@@ -11,11 +11,11 @@
  *     — pas du rafistolage de connecteurs no-code grand public (non nommés).
  *   - De l'audit au cadrage de vos premiers agents IA : on enchaîne dans la
  *     continuité, recommandations directement exploitables.
- *   - Présentiel partout en France.
+ *   - Interventions présentielles partout en France.
  *
- * Fond mocha (premium) pour casser le rythme et marquer la posture de
- * référence. Server Component pur, zéro JS (budget Web Vitals). FR canonique —
- * EN = miroir (locale 301→FR, règle Will 2026-05-16).
+ * Fond clair `halo-warm` (Will 2026-05-31 : le fond sombre était trop dur).
+ * Server Component pur, zéro JS (budget Web Vitals). FR canonique — EN = miroir
+ * (locale 301→FR, règle Will 2026-05-16).
  */
 
 import type { ReactNode } from "react";
@@ -137,45 +137,41 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
   ];
 
   return (
-    <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-32">
+    <section className="bg-halo-warm text-fg relative overflow-hidden py-24 sm:py-28 lg:py-32">
       {/* Halo décoratif terracotta diffus (CSS pur, zéro JS) */}
       <div
         aria-hidden="true"
-        className="bg-terracotta/15 pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
+        className="bg-terracotta/10 pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
       />
 
       <Container className="relative">
         {/* Header 2 colonnes — pitch à gauche, chaîne IA à droite */}
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-mocha-fg/70 text-[13px] font-medium tracking-[0.16em] uppercase">
+            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
-                className="bg-terracotta-soft mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
               {isFr ? "Pourquoi nous choisir" : "Why choose us"}
             </p>
-            <h2 className="text-mocha-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-              {isFr ? "Le seul partenaire qui maîtrise" : "The only partner mastering"}
-              <span
-                className="text-terracotta-soft mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? "toute la chaîne IA" : "the whole AI chain"}
+            <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              {isFr ? "Le seul partenaire qui maîtrise " : "The only partner who masters "}
+              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+                {isFr ? "toute la chaîne IA, de bout en bout." : "the entire AI chain, end to end."}
               </span>
-              {isFr ? ", de bout en bout." : ", end to end."}
             </h2>
-            <p className="text-mocha-fg/85 mt-6 max-w-xl text-lg leading-relaxed">
+            <p className="text-fg-soft mt-6 max-w-xl text-lg leading-relaxed">
               {isFr
                 ? "Un audit IA n'a de valeur que mené par des profils capables de comprendre l'enjeu métier, la contrainte technique et la réalité de la mise en œuvre. Chez Axion-IA, on combine spécialistes, architectes et experts seniors — et on va jusqu'au bout : de la formation à l'implémentation complète."
                 : "An AI audit is only worth what the people running it can grasp — business stakes, technical constraints and delivery reality. At Axion-IA we combine senior specialists, architects and experts — and we go all the way: from training to full implementation."}
             </p>
 
             {/* Claim de positionnement — la première plateforme bout-en-bout */}
-            <p className="border-terracotta/40 bg-terracotta/10 text-mocha-fg mt-7 flex items-start gap-3 rounded-2xl border px-5 py-4 text-[15px] leading-snug font-medium">
+            <p className="border-terracotta/30 bg-terracotta-soft/40 text-fg mt-7 flex items-start gap-3 rounded-2xl border px-5 py-4 text-[15px] leading-snug font-medium">
               <Sparkles
                 aria-hidden="true"
-                className="text-terracotta-soft mt-0.5 h-5 w-5 shrink-0"
+                className="text-terracotta-deep mt-0.5 h-5 w-5 shrink-0"
                 strokeWidth={2}
               />
               <span>
@@ -184,13 +180,15 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                     La première plateforme à couvrir{" "}
                     <span className="font-bold">toute la chaîne IA & automatisation</span> de bout
                     en bout — avec du <span className="font-bold">vrai code source</span>, pas des
-                    applications rafistolées.
+                    applications rafistolées. Avec des interventions{" "}
+                    <span className="font-bold">partout en France</span>.
                   </>
                 ) : (
                   <>
                     The first platform covering the{" "}
-                    <span className="font-bold">entire AI & automation chain</span> end to end —
+                    <span className="font-bold">entire AI &amp; automation chain</span> end to end —
                     with <span className="font-bold">real source code</span>, not duct-taped apps.
+                    With on-site work <span className="font-bold">across France</span>.
                   </>
                 )}
               </span>
@@ -198,8 +196,8 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
           </div>
 
           {/* Chaîne IA — stepper vertical, l'audit comme point d'entrée */}
-          <div className="border-mocha-fg/15 bg-mocha-fg/[0.04] rounded-3xl border p-6 sm:p-8">
-            <p className="text-mocha-fg/60 mb-6 text-[11px] font-bold tracking-[0.18em] uppercase">
+          <div className="border-border bg-paper shadow-card rounded-3xl border p-6 sm:p-8">
+            <p className="text-fg-muted mb-6 text-[11px] font-bold tracking-[0.18em] uppercase">
               {isFr ? "La chaîne IA complète" : "The complete AI chain"}
             </p>
             <ol className="relative space-y-0 p-0">
@@ -209,7 +207,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                   {i < chain.length - 1 ? (
                     <span
                       aria-hidden="true"
-                      className="bg-mocha-fg/15 absolute top-3 left-[5px] h-full w-px"
+                      className="bg-border absolute top-3 left-[5px] h-full w-px"
                     />
                   ) : null}
                   {/* Nœud */}
@@ -217,28 +215,28 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                     aria-hidden="true"
                     className={
                       step.active
-                        ? "bg-terracotta ring-terracotta/30 relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full ring-4"
+                        ? "bg-terracotta ring-terracotta/25 relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full ring-4"
                         : step.strong
-                          ? "bg-terracotta-soft relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full"
-                          : "bg-mocha-fg/40 relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full"
+                          ? "bg-terracotta/60 relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full"
+                          : "bg-border-strong relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full"
                     }
                   />
                   <div className="min-w-0">
                     <p
                       className={
                         step.active
-                          ? "text-terracotta-soft text-[15px] leading-tight font-bold"
-                          : "text-mocha-fg text-[15px] leading-tight font-semibold"
+                          ? "text-terracotta-deep text-[15px] leading-tight font-bold"
+                          : "text-fg text-[15px] leading-tight font-semibold"
                       }
                     >
                       {isFr ? step.labelFr : step.labelEn}
                       {step.active ? (
-                        <span className="bg-terracotta text-mocha-fg ml-2 rounded-full px-2 py-0.5 align-middle text-[10px] font-bold tracking-wide uppercase">
+                        <span className="bg-terracotta text-paper ml-2 rounded-full px-2 py-0.5 align-middle text-[10px] font-bold tracking-wide uppercase">
                           {isFr ? "vous êtes ici" : "you are here"}
                         </span>
                       ) : null}
                     </p>
-                    <p className="text-mocha-fg/65 mt-0.5 text-[13px] leading-snug">
+                    <p className="text-fg-muted mt-0.5 text-[13px] leading-snug">
                       {isFr ? step.descFr : step.descEn}
                     </p>
                   </div>
@@ -255,15 +253,15 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
             return (
               <li
                 key={p.titleFr}
-                className="border-mocha-fg/15 bg-mocha-fg/[0.04] hover:border-terracotta/40 flex h-full flex-col rounded-2xl border p-6 transition"
+                className="border-border bg-paper shadow-subtle hover:border-terracotta/50 hover:shadow-card flex h-full flex-col rounded-2xl border p-6 transition"
               >
                 <span className="bg-terracotta-soft text-terracotta-deep mb-5 flex h-12 w-12 items-center justify-center rounded-2xl">
                   <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
                 </span>
-                <h3 className="text-mocha-fg text-[16px] leading-snug font-bold tracking-tight">
+                <h3 className="text-fg text-[16px] leading-snug font-bold tracking-tight">
                   {isFr ? p.titleFr : p.titleEn}
                 </h3>
-                <p className="text-mocha-fg/75 mt-2.5 text-[13.5px] leading-relaxed">
+                <p className="text-fg-soft mt-2.5 text-[13.5px] leading-relaxed">
                   {isFr ? p.bodyFr : p.bodyEn}
                 </p>
               </li>
@@ -291,11 +289,11 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
             return (
               <li
                 key={b.label}
-                className="text-mocha-fg/85 flex items-center gap-2 text-[13px] font-semibold"
+                className="text-fg-soft flex items-center gap-2 text-[13px] font-semibold"
               >
                 <Icon
                   aria-hidden="true"
-                  className="text-terracotta-soft h-4 w-4 shrink-0"
+                  className="text-terracotta-deep h-4 w-4 shrink-0"
                   strokeWidth={2}
                 />
                 {b.label}

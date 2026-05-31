@@ -16,10 +16,10 @@
  */
 
 import type { ReactNode } from "react";
-import Image from "next/image";
 import { Store, Building, Building2, Clock, ArrowRight, type LucideIcon } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
+import { ZoomableImage } from "@/components/marketing/ZoomableImage";
 import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 interface AudienceCard {
@@ -145,22 +145,20 @@ export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
           </p>
         </div>
 
-        <figure className="border-border shadow-card m-0 overflow-hidden rounded-2xl border">
-          <Image
-            src="/illustrations/audit-segments-entreprise-v2.webp"
-            alt={
-              isFr
-                ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
-                : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile."
-            }
-            width={1536}
-            height={1024}
-            loading="lazy"
-            decoding="async"
-            unoptimized
-            className="h-auto w-full"
-          />
-        </figure>
+        <ZoomableImage
+          src="/illustrations/audit-segments-entreprise-v2.webp"
+          alt={
+            isFr
+              ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
+              : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile."
+          }
+          width={1536}
+          height={1024}
+          sizes="(max-width: 1024px) 92vw, 720px"
+          unoptimized
+          zoomLabel={isFr ? "Agrandir" : "Enlarge"}
+          figureClassName="border-border shadow-card overflow-hidden rounded-2xl border"
+        />
       </div>
 
       <ul className="mt-14 grid list-none gap-6 p-0 md:grid-cols-3">
