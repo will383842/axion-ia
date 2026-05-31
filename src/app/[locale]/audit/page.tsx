@@ -159,15 +159,15 @@ export default async function AuditHub({ params }: Props) {
         encodingFormat: "image/avif",
       },
       {
-        src: "/illustrations/methodologie-audit-ia-8-etapes-v3.webp",
+        src: "/illustrations/methodologie-audit-ia-8-etapes-v4.webp",
         name: isFr
           ? "Méthodologie d'audit IA Axion-IA en 8 étapes"
           : "Axion-IA AI audit methodology in 8 steps",
         alt: isFr
           ? "Méthodologie d'audit IA Axion-IA en 8 étapes illustrées : cadrage, entretiens métier, consolidation et analyse, filtrage des options, évaluation et recommandations chiffrées (ROI), restitution et feuille de route, mise en œuvre, adoption et pilotage dans la durée — chaque étape avec son livrable."
           : "Axion-IA AI audit methodology in 8 illustrated steps: scoping, business interviews, consolidation and analysis, option filtering, evaluation and costed recommendations (ROI), read-out and roadmap, implementation, adoption and long-term steering — each step with its deliverable.",
-        width: 1983,
-        height: 793,
+        width: 1975,
+        height: 569,
         encodingFormat: "image/webp",
       },
     ],
