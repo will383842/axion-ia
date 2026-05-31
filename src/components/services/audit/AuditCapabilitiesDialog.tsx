@@ -4,6 +4,7 @@
 import type { ReactNode } from "react";
 import {
   ArrowRight,
+  Rocket,
   Headset,
   TrendingUp,
   ShoppingCart,
@@ -33,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { AUDIT_CAPABILITIES, type CapabilityIconName } from "@/content/audit-capabilities";
 
 const ICONS: Record<CapabilityIconName, LucideIcon> = {
+  Rocket,
   Headset,
   TrendingUp,
   ShoppingCart,
@@ -84,8 +86,8 @@ export function AuditCapabilitiesDialog({ isFr }: AuditCapabilitiesDialogProps):
             </DialogTitle>
             <DialogDescription className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
               {isFr
-                ? "De la TPE à la grande entreprise, mono-site ou multi-sites / réseau / franchises : l'IA et l'automatisation touchent toutes les fonctions. Vous n'avez pas besoin de tout — l'audit IA détermine ce qui s'applique à vous, et ce qui rapporte le plus vite, fonction par fonction."
-                : "From micro-business to large enterprise, single-site or multi-site / network / franchises: AI and automation touch every function. You don't need all of it — the AI audit determines what applies to you, and what pays off fastest, function by function."}
+                ? "De la TPE à la grande entreprise, mono-site ou multi-sites / réseau / franchises : l'IA et l'automatisation touchent toute l'entreprise — de la stratégie globale à chaque fonction. Vous n'avez pas besoin de tout : l'audit IA détermine ce qui s'applique à vous, et ce qui rapporte le plus vite."
+                : "From micro-business to large enterprise, single-site or multi-site / network / franchises: AI and automation touch the whole company — from the global strategy down to every function. You don't need all of it: the AI audit determines what applies to you, and what pays off fastest."}
             </DialogDescription>
           </div>
 

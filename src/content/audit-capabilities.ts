@@ -13,6 +13,7 @@
  */
 
 export type CapabilityIconName =
+  | "Rocket"
   | "Headset"
   | "TrendingUp"
   | "ShoppingCart"
@@ -41,6 +42,19 @@ export interface CapabilityDomain {
 // Carte exhaustive par fonction. FR canonique (rendu à l'identique en EN —
 // locale EN désactivée / 301→FR).
 export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
+  {
+    icon: "Rocket",
+    title: "Stratégie IA & transformation globale",
+    intro: "Une vision IA d'ensemble, déclinée et pilotée dans toute l'entreprise.",
+    items: [
+      "Vision et feuille de route IA à l'échelle de l'entreprise",
+      "Priorisation des chantiers par ROI et faisabilité",
+      "Gouvernance, conformité (AI Act, RGPD) et maîtrise des risques",
+      "Conduite du changement et montée en compétences des équipes",
+      "Culture IA, cas d'usage transverses et quick wins",
+      "Pilotage des gains (KPI), budget et trajectoire d'investissement",
+    ],
+  },
   {
     icon: "Headset",
     title: "Relation & service client",
