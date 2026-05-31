@@ -25,7 +25,6 @@ import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLe
 import { AuditCapabilitiesMap } from "@/components/services/audit/AuditCapabilitiesMap";
 import { AuditWhyNow } from "@/components/services/audit/AuditWhyNow";
 import { AuditDeliverable } from "@/components/services/audit/AuditDeliverable";
-import { AuditMethodology } from "@/components/services/audit/AuditMethodology";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
@@ -212,9 +211,6 @@ export default async function AuditHub({ params }: Props) {
 
       {/* POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
       <AuditWhyNow isFr={isFr} />
-
-      {/* COMMENT ÇA MARCHE — « Notre démarche en 4 étapes » */}
-      <AuditMethodology isFr={isFr} />
 
       {/* LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
       <AuditDeliverable isFr={isFr} />
