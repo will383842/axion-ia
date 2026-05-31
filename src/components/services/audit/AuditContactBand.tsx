@@ -5,7 +5,7 @@
  * audit : placé juste après la section « Nous, on la rend rentable ». Même
  * traitement visuel (fond terracotta, titre serif, CTA primary « Réserver un
  * appel » + CTA paper « Nous écrire »), copie calibrée audit (orienter vers
- * le bon niveau : flash, ciblé, global).
+ * le bon niveau d'audit IA selon la taille).
  *
  * Zéro JS. FR canonique — EN = miroir (locale 301→FR, règle Will 2026-05-16).
  */
@@ -26,21 +26,21 @@ export function AuditContactBand({ isFr }: AuditContactBandProps): ReactNode {
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
           <div className="max-w-2xl">
             <p className="text-mocha-fg/75 mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
-              {isFr ? "Pas sûr·e du bon niveau d'audit ?" : "Not sure which audit level?"}
+              {isFr ? "Pas sûr·e du bon niveau d'audit IA ?" : "Not sure which AI audit level?"}
             </p>
             <h2
               className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "On cadre votre audit," : "We scope your audit,"}{" "}
+              {isFr ? "On cadre votre audit IA," : "We scope your AI audit,"}{" "}
               <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
                 {isFr ? "au bon niveau" : "at the right level"}
               </span>
             </h2>
             <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Un appel pour comprendre votre contexte, vous dire quel audit vous correspond — du flash ciblé à l'analyse globale de l'entreprise — et comment se déroule la mission. Sans engagement."
-                : "A call to understand your context, tell you which audit fits — from a focused flash to a company-wide deep dive — and how the engagement unfolds. No commitment."}
+                ? "Un appel pour comprendre votre contexte, vous dire quel audit IA vous correspond — du diagnostic ciblé à l'analyse globale de l'entreprise — et comment se déroule la mission. Sans engagement."
+                : "A call to understand your context, tell you which AI audit fits — from a focused diagnosis to a company-wide deep dive — and how the engagement unfolds. No commitment."}
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">

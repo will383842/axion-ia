@@ -32,9 +32,9 @@ const BENEFITS: ReadonlyArray<Benefit> = [
     titleFr: "Une vision claire",
     titleEn: "A clear vision",
     bodyFr:
-      "Toute votre activité cartographiée : où l'IA peut vraiment changer la donne, secteur par secteur.",
+      "Une cartographie IA complète de votre activité : où l'IA change vraiment la donne, secteur par secteur.",
     bodyEn:
-      "Your whole activity mapped: where AI can truly move the needle, department by department.",
+      "A complete AI mapping of your activity: where AI truly moves the needle, department by department.",
   },
   {
     icon: Target,
@@ -85,7 +85,7 @@ export function AuditBenefits({ isFr }: AuditBenefitsProps): ReactNode {
             {isFr ? "Ce que ça change pour vous" : "What it changes for you"}
           </p>
           <h2 className="text-fg mt-5 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.05] font-semibold tracking-tight">
-            {isFr ? "Ce qu'un audit vous apporte," : "What an audit gives you,"}
+            {isFr ? "Ce qu'un audit IA vous apporte," : "What an AI audit gives you,"}
             <span
               className="text-terracotta mx-2 italic"
               style={{ fontFamily: "var(--font-serif)" }}

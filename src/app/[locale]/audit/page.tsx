@@ -68,8 +68,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? "Le diagnostic qui fait passer votre entreprise à l'IA : on cartographie partout où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé. Audit sur place 1 journée complète pour TPE, artisans et commerçants ; sur devis pour PME, ETI et grande entreprise."
-          : "The diagnosis that moves your company to AI: we map everywhere AI saves you time and money, and you leave with a costed, prioritised action plan. 1-day on-site audit for small businesses, artisans and retailers; on quote for SME, mid-cap and large enterprise.",
+          ? "L'audit IA en entreprise rigoureux, complet et minutieux — la référence française. On cartographie en détail partout où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé. Audit IA sur place, 1 journée complète pour TPE, artisans et commerçants ; sur devis pour PME, ETI et grandes entreprises. Partout en France."
+          : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. We map in detail everywhere AI saves you time and money, and you leave with a costed, prioritised action plan. On-site AI audit, 1 full day for small businesses, artisans and retailers; on quote for SMEs, mid-caps and large enterprises. Across France.",
     }),
     title: { absolute: titleStr },
   };
@@ -91,8 +91,8 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? "4 niveaux d'audit IA selon la taille de l'entreprise et la situation. France & international."
-      : "4 AI audit levels by company size and situation. France & international.",
+      ? "L'audit IA en entreprise rigoureux, complet et minutieux — la référence française. 4 niveaux selon la taille (TPE, PME, ETI, grande entreprise). Cartographie détaillée, ROI chiffré, feuille de route actionnable. Partout en France."
+      : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. 4 levels by company size (small business, SME, mid-cap, large enterprise). Detailed mapping, quantified ROI, actionable roadmap. Across France.",
     serviceType: "AI audit",
   });
 
@@ -169,6 +169,18 @@ export default async function AuditHub({ params }: Props) {
           : "Axion-IA AI audit methodology in 8 illustrated steps: scoping, business interviews, consolidation and analysis, option filtering, evaluation and costed recommendations (ROI), read-out and roadmap, implementation, adoption and long-term steering — each step with its deliverable.",
         width: 1983,
         height: 793,
+        encodingFormat: "image/webp",
+      },
+      {
+        src: "/illustrations/audit-audience-segments.webp",
+        name: isFr
+          ? "Audit IA en entreprise par taille — TPE, PME, ETI & grandes entreprises"
+          : "Enterprise AI audit by company size — small business, SME, mid-cap & large enterprise",
+        alt: isFr
+          ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
+          : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile.",
+        width: 1536,
+        height: 1024,
         encodingFormat: "image/webp",
       },
     ],

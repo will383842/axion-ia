@@ -70,8 +70,8 @@ export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
       scopeFr: "Plusieurs jours selon votre activité : sur devis.",
       scopeEn: "Several days depending on your activity: on quote.",
       ctaHref: "/appel",
-      ctaFr: "Réserver l'audit",
-      ctaEn: "Book the audit",
+      ctaFr: "Réserver l'audit IA",
+      ctaEn: "Book the AI audit",
       track: "audit_audience_tpe",
     },
     {
@@ -119,12 +119,12 @@ export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
       tone="canvas"
       eyebrow={isFr ? "Par taille d'entreprise" : "By company size"}
       title={isFr ? "À qui s'adressent" : "Who are"}
-      titleEm={isFr ? "nos audits" : "our audits for"}
+      titleEm={isFr ? "nos audits IA" : "our AI audits for"}
       titleTail=" ?"
       description={
         isFr
-          ? "Quelle que soit votre taille, on audite votre entreprise en détail — tout en présentiel. La durée et le périmètre s'adaptent : d'une journée pour une TPE à plusieurs mois pour un groupe."
-          : "Whatever your size, we audit your company in detail — fully on site. Duration and scope adapt: from one day for a micro-business to several months for a group."
+          ? "Quelle que soit votre taille, on audite votre entreprise en détail, avec rigueur et minutie — tout en présentiel. La durée et le périmètre de l'audit IA s'adaptent : d'une journée pour une TPE à plusieurs mois pour un groupe."
+          : "Whatever your size, we audit your company in detail, rigorously and meticulously — fully on site. The AI audit's duration and scope adapt: from one day for a micro-business to several months for a group."
       }
     >
       <ul className="grid list-none gap-6 p-0 md:grid-cols-3">
