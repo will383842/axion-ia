@@ -1,19 +1,18 @@
 /**
- * AuditBenefits — « Ce qu'un audit vous apporte » : header 2 colonnes (texte +
- * image) + 5 bénéfices concrets en cards sur une ligne (rectangle vertical
- * d'accent) + CTA ouvrant la popup du champ des possibles IA.
+ * AuditBenefits — « Ce qu'un audit IA vous apporte » : 5 bénéfices concrets en
+ * cards rectangulaires verticales sur une ligne (rectangle vertical d'accent) +
+ * CTA ouvrant la popup du champ des possibles IA.
  *
- * Refonte 2026-05-31 (Will) — placé après « À qui s'adressent nos audits ? ».
- * Très visuel (le prospect comprend au premier coup d'œil) ; le détail exhaustif
- * par fonction vit dans la popup (AuditCapabilitiesDialog). Couverture sémantique
- * SEO/AEO assurée côté serveur par la sous-ligne des domaines fonctionnels.
+ * Refonte 2026-05-31 (Will) — placé après « À qui s'adressent nos audits IA ? ».
+ * Header standard (H2 même taille que les autres sections), très visuel ; le
+ * détail exhaustif par fonction vit dans la popup (AuditCapabilitiesDialog).
+ * Couverture sémantique SEO/AEO côté serveur via la sous-ligne des domaines.
  *
  * Server Component (seul morceau client = la popup importée). FR canonique —
  * EN = miroir (locale 301→FR, règle Will 2026-05-16).
  */
 
 import type { ReactNode } from "react";
-import Image from "next/image";
 import { Compass, Target, Coins, ShieldCheck, Map as MapIcon, type LucideIcon } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { AuditCapabilitiesDialog } from "@/components/services/audit/AuditCapabilitiesDialog";
@@ -73,55 +72,21 @@ export interface AuditBenefitsProps {
 
 export function AuditBenefits({ isFr }: AuditBenefitsProps): ReactNode {
   return (
-    <Section tone="sand" className="py-16 sm:py-20 lg:py-24">
-      {/* Header 2 colonnes — texte à gauche, image à droite */}
-      <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-12">
-        <div>
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            />
-            {isFr ? "Ce que ça change pour vous" : "What it changes for you"}
-          </p>
-          <h2 className="text-fg mt-5 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.05] font-semibold tracking-tight">
-            {isFr ? "Ce qu'un audit IA vous apporte," : "What an AI audit gives you,"}
-            <span
-              className="text-terracotta mx-2 italic"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {isFr ? "concrètement" : "concretely"}
-            </span>
-            .
-          </h2>
-          <p className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-            {isFr
-              ? "Pas un rapport qui dort dans un tiroir : une vision claire, des gains chiffrés et une feuille de route pour avancer — de la relation client à la finance, du marketing aux opérations."
-              : "Not a report gathering dust: a clear vision, quantified gains and a roadmap to move forward — from customer service to finance, from marketing to operations."}
-          </p>
-        </div>
-
-        <figure className="border-border shadow-card m-0 overflow-hidden rounded-2xl border">
-          <Image
-            src="/illustrations/audit-audience-segments.webp"
-            alt={
-              isFr
-                ? "Audits IA Axion-IA par taille d'entreprise : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines) et ETI & grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés."
-                : "Axion-IA AI audits by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps & large enterprises (multi-site, long-term support) — duration, price and scope adapted."
-            }
-            width={1536}
-            height={1024}
-            loading="lazy"
-            decoding="async"
-            sizes="(max-width: 1024px) 100vw, 620px"
-            className="h-auto w-full"
-            quality={86}
-          />
-        </figure>
-      </div>
-
-      {/* 5 bénéfices — sur une ligne, rectangle vertical d'accent */}
-      <ul className="mt-12 grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+    <Section
+      tone="sand"
+      eyebrow={isFr ? "Ce que ça change pour vous" : "What it changes for you"}
+      title={isFr ? "Ce qu'un audit IA vous apporte," : "What an AI audit gives you,"}
+      titleEm={isFr ? "concrètement" : "concretely"}
+      titleTail="."
+      description={
+        isFr
+          ? "Pas un rapport qui dort dans un tiroir : une vision claire, des gains chiffrés et une feuille de route pour avancer — de la relation client à la finance, du marketing aux opérations."
+          : "Not a report gathering dust: a clear vision, quantified gains and a roadmap to move forward — from customer service to finance, from marketing to operations."
+      }
+    >
+      {/* 5 bénéfices — rectangles verticaux, sur une seule ligne (rectangle
+          d'accent terracotta sur toute la hauteur à gauche). */}
+      <ul className="grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
         {BENEFITS.map((b) => {
           const Icon = b.icon;
           return (
@@ -130,14 +95,14 @@ export function AuditBenefits({ isFr }: AuditBenefitsProps): ReactNode {
               className="bg-paper border-border shadow-subtle hover:border-terracotta/50 hover:shadow-card flex h-full overflow-hidden rounded-2xl border transition"
             >
               <span aria-hidden="true" className="bg-terracotta w-1.5 shrink-0" />
-              <div className="flex flex-1 flex-col p-5">
-                <span className="bg-terracotta-soft text-terracotta-deep mb-4 flex h-11 w-11 items-center justify-center rounded-2xl">
-                  <Icon aria-hidden="true" className="h-[22px] w-[22px]" strokeWidth={1.75} />
+              <div className="flex flex-1 flex-col p-6">
+                <span className="bg-terracotta-soft text-terracotta-deep mb-5 flex h-12 w-12 items-center justify-center rounded-2xl">
+                  <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
                 </span>
-                <h3 className="text-fg text-[15.5px] leading-tight font-semibold tracking-tight">
+                <h3 className="text-fg text-base leading-tight font-semibold tracking-tight">
                   {isFr ? b.titleFr : b.titleEn}
                 </h3>
-                <p className="text-fg-soft mt-2 text-[13px] leading-snug">
+                <p className="text-fg-soft mt-2.5 text-[13.5px] leading-relaxed">
                   {isFr ? b.bodyFr : b.bodyEn}
                 </p>
               </div>
@@ -147,7 +112,7 @@ export function AuditBenefits({ isFr }: AuditBenefitsProps): ReactNode {
       </ul>
 
       {/* CTA → popup du champ des possibles (tous les secteurs) */}
-      <div className="mt-10 flex flex-col items-center gap-3 text-center">
+      <div className="mt-12 flex flex-col items-center gap-3 text-center">
         <AuditCapabilitiesDialog isFr={isFr} />
         <p className="text-fg-muted text-[13px]">
           {isFr
