@@ -70,8 +70,9 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
       </ol>
 
       {/* Visuel illustré de la méthodologie — quasi pleine largeur, sans cadre
-          (le fond blanc de l'image se fond dans la section paper). `unoptimized`
-          = pas de recompression next/image → texte net (graphique riche en texte). */}
+          (le fond blanc de l'image se fond dans la section paper). Image
+          optimisée (responsive, q90) + lazy → chargement rapide, pas de zone
+          vide. Image déjà rognée (1975×569) pour coller aux numéros. */}
       <figure className="m-0 mt-2 w-full">
         <Image
           src="/illustrations/methodologie-audit-ia-8-etapes-v4.webp"
@@ -84,7 +85,8 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
           height={569}
           loading="lazy"
           decoding="async"
-          unoptimized
+          sizes="(max-width: 1520px) 92vw, 1456px"
+          quality={90}
           className="h-auto w-full"
         />
         <figcaption className="sr-only">
