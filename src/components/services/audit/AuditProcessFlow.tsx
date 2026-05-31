@@ -1,10 +1,11 @@
 /**
- * AuditProcessFlow — « Comment se déroule votre audit », en 4 blocs numérotés
- * sur une seule ligne (Server Component).
+ * AuditProcessFlow — « Comment se déroule votre audit », en 4 cartes-étapes
+ * détaillées sur une ligne (Server Component).
  *
- * Refonte 2026-05-31 (Will) — déroulé concret de l'audit en flow horizontal
- * visuel (01 → 04) relié par un connecteur, chips de durée, micro-ligne de
- * livrable. Volontairement peu de texte : chaque étape = un titre + une ligne.
+ * Refonte 2026-05-31 (Will) — déroulé concret de l'audit, assez détaillé pour
+ * qu'un prospect comprenne exactement ce qu'il se passe à chaque étape (titre +
+ * 2-3 points concrets), tout en restant visuel et scannable. On insiste sur
+ * l'échange avec les dirigeants ET les collaborateurs (cœur de l'entreprise).
  * Écriture propre à Axion-IA (pas de paraphrase du marché).
  *
  * Server Component pur, zéro JS (budget Web Vitals). FR canonique — EN =
@@ -19,7 +20,7 @@ interface Step {
   readonly n: string;
   readonly icon: LucideIcon;
   readonly title: string;
-  readonly sub: string;
+  readonly points: ReadonlyArray<string>;
 }
 
 export interface AuditProcessFlowProps {
@@ -28,41 +29,77 @@ export interface AuditProcessFlowProps {
 
 export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
   const chips: ReadonlyArray<string> = isFr
-    ? ["≈ 6 semaines", "≈ 2 jours / semaine", "Impact minimal sur vos équipes"]
-    : ["≈ 6 weeks", "≈ 2 days / week", "Minimal impact on your teams"];
+    ? [
+        "Durée calibrée sur votre besoin",
+        "Dirigeants + collaborateurs",
+        "Impact minimal sur vos équipes",
+      ]
+    : ["Duration tailored to your need", "Leadership + teams", "Minimal impact on your teams"];
 
   const steps: ReadonlyArray<Step> = [
     {
       n: "01",
       icon: Compass,
-      title: isFr ? "Cadrage" : "Scoping",
-      sub: isFr
-        ? "Objectifs, périmètre et NDA avec les dirigeants."
-        : "Goals, scope and NDA with leadership.",
+      title: isFr ? "Cadrage de la mission" : "Mission scoping",
+      points: isFr
+        ? [
+            "On échange avec les dirigeants et les équipes pour entrer au cœur de l'entreprise.",
+            "Objectifs, contraintes métier, clients et fournisseurs.",
+            "Périmètre prioritaire défini ensemble + NDA.",
+          ]
+        : [
+            "We talk with leadership and teams to reach the heart of the company.",
+            "Goals, business constraints, clients and suppliers.",
+            "Priority scope defined together + NDA.",
+          ],
     },
     {
       n: "02",
       icon: Users,
       title: isFr ? "Entretiens terrain" : "Field interviews",
-      sub: isFr
-        ? "Vos pratiques et points de friction réels."
-        : "Your real practices and friction points.",
+      points: isFr
+        ? [
+            "Directions et collaborateurs concernés, sur site ou à distance.",
+            "Pratiques réelles, points de friction, tâches clés.",
+            "Analyse des process et des outils déjà en place.",
+          ]
+        : [
+            "Management and the teams involved, on site or remotely.",
+            "Real practices, friction points, key tasks.",
+            "Review of existing processes and tools.",
+          ],
     },
     {
       n: "03",
       icon: Search,
-      title: isFr ? "Analyse & veille" : "Analysis & research",
-      sub: isFr
-        ? "Cas d'usage comparables, pistes crédibles."
-        : "Comparable use cases, credible leads.",
+      title: isFr ? "Analyse & recherche" : "Analysis & research",
+      points: isFr
+        ? [
+            "Veille structurée sur les technologies IA pertinentes.",
+            "Cas d'usage comparables dans votre secteur.",
+            "Des pistes crédibles, réalistes, adaptées à vos contraintes.",
+          ]
+        : [
+            "Structured scan of the relevant AI technologies.",
+            "Comparable use cases in your sector.",
+            "Credible, realistic leads fit to your constraints.",
+          ],
     },
     {
       n: "04",
       icon: ListFilter,
-      title: isFr ? "Filtrage des options" : "Option filtering",
-      sub: isFr
-        ? "Faisabilité, risques : une short-list priorisée."
-        : "Feasibility, risks: a prioritised shortlist.",
+      title: isFr ? "Filtrage & priorisation" : "Filtering & prioritisation",
+      points: isFr
+        ? [
+            "Limites, contraintes et risques passés au crible du terrain.",
+            "Priorisation par impact réel et faisabilité.",
+            "Une short-list d'options à fort potentiel à approfondir.",
+          ]
+        : [
+            "Limits, constraints and risks tested against the field.",
+            "Prioritised by real impact and feasibility.",
+            "A shortlist of high-potential options to deepen.",
+          ],
     },
   ];
 
@@ -75,8 +112,8 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
       titleTail="."
       description={
         isFr
-          ? "Un travail de terrain, pas une analyse théorique. Quatre étapes pour passer du flou à une feuille de route prête à exécuter."
-          : "Field work, not a theoretical analysis. Four steps to move from fog to a roadmap ready to execute."
+          ? "Un travail de terrain mené avec vos dirigeants et vos équipes — pas une analyse théorique. Quatre étapes claires, du cadrage à une feuille de route prête à exécuter."
+          : "Field work conducted with your leadership and your teams — not a theoretical analysis. Four clear steps, from scoping to a roadmap ready to execute."
       }
     >
       {/* Chips de durée — pratique, sans verbiage */}
@@ -91,36 +128,39 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
         ))}
       </ul>
 
-      {/* Flow horizontal 01 → 04 relié par un connecteur (desktop) */}
-      <ol className="relative grid list-none gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-        {/* Connecteur horizontal derrière les nœuds (lg) */}
-        <div
-          aria-hidden="true"
-          className="bg-border-strong/40 absolute top-7 right-[12%] left-[12%] hidden h-px lg:block"
-        />
+      {/* 4 cartes-étapes sur une ligne (desktop), détaillées */}
+      <ol className="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((s) => {
           const Icon = s.icon;
           return (
             <li
               key={s.n}
-              className="relative flex flex-col items-center text-center lg:items-start lg:text-left"
+              className="bg-paper border-border shadow-subtle hover:border-terracotta/50 flex h-full flex-col rounded-2xl border p-6 transition-colors"
             >
-              {/* Nœud numéroté sur le connecteur */}
-              <div className="bg-paper border-terracotta shadow-subtle relative z-[1] mb-5 flex h-14 w-14 items-center justify-center rounded-full border-2">
+              <div className="mb-4 flex items-center justify-between gap-3">
                 <span
-                  className="text-terracotta-deep text-lg font-bold tabular-nums"
+                  className="text-terracotta-deep text-3xl leading-none font-bold tabular-nums"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {s.n}
                 </span>
+                <span className="bg-terracotta-soft text-terracotta-deep flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
+                </span>
               </div>
-              <span className="bg-terracotta-soft text-terracotta-deep mb-2.5 inline-flex h-9 w-9 items-center justify-center rounded-xl">
-                <Icon aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={1.75} />
-              </span>
-              <h3 className="text-fg text-[15.5px] leading-tight font-semibold tracking-tight">
+              <h3 className="text-fg text-base leading-tight font-semibold tracking-tight">
                 {s.title}
               </h3>
-              <p className="text-fg-soft mt-1.5 text-[13px] leading-snug">{s.sub}</p>
+              <ul className="text-fg-soft mt-3 list-none space-y-2 p-0 text-[13px] leading-snug">
+                {s.points.map((pt) => (
+                  <li key={pt} className="flex gap-2">
+                    <span aria-hidden="true" className="text-terracotta mt-[3px] leading-none">
+                      ·
+                    </span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
             </li>
           );
         })}
