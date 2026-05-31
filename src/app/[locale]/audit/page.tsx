@@ -14,7 +14,6 @@ import {
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
-import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
 import { AuditAudience } from "@/components/services/audit/AuditAudience";
@@ -220,18 +219,14 @@ export default async function AuditHub({ params }: Props) {
           (adapté du bandeau /un-a-un). */}
       <AuditContactBand isFr={isFr} />
 
-      {/* À QUI ÇA S'ADRESSE — cards par taille (TPE/artisans, PME, ETI, grande
-          entreprise), après le bandeau orange (Will 2026-05-31). */}
-      <AuditAudience isFr={isFr} />
-
-      {/* CE QU'UN AUDIT VOUS APPORTE — 5 bénéfices concrets + CTA popup « tout ce
-          que l'IA peut apporter » (champ des possibles par fonction, monté DOM
-          pour le SEO/AEO). Remplace l'ancienne carte capacités inline (Will 2026-05-31). */}
+      {/* CE QU'UN AUDIT IA VOUS APPORTE — 5 bénéfices concrets + CTA popup « tout
+          ce que l'IA peut apporter » (champ des possibles par fonction). Remonté
+          avant la section audience (Will 2026-05-31). */}
       <AuditBenefits isFr={isFr} />
 
-      {/* PROMESSE — bloc value-prop « Faites auditer votre entreprise et révélez
-          tout ce que l'IA peut réellement vous apporter. » */}
-      <AuditValueProp isFr={isFr} />
+      {/* À QUI ÇA S'ADRESSE — cards par taille (TPE/artisans, PME, ETI, grande
+          entreprise). */}
+      <AuditAudience isFr={isFr} />
 
       {/* Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
