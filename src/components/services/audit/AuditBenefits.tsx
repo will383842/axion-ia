@@ -4,8 +4,9 @@
  *
  * Refonte 2026-05-31 (Will) — placé après « À qui s'adressent nos audits ? ».
  * Version courte et très visuelle (le prospect comprend au premier coup d'œil) ;
- * le détail exhaustif par fonction vit dans la popup (AuditCapabilitiesDialog,
- * contenu monté dans le DOM pour la couverture sémantique SEO/AEO).
+ * le détail exhaustif par fonction vit dans la popup (AuditCapabilitiesDialog).
+ * Couverture sémantique SEO/AEO assurée côté serveur par la sous-ligne des
+ * domaines fonctionnels (le détail de la popup se rend à l'ouverture).
  *
  * Server Component (seul morceau client = la popup importée). FR canonique —
  * EN = miroir (locale 301→FR, règle Will 2026-05-16).
