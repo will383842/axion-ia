@@ -14,6 +14,7 @@ import type { VilleCopy } from "./copy/types";
 import type { VilleEconomicData } from "./economic-data/types";
 import { getVilleEconomicData } from "./economic-data";
 import { PREMIUM_REWRITE_SLUGS } from "./premium-rewrite-slugs";
+import { UNIQUE_VILLE_SLUGS } from "./unique-ville-slugs";
 import { REGIONS, type Region } from "@/content/regions";
 
 import { VILLES_ILE_DE_FRANCE } from "./data/ile-de-france";
@@ -211,10 +212,25 @@ export function isPremiumVille(v: Ville): boolean {
   return !!v.copy && (v.population >= 20_000 || PREMIUM_REWRITE_SLUGS.has(v.slug));
 }
 
-// Villes avec copy, triées par priorité d'indexation : premium d'abord (par
-// population décroissante), puis le reste (par population décroissante). Ordre
-// déterministe et stable entre builds (tri par pop puis slug en tie-break).
-const RANKED_INDEXABLE: ReadonlyArray<Ville> = VILLES.filter((v) => !!v.copy).sort((a, b) => {
+// Villes RÉELLEMENT indexables — garde-fou anti-doorway au mérite (décision Will
+// 2026-05-31 « indexation au mérite + AEO », Phase 2B). Une ville n'entre dans la
+// cohorte d'indexation que si elle a un `copy` ET passe le scorer d'unicité
+// (`UNIQUE_VILLE_SLUGS` : score d'unicité ≥ 0.6 OU premium/gold force-inclus —
+// cf. scripts/villes/compute-ville-uniqueness.ts). Les ~341 villes templatées
+// (clusters de communes voisines quasi-identiques) restent PRÉSENTES, crawlables,
+// maillées et citables par les IA (AEO), mais sortent `noindex` au niveau page
+// (via `isVilleIndexable`) et hors sitemap — sans recréer de doorway HCU 2024.
+//
+// NB : `getIndexableVilles()` (= villes avec copy, 2157) reste la base structurelle
+// stable du sitemap + de la whitelist Edge `seo-noindex-routes.ts`. La décision
+// d'indexation effective (robots des pages + contenu du sitemap) passe, elle, par
+// `isVilleIndexable` ⟶ `RANKED_INDEXABLE` (sous-ensemble unique + drip).
+//
+// Tri par priorité : premium d'abord (population décroissante), puis le reste.
+// Ordre déterministe et stable entre builds (tri par pop puis slug en tie-break).
+const RANKED_INDEXABLE: ReadonlyArray<Ville> = VILLES.filter(
+  (v) => !!v.copy && UNIQUE_VILLE_SLUGS.has(v.slug),
+).sort((a, b) => {
   const pa = isPremiumVille(a);
   const pb = isPremiumVille(b);
   if (pa !== pb) return pa ? -1 : 1;
