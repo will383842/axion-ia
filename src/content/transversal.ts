@@ -726,6 +726,47 @@ export function getAllFaqIds(): string[] {
   return FAQ_GLOBAL.map((f) => f.id);
 }
 
+/**
+ * Catégorisation des FAQ legacy (FAQ_GLOBAL) par thème — perfection FAQ 2026-05-31
+ * (axe C, « allumer les hubs /faq/par-thematique »). Avant, toutes les FAQ legacy
+ * tombaient dans "general" → 5 hubs sur 6 noindex (thin). Mapping vers l'enum
+ * Prisma `FAQCategory` (general | interventions | implementation | audit |
+ * pricing | process). Toute FAQ non mappée → "general" (fallback).
+ */
+const FAQ_GLOBAL_CATEGORY: Readonly<Record<string, string>> = {
+  // interventions
+  "geo-distance-international": "interventions",
+  "competences-techniques": "interventions",
+  "equipes-operationnelles": "interventions",
+  "presentiel-distance": "interventions",
+  "formation-ia-difference": "interventions",
+  "coaching-1-to-1-dirigeant": "interventions",
+  // implementation
+  "no-code-position": "implementation",
+  "delai-implementation": "implementation",
+  "ia-on-premise": "implementation",
+  "tpe-ia": "implementation",
+  "accompagnement-post-implementation": "implementation",
+  "site-web-augmente-ia": "implementation",
+  // audit
+  "audit-ia-definition": "audit",
+  "roi-mesurer": "audit",
+  "choisir-cabinet-ia": "audit",
+  // pricing
+  billing: "pricing",
+  "cout-projet-ia-pme": "pricing",
+  // process
+  "data-security": "process",
+  "confidentialite-projet-ia": "process",
+  "rgpd-ia": "process",
+  // (tout le reste → "general")
+};
+
+/** Catégorie thématique d'une FAQ legacy (défaut "general"). */
+export function getFaqGlobalCategory(id: string): string {
+  return FAQ_GLOBAL_CATEGORY[id] ?? "general";
+}
+
 // slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
 // Anciennement défini inline ici — comportement identique préservé (maxLen default 80).
 

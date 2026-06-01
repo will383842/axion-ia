@@ -45,11 +45,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!entry) return {};
   const isFr = locale === "fr";
   const copy = getCopy(entry, locale as Locale);
+  // Intention de recherche / CTR (perfection FAQ 2026-05-31) : la question EST la
+  // requête (H1 = title). On évite la troncature SERP (~60 car.) : on n'ajoute le
+  // suffixe marque que si la question est courte, sinon on la laisse intacte.
+  const brand = isFr ? "FAQ Axion-IA" : "Axion-IA FAQ";
+  const title = copy.question.length > 50 ? copy.question : `${copy.question} · ${brand}`;
   const meta = buildProductMetadata({
     locale,
     path: `/faq/${slug}`,
-    title: `${copy.question} · ${isFr ? "FAQ Axion-IA" : "Axion-IA FAQ"}`,
-    description: copy.answer,
+    title,
+    description: copy.answer.length > 155 ? `${copy.answer.slice(0, 152).trimEnd()}…` : copy.answer,
   });
   // Fix audit FAQ 2026-05-31 (axe A2) : Track B (auto) non promu tier-1 →
   // `noindex,follow`. Le contrat « tier-2 = noindex » n'était jamais honoré au
