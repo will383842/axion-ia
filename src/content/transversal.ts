@@ -581,6 +581,439 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Axion-IA 1-to-1 coaching is individual support for CEOs, managing directors, HRDs or department heads. In 3 to 5 sessions, you learn to integrate AI into your own daily practice: meeting preparation, data analysis, strategic writing, automated sector monitoring. The goal: save 5 to 10 hours per week and make better decisions faster.",
     },
   },
+  // ── Batch perfection FAQ 2026-05-31 — extension couverture intentions ──────────
+  {
+    id: "tarifs-publics-transparents",
+    fr: {
+      question: "Les tarifs Axion-IA sont-ils publics et transparents ?",
+      answer:
+        "Oui. Axion-IA affiche des tarifs publics, sans devis opaque ni prix caché : chaque service (audit, intervention, implémentation, coaching) a un tarif d'entrée clair, et les missions sur mesure sont chiffrées sur devis détaillé avant tout engagement. Vous savez exactement ce que vous payez et pourquoi, avec un ROI estimé en amont.",
+    },
+    en: {
+      question: "Is Axion-IA pricing public and transparent?",
+      answer:
+        "Yes. Axion-IA publishes public pricing, with no opaque quotes or hidden costs: each service (audit, session, implementation, coaching) has a clear entry price, and custom projects are quoted in detail before any commitment. You know exactly what you pay and why, with ROI estimated upfront.",
+    },
+  },
+  {
+    id: "aides-subventions-ia",
+    fr: {
+      question: "Existe-t-il des aides ou subventions pour un projet IA ?",
+      answer:
+        "Selon votre projet, certains audits ou diagnostics IA peuvent être partiellement co-financés en France : le programme France Num et ses diagnostics, des subventions régionales à la transformation numérique, des dispositifs BPI selon le cas, et les crédits d'impôt recherche/innovation (CIR/CII) pour les développements sur mesure. L'éligibilité dépend de votre taille, secteur et région ; nous vous orientons vers les dispositifs pertinents lors de l'audit.",
+    },
+    en: {
+      question: "Are there grants or subsidies for an AI project?",
+      answer:
+        "Depending on your project, some AI audits or diagnostics can be partially co-funded in France: the France Num programme and its diagnostics, regional digital-transformation grants, BPI schemes where applicable, and research/innovation tax credits (CIR/CII) for custom development. Eligibility depends on your size, sector and region; we point you to the relevant schemes during the audit.",
+    },
+  },
+  {
+    id: "budget-demarrer-ia",
+    fr: {
+      question: "Quel budget prévoir pour démarrer l'IA dans mon entreprise ?",
+      answer:
+        "On peut démarrer sans gros budget. Un premier audit IA ou une intervention ciblée représente un investissement de quelques centaines à quelques milliers d'euros, avec un ROI souvent atteint en quelques semaines (heures gagnées, tâches automatisées). Une implémentation sur mesure (agents, automatisations, IA métier) se chiffre selon le périmètre. La bonne approche : commencer petit sur un cas à fort impact, prouver le ROI, puis étendre.",
+    },
+    en: {
+      question: "What budget should I plan to get started with AI?",
+      answer:
+        "You can start without a big budget. A first AI audit or a targeted session is an investment of a few hundred to a few thousand euros, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
+    },
+  },
+  {
+    id: "duree-audit-ia",
+    fr: {
+      question: "Combien de temps dure un audit IA ?",
+      answer:
+        "Un audit IA Axion-IA se déroule généralement sur quelques heures à quelques jours selon la taille de l'entreprise. La phase sur site ou en visio (cartographie des processus, identification des cas d'usage, estimation du ROI) dure souvent une demi-journée à une journée ; le rapport et la feuille de route sont remis dans la foulée, sous quelques jours ouvrés.",
+    },
+    en: {
+      question: "How long does an AI audit take?",
+      answer:
+        "An Axion-IA audit usually runs from a few hours to a few days depending on company size. The on-site or remote phase (process mapping, use-case identification, ROI estimation) often lasts half a day to a day; the report and roadmap are delivered shortly after, within a few business days.",
+    },
+  },
+  {
+    id: "livrables-audit-ia",
+    fr: {
+      question: "Que contient le rapport d'un audit IA ?",
+      answer:
+        "Le rapport d'audit IA Axion-IA contient : une cartographie de vos processus et des points de friction, une liste priorisée de cas d'usage IA concrets, une estimation du ROI et du temps gagné pour chacun, les outils et l'architecture recommandés (avec contraintes RGPD et souveraineté), et une feuille de route séquencée. C'est un document actionnable, pas un rapport théorique.",
+    },
+    en: {
+      question: "What does an AI audit report contain?",
+      answer:
+        "The Axion-IA audit report contains: a map of your processes and friction points, a prioritised list of concrete AI use cases, an ROI and time-saved estimate for each, recommended tools and architecture (with GDPR and sovereignty constraints), and a sequenced roadmap. It is an actionable document, not a theoretical report.",
+    },
+  },
+  {
+    id: "automatiser-taches-ia",
+    fr: {
+      question: "Quelles tâches peut-on automatiser avec l'IA en entreprise ?",
+      answer:
+        "Beaucoup de tâches répétitives à forte valeur : tri et réponse aux e-mails, rédaction de devis et comptes-rendus, classification et extraction de documents, relances clients, génération de contenus, synthèse de réunions, support client de premier niveau, analyse de données et reporting. L'IA ne remplace pas le métier : elle absorbe le travail répétitif pour libérer du temps sur les tâches à forte valeur ajoutée.",
+    },
+    en: {
+      question: "Which business tasks can be automated with AI?",
+      answer:
+        "Many high-value repetitive tasks: email triage and replies, drafting quotes and reports, document classification and extraction, customer follow-ups, content generation, meeting summaries, first-level customer support, data analysis and reporting. AI does not replace the job: it absorbs repetitive work to free up time for high-value tasks.",
+    },
+  },
+  {
+    id: "ia-integration-outils",
+    fr: {
+      question: "Comment intégrer l'IA à mon CRM ou à mes outils existants ?",
+      answer:
+        "L'IA s'intègre à vos outils existants (CRM, ERP, messagerie, GED, tableurs) via leurs API ou des connecteurs, sans tout remplacer. Axion-IA privilégie une approche progressive : on greffe l'IA là où elle apporte le plus de valeur, en respectant votre stack et vos contraintes de sécurité. Pas besoin de refondre votre système d'information pour bénéficier de l'IA.",
+    },
+    en: {
+      question: "How do I integrate AI with my CRM or existing tools?",
+      answer:
+        "AI integrates with your existing tools (CRM, ERP, email, document management, spreadsheets) via their APIs or connectors, without replacing everything. Axion-IA favours a gradual approach: we graft AI where it adds the most value, respecting your stack and security constraints. No need to overhaul your information system to benefit from AI.",
+    },
+  },
+  {
+    id: "agent-ia-definition",
+    fr: {
+      question: "Qu'est-ce qu'un agent IA ?",
+      answer:
+        "Un agent IA est un programme qui ne se contente pas de répondre : il accomplit des tâches de bout en bout de façon autonome. À partir d'un objectif, il peut consulter vos données, utiliser des outils (envoyer un e-mail, mettre à jour un CRM, générer un document), enchaîner plusieurs étapes et s'adapter. C'est la différence clé avec un simple chatbot, qui ne fait que dialoguer.",
+    },
+    en: {
+      question: "What is an AI agent?",
+      answer:
+        "An AI agent is a program that does more than answer: it carries out tasks end to end autonomously. From a goal, it can consult your data, use tools (send an email, update a CRM, generate a document), chain several steps and adapt. That is the key difference from a simple chatbot, which only converses.",
+    },
+  },
+  {
+    id: "agent-vs-chatbot",
+    fr: {
+      question: "Quelle est la différence entre un agent IA et un chatbot ?",
+      answer:
+        "Un chatbot répond à des questions dans une conversation. Un agent IA agit : il exécute des tâches concrètes (traiter une commande, qualifier un lead, produire un rapport) en utilisant vos outils et vos données, avec plusieurs étapes autonomes. Le chatbot informe ; l'agent fait le travail. Axion-IA conçoit les deux selon votre besoin réel, en gardant l'humain dans la boucle pour les décisions sensibles.",
+    },
+    en: {
+      question: "What is the difference between an AI agent and a chatbot?",
+      answer:
+        "A chatbot answers questions in a conversation. An AI agent acts: it performs concrete tasks (processing an order, qualifying a lead, producing a report) using your tools and data, across several autonomous steps. The chatbot informs; the agent does the work. Axion-IA designs both depending on your real need, keeping a human in the loop for sensitive decisions.",
+    },
+  },
+  {
+    id: "former-equipes-ia",
+    fr: {
+      question: "Comment monter mes équipes en compétence sur l'IA ?",
+      answer:
+        "Les sessions de prise en main Axion-IA sont pratiques, pas théoriques : on part de vos cas métier réels et vos équipes repartent autonomes sur des outils qu'elles utiliseront le lendemain. Sur site ou à distance, on couvre les bons réflexes, la rédaction de prompts efficaces, les pièges à éviter (confidentialité, vérification des réponses) et l'usage responsable. L'objectif : des équipes qui gagnent du temps en sécurité, pas des slides oubliés.",
+    },
+    en: {
+      question: "How do I upskill my teams on AI?",
+      answer:
+        "Axion-IA hands-on sessions are practical, not theoretical: we start from your real business cases and your teams leave autonomous on tools they will use the next day. On-site or remote, we cover good habits, writing effective prompts, pitfalls to avoid (confidentiality, checking answers) and responsible use. The goal: teams that save time safely, not forgotten slides.",
+    },
+  },
+  {
+    id: "ia-generative-definition",
+    fr: {
+      question: "Qu'est-ce que l'IA générative ?",
+      answer:
+        "L'IA générative est une catégorie d'intelligence artificielle capable de produire du contenu nouveau — texte, code, images, synthèses — à partir d'une consigne en langage naturel. Des modèles comme Claude ou GPT en sont les moteurs. Pour une entreprise, l'intérêt n'est pas le gadget : c'est d'automatiser la rédaction, l'analyse et le traitement de l'information à grande échelle, en gardant un contrôle humain sur les résultats.",
+    },
+    en: {
+      question: "What is generative AI?",
+      answer:
+        "Generative AI is a category of artificial intelligence able to produce new content — text, code, images, summaries — from a natural-language instruction. Models such as Claude or GPT are its engines. For a business, the point is not the gadget: it is automating writing, analysis and information processing at scale, while keeping human control over the results.",
+    },
+  },
+  {
+    id: "risques-ia-entreprise",
+    fr: {
+      question: "Quels sont les risques de l'IA en entreprise et comment les maîtriser ?",
+      answer:
+        "Les principaux risques sont la fuite de données confidentielles, les erreurs ou « hallucinations » de l'IA, la dépendance à un fournisseur, et la non-conformité (RGPD, AI Act). On les maîtrise par des règles claires : choisir des outils respectueux des données, ne jamais publier une sortie IA sans relecture humaine sur les sujets sensibles, tracer les usages, et privilégier des solutions souveraines quand les données sont critiques. Axion-IA cadre ces garde-fous dès l'audit.",
+    },
+    en: {
+      question: "What are the risks of AI in business and how do you manage them?",
+      answer:
+        'The main risks are confidential data leaks, AI errors or "hallucinations", vendor lock-in, and non-compliance (GDPR, AI Act). You manage them with clear rules: choose data-respecting tools, never publish an AI output without human review on sensitive topics, log usage, and favour sovereign solutions when data is critical. Axion-IA frames these safeguards from the audit onward.',
+    },
+  },
+  {
+    id: "ia-hallucinations-fiabilite",
+    fr: {
+      question: "Comment éviter les erreurs et hallucinations de l'IA ?",
+      answer:
+        "Une « hallucination » est une réponse fausse présentée avec assurance. On la prévient en ancrant l'IA sur vos données vérifiées (au lieu de sa mémoire générale), en demandant des sources, en gardant une relecture humaine sur les sujets à enjeu, et en mesurant la qualité dans le temps. Bien cadrée, l'IA devient fiable pour la production ; livrée sans garde-fous, elle expose à l'erreur. C'est précisément ce qu'Axion-IA met en place.",
+    },
+    en: {
+      question: "How do you avoid AI errors and hallucinations?",
+      answer:
+        'A "hallucination" is a false answer presented confidently. You prevent it by grounding AI on your verified data (instead of its general memory), asking for sources, keeping human review on high-stakes topics, and measuring quality over time. Properly framed, AI becomes reliable for production; delivered without safeguards, it exposes you to error. That is exactly what Axion-IA puts in place.',
+    },
+  },
+  {
+    id: "ia-souveraine-europe",
+    fr: {
+      question: "Qu'est-ce qu'une IA souveraine ou européenne ?",
+      answer:
+        "Une IA « souveraine » désigne des solutions où vos données restent hébergées et traitées dans un cadre maîtrisé (Europe, voire sur vos propres serveurs), conforme au RGPD, sans transfert incontrôlé hors UE. C'est essentiel pour les données sensibles (santé, juridique, RH, R&D). Axion-IA conçoit des architectures qui combinent performance et souveraineté selon votre niveau de sensibilité, jusqu'à des déploiements on-premise quand c'est nécessaire.",
+    },
+    en: {
+      question: "What is sovereign or European AI?",
+      answer:
+        '"Sovereign" AI refers to solutions where your data stays hosted and processed within a controlled framework (Europe, or even your own servers), GDPR-compliant, with no uncontrolled transfer outside the EU. This is essential for sensitive data (health, legal, HR, R&D). Axion-IA designs architectures combining performance and sovereignty depending on your sensitivity level, up to on-premise deployments when needed.',
+    },
+  },
+  {
+    id: "deroule-mission-axion",
+    fr: {
+      question: "Comment se déroule une mission avec Axion-IA ?",
+      answer:
+        "Une mission suit quatre temps simples : un premier échange pour cerner votre besoin, un audit qui identifie les cas d'usage à fort ROI, la mise en œuvre (intervention, formation ou implémentation sur mesure), puis un accompagnement pour ancrer les usages et mesurer les gains. Vous gardez la main à chaque étape, les livrables sont concrets, et l'objectif reste un ROI mesurable — pas une démo sans suite.",
+    },
+    en: {
+      question: "How does a mission with Axion-IA unfold?",
+      answer:
+        "A mission follows four simple steps: a first conversation to scope your need, an audit identifying high-ROI use cases, delivery (session, intervention or custom implementation), then support to embed usage and measure gains. You stay in control at every step, deliverables are concrete, and the goal remains measurable ROI — not a demo with no follow-up.",
+    },
+  },
+  // ── Batch perfection FAQ 2026-05-31 #2 — secteurs, cas d'usage, comparatifs ────
+  // (terminologie sûre : « session/intervention/accompagnement », jamais OPCO/CPF/
+  //  Qualiopi ; aucun prix chiffré ni fait spécifique inventé.)
+  {
+    id: "ia-commerce-retail",
+    fr: {
+      question: "Comment l'IA peut-elle aider un commerce ou un retailer ?",
+      answer:
+        "Pour un commerce, l'IA automatise les tâches chronophages et améliore la relation client : réponses aux questions fréquentes, gestion des avis, descriptions produits, prévisions de stock, relances et fidélisation, analyse des ventes. L'objectif n'est pas de remplacer le contact humain mais de libérer du temps pour la vente et le conseil. On commence par un cas concret à fort impact, puis on étend.",
+    },
+    en: {
+      question: "Comment l'IA peut-elle aider un commerce ou un retailer ?",
+      answer:
+        "Pour un commerce, l'IA automatise les tâches chronophages et améliore la relation client : réponses aux questions fréquentes, gestion des avis, descriptions produits, prévisions de stock, relances et fidélisation, analyse des ventes. L'objectif n'est pas de remplacer le contact humain mais de libérer du temps pour la vente et le conseil. On commence par un cas concret à fort impact, puis on étend.",
+    },
+  },
+  {
+    id: "ia-restauration-hotellerie",
+    fr: {
+      question: "L'IA est-elle utile pour un restaurant ou un hôtel ?",
+      answer:
+        "Oui. Dans la restauration et l'hôtellerie, l'IA aide sur la réservation et la prise de demandes, les réponses aux avis en ligne, la gestion des plannings, les prévisions d'affluence, le marketing local et les réponses aux questions des clients 24/7. Bien cadrée, elle réduit la charge administrative et améliore l'expérience client, sans dénaturer l'accueil humain.",
+    },
+    en: {
+      question: "L'IA est-elle utile pour un restaurant ou un hôtel ?",
+      answer:
+        "Oui. Dans la restauration et l'hôtellerie, l'IA aide sur la réservation et la prise de demandes, les réponses aux avis en ligne, la gestion des plannings, les prévisions d'affluence, le marketing local et les réponses aux questions des clients 24/7. Bien cadrée, elle réduit la charge administrative et améliore l'expérience client, sans dénaturer l'accueil humain.",
+    },
+  },
+  {
+    id: "ia-btp-construction",
+    fr: {
+      question: "Comment l'IA s'applique-t-elle au BTP et à la construction ?",
+      answer:
+        "Dans le BTP, l'IA accélère le chiffrage et les devis, l'analyse de cahiers des charges, la rédaction de comptes-rendus de chantier, le suivi administratif et la veille appels d'offres. Elle aide aussi à structurer la donnée éparpillée (mails, PDF, photos). Le gain est surtout sur le temps de bureau, qui pèse lourd dans le secteur, pour recentrer les équipes sur le terrain.",
+    },
+    en: {
+      question: "Comment l'IA s'applique-t-elle au BTP et à la construction ?",
+      answer:
+        "Dans le BTP, l'IA accélère le chiffrage et les devis, l'analyse de cahiers des charges, la rédaction de comptes-rendus de chantier, le suivi administratif et la veille appels d'offres. Elle aide aussi à structurer la donnée éparpillée (mails, PDF, photos). Le gain est surtout sur le temps de bureau, qui pèse lourd dans le secteur, pour recentrer les équipes sur le terrain.",
+    },
+  },
+  {
+    id: "ia-immobilier",
+    fr: {
+      question: "Comment l'IA aide-t-elle une agence immobilière ?",
+      answer:
+        "En immobilier, l'IA rédige les annonces, qualifie les leads entrants, répond aux demandes 24/7, prépare les estimations à partir de données de marché, organise les visites et automatise les relances. Elle fait gagner un temps précieux sur l'administratif et la prospection, pour que les agents se concentrent sur la relation et la négociation.",
+    },
+    en: {
+      question: "Comment l'IA aide-t-elle une agence immobilière ?",
+      answer:
+        "En immobilier, l'IA rédige les annonces, qualifie les leads entrants, répond aux demandes 24/7, prépare les estimations à partir de données de marché, organise les visites et automatise les relances. Elle fait gagner un temps précieux sur l'administratif et la prospection, pour que les agents se concentrent sur la relation et la négociation.",
+    },
+  },
+  {
+    id: "ia-cabinet-comptable-conseil",
+    fr: {
+      question: "L'IA est-elle utile pour un cabinet comptable ou de conseil ?",
+      answer:
+        "Beaucoup. Pour un cabinet comptable ou de conseil, l'IA extrait et classe les pièces, pré-saisit les écritures, synthétise des documents volumineux, rédige des notes et des livrables, et automatise la relation client récurrente. Avec un cadre de confidentialité strict, elle absorbe la production répétitive pour redonner du temps au conseil à valeur ajoutée — le cœur du métier.",
+    },
+    en: {
+      question: "L'IA est-elle utile pour un cabinet comptable ou de conseil ?",
+      answer:
+        "Beaucoup. Pour un cabinet comptable ou de conseil, l'IA extrait et classe les pièces, pré-saisit les écritures, synthétise des documents volumineux, rédige des notes et des livrables, et automatise la relation client récurrente. Avec un cadre de confidentialité strict, elle absorbe la production répétitive pour redonner du temps au conseil à valeur ajoutée — le cœur du métier.",
+    },
+  },
+  {
+    id: "ia-industrie-production",
+    fr: {
+      question: "Comment l'IA s'applique-t-elle à l'industrie et à la production ?",
+      answer:
+        "Dans l'industrie, l'IA aide sur la documentation technique, le support et la maintenance (recherche dans les manuels, diagnostics assistés), la qualité, les prévisions de demande, le reporting et l'administratif de production. Au-delà des usages lourds en data, beaucoup de gains rapides viennent de l'automatisation des tâches de bureau et de la mise à disposition de la connaissance interne.",
+    },
+    en: {
+      question: "Comment l'IA s'applique-t-elle à l'industrie et à la production ?",
+      answer:
+        "Dans l'industrie, l'IA aide sur la documentation technique, le support et la maintenance (recherche dans les manuels, diagnostics assistés), la qualité, les prévisions de demande, le reporting et l'administratif de production. Au-delà des usages lourds en data, beaucoup de gains rapides viennent de l'automatisation des tâches de bureau et de la mise à disposition de la connaissance interne.",
+    },
+  },
+  {
+    id: "ia-e-commerce",
+    fr: {
+      question: "Comment booster un e-commerce avec l'IA ?",
+      answer:
+        "Pour un e-commerce, l'IA génère et optimise les fiches produits, personnalise les recommandations, automatise le service client et les retours, rédige les contenus SEO et e-mailings, et analyse les comportements d'achat. Résultat : plus de conversions et moins de temps passé sur les tâches répétitives. On priorise les leviers selon votre catalogue et votre trafic.",
+    },
+    en: {
+      question: "Comment booster un e-commerce avec l'IA ?",
+      answer:
+        "Pour un e-commerce, l'IA génère et optimise les fiches produits, personnalise les recommandations, automatise le service client et les retours, rédige les contenus SEO et e-mailings, et analyse les comportements d'achat. Résultat : plus de conversions et moins de temps passé sur les tâches répétitives. On priorise les leviers selon votre catalogue et votre trafic.",
+    },
+  },
+  {
+    id: "automatiser-facturation-ia",
+    fr: {
+      question: "Peut-on automatiser la facturation et l'administratif avec l'IA ?",
+      answer:
+        "Oui. L'IA peut générer les devis et factures, extraire les données des justificatifs, rapprocher les paiements, relancer les impayés et préparer les éléments pour la comptabilité. Couplée à vos outils existants, elle réduit fortement la saisie manuelle et les erreurs. L'humain garde la validation finale ; l'IA fait le travail répétitif en amont.",
+    },
+    en: {
+      question: "Peut-on automatiser la facturation et l'administratif avec l'IA ?",
+      answer:
+        "Oui. L'IA peut générer les devis et factures, extraire les données des justificatifs, rapprocher les paiements, relancer les impayés et préparer les éléments pour la comptabilité. Couplée à vos outils existants, elle réduit fortement la saisie manuelle et les erreurs. L'humain garde la validation finale ; l'IA fait le travail répétitif en amont.",
+    },
+  },
+  {
+    id: "automatiser-service-client-ia",
+    fr: {
+      question: "Comment automatiser le service client avec l'IA ?",
+      answer:
+        "L'IA peut répondre instantanément aux questions fréquentes, qualifier et router les demandes, rédiger des brouillons de réponse pour vos agents, et assurer un premier niveau 24/7. Le but n'est pas de supprimer l'humain mais de le décharger du répétitif et d'accélérer les réponses. Les cas complexes ou sensibles restent traités par vos équipes, avec l'IA en support.",
+    },
+    en: {
+      question: "Comment automatiser le service client avec l'IA ?",
+      answer:
+        "L'IA peut répondre instantanément aux questions fréquentes, qualifier et router les demandes, rédiger des brouillons de réponse pour vos agents, et assurer un premier niveau 24/7. Le but n'est pas de supprimer l'humain mais de le décharger du répétitif et d'accélérer les réponses. Les cas complexes ou sensibles restent traités par vos équipes, avec l'IA en support.",
+    },
+  },
+  {
+    id: "ia-gestion-documents",
+    fr: {
+      question: "Comment l'IA gère et exploite mes documents ?",
+      answer:
+        "L'IA lit, classe et résume vos documents (PDF, e-mails, contrats, rapports), en extrait les informations clés et permet de les interroger en langage naturel (« retrouve la clause de résiliation »). Elle transforme une masse de fichiers dispersés en connaissance exploitable, en quelques secondes, avec un contrôle d'accès et de confidentialité adapté à vos données.",
+    },
+    en: {
+      question: "Comment l'IA gère et exploite mes documents ?",
+      answer:
+        "L'IA lit, classe et résume vos documents (PDF, e-mails, contrats, rapports), en extrait les informations clés et permet de les interroger en langage naturel (« retrouve la clause de résiliation »). Elle transforme une masse de fichiers dispersés en connaissance exploitable, en quelques secondes, avec un contrôle d'accès et de confidentialité adapté à vos données.",
+    },
+  },
+  {
+    id: "ia-reporting-analyse-donnees",
+    fr: {
+      question: "L'IA peut-elle automatiser mon reporting et mes analyses ?",
+      answer:
+        "Oui. L'IA agrège vos données, génère des synthèses et des tableaux de bord commentés, repère les tendances et anomalies, et produit des rapports lisibles à partir de chiffres bruts. Vous passez moins de temps à compiler et plus à décider. Les analyses restent vérifiables : on garde la traçabilité des sources et un contrôle humain sur les conclusions.",
+    },
+    en: {
+      question: "L'IA peut-elle automatiser mon reporting et mes analyses ?",
+      answer:
+        "Oui. L'IA agrège vos données, génère des synthèses et des tableaux de bord commentés, repère les tendances et anomalies, et produit des rapports lisibles à partir de chiffres bruts. Vous passez moins de temps à compiler et plus à décider. Les analyses restent vérifiables : on garde la traçabilité des sources et un contrôle humain sur les conclusions.",
+    },
+  },
+  {
+    id: "chatgpt-copilot-gemini-choisir",
+    fr: {
+      question: "ChatGPT, Copilot, Gemini, Claude : lequel choisir pour mon entreprise ?",
+      answer:
+        "Il n'y a pas de « meilleur » outil dans l'absolu : le bon choix dépend de vos usages, de vos outils existants et de vos contraintes de confidentialité. Copilot s'intègre à l'écosystème Microsoft, Gemini à Google, Claude et ChatGPT excellent sur le raisonnement et la rédaction. Axion-IA est indépendant des éditeurs : on recommande l'outil adapté à VOTRE contexte, pas celui d'un partenariat.",
+    },
+    en: {
+      question: "ChatGPT, Copilot, Gemini, Claude : lequel choisir pour mon entreprise ?",
+      answer:
+        "Il n'y a pas de « meilleur » outil dans l'absolu : le bon choix dépend de vos usages, de vos outils existants et de vos contraintes de confidentialité. Copilot s'intègre à l'écosystème Microsoft, Gemini à Google, Claude et ChatGPT excellent sur le raisonnement et la rédaction. Axion-IA est indépendant des éditeurs : on recommande l'outil adapté à VOTRE contexte, pas celui d'un partenariat.",
+    },
+  },
+  {
+    id: "ia-gratuite-vs-payante",
+    fr: {
+      question: "Les versions gratuites d'IA suffisent-elles ou faut-il payer ?",
+      answer:
+        "Pour découvrir, les versions gratuites suffisent. Pour un usage professionnel, les versions payantes apportent ce qui compte vraiment : confidentialité (vos données ne servent pas à l'entraînement), modèles plus performants, limites d'usage plus hautes, et intégration à vos outils. Le coût est généralement modeste face au temps gagné — l'enjeu est surtout de bien configurer la confidentialité.",
+    },
+    en: {
+      question: "Les versions gratuites d'IA suffisent-elles ou faut-il payer ?",
+      answer:
+        "Pour découvrir, les versions gratuites suffisent. Pour un usage professionnel, les versions payantes apportent ce qui compte vraiment : confidentialité (vos données ne servent pas à l'entraînement), modèles plus performants, limites d'usage plus hautes, et intégration à vos outils. Le coût est généralement modeste face au temps gagné — l'enjeu est surtout de bien configurer la confidentialité.",
+    },
+  },
+  {
+    id: "ia-droit-auteur-contenu",
+    fr: {
+      question: "Puis-je utiliser commercialement le contenu généré par IA ?",
+      answer:
+        "En général oui, mais avec nuances. Les principaux outils autorisent l'usage commercial des contenus que vous générez (vérifiez leurs conditions). En revanche, en France comme dans l'UE, un contenu purement généré par IA n'est pas automatiquement protégé par le droit d'auteur, et il faut rester vigilant sur les ressemblances avec des œuvres existantes. La bonne pratique : relire, adapter et apporter votre valeur humaine.",
+    },
+    en: {
+      question: "Puis-je utiliser commercialement le contenu généré par IA ?",
+      answer:
+        "En général oui, mais avec nuances. Les principaux outils autorisent l'usage commercial des contenus que vous générez (vérifiez leurs conditions). En revanche, en France comme dans l'UE, un contenu purement généré par IA n'est pas automatiquement protégé par le droit d'auteur, et il faut rester vigilant sur les ressemblances avec des œuvres existantes. La bonne pratique : relire, adapter et apporter votre valeur humaine.",
+    },
+  },
+  {
+    id: "ia-biais-objectivite",
+    fr: {
+      question: "L'IA est-elle objective ou peut-elle être biaisée ?",
+      answer:
+        "L'IA n'est pas neutre : elle reflète les données sur lesquelles elle a été entraînée et peut reproduire des biais. Pour un usage professionnel, cela impose des garde-fous : vérifier les sorties sur les sujets sensibles (RH, juridique, finance), ne pas déléguer les décisions importantes à la machine, et documenter les usages. Bien encadrée, l'IA est un excellent assistant ; elle ne doit pas être un juge automatique.",
+    },
+    en: {
+      question: "L'IA est-elle objective ou peut-elle être biaisée ?",
+      answer:
+        "L'IA n'est pas neutre : elle reflète les données sur lesquelles elle a été entraînée et peut reproduire des biais. Pour un usage professionnel, cela impose des garde-fous : vérifier les sorties sur les sujets sensibles (RH, juridique, finance), ne pas déléguer les décisions importantes à la machine, et documenter les usages. Bien encadrée, l'IA est un excellent assistant ; elle ne doit pas être un juge automatique.",
+    },
+  },
+  {
+    id: "ia-donnees-entrainement-confidentialite",
+    fr: {
+      question: "Mes données servent-elles à entraîner l'IA ?",
+      answer:
+        "Cela dépend de l'outil et de la formule. Avec les offres grand public gratuites, vos échanges peuvent parfois être réutilisés ; avec les offres professionnelles et API, les principaux fournisseurs s'engagent à ne pas entraîner leurs modèles sur vos données. C'est un point que nous vérifions systématiquement chez Axion-IA : on choisit des configurations où vos données restent les vôtres.",
+    },
+    en: {
+      question: "Mes données servent-elles à entraîner l'IA ?",
+      answer:
+        "Cela dépend de l'outil et de la formule. Avec les offres grand public gratuites, vos échanges peuvent parfois être réutilisés ; avec les offres professionnelles et API, les principaux fournisseurs s'engagent à ne pas entraîner leurs modèles sur vos données. C'est un point que nous vérifions systématiquement chez Axion-IA : on choisit des configurations où vos données restent les vôtres.",
+    },
+  },
+  {
+    id: "erreurs-eviter-projet-ia",
+    fr: {
+      question: "Quelles erreurs éviter quand on se lance dans l'IA ?",
+      answer:
+        "Les pièges classiques : vouloir tout automatiser d'un coup, choisir l'outil avant le besoin, négliger la confidentialité des données, déployer sans former les équipes, et ne pas mesurer le ROI. La bonne méthode est inverse : partir d'un cas concret à fort impact, prouver le gain, sécuriser les données, embarquer les équipes, puis étendre. C'est exactement la démarche que cadre l'audit.",
+    },
+    en: {
+      question: "Quelles erreurs éviter quand on se lance dans l'IA ?",
+      answer:
+        "Les pièges classiques : vouloir tout automatiser d'un coup, choisir l'outil avant le besoin, négliger la confidentialité des données, déployer sans former les équipes, et ne pas mesurer le ROI. La bonne méthode est inverse : partir d'un cas concret à fort impact, prouver le gain, sécuriser les données, embarquer les équipes, puis étendre. C'est exactement la démarche que cadre l'audit.",
+    },
+  },
+  {
+    id: "qui-pilote-ia-entreprise",
+    fr: {
+      question: "Qui doit piloter l'IA dans l'entreprise ?",
+      answer:
+        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE/PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
+    },
+    en: {
+      question: "Qui doit piloter l'IA dans l'entreprise ?",
+      answer:
+        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE/PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
+    },
+  },
 ];
 
 // Blog : split Sprint 14.10 (2026-05-08) — `BlogPost` + données + helpers
@@ -755,10 +1188,38 @@ const FAQ_GLOBAL_CATEGORY: Readonly<Record<string, string>> = {
   // pricing
   billing: "pricing",
   "cout-projet-ia-pme": "pricing",
+  "tarifs-publics-transparents": "pricing",
+  "aides-subventions-ia": "pricing",
+  "budget-demarrer-ia": "pricing",
   // process
   "data-security": "process",
   "confidentialite-projet-ia": "process",
   "rgpd-ia": "process",
+  "risques-ia-entreprise": "process",
+  "ia-souveraine-europe": "process",
+  "deroule-mission-axion": "process",
+  // audit (batch 2026-05-31)
+  "duree-audit-ia": "audit",
+  "livrables-audit-ia": "audit",
+  // implementation (batch 2026-05-31)
+  "automatiser-taches-ia": "implementation",
+  "ia-integration-outils": "implementation",
+  "agent-ia-definition": "implementation",
+  "agent-vs-chatbot": "implementation",
+  // interventions (batch 2026-05-31)
+  "former-equipes-ia": "interventions",
+  // implementation (batch #2 2026-05-31 — cas d'usage)
+  "automatiser-facturation-ia": "implementation",
+  "automatiser-service-client-ia": "implementation",
+  "ia-gestion-documents": "implementation",
+  "ia-reporting-analyse-donnees": "implementation",
+  // process (batch #2 2026-05-31 — gouvernance/juridique)
+  "ia-droit-auteur-contenu": "process",
+  "ia-donnees-entrainement-confidentialite": "process",
+  "erreurs-eviter-projet-ia": "process",
+  "qui-pilote-ia-entreprise": "process",
+  // general (batch #2) : secteurs (commerce/resto/btp/immo/compta/industrie/ecommerce),
+  // comparatifs outils, biais → fallback "general"
   // (tout le reste → "general")
 };
 
