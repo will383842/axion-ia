@@ -214,7 +214,7 @@ export default async function Home({ params }: HomeProps) {
     "geo-metropoles",
     "geo-tpe-rural",
     "geo-distance-international",
-    "definition",
+    "definition-axion-ia",
     "comment-commencer",
     "delai-implementation",
     "cout-projet-ia-pme",

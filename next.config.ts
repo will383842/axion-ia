@@ -185,6 +185,38 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // FAQ — slugs legacy faibles → slugs keyword-rich (perfection FAQ 2026-05-31).
+      // 301 pour préserver toute URL déjà connue de Google. Cf. FAQ_GLOBAL ids.
+      {
+        source: "/:locale(fr|en)/faq/definition",
+        destination: "/:locale/faq/definition-axion-ia",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/faq/modules",
+        destination: "/:locale/faq/les-3-modules-axion-ia",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/faq/tools",
+        destination: "/:locale/faq/outils-ia",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/faq/billing",
+        destination: "/:locale/faq/facturation",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/faq/secteurs",
+        destination: "/:locale/faq/secteurs-ia",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/faq/data-security",
+        destination: "/:locale/faq/securite-donnees-ia",
+        permanent: true,
+      },
       {
         source: "/:locale(fr|en)/audit/flash",
         destination: "/:locale/audit/tpe-1-jour",

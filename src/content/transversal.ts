@@ -179,7 +179,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "definition",
+    id: "definition-axion-ia",
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",
       answer:
@@ -192,7 +192,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "modules",
+    id: "les-3-modules-axion-ia",
     fr: {
       question: "Quels sont les 3 modules ?",
       answer: modulesAnswerFr(),
@@ -203,7 +203,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "data-security",
+    id: "securite-donnees-ia",
     fr: {
       question: "Mes données sont-elles partagées ?",
       answer:
@@ -216,7 +216,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "tools",
+    id: "outils-ia",
     fr: {
       question: "Quels outils IA utilisez-vous ?",
       answer:
@@ -242,7 +242,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "billing",
+    id: "facturation",
     fr: {
       question: "Comment se passe la facturation ?",
       answer:
@@ -399,7 +399,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "secteurs",
+    id: "secteurs-ia",
     fr: {
       question: "Quels secteurs sont concernés par l'IA générative ?",
       answer:
@@ -1450,13 +1450,13 @@ const FAQ_GLOBAL_CATEGORY: Readonly<Record<string, string>> = {
   "roi-mesurer": "audit",
   "choisir-cabinet-ia": "audit",
   // pricing
-  billing: "pricing",
+  facturation: "pricing",
   "cout-projet-ia-pme": "pricing",
   "tarifs-publics-transparents": "pricing",
   "aides-subventions-ia": "pricing",
   "budget-demarrer-ia": "pricing",
   // process
-  "data-security": "process",
+  "securite-donnees-ia": "process",
   "confidentialite-projet-ia": "process",
   "rgpd-ia": "process",
   "risques-ia-entreprise": "process",
