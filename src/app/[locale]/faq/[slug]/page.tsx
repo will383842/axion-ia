@@ -37,12 +37,23 @@ function getCopy(item: FaqItem, locale: Locale): { question: string; answer: str
   };
 }
 
+// Soft-404 SEO (fix 2026-05-31) : Next 16 ne propage PAS le statut 404 sur les
+// réponses streamées (limitation documentée, cf. `[locale]/not-found.tsx`). Pour
+// un slug FAQ inexistant, `return {}` héritait `index,follow` + canonical=home du
+// layout → Google classait l'URL « alias non-canonique de la home ». On émet donc
+// un noindex explicite + on neutralise le canonical/alternates hérité. N'affecte
+// PAS Track B (dynamicParams reste true : les vraies FAQ DB rendent normalement).
+const SOFT_404_META: Metadata = {
+  robots: { index: false, follow: false },
+  alternates: {},
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  if (!hasLocale(routing.locales, locale)) return {};
+  if (!hasLocale(routing.locales, locale)) return SOFT_404_META;
   const faqs = await listFaqs();
   const entry = faqs.find((f) => f.slug === slug);
-  if (!entry) return {};
+  if (!entry) return SOFT_404_META;
   const isFr = locale === "fr";
   const copy = getCopy(entry, locale as Locale);
   // Intention de recherche / CTR (perfection FAQ 2026-05-31) : la question EST la
