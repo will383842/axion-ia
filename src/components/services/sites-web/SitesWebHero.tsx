@@ -1,17 +1,17 @@
 /**
- * SitesWebHero — Hero du module Sites web augmentés IA (Server Component).
+ * SitesWebHero — Hero 2 colonnes du module Sites web & SaaS augmentés IA
+ * (Server Component).
  *
- * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis
- * `src/app/[locale]/sites-web-augmentes/page.tsx` (l.326-375). Réutilisé par
- * la page hub `/fr/sites-web-augmentes` ET les 430 pages ville
- * `/fr/implantations/{region}/{ville}/sites-web-ia` (Phase 5). Quand
+ * Fusion 2026-06-01 (Will) — réécrit sur le socle `ServiceHero` (template
+ * /audit, hero 2-col + schéma orbital 8 nœuds IA), en absorbant le hero schema
+ * de l'ancien `/codage-developpement`. Réutilisable hub + pages ville : quand
  * `villeContext` est fourni, le H1 interpole le nom de ville. Émet une
  * SpeakableSpecification inline ciblée sur le H1 + sous-titre du hero.
  */
 
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-import { Container } from "@/components/layout/Container";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
@@ -24,7 +24,7 @@ export interface SitesWebHeroProps {
 
 export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNode {
   // H1 ville-aware vs canonique — wording "site web qui comprend et répond".
-  const titleStart = villeContext
+  const title = villeContext
     ? isFr
       ? `Votre site web à ${villeContext.name} qui`
       : `Your website in ${villeContext.name} that`
@@ -36,11 +36,11 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
 
   const description = villeContext
     ? isFr
-      ? `On intègre l'intelligence artificielle dans votre site web ou plateforme SaaS — équipes basées à ${villeContext.name} (${villeContext.region}) ou à distance. Chatbot RAG, search sémantique, génération éditoriale, personnalisation. Stack toujours la meilleure possible selon vos objectifs, hébergement UE, vos données.`
-      : `We integrate AI into your website or SaaS platform — teams in ${villeContext.name} (${villeContext.region}) or remote. RAG chatbot, semantic search, editorial generation, personalisation. Stack always the best possible for your goals, EU hosting, your data.`
+      ? `On intègre l'intelligence artificielle dans votre site web ou plateforme SaaS — équipes à ${villeContext.name} (${villeContext.region}) ou à distance. Chatbot RAG, search sémantique, agents, personnalisation. On greffe sur votre existant ou on construit IA-native. Toute stack, hébergement UE, vos données.`
+      : `We integrate AI into your website or SaaS platform — teams in ${villeContext.name} (${villeContext.region}) or remote. RAG chatbot, semantic search, agents, personalisation. We graft onto your existing stack or build AI-native. Any stack, EU hosting, your data.`
     : isFr
-      ? "On intègre l'intelligence artificielle dans votre site web ou plateforme SaaS existant — ou on conçoit une expérience IA-native. Chatbot RAG, search sémantique, génération éditoriale, personnalisation. Stack toujours la meilleure possible selon vos objectifs, hébergement UE, vos données."
-      : "We integrate AI into your existing website or SaaS platform — or design an AI-native experience. RAG chatbot, semantic search, editorial generation, personalisation. Stack always the best possible for your goals, EU hosting, your data.";
+      ? "On intègre l'intelligence artificielle dans votre site web ou plateforme SaaS existant — ou on conçoit une expérience IA-native. Chatbot RAG, search sémantique, agents, personnalisation. Toute stack, on s'adapte. Hébergement UE, vos données."
+      : "We integrate AI into your existing website or SaaS platform — or design an AI-native experience. RAG chatbot, semantic search, agents, personalisation. Any stack, we adapt. EU hosting, your data.";
 
   const primaryCtaLabel = villeContext
     ? isFr
@@ -60,52 +60,17 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
 
   return (
     <>
-      <section
-        aria-label={
+      <ServiceHero
+        eyebrow={
           isFr
-            ? "Présentation des services de création de sites web IA"
-            : "AI web creation services overview"
+            ? "Sites web & plateformes SaaS · augmentés par l'IA"
+            : "Websites & SaaS platforms · AI-augmented"
         }
-        className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28"
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, var(--color-border-strong) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border-strong) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-            maskImage: "radial-gradient(ellipse at center, white 20%, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, white 20%, transparent 75%)",
-            opacity: 0.18,
-          }}
-        />
-        <Container className="relative max-w-3xl">
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            />
-            {isFr
-              ? "Sites web & plateformes SaaS · augmentés par l'IA"
-              : "Websites & SaaS platforms · AI-augmented"}
-          </p>
-
-          <h1 className="display-editorial text-fg mt-5">
-            {titleStart}
-            <span
-              className="text-terracotta mx-2 italic"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {titleEm}
-            </span>
-          </h1>
-
-          <p data-hero-description className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
-            {description}
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+        title={title}
+        titleEm={titleEm}
+        description={description}
+        ctas={
+          <>
             <Cta href="/contact" size="lg" track="sites-web-augmentes-hero-primary">
               {primaryCtaLabel}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -113,9 +78,57 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
             <Cta href="/audit" variant="outline" size="lg" track="sites-web-augmentes-hero-audit">
               {isFr ? "Commencer par un audit" : "Start with an audit"}
             </Cta>
-          </div>
-        </Container>
-      </section>
+          </>
+        }
+        schemaCenterLabel={isFr ? "Votre site" : "Your site"}
+        schemaAriaLabel={
+          isFr
+            ? "Schéma : votre site au centre, entouré des 8 couches IA modulaires (chatbot RAG, search sémantique, agents autonomes, automatisations, génération de contenu, vision IA, recommandation, analytics)."
+            : "Diagram: your site at the center, surrounded by 8 modular AI layers (RAG chatbot, semantic search, autonomous agents, automations, content generation, AI vision, recommendation, analytics)."
+        }
+        schemaNodes={[
+          {
+            label: isFr ? "Chatbot RAG" : "RAG chatbot",
+            benefit: isFr ? "Vos docs en assistant" : "Your docs as assistant",
+            accent: "terracotta",
+          },
+          {
+            label: isFr ? "Search sémantique" : "Semantic search",
+            benefit: isFr ? "Trouver par le sens" : "Find by meaning",
+            accent: "primary",
+          },
+          {
+            label: isFr ? "Agents IA" : "AI agents",
+            benefit: isFr ? "Workflows autonomes" : "Autonomous workflows",
+            accent: "sage",
+          },
+          {
+            label: "Automatisations",
+            benefit: isFr ? "Make, n8n, Zapier" : "Make, n8n, Zapier",
+            accent: "mocha",
+          },
+          {
+            label: isFr ? "Génération" : "Generation",
+            benefit: isFr ? "Texte, image, code" : "Text, image, code",
+            accent: "terracotta",
+          },
+          {
+            label: "Vision IA",
+            benefit: isFr ? "OCR, classification" : "OCR, classification",
+            accent: "primary",
+          },
+          {
+            label: "Recommandation",
+            benefit: isFr ? "Cross-sell, perso" : "Cross-sell, perso",
+            accent: "sage",
+          },
+          {
+            label: "Analytics",
+            benefit: isFr ? "Insights live" : "Live insights",
+            accent: "mocha",
+          },
+        ]}
+      />
       <JsonLd
         data={speakableJsonLd}
         strategy="afterInteractive"

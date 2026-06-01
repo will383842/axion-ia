@@ -175,7 +175,7 @@ export default async function PricingPage({ params }: Props) {
   // Géré séparément avec une card unique descriptive.
   const platformSection = {
     id: "plateforme",
-    href: "/codage-developpement",
+    href: "/sites-web-augmentes",
     eyebrow: isFr ? "Plateforme custom" : "Custom platform",
     title: t("nav.platform"),
     description: isFr

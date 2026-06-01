@@ -52,7 +52,7 @@ const STATIC_CATALOG: readonly InternalLinkEntry[] = [
   },
   {
     topic: "site web IA",
-    url: "/codage-developpement",
+    url: "/sites-web-augmentes",
     keywords: ["site web", "développement web", "site augmenté", "web IA", "digital IA"],
   },
   {

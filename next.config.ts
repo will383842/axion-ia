@@ -305,6 +305,20 @@ const nextConfig: NextConfig = {
         destination: "/:locale/sites-web-augmentes",
         permanent: true,
       },
+      // Fusion 2026-06-01 (Will) — `/codage-developpement` (+ sa sous-page
+      // `/web-digital`) fusionnés dans `/sites-web-augmentes` (page hub unique
+      // anti-cannibalisation keyword). 301 plus spécifique d'abord. L'autorité
+      // crawl est transférée vers la page service canonique.
+      {
+        source: "/:locale(fr|en)/codage-developpement/web-digital",
+        destination: "/:locale/sites-web-augmentes",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/codage-developpement",
+        destination: "/:locale/sites-web-augmentes",
+        permanent: true,
+      },
       // Refonte /interventions 2026-05-28 — simplification radicale du hub.
       // Le hub des 4 familles `/interventions` est supprimé (devenu redondant
       // après extraction du 1-to-1 vers `/un-a-un` et suppression de la

@@ -27,7 +27,7 @@ interface FaqGeoEntry {
 // — sans « frais inclus » (frais de déplacement facturés à part)
 // — vocabulaire accessible, blocs courts.
 const FAQS_BY_SERVICE: Record<
-  "audit" | "interventions" | "implementation" | "codage-developpement" | "un-a-un",
+  "audit" | "interventions" | "implementation" | "sites-web-augmentes" | "un-a-un",
   FaqGeoEntry[]
 > = {
   audit: [
@@ -168,7 +168,7 @@ const FAQS_BY_SERVICE: Record<
       },
     },
   ],
-  "codage-developpement": [
+  "sites-web-augmentes": [
     {
       id: "codage-paris",
       fr: {
@@ -264,7 +264,7 @@ const FAQS_BY_SERVICE: Record<
 
 export interface LocalGeoFaqSectionProps {
   isFr: boolean;
-  service: "audit" | "interventions" | "implementation" | "codage-developpement" | "un-a-un";
+  service: "audit" | "interventions" | "implementation" | "sites-web-augmentes" | "un-a-un";
   /** Tone éditorial — `sand` par défaut (ivoire chaud). */
   tone?: "canvas" | "paper" | "sand";
 }

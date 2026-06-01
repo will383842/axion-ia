@@ -1,11 +1,12 @@
 /**
- * SitesWebMethodology — 4 étapes de la méthode augmentation IA (Server Component).
+ * SitesWebMethodology — 5 étapes de la méthode (audit → livraison), Server
+ * Component.
  *
- * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis le `buildHowToJsonLd`
- * (l.218-265) de `src/app/[locale]/sites-web-augmentes/page.tsx`. Rend les
- * 4 steps visuellement (Audit → Choix briques → Intégration → Formation) +
- * injecte le JSON-LD HowTo inline. Réutilisé par hub + 430 pages ville
- * `/fr/implantations/{region}/{ville}/sites-web-ia`.
+ * Fusion 2026-06-01 (Will) — passe de 4 à 5 étapes en absorbant le process
+ * « build / augmentation » de l'ancienne page `/codage-developpement/web-digital`
+ * (audit 2 h → devis 48 h → intégration sans refonte → tests → livraison +
+ * formation). Même process pour un build from scratch ou une augmentation.
+ * Rend les steps via `ProcessSteps` + injecte le JSON-LD HowTo inline.
  */
 
 import type { ReactNode } from "react";
@@ -25,46 +26,56 @@ export function SitesWebMethodology({ isFr }: SitesWebMethodologyProps): ReactNo
   const steps = isFr
     ? [
         {
-          id: "audit",
-          name: "Audit rapide de votre site",
-          text: "2 h pour identifier les 3 points d'augmentation IA à plus fort ROI : chatbot, search, génération, personnalisation.",
+          id: "s1",
+          name: "Audit de votre existant · 2 h",
+          text: "On analyse votre site, votre stack technique et vos données (FAQ, catalogue, docs). On identifie les 2-3 briques IA à plus fort ROI.",
         },
         {
-          id: "choix",
-          name: "Choix des briques IA",
-          text: "Sélection des modules selon votre priorité business, votre stack et votre budget. Devis ferme 48 h.",
+          id: "s2",
+          name: "Devis ferme sous 48 h",
+          text: "Périmètre exact, modules choisis, prix fixe, délai garanti. Pas d'ambiguïté avant la signature.",
         },
         {
-          id: "integration",
-          name: "Intégration par sprints",
-          text: "Sprints de 1 semaine, démos hebdomadaires. Zéro downtime sur votre site en production.",
+          id: "s3",
+          name: "Intégration sans refonte",
+          text: "On greffe l'IA via widget JS, API ou plugin — ou on construit IA-native. Pas de migration imposée, zéro downtime.",
         },
         {
-          id: "training",
-          name: "Formation et transfert",
-          text: "Formation de vos équipes, documentation complète, ownership total du code et des données.",
+          id: "s4",
+          name: "Tests & validation",
+          text: "Démos hebdomadaires, corrections en continu. Vous validez chaque module avant mise en ligne.",
+        },
+        {
+          id: "s5",
+          name: "Livraison + formation incluse",
+          text: "Vos équipes prennent la main, documentation complète, code et données dans votre infra. C'est à vous.",
         },
       ]
     : [
         {
-          id: "audit",
-          name: "Quick audit of your site",
-          text: "2 h to identify the 3 highest-ROI AI augmentation points: chatbot, search, generation, personalisation.",
+          id: "s1",
+          name: "Audit of your existing setup · 2 h",
+          text: "We analyse your site, tech stack and data (FAQ, catalogue, docs). We identify the 2-3 highest-ROI AI bricks.",
         },
         {
-          id: "choix",
-          name: "AI bricks selection",
-          text: "Module selection based on your business priority, stack and budget. Firm quote 48 h.",
+          id: "s2",
+          name: "Firm quote within 48 h",
+          text: "Exact scope, chosen modules, fixed price, guaranteed timeline. No ambiguity before signing.",
         },
         {
-          id: "integration",
-          name: "Sprint-based integration",
-          text: "1-week sprints, weekly demos. Zero downtime on your live site.",
+          id: "s3",
+          name: "Integration without rebuild",
+          text: "We graft AI via JS widget, API or plugin — or build AI-native. No forced migration, zero downtime.",
         },
         {
-          id: "training",
-          name: "Training and handover",
-          text: "Team training, full documentation, complete ownership of code and data.",
+          id: "s4",
+          name: "Tests & validation",
+          text: "Weekly demos, continuous fixes. You validate each module before going live.",
+        },
+        {
+          id: "s5",
+          name: "Delivery + included training",
+          text: "Your teams take over, full documentation, code and data in your infra. It's yours.",
         },
       ];
 
@@ -75,22 +86,22 @@ export function SitesWebMethodology({ isFr }: SitesWebMethodologyProps): ReactNo
       ? "Comment augmenter son site web avec l'intelligence artificielle"
       : "How to augment your website with artificial intelligence",
     description: isFr
-      ? "Les 4 étapes d'Axion-IA pour intégrer l'IA dans votre site web existant ou en IA-native."
-      : "Axion-IA's 4 steps to integrate AI into your existing website or build AI-native.",
-    totalTime: "P3W",
+      ? "Les 5 étapes d'Axion-IA pour intégrer l'IA dans votre site web existant ou construire une plateforme IA-native."
+      : "Axion-IA's 5 steps to integrate AI into your existing website or build an AI-native platform.",
+    totalTime: "P6W",
     steps: steps.map((s) => ({ name: s.name, text: s.text })),
   });
 
   return (
     <>
       <Section
-        eyebrow={isFr ? "Notre méthode" : "Our method"}
-        title={isFr ? "4 étapes pour" : "4 steps to"}
-        titleEm={isFr ? "augmenter votre site" : "augment your site"}
+        eyebrow={isFr ? "Comment ça se passe" : "How it runs"}
+        title={isFr ? "5 étapes," : "5 steps,"}
+        titleEm={isFr ? "nouvelle ou existante" : "new or existing"}
         description={
           isFr
-            ? "De l'audit à la mise en production, on cadre, on intègre et on transfère."
-            : "From audit to production, we frame, integrate and hand over."
+            ? "Même process pour un build from scratch ou une augmentation de l'existant. Sprints courts, démos hebdomadaires, zéro tunnel."
+            : "Same process for a new build or an existing augmentation. Short sprints, weekly demos, zero tunnel effect."
         }
       >
         <ProcessSteps

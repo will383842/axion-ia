@@ -180,11 +180,10 @@ export const routing = defineRouting({
       en: "/one-to-one/by-city/[ville]",
     },
 
-    // Module 3B — Web & Digital augmentés par l'IA (G3B)
-    "/codage-developpement": "/codage-developpement",
-    "/codage-developpement/web-digital": "/codage-developpement/web-digital",
-
-    // Module 3C — Sites web augmentés par l'IA (ServiceSector: sites_web_augmentes)
+    // Module 3C — Sites web & plateformes SaaS augmentés par l'IA (ServiceSector:
+    // sites_web_augmentes). Page hub canonique unique : fusion 2026-06-01 (Will)
+    // de l'ancien `/codage-developpement` (+ sous-page `/web-digital`) dans cette
+    // page — voir 301 dans next.config.ts. Anti-cannibalisation keyword.
     "/sites-web-augmentes": "/sites-web-augmentes",
 
     // Module 3 — Implémentation IA

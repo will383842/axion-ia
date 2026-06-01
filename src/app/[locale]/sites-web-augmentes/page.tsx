@@ -1,14 +1,20 @@
 /**
- * Hub vertical — Sites web & plateformes SaaS augmentés par l'IA.
+ * Hub vertical unique — Sites web & plateformes SaaS augmentés par l'IA.
  *
- * Sprint A · Phase 3 refactor-5 (Will 2026-05-25) — page assemblée à partir
- * des composants Phase 2 sous `src/components/services/sites-web/`. Le JSON-LD
- * HowTo est émis par `SitesWebMethodology`, le FAQPage par `SitesWebFaq` :
- * la page n'émet plus que `Service` + `ItemList` globaux pour éviter les
- * doublons. Le slug géo `codage-developpement` est volontairement conservé
- * pour `LocalCoverageSection` / `LocalGeoFaqSection` (union de types fermée à
- * 5 valeurs ; `sites-web-augmentes` n'y figure pas — match sémantique le plus
- * proche : codage-developpement, qui partage le même bassin de mots-clés).
+ * Fusion 2026-06-01 (Will) — page hub canonique unique résultant de la fusion de
+ * l'ancien `/codage-developpement` (+ sous-page `/web-digital`) dans cette page
+ * (anti-cannibalisation keyword ; 301 dans `next.config.ts`). Template aligné sur
+ * `/audit` : narration value-first en ~15 sections (hero schema → preuve → why →
+ * modules chiffrés → méthodologie → contact → scénarios → why-choose-us → stack →
+ * why-now → couverture → geo-FAQ → FAQ → connaissances → CTA → sticky).
+ *
+ * La page n'émet que `Service` + `ItemList` + `ImageObject` globaux : le HowTo est
+ * émis par `SitesWebMethodology`, le FAQPage par `SitesWebFaq`, le Speakable par
+ * `SitesWebHero` (évite les doublons). Le slug géo `LocalCoverageSection` /
+ * `LocalGeoFaqSection` a été renommé `sites-web-augmentes` (union fermée).
+ *
+ * Server Components purs (zéro JS hors `FaqAccordion` + `StickyMobileCta`) →
+ * budget Web Vitals 2026 préservé. ISR 1 h.
  */
 
 import type { Metadata } from "next";
@@ -23,11 +29,16 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { SitesWebHero } from "@/components/services/sites-web/SitesWebHero";
 import { SitesWebTrustPills } from "@/components/services/sites-web/SitesWebTrustPills";
-import { SitesWebStackAdaptee } from "@/components/services/sites-web/SitesWebStackAdaptee";
+import { SitesWebWhy } from "@/components/services/sites-web/SitesWebWhy";
+import { SitesWebModules } from "@/components/services/sites-web/SitesWebModules";
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
+import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
+import { SitesWebScenarios } from "@/components/services/sites-web/SitesWebScenarios";
+import { SitesWebWhyChooseUs } from "@/components/services/sites-web/SitesWebWhyChooseUs";
+import { SitesWebStackAdaptee } from "@/components/services/sites-web/SitesWebStackAdaptee";
+import { SitesWebWhyNow } from "@/components/services/sites-web/SitesWebWhyNow";
 import { SitesWebFaq } from "@/components/services/sites-web/SitesWebFaq";
 import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlock";
-import { MAINTENANCE_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import {
@@ -35,7 +46,6 @@ import {
   buildServiceJsonLd,
   buildItemListJsonLd,
   buildImageGraphJsonLd,
-  buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -56,11 +66,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/sites-web-augmentes",
     title: isFr
-      ? "Sites web & plateformes SaaS augmentés par l'IA · chatbot RAG · search sémantique | Axion-IA"
-      : "AI-augmented websites & SaaS platforms · RAG chatbot · semantic search | Axion-IA",
+      ? "Sites web & plateformes SaaS augmentés par l'IA · chatbot RAG, agents, search sémantique"
+      : "AI-augmented websites & SaaS platforms · RAG chatbot, agents, semantic search",
     description: isFr
-      ? "Axion-IA intègre l'IA dans vos sites web et plateformes SaaS : chatbot RAG ancré sur vos contenus, search sémantique, personnalisation temps réel, génération éditoriale. TPE/PME/ETI, toute stack."
-      : "Axion-IA integrates AI into your websites and SaaS platforms: RAG chatbot grounded in your content, semantic search, real-time personalisation, editorial generation. SMB/enterprise, any stack.",
+      ? "Axion-IA intègre l'IA dans vos sites web et plateformes SaaS — ou conçoit une plateforme IA-native sur mesure : chatbot RAG ancré sur vos contenus, search sémantique, agents, automatisations, personnalisation. Toute stack, hébergement UE, forfait fixe. TPE/PME/ETI."
+      : "Axion-IA integrates AI into your websites and SaaS platforms — or designs a bespoke AI-native platform: RAG chatbot grounded in your content, semantic search, agents, automations, personalisation. Any stack, EU hosting, fixed fee. SMB/enterprise.",
     alternates: { fr: "/sites-web-augmentes", en: "/sites-web-augmentes" },
   });
 }
@@ -75,7 +85,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/sites-web-augmentes" as const,
-      label: isFr ? "Sites web augmentés IA" : "AI-augmented websites",
+      label: isFr ? "Sites web & SaaS IA" : "AI websites & SaaS",
     },
   ];
 
@@ -86,8 +96,8 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       ? "Sites web & plateformes SaaS augmentés par l'IA · Axion-IA"
       : "AI-augmented websites & SaaS platforms · Axion-IA",
     description: isFr
-      ? "Intégration de l'intelligence artificielle dans les sites web et plateformes SaaS existants ou conception d'expériences IA-natives : chatbot RAG, search sémantique, personnalisation, génération éditoriale."
-      : "Integration of artificial intelligence into existing websites and SaaS platforms or design of AI-native experiences: RAG chatbot, semantic search, personalisation, editorial generation.",
+      ? "Intégration de l'intelligence artificielle dans les sites web et plateformes SaaS existants, ou conception de plateformes IA-natives sur mesure : chatbot RAG, search sémantique, agents autonomes, automatisations métier, génération éditoriale, personnalisation. Toute stack moderne, hébergement UE."
+      : "Integration of artificial intelligence into existing websites and SaaS platforms, or design of bespoke AI-native platforms: RAG chatbot, semantic search, autonomous agents, business automations, editorial generation, personalisation. Any modern stack, EU hosting.",
     serviceType: isFr
       ? "Sites web & plateformes SaaS augmentés IA"
       : "AI-augmented websites & SaaS platforms",
@@ -119,6 +129,14 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       },
       {
         position: 3,
+        name: isFr ? "Agents & automatisations IA" : "AI agents & automations",
+        url: `${SITE_URL}/${loc}/sites-web-augmentes`,
+        description: isFr
+          ? "Agents autonomes et automatisations des processus métier répétitifs, intégrés à vos outils."
+          : "Autonomous agents and automation of repetitive business processes, integrated with your tools.",
+      },
+      {
+        position: 4,
         name: isFr
           ? "Génération & personnalisation éditoriale"
           : "Editorial generation & personalisation",
@@ -127,48 +145,20 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
           ? "Pipeline de génération conforme HCU 2024 + AI Act, personnalisation temps réel."
           : "HCU 2024 + AI Act compliant generation pipeline, real-time personalisation.",
       },
-    ],
-  });
-
-  // HowTo JSON-LD — Sprint AEO Phase 3 2026-05-28 (Will). Process en 3
-  // étapes pour créer un site web augmenté IA Axion-IA. Cité par AI
-  // Overviews / Perplexity sur « comment créer un site web IA »,
-  // « SaaS native IA process ».
-  const sitesWebHowToJsonLd = buildHowToJsonLd({
-    locale: loc,
-    path: "/sites-web-augmentes",
-    name: isFr
-      ? "Comment créer un site web augmenté IA Axion-IA"
-      : "How to build an AI-augmented website with Axion-IA",
-    description: isFr
-      ? "3 étapes pour concevoir, développer et lancer un site web augmenté IA ou SaaS native IA avec Axion-IA — agents conversationnels intégrés, recommandations IA, automatisations métier."
-      : "3 steps to design, build and launch an AI-augmented website or AI-native SaaS with Axion-IA — integrated conversational agents, AI recommendations, business automations.",
-    steps: [
       {
-        name: isFr ? "Cadrage projet et UX" : "Project scoping and UX",
-        text: isFr
-          ? "Atelier de cadrage : audience cible, parcours utilisateur, agents IA à intégrer, sources de données. Wireframes UX et architecture technique validés ensemble."
-          : "Scoping workshop: target audience, user journey, AI agents to integrate, data sources. UX wireframes and technical architecture validated together.",
-      },
-      {
-        name: isFr ? "Design et développement" : "Design and development",
-        text: isFr
-          ? "Design éditorial responsive, développement Next.js + agents IA intégrés (Claude, ChatGPT, RAG sur vos données). Itérations courtes en sprint, démos hebdo en visio."
-          : "Responsive editorial design, Next.js development + integrated AI agents (Claude, ChatGPT, RAG on your data). Short sprint iterations, weekly video demos.",
-      },
-      {
-        name: isFr ? "Lancement et monitoring" : "Launch and monitoring",
-        text: isFr
-          ? `Mise en production, formation équipe interne, documentation. Monitoring Web Vitals et taux de conversion. Évolutions continues possibles en maintenance standard ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })} / mois.`
-          : `Production launch, internal team training, documentation. Web Vitals and conversion rate monitoring. Continuous evolutions possible under standard maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}/month.`,
+        position: 5,
+        name: isFr ? "Plateforme SaaS sur mesure IA-native" : "Bespoke AI-native SaaS platform",
+        url: `${SITE_URL}/${loc}/sites-web-augmentes`,
+        description: isFr
+          ? "Conception et développement d'une plateforme web sur mesure avec l'IA intégrée dès la conception."
+          : "Design and development of a bespoke web platform with AI integrated from day one.",
       },
     ],
   });
 
-  // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
-  // équipe + portrait fondateur pour visibilité Google Images + citation
-  // AI Overviews sur requêtes « site web IA », « SaaS native IA »,
-  // « site web augmenté entreprise ».
+  // ImageObject @graph — Sprint perfection AEO. Photo équipe + portrait fondateur
+  // pour visibilité Google Images + citation AI Overviews sur requêtes « site web
+  // IA », « plateforme SaaS native IA », « site web augmenté entreprise ».
   const sitesWebImagesJsonLd = buildImageGraphJsonLd({
     locale: loc,
     images: [
@@ -201,6 +191,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
 
   return (
     <>
+      {/* Service inline (SEO racine critique), ItemList différé afterInteractive. */}
       <JsonLd data={serviceJsonLd} />
       <JsonLd
         data={itemListJsonLd}
@@ -208,37 +199,67 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         scriptId="jsonld-sites-web-augmentes-itemlist"
       />
       <JsonLd data={sitesWebImagesJsonLd} />
-      <JsonLd data={sitesWebHowToJsonLd} />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
+      {/* HERO value-first 2-col + schéma orbital 8 nœuds IA (+ Speakable) */}
       <SitesWebHero isFr={isFr} />
-      <SitesWebTrustPills isFr={isFr} />
-      <SitesWebStackAdaptee isFr={isFr} />
-      <SitesWebMethodology isFr={isFr} />
-      <SitesWebFaq isFr={isFr} />
 
+      {/* PREUVE — 4 pills réassurance */}
+      <SitesWebTrustPills isFr={isFr} />
+
+      {/* POURQUOI — contraste « tout refaire ❌ vs augmenter l'existant ✅ » */}
+      <SitesWebWhy isFr={isFr} />
+
+      {/* MODULES — 4 briques IA chiffrées (métrique + délai) */}
+      <SitesWebModules isFr={isFr} />
+
+      {/* MÉTHODOLOGIE — 5 étapes (audit → livraison) + HowTo JSON-LD */}
+      <SitesWebMethodology isFr={isFr} />
+
+      {/* BANDEAU TERRACOTTA CONTACT */}
+      <SitesWebContactBand isFr={isFr} />
+
+      {/* SCÉNARIOS — 3 profils avant/après mesurés */}
+      <SitesWebScenarios isFr={isFr} />
+
+      {/* POURQUOI NOUS CHOISIR + transparence on-fait/on-ne-fait-pas */}
+      <SitesWebWhyChooseUs isFr={isFr} />
+
+      {/* STACK ADAPTÉE — 3 cartes modules (toute stack) */}
+      <SitesWebStackAdaptee isFr={isFr} />
+
+      {/* POURQUOI MAINTENANT */}
+      <SitesWebWhyNow isFr={isFr} />
+
+      {/* COUVERTURE NATIONALE (pSEO) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'augmentation web & SaaS IA"
         serviceLabelEn="AI web & SaaS augmentation"
-        serviceSlug="codage-developpement"
+        serviceSlug="sites-web-augmentes"
         tone="sand"
       />
 
-      <LocalGeoFaqSection isFr={isFr} service="codage-developpement" tone="paper" />
+      {/* FAQ GÉOLOCALISÉE (GEO) */}
+      <LocalGeoFaqSection isFr={isFr} service="sites-web-augmentes" tone="paper" />
 
-      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide). Tag
-          service:sites-web-augmentes (≠ slug géo codage-developpement ci-dessus). */}
+      {/* FAQ (unique, fusionnée) + FAQPage JSON-LD */}
+      <SitesWebFaq isFr={isFr} />
+
+      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="sites-web-augmentes" />
 
+      {/* CTA FINAL mocha — pont vers audit */}
       <SitesWebCtaBlock isFr={isFr} />
 
+      {/* STICKY CTA MOBILE */}
       <StickyMobileCta
-        label={isFr ? "Demander un devis" : "Request a quote"}
-        href="/demande-devis"
+        label={isFr ? "Décrire mon projet" : "Describe my project"}
+        href="/contact"
+        track="sites-web-augmentes-sticky"
       />
     </>
   );
