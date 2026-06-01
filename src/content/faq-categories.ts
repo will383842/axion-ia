@@ -23,10 +23,11 @@ export const FAQ_CATEGORIES: ReadonlyArray<FaqCategoryDef> = [
   },
   {
     slug: "interventions",
-    labelFr: "Interventions IA",
-    labelEn: "AI sessions",
-    descFr: "Sessions sur site et à distance, formats, déroulé d'une intervention.",
-    descEn: "On-site and remote sessions, formats, how a session unfolds.",
+    labelFr: "Formation & interventions IA",
+    labelEn: "AI training & sessions",
+    descFr:
+      "Formations et sessions IA sur site et à distance, ateliers, montée en compétence des équipes.",
+    descEn: "On-site and remote AI training and sessions, workshops, team upskilling.",
   },
   {
     slug: "implementation",
@@ -55,6 +56,21 @@ export const FAQ_CATEGORIES: ReadonlyArray<FaqCategoryDef> = [
     labelEn: "Process & method",
     descFr: "Réservation, déroulé, RGPD, support après-vente.",
     descEn: "Booking, process, GDPR, after-sales support.",
+  },
+  {
+    slug: "sites-web",
+    labelFr: "Sites web & SaaS augmentés à l'IA",
+    labelEn: "AI-augmented websites & SaaS",
+    descFr:
+      "Création de sites web et d'applications SaaS sur mesure augmentés à l'intelligence artificielle.",
+    descEn: "Custom AI-augmented websites and SaaS applications.",
+  },
+  {
+    slug: "un-a-un",
+    labelFr: "Coaching IA 1-to-1",
+    labelEn: "1-to-1 AI coaching",
+    descFr: "Accompagnement et coaching IA individuel pour dirigeants, cadres et managers.",
+    descEn: "Individual AI coaching and support for executives, managers and team leads.",
   },
 ];
 

@@ -1014,6 +1014,270 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE/PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
     },
   },
+  // ── Batch FAQ #3 — par service (keyword-rich, EN = clone FR car EN désactivé).
+  //    Services réels : audit · formation/interventions · implémentation ·
+  //    sites web & SaaS IA · coaching 1-to-1. NDA OK → « formation » autorisé ;
+  //    jamais OPCO/CPF/Qualiopi ; aucun prix chiffré inventé. ────────────────────
+  {
+    id: "audit-ia-tpe-pme",
+    fr: {
+      question: "Quel audit IA pour une TPE ou une PME ?",
+      answer:
+        "L'audit IA Axion-IA s'adapte aux TPE et PME : en une demi-journée à une journée, on cartographie vos processus, on identifie les cas d'usage IA les plus rentables pour votre taille et votre secteur, et on chiffre le ROI. Vous repartez avec une feuille de route concrète et priorisée — pas un rapport théorique. C'est le point de départ idéal pour démarrer l'IA sans se disperser.",
+    },
+    en: {
+      question: "Quel audit IA pour une TPE ou une PME ?",
+      answer:
+        "L'audit IA Axion-IA s'adapte aux TPE et PME : en une demi-journée à une journée, on cartographie vos processus, on identifie les cas d'usage IA les plus rentables pour votre taille et votre secteur, et on chiffre le ROI. Vous repartez avec une feuille de route concrète et priorisée — pas un rapport théorique. C'est le point de départ idéal pour démarrer l'IA sans se disperser.",
+    },
+  },
+  {
+    id: "audit-maturite-ia-entreprise",
+    fr: {
+      question: "Qu'est-ce qu'un audit de maturité IA d'entreprise ?",
+      answer:
+        "Un audit de maturité IA évalue où en est votre entreprise face à l'intelligence artificielle : outils déjà utilisés, niveau des équipes, qualité et accessibilité de vos données, processus automatisables, et conformité (RGPD, AI Act). Il situe votre maturité et trace les prochaines étapes prioritaires. C'est une photographie objective qui évite d'investir au hasard et concentre les efforts là où l'IA rapporte vraiment.",
+    },
+    en: {
+      question: "Qu'est-ce qu'un audit de maturité IA d'entreprise ?",
+      answer:
+        "Un audit de maturité IA évalue où en est votre entreprise face à l'intelligence artificielle : outils déjà utilisés, niveau des équipes, qualité et accessibilité de vos données, processus automatisables, et conformité (RGPD, AI Act). Il situe votre maturité et trace les prochaines étapes prioritaires. C'est une photographie objective qui évite d'investir au hasard et concentre les efforts là où l'IA rapporte vraiment.",
+    },
+  },
+  {
+    id: "cout-audit-ia-entreprise",
+    fr: {
+      question: "Combien coûte un audit IA pour une entreprise ?",
+      answer:
+        "Axion-IA pratique des tarifs publics et transparents pour l'audit IA, avec un tarif d'entrée clair selon le format (audit flash sur site ou audit approfondi), et un devis détaillé pour les missions plus larges. L'investissement reste modeste face au temps gagné identifié, et certains diagnostics peuvent être partiellement co-financés (France Num, BPI, subventions régionales) selon votre profil.",
+    },
+    en: {
+      question: "Combien coûte un audit IA pour une entreprise ?",
+      answer:
+        "Axion-IA pratique des tarifs publics et transparents pour l'audit IA, avec un tarif d'entrée clair selon le format (audit flash sur site ou audit approfondi), et un devis détaillé pour les missions plus larges. L'investissement reste modeste face au temps gagné identifié, et certains diagnostics peuvent être partiellement co-financés (France Num, BPI, subventions régionales) selon votre profil.",
+    },
+  },
+  {
+    id: "premier-diagnostic-ia",
+    fr: {
+      question: "Comment se passe un premier diagnostic IA ?",
+      answer:
+        "Le premier diagnostic IA commence par un échange pour comprendre votre activité, vos irritants et vos objectifs. On observe ensuite vos processus et vos outils, on repère les tâches chronophages automatisables, et on identifie 2 à 3 cas d'usage à fort impact pour démarrer vite. L'objectif : sortir avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions.",
+    },
+    en: {
+      question: "Comment se passe un premier diagnostic IA ?",
+      answer:
+        "Le premier diagnostic IA commence par un échange pour comprendre votre activité, vos irritants et vos objectifs. On observe ensuite vos processus et vos outils, on repère les tâches chronophages automatisables, et on identifie 2 à 3 cas d'usage à fort impact pour démarrer vite. L'objectif : sortir avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions.",
+    },
+  },
+  {
+    id: "formation-ia-entreprise",
+    fr: {
+      question: "Comment se passe une formation IA en entreprise ?",
+      answer:
+        "La formation IA Axion-IA est 100 % pratique et adaptée à vos métiers : on part de vos cas réels, pas de théorie. Sur site ou à distance, vos équipes manipulent les outils, apprennent à rédiger des prompts efficaces, à vérifier les réponses et à travailler en sécurité (confidentialité des données). Elles repartent autonomes et opérationnelles dès le lendemain, avec des gains de temps mesurables sur leurs tâches quotidiennes.",
+    },
+    en: {
+      question: "Comment se passe une formation IA en entreprise ?",
+      answer:
+        "La formation IA Axion-IA est 100 % pratique et adaptée à vos métiers : on part de vos cas réels, pas de théorie. Sur site ou à distance, vos équipes manipulent les outils, apprennent à rédiger des prompts efficaces, à vérifier les réponses et à travailler en sécurité (confidentialité des données). Elles repartent autonomes et opérationnelles dès le lendemain, avec des gains de temps mesurables sur leurs tâches quotidiennes.",
+    },
+  },
+  {
+    id: "formation-chatgpt-claude-entreprise",
+    fr: {
+      question: "Proposez-vous une formation ChatGPT ou Claude pour les entreprises ?",
+      answer:
+        "Oui. Axion-IA forme vos équipes à l'usage professionnel des IA génératives (ChatGPT, Claude, Copilot, Gemini) selon vos outils et vos besoins. On va au-delà des bases : prompts métier efficaces, automatisations concrètes, bonnes pratiques de confidentialité et vérification des réponses. La formation est indépendante des éditeurs : on vous apprend à utiliser l'outil le plus adapté à votre contexte, pas à dépendre d'un seul.",
+    },
+    en: {
+      question: "Proposez-vous une formation ChatGPT ou Claude pour les entreprises ?",
+      answer:
+        "Oui. Axion-IA forme vos équipes à l'usage professionnel des IA génératives (ChatGPT, Claude, Copilot, Gemini) selon vos outils et vos besoins. On va au-delà des bases : prompts métier efficaces, automatisations concrètes, bonnes pratiques de confidentialité et vérification des réponses. La formation est indépendante des éditeurs : on vous apprend à utiliser l'outil le plus adapté à votre contexte, pas à dépendre d'un seul.",
+    },
+  },
+  {
+    id: "atelier-ia-equipe",
+    fr: {
+      question: "Qu'est-ce qu'un atelier IA pour une équipe ?",
+      answer:
+        "Un atelier IA est une session courte et pratique où votre équipe travaille sur ses propres cas d'usage, en direct, avec un expert. En quelques heures, on identifie les tâches à automatiser, on teste des outils, et chacun repart avec des automatisations concrètes applicables immédiatement. C'est un format idéal pour lancer une dynamique IA dans l'équipe et lever les blocages, sans monopoliser des journées entières.",
+    },
+    en: {
+      question: "Qu'est-ce qu'un atelier IA pour une équipe ?",
+      answer:
+        "Un atelier IA est une session courte et pratique où votre équipe travaille sur ses propres cas d'usage, en direct, avec un expert. En quelques heures, on identifie les tâches à automatiser, on teste des outils, et chacun repart avec des automatisations concrètes applicables immédiatement. C'est un format idéal pour lancer une dynamique IA dans l'équipe et lever les blocages, sans monopoliser des journées entières.",
+    },
+  },
+  {
+    id: "formation-ia-dirigeants",
+    fr: {
+      question: "Existe-t-il une formation IA pour dirigeants et managers ?",
+      answer:
+        "Oui. Axion-IA propose des formations et un accompagnement IA dédiés aux dirigeants, DG, DRH et managers : comment intégrer l'IA dans son quotidien (préparation de réunions, analyse, rédaction stratégique, veille), comment cadrer une démarche IA dans son entreprise, et comment piloter sans être expert technique. L'objectif est double : gagner du temps personnellement et savoir conduire la transformation IA de ses équipes.",
+    },
+    en: {
+      question: "Existe-t-il une formation IA pour dirigeants et managers ?",
+      answer:
+        "Oui. Axion-IA propose des formations et un accompagnement IA dédiés aux dirigeants, DG, DRH et managers : comment intégrer l'IA dans son quotidien (préparation de réunions, analyse, rédaction stratégique, veille), comment cadrer une démarche IA dans son entreprise, et comment piloter sans être expert technique. L'objectif est double : gagner du temps personnellement et savoir conduire la transformation IA de ses équipes.",
+    },
+  },
+  {
+    id: "implementation-ia-sur-mesure",
+    fr: {
+      question: "Qu'est-ce qu'une implémentation IA sur mesure ?",
+      answer:
+        "L'implémentation IA sur mesure consiste à concevoir et déployer une solution IA adaptée à VOS processus : automatisation d'un workflow, agent IA métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes (sécurité, RGPD). Axion-IA livre une solution opérationnelle, testée et documentée, avec un accompagnement pour l'ancrer durablement.",
+    },
+    en: {
+      question: "Qu'est-ce qu'une implémentation IA sur mesure ?",
+      answer:
+        "L'implémentation IA sur mesure consiste à concevoir et déployer une solution IA adaptée à VOS processus : automatisation d'un workflow, agent IA métier, traitement documentaire, assistant interne, intégration à vos outils existants. Contrairement à un outil générique, elle épouse votre façon de travailler et vos contraintes (sécurité, RGPD). Axion-IA livre une solution opérationnelle, testée et documentée, avec un accompagnement pour l'ancrer durablement.",
+    },
+  },
+  {
+    id: "integration-ia-entreprise-concrete",
+    fr: {
+      question: "Comment intégrer concrètement l'IA dans mon entreprise ?",
+      answer:
+        "On procède par étapes : un audit identifie le cas d'usage à plus fort ROI, on déploie une première solution IA sur ce cas précis, on forme les équipes concernées, on mesure les gains, puis on étend. L'IA se greffe sur vos outils existants (CRM, ERP, messagerie) sans tout remplacer. Cette approche progressive prouve la valeur rapidement et évite les grands projets coûteux qui n'aboutissent pas.",
+    },
+    en: {
+      question: "Comment intégrer concrètement l'IA dans mon entreprise ?",
+      answer:
+        "On procède par étapes : un audit identifie le cas d'usage à plus fort ROI, on déploie une première solution IA sur ce cas précis, on forme les équipes concernées, on mesure les gains, puis on étend. L'IA se greffe sur vos outils existants (CRM, ERP, messagerie) sans tout remplacer. Cette approche progressive prouve la valeur rapidement et évite les grands projets coûteux qui n'aboutissent pas.",
+    },
+  },
+  {
+    id: "chatbot-ia-entreprise",
+    fr: {
+      question: "Peut-on créer un chatbot ou un assistant IA pour mon entreprise ?",
+      answer:
+        "Oui. Axion-IA conçoit des assistants et chatbots IA sur mesure, branchés sur VOS contenus et vos données : réponse aux clients 24/7, support interne pour vos équipes, assistant commercial ou documentaire. Contrairement à un chatbot générique, il répond à partir de vos informations réelles, avec un cadre de confidentialité maîtrisé. On garde l'humain dans la boucle pour les cas sensibles.",
+    },
+    en: {
+      question: "Peut-on créer un chatbot ou un assistant IA pour mon entreprise ?",
+      answer:
+        "Oui. Axion-IA conçoit des assistants et chatbots IA sur mesure, branchés sur VOS contenus et vos données : réponse aux clients 24/7, support interne pour vos équipes, assistant commercial ou documentaire. Contrairement à un chatbot générique, il répond à partir de vos informations réelles, avec un cadre de confidentialité maîtrisé. On garde l'humain dans la boucle pour les cas sensibles.",
+    },
+  },
+  {
+    id: "automatisation-ia-workflow-metier",
+    fr: {
+      question: "Comment automatiser un workflow métier avec l'IA ?",
+      answer:
+        "On cartographie d'abord votre processus (par exemple : réception d'une demande, qualification, réponse, suivi), puis on identifie les étapes où l'IA fait gagner du temps. On connecte l'IA à vos outils pour automatiser ces étapes, avec des points de contrôle humains aux moments clés. Résultat : un workflow plus rapide et fiable, où vos équipes se concentrent sur la valeur, pas sur la saisie répétitive.",
+    },
+    en: {
+      question: "Comment automatiser un workflow métier avec l'IA ?",
+      answer:
+        "On cartographie d'abord votre processus (par exemple : réception d'une demande, qualification, réponse, suivi), puis on identifie les étapes où l'IA fait gagner du temps. On connecte l'IA à vos outils pour automatiser ces étapes, avec des points de contrôle humains aux moments clés. Résultat : un workflow plus rapide et fiable, où vos équipes se concentrent sur la valeur, pas sur la saisie répétitive.",
+    },
+  },
+  {
+    id: "creation-site-web-augmente-ia",
+    fr: {
+      question: "Axion-IA crée-t-il des sites web augmentés à l'IA ?",
+      answer:
+        "Oui. Axion-IA conçoit des sites web et plateformes augmentés à l'intelligence artificielle : assistant de navigation, recherche intelligente, génération et personnalisation de contenu, qualification automatique des visiteurs, chatbot intégré. L'IA n'est pas un gadget posé par-dessus : elle est pensée pour convertir et faire gagner du temps. On part de vos objectifs business et on construit un site rapide, moderne et réellement utile.",
+    },
+    en: {
+      question: "Axion-IA crée-t-il des sites web augmentés à l'IA ?",
+      answer:
+        "Oui. Axion-IA conçoit des sites web et plateformes augmentés à l'intelligence artificielle : assistant de navigation, recherche intelligente, génération et personnalisation de contenu, qualification automatique des visiteurs, chatbot intégré. L'IA n'est pas un gadget posé par-dessus : elle est pensée pour convertir et faire gagner du temps. On part de vos objectifs business et on construit un site rapide, moderne et réellement utile.",
+    },
+  },
+  {
+    id: "saas-application-ia-sur-mesure",
+    fr: {
+      question: "Développez-vous des applications ou SaaS augmentés à l'IA sur mesure ?",
+      answer:
+        "Oui. Axion-IA développe des applications et plateformes SaaS sur mesure intégrant l'IA au cœur du produit : automatisations métier, analyse de données, génération de contenu, agents intelligents. On conçoit la solution autour de votre besoin réel et de vos contraintes (sécurité, RGPD, souveraineté des données), avec une attention forte à la performance et à l'expérience utilisateur. De l'idée au produit en ligne, avec un accompagnement continu.",
+    },
+    en: {
+      question: "Développez-vous des applications ou SaaS augmentés à l'IA sur mesure ?",
+      answer:
+        "Oui. Axion-IA développe des applications et plateformes SaaS sur mesure intégrant l'IA au cœur du produit : automatisations métier, analyse de données, génération de contenu, agents intelligents. On conçoit la solution autour de votre besoin réel et de vos contraintes (sécurité, RGPD, souveraineté des données), avec une attention forte à la performance et à l'expérience utilisateur. De l'idée au produit en ligne, avec un accompagnement continu.",
+    },
+  },
+  {
+    id: "site-internet-intelligent-definition",
+    fr: {
+      question: "Qu'est-ce qu'un site internet augmenté à l'intelligence artificielle ?",
+      answer:
+        "Un site augmenté à l'IA intègre des fonctions intelligentes qui améliorent l'expérience et les résultats : recherche en langage naturel, recommandations personnalisées, assistant conversationnel, génération de contenu, qualification automatique des leads. Concrètement, il comprend mieux vos visiteurs, répond instantanément et convertit davantage. C'est la différence entre un site vitrine statique et un site qui travaille pour vous, 24/7.",
+    },
+    en: {
+      question: "Qu'est-ce qu'un site internet augmenté à l'intelligence artificielle ?",
+      answer:
+        "Un site augmenté à l'IA intègre des fonctions intelligentes qui améliorent l'expérience et les résultats : recherche en langage naturel, recommandations personnalisées, assistant conversationnel, génération de contenu, qualification automatique des leads. Concrètement, il comprend mieux vos visiteurs, répond instantanément et convertit davantage. C'est la différence entre un site vitrine statique et un site qui travaille pour vous, 24/7.",
+    },
+  },
+  {
+    id: "integration-ia-site-existant",
+    fr: {
+      question: "Peut-on intégrer l'IA à mon site ou ma plateforme existante ?",
+      answer:
+        "Oui. Pas besoin de tout refaire : Axion-IA greffe des fonctions IA sur votre site ou plateforme actuelle — chatbot, recherche intelligente, génération de contenu, automatisation des formulaires et des leads. On s'adapte à votre technologie existante via ses API ou des connecteurs. Vous bénéficiez de l'IA rapidement, sans refonte coûteuse, et on peut faire évoluer le périmètre ensuite selon les résultats.",
+    },
+    en: {
+      question: "Peut-on intégrer l'IA à mon site ou ma plateforme existante ?",
+      answer:
+        "Oui. Pas besoin de tout refaire : Axion-IA greffe des fonctions IA sur votre site ou plateforme actuelle — chatbot, recherche intelligente, génération de contenu, automatisation des formulaires et des leads. On s'adapte à votre technologie existante via ses API ou des connecteurs. Vous bénéficiez de l'IA rapidement, sans refonte coûteuse, et on peut faire évoluer le périmètre ensuite selon les résultats.",
+    },
+  },
+  {
+    id: "accompagnement-ia-individuel-dirigeant",
+    fr: {
+      question: "Proposez-vous un accompagnement IA individuel pour dirigeant ?",
+      answer:
+        "Oui. Le coaching IA 1-to-1 Axion-IA est un accompagnement individuel et confidentiel pour dirigeants : en quelques séances, vous apprenez à intégrer l'IA dans votre propre pratique (préparation de réunions, analyse, rédaction stratégique, veille sectorielle). Le rythme et les cas travaillés sont les vôtres. L'objectif : gagner plusieurs heures par semaine et prendre de meilleures décisions, plus vite, avec l'IA comme copilote personnel.",
+    },
+    en: {
+      question: "Proposez-vous un accompagnement IA individuel pour dirigeant ?",
+      answer:
+        "Oui. Le coaching IA 1-to-1 Axion-IA est un accompagnement individuel et confidentiel pour dirigeants : en quelques séances, vous apprenez à intégrer l'IA dans votre propre pratique (préparation de réunions, analyse, rédaction stratégique, veille sectorielle). Le rythme et les cas travaillés sont les vôtres. L'objectif : gagner plusieurs heures par semaine et prendre de meilleures décisions, plus vite, avec l'IA comme copilote personnel.",
+    },
+  },
+  {
+    id: "mentorat-ia-dirigeant",
+    fr: {
+      question: "Qu'est-ce qu'un mentorat IA pour dirigeant ?",
+      answer:
+        "Le mentorat IA est un accompagnement individuel dans la durée : un expert vous guide pas à pas dans l'adoption de l'IA, répond à vos questions concrètes, et vous aide à prendre les bonnes décisions au bon moment. Contrairement à une formation ponctuelle, il s'inscrit dans le temps et s'adapte à l'évolution de vos besoins. C'est idéal pour un dirigeant qui veut monter en compétence sereinement, à son rythme.",
+    },
+    en: {
+      question: "Qu'est-ce qu'un mentorat IA pour dirigeant ?",
+      answer:
+        "Le mentorat IA est un accompagnement individuel dans la durée : un expert vous guide pas à pas dans l'adoption de l'IA, répond à vos questions concrètes, et vous aide à prendre les bonnes décisions au bon moment. Contrairement à une formation ponctuelle, il s'inscrit dans le temps et s'adapte à l'évolution de vos besoins. C'est idéal pour un dirigeant qui veut monter en compétence sereinement, à son rythme.",
+    },
+  },
+  {
+    id: "coaching-ia-cadres-managers",
+    fr: {
+      question: "Le coaching IA est-il adapté aux cadres et aux managers ?",
+      answer:
+        "Tout à fait. Le coaching IA 1-to-1 s'adresse aussi aux cadres, managers et responsables d'équipe : apprendre à automatiser ses tâches, gagner du temps sur le reporting et la rédaction, mais aussi savoir faire monter son équipe en compétence sur l'IA. L'accompagnement est personnalisé selon votre métier et vos outils. Un manager qui maîtrise l'IA devient un multiplicateur de productivité pour toute son équipe.",
+    },
+    en: {
+      question: "Le coaching IA est-il adapté aux cadres et aux managers ?",
+      answer:
+        "Tout à fait. Le coaching IA 1-to-1 s'adresse aussi aux cadres, managers et responsables d'équipe : apprendre à automatiser ses tâches, gagner du temps sur le reporting et la rédaction, mais aussi savoir faire monter son équipe en compétence sur l'IA. L'accompagnement est personnalisé selon votre métier et vos outils. Un manager qui maîtrise l'IA devient un multiplicateur de productivité pour toute son équipe.",
+    },
+  },
+  {
+    id: "coaching-ia-prise-en-main-outils",
+    fr: {
+      question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
+      answer:
+        "Oui. Si vous voulez être autonome rapidement sur les outils IA (ChatGPT, Claude, automatisations, assistants), le coaching 1-to-1 est le format le plus efficace : on travaille sur VOS cas concrets, à votre rythme, jusqu'à ce que vous soyez à l'aise. Pas de cours générique : chaque séance produit des résultats utilisables tout de suite dans votre quotidien professionnel.",
+    },
+    en: {
+      question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
+      answer:
+        "Oui. Si vous voulez être autonome rapidement sur les outils IA (ChatGPT, Claude, automatisations, assistants), le coaching 1-to-1 est le format le plus efficace : on travaille sur VOS cas concrets, à votre rythme, jusqu'à ce que vous soyez à l'aise. Pas de cours générique : chaque séance produit des résultats utilisables tout de suite dans votre quotidien professionnel.",
+    },
+  },
 ];
 
 // Blog : split Sprint 14.10 (2026-05-08) — `BlogPost` + données + helpers
@@ -1173,7 +1437,7 @@ const FAQ_GLOBAL_CATEGORY: Readonly<Record<string, string>> = {
   "equipes-operationnelles": "interventions",
   "presentiel-distance": "interventions",
   "formation-ia-difference": "interventions",
-  "coaching-1-to-1-dirigeant": "interventions",
+  "coaching-1-to-1-dirigeant": "un-a-un",
   // implementation
   "no-code-position": "implementation",
   "delai-implementation": "implementation",
@@ -1220,6 +1484,32 @@ const FAQ_GLOBAL_CATEGORY: Readonly<Record<string, string>> = {
   "qui-pilote-ia-entreprise": "process",
   // general (batch #2) : secteurs (commerce/resto/btp/immo/compta/industrie/ecommerce),
   // comparatifs outils, biais → fallback "general"
+  // ── batch #3 par service ──
+  // audit
+  "audit-ia-tpe-pme": "audit",
+  "audit-maturite-ia-entreprise": "audit",
+  "cout-audit-ia-entreprise": "audit",
+  "premier-diagnostic-ia": "audit",
+  // interventions / formation
+  "formation-ia-entreprise": "interventions",
+  "formation-chatgpt-claude-entreprise": "interventions",
+  "atelier-ia-equipe": "interventions",
+  "formation-ia-dirigeants": "interventions",
+  // implementation
+  "implementation-ia-sur-mesure": "implementation",
+  "integration-ia-entreprise-concrete": "implementation",
+  "chatbot-ia-entreprise": "implementation",
+  "automatisation-ia-workflow-metier": "implementation",
+  // sites web & SaaS IA (nouveau hub)
+  "creation-site-web-augmente-ia": "sites-web",
+  "saas-application-ia-sur-mesure": "sites-web",
+  "site-internet-intelligent-definition": "sites-web",
+  "integration-ia-site-existant": "sites-web",
+  // coaching 1-to-1 (nouveau hub)
+  "accompagnement-ia-individuel-dirigeant": "un-a-un",
+  "mentorat-ia-dirigeant": "un-a-un",
+  "coaching-ia-cadres-managers": "un-a-un",
+  "coaching-ia-prise-en-main-outils": "un-a-un",
   // (tout le reste → "general")
 };
 
