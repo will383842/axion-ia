@@ -9,6 +9,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
@@ -158,6 +159,9 @@ export default async function FaqCategoryPage({ params }: Props) {
           </ul>
         </Container>
       </Section>
+
+      {/* Maillage interne contextuel curé par catégorie (server, 0 JS). */}
+      <FaqRelatedResources category={categorie} locale={locale} isFr={isFr} />
 
       <CtaBlock
         title={isFr ? "Une question non listée ?" : "Question not listed?"}

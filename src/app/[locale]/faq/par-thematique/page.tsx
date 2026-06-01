@@ -13,6 +13,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
 import { listFaqs } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
+import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -83,15 +84,23 @@ export default async function FaqTopicsPage({ params }: Props) {
           <ul className="grid gap-3 sm:grid-cols-2">
             {FAQ_CATEGORIES.map((cat) => {
               const n = countByCat.get(cat.slug) ?? 0;
+              const Icon = FAQ_CATEGORY_ICONS[cat.slug] ?? FAQ_CATEGORY_ICON_FALLBACK;
               return (
                 <li key={cat.slug}>
                   <a
                     href={`/${locale}/faq/par-thematique/${cat.slug}`}
-                    className="border-border bg-paper hover:border-terracotta/60 group flex h-full items-start gap-4 rounded-xl border p-4 transition"
+                    className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group flex h-full items-start gap-4 rounded-xl border p-5 transition"
                   >
+                    <span className="bg-terracotta-soft text-terracotta flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                      <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2} />
+                    </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-fg group-hover:text-terracotta-deep text-base font-medium transition">
-                        {isFr ? cat.labelFr : cat.labelEn}
+                      <p className="text-fg group-hover:text-terracotta-deep flex items-start justify-between gap-3 text-base font-medium transition">
+                        <span className="min-w-0">{isFr ? cat.labelFr : cat.labelEn}</span>
+                        <ArrowUpRight
+                          className="text-fg-muted group-hover:text-terracotta mt-0.5 h-4 w-4 shrink-0 transition"
+                          aria-hidden="true"
+                        />
                       </p>
                       <p className="text-fg-soft mt-1 text-sm leading-snug">
                         {isFr ? cat.descFr : cat.descEn}
@@ -101,10 +110,6 @@ export default async function FaqTopicsPage({ params }: Props) {
                         {n > 1 ? "s" : ""}
                       </p>
                     </div>
-                    <ArrowUpRight
-                      className="text-fg-muted group-hover:text-terracotta mt-1 h-4 w-4 shrink-0 transition"
-                      aria-hidden="true"
-                    />
                   </a>
                 </li>
               );

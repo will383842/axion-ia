@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight, HelpCircle, Mic, RefreshCw, Rss } from "lucide-react";
+import { ArrowRight, HelpCircle, Mic, RefreshCw, Rss } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqHeroSchema } from "@/components/sections/FaqHeroSchema";
+import { FaqHubExplorer } from "@/components/sections/FaqHubExplorer";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
 import { listFaqs } from "@/lib/knowledge/readers";
+import { FAQ_CATEGORIES } from "@/content/faq-categories";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -66,6 +66,22 @@ export default async function FaqPage({ params }: Props) {
     id: entry.slug,
     question: isFr ? entry.questionFr : entry.questionEn,
     answer: isFr ? entry.answerFr : entry.answerEn,
+  }));
+
+  // Données légères pour l'explorateur (recherche + filtres thèmes) : on ne passe
+  // au client que question + extrait court + catégorie (pas la réponse complète).
+  const explorerItems = faqs.map((entry) => {
+    const answer = isFr ? entry.answerFr : entry.answerEn;
+    return {
+      id: entry.slug,
+      question: isFr ? entry.questionFr : entry.questionEn,
+      snippet: answer.length > 110 ? `${answer.slice(0, 108).trimEnd()}…` : answer,
+      category: entry.category,
+    };
+  });
+  const explorerCats = FAQ_CATEGORIES.map((c) => ({
+    slug: c.slug,
+    label: isFr ? c.labelFr : c.labelEn,
   }));
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items, speakableSelector: "[data-aeo='faq-intro']" });
@@ -137,8 +153,8 @@ export default async function FaqPage({ params }: Props) {
               </ul>
               {/* CTAs hero */}
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Cta href="#index" size="lg">
-                  {isFr ? "Toutes les questions" : "All questions"}
+                <Cta href="#questions" size="lg">
+                  {isFr ? "Rechercher une question" : "Search a question"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
                 <Cta href={`/${locale}/faq/par-thematique`} variant="outline" size="lg">
@@ -163,76 +179,16 @@ export default async function FaqPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* Most viewed — top 5 questions populaires */}
-      <Section eyebrow={isFr ? "Plus consultées" : "Most viewed"} tone="paper">
-        <Container className="max-w-3xl">
-          <ul className="grid gap-3">
-            {items.slice(0, 5).map((item, idx) => (
-              <li key={`pop-${item.id}`}>
-                <a
-                  href={`/${locale}/faq/${item.id}`}
-                  className="border-border bg-paper hover:border-terracotta/60 group flex items-start gap-4 rounded-xl border p-4 transition"
-                >
-                  <span
-                    className="text-terracotta text-2xl leading-none font-medium tabular-nums"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                    aria-hidden="true"
-                  >
-                    0{idx + 1}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-fg group-hover:text-terracotta-deep text-base leading-snug font-medium transition">
-                      {item.question}
-                    </p>
-                    <p className="text-fg-soft mt-1 line-clamp-2 text-sm leading-snug">
-                      {item.answer.slice(0, 140)}…
-                    </p>
-                  </div>
-                  <ArrowUpRight
-                    className="text-fg-muted group-hover:text-terracotta mt-1 h-4 w-4 shrink-0 transition"
-                    aria-hidden="true"
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </Section>
-
-      <FaqBlock
-        items={items}
-        emitJsonLd={false}
-        permalinkBase={`/${locale}/faq`}
-        permalinkLabel={isFr ? "Page dédiée" : "Dedicated page"}
-      />
-
-      <Section
-        id="index"
-        eyebrow={isFr ? "Index" : "Index"}
-        title={isFr ? "Toutes les questions" : "All questions"}
-        tone="paper"
-      >
-        <Container className="max-w-3xl">
-          <ul className="border-border divide-border divide-y border-y">
-            {items.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`/${locale}/faq/${item.id}`}
-                  className="group flex items-center justify-between gap-4 py-4"
-                >
-                  <span className="text-fg group-hover:text-primary text-base font-medium transition">
-                    {item.question}
-                  </span>
-                  <ArrowUpRight
-                    className="text-fg-muted group-hover:text-primary h-4 w-4 shrink-0 transition"
-                    aria-hidden="true"
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </Section>
+      {/* Explorateur : recherche temps réel + filtres par thème + résultats
+          groupés. SSR rend la liste complète (SEO/AEO), JS ajoute le filtrage. */}
+      <div id="questions" className="scroll-mt-24">
+        <FaqHubExplorer
+          items={explorerItems}
+          categories={explorerCats}
+          locale={locale}
+          isFr={isFr}
+        />
+      </div>
 
       <CtaBlock
         title={isFr ? "Une question non listée ?" : "Question not listed?"}

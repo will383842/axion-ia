@@ -2,12 +2,21 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { HelpCircle, Clock, RefreshCw, ShieldCheck } from "lucide-react";
+import {
+  HelpCircle,
+  Clock,
+  RefreshCw,
+  ShieldCheck,
+  ArrowUpRight,
+  ArrowLeft,
+  ArrowRight,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
@@ -16,6 +25,8 @@ import { splitTitleEm } from "@/lib/title";
 import { listFaqs, isFaqItemIndexable, type FaqItem } from "@/lib/knowledge/readers";
 import { WasHelpful } from "@/components/marketing/WasHelpful";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { getFaqCategory } from "@/content/faq-categories";
+import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -116,14 +127,39 @@ export default async function FaqEntryPage({ params }: Props) {
     { href: `/faq/${slug}`, label: copy.question },
   ];
 
+  // Catégorie — label + icône pour le badge hero (renforce le silo
+  // hub → catégorie → Q/A, refonte premium 2026-06-01).
+  const catDef = getFaqCategory(entry.category);
+  const catLabel = catDef ? (isFr ? catDef.labelFr : catDef.labelEn) : null;
+  const CatIcon = FAQ_CATEGORY_ICONS[entry.category] ?? FAQ_CATEGORY_ICON_FALLBACK;
+
+  // Navigation séquentielle dans la thématique (lecture continue prev/next).
+  const inCategory = faqs.filter((f) => f.category === entry.category);
+  const curIdx = inCategory.findIndex((f) => f.slug === entry.slug);
+  const prev = curIdx > 0 ? (inCategory[curIdx - 1] ?? null) : null;
+  const next =
+    curIdx >= 0 && curIdx < inCategory.length - 1 ? (inCategory[curIdx + 1] ?? null) : null;
+
   // FAQ liées — priorité à la même catégorie (maillage sémantique, perfection
-  // FAQ 2026-05-31), complété par d'autres questions si < 4.
+  // FAQ 2026-05-31), complété par d'autres questions si < 4. Enrichies d'un
+  // extrait + label catégorie pour l'affichage en cards (refonte 2026-06-01).
   const pool = faqs.filter((f) => f.slug !== entry.slug);
   const sameCategory = pool.filter((f) => f.category === entry.category);
-  const others = [...sameCategory, ...pool.filter((f) => f.category !== entry.category)].slice(
+  const relatedRaw = [...sameCategory, ...pool.filter((f) => f.category !== entry.category)].slice(
     0,
     4,
   );
+  const snippetOf = (a: string) => (a.length > 120 ? `${a.slice(0, 118).trimEnd()}…` : a);
+  const related = relatedRaw.map((f) => {
+    const c = getCopy(f, loc);
+    const def = getFaqCategory(f.category);
+    return {
+      slug: f.slug,
+      question: c.question,
+      snippet: snippetOf(c.answer),
+      catLabel: def ? (isFr ? def.labelFr : def.labelEn) : null,
+    };
+  });
 
   // Réponse directe AEO (40-80 mots) : pour les réponses longues, on extrait un
   // résumé en tête (1-2 phrases, ≤ ~75 mots) que les moteurs IA (AI Overviews,
@@ -169,6 +205,15 @@ export default async function FaqEntryPage({ params }: Props) {
             }
           >
             <Container className="mt-8 max-w-2xl">
+              {catLabel ? (
+                <a
+                  href={`/${locale}/faq/par-thematique/${entry.category}`}
+                  className="border-border bg-paper text-fg-soft hover:border-terracotta/60 hover:text-terracotta-deep mb-5 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-medium transition"
+                >
+                  <CatIcon className="text-terracotta h-4 w-4" aria-hidden="true" strokeWidth={2} />
+                  {catLabel}
+                </a>
+              ) : null}
               <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
                 {[
                   { icon: HelpCircle, label: isFr ? "Question fréquente" : "Frequent question" },
@@ -228,25 +273,83 @@ export default async function FaqEntryPage({ params }: Props) {
           <p className="text-fg faq-answer text-lg leading-relaxed" data-aeo="answer">
             {copy.answer}
           </p>
+
+          {/* Navigation séquentielle dans la thématique (lecture continue). */}
+          {prev || next ? (
+            <nav
+              aria-label={isFr ? "Navigation dans la thématique" : "Topic navigation"}
+              className="border-border mt-10 grid gap-3 border-t pt-8 sm:grid-cols-2"
+            >
+              {prev ? (
+                <a
+                  href={`/${locale}/faq/${prev.slug}`}
+                  className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group rounded-xl border p-4 transition"
+                >
+                  <span className="text-fg-muted inline-flex items-center gap-1 text-xs font-medium tracking-[0.12em] uppercase">
+                    <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                    {isFr ? "Précédent" : "Previous"}
+                  </span>
+                  <span className="text-fg group-hover:text-terracotta-deep mt-1 block text-sm font-medium transition">
+                    {getCopy(prev, loc).question}
+                  </span>
+                </a>
+              ) : (
+                <span aria-hidden="true" className="hidden sm:block" />
+              )}
+              {next ? (
+                <a
+                  href={`/${locale}/faq/${next.slug}`}
+                  className="border-border bg-paper hover:border-terracotta/60 hover:shadow-subtle group rounded-xl border p-4 transition sm:text-right"
+                >
+                  <span className="text-fg-muted inline-flex items-center gap-1 text-xs font-medium tracking-[0.12em] uppercase">
+                    {isFr ? "Suivant" : "Next"}
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </span>
+                  <span className="text-fg group-hover:text-terracotta-deep mt-1 block text-sm font-medium transition">
+                    {getCopy(next, loc).question}
+                  </span>
+                </a>
+              ) : null}
+            </nav>
+          ) : null}
         </Container>
       </Section>
 
-      <Section eyebrow={isFr ? "Autres questions" : "Other questions"}>
-        <Container className="max-w-3xl">
-          <ul className="border-border divide-border divide-y border-y">
-            {others.map((o) => (
-              <li key={o.slug}>
-                <a
-                  href={`/${locale}/faq/${o.slug}`}
-                  className="text-fg hover:text-primary block py-4 text-base font-medium"
-                >
-                  {getCopy(o, loc).question} →
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </Section>
+      {/* Maillage interne contextuel curé par catégorie (server, 0 JS). */}
+      <FaqRelatedResources category={entry.category} locale={locale} isFr={isFr} />
+
+      {related.length > 0 ? (
+        <Section eyebrow={isFr ? "Autres questions" : "Other questions"} tone="paper">
+          <Container className="max-w-3xl">
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {related.map((r) => (
+                <li key={r.slug}>
+                  <a
+                    href={`/${locale}/faq/${r.slug}`}
+                    className="border-border bg-bg hover:border-terracotta/60 hover:shadow-subtle group flex h-full flex-col rounded-xl border p-4 transition"
+                  >
+                    {r.catLabel ? (
+                      <span className="text-terracotta-deep bg-terracotta-soft mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase">
+                        {r.catLabel}
+                      </span>
+                    ) : null}
+                    <span className="text-fg group-hover:text-terracotta-deep flex items-start justify-between gap-3 text-base font-medium transition">
+                      <span className="min-w-0">{r.question}</span>
+                      <ArrowUpRight
+                        className="text-fg-muted group-hover:text-terracotta mt-0.5 h-4 w-4 shrink-0 transition"
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <span className="text-fg-soft mt-1.5 line-clamp-2 block text-sm leading-snug">
+                      {r.snippet}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
 
       <div className="border-border border-t py-6">
         <Container>
