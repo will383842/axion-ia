@@ -15,30 +15,56 @@ import { Cta } from "@/components/marketing/Cta";
 
 export interface SitesWebContactBandProps {
   readonly isFr: boolean;
+  /**
+   * Deux placements, deux messages (évite la répétition) :
+   * `scope` (par défaut) = orienter vers la bonne brique ; `quote` = passer au
+   * devis après la preuve sociale.
+   */
+  readonly variant?: "scope" | "quote";
 }
 
-export function SitesWebContactBand({ isFr }: SitesWebContactBandProps): ReactNode {
+export function SitesWebContactBand({
+  isFr,
+  variant = "scope",
+}: SitesWebContactBandProps): ReactNode {
+  const copy =
+    variant === "quote"
+      ? {
+          eyebrow: isFr ? "Prêt·e à augmenter votre site ?" : "Ready to augment your site?",
+          titleA: isFr ? "Un devis ferme," : "A firm quote,",
+          titleB: isFr ? "sous 48 h" : "within 48 h",
+          desc: isFr
+            ? "Décrivez votre site ou votre projet : on revient sous 48 h avec un périmètre précis, un forfait fixe et un délai garanti. Forfait fixe, pas de régie, code et données à vous."
+            : "Describe your site or project: we come back within 48 h with a precise scope, a fixed fee and a guaranteed timeline. Fixed fee, no time-and-materials, code and data yours.",
+        }
+      : {
+          eyebrow: isFr ? "Pas sûr·e par où commencer ?" : "Not sure where to start?",
+          titleA: isFr ? "On cadre votre projet web IA," : "We scope your AI web project,",
+          titleB: isFr ? "au bon niveau" : "at the right level",
+          desc: isFr
+            ? "Un échange pour comprendre votre site, votre stack et vos objectifs — et vous dire ce qui a le plus d'impact : un chatbot RAG greffé, du search sémantique, ou une plateforme IA-native. Sans engagement."
+            : "A chat to understand your site, stack and goals — and tell you what has the most impact: a grafted RAG chatbot, semantic search, or an AI-native platform. No commitment.",
+        };
+
   return (
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
           <div className="max-w-2xl">
             <p className="text-mocha-fg/75 mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
-              {isFr ? "Pas sûr·e par où commencer ?" : "Not sure where to start?"}
+              {copy.eyebrow}
             </p>
             <h2
               className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "On cadre votre projet web IA," : "We scope your AI web project,"}{" "}
+              {copy.titleA}{" "}
               <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
-                {isFr ? "au bon niveau" : "at the right level"}
+                {copy.titleB}
               </span>
             </h2>
             <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
-              {isFr
-                ? "Un échange pour comprendre votre site, votre stack et vos objectifs — et vous dire ce qui a le plus d'impact : un chatbot RAG greffé, du search sémantique, ou une plateforme IA-native. Devis ferme 48 h, sans engagement."
-                : "A chat to understand your site, stack and goals — and tell you what has the most impact: a grafted RAG chatbot, semantic search, or an AI-native platform. Firm quote 48 h, no commitment."}
+              {copy.desc}
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">

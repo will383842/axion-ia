@@ -12,6 +12,7 @@
 import type { ReactNode } from "react";
 import { Bot, SearchCheck, Sparkles, Target, Globe, type LucideIcon } from "lucide-react";
 import { Section } from "@/components/layout/Section";
+import { SitesWebCapabilitiesDialog } from "@/components/services/sites-web/SitesWebCapabilitiesDialog";
 
 interface ModuleCard {
   readonly icon: LucideIcon;
@@ -149,6 +150,16 @@ export function SitesWebModules({ isFr }: SitesWebModulesProps): ReactNode {
           );
         })}
       </ul>
+
+      {/* CTA → popup du champ des possibles (toutes les capacités IA web) */}
+      <div className="mt-12 flex flex-col items-center gap-3 text-center">
+        <SitesWebCapabilitiesDialog isFr={isFr} />
+        <p className="text-fg-muted text-[13px]">
+          {isFr
+            ? "Chatbot, search, agents, génération, e-commerce, vision, multilingue, perso… on passe chaque usage au crible."
+            : "Chatbot, search, agents, generation, e-commerce, vision, multilingual, personalisation… we comb through every use case."}
+        </p>
+      </div>
     </Section>
   );
 }

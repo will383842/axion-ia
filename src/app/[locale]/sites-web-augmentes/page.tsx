@@ -4,9 +4,10 @@
  * Fusion 2026-06-01 (Will) — page hub canonique unique résultant de la fusion de
  * l'ancien `/codage-developpement` (+ sous-page `/web-digital`) dans cette page
  * (anti-cannibalisation keyword ; 301 dans `next.config.ts`). Template aligné sur
- * `/audit` : narration value-first en ~15 sections (hero schema → preuve → why →
- * modules chiffrés → méthodologie → contact → scénarios → why-choose-us → stack →
- * why-now → couverture → geo-FAQ → FAQ → connaissances → CTA → sticky).
+ * `/audit` : narration value-first riche en images (hero schema → logos → why →
+ * modules + popup capacités → méthodologie → contact → réalisations → avis →
+ * why-choose-us → stack/logos → réassurance → why-now → contact → couverture →
+ * geo-FAQ → FAQ → connaissances → CTA → sticky).
  *
  * La page n'émet que `Service` + `ItemList` + `ImageObject` globaux : le HowTo est
  * émis par `SitesWebMethodology`, le FAQPage par `SitesWebFaq`, le Speakable par
@@ -27,13 +28,15 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { SitesWebHero } from "@/components/services/sites-web/SitesWebHero";
 import { SitesWebTrustPills } from "@/components/services/sites-web/SitesWebTrustPills";
 import { SitesWebWhy } from "@/components/services/sites-web/SitesWebWhy";
 import { SitesWebModules } from "@/components/services/sites-web/SitesWebModules";
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
-import { SitesWebScenarios } from "@/components/services/sites-web/SitesWebScenarios";
+import { SitesWebRealisations } from "@/components/services/sites-web/SitesWebRealisations";
+import { SitesWebReviews } from "@/components/services/sites-web/SitesWebReviews";
 import { SitesWebWhyChooseUs } from "@/components/services/sites-web/SitesWebWhyChooseUs";
 import { SitesWebStackAdaptee } from "@/components/services/sites-web/SitesWebStackAdaptee";
 import { SitesWebWhyNow } from "@/components/services/sites-web/SitesWebWhyNow";
@@ -207,32 +210,41 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       {/* HERO value-first 2-col + schéma orbital 8 nœuds IA (+ Speakable) */}
       <SitesWebHero isFr={isFr} />
 
-      {/* PREUVE — 4 pills réassurance */}
-      <SitesWebTrustPills isFr={isFr} />
+      {/* PREUVE SOCIALE — bandeau logos clients défilant (juste après le hero) */}
+      <ClientLogosMarqueeBand isFr={isFr} />
 
       {/* POURQUOI — contraste « tout refaire ❌ vs augmenter l'existant ✅ » */}
       <SitesWebWhy isFr={isFr} />
 
-      {/* MODULES — 4 briques IA chiffrées (métrique + délai) */}
+      {/* MODULES — 4 briques IA chiffrées + popup « tout ce que l'IA peut faire » */}
       <SitesWebModules isFr={isFr} />
 
       {/* MÉTHODOLOGIE — 5 étapes (audit → livraison) + HowTo JSON-LD */}
       <SitesWebMethodology isFr={isFr} />
 
-      {/* BANDEAU TERRACOTTA CONTACT */}
-      <SitesWebContactBand isFr={isFr} />
+      {/* BANDEAU TERRACOTTA CONTACT #1 — orientation/cadrage */}
+      <SitesWebContactBand isFr={isFr} variant="scope" />
 
-      {/* SCÉNARIOS — 3 profils avant/après mesurés */}
-      <SitesWebScenarios isFr={isFr} />
+      {/* RÉALISATIONS — marquee à images (sites & plateformes IA livrés) */}
+      <SitesWebRealisations isFr={isFr} />
+
+      {/* AVIS CLIENTS — 6 portraits + note 5 étoiles */}
+      <SitesWebReviews isFr={isFr} />
 
       {/* POURQUOI NOUS CHOISIR + transparence on-fait/on-ne-fait-pas */}
       <SitesWebWhyChooseUs isFr={isFr} />
 
-      {/* STACK ADAPTÉE — 3 cartes modules (toute stack) */}
+      {/* STACK — modèles IA (logos) + frameworks/CMS supportés */}
       <SitesWebStackAdaptee isFr={isFr} />
+
+      {/* RÉASSURANCE — 4 pills */}
+      <SitesWebTrustPills isFr={isFr} />
 
       {/* POURQUOI MAINTENANT */}
       <SitesWebWhyNow isFr={isFr} />
+
+      {/* BANDEAU TERRACOTTA CONTACT #2 — passage au devis */}
+      <SitesWebContactBand isFr={isFr} variant="quote" />
 
       {/* COUVERTURE NATIONALE (pSEO) */}
       <LocalCoverageSection
