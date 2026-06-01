@@ -14,27 +14,23 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/seo";
-import { enqueueIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
+import { pingIndexNow } from "@/lib/indexnow";
+import type { FAQCategory, PublishStatus } from "../../../prisma/generated/client";
 
 /**
  * Fix audit FAQ 2026-05-31 (axes G1/G3) : l'admin FAQ ne pingait jamais IndexNow
- * (ni à la publication, ni à l'archivage). On câble ici le lifecycle complet :
- * publish/update → ping `publish` ; archivage → ping `delete` (URL_DELETED).
- * Fire-and-forget (le helper n'échoue jamais). FR uniquement (EN désactivé).
+ * (ni à la publication, ni à l'archivage). On câble ici le lifecycle :
+ * publish → ping (Bing/Yandex re-crawl) ; archivage → ping (le re-crawl découvre
+ * le retrait, la page archivée renvoyant notFound). Fire-and-forget, jamais
+ * bloquant. FR uniquement (EN désactivé).
+ *
+ * On utilise `pingIndexNow` (@/lib/indexnow, helper IndexNow générique) plutôt
+ * que le helper du pipeline de génération, pour respecter le cloisonnement
+ * architectural (isolation-check CI).
  */
-async function pingFaqIndexing(slug: string, event: "publish" | "delete"): Promise<void> {
-  try {
-    await enqueueIndexingForUrls({
-      entityId: `faq-${slug}`,
-      urls: [`${SITE_URL}/fr/faq/${slug}`],
-      origin: "manual",
-      lifecycleEvent: event,
-    });
-  } catch {
-    // jamais bloquant sur une action admin
-  }
+function pingFaqIndexing(slug: string, event: "publish" | "delete"): void {
+  pingIndexNow([`${SITE_URL}/fr/faq/${slug}`], `faq:${event}`);
 }
-import type { FAQCategory, PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -220,9 +216,9 @@ export async function upsertFAQAction(
     // Lifecycle indexation (fix audit FAQ 2026-05-31) : publié → ping publish,
     // archivé via upsert → ping delete (URL_DELETED).
     if (parsed.data.status === "published") {
-      await pingFaqIndexing(parsed.data.slug, "publish");
+      pingFaqIndexing(parsed.data.slug, "publish");
     } else if (parsed.data.status === "archived") {
-      await pingFaqIndexing(parsed.data.slug, "delete");
+      pingFaqIndexing(parsed.data.slug, "delete");
     }
     return { ok: true, id: faq.id, created };
   } catch (err) {
@@ -272,7 +268,7 @@ export async function archiveFAQAction(
   // Dé-indexation propre (fix audit FAQ 2026-05-31, axe G3) : URL_DELETED.
   if (archived?.slug) {
     revalidatePath(`/fr/faq/${archived.slug}`);
-    await pingFaqIndexing(archived.slug, "delete");
+    pingFaqIndexing(archived.slug, "delete");
   }
   return { ok: true };
 }

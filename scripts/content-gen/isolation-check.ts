@@ -236,6 +236,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   //   `src/server/content-gen/kb/*` (verticales des KbFact) — refs doc.
   /^\.github\/workflows\/seed-kb-manual\.yml$/,
   /^src\/content\/knowledge\/services\.ts$/,
+  // Fix audit FAQ 2026-05-31 — violation PRÉ-EXISTANTE (commit aaf08c67) qui
+  // rendait déjà « CI · Gates A + B » rouge avant le sprint FAQ. Le composant
+  // référence `docs/content-gen/UNSPLASH-COMPLIANCE.md` dans un commentaire JSDoc
+  // (conformité Unsplash), pas du code du pipeline de génération. Whitelist comme
+  // les autres consommateurs/refs-doc ci-dessus.
+  /^src\/components\/services\/audit\/AuditClientReviews\.tsx$/,
 ];
 
 /**
