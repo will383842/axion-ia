@@ -100,8 +100,34 @@ export default async function FaqEntryPage({ params }: Props) {
     { href: `/faq/${slug}`, label: copy.question },
   ];
 
-  // Suggested companion FAQs (4 others).
-  const others = faqs.filter((f) => f.slug !== entry.slug).slice(0, 4);
+  // FAQ liées — priorité à la même catégorie (maillage sémantique, perfection
+  // FAQ 2026-05-31), complété par d'autres questions si < 4.
+  const pool = faqs.filter((f) => f.slug !== entry.slug);
+  const sameCategory = pool.filter((f) => f.category === entry.category);
+  const others = [...sameCategory, ...pool.filter((f) => f.category !== entry.category)].slice(
+    0,
+    4,
+  );
+
+  // Réponse directe AEO (40-80 mots) : pour les réponses longues, on extrait un
+  // résumé en tête (1-2 phrases, ≤ ~75 mots) que les moteurs IA (AI Overviews,
+  // Perplexity, ChatGPT, Gemini) peuvent citer directement. Speakable cible déjà
+  // `.tldr-answer` / `[data-aeo="tldr"]` (cf. buildQAPageJsonLd). Réponses courtes :
+  // pas de doublon, la réponse elle-même fait office de réponse directe.
+  const answerWords = copy.answer.trim().split(/\s+/);
+  const directAnswer =
+    answerWords.length > 80
+      ? (copy.answer.match(/[^.!?]+[.!?]+/g) ?? [copy.answer])
+          .reduce<{ text: string; words: number }>(
+            (acc, sentence) => {
+              if (acc.words >= 40) return acc;
+              const w = sentence.trim().split(/\s+/).length;
+              return { text: acc.text + sentence, words: acc.words + w };
+            },
+            { text: "", words: 0 },
+          )
+          .text.trim()
+      : null;
 
   return (
     <>
@@ -171,6 +197,17 @@ export default async function FaqEntryPage({ params }: Props) {
 
       <Section>
         <Container className="max-w-3xl">
+          {/* Réponse directe citable (AEO) — .tldr-answer + data-aeo="tldr" =
+              cssSelector Speakable, isolée par les moteurs IA. Affichée seulement
+              pour les réponses longues (sinon doublon avec la réponse complète). */}
+          {directAnswer ? (
+            <p
+              className="text-fg tldr-answer border-terracotta bg-halo-warm mb-6 rounded-xl border-l-4 px-5 py-4 text-lg leading-relaxed font-medium"
+              data-aeo="tldr"
+            >
+              {directAnswer}
+            </p>
+          ) : null}
           {/* data-aeo="answer" + .faq-answer = cssSelector Speakable JSON-LD */}
           <p className="text-fg faq-answer text-lg leading-relaxed" data-aeo="answer">
             {copy.answer}

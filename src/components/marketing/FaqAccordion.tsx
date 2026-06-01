@@ -1,10 +1,4 @@
 import { ArrowUpRight } from "lucide-react";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
 import { buildFaqJsonLd } from "@/lib/seo";
 import { JsonLd } from "./JsonLd";
 
@@ -29,8 +23,13 @@ interface FaqAccordionProps {
   permalinkLabel?: string;
 }
 
-// Wraps the headless Accordion with auto Schema.org `FAQPage` JSON-LD
-// (axionia-seo-aeo §AEO answer blocks).
+// FAQ accordion 100% CSS-only (`<details>/<summary>`) — aucun JS client, aucun
+// hook (perfection FAQ 2026-05-31, axe F1) : retire `@radix-ui/react-accordion`
+// du First Load JS de toute route portant des FAQ (hub, services). Même pattern
+// a11y que `VilleFaqGeolocalisee` : `<ul role="list">` (évite les échecs axe
+// `definition-list`), `data-faq-q`/`data-faq-a` conservés pour la Speakable
+// Specification (sélecteurs CSS, indépendants du tag). Émet le `FAQPage` JSON-LD
+// via la factory centralisée `buildFaqJsonLd` (Speakable auto-injecté).
 export function FaqAccordion({
   items,
   emitJsonLd = true,
@@ -38,32 +37,43 @@ export function FaqAccordion({
   permalinkBase,
   permalinkLabel = "Page dédiée",
 }: FaqAccordionProps) {
-  // Factory centralisée seo.ts (audit perfection 2026-05-12).
   const jsonLd = emitJsonLd ? buildFaqJsonLd({ items }) : null;
 
   return (
     <>
-      <Accordion type="single" collapsible className={className}>
+      <ul role="list" className={className}>
         {items.map((item) => (
-          <AccordionItem key={item.id} value={item.id}>
-            <AccordionTrigger>
-              <span data-faq-q>{item.question}</span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <p data-faq-a>{item.answer}</p>
-              {permalinkBase ? (
-                <a
-                  href={`${permalinkBase}/${item.id}`}
-                  className="text-primary hover:text-primary/80 mt-4 inline-flex items-center gap-1 text-sm font-medium"
+          <li key={item.id}>
+            <details className="group border-border border-b">
+              <summary className="text-fg flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-left text-base font-medium">
+                <span data-faq-q className="flex-1">
+                  {item.question}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-fg-muted mt-1 shrink-0 text-xl leading-none transition-transform group-open:rotate-45"
                 >
-                  {permalinkLabel}
-                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                </a>
-              ) : null}
-            </AccordionContent>
-          </AccordionItem>
+                  +
+                </span>
+              </summary>
+              <div className="pb-5">
+                <p data-faq-a className="text-fg-soft text-[15px] leading-relaxed">
+                  {item.answer}
+                </p>
+                {permalinkBase ? (
+                  <a
+                    href={`${permalinkBase}/${item.id}`}
+                    className="text-primary hover:text-primary/80 mt-4 inline-flex items-center gap-1 text-sm font-medium"
+                  >
+                    {permalinkLabel}
+                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
+                ) : null}
+              </div>
+            </details>
+          </li>
         ))}
-      </Accordion>
+      </ul>
       {jsonLd ? <JsonLd data={jsonLd} /> : null}
     </>
   );

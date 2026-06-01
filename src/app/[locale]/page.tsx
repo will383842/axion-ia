@@ -46,12 +46,7 @@ import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 
 // ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
 // /implementation). Sans ce flag, la home reste sur le comportement par défaut
@@ -1639,14 +1634,15 @@ export default async function Home({ params }: HomeProps) {
             </h2>
             <p className="text-fg-soft mt-4 text-base leading-relaxed">{t("faqDescription")}</p>
             <div className="mt-12">
-              <Accordion type="single" collapsible>
-                {faqs.map((f) => (
-                  <AccordionItem key={f.id} value={f.id}>
-                    <AccordionTrigger>{f.question}</AccordionTrigger>
-                    <AccordionContent>{f.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              {/* CSS-only + permalien par question vers sa page dédiée indexable
+                  (maillage interne — perfection FAQ 2026-05-31). emitJsonLd=false :
+                  la home émet déjà son FAQPage via buildFaqSpeakableJsonLd. */}
+              <FaqAccordion
+                items={faqs}
+                emitJsonLd={false}
+                permalinkBase={`/${loc}/faq`}
+                permalinkLabel={isFr ? "Lire la réponse complète" : "Read full answer"}
+              />
               <p className="text-fg-muted mt-8 text-center text-sm">
                 {isFr ? (
                   <>
