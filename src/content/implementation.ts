@@ -64,6 +64,14 @@ interface PageCopy {
     intro?: string;
     levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
   };
+  /** Optionnel — 3 avis représentatifs distincts (rendus par ProductPageTemplate). */
+  testimonials?: ReadonlyArray<{ id: string; quote: string; author: string; role: string }>;
+  /** Optionnel — section "Pourquoi ce cas d'usage" (rendue après le hero). */
+  why?: {
+    title: string;
+    intro?: string;
+    points: ReadonlyArray<{ title: string; description: string }>;
+  };
   metaSeo: { title: string; description: string };
 }
 
@@ -283,6 +291,8 @@ function makeFr(args: {
   maturityIntro?: string;
   ctaBlockTitle?: string;
   ctaBlockDescription?: string;
+  testimonials?: PageCopy["testimonials"];
+  why?: PageCopy["why"];
 }): PageCopy {
   return {
     eyebrow: args.eyebrow,
@@ -370,6 +380,8 @@ function makeFr(args: {
         },
       ],
     },
+    ...(args.testimonials ? { testimonials: args.testimonials } : {}),
+    ...(args.why ? { why: args.why } : {}),
     metaSeo: {
       title: `${args.title} · Implémentation IA · Axion-IA`,
       description: clampMeta(args.answer, 155),

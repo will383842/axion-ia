@@ -1,9 +1,7 @@
 // AUTO-GÉNÉRÉ 2026-06-02 — contenu FR DISTINCT par sous-page /implementation.
-// Source : workflow impl-subpages-fr-content (9 rédacteurs FR + critique
-// anti-duplication + passe de révision des chevauchements). Dé-duplique les
-// blocs partagés de makeFr (benefits/process/metrics/faqs/maturity/cta).
-// FR uniquement : l'EN (non live, 301→FR) garde les défauts de makeEn jusqu'à
-// sa traduction (prévue dans plusieurs mois).
+// Source : workflows impl-subpages-fr-content (Phase 2) + impl-subpages-why-reviews
+// (section "why" + 3 avis représentatifs, personas uniques par page). Critique
+// anti-duplication + révision à chaque passe. FR uniquement (EN non live, 301→FR).
 import type { ImplementationSlug } from "./implementation";
 
 export interface ImplementationFrOverride {
@@ -14,6 +12,12 @@ export interface ImplementationFrOverride {
   maturityIntro: string;
   ctaBlockTitle: string;
   ctaBlockDescription: string;
+  testimonials: ReadonlyArray<{ id: string; quote: string; author: string; role: string }>;
+  why: {
+    title: string;
+    intro?: string;
+    points: ReadonlyArray<{ title: string; description: string }>;
+  };
 }
 
 export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverride> = {
@@ -118,6 +122,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Un besoin IA complexe que les outils standard ne couvrent pas ?",
     ctaBlockDescription:
       "Parlons de votre architecture, de vos données et de vos contraintes de sécurité. Nous concevons une IA sur-mesure, intégrée à votre SI et dont vous gardez la maîtrise complète.",
+    testimonials: [
+      {
+        id: "ia-custom-1",
+        quote:
+          "Les solutions sur étagère plafonnaient sur notre vocabulaire réglementaire. Un modèle fine-tuné sur nos propres dossiers a enfin donné des réponses exploitables par les équipes métier, sans les reformuler à chaque fois.",
+        author: "Bertrand A.",
+        role: "Directeur de l'innovation, groupe d'assurance, grand compte",
+      },
+      {
+        id: "ia-custom-2",
+        quote:
+          "L'hébergement en cloud privé était une condition absolue pour notre direction juridique. Maîtriser toute la chaîne d'indexation, jusqu'au choix de la vector DB, a levé les réticences internes sur la traçabilité.",
+        author: "Nadia K.",
+        role: "DSI, laboratoire pharmaceutique, ETI",
+      },
+      {
+        id: "ia-custom-3",
+        quote:
+          "Ce qui a fait la différence, c'est la partie MLOps et l'équipe dédiée : le système ne s'est pas dégradé après la mise en production, il a été suivi et réentraîné au fil de nos évolutions métier.",
+        author: "Olivier P.",
+        role: "Responsable data, énergéticien, grand compte",
+      },
+    ],
+    why: {
+      title: "Quand le sur-mesure devient la seule option qui tient à l'échelle",
+      intro:
+        "Au-delà d'un certain niveau d'exigence, les briques génériques atteignent leurs limites : volumétrie, confidentialité, intégration au SI. L'IA sur-mesure répond à des contraintes que rien d'autre ne couvre.",
+      points: [
+        {
+          title: "Modèles fine-tunés sur votre métier",
+          description:
+            "Un modèle entraîné sur votre corpus interne et votre terminologie répond avec une justesse qu'aucun modèle généraliste ne reproduit sur vos cas réels.",
+        },
+        {
+          title: "Architecture RAG et vector DB maîtrisée de bout en bout",
+          description:
+            "Choix de l'indexation, du chunking, de l'embedding et de la vector DB : vous gardez la main sur chaque couche de récupération, optimisée pour la volumétrie et la latence de vos propres jeux de données.",
+        },
+        {
+          title: "Déploiement on-premise ou cloud privé",
+          description:
+            "Vos données ne quittent jamais votre périmètre : hébergement isolé, conformité RGPD et souveraineté assurées, condition non négociable pour beaucoup de directions juridiques.",
+        },
+        {
+          title: "MLOps et équipe dédiée dans la durée",
+          description:
+            "Pipelines de réentraînement, monitoring, versioning et une équipe attitrée transforment un prototype en système exploité de façon fiable sur plusieurs années.",
+        },
+      ],
+    },
   },
   chatbot: {
     benefits: [
@@ -219,6 +273,57 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Un assistant conversationnel qui répond juste, sur vos sources ?",
     ctaBlockDescription:
       "Parlons de vos demandes récurrentes (SAV, helpdesk, qualification de leads) et des canaux à couvrir. Vous repartez avec un périmètre clair pour un premier assistant fiable et monitoré.",
+    testimonials: [
+      {
+        id: "chatbot-1",
+        quote:
+          "Le chatbot relié à notre base d'articles traite seul la majorité des demandes de niveau 1 et passe la main proprement dès que le sujet sort de son périmètre. Nos agents se concentrent enfin sur les cas complexes.",
+        author: "Camille V.",
+        role: "Responsable support client, éditeur de logiciel SaaS, ETI",
+      },
+      {
+        id: "chatbot-2",
+        quote:
+          "Sur notre site et notre app, l'assistant répond aux questions courantes sur les commandes et les retours, avec un renvoi vers la fiche concernée. Les clients obtiennent une réponse immédiate sans attendre un agent.",
+        author: "Yann L.",
+        role: "DSI, e-commerçant mode, PME",
+      },
+      {
+        id: "chatbot-3",
+        quote:
+          "L'assistant guide les usagers vers la bonne démarche et reformule en langage clair des informations parfois arides. Quand la question dépasse son cadre, il oriente vers le bon service plutôt que de tenter une réponse approximative.",
+        author: "Inès F.",
+        role: "Directrice de la relation usagers, collectivité",
+      },
+    ],
+    why: {
+      title:
+        "Pourquoi un chatbot IA bien cadré transforme votre relation client et votre support interne",
+      intro:
+        "Un assistant conversationnel relié à votre base de connaissances répond instantanément, 24/7, dans le canal où vos interlocuteurs sont déjà. Bien encadré, il décharge vos équipes des questions répétitives sans jamais sortir de son périmètre.",
+      points: [
+        {
+          title: "Une conversation ancrée, sans improvisation",
+          description:
+            "En dialogue, l'assistant s'appuie sur votre documentation et reformule clairement la réponse trouvée, en renvoyant vers le passage concerné plutôt que de combler les vides par une réponse plausible mais fausse.",
+        },
+        {
+          title: "Présent là où vos échanges ont lieu",
+          description:
+            "Slack, Teams, votre site, WhatsApp ou un assistant vocal : le même socle conversationnel se déploie sur les canaux de vos clients et de vos collaborateurs.",
+        },
+        {
+          title: "Détection des sujets sensibles en conversation",
+          description:
+            "L'assistant reconnaît en cours d'échange les demandes hors périmètre, juridiques ou émotionnellement chargées, baisse la voilure et passe la main à un humain dès que la confiance d'une réponse devient incertaine.",
+        },
+        {
+          title: "Monitoring et amélioration continue",
+          description:
+            "Chaque conversation est tracée, évaluée et analysée pour repérer les angles morts de votre base de connaissances et corriger les réponses faibles.",
+        },
+      ],
+    },
   },
   processus: {
     benefits: [
@@ -320,6 +425,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Quel processus vous coûte le plus d'heures aujourd'hui ?",
     ctaBlockDescription:
       "Décrivez-nous un flux répétitif — relances, validations, devis, reporting, onboarding — et nous identifions ensemble les étapes automatisables, leurs seuils de contrôle et le temps qu'elles vous feraient gagner.",
+    testimonials: [
+      {
+        id: "processus-1",
+        quote:
+          "Nos relances de factures et nos rappels de paiement partent désormais tout seuls au bon moment, et chaque échéance suit son propre chemin de relance. L'équipe compta a récupéré ses fins de mois.",
+        author: "Claire M.",
+        role: "DAF, cabinet d'expertise comptable, PME",
+      },
+      {
+        id: "processus-2",
+        quote:
+          "L'enchaînement réception de commande, planification de tournée et confirmation client se déroule sans qu'on rouvre trois logiciels. Les exceptions remontent toutes seules à la bonne personne.",
+        author: "Damien R.",
+        role: "Directeur des opérations, transporteur-logisticien, ETI",
+      },
+      {
+        id: "processus-3",
+        quote:
+          "Le parcours devis-validation-facturation est enchaîné de bout en bout, avec les bons niveaux d'approbation selon le montant. On a arrêté de perdre des dossiers entre deux boîtes mail.",
+        author: "Awa S.",
+        role: "Responsable ADV, agroalimentaire, ETI",
+      },
+    ],
+    why: {
+      title: "L'automatisation de bout en bout : là où vos équipes perdent le plus de temps",
+      intro:
+        "Relances, devis, facturation, reporting, validations : ces tâches répétitives, à faible valeur, grignotent vos journées et créent des oublis. L'automatisation les enchaîne selon des règles déterministes — un déclencheur, une suite d'actions câblées sur votre système d'information — sans qu'aucun humain rouvre dix onglets. Contrairement à un agent qui décide, ici chaque étape est prévisible et reproductible.",
+      points: [
+        {
+          title: "Du déclencheur à l'action, sans intervention",
+          description:
+            "Un événement (devis accepté, facture échue, dossier reçu) enclenche automatiquement la suite des étapes — relance, génération, notification, archivage — selon un chemin fixe que vous validez une fois et qui s'exécute à l'identique ensuite.",
+        },
+        {
+          title: "Des workflows conditionnels, pas des scripts rigides",
+          description:
+            "Les règles métier (seuils, validations à plusieurs niveaux, exceptions par client ou par montant) sont encodées explicitement : le workflow sait quand router, escalader ou attendre un accord humain, sans laisser place à l'interprétation.",
+        },
+        {
+          title: "Branché sur vos outils, pas à côté",
+          description:
+            "L'automatisation lit et écrit la donnée au bon endroit dans votre CRM, votre ERP, votre messagerie et vos tableurs existants, plutôt que de créer un nouveau silo à maintenir en parallèle.",
+        },
+        {
+          title: "RPA augmentée : le geste répétitif disparaît",
+          description:
+            "Là où la donnée n'a pas d'API propre, le robot reproduit et fiabilise les manipulations à l'écran (ressaisies, rapprochements, exports planifiés) et sait passer la main à un humain sur les cas ambigus que la RPA classique bloquait.",
+        },
+      ],
+    },
   },
   structuration: {
     benefits: [
@@ -422,6 +577,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Transformons vos documents en données exploitables",
     ctaBlockDescription:
       "Emails, PDF, contrats, factures : on construit le pipeline qui les convertit en JSON propre et validé, prêt à alimenter vos outils et vos cas IA. Parlons de vos sources de données et du schéma cible.",
+    testimonials: [
+      {
+        id: "structuration-1",
+        quote:
+          "Nos données clients et dossiers étaient éparpillées entre messagerie, tableurs et actes scannés. Disposer enfin d'un référentiel normalisé et vérifié nous a permis d'arrêter de bricoler avant chaque projet.",
+        author: "Pierre-Yves G.",
+        role: "Associé, cabinet juridique, PME",
+      },
+      {
+        id: "structuration-2",
+        quote:
+          "Avant, chaque équipe avait sa propre façon de nommer et ranger l'information. Le schéma de données unifié qu'on a posé ensemble sert maintenant de base commune à tout ce qu'on construit.",
+        author: "Leïla B.",
+        role: "Responsable back-office, courtier en assurance, PME",
+      },
+      {
+        id: "structuration-3",
+        quote:
+          "On voulait lancer des projets d'IA, mais nos données n'étaient pas exploitables. Mettre le modèle data au carré en amont a tout débloqué pour la suite.",
+        author: "Hugo C.",
+        role: "Directeur technique, foncière immobilière, ETI",
+      },
+    ],
+    why: {
+      title: "Pourquoi structurer vos données métier débloque tout le reste de votre IA",
+      intro:
+        "Vos informations utiles vivent dans des emails, des PDF, des contrats et des tableurs que personne ne peut interroger directement. Les convertir en données structurées, normalisées et fiables, c'est poser le socle data sans lequel aucun cas d'usage IA ne tient dans la durée. Ce travail intervient en amont : il prépare la matière, pas la lecture opérationnelle au fil de l'eau.",
+      points: [
+        {
+          title: "Le non-structuré bloque tout en aval",
+          description:
+            "Tant que vos données restent enfermées dans des pièces jointes et des scans, aucun reporting, aucun moteur de recherche interne ni aucun agent IA ne peut s'appuyer dessus de façon fiable. Structurer, c'est lever ce verrou une fois pour toutes.",
+        },
+        {
+          title: "Une modélisation pensée pour vos cas d'usage",
+          description:
+            "Nous définissons avec vous le schéma cible : quelles entités, quels champs, quelles relations, quelle granularité. La sortie n'est pas un simple export, mais un modèle data stable qui anticipe les usages IA que vous viserez ensuite.",
+        },
+        {
+          title: "Le contrôle qualité avant le downstream",
+          description:
+            "Chaque enregistrement passe des règles de validation (champs obligatoires, formats, cohérence, déduplication, seuils de confiance) avec mise en revue humaine des cas douteux, pour ne pousser que de la donnée propre dans vos systèmes.",
+        },
+        {
+          title: "Un schéma normalisé prêt à brancher",
+          description:
+            "La sortie est un JSON documenté et versionné, poussé vers votre base, votre data warehouse ou vos pipelines. Ce référentiel devient le pré-requis sur lequel reposeront vos futurs projets d'IA.",
+        },
+      ],
+    },
   },
   "crm-erp": {
     benefits: [
@@ -524,6 +729,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Votre CRM/ERP contient déjà la matière, exploitons-la",
     ctaBlockDescription:
       "Scoring de leads, enrichissement de fiches, prévisions de ventes et comptes-rendus automatiques : nous greffons l'IA sur votre Salesforce, HubSpot, Sage, Cegid ou Dynamics sans migration. Parlons de votre premier cas d'usage.",
+    testimonials: [
+      {
+        id: "crm-erp-1",
+        quote:
+          "L'enrichissement s'est branché sur notre HubSpot sans rien changer pour les commerciaux : le secteur et l'effectif sont déjà renseignés à l'arrivée du lead, et l'équipe perd moins de temps à se documenter avant un appel.",
+        author: "Sandrine T.",
+        role: "Directrice commerciale, négoce BtoB, ETI",
+      },
+      {
+        id: "crm-erp-2",
+        quote:
+          "Le scoring s'appuie sur notre vrai historique Dynamics et pas sur une recette toute faite. On priorise les comptes qui ont réellement une chance d'aboutir, et les prévisions collent enfin à ce que vit le terrain.",
+        author: "Mehdi O.",
+        role: "DSI, fabricant d'équipements industriels, ETI",
+      },
+      {
+        id: "crm-erp-3",
+        quote:
+          "Les comptes-rendus de visite se génèrent à partir des notes saisies dans l'outil, et une alerte nous prévient quand un client habituel ralentit ses commandes. On réagit avant de perdre le compte, sans avoir changé de CRM.",
+        author: "Florence J.",
+        role: "Responsable CRM, distribution spécialisée, grand compte",
+      },
+    ],
+    why: {
+      title: "Faire parler la donnée client dormante de votre CRM/ERP",
+      intro:
+        "Votre Salesforce, HubSpot, Sage, Cegid ou Dynamics accumule depuis des années l'historique de vos comptes, de vos opportunités et de vos commandes. L'essentiel de cette matière reste inexploité : l'IA la met au travail pour qualifier, scorer et anticiper, en s'appuyant sur vos cycles de vente réels.",
+      points: [
+        {
+          title: "Vos commerciaux gardent leur écran, leurs champs, leurs workflows",
+          description:
+            "L'IA lit et écrit via l'API du CRM/ERP dans les champs et objets existants (compte, opportunité, ligne de commande). Aucun nouvel outil à apprendre : l'enrichissement et le scoring apparaissent directement dans la fiche Salesforce ou Sage que l'équipe ouvre déjà.",
+        },
+        {
+          title: "Fiches enrichies sans ressaisie",
+          description:
+            "Coordonnées complétées, secteur et effectif déduits, doublons signalés, notes d'appel résumées : la qualité de la base remonte en continu, sans que vos commerciaux ou gestionnaires aient une ligne de plus à saisir.",
+        },
+        {
+          title: "Scoring et prévisions calés sur votre historique réel",
+          description:
+            "Le scoring de leads et les prévisions de ventes apprennent de vos conversions passées, de la durée réelle de vos cycles et de vos motifs de perte, pas d'un modèle générique déconnecté de votre marché et de votre façon de vendre.",
+        },
+        {
+          title: "Signaux d'alerte et comptes-rendus au bon moment",
+          description:
+            "Comptes de bonne taille qui ralentissent leurs commandes, opportunités qui stagnent dans le pipeline, comptes-rendus de RDV rédigés depuis les notes : l'information décisive remonte dans le flux de travail, avant que le compte ne décroche.",
+        },
+      ],
+    },
   },
   documents: {
     benefits: [
@@ -625,6 +880,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Faites travailler l'IA sur vos documents",
     ctaBlockDescription:
       "Génération de devis et contrats, lecture automatique des pièces entrantes, recherche dans vos archives : décrivons ensemble vos documents et le flux à automatiser en priorité.",
+    testimonials: [
+      {
+        id: "documents-1",
+        quote:
+          "Nos PV de chantier et nos comptes-rendus de réunion sont désormais générés depuis nos modèles, avec le bon cadre contractuel. La rédaction qui mobilisait une demi-journée se fait en quelques minutes, et nos conducteurs de travaux se concentrent sur le terrain.",
+        author: "Antoine W.",
+        role: "Directeur de travaux, groupe BTP, ETI",
+      },
+      {
+        id: "documents-2",
+        quote:
+          "Les courriers et comptes-rendus entrants sont lus, rattachés au bon dossier patient et routés vers le bon pôle automatiquement. Plus de pile à trier le matin, et rien ne se perd entre les services.",
+        author: "Rachida E.",
+        role: "Responsable qualité, clinique privée, ETI",
+      },
+      {
+        id: "documents-3",
+        quote:
+          "Retrouver la bonne clause dans nos milliers de dossiers archivés relevait du casse-tête. La recherche sémantique nous donne le passage exact et le document source, ce qui nous permet de vérifier avant de répondre.",
+        author: "Vincent H.",
+        role: "Responsable conformité, banque de détail, grand compte",
+      },
+    ],
+    why: {
+      title: "Vos documents ne devraient plus être un goulot d'étranglement",
+      intro:
+        "Rédiger, relire et traiter des documents mobilise vos équipes sur des tâches répétitives. L'IA documentaire produit les documents sortants depuis vos modèles et vos données, lit les documents entrants pour en classer et router l'essentiel, et rend votre fonds documentaire enfin consultable par le sens.",
+      points: [
+        {
+          title: "Génération depuis vos modèles",
+          description:
+            "Devis, contrats et comptes-rendus sont produits automatiquement à partir de vos templates et de vos données métier, avec votre mise en forme et votre cadre juridique.",
+        },
+        {
+          title: "Lecture et classement des entrants",
+          description:
+            "Factures, bons de commande et courriers reçus sont lus, rattachés au bon dossier et routés vers le bon service, avec les champs clés repris dans vos outils sans ressaisie. La normalisation amont du schéma de données reste l'affaire de la brique structuration ; ici, l'objectif est opérationnel : trier et acheminer le flux entrant.",
+        },
+        {
+          title: "Recherche sémantique interne",
+          description:
+            "Vos équipes retrouvent une clause, une procédure ou un précédent dans des milliers de documents par le sens, pas par mot-clé exact, même quand le terme exact n'est pas celui utilisé dans le document.",
+        },
+        {
+          title: "Passage source vérifiable à chaque réponse",
+          description:
+            "Quand l'IA répond à une question interne, elle remonte le document et le passage précis sur lesquels elle s'appuie, pour que votre équipe relise la source d'origine avant de décider plutôt que de faire confiance à une synthèse opaque.",
+        },
+      ],
+    },
   },
   agents: {
     benefits: [
@@ -726,6 +1031,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Un agent qui agit, pas seulement qui répond",
     ctaBlockDescription:
       "Décrivez-nous une tâche multi-étapes de votre quotidien — prospection, support, veille ou opérations — et nous vous dirons si un agent IA peut la prendre en charge, avec quels garde-fous et dans quel ordre de déploiement.",
+    testimonials: [
+      {
+        id: "agents-1",
+        quote:
+          "Notre agent de veille concurrentielle décide seul quelles sources approfondir, recoupe les signaux et nous remet une note d'analyse exploitable. On débat des conclusions au lieu d'éplucher les pages nous-mêmes.",
+        author: "Julie N.",
+        role: "Directrice associée, cabinet de conseil / ESN, ETI",
+      },
+      {
+        id: "agents-2",
+        quote:
+          "L'agent traite le premier niveau de nos demandes candidats : il va chercher l'info dans nos outils, tranche les cas simples et n'escalade que ce qui mérite un humain. Le journal des actions nous a rassurés avant la mise en production.",
+        author: "Karim Z.",
+        role: "Responsable recrutement, cabinet RH, PME",
+      },
+      {
+        id: "agents-3",
+        quote:
+          "Pour le suivi éditorial, plusieurs agents se répartissent la collecte des sujets, la vérification et l'alerte. Chacun garde son périmètre et on reconstitue facilement qui a fait quoi quand un point demande validation.",
+        author: "Élodie Q.",
+        role: "Rédactrice en chef, groupe de presse, PME",
+      },
+    ],
+    why: {
+      title: "Pourquoi les agents IA autonomes changent la donne",
+      intro:
+        "Un agent ne suit pas un scénario figé : face à un objectif, il décide de l'étape suivante, recoupe ce qu'il trouve et corrige sa trajectoire jusqu'à boucler la tâche. C'est cette capacité de décision multi-étapes qui le distingue d'un automatisme câblé à l'avance.",
+      points: [
+        {
+          title: "Une autonomie décisionnelle, pas un script",
+          description:
+            "L'agent arbitre lui-même : il choisit l'outil à interroger, juge si l'information est suffisante, relance une recherche ou tranche, là où un workflow déterministe se contenterait d'exécuter une suite d'actions prédéfinies.",
+        },
+        {
+          title: "Des tâches multi-étapes déléguées",
+          description:
+            "Prospection, support de niveau 1, veille concurrentielle, opérations de back-office : l'agent prend en charge un raisonnement de bout en bout — comprendre la demande, agir sur vos systèmes, conclure — plutôt qu'une action isolée.",
+        },
+        {
+          title: "Mono ou multi-agents selon le besoin",
+          description:
+            "Un seul agent pour une tâche cadrée, ou plusieurs agents spécialisés qui se passent le relais quand le processus mêle collecte, décision et exécution distinctes.",
+        },
+        {
+          title: "Une autonomie auditable",
+          description:
+            "Périmètre d'action borné, journal complet de chaque décision et action posée, validations imposées sur les étapes sensibles : vous gardez la main et pouvez reconstituer après coup pourquoi l'agent a agi ainsi.",
+        },
+      ],
+    },
   },
   integrations: {
     benefits: [
@@ -827,6 +1182,56 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Branchez l'IA sur vos outils, sans changer vos habitudes",
     ctaBlockDescription:
       "Slack, Teams, Notion, Airtable, Google Workspace, mail ou APIs internes : on construit les connecteurs qui relient l'IA à votre SI existant, avec contrats d'API documentés, gestion des rate limits, suivi des coûts et code livré chez vous. Parlons de votre stack et des flux à raccorder.",
+    testimonials: [
+      {
+        id: "integrations-1",
+        quote:
+          "L'IA répond directement dans notre Slack et va chercher l'info dans Notion et nos APIs internes. Personne ne change d'outil, et le réflexe est venu tout seul.",
+        author: "Thomas X.",
+        role: "DSI, groupe industriel, grand compte",
+      },
+      {
+        id: "integrations-2",
+        quote:
+          "La liaison avec Google Workspace et notre messagerie tourne sans accroc : les rate limits sont gérés proprement, on n'a jamais subi de blocage côté fournisseur.",
+        author: "Sofia M.",
+        role: "CTO, fintech, scale-up",
+      },
+      {
+        id: "integrations-3",
+        quote:
+          "Ce que je retiens, c'est de voir où l'IA est sollicitée, connecteur par connecteur, entre Teams et nos outils internes. Je peux arbitrer en connaissance de cause.",
+        author: "Renaud D.",
+        role: "Responsable IT, enseigne de retail, ETI",
+      },
+    ],
+    why: {
+      title: "Brancher l'IA sur vos outils, sans tout refondre",
+      intro:
+        "Votre information utile est éclatée entre Slack, Teams, Notion, Google Workspace, vos mails et vos APIs internes. Une IA n'a de valeur que si elle traverse ce SI : lire au bon endroit, écrire au bon endroit, déclencher la bonne action, là où vos équipes travaillent déjà.",
+      points: [
+        {
+          title: "L'IA s'invite dans les canaux du quotidien",
+          description:
+            "Plutôt qu'une nouvelle interface, l'IA répond là où passent vos échanges : un message Slack ou Teams, une page Notion, un fil de mail. Le canal reste celui de l'équipe, l'IA s'y branche.",
+        },
+        {
+          title: "Connecteurs codés, pas bricolés",
+          description:
+            "Chaque liaison a sa propre couche d'authentification, respecte les rate limits de l'API cible et gère ses erreurs explicitement, pour ne pas casser à la première montée de version d'un fournisseur.",
+        },
+        {
+          title: "Consommation traçable par connecteur",
+          description:
+            "Chaque appel est instrumenté pour savoir quel outil et quel cas d'usage sollicite l'IA, afin que la charge reste lisible et arbitrable au lieu d'une boîte noire transverse.",
+        },
+        {
+          title: "Visibilité sur les échanges dès le départ",
+          description:
+            "Logs, alertes et tableaux de bord montrent ce qui circule entre l'IA et chaque brique de votre SI, pour intervenir avant que l'utilisateur ne signale un blocage.",
+        },
+      ],
+    },
   },
   "no-code": {
     benefits: [
@@ -928,5 +1333,55 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Vous avez déjà n8n, Make, Zapier, Bubble ou Airtable ?",
     ctaBlockDescription:
       "Montrez-nous vos scénarios existants : nous vous dirons honnêtement où l'IA se greffe proprement dans votre no-code et où le code custom serait un meilleur choix.",
+    testimonials: [
+      {
+        id: "no-code-1",
+        quote:
+          "On voulait tester l'IA sans réécrire nos scénarios Make. Axion-IA a branché le tri et le résumé des demandes dessus en quelques jours, et nous a dit franchement à partir de quel volume il faudrait passer en code custom.",
+        author: "Manon B.",
+        role: "Directrice, agence marketing, PME",
+      },
+      {
+        id: "no-code-2",
+        quote:
+          "Notre base Airtable est le coeur de notre suivi bénévoles et dons. Ils ont greffé la qualification IA directement dessus, proprement documentée, sans nous enfermer ni nous forcer à migrer.",
+        author: "Cédric L.",
+        role: "Responsable des opérations, association d'intérêt général",
+      },
+      {
+        id: "no-code-3",
+        quote:
+          "Ils ont posé la vraie question dès le départ : no-code ou sur-mesure. Pour cette première brique, la greffe sur nos outils actuels suffisait, et ils ont prévu la sortie au cas où on grandirait.",
+        author: "Aurélie P.",
+        role: "Gérante, organisme de formation, TPE",
+      },
+    ],
+    why: {
+      title: "Démarrer l'IA depuis Make ou Airtable, sans repasser par la case code",
+      intro:
+        "Make, Airtable, Notion, un builder maison : vos équipes les pilotent déjà au quotidien. Plutôt que d'imposer d'emblée du code custom — notre approche par défaut — on assume ici l'exception : on y insère l'IA pour livrer une première brique très vite, en gardant la porte de sortie ouverte vers le sur-mesure quand le besoin l'exigera.",
+      points: [
+        {
+          title: "Mise en route en jours, pas en semaines",
+          description:
+            "On s'appuie sur vos scénarios Make et vos bases Airtable déjà en place : qualification, tri ou résumé arrivent en production rapidement, sans repartir d'une page blanche ni former l'équipe à un nouvel outil.",
+        },
+        {
+          title: "Une exception assumée, pas un dogme",
+          description:
+            "Le no-code accélère le démarrage, mais on vous dit clairement où il bute — volumétrie, performance, dépendance à l'éditeur, plafond tarifaire — et à quel moment basculer en code custom devient le choix rentable.",
+        },
+        {
+          title: "Greffe propre, pas de bricolage",
+          description:
+            "Prompts versionnés, garde-fous, gestion d'erreurs et coûts surveillés : même branchée sur un outil no-code, la logique IA reste documentée et maintenable, loin de la suite d'étapes fragiles qu'on voit souvent.",
+        },
+        {
+          title: "Réversibilité préservée",
+          description:
+            "On isole la logique IA pour qu'elle reste extractible : le jour où vous voudrez quitter le no-code pour gagner en souveraineté et en contrôle, le travail déjà fait se réutilise au lieu d'être jeté.",
+        },
+      ],
+    },
   },
 };

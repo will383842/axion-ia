@@ -91,6 +91,13 @@ interface ProductPageTemplateProps {
     testimonialsTitle?: string;
     /** Optionnel — section anti-fear "Pour qui ça marche" 3 niveaux maturité (D7 Anti-fear). */
     maturity?: MaturityLevels;
+    /** Optionnel — section "Pourquoi ce cas d'usage" (sous-pages implémentation),
+     *  rendue juste après le hero. Spécifique au sous-service. */
+    why?: {
+      title: string;
+      intro?: string;
+      points: ReadonlyArray<{ title: string; description: string }>;
+    };
   };
   ctaPrimaryHref: string;
   ctaSecondaryHref: string;
@@ -144,6 +151,10 @@ export function ProductPageTemplate({
         }
         {...(heroSchema ? { heroSchema } : {})}
       />
+
+      {/* « Pourquoi ce cas d'usage » — juste après le hero. Optionnelle
+          (sous-pages implémentation). Silencieuse si absente. */}
+      {copy.why ? <WhySection isFr={isFr} why={copy.why} /> : null}
 
       {/* Déroulement de la journée — JUSTE APRÈS LE HERO (Module 1).
           Section principale de la page : grand format, moderne. */}
@@ -356,6 +367,42 @@ function TestimonialsSection({
               <p className="text-fg-muted text-xs">{t.role}</p>
             </figcaption>
           </figure>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// "Pourquoi ce cas d'usage" — section éditoriale rendue juste après le hero.
+// Server Component pure. Rendue seulement si copy.why est fourni.
+function WhySection({
+  isFr,
+  why,
+}: {
+  isFr: boolean;
+  why: NonNullable<ProductPageTemplateProps["copy"]["why"]>;
+}) {
+  return (
+    <Section
+      tone="paper"
+      eyebrow={isFr ? "L'enjeu" : "Why it matters"}
+      title={why.title}
+      description={why.intro}
+    >
+      <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
+        {why.points.map((p, i) => (
+          <article
+            key={i}
+            className="bg-bg border-border hover:border-terracotta/40 hover:shadow-card flex flex-col rounded-2xl border p-6 transition-all sm:p-7"
+          >
+            <h3
+              className="text-fg text-lg leading-tight font-medium tracking-tight sm:text-xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {p.title}
+            </h3>
+            <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">{p.description}</p>
+          </article>
         ))}
       </div>
     </Section>
