@@ -787,37 +787,6 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     source: "manuel",
   },
 
-  {
-    keyword: "peut-on financer un audit IA TPE avec une aide publique ?",
-    intent: "aeo",
-    kbType: "faq",
-    module: "audit",
-    cible: "tpe",
-    priorite: 1,
-    niveau: 3,
-    injection: {
-      h1: "Financer votre audit IA TPE — aides publiques disponibles en 2026",
-      metaTitle: "Financer audit IA TPE aide publique | Axion-IA FAQ",
-      metaDescription:
-        "Certains audits IA peuvent être co-financés via BPI ou subventions régionales. Guide des aides publiques disponibles pour les TPE françaises en 2026.",
-      h2Variants: [
-        "Quelles aides publiques pour financer un audit IA en TPE en 2026 ?",
-        "BPI, subventions régionales : ce qui s'applique à votre audit IA",
-      ],
-    },
-    variables: {
-      process: "financement audit IA",
-      resultat: "coût partiellement couvert",
-      chiffre: "50",
-      unite: "%",
-      delai: "sous conditions",
-    },
-    urlCible: "/fr/faq/financement-audit-ia-tpe-aides-publiques",
-    canonicalParent: "/fr/audit/tpe-1-jour",
-    source: "manuel",
-    note: "Fort potentiel PAA — financement aide publique sujet très recherché",
-  },
-
   // ─────────────────────────────────────────────
   //  AUDIT × PME
   //  Douleur : La PME veut structurer son approche IA mais manque de méthode

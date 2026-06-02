@@ -49,6 +49,8 @@ const BANNED_TERMS = [
   "Qualiopi",
   "CPF",
   "FIFPL",
+  "FIF-PL",
+  "CNFPT",
   "Datadock",
   "n8n",
   "zapier",
@@ -58,6 +60,21 @@ const BANNED_TERMS = [
   "Make vs",
   "Make ou n8n",
   "LangChain",
+  // 2026-06-02 — Axion-IA n'a NI Qualiopi NI OPCO/CPF NI dispositif de
+  // financement : interdiction de tout claim de financement/aide (publicité
+  // trompeuse). NB : « Bpifrance »/« BPI » restent autorisés UNIQUEMENT comme
+  // source de stats/rapports publics (jamais comme dispositif de financement).
+  "financement",
+  "subvention",
+  "co-financ",
+  "cofinanc",
+  "finançable",
+  "finançables",
+  "aide publique",
+  "aides publiques",
+  "aide régionale",
+  "aides régionales",
+  "Pack IA",
 ];
 
 function isClean(seed: KeywordSeed): boolean {

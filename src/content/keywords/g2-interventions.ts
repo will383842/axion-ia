@@ -290,7 +290,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
         "Une demi-journée de formation IA sur site pour TPE coûte entre X et Y €. Découvrez ce qui est inclus et le calcul ROI.",
       h2Variants: [
         "Fourchette de prix selon le format (4h, 1j, 2j)",
-        "Options de financement disponibles",
         "Calcul ROI : quand la formation est-elle remboursée ?",
       ],
     },
@@ -1702,38 +1701,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     canonicalParent: "/fr/interventions-formations/tpe",
     source: "manuel",
     note: "D3 informationnel · trafic haut entonnoir TPE · passerelle vers formation",
-  },
-
-  {
-    keyword: "la formation IA peut-elle être financée pour une TPE de moins de 10 salariés ?",
-    intent: "aeo",
-    kbType: "faq",
-    module: "interventions-formations",
-    cible: "tpe",
-    priorite: 2,
-    niveau: 3,
-    injection: {
-      h1: "Financement formation IA pour TPE de moins de 10 salariés : oui, c'est possible",
-      metaTitle: "Financement formation IA TPE < 10 salariés — FAQ",
-      metaDescription:
-        "Les TPE de moins de 10 salariés peuvent financer leur formation IA via différents dispositifs. Conditions, démarches et montants disponibles en 2026.",
-      h2Variants: [
-        "Dispositifs de financement disponibles pour les TPE",
-        "Comment vos salariés financent leur formation IA",
-        "Aide régionale complémentaire : ce que certaines régions proposent",
-      ],
-    },
-    variables: {
-      process: "financement formation IA TPE",
-      resultat: "formation financée à 100 % pour les TPE éligibles",
-      chiffre: "100",
-      unite: "%",
-      delai: "après validation du dossier de financement",
-    },
-    urlCible: "/fr/faq/financement-formation-ia-tpe-moins-10-salaries",
-    canonicalParent: "/fr/interventions-formations/tpe",
-    source: "manuel",
-    note: "D4 AEO · préoccupation prix + financement · schema.org FAQPage",
   },
 
   // ─────────────────────────────────────────────

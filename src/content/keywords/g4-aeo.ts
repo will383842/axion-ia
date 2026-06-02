@@ -173,7 +173,6 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h2Variants: [
         "Tableau des tarifs audit IA Axion-IA",
         "Marché des prix : comparatif cabinets IA",
-        "Options de financement disponibles",
       ],
     },
     variables: { resultat: "490 € à 12 000 €", delai: "selon taille entreprise" },
@@ -559,7 +558,6 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h2Variants: [
         "Tarif groupe vs individuel : la différence",
         "Ce qui justifie le prix d'une formation IA",
-        "Options de financement disponibles",
       ],
     },
     urlCible: "/fr/faq/prix-journee-formation-ia-entreprise",
