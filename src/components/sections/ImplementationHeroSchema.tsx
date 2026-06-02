@@ -185,14 +185,20 @@ export function ImplementationHeroSchema({
 
           {/* Ombre portée douce (profondeur). */}
           <filter id="im-soft-shadow" x="-60%" y="-60%" width="220%" height="220%">
-            <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#3a2a22" floodOpacity="0.16" />
+            <feDropShadow
+              dx="0"
+              dy="4"
+              stdDeviation="5"
+              floodColor="var(--color-mocha)"
+              floodOpacity="0.16"
+            />
           </filter>
           <filter id="im-center-shadow" x="-60%" y="-60%" width="220%" height="220%">
             <feDropShadow
               dx="0"
               dy="8"
               stdDeviation="14"
-              floodColor="#3a2a22"
+              floodColor="var(--color-mocha)"
               floodOpacity="0.18"
             />
           </filter>

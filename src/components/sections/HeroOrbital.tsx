@@ -249,7 +249,7 @@ export function HeroOrbital({
               dx="0"
               dy="8"
               stdDeviation="14"
-              floodColor="#3a2a22"
+              floodColor="var(--color-mocha)"
               floodOpacity="0.18"
             />
           </filter>
