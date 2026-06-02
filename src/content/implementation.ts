@@ -5,6 +5,7 @@
 // Sprint 14.10.5 (2026-05-08) : prix IA custom dérivés de pricing.ts (SSOT).
 
 import { IMPLEMENTATION_TIERS, formatAmount, formatAmountRange, getTierById } from "./pricing";
+import { IMPL_FR_OVERRIDES } from "./implementation-fr-overrides";
 
 const IA_CUSTOM_TIER = getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom");
 const IA_CUSTOM_RANGE_FR = formatAmountRange(
@@ -72,6 +73,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/ia-custom",
     pathEn: "/implementation/custom-ai",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["ia-custom"],
       eyebrow: "Service premium · Module 3",
       title: `IA custom d'entreprise (${IA_CUSTOM_RANGE_FR})`,
       answer: `Implémentation IA sur mesure pour grands comptes : modèles fine-tuned sur vos données, intégration profonde dans vos systèmes, équipe dédiée. Prestations ${formatAmount(IA_CUSTOM_TIER.priceMin!, "fr", { compact: true })} à ${formatAmount(IA_CUSTOM_TIER.priceMax!, "fr")}, livraison ${IA_CUSTOM_TIER.durationFr}.`,
@@ -87,6 +89,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/chatbot",
     pathEn: "/implementation/chatbot",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["chatbot"],
       eyebrow: "Implémentation IA · Module 3",
       title: "Chatbots IA pour entreprise",
       answer:
@@ -104,6 +107,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/processus",
     pathEn: "/implementation/processes",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["processus"],
       eyebrow: "Implémentation IA · Module 3",
       title: "Automatiser vos processus métier",
       answer:
@@ -121,6 +125,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/structuration",
     pathEn: "/implementation/structuring",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["structuration"],
       eyebrow: "Implémentation IA · Module 3",
       title: "Structurer vos données métier",
       answer:
@@ -138,6 +143,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/crm-erp",
     pathEn: "/implementation/crm-erp",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["crm-erp"],
       eyebrow: "Implémentation IA · Module 3",
       title: "IA pour CRM et ERP",
       answer:
@@ -155,6 +161,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/documents",
     pathEn: "/implementation/documents",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["documents"],
       eyebrow: "Implémentation IA · Module 3",
       title: "Génération et analyse documentaire IA",
       answer:
@@ -172,6 +179,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/agents",
     pathEn: "/implementation/agents",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["agents"],
       eyebrow: "Implémentation IA · Module 3",
       title: "Agents IA autonomes",
       answer:
@@ -189,6 +197,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/integrations",
     pathEn: "/implementation/integrations",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["integrations"],
       eyebrow: "Implémentation IA · Module 3",
       title: "Intégrations IA + outils existants",
       answer:
@@ -206,6 +215,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/no-code",
     pathEn: "/implementation/no-code",
     fr: makeFr({
+      ...IMPL_FR_OVERRIDES["no-code"],
       eyebrow: "Implémentation IA · Module 3 · Sur demande",
       title: "IA dans vos outils no-code existants",
       answer:
@@ -259,7 +269,21 @@ function clampMeta(text: string, max = 155): string {
   return out;
 }
 
-function makeFr(args: { eyebrow: string; title: string; answer: string }): PageCopy {
+function makeFr(args: {
+  eyebrow: string;
+  title: string;
+  answer: string;
+  // Overrides FR par sous-page (dé-duplication 2026-06-02). Si absents, on
+  // retombe sur les valeurs partagées ci-dessous. EN garde les défauts
+  // (non live, 301→FR ; traduction prévue dans plusieurs mois).
+  benefits?: PageCopy["benefits"];
+  processSteps?: PageCopy["processSteps"];
+  metrics?: PageCopy["metrics"];
+  faqs?: PageCopy["faqs"];
+  maturityIntro?: string;
+  ctaBlockTitle?: string;
+  ctaBlockDescription?: string;
+}): PageCopy {
   return {
     eyebrow: args.eyebrow,
     title: args.title,
@@ -267,7 +291,7 @@ function makeFr(args: { eyebrow: string; title: string; answer: string }): PageC
     ctaPrimary: "Demander un devis",
     ctaSecondary: "Voir les cas concrets",
     benefitsTitle: "Ce que vous obtenez",
-    benefits: [
+    benefits: args.benefits ?? [
       {
         title: "Spécification chiffrée",
         description: "Périmètre, jalons, budgets fermés avant tout démarrage.",
@@ -282,20 +306,20 @@ function makeFr(args: { eyebrow: string; title: string; answer: string }): PageC
       },
     ],
     processTitle: "Comment ça se déroule",
-    processSteps: [
+    processSteps: args.processSteps ?? [
       { title: "Cadrage", description: "1 sprint de cadrage technique + budget chiffré." },
       { title: "Build", description: "Sprints itératifs avec démo et validation." },
       { title: "Déploiement", description: "Mise en production progressive, tests utilisateurs." },
       { title: "Support 30 j", description: "Maintenance corrective + évolutions mineures." },
     ],
     metricsTitle: "Résultats observés",
-    metrics: [
+    metrics: args.metrics ?? [
       { number: "4-12", suffix: "sem", label: "Délai de livraison" },
       { number: "+40", suffix: "%", label: "Productivité moyenne" },
       { number: "30", suffix: "j", label: "Support post-livraison" },
     ],
     faqTitle: "Questions fréquentes",
-    faqs: [
+    faqs: args.faqs ?? [
       {
         id: "fit",
         question: "Comment savoir si c'est adapté à mon entreprise ?",
@@ -315,13 +339,15 @@ function makeFr(args: { eyebrow: string; title: string; answer: string }): PageC
           "Non. Hébergement UE par défaut. Modèles fine-tuned hébergés chez vous ou sur infra dédiée si requis.",
       },
     ],
-    ctaBlockTitle: "Prête à industrialiser un usage IA ?",
+    ctaBlockTitle: args.ctaBlockTitle ?? "Prête à industrialiser un usage IA ?",
     ctaBlockDescription:
+      args.ctaBlockDescription ??
       "Demandez un devis — réponse sous 48 h ouvrées avec spécification chiffrée du projet.",
     maturity: {
       eyebrow: "Pour qui ça marche",
       title: "Trois niveaux de maturité technique",
       intro:
+        args.maturityIntro ??
         "L'implémentation s'adapte à l'état de votre stack et de vos équipes. On part de votre point de départ, pas d'un état idéal théorique.",
       levels: [
         {
