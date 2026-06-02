@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { ImplementationSubPageExtras } from "@/components/services/implementation/ImplementationSubPageExtras";
+import { IntentionHeroSchema } from "@/components/sections/IntentionHeroSchema";
+import { INTENTION_HERO_ARIA } from "@/content/intention-hero-configs";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getImplementation } from "@/content/implementation";
@@ -103,6 +105,7 @@ export default async function StructurationPage({ params }: Props) {
         accent="orange"
         hideFinalCta
         copy={copy}
+        heroSchema={<IntentionHeroSchema variant={SLUG} ariaLabel={INTENTION_HERO_ARIA[SLUG]} />}
         ctaPrimaryHref="/contact?type=implementation&subType=structuration"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
