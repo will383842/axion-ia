@@ -30,9 +30,15 @@ import { ServiceOfferBlock } from "@/components/services/ServiceOfferBlock";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
-import { extractKeyFact, extractSources, sourcesToCitations } from "@/lib/knowledge/article-enrich";
+import {
+  extractKeyFact,
+  extractSources,
+  sourcesToCitations,
+  buildToc,
+} from "@/lib/knowledge/article-enrich";
 import { KeyFactCard } from "@/components/knowledge/KeyFactCard";
 import { KbSources } from "@/components/knowledge/KbSources";
+import { KbToc } from "@/components/knowledge/KbToc";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -137,6 +143,10 @@ export default async function ConnaissanceDetail({ params }: Props) {
   const sources = extractSources(entry.body);
   const citations = sourcesToCitations(sources);
 
+  // Sommaire — détecte les h2 du body SANITISÉ, injecte ancres + data-speakable.
+  // < 3 h2 → bodyHtml inchangé + toc vide (pas de sommaire sur entrée courte).
+  const { html: bodyHtml, toc } = buildToc(sanitizeTiptapHtml(entry.body));
+
   const articleJsonLd = buildArticleJsonLd({
     title: entry.title,
     description: entry.excerpt ?? entry.title,
@@ -229,10 +239,12 @@ export default async function ConnaissanceDetail({ params }: Props) {
         <Container>
           <article className="max-w-3xl">
             {keyFact ? <KeyFactCard fact={keyFact} /> : null}
+            <KbToc items={toc} />
             <div
               className="prose prose-axionia max-w-none"
               // P0 audit KB 2026-05-29 : sanitize SSR anti-XSS (whitelist Tiptap).
-              dangerouslySetInnerHTML={{ __html: sanitizeTiptapHtml(entry.body) }}
+              // `bodyHtml` = sortie sanitize + ancres h2 injectées par buildToc.
+              dangerouslySetInnerHTML={{ __html: bodyHtml }}
             />
             <KbSources sources={sources} />
             <AiContentDisclaimer locale="fr" className="mt-10" />

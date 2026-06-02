@@ -53,9 +53,14 @@ const VALUE_MATCHERS: ReadonlyArray<{
     re: new RegExp(`[×x]\\s?(${NUM})(?=\\b)`, "i"),
     format: (m) => `×${m[1]}`,
   },
-  // Multiplicateur suffixé : "3 fois", "multiplié par 4"
+  // Multiplicateur "multiplié par 4" (sans "fois").
   {
-    re: new RegExp(`(?:multipli[ée]e?\\spar\\s)?(${NUM})\\s?fois`, "i"),
+    re: new RegExp(`multipli[ée]e?\\spar\\s(${NUM})`, "i"),
+    format: (m) => `×${m[1]}`,
+  },
+  // Multiplicateur suffixé : "3 fois".
+  {
+    re: new RegExp(`(${NUM})\\s?fois`, "i"),
     format: (m) => `×${m[1]}`,
   },
   // Monétaire avec échelle / symbole.
@@ -203,4 +208,109 @@ export function sourcesToCitations(
   return sources
     .filter((s): s is SourceRef & { href: string } => Boolean(s.href))
     .map((s) => ({ url: s.href, title: s.label }));
+}
+
+// ============================================================
+// 3. Sommaire (TOC) + ancres + data-speakable (longs guides)
+// ============================================================
+
+export interface TocItem {
+  readonly id: string;
+  readonly text: string;
+}
+
+export interface TocResult {
+  /** Le HTML (éventuellement enrichi des `id`/`data-speakable` sur les h2). */
+  readonly html: string;
+  /** Entrées du sommaire (vide si le body n'a pas assez de h2). */
+  readonly toc: ReadonlyArray<TocItem>;
+}
+
+/** Seuil "long guide" : en deçà, pas de TOC (anti-doorway, entrée thin intacte). */
+const TOC_MIN_HEADINGS = 3;
+
+const ACCENTS_MAP: Record<string, string> = {
+  à: "a",
+  â: "a",
+  ä: "a",
+  á: "a",
+  ã: "a",
+  é: "e",
+  è: "e",
+  ê: "e",
+  ë: "e",
+  î: "i",
+  ï: "i",
+  í: "i",
+  ô: "o",
+  ö: "o",
+  ó: "o",
+  õ: "o",
+  û: "u",
+  ü: "u",
+  ù: "u",
+  ú: "u",
+  ç: "c",
+  ñ: "n",
+  œ: "oe",
+  æ: "ae",
+};
+
+function slugifyHeading(text: string): string {
+  const base = text
+    .toLowerCase()
+    .replace(/[àâäáãéèêëîïíôöóõûüùúçñœæ]/g, (c) => ACCENTS_MAP[c] ?? c)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+  return base || "section";
+}
+
+/**
+ * Détecte les `<h2>` du body **sanitisé**, leur injecte un `id` (ancre) +
+ * `data-speakable="true"` (signal AEO assistants vocaux), et renvoie le
+ * sommaire. Si moins de `TOC_MIN_HEADINGS` h2 → HTML inchangé + `toc` vide
+ * (pas de sommaire fabriqué sur une entrée courte).
+ *
+ * ⚠️ À appeler APRÈS `sanitizeTiptapHtml` : les `id` injectés doivent matcher
+ * le HTML réellement rendu (le sanitize aurait sinon strippé l'attribut).
+ */
+export function buildToc(sanitizedHtml: string): TocResult {
+  const headings: Array<{ id: string; text: string }> = [];
+  const used = new Set<string>();
+
+  // 1er passage : recensement (sans muter), pour décider du seuil.
+  const SCAN = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+  let m: RegExpExecArray | null;
+  while ((m = SCAN.exec(sanitizedHtml)) !== null) {
+    const text = (m[1] ?? "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!text) continue;
+    let id = slugifyHeading(text);
+    let n = 2;
+    while (used.has(id)) id = `${slugifyHeading(text)}-${n++}`;
+    used.add(id);
+    headings.push({ id, text });
+  }
+
+  if (headings.length < TOC_MIN_HEADINGS) {
+    return { html: sanitizedHtml, toc: [] };
+  }
+
+  // 2e passage : injection des id/data-speakable dans l'ordre des h2.
+  let i = 0;
+  const html = sanitizedHtml.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi, (full, _attrs, inner) => {
+    const text = String(inner)
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!text) return full; // h2 vide → on ne lui colle pas d'ancre
+    const heading = headings[i++];
+    if (!heading) return full;
+    return `<h2 id="${heading.id}" data-speakable="true">${inner}</h2>`;
+  });
+
+  return { html, toc: headings };
 }
