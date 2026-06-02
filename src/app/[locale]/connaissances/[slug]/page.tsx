@@ -32,6 +32,26 @@ import { findRelatedArticles } from "@/server/content-gen/links/related-articles
 export const revalidate = 3600;
 export const dynamicParams = true;
 
+// Libellés FR propres pour le type d'entrée KB (au lieu du slug brut
+// "industry_use_case" → "industry use case"). Défaut sobre « Ressource ».
+const TYPE_LABEL: Readonly<Record<string, string>> = {
+  fact: "Donnée clé",
+  industry_use_case: "Cas d'usage",
+  case_study: "Cas concret",
+  guide: "Guide",
+  comparison: "Comparatif",
+  faq: "Question fréquente",
+  glossary_term: "Définition",
+  tool_review: "Outils",
+  automation_recipe: "Automatisation",
+  roi_calculator_template: "ROI",
+  implementation_playbook: "Méthode",
+  secteur_brief: "Secteur",
+  dept_brief: "Fonction",
+  metier_brief: "Métier",
+  competence_boost: "Compétence",
+};
+
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
@@ -77,6 +97,12 @@ export default async function ConnaissanceDetail({ params }: Props) {
 
   const publishedStr = formatDate(entry.publishedAt);
   const updatedStr = formatDate(entry.updatedAt);
+  const typeLabel = TYPE_LABEL[String(entry.type)] ?? "Ressource";
+  // Évite la répétition titre = excerpt (fréquent sur les entrées "fact").
+  const ex = entry.excerpt?.trim();
+  const showExcerpt = Boolean(
+    ex && !ex.toLowerCase().startsWith(entry.title.trim().slice(0, 24).toLowerCase()),
+  );
 
   const articleJsonLd = buildArticleJsonLd({
     title: entry.title,
@@ -106,17 +132,31 @@ export default async function ConnaissanceDetail({ params }: Props) {
       <Section tone="paper" className="pt-6 pb-16 lg:pt-10 lg:pb-24">
         <Container>
           <article className="mx-auto max-w-3xl">
-            <p className="text-fg-muted mb-4 text-xs tracking-[0.16em] uppercase">
-              {entry.type.replaceAll("_", " ")}
-              {publishedStr ? <> · publié le {publishedStr}</> : null}
+            <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+              <span className="text-terracotta-deep inline-flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+                />
+                {typeLabel}
+              </span>
+            </p>
+            <h1
+              className="text-fg text-[clamp(1.875rem,3.4vw,2.75rem)] leading-[1.12] font-semibold tracking-tight"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {entry.title}
+            </h1>
+            <p className="text-fg-muted mt-5 text-[13px]">
+              {publishedStr ? <>Publié le {publishedStr}</> : null}
               {updatedStr && updatedStr !== publishedStr ? (
                 <> · mis à jour le {updatedStr}</>
               ) : null}
-              {entry.readingTime ? <> · {entry.readingTime} min</> : null}
+              {entry.readingTime ? <> · {entry.readingTime} min de lecture</> : null}
             </p>
-            <h1 className="display-editorial text-fg">{entry.title}</h1>
-            {entry.excerpt ? (
-              <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
+            <div aria-hidden="true" className="bg-terracotta mt-8 h-0.5 w-16" />
+            {showExcerpt ? (
+              <p className="text-fg-soft mt-8 text-lg leading-relaxed sm:text-xl">
                 {entry.excerpt}
               </p>
             ) : null}
