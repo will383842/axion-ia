@@ -113,7 +113,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-011",
-    text: "Formation journée complète en entreprise (6h, jusqu'à 10 personnes) — sur devis selon le périmètre, selon secteur et niveau — déductible de la taxe d'apprentissage et éligible CPF pour les salariés.",
+    text: "Formation journée complète en entreprise (6h, jusqu'à 10 personnes) — sur devis selon le périmètre, selon secteur et niveau.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -128,25 +128,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.92,
-  },
-  // ── Financement ──────────────────────────────────────────────────────────
-  {
-    id: "form-013",
-    text: "Les formations IA peuvent être financées via le Compte Personnel de Formation (CPF), l'OPCO sectoriel ou le Plan de Développement des Compétences — sous réserve de certification Qualiopi du prestataire.",
-    source: "Ministère du Travail — Guide financement formation 2025",
-    sourceUrl: "https://travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.88,
-  },
-  {
-    id: "form-014",
-    text: "BPI France co-finance jusqu'à 50 % des formations numériques pour les PME via le dispositif « Virage Numérique » — dont les formations IA applicatives sont éligibles depuis janvier 2024.",
-    source: "BPI France — Dispositif Virage Numérique 2024",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["interventions_formations"],
-    confidence: 0.8,
   },
   // ── Marché de la formation IA en France ─────────────────────────────────
   {
@@ -366,34 +347,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.85,
   },
-  // ── Financement CPF et OPCO ───────────────────────────────────────────────
-  {
-    id: "form-038",
-    text: "Le Compte Personnel de Formation (CPF) finance les formations IA certifiantes inscrites au RNCP ou au RS (Répertoire Spécifique) — le solde moyen disponible par salarié est de 800 à 1 500 € permettant de couvrir une formation courte de 1 à 2 jours." /* price-exempt: stat marché tierce */,
-    source: "France Compétences — Guide CPF et formations numériques 2025",
-    sourceUrl: "https://www.francecompetences.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.86,
-  },
-  {
-    id: "form-039",
-    text: "Les OPCO (Opérateurs de Compétences) financent les plans de développement des compétences IA pour les entreprises de moins de 50 salariés jusqu'à 100 % du coût pédagogique — via les enveloppes « Transitions collectives » et « FNE-Formation ».",
-    source: "Ministère du Travail — Guide OPCO et FNE-Formation 2025",
-    sourceUrl: "https://travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.87,
-  },
-  {
-    id: "form-040",
-    text: "Le Plan de Développement des Compétences (PDC) permet aux entreprises de financer des formations IA sur le temps de travail — les dépenses sont déductibles de la contribution formation (0,55 % à 1 % de la masse salariale selon la taille).",
-    source: "Ministère du Travail — Guide Plan de Développement des Compétences 2025",
-    sourceUrl: "https://travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.88,
-  },
   // ── Secteurs banque, assurance, retail, santé ─────────────────────────────
   {
     id: "form-041",
@@ -431,43 +384,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
     confidence: 0.79,
-  },
-  {
-    id: "form-045",
-    text: "France Travail (ex-Pôle Emploi) finance des formations de reconversion vers les métiers de l'IA (data analyst, prompt engineer, consultant IA) via l'AIF (Aide Individuelle à la Formation) — montant moyen financé : 4 200 € par demandeur d'emploi en 2024." /* price-exempt: stat marché tierce */,
-    source: "France Travail — Guide formations IA et reconversion 2024",
-    sourceUrl: "https://www.francetravail.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.82,
-  },
-  {
-    id: "form-046",
-    text: "Le dispositif « Pro-A » (reconversion ou promotion par alternance) permet à des salariés en poste de se former à l'IA sur 6 à 24 mois, avec maintien du salaire — applicable aux certifications IA inscrites au RNCP.",
-    source: "Ministère du Travail — Guide Pro-A et transitions professionnelles 2025",
-    sourceUrl: "https://travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.85,
-  },
-  // ── Certification Qualiopi ────────────────────────────────────────────────
-  {
-    id: "form-047",
-    text: "La certification Qualiopi est obligatoire depuis le 1er janvier 2022 pour tout organisme de formation souhaitant percevoir des fonds publics ou mutualisés (CPF, OPCO, FNE) — elle atteste du respect du Référentiel National Qualité (RNQ) en 7 critères.",
-    source: "Ministère du Travail — Référentiel National Qualité Qualiopi 2024",
-    sourceUrl: "https://travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.96,
-  },
-  {
-    id: "form-048",
-    text: "En 2024, France Compétences recense 7 800 organismes de formation certifiés Qualiopi proposant des formations IA ou incluant des modules IA — une multiplication par 5 depuis 2022, reflétant l'explosion de la demande.",
-    source: "France Compétences — Tableau de bord qualité de la formation 2024",
-    sourceUrl: "https://www.francecompetences.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.77,
   },
   // ── Certification des compétences IA ─────────────────────────────────────
   {
@@ -555,16 +471,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
     confidence: 0.81,
-  },
-  // ── Axion-IA et partenariats OPCO ─────────────────────────────────────────
-  {
-    id: "form-058",
-    text: "Axion-IA accompagne ses clients dans la constitution des dossiers de financement OPCO : identification de l'OPCO compétent selon le code NAF, rédaction du programme pédagogique conforme au référentiel de l'OPCO, et suivi administratif.",
-    source: "Axion-IA — Processus financement formation 2026",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.93,
   },
   // ── Enjeux réglementaires formation ──────────────────────────────────────
   {

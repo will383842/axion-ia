@@ -512,21 +512,12 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-054",
-    text: "Le tarif d'un audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) démarre à {{price:audit-strategique-pme|range}}, et un audit ETI (8 cas d'usage, 10 jours) à {{price:audit-strategique-eti|from}} — éligibles aux dispositifs France Num et Bpifrance Diag IA.",
+    text: "Le tarif d'un audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) démarre à {{price:audit-strategique-pme|range}}, et un audit ETI (8 cas d'usage, 10 jours) à {{price:audit-strategique-eti|from}}.",
     source: "Axion-IA — Grille tarifaire audit 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.92,
-  },
-  {
-    id: "audit-055",
-    text: "Le programme Diag IA de Bpifrance finance jusqu'à 80 % du coût d'un audit IA pour les PME (plafond 16 000 € HT) — démarche à initier avant signature du devis, validation Bpifrance sous 4-6 semaines." /* price-exempt: stat marché tierce */,
-    source: "Bpifrance — Diagnostic IA",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["audits"],
-    confidence: 0.88,
   },
   // ── Statistiques générales d'adoption et marchés ──────────────────────────
   {

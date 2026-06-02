@@ -252,15 +252,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.75,
   },
   {
-    id: "ua-026",
-    text: "Le coaching 1-to-1 est éligible au financement par les OPCO (Opérateurs de Compétences) pour les dirigeants salariés de leur propre entreprise, sous certaines conditions — Axion-IA accompagne la constitution du dossier.",
-    source: "Ministère du Travail — Guide financement formation dirigeants 2025",
-    sourceUrl: "https://travail-emploi.gouv.fr",
-    verifiedAt: "2026-05-01",
-    verticales: ["un_a_un"],
-    confidence: 0.82,
-  },
-  {
     id: "ua-027",
     text: "Chaque programme 1-to-1 Axion-IA se clôt par une « Feuille de route IA 12 mois » personnalisée : liste priorisée des projets IA à lancer, KPIs associés, budget indicatif et plan de montée en compétences des équipes.",
     source: "Axion-IA — Programme Un-à-un 2026",
