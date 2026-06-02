@@ -77,8 +77,8 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `Cabinet IA & automatisation au service des entreprises de ${villeContext.name} et sa région. Forfait fixe à partir de ${startupAmount}, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel.`
       : `AI & automation consultancy serving ${villeContext.name}-area companies. Fixed fee from ${startupAmount}, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription.`
     : isFr
-      ? `Chatbots, agents IA, automatisations, intégrations à vos outils… on conçoit et on livre la solution adaptée à votre métier. Le code est à vous, sans abonnement.`
-      : `Chatbots, AI agents, automations, integrations with your tools… we design and ship the solution that fits your business. The code is yours, no subscription.`;
+      ? `Chatbots, agents IA, automatisations, intégrations à vos outils… on conçoit et on livre la solution adaptée à votre métier. Du vrai code sur-mesure, robuste — pas du no-code fragile (Zapier, Make, n8n).`
+      : `Chatbots, AI agents, automations, integrations with your tools… we design and ship the solution that fits your business. Real custom code, robust — not brittle no-code (Zapier, Make, n8n).`;
 
   // Speakable AEO 2026 — h1 + sous-titre.
   const speakableSelectors = ["h1", "h1 + p", "[data-hero-description]"] as const;
