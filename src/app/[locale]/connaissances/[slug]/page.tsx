@@ -28,8 +28,9 @@ import { ServiceOfferBlock } from "@/components/services/ServiceOfferBlock";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
-import { extractKeyFact } from "@/lib/knowledge/article-enrich";
+import { extractKeyFact, extractSources, sourcesToCitations } from "@/lib/knowledge/article-enrich";
 import { KeyFactCard } from "@/components/knowledge/KeyFactCard";
+import { KbSources } from "@/components/knowledge/KbSources";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -116,6 +117,12 @@ export default async function ConnaissanceDetail({ params }: Props) {
     excerpt: entry.excerpt,
   });
 
+  // Sources/références — extraites du body BRUT (sanitizeTiptapHtml strippe les
+  // href). Liste vide → section non rendue. Les sources liées alimentent aussi
+  // Article.citation[] (Perplexity reprend mot-à-mot les sources citées).
+  const sources = extractSources(entry.body);
+  const citations = sourcesToCitations(sources);
+
   const articleJsonLd = buildArticleJsonLd({
     title: entry.title,
     description: entry.excerpt ?? entry.title,
@@ -126,6 +133,7 @@ export default async function ConnaissanceDetail({ params }: Props) {
     section: "Connaissances IA",
     urlSegment: "connaissances",
     ...(entry.readingTime ? { readingTimeMinutes: entry.readingTime } : {}),
+    ...(citations.length > 0 ? { citations } : {}),
   });
 
   return (
@@ -202,6 +210,7 @@ export default async function ConnaissanceDetail({ params }: Props) {
               // P0 audit KB 2026-05-29 : sanitize SSR anti-XSS (whitelist Tiptap).
               dangerouslySetInnerHTML={{ __html: sanitizeTiptapHtml(entry.body) }}
             />
+            <KbSources sources={sources} />
             <AiContentDisclaimer locale="fr" className="mt-10" />
           </article>
         </Container>

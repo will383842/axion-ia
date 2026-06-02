@@ -118,3 +118,89 @@ export function extractKeyFact(input: {
   }
   return null;
 }
+
+// ============================================================
+// 2. Sources / références (citabilité GEO/AEO — Article.citation[])
+// ============================================================
+
+export interface SourceRef {
+  /** Libellé lisible de la source. */
+  readonly label: string;
+  /** URL externe si présente dans le body brut (sinon null → référence non cliquable). */
+  readonly href: string | null;
+}
+
+const SITE_HOSTS = new Set(["axion-ia.com", "www.axion-ia.com"]);
+
+/** Lien http(s) externe (≠ Axion-IA, ≠ relatif, ≠ ancre). */
+function isExternalHttp(href: string): boolean {
+  try {
+    const u = new URL(href);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return false;
+    return !SITE_HOSTS.has(u.hostname.toLowerCase());
+  } catch {
+    return false; // relatif (/...), ancre (#...), mailto:, tel: → pas une source citable
+  }
+}
+
+function cleanLabel(raw: string): string {
+  return raw
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .replace(/^[\s—–-]+|[\s—–.;,:]+$/g, "")
+    .trim();
+}
+
+/**
+ * Extrait les sources/références citées d'un body Tiptap **BRUT** (pré-sanitize,
+ * car `sanitizeTiptapHtml` strippe les `href`). Deux signaux complémentaires :
+ *  1. liens `<a href>` externes (deviennent des `CreativeWork` dans le JSON-LD) ;
+ *  2. mentions éditoriales « Source(s) : … » / « Référence(s) : … » (souvent
+ *     sans lien → référence textuelle, citable mais non cliquable).
+ *
+ * Retourne `[]` si rien → la section Sources n'est pas rendue (anti-doorway).
+ */
+export function extractSources(rawBody: string): SourceRef[] {
+  const out: SourceRef[] = [];
+  const seen = new Set<string>();
+  const add = (label: string, href: string | null): void => {
+    const clean = cleanLabel(label) || href || "";
+    if (clean.length < 3) return;
+    const key = (href ?? clean).toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push({ label: clean, href });
+  };
+
+  // 1. Liens externes.
+  const A = /<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let m: RegExpExecArray | null;
+  while ((m = A.exec(rawBody)) !== null) {
+    const href = (m[1] ?? "").trim();
+    if (isExternalHttp(href)) add(m[2] ?? href, href);
+  }
+
+  // 2. Mentions « Source(s) : » / « Référence(s) : » (sur le texte aplati pour
+  //    ne pas re-capturer le markup). Le « : » est requis → faible faux-positif.
+  const flat = rawBody
+    .replace(/<\/(p|li|h[1-6]|blockquote|figcaption)>/gi, "\n")
+    .replace(/<[^>]*>/g, "");
+  const S = /\b(?:sources?|r[ée]f[ée]rences?)\s*:\s+([^\n<]{3,180})/gi;
+  while ((m = S.exec(flat)) !== null) {
+    add(m[1] ?? "", null);
+  }
+
+  return out;
+}
+
+/**
+ * Sous-ensemble citable en JSON-LD `Article.citation[]` (factory attend une
+ * `url`) — seules les sources liées (href externe) sont éligibles.
+ */
+export function sourcesToCitations(
+  sources: ReadonlyArray<SourceRef>,
+): ReadonlyArray<{ url: string; title: string }> {
+  return sources
+    .filter((s): s is SourceRef & { href: string } => Boolean(s.href))
+    .map((s) => ({ url: s.href, title: s.label }));
+}
