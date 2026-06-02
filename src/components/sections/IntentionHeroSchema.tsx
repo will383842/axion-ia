@@ -145,10 +145,10 @@ function ChatbotFlow(): ReactNode {
       {/* moteur RAG (centre) */}
       <Card x={186} y={236} w={188} h={88} accent r={44} />
       <Title x={280} y={278} anchor="middle">
-        Recherche IA
+        L'assistant
       </Title>
       <Sub x={280} y={302} anchor="middle">
-        réponse sourcée (RAG)
+        cherche la bonne réponse
       </Sub>
       {/* doc source */}
       <rect
@@ -266,13 +266,13 @@ function EnrichFlow(): ReactNode {
       />
       <circle cx={280} cy={281} r={18} fill="var(--color-terracotta)" fillOpacity={0.85} />
       <Sub x={280} y={344} anchor="middle">
-        Enrichissement IA
+        L'IA complète & vérifie
       </Sub>
       <Flow d="M 324 281 H 362" />
       {/* fiche enrichie */}
       <Card x={362} y={186} w={150} h={190} accent />
       <Title x={437} y={222} anchor="middle" size={16}>
-        Fiche enrichie
+        Fiche à jour
       </Title>
       {[0, 1, 2, 3].map((i) => (
         <line
@@ -326,27 +326,25 @@ function ParsePipeline(): ReactNode {
         />
       ))}
       <Sub x={280} y={372} anchor="middle">
-        Extraction IA
+        L'IA lit & extrait
       </Sub>
       <Flow d="M 336 280 H 372" />
       {/* JSON */}
       <Card x={372} y={210} w={132} h={140} />
-      <text
-        x={438}
-        y={250}
-        textAnchor="middle"
-        fontSize={26}
-        fontWeight={700}
-        fill="var(--color-terracotta)"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        {"{ }"}
-      </text>
-      <Sub x={438} y={300} anchor="middle">
-        JSON exploitable
+      <circle cx={438} cy={244} r={18} fill="var(--color-terracotta)" fillOpacity={0.16} />
+      <path
+        d="M 430 244 l 6 7 l 11 -13"
+        fill="none"
+        stroke="var(--color-terracotta)"
+        strokeWidth={3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Sub x={438} y={296} anchor="middle">
+        Infos prêtes à l'emploi
       </Sub>
-      <Sub x={438} y={322} anchor="middle">
-        prêt pour vos outils
+      <Sub x={438} y={318} anchor="middle">
+        directement dans vos outils
       </Sub>
     </g>
   );
@@ -374,7 +372,7 @@ function TriggerAction(): ReactNode {
         filter="url(#ihs-shadow)"
       />
       <Sub x={318} y={290} anchor="middle">
-        Règle métier
+        Vos règles
       </Sub>
       {/* deux branches */}
       <Flow d="M 388 270 C 430 250 440 210 452 196" />
@@ -445,6 +443,9 @@ function ToStructured(): ReactNode {
         strokeWidth={1.5}
         strokeOpacity={0.4}
       />
+      <Sub x={404} y={400} anchor="middle">
+        Données claires & exploitables
+      </Sub>
     </g>
   );
 }
@@ -499,7 +500,7 @@ function HubSpoke(): ReactNode {
       />
       <circle cx={280} cy={280} r={24} fill="var(--color-terracotta)" fillOpacity={0.85} />
       <Sub x={280} y={356} anchor="middle">
-        Connecteurs IA → votre SI
+        Tous vos outils reliés à l'IA
       </Sub>
     </g>
   );
@@ -507,10 +508,10 @@ function HubSpoke(): ReactNode {
 
 function LayeredStack(): ReactNode {
   const layers = [
-    { t: "Garde-fous & monitoring", accent: true },
-    { t: "Fine-tuning ciblé" },
-    { t: "RAG & vector DB" },
-    { t: "Modèle de base (LLM)" },
+    { t: "Sécurité & contrôle", accent: true },
+    { t: "Adaptée à votre métier" },
+    { t: "Branchée sur vos données" },
+    { t: "Intelligence sur-mesure" },
   ];
   return (
     <g>
@@ -533,7 +534,7 @@ function LayeredStack(): ReactNode {
         );
       })}
       <Sub x={280} y={486} anchor="middle">
-        Une IA sur-mesure, à vous, souveraine
+        Une IA à vous, qui parle votre métier
       </Sub>
     </g>
   );
@@ -577,10 +578,10 @@ const DIAGRAMS: Record<IntentionVariant, () => ReactNode> = {
   agents: () =>
     Steps({
       items: [
-        { t: "Recherche", s: "collecte l'information" },
-        { t: "Synthèse", s: "raisonne sur les données" },
-        { t: "Action", s: "agit sur vos systèmes" },
-        { t: "Contrôle", s: "journalisé & auditable" },
+        { t: "Cherche", s: "l'information utile" },
+        { t: "Analyse", s: "comprend la demande" },
+        { t: "Agit", s: "fait le travail pour vous" },
+        { t: "Vous validez", s: "vous gardez la main" },
       ],
     }),
   "crm-erp": EnrichFlow,
