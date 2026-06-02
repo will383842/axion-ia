@@ -3,21 +3,33 @@
  *
  * Levier d'autorité topique + anti dead-end : relie une entrée `/connaissances`
  * aux autres entrées du même cluster. Stratégie en TIERS (du signal le plus fort
- * au plus faible), tous filtrés par le prédicat anti-leak public (SSOT
- * `publicEntryFilter`) :
+ * au plus faible), chaque tier ne s'exécutant que si le précédent n'a pas rempli
+ * `limit` (économe). Tous filtrés par le prédicat anti-leak public :
  *   1. **Relations éditoriales explicites** (`KnowledgeRelation`, kinds
  *      constructifs `related_to/extends/depends_on/cites`, dans les deux sens) ;
  *   2. **Tags partagés** (entrées partageant le plus de tags) ;
- *   3. **Même domaine** (repli récence) pour garantir un cluster non vide.
+ *   3. **Voisinage sémantique** (embeddings pgvector `KnowledgeEmbedding`, op
+ *      cosine `<=>`) — SQL brut (Prisma ne supporte pas le type `vector`),
+ *      pattern aligné sur `dedup-check.ts` ;
+ *   4. **Même domaine** (repli récence) pour garantir un cluster non vide.
  *
  * Dégrade proprement : `[]` si l'entrée est inconnue/non-publique, ou au build
- * (stub Prisma `stub.invalid` → findFirst null → `[]`). Anti-doorway : on relie
- * des entrées DISTINCTES déjà publiées, on n'en fabrique aucune.
+ * (stub Prisma `stub.invalid` → findFirst null → `[]` AVANT tout SQL brut ;
+ * + garde explicite `stub.invalid` dans le helper sémantique, ceinture+bretelles).
+ * Anti-doorway : on relie des entrées DISTINCTES déjà publiées, on n'en fabrique
+ * aucune.
  *
- * NB : un 4ᵉ tier sémantique (embeddings pgvector `KnowledgeEmbedding`, op `<=>`)
- * serait le signal le plus fin mais impose du SQL brut + une gestion stub
- * dédiée → laissé en évolution future. Les 3 tiers ci-dessus sont index-backed
- * et suffisent à constituer le cluster.
+ * ⚠️ Le tier sémantique reproduit le filtre anti-leak EN SQL BRUT (impossible de
+ * réutiliser `publicEntryFilter` typé Prisma ici) : toute modif du prédicat
+ * public doit être répercutée dans `findSemanticNeighborIds`. Labels d'enum
+ * vérifiés : `'published'::"KbStatus"`, `'public'::"KbAudience"`,
+ * `'public'::"KbConfidentiality"`, `'fr'::"Locale"`.
+ *
+ * NB embeddings : le générateur (`@/lib/knowledge/embeddings`) est encore un STUB
+ * déterministe (sha-256) tant que Voyage AI n'est pas câblé → ce tier devient
+ * réellement sémantique sans changement de code dès que les vrais vecteurs sont
+ * persistés. S'il n'existe aucun embedding pour l'entrée courante, le tier rend
+ * `[]` (garde `EXISTS`) → on retombe sur le tier 4 domaine.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -75,6 +87,54 @@ async function loadCards(ids: ReadonlyArray<string>, now: Date): Promise<Related
 }
 
 /**
+ * Tier 3 — voisins sémantiques (pgvector cosine `<=>`). Renvoie des entryIds
+ * triés par proximité au vecteur de la traduction FR courante.
+ *
+ * SQL brut (le type `vector` n'est pas exposé par Prisma) — pattern calqué sur
+ * `dedup-check.ts`. Le filtre anti-leak public est répliqué inline et DOIT
+ * rester aligné sur `publicEntryFilter`. La garde `EXISTS` renvoie 0 ligne si
+ * l'entrée courante n'a pas d'embedding (sinon `<=> NULL` → ordre arbitraire).
+ *
+ * @param currentTranslationId traduction FR courante (porte l'embedding).
+ * @param currentEntryId       entrée courante à exclure (anti self-link).
+ * @param take                 nb de candidats à ramener (sur-échantillonné, le
+ *                             filtrage `seen` se fait ensuite côté JS).
+ */
+async function findSemanticNeighborIds(
+  currentTranslationId: string,
+  currentEntryId: string,
+  take: number,
+): Promise<string[]> {
+  // Ceinture+bretelles : jamais de SQL brut au build (le stub renverrait le
+  // model-proxy non-appelable pour `$queryRawUnsafe`).
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  const limit = Math.max(1, Math.min(60, Math.trunc(take)));
+  const rows = await prisma.$queryRawUnsafe<Array<{ entryId: string }>>(
+    `
+    SELECT ke.id AS "entryId"
+    FROM knowledge_embeddings kemb
+    JOIN knowledge_translations kt ON kt.id = kemb.translation_id AND kt.locale = 'fr'::"Locale"
+    JOIN knowledge_entries ke ON ke.id = kt.entry_id
+    WHERE ke.status = 'published'::"KbStatus"
+      AND ke.audience = 'public'::"KbAudience"
+      AND ke.confidentiality = 'public'::"KbConfidentiality"
+      AND ke.deleted_at IS NULL
+      AND ke.published_at <= NOW()
+      AND (ke.embargo_until IS NULL OR ke.embargo_until <= NOW())
+      AND ke.id <> $2::uuid
+      AND EXISTS (SELECT 1 FROM knowledge_embeddings WHERE translation_id = $1::uuid)
+    ORDER BY kemb.embedding <=> (
+      SELECT embedding FROM knowledge_embeddings WHERE translation_id = $1::uuid
+    )
+    LIMIT ${limit};
+    `,
+    currentTranslationId,
+    currentEntryId,
+  );
+  return rows.map((r) => r.entryId);
+}
+
+/**
  * Renvoie jusqu'à `limit` entrées KB liées à `slugFr` (cluster topique).
  * `[]` si l'entrée est inconnue/non-publique ou si aucun voisin n'existe.
  */
@@ -89,10 +149,11 @@ export async function findRelatedKbEntries(
     // Résout l'entrée courante (et son domaine) via le filtre public strict.
     const current = await prisma.knowledgeTranslation.findFirst({
       where: { locale: FR_LOCALE, slug: slugFr, entry: publicEntryFilter(now) },
-      select: { entryId: true, entry: { select: { domain: true } } },
+      select: { id: true, entryId: true, entry: { select: { domain: true } } },
     });
     if (!current) return [];
     const currentId = current.entryId;
+    const currentTranslationId = current.id;
     const seen = new Set<string>([currentId]);
 
     // ---- Tier 1 : relations éditoriales explicites (deux sens) ----
@@ -143,7 +204,27 @@ export async function findRelatedKbEntries(
     // Charge tier 1 + 2 (validés public + FR, ordre préservé).
     let cards = await loadCards([...tier1Ids, ...tier2Ids], now);
 
-    // ---- Tier 3 : repli même domaine (récence) pour compléter le cluster ----
+    // ---- Tier 3 : voisinage sémantique (pgvector) si encore besoin ----
+    if (cards.length < limit) {
+      // Sur-échantillonne pour absorber le filtrage `seen` côté JS.
+      const semanticIds = await findSemanticNeighborIds(
+        currentTranslationId,
+        currentId,
+        limit + seen.size,
+      );
+      const tier3Ids: string[] = [];
+      for (const id of semanticIds) {
+        if (!seen.has(id)) {
+          seen.add(id);
+          tier3Ids.push(id);
+        }
+      }
+      if (tier3Ids.length > 0) {
+        cards = [...cards, ...(await loadCards(tier3Ids, now))];
+      }
+    }
+
+    // ---- Tier 4 : repli même domaine (récence) pour compléter le cluster ----
     if (cards.length < limit) {
       const exclude = new Set<string>(seen);
       const fill = await prisma.knowledgeEntry.findMany({
