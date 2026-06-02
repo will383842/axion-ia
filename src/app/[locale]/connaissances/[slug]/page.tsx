@@ -103,6 +103,8 @@ export default async function ConnaissanceDetail({ params }: Props) {
   const showExcerpt = Boolean(
     ex && !ex.toLowerCase().startsWith(entry.title.trim().slice(0, 24).toLowerCase()),
   );
+  // Titre-phrase (entrées "fait") → H1 plus petit pour ne pas être absurde.
+  const titleLong = entry.title.length > 90;
 
   const articleJsonLd = buildArticleJsonLd({
     title: entry.title,
@@ -118,52 +120,72 @@ export default async function ConnaissanceDetail({ params }: Props) {
 
   return (
     <>
-      <Section tone="paper" className="pt-8 lg:pt-12">
-        <Container>
+      {/* HÉRO éditorial — fond halo-warm + eyebrow terracotta + H1 serif
+          (taille adaptative) + réponse directe (AEO) + meta + CTA contextuel.
+          Modèle « contenu premium », PAS un hub service (intention informationnelle). */}
+      <section className="bg-halo-warm relative overflow-hidden pt-8 pb-14 sm:pt-10 lg:pt-14 lg:pb-20">
+        {/* halo terracotta diffus à droite */}
+        <div
+          aria-hidden="true"
+          className="bg-terracotta/15 pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full blur-3xl"
+        />
+        <Container className="relative">
           <Breadcrumbs
             items={[
               { href: "/connaissances", label: "Connaissances" },
               { href: `/connaissances/${entry.slug}`, label: entry.title },
             ]}
           />
-        </Container>
-      </Section>
-
-      <Section tone="paper" className="pt-6 pb-16 lg:pt-10 lg:pb-24">
-        <Container>
-          <article className="mx-auto max-w-3xl">
-            <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span className="text-terracotta-deep inline-flex items-center gap-2">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
-                />
-                {typeLabel}
-              </span>
+          <div className="mt-8 max-w-3xl">
+            <p className="text-terracotta-deep mb-5 flex items-center gap-2 text-[13px] font-medium tracking-[0.16em] uppercase">
+              <span
+                aria-hidden="true"
+                className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+              />
+              {typeLabel}
             </p>
             <h1
-              className="text-fg text-[clamp(1.875rem,3.4vw,2.75rem)] leading-[1.12] font-semibold tracking-tight"
+              className={`text-fg font-semibold tracking-tight ${
+                titleLong
+                  ? "text-[clamp(1.5rem,2.6vw,2.125rem)] leading-[1.25]"
+                  : "text-[clamp(2rem,3.6vw,3rem)] leading-[1.12]"
+              }`}
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {entry.title}
             </h1>
-            <p className="text-fg-muted mt-5 text-[13px]">
+            {showExcerpt ? (
+              <p
+                className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
+                data-aeo="answer"
+                data-speakable="true"
+              >
+                {entry.excerpt}
+              </p>
+            ) : null}
+            <p className="text-fg-muted mt-6 text-[13px]">
               {publishedStr ? <>Publié le {publishedStr}</> : null}
               {updatedStr && updatedStr !== publishedStr ? (
                 <> · mis à jour le {updatedStr}</>
               ) : null}
               {entry.readingTime ? <> · {entry.readingTime} min de lecture</> : null}
             </p>
-            <div aria-hidden="true" className="bg-terracotta mt-8 h-0.5 w-16" />
-            {showExcerpt ? (
-              <p className="text-fg-soft mt-8 text-lg leading-relaxed sm:text-xl">
-                {entry.excerpt}
-              </p>
-            ) : null}
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Cta href="/contact" size="lg">
+                Parler à un expert →
+              </Cta>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Corps de l'article */}
+      <Section tone="paper" className="pt-12 pb-16 lg:pt-16 lg:pb-24">
+        <Container>
+          <article className="max-w-3xl">
             <div
-              className="prose prose-axionia mt-10 max-w-none"
+              className="prose prose-axionia max-w-none"
               // P0 audit KB 2026-05-29 : sanitize SSR anti-XSS (whitelist Tiptap).
-              // Le commentaire d'origine promettait DOMPurify mais aucun sanitize n'était appliqué.
               dangerouslySetInnerHTML={{ __html: sanitizeTiptapHtml(entry.body) }}
             />
             <AiContentDisclaimer locale="fr" className="mt-10" />
