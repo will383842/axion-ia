@@ -97,6 +97,16 @@ export function ImplementationSubPageExtras({
         </div>
       </Section>
 
+      {/* FAQ — juste AVANT la couverture France (Will 2026-06-02). Le
+          ProductPageTemplate la supprime via hideFaq. */}
+      <FaqBlock
+        title={faqTitle.head}
+        titleEm={faqTitle.em}
+        items={copy.faqs}
+        emitJsonLd={false}
+        tone="canvas"
+      />
+
       {/* Couverture nationale — visibilité villes / pSEO (sujet exact de la page) */}
       <LocalCoverageSection
         isFr={isFr}
@@ -108,16 +118,6 @@ export function ImplementationSubPageExtras({
 
       {/* Connaissances liées — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="implementation" />
-
-      {/* FAQ — tout en bas, juste avant le footer (Will 2026-06-02). Le
-          ProductPageTemplate la supprime via hideFaq. */}
-      <FaqBlock
-        title={faqTitle.head}
-        titleEm={faqTitle.em}
-        items={copy.faqs}
-        emitJsonLd={false}
-        tone="canvas"
-      />
     </>
   );
 }
