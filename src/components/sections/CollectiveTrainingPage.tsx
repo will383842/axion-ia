@@ -21,6 +21,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
 import { InterventionBenefitsGrid } from "@/components/sections/intervention-parts/InterventionBenefitsGrid";
 import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
+import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
 import {
   getFamily,
   getDuration,
@@ -485,6 +486,9 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
       >
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
+
+      {/* BANDEAU CONTACT — parité pages-intention (slot midBand). */}
+      <FormationContactBand isFr={isFr} trackSuffix={`-${slug}`} />
 
       {/* FAQ */}
       <Section
