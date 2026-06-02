@@ -6,6 +6,7 @@ import { Sunrise, Wrench, Rocket } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
+import { FormationSubPageExtras } from "@/components/services/formation/FormationSubPageExtras";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -148,6 +149,7 @@ export default async function GagnerDuTemps({ params }: Props) {
         midBand={<FormationContactBand isFr={isFr} />}
         jsonLd={jsonLd}
       />
+      <FormationSubPageExtras isFr={isFr} slug="gagner-du-temps" />
     </>
   );
 }

@@ -6,6 +6,7 @@ import { ArrowRight, Layers, Sparkles, Target, Wrench } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
+import { FormationSubPageExtras } from "@/components/services/formation/FormationSubPageExtras";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
@@ -220,6 +221,7 @@ export default async function Approfondie({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      <FormationSubPageExtras isFr={isFr} slug="approfondie" />
     </>
   );
 }

@@ -9,6 +9,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
+import { FormationSubPageExtras } from "@/components/services/formation/FormationSubPageExtras";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ESSENTIELLE_TIERS, getIntervention } from "@/content/interventions";
@@ -227,6 +228,7 @@ export default async function Essentielle({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      <FormationSubPageExtras isFr={isFr} slug="essentielle" />
     </>
   );
 }
