@@ -42,6 +42,10 @@ import { KW_PHASE3_TOPUP } from "./g-phase3-balance-topup";
 import { KW_IMPL_EXISTANT_NEUF } from "./g3g-implementation-existant-neuf";
 // 2026-06-02 — segmentation audit par maturité IA (DÉCOUVERTE vs AVANCÉ)
 import { KW_AUDIT_MATURITE } from "./g1m-audit-maturite";
+// 2026-06-02 — CSV formation : axe formationFormat (PONCTUEL vs RECURRENT vs TRANSVERSE)
+import { KW_FORMATION_CLUSTERS_V2 } from "./g2m-formation-clusters";
+// 2026-06-02 — CSV sites/saas : axe siteProjectType (AUGMENTATION vs NATIVE vs TRANSVERSE)
+import { KW_SITES_SAAS_CLUSTERS } from "./g3h-sites-saas-clusters";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -196,6 +200,10 @@ export const ALL_KEYWORD_SEEDS: KeywordSeed[] = [
   ...KW_IMPL_EXISTANT_NEUF.filter(isClean),
   // 2026-06-02 — audit segmenté par maturité IA (DÉCOUVERTE / AVANCÉ / TRANSVERSE)
   ...KW_AUDIT_MATURITE.filter(isClean),
+  // 2026-06-02 — CSV formation : clusters PONCTUEL / RECURRENT / TRANSVERSE
+  ...KW_FORMATION_CLUSTERS_V2.filter(isClean),
+  // 2026-06-02 — CSV sites/saas : clusters AUGMENTATION / NATIVE / TRANSVERSE
+  ...KW_SITES_SAAS_CLUSTERS.filter(isClean),
 ];
 
 // ─── Filtres utiles pour le Content Engine ───────────────────────────────────
@@ -225,3 +233,19 @@ export const BY_IMPL_TYPE = (t: NonNullable<KeywordSeed["implementationType"]>) 
  */
 export const BY_MATURITY = (m: NonNullable<KeywordSeed["maturite_cible"]>) =>
   ALL_KEYWORD_SEEDS.filter((s) => s.maturite_cible === m);
+
+/**
+ * Filtre par format pédagogique (ponctuel/recurrent/transverse) — routage
+ * anti-cannibalisation des clusters formation (one-shot vs accompagnement
+ * récurrent ne partagent jamais d'urlCible).
+ */
+export const BY_FORMATION_FORMAT = (fmt: NonNullable<KeywordSeed["formationFormat"]>) =>
+  ALL_KEYWORD_SEEDS.filter((s) => s.formationFormat === fmt);
+
+/**
+ * Filtre par paradigme web/SaaS (augmentation/native/transverse) — routage
+ * anti-cannibalisation des clusters sites/saas (greffe sur existant vs build
+ * IA-native ne partagent jamais d'urlCible).
+ */
+export const BY_SITE_PROJECT_TYPE = (t: NonNullable<KeywordSeed["siteProjectType"]>) =>
+  ALL_KEYWORD_SEEDS.filter((s) => s.siteProjectType === t);

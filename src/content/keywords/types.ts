@@ -120,6 +120,40 @@ export type KeywordImplementationType = "existant" | "neuf" | "transverse";
  */
 export type KeywordMaturiteCible = "decouverte" | "avance" | "transverse";
 
+/**
+ * Format pédagogique d'une formation (garde-fou anti-cannibalisation pour le
+ * module `interventions-formations`, 2026-06-02 — CSV formation) :
+ *   - `ponctuel`  : one-shot (demi-journée, 1 jour, 2 jours, séminaire) — un
+ *     événement de formation isolé. Intentions « formation IA une journée »,
+ *     « séminaire IA dirigeants ».
+ *   - `recurrent` : abonnement / accompagnement dans la durée (formateur dédié,
+ *     formation mensuelle, suivi continu) — différenciant Axion-IA. Intentions
+ *     « accompagnement IA continu », « formation IA mensuelle entreprise ».
+ *   - `transverse`: indépendant du rythme (par outil, par fonction, par public,
+ *     piliers de routage, AEO).
+ *
+ * RÈGLE : ne JAMAIS faire pointer un keyword `ponctuel` et un keyword
+ * `recurrent` vers la même `urlCible` (sinon Google fusionne et cannibalise).
+ * Champ optionnel — par défaut `transverse` côté consommateurs.
+ */
+export type KeywordFormationFormat = "ponctuel" | "recurrent" | "transverse";
+
+/**
+ * Paradigme d'un projet web/SaaS (garde-fou anti-cannibalisation pour le module
+ * `codage-developpement`, 2026-06-02 — CSV sites/saas) :
+ *   - `augmentation` : greffer l'IA sur un site / une application déjà en place,
+ *     sans refonte (widget, API, brique). Intentions « ajouter l'IA à mon site
+ *     sans refonte », « greffer un chatbot sur mon site ».
+ *   - `native`       : construire une plateforme / un SaaS IA-native de A à Z.
+ *     Intentions « créer un SaaS IA sur mesure », « plateforme B2B IA-native ».
+ *   - `transverse`   : indépendant du point de départ (briques, stacks, modèles,
+ *     RGPD, AEO, piliers de routage).
+ *
+ * RÈGLE : ne JAMAIS faire pointer un keyword `augmentation` et un keyword
+ * `native` vers la même `urlCible` (sinon cannibalisation). Champ optionnel.
+ */
+export type KeywordSiteProjectType = "augmentation" | "native" | "transverse";
+
 export interface KeywordInjection {
   /** H1 optimisé bénéfice — JAMAIS le keyword brut (règle anti-cannibalisation R5). */
   readonly h1?: string;
@@ -183,6 +217,16 @@ export interface KeywordSeed {
    * anti-cannibalisation pour le module `audit`. Optionnel.
    */
   readonly maturite_cible?: KeywordMaturiteCible;
+  /**
+   * Format pédagogique (ponctuel/recurrent/transverse) — garde-fou
+   * anti-cannibalisation pour le module `interventions-formations`. Optionnel.
+   */
+  readonly formationFormat?: KeywordFormationFormat;
+  /**
+   * Paradigme web/SaaS (augmentation/native/transverse) — garde-fou
+   * anti-cannibalisation pour le module `codage-developpement`. Optionnel.
+   */
+  readonly siteProjectType?: KeywordSiteProjectType;
   /** Contexte, contrainte, schema.org à appliquer, keywords secondaires. */
   readonly note?: string;
 }
