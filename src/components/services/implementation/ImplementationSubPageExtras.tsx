@@ -14,7 +14,6 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
-import { ImplementationContactBand } from "@/components/services/implementation/ImplementationContactBand";
 import { getImplementation, type ImplementationSlug } from "@/content/implementation";
 import {
   IMPLEMENTATION_RELATED,
@@ -95,11 +94,6 @@ export function ImplementationSubPageExtras({
 
       {/* Connaissances liées — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="implementation" />
-
-      {/* Bandeau de contact canonique — terracotta, « Réserver un appel » (/appel)
-          + « Nous écrire » (/contact). Remplace le CtaBlock « Demander un devis »
-          du ProductPageTemplate (supprimé via hideFinalCta). */}
-      <ImplementationContactBand isFr={isFr} trackSuffix={`-${slug}`} />
     </>
   );
 }

@@ -604,9 +604,8 @@ export function IntentionHeroSchema({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         xmlns="http://www.w3.org/2000/svg"
-        className="h-auto w-full overflow-visible"
+        className="h-auto w-full"
         preserveAspectRatio="xMidYMid meet"
-        overflow="visible"
         aria-hidden="true"
       >
         <defs>

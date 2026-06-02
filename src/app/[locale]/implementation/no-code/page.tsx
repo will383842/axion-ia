@@ -7,6 +7,7 @@ import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { ImplementationSubPageExtras } from "@/components/services/implementation/ImplementationSubPageExtras";
 import { IntentionHeroSchema } from "@/components/sections/IntentionHeroSchema";
 import { INTENTION_HERO_ARIA } from "@/content/intention-hero-configs";
+import { ImplementationContactBand } from "@/components/services/implementation/ImplementationContactBand";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getImplementation } from "@/content/implementation";
@@ -104,6 +105,7 @@ export default async function NoCodePage({ params }: Props) {
         hideFinalCta
         copy={copy}
         heroSchema={<IntentionHeroSchema variant={SLUG} ariaLabel={INTENTION_HERO_ARIA[SLUG]} />}
+        midBand={<ImplementationContactBand isFr={isFr} trackSuffix={`-${SLUG}`} />}
         ctaPrimaryHref="/contact?type=implementation&subType=no-code"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}

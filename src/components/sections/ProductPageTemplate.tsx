@@ -110,6 +110,9 @@ interface ProductPageTemplateProps {
    *  implémentation rendent à la place le bandeau terracotta
    *  ImplementationContactBand « Réserver un appel / Nous écrire »). */
   hideFinalCta?: boolean;
+  /** Optionnel — bandeau (contact) inséré juste avant la section process
+   *  « Comment ça se déroule » (sous-pages implémentation). */
+  midBand?: React.ReactNode;
 }
 
 // Editorial v3 — alternance auto des sections paper/sand/halo-cool/canvas/mocha
@@ -124,6 +127,7 @@ export function ProductPageTemplate({
   heroSchema,
   jsonLd = [],
   hideFinalCta = false,
+  midBand,
 }: ProductPageTemplateProps) {
   const metricsVariant: "primary" | "purple" | "orange" | "green" = accent;
   return (
@@ -180,6 +184,9 @@ export function ProductPageTemplate({
           columns={copy.benefits.length >= 4 ? 4 : 3}
         />
       </Section>
+
+      {/* Bandeau (contact) optionnel — juste avant le process (Will 2026-06-02). */}
+      {midBand ?? null}
 
       {/* « Comment fonctionne une réservation » — sand intermission, 5 étapes.
           Eyebrow paramétrable (défaut "Réservation" pour Module 1, "Déroulement"
