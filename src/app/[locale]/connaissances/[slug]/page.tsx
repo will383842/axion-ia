@@ -16,7 +16,7 @@ import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { CtaBlock } from "@/components/sections/CtaBlock";
+import { ContactBand } from "@/components/sections/ContactBand";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
@@ -215,16 +215,12 @@ export default async function ConnaissanceDetail({ params }: Props) {
           l'entrée n'est rattachée à aucun service via tag service:*). */}
       {service ? <ServiceOfferBlock service={service} /> : null}
 
-      <CtaBlock
-        title="Vous voulez en discuter"
-        titleEm="en équipe"
-        description="Réservez un audit IA flash terrain — diagnostic ROI sur vos vraies données."
-        cta={
-          <Cta href="/reserver" size="lg">
-            Réserver →
-          </Cta>
-        }
-        tone="dark"
+      <ContactBand
+        eyebrow="Un sujet IA à creuser ?"
+        title="Parlons de votre projet IA,"
+        titleEm="concrètement"
+        description="Un échange pour comprendre votre besoin et vous dire ce qui est réalisable — du quick-win à l'agent connecté à vos outils. Sans engagement."
+        track="-connaissances"
       />
 
       <JsonLd data={articleJsonLd} />
