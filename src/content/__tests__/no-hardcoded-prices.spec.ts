@@ -123,8 +123,6 @@ const EXEMPT_FILES: ReadonlySet<string> = new Set([
   "content/legal.ts", // seuils légaux (TVA, plafonds)
   "content/case-studies.ts", // budgets clients cités
   "content/regions.ts", // PIB régionaux (« €838 B GDP ») — données économiques
-  // Matrice build-vs-buy : colonnes SaaS marché / dev custom marché, pas Axion.
-  "components/services/implementation/ImplementationComparisonMatrix.tsx",
   // 5 villes dont le SEUL € est une donnée INSEE (revenu médian / immobilier) en
   // prose écosystème — pas un tarif Axion. Leurs prix Axion sont tokenisés.
   "content/villes/copy/la-celle-saint-cloud.ts", // revenu médian 29 510 €

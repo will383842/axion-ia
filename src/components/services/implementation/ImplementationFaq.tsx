@@ -14,7 +14,6 @@ import { Section } from "@/components/layout/Section";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { AUDIT_TIERS, INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import type { VilleContext } from "@/components/services/types";
 
 interface FaqItem {
@@ -35,21 +34,13 @@ export function ImplementationFaq({
   villeContext,
   villeSpecificFaqs,
 }: ImplementationFaqProps): ReactNode {
-  const loc: "fr" | "en" = isFr ? "fr" : "en";
-  const startupAmount = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    loc,
-  );
-  const flashAmount = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
-    compact: true,
-  });
-
   const baseFaqs: ReadonlyArray<FaqItem> = isFr
     ? [
         {
           id: "q-prix",
-          question: "Combien ça coûte vraiment, en pratique ?",
-          answer: `Une première automatisation simple démarre à ${startupAmount}. Les implémentations standards (plusieurs automatisations connectées) et l'IA Custom pour ETI ou grands comptes sont chiffrées sur devis selon votre périmètre. Toujours en forfait fixe : devis ferme avant tout démarrage, pas de dépassement.`,
+          question: "Comment ça marche, côté budget ?",
+          answer:
+            "Toujours en forfait fixe : un devis ferme avant tout démarrage, sans dépassement. Le montant dépend du périmètre — d'une automatisation simple à plusieurs automatisations connectées ou à de l'IA sur-mesure pour ETI et grands comptes. On le cadre ensemble lors d'un premier échange, sans engagement.",
         },
         {
           id: "q-proprio",
@@ -90,14 +81,16 @@ export function ImplementationFaq({
         {
           id: "q-taille",
           question: "C'est adapté à une entreprise comme la mienne ?",
-          answer: `Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. Notre catalogue couvre artisan (devis, suivi clients) → grand groupe (assistant juridique, agents internes). Si vous hésitez, l'audit Flash (${flashAmount}) cadre le projet en 2 jours.`,
+          answer:
+            "Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. On couvre l'artisan (devis, suivi clients) jusqu'au grand groupe (assistant juridique, agents internes). Si vous hésitez, un audit cadre le projet et priorise ce qui rapporte le plus vite.",
         },
       ]
     : [
         {
           id: "q-prix",
-          question: "How much does it really cost, in practice?",
-          answer: `A first simple automation starts at ${startupAmount}. Standard implementations (multiple connected automations) and Custom AI for mid-cap or enterprise are quoted on a per-scope basis. Always fixed-fee: firm quote before any kick-off, no overrun.`,
+          question: "How does it work, budget-wise?",
+          answer:
+            "Always fixed-fee: a firm quote before any kick-off, with no overrun. The amount depends on scope — from a simple automation to several connected automations or custom AI for mid-caps and enterprise. We scope it together in a first chat, no commitment.",
         },
         {
           id: "q-proprio",
@@ -138,7 +131,8 @@ export function ImplementationFaq({
         {
           id: "q-taille",
           question: "Is this fit for a company like mine?",
-          answer: `Yes, as long as there is a repetitive task or daily annoyance. Our catalogue covers trades (quoting, follow-up) → enterprise (legal assistant, internal agents). If unsure, the Flash audit (${flashAmount}) frames the project in 2 days.`,
+          answer:
+            "Yes, as long as there is a repetitive task or daily annoyance. We cover trades (quoting, follow-up) through to enterprise (legal assistant, internal agents). If unsure, an audit frames the project and prioritises what pays off fastest.",
         },
       ];
 

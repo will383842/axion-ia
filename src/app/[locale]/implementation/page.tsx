@@ -1,22 +1,15 @@
 /**
  * /[locale]/implementation — Page hub Implémentation IA (Module 3).
  *
- * Sprint A · Phase 3 Refactor-3 (Will 2026-05-25) — la page est désormais un
- * assemblage des composants `src/components/services/implementation/*` extraits
- * en Phase 2. La page hub n'injecte PAS de `villeContext` (cf. Phase 5 pour
- * les ~430 routes ville `/fr/implantations/{region}/{ville}/implementations`).
+ * Refonte 2026-06-02 (Will) — narration value-first alignée sur /audit et
+ * /un-a-un, SANS prix : hero → nos services (4 piliers) → nos expertises (popup)
+ * → bandeau contact → méthodologie → pourquoi nous → projets réalisés → avis →
+ * couverture France → FAQ → bandeau contact final. Composants centralisés
+ * réutilisés ; les anciennes sections orientées tarifs/comparatif/scénarios ont
+ * été supprimées.
  *
- * Reste inline ici (par design) :
- * - `generateMetadata` (SEO product canonical hub)
- * - `revalidate = 3600` (ISR 1 h)
- * - `setRequestLocale(locale)` + check `hasLocale`
- * - Breadcrumbs visuel + JSON-LD intégré
- * - Service JSON-LD avec `hasOfferCatalog` (9 offres)
- * - `LocalCoverageSection` + `LocalGeoFaqSection` (pSEO — Sprint 14.9)
- * - `StickyMobileCta`
- * - Closing illustration `IMPL-03-closing` (Visual Rhythm 2026)
- *
- * SSOT prix : `@/content/pricing` — aucun montant hardcodé.
+ * La page hub n'injecte PAS de `villeContext` (pages ville = template dédié).
+ * Aucun montant : prix retirés de la metadata, du Service JSON-LD et du HowTo.
  */
 
 import type { Metadata } from "next";
@@ -25,19 +18,9 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { Section } from "@/components/layout/Section";
-import { Illustration } from "@/components/visual/Illustration";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import {
-  IMPLEMENTATION_TIERS,
-  INTERVENTION_TIERS,
-  MAINTENANCE_TIERS,
-  formatAmount,
-  getEntryPriceEur,
-  getTierById,
-} from "@/content/pricing";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -46,17 +29,15 @@ import {
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
-import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { ImplementationHero } from "@/components/services/implementation/ImplementationHero";
-import { ImplementationTrustPills } from "@/components/services/implementation/ImplementationTrustPills";
-import { ImplementationPillarChoices } from "@/components/services/implementation/ImplementationPillarChoices";
-import { ImplementationCatalogFunctions } from "@/components/services/implementation/ImplementationCatalogFunctions";
-import { ImplementationPricingTiers } from "@/components/services/implementation/ImplementationPricingTiers";
-import { ImplementationComparisonMatrix } from "@/components/services/implementation/ImplementationComparisonMatrix";
-import { ImplementationScenariosBySize } from "@/components/services/implementation/ImplementationScenariosBySize";
-import { ImplementationProcessSteps } from "@/components/services/implementation/ImplementationProcessSteps";
+import { ImplementationServices } from "@/components/services/implementation/ImplementationServices";
+import { ImplementationExpertises } from "@/components/services/implementation/ImplementationExpertises";
+import { ImplementationContactBand } from "@/components/services/implementation/ImplementationContactBand";
+import { ImplementationMethodology } from "@/components/services/implementation/ImplementationMethodology";
+import { ImplementationWhyChooseUs } from "@/components/services/implementation/ImplementationWhyChooseUs";
+import { ImplementationRealisations } from "@/components/services/implementation/ImplementationRealisations";
+import { ImplementationClientReviews } from "@/components/services/implementation/ImplementationClientReviews";
 import { ImplementationFaq } from "@/components/services/implementation/ImplementationFaq";
-import { ImplementationCtaBlock } from "@/components/services/implementation/ImplementationCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 
 export const revalidate = 3600;
@@ -69,25 +50,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  // « Mise en route IA » entry-level — aligné sur intervention-essentielle
-  // (490 €) qui correspond à la prestation « première automatisation simple ».
-  // TODO(pricing): valider mapping avec Will (intervention-essentielle vs impl-poc 990 €).
-  const entryAutomatisation = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    loc,
-    { compact: true },
-  );
   return buildProductMetadata({
     locale,
     path: "/implementation",
     title:
       loc === "fr"
-        ? "Implémentation IA · Catalogue par fonction · Axion-IA"
-        : "AI implementation · Catalogue by function · Axion-IA",
+        ? "Implémentation IA & agents IA sur-mesure · Axion-IA"
+        : "Custom AI implementation & AI agents · Axion-IA",
     description:
       loc === "fr"
-        ? `Automatisations IA par fonction (service client, ventes, RH, données…). Forfait fixe dès ${entryAutomatisation}, sans abonnement, livraison 2-6 semaines. Résultats mesurables.`
-        : `AI automations by function (customer service, sales, HR, data…). Fixed fee from ${entryAutomatisation}, no subscription, 2-6 week delivery. Measurable results.`,
+        ? "Implémentation IA opérationnelle : agents IA, chatbots, automatisations et intégrations sur-mesure, branchés sur vos outils (CRM, ERP). Du vrai code, à vous, sans abonnement. Partout en France."
+        : "Operational AI implementation: AI agents, chatbots, automations and custom integrations, wired into your tools (CRM, ERP). Real code, yours, no subscription. Across France.",
   });
 }
 
@@ -98,8 +71,6 @@ export default async function ImplementationListing({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
   const breadcrumbItems = [
     {
       href: "/implementation",
@@ -107,20 +78,20 @@ export default async function ImplementationListing({ params }: Props) {
     },
   ];
 
-  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2)
-  // + hasOfferCatalog (9 offres) — reste inline car spécifique à la page hub.
+  // Service JSON-LD avec areasServed multi-régions + hasOfferCatalog (9 offres).
+  // Sans `priceEur` (cf. /audit Sprint 14.10.8 : éviter l'interprétation
+  // « service gratuit »). Description sans montant.
   const serviceJsonLd = {
     ...buildServiceJsonLd({
       locale: loc,
       path: "/implementation",
       name: isFr
-        ? "Implémentation IA opérationnelle · Axion-IA"
-        : "Operational AI implementation · Axion-IA",
+        ? "Implémentation IA opérationnelle & agents IA · Axion-IA"
+        : "Operational AI implementation & AI agents · Axion-IA",
       description: isFr
-        ? `Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}.`
-        : `Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en")}.`,
+        ? "Implémentation IA opérationnelle sur-mesure : agents IA conversationnels, chatbots, automatisation des processus, intégration CRM/ERP, traitement de documents et IA custom. Du code livré, à vous, sans abonnement. Partout en France."
+        : "Custom operational AI implementation: conversational AI agents, chatbots, process automation, CRM/ERP integration, document processing and custom AI. Code delivered, yours, no subscription. Across France.",
       serviceType: "AI implementation",
-      priceEur: getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0,
       areasServed: buildServiceAreasServed(loc),
     }),
     hasOfferCatalog: {
@@ -131,45 +102,59 @@ export default async function ImplementationListing({ params }: Props) {
       itemListElement: [
         {
           "@type": "Offer",
-          itemOffered: { "@type": "Service", name: isFr ? "IA Custom" : "Custom AI" },
-        },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Chatbot RAG" } },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Automatisation processus" : "Process automation",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Structuration données" : "Data structuring",
-          },
-        },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM / ERP IA" } },
-        {
-          "@type": "Offer",
-          itemOffered: { "@type": "Service", name: isFr ? "Documents IA" : "AI Documents" },
-        },
-        {
-          "@type": "Offer",
           itemOffered: { "@type": "Service", name: isFr ? "Agents IA" : "AI Agents" },
         },
         {
           "@type": "Offer",
-          itemOffered: { "@type": "Service", name: isFr ? "Intégrations" : "Integrations" },
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Chatbots & assistants" : "Chatbots & assistants",
+          },
         },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "No-code IA" } },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Automatisation des processus" : "Process automation",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Intégrations CRM / ERP" : "CRM / ERP integrations",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Traitement de documents" : "Document processing",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Recherche interne (RAG)" : "Internal search (RAG)",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Génération de contenu" : "Content generation",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: isFr ? "IA Custom" : "Custom AI" },
+        },
       ],
     },
   };
 
-  // HowTo JSON-LD — Sprint AEO Phase 3 2026-05-28 (Will). Process en 3
-  // étapes d'une implémentation IA opérationnelle Axion-IA. Permet citation
-  // Perplexity / Claude.ai / Google AI Overviews sur « comment déployer
-  // une IA en entreprise », « process implémentation IA ».
+  // HowTo JSON-LD — process d'implémentation IA en 3 étapes (AEO). Sans prix.
   const implementationHowToJsonLd = buildHowToJsonLd({
     locale: loc,
     path: "/implementation",
@@ -177,34 +162,31 @@ export default async function ImplementationListing({ params }: Props) {
       ? "Comment déployer une implémentation IA opérationnelle"
       : "How to deploy an operational AI implementation",
     description: isFr
-      ? "3 étapes pour cadrer, prototyper et mettre en production un cas IA opérationnel avec Axion-IA — agents conversationnels, automatisations métier, intégrations CRM/ERP."
-      : "3 steps to scope, prototype and deploy an operational AI use case with Axion-IA — conversational agents, business automations, CRM/ERP integrations.",
+      ? "3 étapes pour cadrer, construire et mettre en production une solution IA sur-mesure avec Axion-IA — agents IA, chatbots, automatisations métier, intégrations CRM/ERP."
+      : "3 steps to scope, build and deploy a custom AI solution with Axion-IA — AI agents, chatbots, business automations, CRM/ERP integrations.",
     steps: [
       {
-        name: isFr ? "Cadrage du cas d'usage" : "Use case scoping",
+        name: isFr ? "Cadrage du besoin" : "Need scoping",
         text: isFr
-          ? "Atelier de cadrage pour identifier le cas IA opérationnel prioritaire selon votre métier (lecture de factures, agents conversationnels, automatisation back-office, RAG CRM, etc.). ROI chiffré et planning."
-          : "Scoping workshop to identify the priority operational AI use case for your business (invoice reading, conversational agents, back-office automation, CRM RAG, etc.). Quantified ROI and timeline.",
+          ? "Atelier de cadrage pour identifier le cas prioritaire selon votre métier (agent connecté à vos outils, chatbot, automatisation back-office, RAG, etc.). Architecture, backlog priorisé et spécifications claires."
+          : "Scoping workshop to identify the priority case for your business (agent wired to your tools, chatbot, back-office automation, RAG, etc.). Architecture, prioritised backlog and clear specs.",
       },
       {
-        name: isFr ? "POC et MVP en 2-4 semaines" : "POC and MVP in 2-4 weeks",
+        name: isFr ? "Développement itératif" : "Iterative development",
         text: isFr
-          ? "Prototype fonctionnel rapide pour valider le cas sur vos vraies données. MVP livré, équipe formée sur l'outil, KPI de qualité mesurés. Itérations courtes selon vos retours."
-          : "Fast functional prototype to validate the case on your real data. MVP delivered, team trained on the tool, quality KPIs measured. Short iterations based on your feedback.",
+          ? "Construction par sprints courts avec démos régulières et validation métier à chaque étape. Vous voyez la solution prendre forme sur vos vraies données, sans effet tunnel."
+          : "Build in short sprints with regular demos and business validation at each step. You watch the solution take shape on your real data, with no tunnel effect.",
       },
       {
-        name: isFr ? "Mise en production et suivi" : "Production deployment and follow-up",
+        name: isFr ? "Mise en production et suivi" : "Go-live and follow-up",
         text: isFr
-          ? `Déploiement en production avec monitoring, formation équipe et documentation. Suivi 30 jours inclus, option maintenance standard ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })} / mois pour évolutions continues.`
-          : `Production deployment with monitoring, team training and documentation. 30-day follow-up included, standard maintenance option ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}/month for continuous evolutions.`,
+          ? "Recette, mise en production sur vos outils, monitoring et formation des équipes. Le code et la documentation vous sont livrés ; vous faites évoluer à la demande, sans abonnement imposé."
+          : "QA, go-live on your tools, monitoring and team training. Code and docs are delivered to you; you evolve on demand, with no imposed subscription.",
       },
     ],
   });
 
-  // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
-  // équipe + portrait fondateur pour signal AEO Google Images +
-  // citation AI Overviews sur requêtes « implémentation IA », « agents IA
-  // entreprise », « automatisation IA TPE/PME/ETI ».
+  // ImageObject @graph — signal AEO Google Images + AI Overviews (sans prix).
   const implementationImagesJsonLd = buildImageGraphJsonLd({
     locale: loc,
     images: [
@@ -214,8 +196,8 @@ export default async function ImplementationListing({ params }: Props) {
           ? "Équipe Axion-IA — implémentation IA opérationnelle pour entreprises"
           : "Axion-IA team — operational AI implementation for companies",
         alt: isFr
-          ? "Équipe Axion-IA en mission d'implémentation IA opérationnelle — agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom pour TPE, PME, ETI et grandes entreprises françaises. ROI chiffré 6-12 semaines."
-          : "Axion-IA team on operational AI implementation mission — conversational agents, back-office automation, CRM/ERP integration, custom AI for French SMEs, mid-caps and large enterprises. Quantified ROI in 6-12 weeks.",
+          ? "Équipe Axion-IA en mission d'implémentation IA opérationnelle — agents IA, chatbots, automatisation back-office, intégration CRM/ERP, IA sur-mesure pour TPE, PME, ETI et grandes entreprises françaises."
+          : "Axion-IA team on operational AI implementation mission — AI agents, chatbots, back-office automation, CRM/ERP integration, custom AI for French SMEs, mid-caps and large enterprises.",
         width: 1961,
         height: 802,
         encodingFormat: "image/avif",
@@ -226,8 +208,8 @@ export default async function ImplementationListing({ params }: Props) {
           ? "William — Fondateur Axion-IA et architecte IA"
           : "William — Axion-IA founder and AI architect",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote les missions d'implémentation IA (agents IA conversationnels, automatisations métier, RAG, intégrations CRM ERP) pour dirigeants TPE PME ETI grandes entreprises françaises."
-          : "Portrait of William, Axion-IA founder. Drives AI implementation missions (conversational AI agents, business automations, RAG, CRM ERP integrations) for French SME mid-cap large enterprise executives.",
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote les missions d'implémentation IA (agents IA, automatisations métier, RAG, intégrations CRM ERP) pour dirigeants TPE PME ETI grandes entreprises françaises."
+          : "Portrait of William, Axion-IA founder. Drives AI implementation missions (AI agents, business automations, RAG, CRM ERP integrations) for French SME mid-cap large enterprise executives.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",
@@ -240,21 +222,36 @@ export default async function ImplementationListing({ params }: Props) {
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={implementationImagesJsonLd} />
       <JsonLd data={implementationHowToJsonLd} />
+
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
+      {/* HERO value-first (sans prix) */}
       <ImplementationHero isFr={isFr} />
-      <ImplementationTrustPills isFr={isFr} />
-      <ImplementationPillarChoices isFr={isFr} />
-      <ImplementationCatalogFunctions isFr={isFr} />
-      <ImplementationPricingTiers isFr={isFr} />
-      <ImplementationComparisonMatrix isFr={isFr} />
-      <ImplementationScenariosBySize isFr={isFr} />
-      <ImplementationProcessSteps isFr={isFr} />
-      <ImplementationFaq isFr={isFr} />
 
-      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      {/* NOS SERVICES — positionnement + 4 piliers natifs */}
+      <ImplementationServices isFr={isFr} />
+
+      {/* NOS EXPERTISES — 6 cartes + popup du champ des possibles */}
+      <ImplementationExpertises isFr={isFr} />
+
+      {/* BANDEAU CONTACT (orientation) */}
+      <ImplementationContactBand isFr={isFr} trackSuffix="-mid" />
+
+      {/* NOTRE MÉTHODOLOGIE — 4 étapes, sans durée */}
+      <ImplementationMethodology isFr={isFr} />
+
+      {/* POURQUOI TRAVAILLER AVEC NOUS — 4 raisons (cartes statiques) */}
+      <ImplementationWhyChooseUs isFr={isFr} />
+
+      {/* PROJETS RÉALISÉS — marquee (illustratif) */}
+      <ImplementationRealisations isFr={isFr} />
+
+      {/* AVIS CLIENTS */}
+      <ImplementationClientReviews isFr={isFr} />
+
+      {/* L'IMPLÉMENTATION & AGENTS IA PARTOUT EN FRANCE (pSEO levier 3) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'implémentation IA"
@@ -263,40 +260,21 @@ export default async function ImplementationListing({ params }: Props) {
         tone="paper"
       />
 
-      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
-      <LocalGeoFaqSection isFr={isFr} service="implementation" tone="sand" />
-
-      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
-      <Section tone="canvas">
-        <Container className="max-w-3xl">
-          <Illustration
-            slot="IMPL-03-closing"
-            aspectRatio="16:9"
-            filenameTarget="public/illustrations/implementation-closing.avif"
-            caption={
-              isFr
-                ? "Implémentation livrée — système opérationnel, clés remises"
-                : "Implementation delivered — operational system, keys handed over"
-            }
-            alt={
-              isFr
-                ? "Illustration éditoriale d'un système opérationnel livré à l'issue d'une implémentation Axion-IA."
-                : "Editorial illustration of an operational system delivered at the end of an Axion-IA implementation."
-            }
-          />
-        </Container>
-      </Section>
+      {/* FAQ unique (sans prix) — la FAQ géolocalisée a été retirée pour ne pas
+          faire « deux FAQ » à la suite ; la couverture locale reste portée par
+          LocalCoverageSection + les pages ville /implantations. */}
+      <ImplementationFaq isFr={isFr} />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="implementation" />
 
-      <ImplementationCtaBlock isFr={isFr} />
+      {/* BANDEAU CONTACT FINAL */}
+      <ImplementationContactBand isFr={isFr} trackSuffix="-final" />
 
-      {/* CTA flottant mobile — visible < lg, après scroll passé le hero,
-          caché en bas de page (le CTA Block final reprend le relais). */}
+      {/* CTA flottant mobile — visible < lg */}
       <StickyMobileCta
         href="/contact"
-        label={isFr ? "Décrire mon besoin · 48 h" : "Describe my need · 48 h"}
+        label={isFr ? "Décrire mon besoin" : "Describe my need"}
         track="impl-sticky-mobile"
       />
     </>
