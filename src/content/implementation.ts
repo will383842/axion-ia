@@ -69,6 +69,8 @@ interface PageCopy {
   /** Optionnel — section "Pourquoi ce cas d'usage" (rendue après le hero). */
   why?: {
     title: string;
+    /** Portion de fin du titre, mise en valeur terracotta italique serif. */
+    titleEm?: string;
     intro?: string;
     points: ReadonlyArray<{ title: string; description: string }>;
   };

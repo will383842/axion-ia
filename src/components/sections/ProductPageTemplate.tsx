@@ -95,6 +95,7 @@ interface ProductPageTemplateProps {
      *  rendue juste après le hero. Spécifique au sous-service. */
     why?: {
       title: string;
+      titleEm?: string;
       intro?: string;
       points: ReadonlyArray<{ title: string; description: string }>;
     };
@@ -115,6 +116,14 @@ interface ProductPageTemplateProps {
   midBand?: React.ReactNode;
 }
 
+// Coupe le dernier mot d'un titre pour le mettre en valeur (terracotta italique
+// serif via Section.titleEm) — convention typographique noir + terracotta des hubs.
+function splitEm(s: string): { head: string; em: string } {
+  const w = s.trim().split(/\s+/);
+  if (w.length <= 1) return { head: "", em: s };
+  return { head: w.slice(0, -1).join(" "), em: w.slice(-1).join(" ") };
+}
+
 // Editorial v3 — alternance auto des sections paper/sand/halo-cool/canvas/mocha
 // pour rythme visuel. Toutes les pages produits (Module 1/2/3, ~21 pages)
 // héritent automatiquement de cette doctrine.
@@ -130,6 +139,9 @@ export function ProductPageTemplate({
   midBand,
 }: ProductPageTemplateProps) {
   const metricsVariant: "primary" | "purple" | "orange" | "green" = accent;
+  const benefitsT = splitEm(copy.benefitsTitle);
+  const processT = splitEm(copy.processTitle);
+  const metricsT = splitEm(copy.metricsTitle);
   return (
     <>
       <ProductHero
@@ -178,7 +190,12 @@ export function ProductPageTemplate({
 
       {/* « Ce que vos équipes apprendront » — paper white pour respiration.
           4 colonnes sur lg+ si 4 bénéfices, sinon auto. */}
-      <Section tone="paper" eyebrow={copy.benefitsTitle.toUpperCase()} title={copy.benefitsTitle}>
+      <Section
+        tone="paper"
+        eyebrow={copy.benefitsTitle.toUpperCase()}
+        title={benefitsT.head}
+        titleEm={benefitsT.em}
+      >
         <FeatureGrid
           items={copy.benefits.map((b, i) => ({ id: `b-${i}`, ...b }))}
           columns={copy.benefits.length >= 4 ? 4 : 3}
@@ -194,7 +211,8 @@ export function ProductPageTemplate({
       <Section
         tone="sand"
         eyebrow={copy.processEyebrow ?? (isFr ? "Réservation" : "Booking")}
-        title={copy.processTitle}
+        title={processT.head}
+        titleEm={processT.em}
       >
         <ProcessSteps steps={copy.processSteps.map((s, i) => ({ id: `s-${i}`, ...s }))} />
       </Section>
@@ -203,7 +221,8 @@ export function ProductPageTemplate({
       <Section
         tone="mocha"
         eyebrow={copy.metricsEyebrow ?? (isFr ? "Chiffres" : "By the numbers")}
-        title={copy.metricsTitle}
+        title={metricsT.head}
+        titleEm={metricsT.em}
       >
         <MetricsRow
           stats={copy.metrics.map((m, i) => ({
@@ -394,6 +413,7 @@ function WhySection({
       tone="paper"
       eyebrow={isFr ? "L'enjeu" : "Why it matters"}
       title={why.title}
+      {...(why.titleEm ? { titleEm: why.titleEm } : {})}
       description={why.intro}
     >
       <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
