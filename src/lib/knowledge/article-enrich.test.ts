@@ -92,6 +92,15 @@ describe("extractSources", () => {
     expect(extractSources("<p>Texte sans lien ni source.</p>")).toEqual([]);
   });
 
+  it("ignore une fausse mention 'Source :' en prose (faux positif)", () => {
+    expect(extractSources("<p>Source : voir ci-dessous pour le détail.</p>")).toEqual([]);
+  });
+
+  it("garde une 'Source :' textuelle crédible (nom propre / année)", () => {
+    expect(extractSources("<p>Source : Gartner 2024</p>")[0]?.label).toContain("Gartner");
+    expect(extractSources("<p>Référence : étude INSEE</p>")[0]?.label).toContain("INSEE");
+  });
+
   it("sourcesToCitations ne garde que les sources liées", () => {
     const c = sourcesToCitations([
       { label: "INSEE", href: "https://insee.fr" },

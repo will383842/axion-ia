@@ -157,6 +157,19 @@ function cleanLabel(raw: string): string {
 }
 
 /**
+ * Une mention « Source : … » textuelle n'est retenue que si elle ressemble à
+ * une source citable : présence d'un nom propre (majuscule), d'une année, ou
+ * d'un domaine. Évite de capturer de la prose ("Source : voir ci-dessous").
+ */
+function looksLikeSource(label: string): boolean {
+  return (
+    /[A-ZÀ-ÖØ-Þ]/.test(label) || // nom propre / organisme (INSEE, Syntec…)
+    /\b(?:19|20)\d{2}\b/.test(label) || // année (2024…)
+    /[a-z0-9-]+\.[a-z]{2,}\b/i.test(label) // domaine (insee.fr…)
+  );
+}
+
+/**
  * Extrait les sources/références citées d'un body Tiptap **BRUT** (pré-sanitize,
  * car `sanitizeTiptapHtml` strippe les `href`). Deux signaux complémentaires :
  *  1. liens `<a href>` externes (deviennent des `CreativeWork` dans le JSON-LD) ;
@@ -192,7 +205,8 @@ export function extractSources(rawBody: string): SourceRef[] {
     .replace(/<[^>]*>/g, "");
   const S = /\b(?:sources?|r[ée]f[ée]rences?)\s*:\s+([^\n<]{3,180})/gi;
   while ((m = S.exec(flat)) !== null) {
-    add(m[1] ?? "", null);
+    const raw = m[1] ?? "";
+    if (looksLikeSource(raw)) add(raw, null);
   }
 
   return out;

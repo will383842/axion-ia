@@ -10,6 +10,8 @@
 
 import { Section } from "@/components/layout/Section";
 import { Link } from "@/i18n/navigation";
+import { JsonLd } from "@/components/marketing/JsonLd";
+import { SITE_URL } from "@/lib/seo";
 import type { RelatedKbCard } from "@/lib/knowledge/related-entries";
 
 const TYPE_LABEL: Readonly<Record<string, string>> = {
@@ -38,8 +40,24 @@ export function KbRelatedEntries({ items }: KbRelatedEntriesProps) {
   // Un cluster a besoin d'au moins 2 voisins pour avoir du sens.
   if (items.length < 2) return null;
 
+  // ItemList AEO/GEO — rend le cluster lisible par les moteurs/LLM (même shape
+  // que SuggestedContent.buildItemListJsonLd, pour cohérence sitewide).
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Sur le même sujet",
+    numberOfItems: items.length,
+    itemListElement: items.map((card, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      url: `${SITE_URL}/fr/connaissances/${card.slug}`,
+      name: card.title,
+    })),
+  };
+
   return (
     <Section tone="sand" eyebrow="Cluster" title="Sur le même" titleEm="sujet">
+      <JsonLd data={itemListJsonLd} />
       <ul className="-mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((card) => {
           const typeLabel = TYPE_LABEL[card.type] ?? "Ressource";
