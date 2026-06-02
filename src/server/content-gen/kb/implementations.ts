@@ -409,15 +409,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     verticales: ["implementations"],
     confidence: 0.78,
   },
-  {
-    id: "impl-043",
-    text: "BPI France finance jusqu'à 50 % des projets d'implémentation IA pour les PME éligibles via le dispositif « Prêt Transformation Numérique » (PTN) — montant maximum de 100 000 € pour les projets IA à fort impact opérationnel." /* price-exempt: stat marché tierce */,
-    source: "BPI France — Dispositif Prêt Transformation Numérique 2025",
-    sourceUrl: "https://www.bpifrance.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.82,
-  },
   // ── Technos dominantes ────────────────────────────────────────────────────
   {
     id: "impl-044",
@@ -693,16 +684,6 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
     confidence: 0.9,
-  },
-  // ── Accessibilité financière ──────────────────────────────────────────────
-  {
-    id: "impl-073",
-    text: "Le crédit d'impôt innovation (CII) est applicable aux dépenses de développement de prototypes IA pour les PME françaises — permettant de récupérer 20 % des dépenses éligibles (jusqu'à 400 000 € de dépenses), soit un remboursement pouvant atteindre 80 000 € pour un projet IA innovant." /* price-exempt: stat marché tierce */,
-    source: "Direction Générale des Finances Publiques — Guide Crédit Impôt Innovation 2025",
-    sourceUrl: "https://www.impots.gouv.fr",
-    verifiedAt: "2026-05-22",
-    verticales: ["implementations"],
-    confidence: 0.87,
   },
   // ── Chiffres OCDE supplémentaires ─────────────────────────────────────────
   {
