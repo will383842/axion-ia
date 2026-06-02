@@ -1,6 +1,6 @@
 // AUTO-GÉNÉRÉ 2026-06-02 — contenu FR DISTINCT + PUNCHY par sous-page /implementation.
-// why/benefits/metrics courts & aérés (intro ≤18 mots, descriptions ≤14 mots,
-// 0 jargon, métriques à label clair) + why.titleEm (accent terracotta).
+// + avatars d'avis (réutilisation des 6 portraits Unsplash du hub, matchés par
+// genre, distincts par page ; crédits photographes obligatoires CGU Unsplash §6).
 // FR uniquement (EN non live, 301→FR).
 import type { ImplementationSlug } from "./implementation";
 
@@ -12,7 +12,15 @@ export interface ImplementationFrOverride {
   maturityIntro: string;
   ctaBlockTitle: string;
   ctaBlockDescription: string;
-  testimonials: ReadonlyArray<{ id: string; quote: string; author: string; role: string }>;
+  testimonials: ReadonlyArray<{
+    id: string;
+    quote: string;
+    author: string;
+    role: string;
+    avatar: string;
+    photographer: string;
+    photographerUrl: string;
+  }>;
   why: {
     title: string;
     titleEm: string;
@@ -127,6 +135,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Les solutions sur étagère plafonnaient sur notre vocabulaire réglementaire. Un modèle fine-tuné sur nos propres dossiers a enfin donné des réponses exploitables par les équipes métier, sans les reformuler à chaque fois.",
         author: "Bertrand A.",
         role: "Directeur de l'innovation, groupe d'assurance, grand compte",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "ia-custom-2",
@@ -134,6 +145,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "L'hébergement en cloud privé était une condition absolue pour notre direction juridique. Maîtriser toute la chaîne d'indexation, jusqu'au choix de la vector DB, a levé les réticences internes sur la traçabilité.",
         author: "Nadia K.",
         role: "DSI, laboratoire pharmaceutique, ETI",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "ia-custom-3",
@@ -141,6 +155,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Ce qui a fait la différence, c'est la partie MLOps et l'équipe dédiée : le système ne s'est pas dégradé après la mise en production, il a été suivi et réentraîné au fil de nos évolutions métier.",
         author: "Olivier P.",
         role: "Responsable data, énergéticien, grand compte",
+        avatar: "/images/reviews/avis-impl-thomas.webp",
+        photographer: "Joseph Gonzalez",
+        photographerUrl: "https://unsplash.com/@miracletwentyone",
       },
     ],
     why: {
@@ -268,6 +285,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Le chatbot relié à notre base d'articles traite seul la majorité des demandes de niveau 1 et passe la main proprement dès que le sujet sort de son périmètre. Nos agents se concentrent enfin sur les cas complexes.",
         author: "Camille V.",
         role: "Responsable support client, éditeur de logiciel SaaS, ETI",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "chatbot-2",
@@ -275,6 +295,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Sur notre site et notre app, l'assistant répond aux questions courantes sur les commandes et les retours, avec un renvoi vers la fiche concernée. Les clients obtiennent une réponse immédiate sans attendre un agent.",
         author: "Yann L.",
         role: "DSI, e-commerçant mode, PME",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "chatbot-3",
@@ -282,6 +305,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "L'assistant guide les usagers vers la bonne démarche et reformule en langage clair des informations parfois arides. Quand la question dépasse son cadre, il oriente vers le bon service plutôt que de tenter une réponse approximative.",
         author: "Inès F.",
         role: "Directrice de la relation usagers, collectivité",
+        avatar: "/images/reviews/avis-impl-nadia.webp",
+        photographer: "Christina @ wocintechchat.com",
+        photographerUrl: "https://unsplash.com/@wocintechchat",
       },
     ],
     why: {
@@ -408,6 +434,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Nos relances de factures et nos rappels de paiement partent désormais tout seuls au bon moment, et chaque échéance suit son propre chemin de relance. L'équipe compta a récupéré ses fins de mois.",
         author: "Claire M.",
         role: "DAF, cabinet d'expertise comptable, PME",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "processus-2",
@@ -415,6 +444,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "L'enchaînement réception de commande, planification de tournée et confirmation client se déroule sans qu'on rouvre trois logiciels. Les exceptions remontent toutes seules à la bonne personne.",
         author: "Damien R.",
         role: "Directeur des opérations, transporteur-logisticien, ETI",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "processus-3",
@@ -422,6 +454,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Le parcours devis-validation-facturation est enchaîné de bout en bout, avec les bons niveaux d'approbation selon le montant. On a arrêté de perdre des dossiers entre deux boîtes mail.",
         author: "Awa S.",
         role: "Responsable ADV, agroalimentaire, ETI",
+        avatar: "/images/reviews/avis-impl-nadia.webp",
+        photographer: "Christina @ wocintechchat.com",
+        photographerUrl: "https://unsplash.com/@wocintechchat",
       },
     ],
     why: {
@@ -549,6 +584,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Nos données clients et dossiers étaient éparpillées entre messagerie, tableurs et actes scannés. Disposer enfin d'un référentiel normalisé et vérifié nous a permis d'arrêter de bricoler avant chaque projet.",
         author: "Pierre-Yves G.",
         role: "Associé, cabinet juridique, PME",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "structuration-2",
@@ -556,6 +594,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Avant, chaque équipe avait sa propre façon de nommer et ranger l'information. Le schéma de données unifié qu'on a posé ensemble sert maintenant de base commune à tout ce qu'on construit.",
         author: "Leïla B.",
         role: "Responsable back-office, courtier en assurance, PME",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "structuration-3",
@@ -563,6 +604,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "On voulait lancer des projets d'IA, mais nos données n'étaient pas exploitables. Mettre le modèle data au carré en amont a tout débloqué pour la suite.",
         author: "Hugo C.",
         role: "Directeur technique, foncière immobilière, ETI",
+        avatar: "/images/reviews/avis-impl-thomas.webp",
+        photographer: "Joseph Gonzalez",
+        photographerUrl: "https://unsplash.com/@miracletwentyone",
       },
     ],
     why: {
@@ -691,6 +735,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "L'enrichissement s'est branché sur notre HubSpot sans rien changer pour les commerciaux : le secteur et l'effectif sont déjà renseignés à l'arrivée du lead, et l'équipe perd moins de temps à se documenter avant un appel.",
         author: "Sandrine T.",
         role: "Directrice commerciale, négoce BtoB, ETI",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "crm-erp-2",
@@ -698,6 +745,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Le scoring s'appuie sur notre vrai historique Dynamics et pas sur une recette toute faite. On priorise les comptes qui ont réellement une chance d'aboutir, et les prévisions collent enfin à ce que vit le terrain.",
         author: "Mehdi O.",
         role: "DSI, fabricant d'équipements industriels, ETI",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "crm-erp-3",
@@ -705,6 +755,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Les comptes-rendus de visite se génèrent à partir des notes saisies dans l'outil, et une alerte nous prévient quand un client habituel ralentit ses commandes. On réagit avant de perdre le compte, sans avoir changé de CRM.",
         author: "Florence J.",
         role: "Responsable CRM, distribution spécialisée, grand compte",
+        avatar: "/images/reviews/avis-impl-nadia.webp",
+        photographer: "Christina @ wocintechchat.com",
+        photographerUrl: "https://unsplash.com/@wocintechchat",
       },
     ],
     why: {
@@ -831,6 +884,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Nos PV de chantier et nos comptes-rendus de réunion sont désormais générés depuis nos modèles, avec le bon cadre contractuel. La rédaction qui mobilisait une demi-journée se fait en quelques minutes, et nos conducteurs de travaux se concentrent sur le terrain.",
         author: "Antoine W.",
         role: "Directeur de travaux, groupe BTP, ETI",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "documents-2",
@@ -838,6 +894,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Les courriers et comptes-rendus entrants sont lus, rattachés au bon dossier patient et routés vers le bon pôle automatiquement. Plus de pile à trier le matin, et rien ne se perd entre les services.",
         author: "Rachida E.",
         role: "Responsable qualité, clinique privée, ETI",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "documents-3",
@@ -845,6 +904,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Retrouver la bonne clause dans nos milliers de dossiers archivés relevait du casse-tête. La recherche sémantique nous donne le passage exact et le document source, ce qui nous permet de vérifier avant de répondre.",
         author: "Vincent H.",
         role: "Responsable conformité, banque de détail, grand compte",
+        avatar: "/images/reviews/avis-impl-thomas.webp",
+        photographer: "Joseph Gonzalez",
+        photographerUrl: "https://unsplash.com/@miracletwentyone",
       },
     ],
     why: {
@@ -971,6 +1033,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Notre agent de veille concurrentielle décide seul quelles sources approfondir, recoupe les signaux et nous remet une note d'analyse exploitable. On débat des conclusions au lieu d'éplucher les pages nous-mêmes.",
         author: "Julie N.",
         role: "Directrice associée, cabinet de conseil / ESN, ETI",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "agents-2",
@@ -978,6 +1043,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "L'agent traite le premier niveau de nos demandes candidats : il va chercher l'info dans nos outils, tranche les cas simples et n'escalade que ce qui mérite un humain. Le journal des actions nous a rassurés avant la mise en production.",
         author: "Karim Z.",
         role: "Responsable recrutement, cabinet RH, PME",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "agents-3",
@@ -985,6 +1053,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Pour le suivi éditorial, plusieurs agents se répartissent la collecte des sujets, la vérification et l'alerte. Chacun garde son périmètre et on reconstitue facilement qui a fait quoi quand un point demande validation.",
         author: "Élodie Q.",
         role: "Rédactrice en chef, groupe de presse, PME",
+        avatar: "/images/reviews/avis-impl-nadia.webp",
+        photographer: "Christina @ wocintechchat.com",
+        photographerUrl: "https://unsplash.com/@wocintechchat",
       },
     ],
     why: {
@@ -1111,6 +1182,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "L'IA répond directement dans notre Slack et va chercher l'info dans Notion et nos APIs internes. Personne ne change d'outil, et le réflexe est venu tout seul.",
         author: "Thomas X.",
         role: "DSI, groupe industriel, grand compte",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "integrations-2",
@@ -1118,6 +1192,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "La liaison avec Google Workspace et notre messagerie tourne sans accroc : les rate limits sont gérés proprement, on n'a jamais subi de blocage côté fournisseur.",
         author: "Sofia M.",
         role: "CTO, fintech, scale-up",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "integrations-3",
@@ -1125,6 +1202,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Ce que je retiens, c'est de voir où l'IA est sollicitée, connecteur par connecteur, entre Teams et nos outils internes. Je peux arbitrer en connaissance de cause.",
         author: "Renaud D.",
         role: "Responsable IT, enseigne de retail, ETI",
+        avatar: "/images/reviews/avis-impl-thomas.webp",
+        photographer: "Joseph Gonzalez",
+        photographerUrl: "https://unsplash.com/@miracletwentyone",
       },
     ],
     why: {
@@ -1251,6 +1331,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "On voulait tester l'IA sans réécrire nos scénarios Make. Axion-IA a branché le tri et le résumé des demandes dessus en quelques jours, et nous a dit franchement à partir de quel volume il faudrait passer en code custom.",
         author: "Manon B.",
         role: "Directrice, agence marketing, PME",
+        avatar: "/images/reviews/avis-impl-catherine.webp",
+        photographer: "Michael Dam",
+        photographerUrl: "https://unsplash.com/@michaeldam",
       },
       {
         id: "no-code-2",
@@ -1258,6 +1341,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Notre base Airtable est le coeur de notre suivi bénévoles et dons. Ils ont greffé la qualification IA directement dessus, proprement documentée, sans nous enfermer ni nous forcer à migrer.",
         author: "Cédric L.",
         role: "Responsable des opérations, association d'intérêt général",
+        avatar: "/images/reviews/avis-impl-marc.webp",
+        photographer: "Jurica Koletić",
+        photographerUrl: "https://unsplash.com/@juricakoletic",
       },
       {
         id: "no-code-3",
@@ -1265,6 +1351,9 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
           "Ils ont posé la vraie question dès le départ : no-code ou sur-mesure. Pour cette première brique, la greffe sur nos outils actuels suffisait, et ils ont prévu la sortie au cas où on grandirait.",
         author: "Aurélie P.",
         role: "Gérante, organisme de formation, TPE",
+        avatar: "/images/reviews/avis-impl-nadia.webp",
+        photographer: "Christina @ wocintechchat.com",
+        photographerUrl: "https://unsplash.com/@wocintechchat",
       },
     ],
     why: {

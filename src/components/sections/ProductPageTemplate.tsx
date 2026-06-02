@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -32,6 +33,9 @@ interface Testimonial {
   quote: string;
   author: string;
   role: string;
+  avatar?: string;
+  photographer?: string;
+  photographerUrl?: string;
 }
 
 interface MaturityLevel {
@@ -378,23 +382,81 @@ function TestimonialsSection({
             key={t.id}
             className="bg-bg border-border hover:border-terracotta/40 hover:shadow-card flex flex-col rounded-2xl border p-6 transition-all sm:p-7"
           >
-            <span
-              aria-hidden="true"
-              className="text-terracotta-deep block text-5xl leading-none italic"
-              style={{ fontFamily: "var(--font-serif)" }}
+            <div
+              className="text-terracotta flex gap-0.5"
+              role="img"
+              aria-label={isFr ? "Note : 5 étoiles sur 5" : "Rating: 5 out of 5 stars"}
             >
-              &ldquo;
-            </span>
-            <blockquote className="text-fg mt-2 flex-1 text-base leading-relaxed sm:text-lg">
-              {t.quote}
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg
+                  key={i}
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-4 w-4"
+                >
+                  <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z" />
+                </svg>
+              ))}
+            </div>
+            <blockquote className="text-fg mt-4 flex-1 text-[15px] leading-relaxed">
+              «&nbsp;{t.quote}&nbsp;»
             </blockquote>
-            <figcaption className="border-border mt-6 border-t pt-4">
-              <p className="text-fg text-sm font-semibold">{t.author}</p>
-              <p className="text-fg-muted text-xs">{t.role}</p>
+            <figcaption className="border-border mt-6 flex items-center gap-3 border-t pt-4">
+              {t.avatar ? (
+                <Image
+                  src={t.avatar}
+                  alt={t.author}
+                  width={44}
+                  height={44}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="44px"
+                  className="bg-terracotta-soft h-11 w-11 flex-shrink-0 rounded-full object-cover"
+                />
+              ) : null}
+              <div className="min-w-0">
+                <p className="text-fg text-sm font-semibold">{t.author}</p>
+                <p className="text-fg-muted text-xs">{t.role}</p>
+              </div>
             </figcaption>
           </figure>
         ))}
       </div>
+
+      {/* Crédit Unsplash obligatoire (CGU API §6) — portraits réutilisés. */}
+      {items.some((t) => t.photographer) ? (
+        <p className="text-fg-muted mt-10 text-center text-[12px] leading-relaxed">
+          {isFr ? "Portraits : " : "Portraits: "}
+          {Array.from(
+            new Map(
+              items.filter((t) => t.photographer).map((t) => [t.photographer as string, t]),
+            ).values(),
+          ).map((t, i) => (
+            <span key={t.photographer}>
+              {i > 0 ? ", " : ""}
+              <a
+                href={`${t.photographerUrl}?utm_source=axion-ia&utm_medium=referral`}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="hover:text-fg underline underline-offset-2"
+              >
+                {t.photographer}
+              </a>
+            </span>
+          ))}
+          {isFr ? " sur " : " on "}
+          <a
+            href="https://unsplash.com?utm_source=axion-ia&utm_medium=referral"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="hover:text-fg underline underline-offset-2"
+          >
+            Unsplash
+          </a>
+          .
+        </p>
+      ) : null}
     </Section>
   );
 }

@@ -65,7 +65,16 @@ interface PageCopy {
     levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
   };
   /** Optionnel — 3 avis représentatifs distincts (rendus par ProductPageTemplate). */
-  testimonials?: ReadonlyArray<{ id: string; quote: string; author: string; role: string }>;
+  testimonials?: ReadonlyArray<{
+    id: string;
+    quote: string;
+    author: string;
+    role: string;
+    /** Portrait Unsplash réutilisé (crédit photographe obligatoire). */
+    avatar?: string;
+    photographer?: string;
+    photographerUrl?: string;
+  }>;
   /** Optionnel — section "Pourquoi ce cas d'usage" (rendue après le hero). */
   why?: {
     title: string;
