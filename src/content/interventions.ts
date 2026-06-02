@@ -154,6 +154,18 @@ interface PageCopy {
     intro?: string;
     levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
   };
+  /** Optionnel — 2-3 testimonials clients illustratifs (D6 Proof), même shape
+      et même traitement que /implementation. Photos réutilisées (gender-matched)
+      depuis /images/reviews/ + crédit photographe Unsplash. */
+  testimonials?: ReadonlyArray<{
+    id: string;
+    quote: string;
+    author: string;
+    role: string;
+    avatar?: string;
+    photographer?: string;
+    photographerUrl?: string;
+  }>;
   metaSeo: { title: string; description: string };
   /** Timeline détaillée d'une journée d'intervention/formation (optionnel,
       réservé au Module 1 Interventions). 1 ou 2 jours selon le format. */
@@ -521,6 +533,38 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ctaBlockTitle: "Prête à démarrer concrètement avec l'IA ?",
       ctaBlockDescription:
         "Réservez la prochaine intervention disponible. Le calendrier maison affiche les créneaux en temps réel.",
+      testimonials: [
+        {
+          id: "ess-t1",
+          quote:
+            "Une équipe partie de zéro. Le soir, chacun avait repéré 2 à 3 usages concrets sur ses propres tâches. Concret, sans jargon, directement applicable.",
+          author: "Sabrina T.",
+          role: "Office manager · cabinet d'expertise comptable",
+          avatar: "/images/reviews/avis-impl-catherine.webp",
+          photographer: "Michael Dam",
+          photographerUrl: "https://unsplash.com/@michaeldam",
+        },
+        {
+          id: "ess-t2",
+          quote:
+            "Enfin une journée qui parle notre langue. On est repartis avec des réflexes IA utilisables dès le lundi matin, pas de la théorie.",
+          author: "Damien R.",
+          role: "Dirigeant · PME du bâtiment",
+          avatar: "/images/reviews/avis-impl-marc.webp",
+          photographer: "Jurica Koletić",
+          photographerUrl: "https://unsplash.com/@juricakoletic",
+        },
+        {
+          id: "ess-t3",
+          quote:
+            "Mes commerciaux ont vu en une journée ce qu'ils cherchaient depuis des mois. Le temps gagné s'est senti dès la semaine suivante.",
+          author: "Karim B.",
+          role: "Responsable commercial · distribution B2B",
+          avatar: "/images/reviews/avis-impl-thomas.webp",
+          photographer: "Joseph Gonzalez",
+          photographerUrl: "https://unsplash.com/@miracletwentyone",
+        },
+      ],
       metaSeo: {
         title: `Intervention IA Essentielle · cabinet Axion-IA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
         description: `Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'usages IA opérationnels. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
@@ -806,6 +850,38 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Allez au fond du sujet en 2 jours",
       ctaBlockDescription: `Réservez la prochaine Approfondie disponible — calendrier en temps réel. Tarif fixe à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}, 3 paliers d'effectif.`,
+      testimonials: [
+        {
+          id: "app-t1",
+          quote:
+            "Le deuxième jour change tout. On n'a pas écouté des slides : on a co-construit nos automatisations sur nos vrais outils, avec un plan derrière.",
+          author: "Hélène M.",
+          role: "Directrice des opérations · ETI de services",
+          avatar: "/images/reviews/avis-impl-nadia.webp",
+          photographer: "Christina @ wocintechchat.com",
+          photographerUrl: "https://unsplash.com/@wocintechchat",
+        },
+        {
+          id: "app-t2",
+          quote:
+            "Le plan d'action 30 jours, on l'a vraiment suivi. Trois mois après, l'équipe est autonome sur ses propres cas.",
+          author: "Vincent D.",
+          role: "Responsable SI · PME industrielle",
+          avatar: "/images/reviews/avis-impl-marc.webp",
+          photographer: "Jurica Koletić",
+          photographerUrl: "https://unsplash.com/@juricakoletic",
+        },
+        {
+          id: "app-t3",
+          quote:
+            "Deux jours pour passer de la curiosité à la maîtrise. Le format intra, sur nos propres dossiers, fait toute la différence.",
+          author: "Aurélie P.",
+          role: "Responsable RH · groupe régional",
+          avatar: "/images/reviews/avis-impl-catherine.webp",
+          photographer: "Michael Dam",
+          photographerUrl: "https://unsplash.com/@michaeldam",
+        },
+      ],
     },
     en: {
       ...makeEn({
@@ -1177,6 +1253,38 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Gagnez plusieurs heures par semaine et par personne",
       ctaBlockDescription: `Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe ${TEMPS_PRICE_FR}, pas de surprise.`,
+      testimonials: [
+        {
+          id: "gdt-t1",
+          quote:
+            "On a chiffré les heures perdues le matin, on les a automatisées l'après-midi. Plusieurs heures récupérées chaque semaine, mesurées.",
+          author: "Mathieu G.",
+          role: "Gérant · agence immobilière",
+          avatar: "/images/reviews/avis-impl-thomas.webp",
+          photographer: "Joseph Gonzalez",
+          photographerUrl: "https://unsplash.com/@miracletwentyone",
+        },
+        {
+          id: "gdt-t2",
+          quote:
+            "Mes tâches répétitives — comptes-rendus, mails types, relances — passent maintenant par l'IA. Je respire, et je me concentre sur l'essentiel.",
+          author: "Claire V.",
+          role: "Assistante de direction · PME",
+          avatar: "/images/reviews/avis-impl-nadia.webp",
+          photographer: "Christina @ wocintechchat.com",
+          photographerUrl: "https://unsplash.com/@wocintechchat",
+        },
+        {
+          id: "gdt-t3",
+          quote:
+            "Le reporting hebdo me prenait une demi-journée. Aujourd'hui, une heure. Rentabilisé dès la première semaine de retour.",
+          author: "Romain C.",
+          role: "Responsable ADV · négoce",
+          avatar: "/images/reviews/avis-impl-marc.webp",
+          photographer: "Jurica Koletić",
+          photographerUrl: "https://unsplash.com/@juricakoletic",
+        },
+      ],
     },
     en: {
       ...makeEn({
@@ -1362,6 +1470,38 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
       ctaBlockDescription: `Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe ${CLAUDE_PRICE_FR} pour 2 à 8 personnes.`,
+      testimonials: [
+        {
+          id: "cld-t1",
+          quote:
+            "On utilisait Claude en surface. La journée nous a ouvert Projects et la mémoire de projet — un tout autre niveau de travail.",
+          author: "Léa F.",
+          role: "Cheffe de projet · scale-up",
+          avatar: "/images/reviews/avis-impl-catherine.webp",
+          photographer: "Michael Dam",
+          photographerUrl: "https://unsplash.com/@michaeldam",
+        },
+        {
+          id: "cld-t2",
+          quote:
+            "Claude Code adopté par toute l'équipe tech dès le lendemain. Génération, refactoring, lecture de codebase : on ne revient pas en arrière.",
+          author: "Antoine B.",
+          role: "Lead dev · éditeur de logiciel",
+          avatar: "/images/reviews/avis-impl-thomas.webp",
+          photographer: "Joseph Gonzalez",
+          photographerUrl: "https://unsplash.com/@miracletwentyone",
+        },
+        {
+          id: "cld-t3",
+          quote:
+            "Prompts longs, structurés, system prompts… j'ai gagné en profondeur d'analyse sur tous mes livrables. Une journée qui se rentabilise vite.",
+          author: "Margaux D.",
+          role: "Consultante · cabinet de conseil",
+          avatar: "/images/reviews/avis-impl-nadia.webp",
+          photographer: "Christina @ wocintechchat.com",
+          photographerUrl: "https://unsplash.com/@wocintechchat",
+        },
+      ],
       metaSeo: {
         title: "Expert Claude (Anthropic) · Formation IA outil-spécifique · Axion-IA",
         description:
