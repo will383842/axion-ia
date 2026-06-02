@@ -7,7 +7,11 @@
 // 0 financement, EN = miroir concis (locale 301→FR). Axe siteProjectType aligné
 // sur les keywords g3h (augmentation / native / transverse).
 
-export type SitesWebSlug = "chatbot-rag" | "recherche-semantique";
+export type SitesWebSlug =
+  | "chatbot-rag"
+  | "recherche-semantique"
+  | "sans-refonte"
+  | "plateforme-native";
 
 export type SitesWebProjectType = "augmentation" | "native" | "transverse";
 
@@ -595,6 +599,511 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
             title: "Visitors don't speak your jargon",
             description:
               "They search with their words. Semantic search bridges their language and your catalogue.",
+          },
+        ],
+      },
+    },
+  },
+  // ── AUGMENTATION : ajouter l'IA sans refonte ───────────────────────────────
+  {
+    slug: "sans-refonte",
+    projectType: "augmentation",
+    pathFr: "/sites-web-augmentes/sans-refonte",
+    pathEn: "/sites-web-augmentes/sans-refonte",
+    accent: "primary",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "L'IA greffée sur l'existant",
+      titleEn: "AI grafted onto the existing",
+      blocks: [
+        {
+          icon: "Plug",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "On garde votre site",
+          labelEn: "We keep your site",
+          detailFr: "Aucune refonte : on greffe l'IA sur ce qui tourne déjà.",
+          detailEn: "No rebuild: we graft AI onto what already runs.",
+        },
+        {
+          icon: "Sparkles",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "On ajoute la brique utile",
+          labelEn: "We add the useful brick",
+          detailFr: "Chatbot, recherche, automatisation — selon votre vrai besoin.",
+          detailEn: "Chatbot, search, automation — per your real need.",
+        },
+        {
+          icon: "Rocket",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "En ligne vite",
+          labelEn: "Live fast",
+          detailFr: "Quelques semaines, pas un projet de refonte de plusieurs mois.",
+          detailEn: "A few weeks, not a multi-month rebuild.",
+        },
+      ],
+      ariaFr:
+        "Schéma : on garde votre site existant, on y greffe la brique IA utile, en ligne en quelques semaines sans refonte.",
+      ariaEn:
+        "Diagram: we keep your existing site, graft the useful AI brick, live in weeks with no rebuild.",
+    },
+    fr: {
+      eyebrow: "Augmentation · sans refonte",
+      title: "Ajoutez l'IA à votre site",
+      titleEm: "sans tout refaire",
+      answer:
+        "Pas besoin de refondre votre site pour profiter de l'IA. On greffe la brique utile (chatbot ancré, recherche sémantique, automatisation) sur votre site existant, quelle que soit votre technologie — en quelques semaines, sans casser ce qui marche déjà.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Zéro refonte, zéro régression",
+          description:
+            "On ne touche pas à votre site : on ajoute une couche IA par-dessus. Ce qui marche aujourd'hui continue de marcher.",
+        },
+        {
+          title: "Vite en ligne",
+          description:
+            "Quelques semaines au lieu d'un projet de refonte de plusieurs mois. Vous mesurez l'impact rapidement.",
+        },
+        {
+          title: "Sur n'importe quelle technologie",
+          description:
+            "WordPress, Shopify, Webflow, Next.js, Laravel… on s'adapte à votre stack, sans vous imposer la nôtre.",
+        },
+        {
+          title: "Forfait fixe, code à vous",
+          description: "Périmètre clair, prix ferme, pas de régie. Le code livré vous appartient.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On regarde votre site",
+          description: "Stack, contenus, objectifs : ce qui a le plus d'impact pour vous.",
+        },
+        {
+          title: "On choisit la bonne brique",
+          description: "Chatbot, recherche, automatisation : une seule chose, bien faite.",
+        },
+        {
+          title: "On greffe sans casser",
+          description: "Intégration par-dessus l'existant, testée sur vos vrais cas.",
+        },
+        {
+          title: "On met en ligne et on mesure",
+          description: "Impact suivi, itérations selon les retours.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "0", suffix: "refonte", label: "On garde votre site" },
+        { number: "≈ sem.", suffix: "", label: "Mise en ligne rapide" },
+        { number: "UE", suffix: "", label: "Hébergement conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "refonte",
+          question: "Faut-il refondre mon site ?",
+          answer:
+            "Non. On greffe l'IA par-dessus votre site existant, sans refonte. C'est tout l'intérêt : profiter de l'IA sans le coût et le risque d'un nouveau site.",
+        },
+        {
+          id: "stack",
+          question: "Et si mon site est sur une vieille techno ?",
+          answer:
+            "On s'adapte à la plupart des stacks (WordPress, Shopify, Webflow, frameworks). On valide la faisabilité au cadrage, avant tout engagement.",
+        },
+        {
+          id: "brique",
+          question: "Quelle brique IA choisir ?",
+          answer:
+            "Celle qui a le plus d'impact pour vous : un chatbot ancré, une recherche sémantique, une automatisation. On vous oriente au cadrage.",
+        },
+        {
+          id: "delai",
+          question: "Combien de temps ?",
+          answer:
+            "Quelques semaines selon la brique. Périmètre et délai fermes sous 48 h après votre description.",
+        },
+      ],
+      ctaBlockTitle: "Profitez de l'IA sans refaire votre site",
+      ctaBlockDescription:
+        "Décrivez votre site et votre besoin : on revient sous 48 h avec la brique la plus utile, un forfait fixe et un délai.",
+      why: {
+        title: "Refondre,",
+        titleEm: "le faux réflexe",
+        intro:
+          "On croit souvent qu'il faut « tout refaire » pour avoir de l'IA. C'est faux, lent et risqué.",
+        points: [
+          {
+            title: "Une refonte, c'est long et risqué",
+            description:
+              "Des mois de chantier, des régressions, un budget lourd — pour au final ajouter ce qu'on peut greffer aujourd'hui.",
+          },
+          {
+            title: "L'augmentation va droit au but",
+            description:
+              "On ajoute la valeur IA là où elle compte, sur votre site actuel, sans tout remettre en jeu.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "Augmentation · no rebuild",
+      title: "Add AI to your site",
+      titleEm: "without redoing it all",
+      answer:
+        "You don't need to rebuild your site to benefit from AI. We graft the useful brick (grounded chatbot, semantic search, automation) onto your existing site, whatever your technology — in a few weeks, without breaking what already works.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "Zero rebuild, zero regression",
+          description:
+            "We don't touch your site: we add an AI layer on top. What works today keeps working.",
+        },
+        {
+          title: "Live fast",
+          description: "A few weeks instead of a multi-month rebuild. You measure impact quickly.",
+        },
+        {
+          title: "On any technology",
+          description: "WordPress, Shopify, Webflow, Next.js, Laravel… we adapt to your stack.",
+        },
+        {
+          title: "Fixed fee, code yours",
+          description: "Clear scope, firm price, no time-and-materials. Delivered code is yours.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We look at your site",
+          description: "Stack, content, goals: what has the most impact for you.",
+        },
+        {
+          title: "We pick the right brick",
+          description: "Chatbot, search, automation: one thing, done well.",
+        },
+        {
+          title: "We graft without breaking",
+          description: "Integration on top of the existing, tested on your real cases.",
+        },
+        { title: "We ship and measure", description: "Impact tracked, iterations from feedback." },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "0", suffix: "rebuild", label: "We keep your site" },
+        { number: "≈ wks", suffix: "", label: "Fast go-live" },
+        { number: "EU", suffix: "", label: "GDPR-compliant hosting" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "refonte",
+          question: "Do I need to rebuild my site?",
+          answer:
+            "No. We graft AI on top of your existing site, no rebuild — benefit from AI without the cost and risk of a new site.",
+        },
+        {
+          id: "stack",
+          question: "What if my site is on old tech?",
+          answer:
+            "We adapt to most stacks. We validate feasibility at scoping, before any commitment.",
+        },
+        {
+          id: "brique",
+          question: "Which AI brick to choose?",
+          answer:
+            "The one with the most impact for you: grounded chatbot, semantic search, automation. We guide you at scoping.",
+        },
+        {
+          id: "delai",
+          question: "How long?",
+          answer: "A few weeks depending on the brick. Firm scope and timeline within 48 h.",
+        },
+      ],
+      ctaBlockTitle: "Benefit from AI without redoing your site",
+      ctaBlockDescription:
+        "Describe your site and need: we come back within 48 h with the most useful brick, a fixed fee and a timeline.",
+      why: {
+        title: "Rebuilding,",
+        titleEm: "the false reflex",
+        intro:
+          "People often think they must « redo everything » to get AI. That's false, slow and risky.",
+        points: [
+          {
+            title: "A rebuild is long and risky",
+            description:
+              "Months of work, regressions, heavy budget — to ultimately add what can be grafted today.",
+          },
+          {
+            title: "Augmentation goes straight to the point",
+            description:
+              "We add AI value where it matters, on your current site, without putting everything at stake.",
+          },
+        ],
+      },
+    },
+  },
+
+  // ── NATIVE : plateforme SaaS IA-native ──────────────────────────────────────
+  {
+    slug: "plateforme-native",
+    projectType: "native",
+    pathFr: "/sites-web-augmentes/plateforme-native",
+    pathEn: "/sites-web-augmentes/plateforme-native",
+    accent: "purple",
+    hero: {
+      eyebrowFr: "Comment on construit",
+      eyebrowEn: "How we build",
+      titleFr: "Une plateforme pensée IA dès le départ",
+      titleEn: "A platform built AI-first",
+      blocks: [
+        {
+          icon: "Layers",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "Conçue autour de l'IA",
+          labelEn: "Designed around AI",
+          detailFr: "L'IA n'est pas un ajout : c'est le cœur du produit.",
+          detailEn: "AI isn't an add-on: it's the core of the product.",
+        },
+        {
+          icon: "Database",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Sur vos données métier",
+          labelEn: "On your business data",
+          detailFr: "Plateforme sur mesure, branchée sur votre métier réel.",
+          detailEn: "Bespoke platform, wired to your real business.",
+        },
+        {
+          icon: "ShieldCheck",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "À vous, hébergée UE",
+          labelEn: "Yours, EU-hosted",
+          detailFr: "Code livré, propriété totale, conforme RGPD.",
+          detailEn: "Code delivered, full ownership, GDPR-compliant.",
+        },
+      ],
+      ariaFr:
+        "Schéma : une plateforme SaaS conçue autour de l'IA, sur vos données métier, dont le code vous appartient et hébergée en UE.",
+      ariaEn:
+        "Diagram: a SaaS platform designed around AI, on your business data, code yours and EU-hosted.",
+    },
+    fr: {
+      eyebrow: "Native · plateforme SaaS IA",
+      title: "Créez une plateforme",
+      titleEm: "IA-native",
+      answer:
+        "Quand l'IA est au cœur de votre produit, on ne la greffe pas : on construit une plateforme sur mesure pensée autour d'elle dès la conception. Branchée sur vos données métier, hébergée en UE, code et propriété intégralement à vous.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "L'IA au cœur, pas en surcouche",
+          description:
+            "Architecture pensée pour l'IA dès le départ — pas un produit classique avec une fonctionnalité IA collée par-dessus.",
+        },
+        {
+          title: "Sur mesure pour votre métier",
+          description:
+            "On part de vos vrais flux, vos données, vos utilisateurs. La plateforme épouse votre activité, pas l'inverse.",
+        },
+        {
+          title: "Vous êtes propriétaire",
+          description:
+            "Code livré, propriété totale, pas de dépendance. Vous pouvez la faire évoluer avec qui vous voulez.",
+        },
+        {
+          title: "Souveraine et conforme",
+          description:
+            "Hébergement UE, conforme RGPD dès la conception — un argument pour vos propres clients.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On cadre le produit",
+          description: "Utilisateurs, flux, rôle exact de l'IA, périmètre du premier jalon.",
+        },
+        {
+          title: "On conçoit l'architecture",
+          description: "Fondations pensées IA + données, sécurité et conformité intégrées.",
+        },
+        {
+          title: "On construit par jalons",
+          description: "Livraisons régulières, testables, pas un tunnel de plusieurs mois.",
+        },
+        {
+          title: "On livre et on transfère",
+          description: "Code, documentation, propriété — vous gardez la main.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "IA", suffix: "first", label: "Au cœur du produit" },
+        { number: "100%", suffix: "", label: "Propriété du code à vous" },
+        { number: "UE", suffix: "", label: "Hébergement conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "vs-augmentation",
+          question: "Quelle différence avec greffer l'IA sur l'existant ?",
+          answer:
+            "L'augmentation ajoute l'IA à un site existant. Le natif construit une plateforme nouvelle quand l'IA EST le produit. On vous aide à trancher au cadrage.",
+        },
+        {
+          id: "propriete",
+          question: "À qui appartient le code ?",
+          answer:
+            "À vous, intégralement. On livre le code et la documentation — aucune dépendance technique à Axion-IA.",
+        },
+        {
+          id: "perimetre",
+          question: "Comment éviter l'effet tunnel ?",
+          answer:
+            "On livre par jalons testables. Vous voyez le produit grandir et arbitrez en continu, plutôt que d'attendre une livraison finale.",
+        },
+        {
+          id: "rgpd",
+          question: "Et la conformité ?",
+          answer:
+            "RGPD et hébergement UE pensés dès la conception — y compris comme argument vis-à-vis de vos propres clients.",
+        },
+      ],
+      ctaBlockTitle: "Construisez votre plateforme IA-native",
+      ctaBlockDescription:
+        "Décrivez votre produit : on revient sous 48 h avec un premier jalon cadré, un forfait fixe et un délai garanti.",
+      why: {
+        title: "Greffer ne suffit pas",
+        titleEm: "toujours",
+        intro:
+          "Quand l'IA est le cœur de la valeur, l'ajouter à un produit classique bride tout. Mieux vaut construire autour d'elle.",
+        points: [
+          {
+            title: "Une surcouche plafonne vite",
+            description:
+              "Greffer l'IA sur une base non prévue pour elle finit par coincer (données, perfs, UX). Le natif n'a pas ce plafond.",
+          },
+          {
+            title: "Le natif, c'est un produit, pas un patch",
+            description:
+              "Architecture, données et expérience pensées pour l'IA — un vrai avantage produit, pas une démo.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "Native · AI SaaS platform",
+      title: "Build an",
+      titleEm: "AI-native platform",
+      answer:
+        "When AI is at the heart of your product, we don't graft it: we build a bespoke platform designed around it from day one. Wired to your business data, EU-hosted, code and ownership fully yours.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "AI at the core, not bolted on",
+          description:
+            "Architecture designed for AI from the start — not a classic product with an AI feature glued on.",
+        },
+        {
+          title: "Bespoke for your business",
+          description:
+            "We start from your real flows, data, users. The platform fits your activity, not the other way around.",
+        },
+        {
+          title: "You own it",
+          description:
+            "Code delivered, full ownership, no lock-in. You can evolve it with whoever you want.",
+        },
+        {
+          title: "Sovereign and compliant",
+          description: "EU hosting, GDPR-compliant by design — an argument for your own customers.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We scope the product",
+          description: "Users, flows, exact AI role, first milestone scope.",
+        },
+        {
+          title: "We design the architecture",
+          description: "AI + data foundations, security and compliance built in.",
+        },
+        {
+          title: "We build by milestones",
+          description: "Regular, testable deliveries, not a multi-month tunnel.",
+        },
+        {
+          title: "We deliver and hand over",
+          description: "Code, documentation, ownership — you keep control.",
+        },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "AI", suffix: "first", label: "At the product core" },
+        { number: "100%", suffix: "", label: "Code ownership yours" },
+        { number: "EU", suffix: "", label: "GDPR-compliant hosting" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "vs-augmentation",
+          question: "How is it different from grafting AI onto the existing?",
+          answer:
+            "Augmentation adds AI to an existing site. Native builds a new platform when AI IS the product. We help you decide at scoping.",
+        },
+        {
+          id: "propriete",
+          question: "Who owns the code?",
+          answer: "You, entirely. We deliver code and docs — no technical lock-in to Axion-IA.",
+        },
+        {
+          id: "perimetre",
+          question: "How to avoid the tunnel effect?",
+          answer:
+            "We deliver by testable milestones. You watch the product grow and steer continuously.",
+        },
+        {
+          id: "rgpd",
+          question: "What about compliance?",
+          answer:
+            "GDPR and EU hosting designed from the start — including as an argument toward your own customers.",
+        },
+      ],
+      ctaBlockTitle: "Build your AI-native platform",
+      ctaBlockDescription:
+        "Describe your product: we come back within 48 h with a scoped first milestone, a fixed fee and a guaranteed timeline.",
+      why: {
+        title: "Grafting isn't",
+        titleEm: "always enough",
+        intro:
+          "When AI is the core of the value, adding it to a classic product caps everything. Better to build around it.",
+        points: [
+          {
+            title: "An overlay hits a ceiling fast",
+            description:
+              "Grafting AI onto a base not designed for it eventually jams (data, perf, UX). Native has no such ceiling.",
+          },
+          {
+            title: "Native is a product, not a patch",
+            description:
+              "Architecture, data and experience designed for AI — a real product edge, not a demo.",
           },
         ],
       },
