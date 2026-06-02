@@ -83,6 +83,7 @@ interface PublicKbDetail {
   publishedAt: Date | null;
   updatedAt: Date;
   readingTime: number | null;
+  wordCount: number | null;
   metaTitle: string | null;
   metaDescription: string | null;
 }
@@ -116,6 +117,7 @@ export async function fetchPublicKbBySlug(slugFr: string): Promise<PublicKbDetai
         metaTitle: true,
         metaDescription: true,
         readingTime: true,
+        wordCount: true,
         updatedAt: true,
         entry: {
           select: { type: true, publishedAt: true },
@@ -132,6 +134,7 @@ export async function fetchPublicKbBySlug(slugFr: string): Promise<PublicKbDetai
       publishedAt: translation.entry.publishedAt,
       updatedAt: translation.updatedAt,
       readingTime: translation.readingTime,
+      wordCount: translation.wordCount,
       metaTitle: translation.metaTitle,
       metaDescription: translation.metaDescription,
     };

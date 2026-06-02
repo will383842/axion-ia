@@ -32,7 +32,13 @@ export function KeyFactCard({ fact }: KeyFactCardProps) {
         {fact.value}
       </p>
       <div className="flex flex-col gap-2">
-        <p className="text-fg text-base leading-relaxed sm:text-lg">{fact.context}</p>
+        {/* data-aeo="answer" → cible le SpeakableSpecification de l'Article JSON-LD
+            (sélecteur [data-aeo="answer"]). Sur les entrées "fact" où l'excerpt
+            = le titre, le héro ne rend pas son bloc réponse : ce paragraphe
+            devient alors l'unique réponse canonique speakable de la page. */}
+        <p className="text-fg text-base leading-relaxed sm:text-lg" data-aeo="answer">
+          {fact.context}
+        </p>
         {fact.source ? (
           <p className="text-fg-muted text-[13px]">
             <span className="text-terracotta-deep font-medium">Source</span> · {fact.source}

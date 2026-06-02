@@ -22,7 +22,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
 import { getServiceForEntrySlug } from "@/lib/knowledge/readers";
@@ -147,6 +147,11 @@ export default async function ConnaissanceDetail({ params }: Props) {
   // < 3 h2 → bodyHtml inchangé + toc vide (pas de sommaire sur entrée courte).
   const { html: bodyHtml, toc } = buildToc(sanitizeTiptapHtml(entry.body));
 
+  // Image Article = carte OG dynamique (même image que le partage social) →
+  // éligibilité rich result Article + Google Discover, à coût LCP nul (l'image
+  // n'est pas chargée dans la page, seulement déclarée pour les crawlers).
+  const ogImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(entry.metaTitle ?? entry.title)}`;
+
   const articleJsonLd = buildArticleJsonLd({
     title: entry.title,
     description: entry.excerpt ?? entry.title,
@@ -156,7 +161,10 @@ export default async function ConnaissanceDetail({ params }: Props) {
     updatedAt: entry.updatedAt,
     section: "Connaissances IA",
     urlSegment: "connaissances",
+    imageUrl: ogImageUrl,
+    imageAlt: entry.title,
     ...(entry.readingTime ? { readingTimeMinutes: entry.readingTime } : {}),
+    ...(entry.wordCount ? { wordCount: entry.wordCount } : {}),
     ...(citations.length > 0 ? { citations } : {}),
   });
 
