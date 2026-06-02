@@ -112,7 +112,7 @@ export function ProductHero({
       <Container className="relative">
         {heroSchema ? (
           // Layout 2-col Sprint Visual Rhythm 2026 — schéma visuel à droite en lg+
-          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
             {heroBlock}
             <div className="relative mx-auto w-full max-w-xl lg:mx-0">{heroSchema}</div>
           </div>

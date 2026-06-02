@@ -61,24 +61,24 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `Implémentation IA à ${villeContext.name}`
       : `AI implementation in ${villeContext.name}`
     : isFr
-      ? "Vous savez déjà ce qu'il vous faut ?"
-      : "Already know what you need?";
+      ? "On implémente l'IA dans votre entreprise,"
+      : "We implement AI across your company,";
 
   const titleEm = villeContext
     ? isFr
       ? `& région ${villeContext.region}`
       : `& ${villeContext.region} region`
     : isFr
-      ? "On l'installe."
-      : "We install it.";
+      ? "quel que soit votre besoin."
+      : "whatever you need.";
 
   const description = villeContext
     ? isFr
       ? `Cabinet IA & automatisation au service des entreprises de ${villeContext.name} et sa région. Forfait fixe à partir de ${startupAmount}, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel.`
       : `AI & automation consultancy serving ${villeContext.name}-area companies. Fixed fee from ${startupAmount}, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription.`
     : isFr
-      ? `Aucun prérequis technique — on part de votre niveau réel, de vos outils actuels, de votre quotidien. Forfait fixe à partir de ${startupAmount}, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel.`
-      : `No technical prerequisite — we start from your actual level, your current tools, your daily reality. Fixed fee from ${startupAmount}, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription.`;
+      ? `Chatbots, agents IA, automatisations, intégrations à vos outils… on conçoit et on livre la solution adaptée à votre métier. Le code est à vous, sans abonnement.`
+      : `Chatbots, AI agents, automations, integrations with your tools… we design and ship the solution that fits your business. The code is yours, no subscription.`;
 
   // Speakable AEO 2026 — h1 + sous-titre.
   const speakableSelectors = ["h1", "h1 + p", "[data-hero-description]"] as const;
@@ -105,8 +105,8 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
         />
 
         <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            <div className="max-w-xl">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
+            <div className="max-w-2xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
                   aria-hidden="true"

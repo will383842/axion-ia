@@ -105,9 +105,9 @@ export function ServiceHero({
   return (
     <section className="bg-paper relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
       <Container className="relative">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 xl:gap-16">
           {/* Colonne gauche — eyebrow + h1 + description + CTAs */}
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
