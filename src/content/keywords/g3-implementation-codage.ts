@@ -858,7 +858,7 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
       h1: "Chatbot IA sur mesure pour votre PME — service client disponible 24h/7j",
       metaTitle: "Chatbot IA sur mesure PME service client | Axion-IA",
       metaDescription:
-        "Formé sur votre base de connaissance, intégré à votre site ou WhatsApp : notre chatbot IA sur mesure PME répond à 80 % des questions sans intervention humaine.",
+        "Formé sur votre base de connaissance, intégré à votre site ou WhatsApp : notre chatbot IA sur mesure PME répond à 80 % des questions sans intervention",
     },
     variables: {
       process: "support client",
@@ -959,7 +959,7 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
       h1: "Intégrer OpenAI, Anthropic ou Mistral dans votre produit startup — guide développeur",
       metaTitle: "Intégration LLM OpenAI Anthropic Mistral startup | Axion-IA",
       metaDescription:
-        "Benchmarks coût/performance, prompt engineering, streaming SSE, cache sémantique : Axion-IA développe vos intégrations LLM startup avec les meilleures pratiques 2026.",
+        "Benchmarks coût/performance, prompt engineering, streaming SSE, cache sémantique : Axion-IA développe vos intégrations LLM startup avec les meilleures",
     },
     urlCible: "/fr/blog/integration-api-llm-openai-anthropic-mistral-startup",
     canonicalParent: "/fr/codage-developpement",

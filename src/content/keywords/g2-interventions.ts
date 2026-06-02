@@ -514,7 +514,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "PME : les 8 compétences IA à développer en priorité en 2026",
       metaTitle: "Compétences IA prioritaires en PME — top 8 2026",
       metaDescription:
-        "Prompt engineering, lecture de données, automatisation de flux : les 8 compétences IA que toute PME doit maîtriser en 2026. Grille d'auto-évaluation incluse.",
+        "Prompt engineering, lecture de données, automatisation de flux : les 8 compétences IA que toute PME doit maîtriser en 2026.",
       h2Variants: [
         "Les 8 compétences IA incontournables pour les PME en 2026",
         "Comment auto-évaluer le niveau IA actuel de votre équipe",
@@ -810,7 +810,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Conférencier IA pour votre école : masterclass inspirante et actionnable",
       metaTitle: "Conférencier IA école privée — masterclass Axion-IA",
       metaDescription:
-        "Axion-IA intervient en conférence dans votre école de commerce, d'ingénieurs ou de design : IA générative, enjeux 2026, cas concrets par filière. Devis 24h.",
+        "Axion-IA intervient en conférence dans votre école de commerce, d'ingénieurs ou de design : IA générative, enjeux 2026, cas concrets par filière. Devis",
       h2Variants: [
         "Thèmes de conférence IA disponibles pour les grandes écoles",
         "Format masterclass 2h ou demi-journée avec ateliers pratiques",
@@ -1038,7 +1038,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Automatisez la conception de vos formations grâce à l'IA",
       metaTitle: "Automatiser conception formations avec IA — OF",
       metaDescription:
-        "Storyboard, quiz, exercices, supports : l'IA réduit de 60 % le temps de conception pédagogique. Axion-IA forme vos équipes en 1 journée sur vos vrais projets.",
+        "Storyboard, quiz, exercices, supports : l'IA réduit de 60 % le temps de conception pédagogique.",
       h2Variants: [
         "Quelles tâches de conception l'IA automatise réellement",
         "Session 1 jour : vos ingénieurs pédagogiques autonomes sur l'IA",
@@ -1166,7 +1166,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "L'IA va-t-elle remplacer les formateurs ? Réponse directe.",
       metaTitle: "IA remplace-t-elle les formateurs ? Réponse honnête",
       metaDescription:
-        "Non, l'IA ne remplace pas les formateurs : elle automatise les tâches répétitives (conception, correction, FAQ) et libère du temps pour l'accompagnement humain.",
+        "Non, l'IA ne remplace pas les formateurs : elle automatise les tâches répétitives (conception, correction, FAQ) et libère du temps pour l'accompagnement",
       h2Variants: [
         "Ce que l'IA fait mieux qu'un formateur (et pourquoi c'est une bonne nouvelle)",
         "Ce que seul un formateur humain peut apporter en 2026",
@@ -1234,7 +1234,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Formation IA sur site — intervenants experts dans toute la France",
       metaTitle: "Formation IA sur site France — Axion-IA",
       metaDescription:
-        "Axion-IA intervient dans toute la France pour former vos équipes à l'IA : formats 4h, 1 jour, 2 jours, 3 jours+. Devis sous 24h. Exercices sur vos vrais cas.",
+        "Axion-IA intervient dans toute la France pour former vos équipes à l'IA : formats 4h, 1 jour, 2 jours, 3 jours+. Devis sous 24h.",
       h2Variants: [
         "Pourquoi la formation sur site change les résultats",
         "Toutes les cibles : TPE, PME, ETI, écoles, organismes de formation",
@@ -1391,7 +1391,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Combien de temps pour former une équipe à l'IA ? Réponse directe.",
       metaTitle: "Durée formation IA équipe — réponse honnête 2026",
       metaDescription:
-        "4h pour les fondamentaux, 1 jour pour l'autonomie opérationnelle, 2 jours pour transformer durablement les pratiques. Détail par objectif et taille d'équipe.",
+        "4h pour les fondamentaux, 1 jour pour l'autonomie opérationnelle, 2 jours pour transformer durablement les pratiques.",
       h2Variants: [
         "4h : que peut-on réalistement apprendre sur l'IA en une demi-journée ?",
         "1 jour : le format le plus plébiscité par les PME en 2026",
@@ -1651,7 +1651,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Transformation numérique TPE : l'IA, le levier le plus rapide en 2026",
       metaTitle: "Transformation numérique TPE avec l'IA — 2026",
       metaDescription:
-        "L'IA est la transformation numérique la plus accessible pour une TPE : coût faible, résultats rapides. Découvrez comment Axion-IA accompagne les petites structures.",
+        "L'IA est la transformation numérique la plus accessible pour une TPE : coût faible, résultats rapides.",
       h2Variants: [
         "Pourquoi l'IA est le meilleur point d'entrée dans le numérique pour une TPE",
         "3 exemples de transformation numérique IA réussie par des TPE",
@@ -1683,7 +1683,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Outils IA gratuits pour gérants de TPE : top 5 opérationnels en 2026",
       metaTitle: "Outils IA gratuits gérant TPE — top 5 2026",
       metaDescription:
-        "ChatGPT Free, Copilot, Gemini, Mistral… Quels outils IA gratuits vaut-il la peine d'apprendre pour un gérant de TPE ? Comparatif honnête avec cas d'usage réels.",
+        "ChatGPT Free, Copilot, Gemini, Mistral… Quels outils IA gratuits vaut-il la peine d'apprendre pour un gérant de TPE ?",
       h2Variants: [
         "Les 5 meilleurs outils IA gratuits pour une TPE en 2026",
         "Quand passer à un outil IA payant : le bon moment pour une TPE",
@@ -1751,7 +1751,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "IA pour PME industrielle : formez vos équipes sur vos vrais process",
       metaTitle: "Formation IA PME industrielle — Axion-IA",
       metaDescription:
-        "Maintenance prédictive, rédaction de rapports qualité, gestion des plannings : Axion-IA forme les équipes de PME industrielles à l'IA sur leurs outils réels.",
+        "Maintenance prédictive, rédaction de rapports qualité, gestion des plannings : Axion-IA forme les équipes de PME industrielles à l'IA sur leurs outils",
       h2Variants: [
         "5 cas d'usage IA concrets pour une PME industrielle",
         "Formation sur site en atelier : nos formateurs s'adaptent à votre environnement",
@@ -1884,7 +1884,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "ETI de services formée à l'IA : ROI réel mesuré à 6 mois",
       metaTitle: "ROI formation IA ETI services — 6 mois de données",
       metaDescription:
-        "Étude de cas : ETI de services (250 personnes) après 6 mois de déploiement IA. –20 % de charge administrative, +18 % de productivité sur les missions clients.",
+        "Étude de cas : ETI de services (250 personnes) après 6 mois de déploiement IA. –20 % de charge administrative, +18 % de productivité sur les missions",
       h2Variants: [
         "Avant / après : l'ETI de conseil de 250 personnes",
         "Les 3 leviers IA qui ont généré le plus de valeur",
@@ -1949,7 +1949,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Formation IA pour ETI banque et assurance : conformité et performance",
       metaTitle: "Formation IA ETI banque assurance — Axion-IA",
       metaDescription:
-        "Axion-IA forme les ETI du secteur bancaire et assurantiel : traitement de dossiers, conformité RGPD/AI Act, automatisation sans risque. Programme sur mesure.",
+        "Axion-IA forme les ETI du secteur bancaire et assurantiel : traitement de dossiers, conformité RGPD/AI Act, automatisation sans risque.",
       h2Variants: [
         "Cas d'usage IA dans les ETI banque et assurance",
         "Conformité réglementaire et IA : ce que les équipes doivent maîtriser",
@@ -2019,7 +2019,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Conférence IA pour étudiants en droit : enjeux, outils et métiers de demain",
       metaTitle: "Conférence IA étudiants droit école privée",
       metaDescription:
-        "LegalTech, IA et droit, AI Act : Axion-IA intervient dans les écoles de droit pour sensibiliser les futurs juristes aux enjeux et outils IA. Demi-journée ou journée.",
+        "LegalTech, IA et droit, AI Act : Axion-IA intervient dans les écoles de droit pour sensibiliser les futurs juristes aux enjeux et outils IA.",
       h2Variants: [
         "Comment l'IA transforme les métiers du droit",
         "AI Act et étudiants en droit : ce qu'ils doivent maîtriser avant de sortir diplômés",
@@ -2084,7 +2084,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Pourquoi former les étudiants à l'IA dès 2026 : réponse directe aux directeurs d'école",
       metaTitle: "Pourquoi former étudiants à l'IA dès 2026 ?",
       metaDescription:
-        "L'AI Act impose une littératie IA aux utilisateurs de systèmes IA. 87 % des recruteurs attendent des compétences IA des jeunes diplômés. Réponse aux directions d'école.",
+        "L'AI Act impose une littératie IA aux utilisateurs de systèmes IA. 87 % des recruteurs attendent des compétences IA des jeunes diplômés.",
       h2Variants: [
         "Ce que l'AI Act impose aux étudiants utilisateurs de systèmes IA",
         "Ce que les recruteurs attendent en matière d'IA des jeunes diplômés 2026",

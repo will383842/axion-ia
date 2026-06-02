@@ -66,7 +66,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Durée d'un audit IA : de 1 jour à 6 semaines selon la formule",
       metaTitle: "Durée audit IA : 1 jour à 6 semaines | Axion-IA",
       metaDescription:
-        "Un audit IA Flash prend 1 jour (490 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines. Choisissez selon votre urgence et votre taille.",
+        "Un audit IA Flash prend 1 jour (490 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines.",
       h2Variants: [
         "Durée de l'audit sur place (1 jour)",
         "Durée de l'audit Stratégique PME",
@@ -92,7 +92,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Contenu d'un audit IA entreprise : les 5 livrables clés",
       metaTitle: "Contenu audit IA entreprise : livrables | Axion-IA",
       metaDescription:
-        "Un audit IA comprend : cartographie des processus, identification des gains, analyse des risques, feuille de route priorisée et rapport de restitution. En 1 jour à 6 semaines.",
+        "Un audit IA comprend : cartographie des processus, identification des gains, analyse des risques, feuille de route priorisée et rapport de restitution.",
       h2Variants: [
         "Les 5 livrables d'un audit IA Axion-IA",
         "Phase de diagnostic et cartographie",
@@ -118,7 +118,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Audit IA avant automatisation : obligatoire ou optionnel ?",
       metaTitle: "Faut-il un audit IA avant d'automatiser ? | Axion-IA",
       metaDescription:
-        "Oui : sans audit préalable, 68 % des projets IA échouent faute de priorisation. L'audit identifie les 3 processus à plus fort ROI avant tout investissement technique.",
+        "Oui : sans audit préalable, 68 % des projets IA échouent faute de priorisation. L'audit identifie les 3 processus à plus fort ROI avant tout investissement",
       h2Variants: [
         "Les risques d'automatiser sans audit",
         "Ce que révèle un audit avant implémentation",
@@ -144,7 +144,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Audit IA Flash vs Stratégique : comment choisir en 2026 ?",
       metaTitle: "Audit sur place vs Stratégique : choisir | Axion-IA",
       metaDescription:
-        "L'audit sur place (490 €, 1 jour) convient aux TPE/PME pressées. L'audit Stratégique (4 900-12 000 €, 3-6 semaines) s'impose dès 20 salariés ou un enjeu de transformation globale.",
+        "L'audit sur place (490 €, 1 jour) convient aux TPE/PME pressées. L'audit Stratégique (4 900-12 000 €, 3-6 semaines) s'impose dès 20 salariés ou un enjeu de",
       h2Variants: [
         "L'audit sur place : pour qui et pour quoi ?",
         "L'audit Stratégique PME : critères de choix",
@@ -169,7 +169,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prix d'un audit IA entreprise en France en 2026",
       metaTitle: "Prix audit IA entreprise 2026 | Axion-IA",
       metaDescription:
-        "Un audit IA coûte entre 490 € (Flash 1 jour) et 12 000 € (Stratégique ETI). Le marché pratique 1 500 à 25 000 € ; Axion-IA est positionné PME avec des formats accessibles.",
+        "Un audit IA coûte entre 490 € (Flash 1 jour) et 12 000 € (Stratégique ETI). Le marché pratique 1 500 à 25 000 € ; Axion-IA est positionné PME avec des",
       h2Variants: [
         "Tableau des tarifs audit IA Axion-IA",
         "Marché des prix : comparatif cabinets IA",
@@ -194,7 +194,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Audit IA vs diagnostic IA : deux mots, deux réalités",
       metaTitle: "Audit IA vs diagnostic IA : différences | Axion-IA",
       metaDescription:
-        "Le diagnostic IA est souvent une prise de contact gratuite (1-2h). L'audit IA est une prestation structurée avec livrables, méthode et feuille de route. Les deux sont complémentaires.",
+        "Le diagnostic IA est souvent une prise de contact gratuite (1-2h). L'audit IA est une prestation structurée avec livrables, méthode et feuille de route.",
       h2Variants: [
         "Ce que recouvre le terme diagnostic IA",
         "Ce que garantit un audit IA professionnel",
@@ -219,7 +219,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Préparer son entreprise à un audit IA : 5 étapes pratiques",
       metaTitle: "Préparer un audit IA PME : étapes | Axion-IA",
       metaDescription:
-        "Avant l'audit : listez vos 10 principaux processus, identifiez les outils existants, notez les frustrations quotidiennes de votre équipe. L'auditeur fait le reste en 1 à 5 jours.",
+        "Avant l'audit : listez vos 10 principaux processus, identifiez les outils existants, notez les frustrations quotidiennes de votre équipe.",
       h2Variants: [
         "Ce que vous devez préparer avant l'audit",
         "Qui mobiliser en interne ?",
@@ -244,7 +244,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Quels processus auditer en premier avec l'IA ? Les 5 priorités",
       metaTitle: "Processus à auditer en priorité avec l'IA | Axion-IA",
       metaDescription:
-        "Les 5 processus à plus fort ROI IA dans une PME : traitement des emails, création de devis/rapports, tri des candidatures, relance clients, analyse de données. L'audit les confirme ou les réoriente.",
+        "Les 5 processus à plus fort ROI IA dans une PME : traitement des emails, création de devis/rapports, tri des candidatures, relance clients, analyse de",
       h2Variants: [
         "Méthode pour identifier les quick wins IA",
         "Top 5 processus à forte valeur IA en PME",
@@ -270,7 +270,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Audit IA opérationnel PME : définition et périmètre",
       metaTitle: "Audit IA opérationnel PME : définition | Axion-IA",
       metaDescription:
-        "L'audit IA opérationnel analyse les processus métier existants pour identifier où l'IA gagne du temps ou de l'argent. Il produit une feuille de route priorisée par ROI, sans jargon technique.",
+        "L'audit IA opérationnel analyse les processus métier existants pour identifier où l'IA gagne du temps ou de l'argent.",
       h2Variants: [
         "Différence avec un audit SI ou audit de conformité",
         "Les 3 livrables d'un audit opérationnel",
@@ -295,14 +295,14 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Audit IA avant recrutement IA : éviter les erreurs coûteuses",
       metaTitle: "Auditer avant de recruter en IA | Axion-IA",
       metaDescription:
-        "Sans audit, 4 entreprises sur 5 recrutent avant de savoir ce dont elles ont besoin. L'audit définit le bon profil (dev, prompt engineer, chef de projet IA) et le budget réaliste.",
+        "Sans audit, 4 entreprises sur 5 recrutent avant de savoir ce dont elles ont besoin.",
       h2Variants: [
         "Le coût d'un recrutement IA sans cadrage préalable",
         "Ce que l'audit révèle sur le besoin humain réel",
         "Recrutement ou sous-traitance IA : l'audit tranche",
       ],
     },
-    variables: { chiffre: "4 sur 5", unite: "entreprises sans cadrage recrutent mal" },
+    variables: { chiffre: "4", unite: "entreprises sur 5 sans cadrage recrutent mal" },
     urlCible: "/fr/faq/audit-ia-avant-recrutement",
     canonicalParent: "/fr/audit",
     source: "manuel",
@@ -325,7 +325,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Former une équipe à l'IA : combien d'heures pour quel résultat ?",
       metaTitle: "Heures de formation IA équipe PME | Axion-IA",
       metaDescription:
-        "Une équipe de 5 à 20 personnes atteint l'autonomie opérationnelle en 7 à 14 heures (2 à 3 jours). Nos formations démarrent à 4h pour les cas d'usage ciblés, jusqu'à 3 jours pour une transformation complète.",
+        "Une équipe de 5 à 20 personnes atteint l'autonomie opérationnelle en 7 à 14 heures (2 à 3 jours).",
       h2Variants: [
         "Formation 4h : les cas d'usage immédiats",
         "Formation 2 jours : l'équipe autonome",
@@ -351,7 +351,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Autonomie IA des équipes : le délai réaliste en PME",
       metaTitle: "Délai autonomie IA équipes PME | Axion-IA",
       metaDescription:
-        "En PME, l'autonomie sur les outils IA du quotidien s'acquiert en 3 à 6 semaines après une formation de 2 jours. L'ancrage dépend de la pratique quotidienne, pas de la durée de formation.",
+        "En PME, l'autonomie sur les outils IA du quotidien s'acquiert en 3 à 6 semaines après une formation de 2 jours.",
       h2Variants: [
         "Les 3 phases vers l'autonomie IA",
         "Pourquoi la pratique quotidienne est clé",
@@ -377,7 +377,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Formation IA pour non-techniques : accessible et concrète",
       metaTitle: "Formation IA non-techniques : accessible ? | Axion-IA",
       metaDescription:
-        "Oui. 80 % de nos participants sont des non-techniques (commerciaux, RH, comptables, dirigeants). Nos formations ne nécessitent aucune base en code ni en data science.",
+        "Oui. 80 % de nos participants sont des non-techniques (commerciaux, RH, comptables, dirigeants).",
       h2Variants: [
         "Ce que nos participants non-tech apprennent en 1 jour",
         "Exemples de cas d'usage sans code",
@@ -403,7 +403,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Formation IA générale vs formation outil : laquelle choisir ?",
       metaTitle: "Formation IA générale vs outil : choisir | Axion-IA",
       metaDescription:
-        "La formation générale développe les réflexes IA (prompt, workflows, évaluation). La formation outil (ex. ChatGPT, Claude) optimise la maîtrise d'un seul produit. En PME : commencez par le général.",
+        "La formation générale développe les réflexes IA (prompt, workflows, évaluation). La formation outil (ex.",
       h2Variants: [
         "Formation générale : quand et pourquoi",
         "Formation outil spécifique : les cas où ça s'impose",
@@ -428,7 +428,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Formation IA dirigeants PME : ce qui change en 1 journée",
       metaTitle: "Formation IA dirigeants PME | Axion-IA",
       metaDescription:
-        "Les dirigeants PME ont besoin de 3 choses : comprendre la valeur IA (1h), identifier leurs 3 cas d'usage prioritaires (2h), et piloter leurs équipes (2h). Notre journée dirigeant couvre exactement cela.",
+        "Les dirigeants PME ont besoin de 3 choses : comprendre la valeur IA (1h), identifier leurs 3 cas d'usage prioritaires (2h), et piloter leurs équipes (2h).",
       h2Variants: [
         "Agenda type d'une journée dirigeant IA",
         "Ce que vous déciderez mieux après la formation",
@@ -453,7 +453,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Mesurer les progrès post-formation IA : méthode et indicateurs",
       metaTitle: "Mesurer progrès formation IA | Axion-IA",
       metaDescription:
-        "3 indicateurs simples : taux d'adoption (outils utilisés semaine 4), temps gagné déclaré par l'équipe, et nombre de cas d'usage autonomes. Nous fournissons une grille de suivi à J+30.",
+        "3 indicateurs simples : taux d'adoption (outils utilisés semaine 4), temps gagné déclaré par l'équipe, et nombre de cas d'usage autonomes.",
       h2Variants: [
         "Les 3 KPI post-formation IA",
         "Grille de suivi autonomie à J+30",
@@ -478,7 +478,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Formation IA pour artisans : utile ou gadget ?",
       metaTitle: "Formation IA artisans et TPE | Axion-IA",
       metaDescription:
-        "Oui, même les artisans gagnent 2 à 5h par semaine grâce à l'IA : devis automatisés, réponses clients, gestion des réseaux. Une demi-journée suffit pour maîtriser l'essentiel.",
+        "Oui, même les artisans gagnent 2 à 5h par semaine grâce à l'IA : devis automatisés, réponses clients, gestion des réseaux.",
       h2Variants: [
         "Ce que l'IA change concrètement pour un artisan",
         "Les 3 outils IA gratuits pour démarrer",
@@ -504,7 +504,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Une journée de formation IA : ce qu'on peut vraiment apprendre",
       metaTitle: "Une journée formation IA : résultats réels | Axion-IA",
       metaDescription:
-        "En 1 journée, une équipe maîtrise 2 à 3 outils IA sur ses cas d'usage métier. C'est suffisant pour démarrer, insuffisant pour une transformation complète. La 2e journée consolide et déploie.",
+        "En 1 journée, une équipe maîtrise 2 à 3 outils IA sur ses cas d'usage métier. C'est suffisant pour démarrer, insuffisant pour une transformation complète.",
       h2Variants: [
         "Programme type d'une journée formation IA collective",
         "Ce qu'une équipe retient après 1 jour",
@@ -529,7 +529,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Intervention IA vs formation IA : deux approches complémentaires",
       metaTitle: "Intervention vs formation IA : différences | Axion-IA",
       metaDescription:
-        "La formation IA développe des compétences durables dans l'équipe. L'intervention IA résout un problème ou démontre un usage sur votre terrain. Les deux se combinent pour un impact maximal.",
+        "La formation IA développe des compétences durables dans l'équipe. L'intervention IA résout un problème ou démontre un usage sur votre terrain.",
       h2Variants: [
         "Quand choisir une intervention IA ponctuelle",
         "Quand investir dans une formation longue",
@@ -578,7 +578,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prérequis d'une formation IA collective : aucun niveau requis",
       metaTitle: "Prérequis formation IA collective | Axion-IA",
       metaDescription:
-        "Non : aucun prérequis technique n'est nécessaire. Nos formations partent du zéro absolu. Un questionnaire amont permet d'adapter le rythme à la diversité des niveaux dans votre équipe.",
+        "Non : aucun prérequis technique n'est nécessaire. Nos formations partent du zéro absolu.",
       h2Variants: [
         "Le questionnaire d'évaluation amont",
         "Comment gérer les niveaux mixtes dans une équipe",
@@ -603,7 +603,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Formation IA sur site vs distanciel : laquelle choisir ?",
       metaTitle: "Formation IA sur site vs distanciel | Axion-IA",
       metaDescription:
-        "Sur site : ancrage dans vos outils réels, engagement de l'équipe supérieur, démo en conditions réelles. Distanciel : économie de déplacement, groupe multi-sites possible. Les deux produisent des résultats équivalents si bien animés.",
+        "Sur site : ancrage dans vos outils réels, engagement de l'équipe supérieur, démo en conditions réelles.",
       h2Variants: [
         "Avantages et limites du présentiel",
         "Quand la formation distanciel suffit",
@@ -628,7 +628,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Former ses équipes à l'IA : la méthode en 4 étapes",
       metaTitle: "Former équipes IA entreprise : méthode | Axion-IA",
       metaDescription:
-        "4 étapes : 1. Auditer les besoins (0,5 jour), 2. Former par cas d'usage métier (1-2 jours), 3. Pratiquer avec un suivi (30 jours), 4. Mesurer et ancrer. Sans cette séquence, 60 % des acquis disparaissent en 6 semaines.",
+        "4 étapes : 1. Auditer les besoins (0,5 jour), 2. Former par cas d'usage métier (1-2 jours), 3. Pratiquer avec un suivi (30 jours), 4. Mesurer et ancrer.",
       h2Variants: [
         "Étape 1 : identifier les besoins par métier",
         "Étape 2 : la formation sur cas d'usage réels",
@@ -654,7 +654,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Formation IA vs prompt engineering : au-delà du ChatGPT basique",
       metaTitle: "Formation IA vs prompt engineering | Axion-IA",
       metaDescription:
-        "Le prompt engineering est une brique, pas une stratégie. Une vraie formation IA couvre : évaluation des sorties, automatisation de workflows, intégration aux outils métier et culture de la vérification.",
+        "Le prompt engineering est une brique, pas une stratégie. Une vraie formation IA couvre : évaluation des sorties, automatisation de workflows, intégration",
       h2Variants: [
         "Ce que le prompt engineering ne couvre pas",
         "Les 4 dimensions d'une formation IA complète",
@@ -683,7 +683,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Déployer l'IA en PME : délai réaliste par type de projet",
       metaTitle: "Déployer l'IA en PME : délai semaines | Axion-IA",
       metaDescription:
-        "Un premier cas d'usage IA (automatisation, chatbot, rapport automatique) se déploie en 2 à 6 semaines. Un projet de transformation complet prend 3 à 6 mois. La rapidité dépend de la complexité et des données disponibles.",
+        "Un premier cas d'usage IA (automatisation, chatbot, rapport automatique) se déploie en 2 à 6 semaines. Un projet de transformation complet prend 3 à 6",
       h2Variants: [
         "Phase 1 : cadrage et configuration (2 semaines)",
         "Phase 2 : déploiement et tests (2-4 semaines)",
@@ -735,7 +735,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Implémentation IA vs développement IA : deux niveaux distincts",
       metaTitle: "Implémentation IA vs développement IA | Axion-IA",
       metaDescription:
-        "L'implémentation IA configure et intègre des outils existants dans vos processus. Le développement IA crée des modèles ou applications sur mesure. 90 % des PME n'ont besoin que d'implémentation.",
+        "L'implémentation IA configure et intègre des outils existants dans vos processus. Le développement IA crée des modèles ou applications sur mesure.",
       h2Variants: [
         "Ce que couvre l'implémentation IA",
         "Quand le développement sur mesure est nécessaire",
@@ -761,7 +761,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prioriser ses projets IA : la matrice ROI × effort",
       metaTitle: "Prioriser projets IA entreprise | Axion-IA",
       metaDescription:
-        "Critères de priorisation : 1. Volume de temps répétitif, 2. Coût d'erreur humaine, 3. Disponibilité des données, 4. Acceptation équipe. Un audit de 1 jour produit cette matrice pour vous.",
+        "Critères de priorisation : 1. Volume de temps répétitif, 2. Coût d'erreur humaine, 3. Disponibilité des données, 4. Acceptation équipe.",
       h2Variants: [
         "La matrice impact × effort IA",
         "Les 3 critères de priorisation Axion-IA",
@@ -811,7 +811,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Budget premier projet IA en PME : les fourchettes réelles",
       metaTitle: "Budget premier projet IA PME | Axion-IA",
       metaDescription:
-        "Un premier projet IA PME coûte entre 1 500 € (automatisation simple no-code) et 15 000 € (intégration avec développement sur mesure). L'audit préalable (490-1 500 €) évite de dépenser au mauvais endroit.",
+        "Un premier projet IA PME coûte entre 1 500 € (automatisation simple no-code) et 15 000 € (intégration avec développement sur mesure).",
       h2Variants: [
         "Fourchettes par type de projet IA",
         "Ce qui fait varier le budget IA",
@@ -863,7 +863,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Mesurer le ROI d'une implémentation IA : méthode et KPI",
       metaTitle: "ROI implémentation IA : mesure et KPI | Axion-IA",
       metaDescription:
-        "3 indicateurs ROI : temps libéré par semaine × coût horaire, taux d'erreur avant/après, délai de traitement. Le ROI médian d'une implémentation IA PME est de 159 % sur 7 mois.",
+        "3 indicateurs ROI : temps libéré par semaine × coût horaire, taux d'erreur avant/après, délai de traitement.",
       h2Variants: [
         "Calculer le temps libéré post-implémentation",
         "Les KPI business à suivre sur 6 mois",
@@ -889,7 +889,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Déployer un chatbot IA en PME : guide pratique 2026",
       metaTitle: "Chatbot IA PME : déploiement 2026 | Axion-IA",
       metaDescription:
-        "Un chatbot IA PME se déploie en 3 à 5 semaines : choix de la plateforme (HubSpot, Intercom, solution sur mesure), alimentation de la base de connaissance, tests, formation équipe. Coût : 1 500 à 8 000 €.",
+        "Un chatbot IA PME se déploie en 3 à 5 semaines : choix de la plateforme (HubSpot, Intercom, solution sur mesure), alimentation de la base de connaissance",
       h2Variants: [
         "Étapes de déploiement d'un chatbot IA",
         "Plateformes chatbot IA recommandées en PME",
@@ -915,7 +915,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Implémenter l'IA dans son entreprise : par où commencer ?",
       metaTitle: "Par où commencer pour implémenter l'IA | Axion-IA",
       metaDescription:
-        "3 premières étapes : 1. Identifier le processus le plus chronophage et répétitif (30 min), 2. Tester un outil IA gratuit dessus (1 semaine), 3. Mesurer le gain. Si positif, structurez avec un audit.",
+        "3 premières étapes : 1. Identifier le processus le plus chronophage et répétitif (30 min), 2. Tester un outil IA gratuit dessus (1 semaine), 3.",
       h2Variants: [
         "Étape 1 : identifier le processus cible",
         "Étape 2 : tester sans risque",
@@ -940,7 +940,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Ressources internes pour un projet IA : ce qu'il faut prévoir",
       metaTitle: "Ressources internes projet IA PME | Axion-IA",
       metaDescription:
-        "Un projet IA PME nécessite un référent interne à 20-30 % de son temps sur 6 semaines. Le reste est pris en charge par Axion-IA. Aucun développeur interne n'est nécessaire en mode implémentation.",
+        "Un projet IA PME nécessite un référent interne à 20-30 % de son temps sur 6 semaines. Le reste est pris en charge par Axion-IA.",
       h2Variants: [
         "Le rôle du référent IA interne",
         "Ce que notre équipe prend en charge",
@@ -965,7 +965,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Automatiser ses rapports avec l'IA : méthode et outils",
       metaTitle: "Automatiser rapports IA PME | Axion-IA",
       metaDescription:
-        "L'IA peut générer un rapport de 5 pages en 3 minutes à partir d'un tableau Excel ou d'une base de données. Outils recommandés : Claude API, GPT-4o, ou solutions packagées sans code.",
+        "L'IA peut générer un rapport de 5 pages en 3 minutes à partir d'un tableau Excel ou d'une base de données.",
       h2Variants: [
         "Outils IA pour automatiser vos rapports",
         "Configuration d'un pipeline rapport automatique",
@@ -995,7 +995,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Obligations AI Act 2026 pour les PME : ce qui entre en vigueur le 3 août",
       metaTitle: "Obligations AI Act 2026 PME | Axion-IA",
       metaDescription:
-        "À partir du 3 août 2026 : toute PME utilisant un système IA doit informer ses utilisateurs (art. 50), tenir un registre des systèmes IA à haut risque, et former ses équipes IA. Sanctions : jusqu'à 7,5 M€ ou 1,5 % du CA.",
+        "À partir du 3 août 2026 : toute PME utilisant un système IA doit informer ses utilisateurs (art.",
       h2Variants: [
         "Ce qui s'applique aux PME dès le 3 août 2026",
         "Les 3 obligations minimum à anticiper maintenant",
@@ -1021,7 +1021,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Mon entreprise est-elle concernée par l'AI Act 2026 ?",
       metaTitle: "Mon entreprise est soumise à l'AI Act ? | Axion-IA",
       metaDescription:
-        "Si vous utilisez un outil IA (ChatGPT, Copilot, Midjourney) ou développez une application avec de l'IA, vous êtes concerné. Les entreprises hors UE qui déploient en Europe aussi. L'AI Act couvre 99 % des usages d'entreprise.",
+        "Si vous utilisez un outil IA (ChatGPT, Copilot, Midjourney) ou développez une application avec de l'IA, vous êtes concerné.",
       h2Variants: [
         "Qui est concerné par l'AI Act ?",
         "Les 4 niveaux de risque AI Act",
@@ -1046,7 +1046,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Se conformer à l'AI Act en PME : guide pratique 2026",
       metaTitle: "Conformité AI Act PME : guide pratique | Axion-IA",
       metaDescription:
-        "5 étapes : 1. Inventorier tous vos systèmes IA, 2. Classifier les risques, 3. Mettre en place l'information utilisateurs (art. 50), 4. Former vos équipes, 5. Tenir un registre. Notre audit AI Act couvre les 5 étapes.",
+        "5 étapes : 1. Inventorier tous vos systèmes IA, 2. Classifier les risques, 3. Mettre en place l'information utilisateurs (art. 50), 4.",
       h2Variants: [
         "Étape 1 : inventorier vos systèmes IA",
         "Étape 2 : classifier les niveaux de risque",
@@ -1071,7 +1071,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Sanctions AI Act : les risques réels pour une entreprise",
       metaTitle: "Risques non-conformité AI Act | Axion-IA",
       metaDescription:
-        "Les sanctions AI Act vont jusqu'à 7,5 M€ ou 1,5 % du chiffre d'affaires mondial pour les violations de l'art. 50 (information). Pour les systèmes IA interdits : 35 M€ ou 7 % du CA. Premiers contrôles attendus dès fin 2026.",
+        "Les sanctions AI Act vont jusqu'à 7,5 M€ ou 1,5 % du chiffre d'affaires mondial pour les violations de l'art. 50 (information).",
       h2Variants: [
         "Les 3 niveaux de sanctions AI Act",
         "Qui contrôle la conformité AI Act en France ?",
@@ -1097,7 +1097,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "AI Act et formation IA obligatoire : ce que dit le règlement",
       metaTitle: "AI Act formation obligatoire PME | Axion-IA",
       metaDescription:
-        "Oui : l'AI Act (art. 4) impose d'assurer la 'littératie IA' de tous les employés utilisant des systèmes IA. Ce n'est pas une formation certifiante mais une sensibilisation documentée. Nos formations respectent cet article.",
+        "Oui : l'AI Act (art. 4) impose d'assurer la 'littératie IA' de tous les employés utilisant des systèmes IA.",
       h2Variants: [
         "L'article 4 AI Act et la littératie IA",
         "Ce qu'une formation AI Act doit couvrir",
@@ -1122,7 +1122,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "IA et RGPD en 2026 : les règles à respecter",
       metaTitle: "IA et RGPD conformité 2026 | Axion-IA",
       metaDescription:
-        "3 règles clés IA × RGPD : ne pas envoyer de données personnelles brutes aux LLM sans contrat DPA, utiliser des modèles hébergés en Europe si possible, et informer les personnes concernées. Nous opérons avec 6 DPA signés.",
+        "3 règles clés IA × RGPD : ne pas envoyer de données personnelles brutes aux LLM sans contrat DPA, utiliser des modèles hébergés en Europe si possible, et",
       h2Variants: [
         "Les 3 obligations RGPD pour les usages IA",
         "Choisir des outils IA conformes RGPD",
@@ -1147,7 +1147,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Documenter l'usage IA en entreprise : les exigences AI Act",
       metaTitle: "Documenter usage IA entreprise AI Act | Axion-IA",
       metaDescription:
-        "L'AI Act exige un registre des systèmes IA utilisés, avec niveau de risque, responsable, date de mise en service et mesures de conformité. Un tableur structuré suffit pour les PME. Nous fournissons un modèle.",
+        "L'AI Act exige un registre des systèmes IA utilisés, avec niveau de risque, responsable, date de mise en service et mesures de conformité.",
       h2Variants: [
         "Ce que doit contenir le registre IA",
         "Modèle de registre IA PME téléchargeable",
@@ -1172,7 +1172,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Calendrier AI Act 2026 : les dates clés pour les PME",
       metaTitle: "AI Act 2026 : dates clés PME | Axion-IA",
       metaDescription:
-        "Dates AI Act : 2 février 2025 (pratiques IA interdites), 2 août 2025 (gouvernance), 3 août 2026 (obligations générales dont art. 50 information + art. 4 littératie IA). PME : préparez-vous maintenant.",
+        "Dates AI Act : 2 février 2025 (pratiques IA interdites), 2 août 2025 (gouvernance), 3 août 2026 (obligations générales dont art. 50 information + art.",
       h2Variants: [
         "Chronologie AI Act 2024-2027",
         "Ce qui s'applique le 3 août 2026",
@@ -1201,7 +1201,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Adopter l'IA en entreprise : le point de départ en 2026",
       metaTitle: "Par où commencer pour adopter l'IA | Axion-IA",
       metaDescription:
-        "3 premières étapes : 1. Former 1 à 3 personnes clés en 1 journée, 2. Identifier le processus le plus chronophage, 3. Tester un outil IA 2 semaines. Sans audit ni budget. Puis structurer avec un accompagnement.",
+        "3 premières étapes : 1. Former 1 à 3 personnes clés en 1 journée, 2. Identifier le processus le plus chronophage, 3. Tester un outil IA 2 semaines.",
       h2Variants: [
         "Étape 1 : la formation éclair de 1 journée",
         "Étape 2 : le processus cible idéal",
@@ -1226,7 +1226,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Heures gagnées par l'IA en PME : chiffres réels 2026",
       metaTitle: "Heures libérées par l'IA PME 2026 | Axion-IA",
       metaDescription:
-        "En PME, l'IA libère en moyenne 2,4 h par personne par jour sur les tâches répétitives (emails, rapports, recherches, prises de notes). Sur 5 personnes, c'est 12 h/jour soit 1,5 ETP récupéré.",
+        "En PME, l'IA libère en moyenne 2,4 h par personne par jour sur les tâches répétitives (emails, rapports, recherches, prises de notes).",
       h2Variants: [
         "Détail des tâches libérées par l'IA",
         "Comment calculer les heures libérées dans votre équipe",
@@ -1256,7 +1256,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Cabinet IA vs agence IA : deux positionnements distincts",
       metaTitle: "Cabinet IA vs agence IA : différences | Axion-IA",
       metaDescription:
-        "Un cabinet IA (comme Axion-IA) conseille, forme et accompagne la transformation : indépendance des fournisseurs, approche métier. Une agence IA crée du contenu ou développe des solutions IA pour ses clients. Ce ne sont pas les mêmes besoins.",
+        "Un cabinet IA (comme Axion-IA) conseille, forme et accompagne la transformation : indépendance des fournisseurs, approche métier.",
       h2Variants: [
         "Ce que fait un cabinet IA",
         "Ce que fait une agence IA",
@@ -1281,7 +1281,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Choisir un prestataire IA en France : 7 critères en 2026",
       metaTitle: "Choisir prestataire IA France 2026 | Axion-IA",
       metaDescription:
-        "7 critères : indépendance des outils, références vérifiables, méthode documentée, transparence tarifaire, accompagnement post-déploiement, conformité RGPD/AI Act, et disponibilité de l'interlocuteur. Demandez un audit sur place avant tout engagement long.",
+        "7 critères : indépendance des outils, références vérifiables, méthode documentée, transparence tarifaire, accompagnement post-déploiement, conformité",
       h2Variants: [
         "Les 7 questions à poser avant de signer",
         "Red flags d'un mauvais prestataire IA",
@@ -1306,7 +1306,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "L'IA va-t-elle remplacer les employés ? Ce que montrent les données",
       metaTitle: "IA et emploi : l'IA remplace-t-elle les salariés | Axion-IA",
       metaDescription:
-        "Non : l'IA remplace des tâches, pas des métiers. 85 % des entreprises ayant déployé l'IA rapportent qu'elles ont réaffecté les employés sur des missions à plus forte valeur. En PME, l'IA libère du temps, elle ne supprime pas des postes.",
+        "Non : l'IA remplace des tâches, pas des métiers. 85 % des entreprises ayant déployé l'IA rapportent qu'elles ont réaffecté les employés sur des missions à",
       h2Variants: [
         "Ce que l'IA remplace vraiment : les tâches répétitives",
         "Ce que l'IA ne peut pas remplacer",
@@ -1332,7 +1332,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Budget IA PME en 2026 : combien investir et comment phaser ?",
       metaTitle: "Budget IA PME 2026 : combien investir | Axion-IA",
       metaDescription:
-        "Un budget IA PME réaliste : 2 000 à 5 000 € pour démarrer (audit + 1 formation + 1 outil). 15 000 à 50 000 € pour une transformation complète sur 12 mois. ROI médian : 159 % sur 7 mois selon nos données terrain.",
+        "Un budget IA PME réaliste : 2 000 à 5 000 € pour démarrer (audit + 1 formation + 1 outil). 15 000 à 50 000 € pour une transformation complète sur 12 mois.",
       h2Variants: [
         "Budget phase 1 : démarrer sans risque",
         "Budget phase 2 : transformer un service",
@@ -1358,7 +1358,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "L'IA pour les TPE : accessible et rentable en 2026",
       metaTitle: "IA pour TPE : accessible en 2026 ? | Axion-IA",
       metaDescription:
-        "Oui : les outils IA gratuits ou à moins de 30 €/mois (ChatGPT, Claude, Mistral) sont accessibles à toute TPE. Une demi-journée de formation suffit pour démarrer. Le ROI se voit en moins d'un mois.",
+        "Oui : les outils IA gratuits ou à moins de 30 €/mois (ChatGPT, Claude, Mistral) sont accessibles à toute TPE.",
       h2Variants: [
         "Outils IA gratuits et accessibles aux TPE",
         "Combien une TPE peut gagner avec l'IA",
@@ -1384,7 +1384,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Quelle IA choisir pour une PME française en 2026 ?",
       metaTitle: "Quelle IA pour PME France 2026 | Axion-IA",
       metaDescription:
-        "Top 3 PME France 2026 : Claude (Anthropic) pour la qualité du raisonnement et RGPD, ChatGPT (OpenAI) pour l'accessibilité, Mistral pour la souveraineté européenne. Le choix dépend du cas d'usage et des exigences RGPD.",
+        "Top 3 PME France 2026 : Claude (Anthropic) pour la qualité du raisonnement et RGPD, ChatGPT (OpenAI) pour l'accessibilité, Mistral pour la souveraineté",
       h2Variants: [
         "Claude vs ChatGPT pour une PME française",
         "Mistral : l'option souverainiste",
@@ -1409,7 +1409,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Sécuriser ses données dans un projet IA : les 5 règles",
       metaTitle: "Sécurité données projet IA | Axion-IA",
       metaDescription:
-        "5 règles : 1. Jamais de données personnelles brutes dans les prompts, 2. Contrat DPA signé avec chaque fournisseur IA, 3. Modèles hébergés EU si données sensibles, 4. Politique interne 'ce qui entre dans l'IA', 5. Audit annuel des usages.",
+        "5 règles : 1. Jamais de données personnelles brutes dans les prompts, 2. Contrat DPA signé avec chaque fournisseur IA, 3.",
       h2Variants: [
         "Règle 1 : anonymiser avant d'envoyer à l'IA",
         "Règle 2 : le contrat DPA, un must",
@@ -1434,7 +1434,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "L'IA en PME : pourquoi l'impact est souvent supérieur aux grands groupes",
       metaTitle: "IA PME plus impactante que grands groupes | Axion-IA",
       metaDescription:
-        "En PME, chaque heure libérée représente un % élevé du temps total. La décision est plus rapide, le déploiement plus agile. Les grands groupes ont plus de ressources mais plus d'inertie. Le ROI IA PME est souvent 2× plus rapide.",
+        "En PME, chaque heure libérée représente un % élevé du temps total. La décision est plus rapide, le déploiement plus agile.",
       h2Variants: [
         "Vitesse de déploiement : PME vs grande entreprise",
         "Le poids d'une heure libérée en PME",
@@ -1459,7 +1459,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Premiers résultats IA en PME : délai réaliste",
       metaTitle: "Premiers résultats IA PME : délai | Axion-IA",
       metaDescription:
-        "Les premiers gains mesurables apparaissent en 2 à 4 semaines (temps libéré sur les tâches ciblées). L'impact ROI global se consolide sur 3 à 6 mois. Sans patience : le risque d'abandonner avant les vrais résultats.",
+        "Les premiers gains mesurables apparaissent en 2 à 4 semaines (temps libéré sur les tâches ciblées). L'impact ROI global se consolide sur 3 à 6 mois.",
       h2Variants: [
         "Semaine 1-2 : les quick wins immédiats",
         "Mois 1-3 : l'impact cumulatif",
@@ -1485,7 +1485,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Rentabilité de l'IA en PME : le délai moyen de retour sur investissement",
       metaTitle: "Rentabilité IA PME : délai ROI | Axion-IA",
       metaDescription:
-        "Le ROI médian d'un investissement IA en PME est de 159 % atteint en 7 mois. Les projets bien ciblés (processus répétitifs à fort volume) atteignent l'équilibre dès le 3e mois. Sans ciblage, le délai peut dépasser 18 mois.",
+        "Le ROI médian d'un investissement IA en PME est de 159 % atteint en 7 mois. Les projets bien ciblés (processus répétitifs à fort volume) atteignent",
       h2Variants: [
         "Facteurs qui accélèrent le ROI IA",
         "Pourquoi certains projets IA ne sont jamais rentables",
@@ -1511,7 +1511,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Maturité IA de mon entreprise : comment l'évaluer ?",
       metaTitle: "Maturité IA entreprise : évaluation | Axion-IA",
       metaDescription:
-        "3 niveaux de maturité IA : Découverte (outils utilisés ponctuellement), Adoption (processus intégrés), Transformation (IA dans la stratégie). Notre diagnostic gratuit de 30 min vous positionne sur cette échelle.",
+        "3 niveaux de maturité IA : Découverte (outils utilisés ponctuellement), Adoption (processus intégrés), Transformation (IA dans la stratégie).",
       h2Variants: [
         "Les 3 niveaux de maturité IA d'une entreprise",
         "Indicateurs pour s'auto-évaluer",
@@ -1536,7 +1536,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "IA vs automatisation : deux technologies complémentaires",
       metaTitle: "IA vs automatisation : différences clés | Axion-IA",
       metaDescription:
-        "L'automatisation exécute des règles fixes (si X alors Y). L'IA apprend et s'adapte aux situations nouvelles. En PME, les deux se combinent : automatisation pour les flux simples, IA pour les décisions complexes.",
+        "L'automatisation exécute des règles fixes (si X alors Y). L'IA apprend et s'adapte aux situations nouvelles.",
       h2Variants: [
         "Ce que fait l'automatisation sans IA",
         "Ce que l'IA ajoute à l'automatisation",
@@ -1561,7 +1561,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Cabinet IA vs freelance IA : lequel choisir pour une PME ?",
       metaTitle: "Cabinet IA vs freelance IA : choisir | Axion-IA",
       metaDescription:
-        "Un freelance IA est compétent sur 1 à 2 outils. Un cabinet IA couvre la stratégie, la formation, l'implémentation et la conformité avec une équipe dédiée. En dessous de 5 000 € de projet : freelance. Au-dessus : cabinet.",
+        "Un freelance IA est compétent sur 1 à 2 outils. Un cabinet IA couvre la stratégie, la formation, l'implémentation et la conformité avec une équipe dédiée.",
       h2Variants: [
         "Quand le freelance IA suffit",
         "Quand le cabinet IA est nécessaire",
@@ -1586,7 +1586,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "IA et croissance PME : les 5 leviers concrets en 2026",
       metaTitle: "IA pour croissance PME : leviers 2026 | Axion-IA",
       metaDescription:
-        "5 leviers IA pour la croissance PME : prospecter plus vite, personnaliser l'offre clients, réduire les coûts opérationnels, produire plus de contenu, et accélérer les décisions avec des données. Gains moyens : +38 % productivité.",
+        "5 leviers IA pour la croissance PME : prospecter plus vite, personnaliser l'offre clients, réduire les coûts opérationnels, produire plus de contenu, et",
       h2Variants: [
         "Levier 1 : prospection et acquisition client IA",
         "Levier 2 : réduction des coûts par l'automatisation",
@@ -1612,7 +1612,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "L'IA dans mon secteur : cas d'usage et exemples concrets",
       metaTitle: "IA dans mon secteur : cas d'usage 2026 | Axion-IA",
       metaDescription:
-        "L'IA crée de la valeur dans 35+ secteurs. Les usages varient (RH, comptabilité, marketing, production, service client) mais les gains de temps sont universels : 2 à 5h/semaine/personne quelle que soit l'activité.",
+        "L'IA crée de la valeur dans 35+ secteurs. Les usages varient (RH, comptabilité, marketing, production, service client) mais les gains de temps sont",
       h2Variants: [
         "Secteurs où l'IA apporte le plus de valeur",
         "Ce qui ne change pas selon le secteur",
@@ -1637,7 +1637,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Équipe réticente à l'IA : comment lever les freins",
       metaTitle: "Collaborateurs réticents à l'IA — gérer les freins",
       metaDescription:
-        "3 approches : montrer un gain concret sur leur propre tâche (pas une démo abstraite), commencer par les volontaires, nommer un ambassadeur IA interne. La résistance vient toujours de la peur du remplacement, pas de l'outil.",
+        "3 approches : montrer un gain concret sur leur propre tâche (pas une démo abstraite), commencer par les volontaires, nommer un ambassadeur IA interne.",
       h2Variants: [
         "Comprendre les 3 types de résistance IA",
         "La démo 'sur leur propre tâche' : pourquoi ça marche",

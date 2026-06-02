@@ -795,7 +795,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       h1: "Un cabinet IA qui s'engage sur des résultats mesurables — Pas de promesses vagues",
       metaTitle: "Cabinet IA résultats mesurables | Axion-IA France",
       metaDescription:
-        "Axion-IA définit des KPIs dès le départ et les suit avec vous. Résultats documentés à 30, 60 et 90 jours. Engagement sur les livrables, pas sur des présentations.",
+        "Axion-IA définit des KPIs dès le départ et les suit avec vous. Résultats documentés à 30, 60 et 90 jours.",
       h2Variants: [
         "Notre engagement contractuel sur les livrables",
         "Comment nous définissons les KPIs avant chaque mission",
@@ -952,7 +952,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       h1: "Une équipe dédiée d'experts IA pour votre entreprise — L'avantage Axion-IA",
       metaTitle: "Expertise IA entreprise France — Équipe dédiée Axion-IA",
       metaDescription:
-        "Axion-IA met à disposition une équipe d'experts IA dédiée à votre projet. Continuité, responsabilité, montée en charge — ce que les freelances ne peuvent pas offrir.",
+        "Axion-IA met à disposition une équipe d'experts IA dédiée à votre projet. Continuité, responsabilité, montée en charge — ce que les freelances ne peuvent",
       h2Variants: [
         "Ce que change une équipe dédiée vs un consultant ponctuel",
         "Notre équipe : profils, expertises, secteurs maîtrisés",

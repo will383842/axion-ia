@@ -1682,8 +1682,8 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     variables: {
       process: "conformité AI Act",
       resultat: "ETI conforme AI Act",
-      chiffre: "août 2026",
-      unite: "deadline",
+      chiffre: "2026",
+      unite: "deadline (août)",
       delai: "avant août 2026",
     },
     urlCible: "/fr/audit/eti",
@@ -2074,7 +2074,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "AI Act 2026 et les ETI françaises — ce qui change, ce qui est obligatoire",
       metaTitle: "AI Act impact ETI françaises 2026 | Axion-IA",
       metaDescription:
-        "Le règlement européen AI Act entre en vigueur en 2026. Ce que chaque ETI française doit faire : audit de conformité, classification des systèmes IA, politique.",
+        "Le règlement européen AI Act entre en vigueur en 2026. Ce que chaque ETI française doit faire : audit de conformité, classification des systèmes IA",
       h2Variants: [
         "Quelles obligations l'AI Act impose-t-il aux ETI en 2026 ?",
         "Comment une ETI peut-elle se mettre en conformité AI Act ?",
@@ -2084,8 +2084,8 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     variables: {
       process: "conformité AI Act",
       resultat: "ETI conforme avant deadline",
-      chiffre: "août 2026",
-      unite: "deadline",
+      chiffre: "2026",
+      unite: "deadline (août)",
       delai: "avant août 2026",
     },
     urlCible: "/fr/guides/ai-act-impact-eti-france-2026",
@@ -2318,7 +2318,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "Combien de temps dure un audit IA stratégique pour une ETI ?",
+      h1: "Audit IA stratégique pour une ETI : quelle durée prévoir ?",
       metaTitle: "Durée audit IA ETI | Axion-IA FAQ",
       metaDescription:
         "L'audit IA stratégique Axion-IA pour ETI dure 2 à 3 semaines (ateliers + analyse + livrable). Périmètre adapté selon la taille de l'ETI.",
@@ -2351,7 +2351,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Peut-on exiger des garanties de résultats à un cabinet IA pour une ETI ?",
       metaTitle: "Garanties résultats cabinet IA ETI | Axion-IA FAQ",
       metaDescription:
-        "Oui, dans certaines conditions. Axion-IA propose des jalons contractuels liés aux livrables. Ce qui est garantissable et ce qui ne l'est pas — honnêteté totale.",
+        "Oui, dans certaines conditions. Axion-IA propose des jalons contractuels liés aux livrables.",
       h2Variants: [
         "Que peut-on contractualiser avec un cabinet IA pour une ETI ?",
         "Jalons, KPIs et garanties : comment cadrer un contrat IA ETI ?",

@@ -74,7 +74,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Coaching IA pour chef d'entreprise — accessible, sans jargon, sur vos cas réels",
       metaTitle: "Coach IA chef d'entreprise accessible | Axion-IA",
       metaDescription:
-        "Vous êtes chef d'entreprise, pas ingénieur. Le coaching IA Axion-IA s'adapte à votre niveau et à vos process métier. Séance individuelle, résultats concrets.",
+        "Vous êtes chef d'entreprise, pas ingénieur. Le coaching IA Axion-IA s'adapte à votre niveau et à vos process métier.",
       h2Variants: [
         "L'IA pour les dirigeants non-techniques : par où commencer ?",
         "1 séance de coaching IA : ce que vous repartez avec",
@@ -98,7 +98,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Coaching IA stratégique pour directeurs généraux d'ETI",
       metaTitle: "Coaching IA DG ETI — stratégie IA | Axion-IA",
       metaDescription:
-        "Coaching IA individuel pour directeurs généraux d'ETI : gouvernance IA, roadmap stratégique, transformation opérationnelle. Programme sur mesure, résultats mesurables.",
+        "Coaching IA individuel pour directeurs généraux d'ETI : gouvernance IA, roadmap stratégique, transformation opérationnelle.",
       h2Variants: [
         "Quel rôle le DG joue dans la transformation IA de son ETI ?",
         "Programme coaching IA DG ETI : durée, contenu, livrables",
@@ -126,7 +126,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Audit IA en 5 jours — plan d'action chiffré livré, pas de projet interminable",
       metaTitle: "Audit IA PME en 5 jours — plan chiffré | Axion-IA",
       metaDescription:
-        "L'audit IA Axion-IA dure 5 jours : 2 jours d'interviews + 2 jours d'analyse + 1 jour de restitution. Livrable PDF 25-40 pages + plan priorisé. Opérationnel.",
+        "L'audit IA Axion-IA dure 5 jours : 2 jours d'interviews + 2 jours d'analyse + 1 jour de restitution. Livrable PDF 25-40 pages + plan priorisé",
       h2Variants: [
         "Pourquoi 5 jours suffisent pour un audit IA complet en PME",
         "Ce que contient le livrable de l'audit IA Axion-IA",
@@ -152,7 +152,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Audit IA Flash — diagnostic rapide et accessible pour TPE et PME",
       metaTitle: "Audit IA Flash TPE PME — diagnostic rapide | Axion-IA",
       metaDescription:
-        "L'audit sur place Axion-IA est le format d'entrée : 1 journée, identification des 3-5 process candidats à l'IA, plan de priorisation. Sans engagement sur la suite.",
+        "L'audit sur place Axion-IA est le format d'entrée : 1 journée, identification des 3-5 process candidats à l'IA, plan de priorisation.",
       h2Variants: [
         "Qu'est-ce qu'un audit IA Flash et à quoi ça sert ?",
         "Audit sur place vs audit complet : lequel choisir pour ma TPE ?",
@@ -205,7 +205,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Automatisez vos process métier avec l'IA — opérationnel en 4 semaines",
       metaTitle: "Automatisation IA processus PME France | Axion-IA",
       metaDescription:
-        "Cabinet & agence IA : automatisation de vos processus PME avec l'intelligence artificielle. Relances, facturation, qualification prospects — opérationnel en 4 semaines.",
+        "Cabinet & agence IA : automatisation de vos processus PME avec l'intelligence artificielle.",
       h2Variants: [
         "Quels processus PME automatiser en priorité avec l'IA ?",
         "5 automatisations IA les plus rentables pour une PME en 2026",
@@ -260,7 +260,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Intégrez l'IA à votre logiciel métier existant — sans tout remettre à plat",
       metaTitle: "Intégration IA logiciel métier PME | Axion-IA",
       metaDescription:
-        "L'IA s'intègre à votre ERP, CRM, comptabilité sans migration ni refonte. Axion-IA déploie une solution IA sur vos outils existants. Démo sur vos données réelles.",
+        "L'IA s'intègre à votre ERP, CRM, comptabilité sans migration ni refonte. Axion-IA déploie une solution IA sur vos outils existants.",
       h2Variants: [
         "L'IA peut-elle se connecter à mon logiciel métier actuel ?",
         "ERP, CRM, comptabilité : comment l'IA s'intègre sans friction",
@@ -284,7 +284,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Automatisez vos tâches répétitives avec l'IA — gagnez 5 à 10h par semaine",
       metaTitle: "Automatiser tâches répétitives IA PME | Axion-IA",
       metaDescription:
-        "Emails, relances, comptes-rendus, classement, rapports : l'IA prend en charge les tâches répétitives de votre PME. Cabinet IA franco-européen, résultats mesurables.",
+        "Emails, relances, comptes-rendus, classement, rapports : l'IA prend en charge les tâches répétitives de votre PME.",
       h2Variants: [
         "Quelles tâches répétitives l'IA peut automatiser dans une PME ?",
         "Combien d'heures par semaine récupère-t-on après automatisation IA ?",
@@ -314,7 +314,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Automatisez facturation, devis et emails — libérez 6h par semaine dans votre PME",
       metaTitle: "Automatiser facturation devis emails IA PME | Axion-IA",
       metaDescription:
-        "L'IA prend en charge relances, génération de devis, envoi d'emails — connectée à vos outils existants. 6h/semaine récupérées en moyenne sur une PME de 5 personnes.",
+        "L'IA prend en charge relances, génération de devis, envoi d'emails — connectée à vos outils existants.",
       h2Variants: [
         "Comment l'IA automatise la facturation d'une PME ?",
         "Génération de devis assistée par IA : de la demande au document signé",

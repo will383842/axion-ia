@@ -31,7 +31,7 @@ const KW_WEB_DIGITAL_TRANSACTIONNEL: KeywordSeed[] = [
       h1: "Intégrer l'IA dans votre site web PME — chatbot, search, personnalisation",
       metaTitle: "Intégrer l'IA dans votre site web PME | Axion-IA",
       metaDescription:
-        "Axion-IA greffe l'IA sur votre site ou application : chatbot RAG, recherche sémantique, personnalisation. Next.js, Laravel, Shopify. Livraison 3-6 semaines.",
+        "Axion-IA greffe l'IA sur votre site ou application : chatbot RAG, recherche sémantique, personnalisation. Next.js, Laravel, Shopify. Livraison 3-6",
       h2Variants: [
         "Pourquoi augmenter votre site avec l'IA plutôt que le refaire ?",
         "3 briques IA à greffer sur n'importe quel site web PME",

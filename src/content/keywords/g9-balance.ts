@@ -844,7 +844,7 @@ const COACHING: KeywordSeed[] = [
     urlCible: "/fr/coaching-ia-dirigeants",
   }),
   s({
-    keyword: "coaching ia aeo question dirigeant ia",
+    keyword: "le coaching IA est-il utile pour un dirigeant ?",
     module: "coaching-1-to-1",
     intent: "aeo",
     cible: "toutes-cibles",
@@ -853,7 +853,7 @@ const COACHING: KeywordSeed[] = [
     urlCible: "/fr/coaching-ia-dirigeants",
   }),
   s({
-    keyword: "pourquoi coaching ia pour dirigeant entreprise",
+    keyword: "pourquoi un coaching IA pour un dirigeant d'entreprise ?",
     module: "coaching-1-to-1",
     intent: "aeo",
     cible: "toutes-cibles",
@@ -862,7 +862,7 @@ const COACHING: KeywordSeed[] = [
     urlCible: "/fr/coaching-ia-dirigeants",
   }),
   s({
-    keyword: "combien coute coaching ia personnalise france",
+    keyword: "combien coûte un coaching IA personnalisé en France ?",
     module: "coaching-1-to-1",
     intent: "aeo",
     cible: "toutes-cibles",
@@ -1832,7 +1832,7 @@ const CODAGE: KeywordSeed[] = [
     urlCible: "/fr/codage-developpement",
   }),
   s({
-    keyword: "pourquoi site web avec ia en 2026",
+    keyword: "pourquoi créer un site web avec IA en 2026 ?",
     module: "codage-developpement",
     intent: "aeo",
     cible: "toutes-cibles",
@@ -1841,7 +1841,7 @@ const CODAGE: KeywordSeed[] = [
     urlCible: "/fr/codage-developpement",
   }),
   s({
-    keyword: "cout creation site web ia france",
+    keyword: "combien coûte la création d'un site web IA en France ?",
     module: "codage-developpement",
     intent: "aeo",
     cible: "toutes-cibles",
@@ -2094,7 +2094,7 @@ const CODAGE: KeywordSeed[] = [
     urlCible: "/fr/codage-developpement",
   }),
   s({
-    keyword: "site ia aeo geolocalisation france",
+    keyword: "comment géolocaliser un site IA en France ?",
     module: "codage-developpement",
     intent: "aeo",
     cible: "toutes-cibles",

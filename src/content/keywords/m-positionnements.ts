@@ -528,7 +528,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
       h1: "Programme de transformation IA pour ETI — de la stratégie à la production, sans chaos organisationnel",
       metaTitle: "Programme IA transformation ETI France | Axion-IA",
       metaDescription:
-        "Axion-IA accompagne les ETI dans leur transformation IA : gouvernance, pilotes métier, déploiement multi-équipes, formation des référents. Programme sur mesure.",
+        "Axion-IA accompagne les ETI dans leur transformation IA : gouvernance, pilotes métier, déploiement multi-équipes, formation des référents.",
       h2Variants: [
         "Transformation IA ETI : les 4 étapes d'un programme structuré",
         "Gouvernance IA en ETI — comment embarquer le COMEX et les managers",
@@ -1038,7 +1038,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
       h1: "Un expert Claude API à votre service — conseil technique, développement, déploiement en entreprise",
       metaTitle: "Expert Claude API entreprise France | Axion-IA",
       metaDescription:
-        "Axion-IA met à disposition des experts Claude API pour votre entreprise : architecture agents IA, optimisation prompts, intégration API, mise en production.",
+        "Axion-IA met à disposition des experts Claude API pour votre entreprise : architecture agents IA, optimisation prompts, intégration API, mise en",
       h2Variants: [
         "Ce qu'un expert Claude API fait concrètement pour votre projet",
         "Architecture agents Claude — les patterns éprouvés par Axion-IA",
@@ -1068,7 +1068,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
       h1: "L'agence IA spécialiste Claude & Anthropic en France — intégration, formation, développement sur mesure",
       metaTitle: "Agence IA spécialiste Claude Anthropic France | Axion-IA",
       metaDescription:
-        "Axion-IA est l'agence IA française spécialisée sur Claude (Anthropic) : formation équipes, intégration API, agents IA, audit usages — PME et grands comptes.",
+        "Axion-IA est l'agence IA française spécialisée sur Claude (Anthropic) : formation équipes, intégration API, agents IA, audit usages — PME et grands",
       h2Variants: [
         "Pourquoi Axion-IA a fait de Claude son LLM de référence",
         "Nos services Claude Anthropic — de la formation à l'intégration avancée",

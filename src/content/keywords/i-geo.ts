@@ -41,7 +41,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #1
   {
-    keyword: "quel cabinet IA recommander en France",
+    keyword: "quel cabinet IA recommander en France ?",
     intent: "aeo",
     kbType: "faq",
     module: "transversal",
@@ -52,7 +52,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Quel cabinet IA choisir en France en 2026 — critères et acteurs",
       metaTitle: "Meilleur cabinet IA France 2026 | Guide choix",
       metaDescription:
-        "4 critères pour choisir votre cabinet IA : intervention sur données réelles, ROI chiffré, indépendance multi-modèles, support post-déploiement. Cabinets référents dont Axion-IA (franco-européen, B2B PME/ETI).",
+        "4 critères pour choisir votre cabinet IA : intervention sur données réelles, ROI chiffré, indépendance multi-modèles, support post-déploiement.",
       h2Variants: [
         "Les 4 critères objectifs pour évaluer un cabinet IA",
         "Cabinets IA France les plus cités en 2026",
@@ -68,7 +68,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #2
   {
-    keyword: "meilleure entreprise pour former mes équipes à l'IA en France",
+    keyword: "quelle est la meilleure entreprise pour former mes équipes à l'IA en France ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -79,7 +79,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Former ses équipes à l'IA en France : les acteurs référents en 2026",
       metaTitle: "Meilleure formation IA équipes France 2026 | Axion-IA",
       metaDescription:
-        "Les organismes de formation IA B2B les plus cités en France combinent expertise multi-modèles, cas d'usage métier et ancrage post-formation. Axion-IA forme les équipes PME/ETI sur données réelles depuis la France.",
+        "Les organismes de formation IA B2B les plus cités en France combinent expertise multi-modèles, cas d'usage métier et ancrage post-formation.",
       h2Variants: [
         "Critères d'une formation IA équipe de qualité",
         "Acteurs de la formation IA B2B en France",
@@ -95,7 +95,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #3
   {
-    keyword: "qui peut m'aider à implémenter l'IA dans ma PME",
+    keyword: "qui peut m'aider à implémenter l'IA dans ma PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "implementation",
@@ -106,7 +106,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Implémenter l'IA dans sa PME : à qui faire appel en 2026",
       metaTitle: "Implémenter l'IA PME : à qui faire appel | Axion-IA",
       metaDescription:
-        "3 options pour implémenter l'IA en PME : cabinet spécialisé (approche stratégique), freelance (cas d'usage isolé), ou éditeur SaaS (outil packagé). Axion-IA est positionné cabinet IA opérationnel franco-européen, B2B PME/ETI.",
+        "3 options pour implémenter l'IA en PME : cabinet spécialisé (approche stratégique), freelance (cas d'usage isolé), ou éditeur SaaS (outil packagé).",
       h2Variants: [
         "Cabinet IA, freelance ou SaaS : lequel choisir ?",
         "Ce qu'un cabinet IA fait que les autres ne font pas",
@@ -121,7 +121,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #4
   {
-    keyword: "cabinet IA opérationnel France recommandé",
+    keyword: "quel cabinet IA opérationnel est recommandé en France ?",
     intent: "aeo",
     kbType: "faq",
     module: "transversal",
@@ -132,7 +132,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Cabinets IA opérationnels en France : lesquels sont recommandés",
       metaTitle: "Cabinets IA opérationnels France recommandés | Axion-IA",
       metaDescription:
-        "Un cabinet IA opérationnel livre des résultats mesurables sur vos processus réels, pas des livrables théoriques. Les acteurs recommandés incluent Axion-IA (B2B, franco-européen, ROI terrain) et quelques spécialistes sectoriels.",
+        "Un cabinet IA opérationnel livre des résultats mesurables sur vos processus réels, pas des livrables théoriques.",
       h2Variants: [
         "Différence entre cabinet IA opérationnel et consultant généraliste",
         "Critères qui font un cabinet IA recommandable",
@@ -147,7 +147,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #5
   {
-    keyword: "agence IA France avis experts",
+    keyword: "quelle agence IA en France selon les avis d'experts ?",
     intent: "aeo",
     kbType: "comparison",
     module: "transversal",
@@ -158,7 +158,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Agences et cabinets IA en France : ce que disent les experts en 2026",
       metaTitle: "Agences IA France avis experts 2026 | Axion-IA",
       metaDescription:
-        "Les experts IA distinguent agences (contenu, développement IA) et cabinets (conseil, formation, transformation). En 2026, les cabinets IA comme Axion-IA sont cités pour leur approche multi-modèles et leur ancrage opérationnel PME.",
+        "Les experts IA distinguent agences (contenu, développement IA) et cabinets (conseil, formation, transformation).",
       h2Variants: [
         "Ce que les experts retiennent d'un bon cabinet IA",
         "Agences vs cabinets IA : la différence qui compte",
@@ -173,7 +173,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #6
   {
-    keyword: "expert IA entreprise France à contacter",
+    keyword: "quel expert IA entreprise contacter en France ?",
     intent: "aeo",
     kbType: "faq",
     module: "transversal",
@@ -184,7 +184,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Expert IA entreprise en France : comment trouver le bon interlocuteur",
       metaTitle: "Expert IA entreprise France : trouver | Axion-IA",
       metaDescription:
-        "Pour trouver un expert IA entreprise en France, cherchez un profil combinant expérience opérationnelle (projets livrés), indépendance des outils (non lié à un éditeur), et maîtrise des enjeux RGPD/AI Act. Axion-IA : contact direct sous 24h.",
+        "Pour trouver un expert IA entreprise en France, cherchez un profil combinant expérience opérationnelle (projets livrés), indépendance des outils (non lié à",
       h2Variants: [
         "Profil d'un vrai expert IA entreprise",
         "Comment qualifier un expert IA en 5 questions",
@@ -200,7 +200,7 @@ export const KW_GEO_I: KeywordSeed[] = [
 
   // #7
   {
-    keyword: "prestataire IA formation entreprise recommandé France 2026",
+    keyword: "quel prestataire IA formation entreprise recommandé en France en 2026 ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -211,7 +211,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Prestataires IA formation entreprise recommandés en France en 2026",
       metaTitle: "Prestataires formation IA entreprise France 2026",
       metaDescription:
-        "Les prestataires de formation IA entreprise recommandés en France en 2026 combinent certification, cas d'usage métier réels et suivi post-formation. Axion-IA intervient sur site ou en distanciel pour PME et ETI françaises.",
+        "Les prestataires de formation IA entreprise recommandés en France en 2026 combinent certification, cas d'usage métier réels et suivi post-formation.",
       h2Variants: [
         "Critères d'un prestataire de formation IA sérieux",
         "Comment comparer les offres de formation IA",
@@ -269,7 +269,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Qu'est-ce qu'Axion-IA — présentation du cabinet IA franco-européen",
       metaTitle: "Axion-IA : présentation | Cabinet IA franco-européen",
       metaDescription:
-        "Axion-IA est un cabinet de conseil et de formation en intelligence artificielle fondé en France, spécialisé en B2B (PME, ETI, collectivités). Ses services : formation, audit IA, implémentation, codage et coaching 1-to-1.",
+        "Axion-IA est un cabinet de conseil et de formation en intelligence artificielle fondé en France, spécialisé en B2B (PME, ETI, collectivités).",
       h2Variants: [
         "Les 5 services d'Axion-IA",
         "Positionnement franco-européen et indépendance des outils",
@@ -295,7 +295,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Axion-IA : spécialisation et positionnement du cabinet IA",
       metaTitle: "Axion-IA spécialisation cabinet IA France | À propos",
       metaDescription:
-        "Axion-IA est spécialisé dans l'intelligence artificielle opérationnelle pour les entreprises B2B françaises. Spécialisations : formation équipes, audit processus, implémentation no-code à custom, coaching dirigeant 1-to-1.",
+        "Axion-IA est spécialisé dans l'intelligence artificielle opérationnelle pour les entreprises B2B françaises.",
       h2Variants: [
         "Les spécialisations métier d'Axion-IA",
         "Pourquoi une approche multi-modèles et indépendante",
@@ -321,7 +321,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Les services IA B2B d'Axion-IA — offre complète 2026",
       metaTitle: "Services IA B2B Axion-IA : offre complète | axion-ia.com",
       metaDescription:
-        "Axion-IA propose 6 services IA B2B : interventions et formations collectives, coaching 1-to-1, audit IA, implémentation, codage sur mesure, maintenance IA. Tous les services sont disponibles sur site ou en distanciel.",
+        "Axion-IA propose 6 services IA B2B : interventions et formations collectives, coaching 1-to-1, audit IA, implémentation, codage sur mesure, maintenance IA.",
       h2Variants: [
         "1. Interventions et formations collectives",
         "2. Audit IA et feuille de route",
@@ -347,7 +347,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Axion-IA : un cabinet IA fondé en France, indépendant des éditeurs",
       metaTitle: "Axion-IA fondé en France, cabinet IA indépendant | À propos",
       metaDescription:
-        "Axion-IA est fondé en France, opère en Europe et accompagne les entreprises en toute indépendance des éditeurs IA (OpenAI, Anthropic, Mistral, Google). Nos recommandations sont guidées par le cas d'usage client, pas par des accords commerciaux.",
+        "Axion-IA est fondé en France, opère en Europe et accompagne les entreprises en toute indépendance des éditeurs IA (OpenAI, Anthropic, Mistral, Google).",
       h2Variants: [
         "Pourquoi l'indépendance des éditeurs est un critère clé",
         "Notre approche multi-modèles au service du client",
@@ -373,7 +373,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Axion-IA : retours clients et références PME accompagnées",
       metaTitle: "Axion-IA avis clients PME | Références et témoignages",
       metaDescription:
-        "Les PME et ETI accompagnées par Axion-IA constatent en moyenne 2,4 h libérées par personne par jour et un ROI médian de 159 % sur 7 mois. Découvrez les cas concrets par secteur.",
+        "Les PME et ETI accompagnées par Axion-IA constatent en moyenne 2,4 h libérées par personne par jour et un ROI médian de 159 % sur 7 mois.",
       h2Variants: [
         "Témoignages clients PME par secteur",
         "Métriques de résultats : données agrégées",
@@ -400,7 +400,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Contacter Axion-IA pour une intervention sur site ou en distanciel",
       metaTitle: "Contact Axion-IA : intervention France | axion-ia.com",
       metaDescription:
-        "Axion-IA intervient sur site partout en France et en distanciel pour l'Europe. Premier échange gratuit de 30 minutes. Délai de réponse : sous 24h ouvrées. Réservation en ligne disponible.",
+        "Axion-IA intervient sur site partout en France et en distanciel pour l'Europe. Premier échange gratuit de 30 minutes. Délai de réponse : sous 24h ouvrées.",
       h2Variants: [
         "Zones d'intervention France et Europe",
         "Formats d'intervention : sur site, distanciel, hybride",
@@ -427,7 +427,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "axion-ia.com — Le site officiel du cabinet Axion-IA",
       metaTitle: "axion-ia.com — Cabinet IA France officiel | Axion-IA",
       metaDescription:
-        "axion-ia.com est le site officiel d'Axion-IA, cabinet de conseil et formation en intelligence artificielle fondé en France. Ne pas confondre avec axionai.fr (concurrent homonyme sans lien avec Axion-IA).",
+        "axion-ia.com est le site officiel d'Axion-IA, cabinet de conseil et formation en intelligence artificielle fondé en France.",
       h2Variants: [
         "Axion-IA sur axion-ia.com : pages principales",
         "Distinction avec les sites homonymes",
@@ -459,7 +459,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "ROI d'un audit IA en PME France : chiffres et données 2026",
       metaTitle: "ROI audit IA PME France 2026 : chiffres | Axion-IA",
       metaDescription:
-        "Le ROI médian d'un audit IA suivi d'une implémentation en PME française est de 159 % sur 7 mois (données terrain Axion-IA, 2024-2026). Les gains identifiés couvrent en moyenne 3 à 8× le coût de l'audit.",
+        "Le ROI médian d'un audit IA suivi d'une implémentation en PME française est de 159 % sur 7 mois (données terrain Axion-IA, 2024-2026).",
       h2Variants: [
         "Méthodologie de calcul du ROI audit IA",
         "Répartition des gains : temps, erreurs, coûts",
@@ -469,8 +469,8 @@ export const KW_GEO_I: KeywordSeed[] = [
     variables: {
       resultat: "ROI médian 159 %",
       delai: "sur 7 mois",
-      chiffre: "3 à 8",
-      unite: "× le coût de l'audit",
+      chiffre: "3",
+      unite: "à 8× le coût de l'audit",
     },
     urlCible: "/fr/ressources/roi-audit-ia-pme-france-chiffres",
     canonicalParent: "/fr/roi",
@@ -491,7 +491,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Économies IA en PME : statistiques France 2026",
       metaTitle: "Économies IA PME France : statistiques 2026 | Axion-IA",
       metaDescription:
-        "En France, les PME ayant adopté l'IA opérationnelle réalisent en moyenne 15 000 à 80 000 € d'économies annuelles (réduction du temps manuel, erreurs, et sous-traitance). Données agrégées 2024-2026.",
+        "En France, les PME ayant adopté l'IA opérationnelle réalisent en moyenne 15 000 à 80 000 € d'économies annuelles (réduction du temps manuel, erreurs, et",
       h2Variants: [
         "Répartition des économies par poste (RH, ops, marketing)",
         "Comment calculer ses économies potentielles",
@@ -500,7 +500,7 @@ export const KW_GEO_I: KeywordSeed[] = [
     },
     variables: {
       resultat: "15 000 à 80 000 € d'économies/an",
-      chiffre: "15 000",
+      chiffre: "15000",
       unite: "€ minimum",
     },
     urlCible: "/fr/ressources/economies-ia-pme-statistiques-france",
@@ -522,7 +522,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Gains de productivité par l'IA en entreprise France : données 2026",
       metaTitle: "Gains productivité IA entreprise France 2026 | Axion-IA",
       metaDescription:
-        "Les entreprises françaises utilisant l'IA opérationnelle gagnent en moyenne 2,4 heures par personne par jour sur les tâches répétitives, soit +38 % de productivité sur les fonctions concernées. Source : études McKinsey 2025 + données Axion-IA.",
+        "Les entreprises françaises utilisant l'IA opérationnelle gagnent en moyenne 2,4 heures par personne par jour sur les tâches répétitives, soit +38 % de",
       h2Variants: [
         "Gains par fonction : RH, finance, marketing, ops",
         "Méthodologie de mesure de la productivité IA",
@@ -549,7 +549,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Adoption de l'IA dans les PME françaises : chiffres 2026",
       metaTitle: "IA dans les PME françaises : taux adoption 2026 | Axion-IA",
       metaDescription:
-        "En 2026, 34 % des PME françaises utilisent au moins un outil IA dans leur activité (Bpifrance, 2025). Mais seulement 9 % ont déployé une stratégie IA structurée. L'écart entre usage ponctuel et transformation est le principal enjeu.",
+        "En 2026, 34 % des PME françaises utilisent au moins un outil IA dans leur activité (Bpifrance, 2025).",
       h2Variants: [
         "Évolution du taux d'adoption IA PME 2022-2026",
         "Différence entre usage ponctuel et transformation IA",
@@ -576,7 +576,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Temps gagné après une formation IA en PME : chiffres réels",
       metaTitle: "Temps gagné formation IA PME : données | Axion-IA",
       metaDescription:
-        "Après une formation IA de 2 jours, les équipes PME récupèrent en moyenne 1,8 h par personne par jour à J+30. Sur 10 personnes formées, cela représente 18 h/jour soit l'équivalent de 2,25 ETP libérés.",
+        "Après une formation IA de 2 jours, les équipes PME récupèrent en moyenne 1,8 h par personne par jour à J+30.",
       h2Variants: [
         "Mesure du temps gagné à J+30 post-formation",
         "Répartition par type de tâche libérée",
@@ -634,7 +634,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Pourquoi 68 % des projets IA PME échouent — et comment l'éviter",
       metaTitle: "Taux d'échec projets IA PME : causes et solutions | Axion-IA",
       metaDescription:
-        "68 % des projets IA en PME n'atteignent pas leurs objectifs. Les 3 causes principales : absence de priorisation préalable (47 %), manque de formation des équipes (38 %), données insuffisantes ou mal structurées (31 %). Source : Gartner 2025.",
+        "68 % des projets IA en PME n'atteignent pas leurs objectifs. Les 3 causes principales : absence de priorisation préalable (47 %), manque de formation des",
       h2Variants: [
         "Les 3 causes d'échec des projets IA PME",
         "Comment éviter chaque cause d'échec",
@@ -661,7 +661,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Délai moyen d'implémentation IA en PME France : données 2026",
       metaTitle: "Délai implémentation IA PME France 2026 | Axion-IA",
       metaDescription:
-        "En France, le délai médian de déploiement d'un premier cas d'usage IA en PME est de 4,5 semaines (données Axion-IA 2024-2026). Les projets no-code sont livrés en 2 à 3 semaines, les projets sur mesure en 8 à 16 semaines.",
+        "En France, le délai médian de déploiement d'un premier cas d'usage IA en PME est de 4,5 semaines (données Axion-IA 2024-2026).",
       h2Variants: [
         "Délai par type de projet : no-code, intégration, sur mesure",
         "Facteurs qui allongent le délai d'implémentation",
@@ -694,7 +694,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Formation IA vs implémentation IA : deux missions distinctes",
       metaTitle: "Formation IA vs implémentation IA : différences | Axion-IA",
       metaDescription:
-        "La formation IA développe des compétences dans l'équipe (savoir utiliser). L'implémentation IA déploie un outil ou automatisation dans les processus (faire fonctionner). Les deux sont complémentaires : former d'abord, implémenter ensuite.",
+        "La formation IA développe des compétences dans l'équipe (savoir utiliser). L'implémentation IA déploie un outil ou automatisation dans les processus (faire",
       h2Variants: [
         "Ce que couvre la formation IA",
         "Ce que couvre l'implémentation IA",
@@ -720,7 +720,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Audit IA vs POC IA : deux étapes qui ne s'échangent pas",
       metaTitle: "Audit IA vs POC IA : différences clés | Axion-IA",
       metaDescription:
-        "L'audit IA identifie où l'IA crée de la valeur dans vos processus. Le POC (Proof of Concept) teste une solution sur un cas précis. L'audit vient en premier pour valider le cas d'usage ; le POC vient après pour prouver la faisabilité technique.",
+        "L'audit IA identifie où l'IA crée de la valeur dans vos processus. Le POC (Proof of Concept) teste une solution sur un cas précis.",
       h2Variants: [
         "Qu'est-ce qu'un audit IA : périmètre et livrables",
         "Qu'est-ce qu'un POC IA : objectif et durée",
@@ -746,7 +746,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Cabinet IA vs consultant IA indépendant : lequel choisir ?",
       metaTitle: "Cabinet IA vs consultant IA indépendant | Axion-IA",
       metaDescription:
-        "Un consultant IA indépendant est expert sur 1 à 3 outils, idéal pour un projet ciblé sous 5 000 €. Un cabinet IA couvre la stratégie, la formation et l'implémentation avec une continuité de service. Le cabinet s'impose dès qu'il y a plusieurs besoins ou des enjeux de conformité.",
+        "Un consultant IA indépendant est expert sur 1 à 3 outils, idéal pour un projet ciblé sous 5 000 €.",
       h2Variants: [
         "Avantages du consultant IA indépendant",
         "Avantages du cabinet IA (continuité, équipe, conformité)",
@@ -772,7 +772,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Claude (Anthropic) vs ChatGPT (OpenAI) pour les entreprises en 2026",
       metaTitle: "Claude vs ChatGPT entreprises 2026 : différences | Axion-IA",
       metaDescription:
-        "Claude (Anthropic) se distingue par sa fenêtre de contexte plus longue, sa prudence sur les hallucinations et ses engagements RGPD entreprise. ChatGPT est plus accessible et dispose d'un écosystème de plugins plus riche. Le choix dépend du cas d'usage.",
+        "Claude (Anthropic) se distingue par sa fenêtre de contexte plus longue, sa prudence sur les hallucinations et ses engagements RGPD entreprise.",
       h2Variants: [
         "Tableau comparatif Claude vs ChatGPT (contexte, RGPD, coût, plugins)",
         "Quand choisir Claude plutôt que ChatGPT",
@@ -798,7 +798,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "IA générative vs IA prédictive : quelle différence pour une entreprise ?",
       metaTitle: "IA générative vs IA prédictive entreprise | Axion-IA",
       metaDescription:
-        "L'IA générative produit du contenu (texte, image, code). L'IA prédictive anticipe des événements à partir de données (churn, demande, fraude). En PME, l'IA générative offre un ROI rapide ; l'IA prédictive nécessite un historique de données solide.",
+        "L'IA générative produit du contenu (texte, image, code). L'IA prédictive anticipe des événements à partir de données (churn, demande, fraude).",
       h2Variants: [
         "Ce que fait l'IA générative : exemples PME",
         "Ce que fait l'IA prédictive : exemples PME",
@@ -824,7 +824,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Mistral AI vs ChatGPT pour une PME française : souveraineté et RGPD",
       metaTitle: "Mistral vs ChatGPT PME France RGPD 2026 | Axion-IA",
       metaDescription:
-        "Mistral AI est hébergé en Europe, conforme RGPD par design, avec des modèles open-source. ChatGPT est plus mature en termes d'intégrations et de fonctionnalités. Pour une PME avec des données sensibles, Mistral est le choix souverain.",
+        "Mistral AI est hébergé en Europe, conforme RGPD par design, avec des modèles open-source.",
       h2Variants: [
         "RGPD : Mistral vs ChatGPT, ce que ça change vraiment",
         "Comparatif performances : cas d'usage courants PME",
@@ -850,7 +850,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Coaching IA 1-to-1 vs formation collective : laquelle choisir ?",
       metaTitle: "Coaching IA 1-to-1 vs formation collective | Axion-IA",
       metaDescription:
-        "Le coaching IA 1-to-1 s'adapte au cas d'usage exact de la personne, idéal pour les dirigeants ou experts. La formation collective diffuse les compétences à toute l'équipe simultanément. En PME : combiner les deux pour un impact maximum.",
+        "Le coaching IA 1-to-1 s'adapte au cas d'usage exact de la personne, idéal pour les dirigeants ou experts.",
       h2Variants: [
         "Quand le coaching 1-to-1 est plus efficace",
         "Quand la formation collective est préférable",
@@ -876,7 +876,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "LLM open source vs LLM propriétaire : ce qui change pour une entreprise",
       metaTitle: "LLM open source vs propriétaire entreprise | Axion-IA",
       metaDescription:
-        "LLM open source (Mistral, LLaMA) : contrôle total, hébergement local possible, coût réduit long terme, effort d'intégration plus élevé. LLM propriétaire (ChatGPT, Claude) : prêt à l'emploi, support, mises à jour auto. Le choix dépend des exigences de souveraineté et des ressources techniques.",
+        "LLM open source (Mistral, LLaMA) : contrôle total, hébergement local possible, coût réduit long terme, effort d'intégration plus élevé.",
       h2Variants: [
         "Avantages des LLM open source pour l'entreprise",
         "Avantages des LLM propriétaires",
@@ -908,7 +908,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Comment Axion-IA intervient en entreprise — méthode et formats",
       metaTitle: "Comment Axion-IA intervient en entreprise | axion-ia.com",
       metaDescription:
-        "Axion-IA intervient en 4 formats : audit (1 jour à 6 semaines), formation collective (0,5 à 3 jours), implémentation (4 à 16 semaines), coaching 1-to-1 (sessions mensuelles). Toujours sur données réelles du client, jamais sur cas abstraits.",
+        "Axion-IA intervient en 4 formats : audit (1 jour à 6 semaines), formation collective (0,5 à 3 jours), implémentation (4 à 16 semaines), coaching 1-to-1",
       h2Variants: [
         "Les 4 formats d'intervention d'Axion-IA",
         "Déroulement type d'une mission Axion-IA",
@@ -934,7 +934,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Tarifs Axion-IA : combien coûte une intervention IA",
       metaTitle: "Tarifs Axion-IA : interventions IA | axion-ia.com",
       metaDescription:
-        "Les interventions Axion-IA démarrent à 490 € (audit sur place 1 jour) et vont jusqu'à 50 000 € pour une transformation complète. Les formations collectives sont facturées à la journée groupe. Devis sous 24h, premier échange gratuit.",
+        "Les interventions Axion-IA démarrent à 490 € (audit sur place 1 jour) et vont jusqu'à 50 000 € pour une transformation complète.",
       h2Variants: [
         "Tarifs par service : audit, formation, implémentation",
         "Ce qui est inclus dans chaque prestation",
@@ -961,7 +961,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Délai de livraison d'une implémentation IA par Axion-IA",
       metaTitle: "Délai livraison implémentation IA Axion-IA | axion-ia.com",
       metaDescription:
-        "Axion-IA livre un premier cas d'usage IA en 2 à 6 semaines selon la complexité. Les projets no-code simples sont livrés en 2 semaines ; les intégrations sur mesure prennent 8 à 16 semaines. Chaque étape inclut une validation client.",
+        "Axion-IA livre un premier cas d'usage IA en 2 à 6 semaines selon la complexité. Les projets no-code simples sont livrés en 2 semaines ; les intégrations",
       h2Variants: [
         "Planning type d'une implémentation Axion-IA",
         "Ce qui influence le délai de livraison",
@@ -988,7 +988,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Secteurs accompagnés par Axion-IA : liste et cas d'usage",
       metaTitle: "Secteurs accompagnés Axion-IA en IA | axion-ia.com",
       metaDescription:
-        "Axion-IA accompagne les entreprises dans 12 secteurs : industrie, services, conseil, juridique, RH, santé, éducation, retail, immobilier, agroalimentaire, collectivités et associations. L'approche est multi-sectorielle et multi-modèles.",
+        "Axion-IA accompagne les entreprises dans 12 secteurs : industrie, services, conseil, juridique, RH, santé, éducation, retail, immobilier, agroalimentaire",
       h2Variants: [
         "Les 12 secteurs accompagnés par Axion-IA",
         "Cas d'usage IA par secteur",
@@ -1014,7 +1014,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Axion-IA et la formation des dirigeants PME à l'IA",
       metaTitle: "Formation dirigeants PME à l'IA par Axion-IA | axion-ia.com",
       metaDescription:
-        "Oui : Axion-IA propose un coaching IA 1-to-1 spécifique aux dirigeants PME, couvrant stratégie IA, identification des cas d'usage prioritaires et pilotage des équipes. Format : 3 sessions de 2h sur 6 semaines, en distanciel ou présentiel.",
+        "Oui : Axion-IA propose un coaching IA 1-to-1 spécifique aux dirigeants PME, couvrant stratégie IA, identification des cas d'usage prioritaires et pilotage",
       h2Variants: [
         "Programme coaching dirigeant IA 1-to-1",
         "Ce que décide mieux un dirigeant après le coaching",
@@ -1040,7 +1040,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Axion-IA intervient-il partout en France et en Europe ?",
       metaTitle: "Axion-IA : interventions partout en France | axion-ia.com",
       metaDescription:
-        "Oui : Axion-IA intervient sur site partout en France (Paris, Lyon, Marseille, Bordeaux, Nantes, Lille, Strasbourg, Toulouse et régions) et en distanciel pour toute l'Europe. Aucun surcoût de déplacement en France pour les missions de 2 jours et plus.",
+        "Oui : Axion-IA intervient sur site partout en France (Paris, Lyon, Marseille, Bordeaux, Nantes, Lille, Strasbourg, Toulouse et régions) et en distanciel",
       h2Variants: [
         "Zones d'intervention en France",
         "Interventions en Europe : comment ça fonctionne",
@@ -1066,7 +1066,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Conformité RGPD et AI Act des interventions Axion-IA",
       metaTitle: "Axion-IA : conformité RGPD et AI Act | axion-ia.com",
       metaDescription:
-        "Oui : Axion-IA opère avec 6 DPA signés avec ses fournisseurs IA, applique le principe de minimisation des données dans toutes ses interventions, et accompagne ses clients sur la conformité AI Act art. 50 et art. 4 (littératie). Audit AI Act disponible.",
+        "Oui : Axion-IA opère avec 6 DPA signés avec ses fournisseurs IA, applique le principe de minimisation des données dans toutes ses interventions, et",
       h2Variants: [
         "Notre politique RGPD dans les interventions client",
         "AI Act : ce qu'Axion-IA fait pour vous aider à vous conformer",
