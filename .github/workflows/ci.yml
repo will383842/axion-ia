@@ -246,6 +246,35 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # Free disk space avant le `docker build` SSG (17,9k pages) — le runner
+      # ubuntu-latest démarre à ~14 GB libres, insuffisant : le build + la copie
+      # standalone .next saturaient le disque (« ENOSPC: no space left on device »),
+      # ce qui faisait échouer ce smoke test EN PERMANENCE à l'étape build, avant
+      # même de booter le conteneur (donc 0 signal réel). Même cleanup que gate-b ;
+      # ici on retire EN PLUS /opt/google (Chrome, inutile sans size-limit) et on
+      # prune les images Docker pré-installées — inséré avant le pull de Redis pour
+      # que le prune soit sans risque. (Fix Gate C 2026-06-02 — ENOSPC chronique.)
+      - name: Free disk space (max headroom)
+        run: |
+          df -h /
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/local/share/boost \
+            /usr/local/share/powershell \
+            /usr/lib/jvm \
+            /usr/lib/google-cloud-sdk \
+            /usr/lib/firefox \
+            /opt/google \
+            /opt/az \
+            /opt/microsoft \
+            /opt/pipx || true
+          sudo apt-get clean || true
+          docker image prune -af || true
+          df -h /
+
       - name: Generate ephemeral test secrets
         id: secrets
         run: |
