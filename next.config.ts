@@ -73,6 +73,17 @@ const BUILD_TIME_ISO = process.env.BUILD_TIME ?? new Date().toISOString();
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Fix workspace-root mis-detection (2026-06-02). Le home dir `C:\Users\willi`
+  // est lui-même un projet pnpm (package.json + pnpm-lock.yaml + pnpm-workspace
+  // .yaml). Sans `turbopack.root`, Next/Turbopack remonte les lockfiles et
+  // choisit ce home dir comme racine workspace → lit/écrit un cache `.next`
+  // corrompu à la mauvaise racine (SyntaxError `JSON.parse` → 500 sur TOUTES
+  // les routes en dev). On épingle la racine sur le dossier projet.
+  // Dev-only (Turbopack) — le build prod utilise `next build --webpack` et
+  // ignore cette clé.
+  turbopack: {
+    root: import.meta.dirname,
+  },
   // Expose BUILD_TIME au runtime serveur via DefinePlugin. Non `NEXT_PUBLIC_`,
   // donc accessible UNIQUEMENT dans les Server Components / route handlers
   // (sitemap.ts). N'est PAS inliné dans les bundles client.
