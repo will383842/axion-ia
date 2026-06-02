@@ -104,6 +104,22 @@ export type KeywordSource = "gsc" | "autocomplete" | "concurrent" | "manuel";
  */
 export type KeywordImplementationType = "existant" | "neuf" | "transverse";
 
+/**
+ * Maturité IA de la cible (garde-fou anti-cannibalisation pour le module
+ * `audit`, 2026-06-02) :
+ *   - `decouverte` : l'entreprise n'a PAS encore de projet IA — intentions
+ *     « par où commencer », « suis-je prêt », « premiers cas d'usage ».
+ *     Routées vers les formats d'entrée (audit flash 1 jour, audit ciblé).
+ *   - `avance`     : un POC / projet IA est DÉJÀ lancé — intentions
+ *     « industrialiser un POC », « débloquer un projet IA », « passer à
+ *     l'échelle ». Routées vers les audits stratégiques (PME/ETI).
+ *   - `transverse`: indépendant de la maturité (piliers, AEO, comparatifs).
+ *
+ * RÈGLE : ne JAMAIS faire pointer un keyword `decouverte` et un keyword
+ * `avance` vers la même `urlCible` (sinon cannibalisation). Champ optionnel.
+ */
+export type KeywordMaturiteCible = "decouverte" | "avance" | "transverse";
+
 export interface KeywordInjection {
   /** H1 optimisé bénéfice — JAMAIS le keyword brut (règle anti-cannibalisation R5). */
   readonly h1?: string;
@@ -162,6 +178,11 @@ export interface KeywordSeed {
    * anti-cannibalisation pour le module `implementation`. Optionnel.
    */
   readonly implementationType?: KeywordImplementationType;
+  /**
+   * Maturité IA de la cible (decouverte/avance/transverse) — garde-fou
+   * anti-cannibalisation pour le module `audit`. Optionnel.
+   */
+  readonly maturite_cible?: KeywordMaturiteCible;
   /** Contexte, contrainte, schema.org à appliquer, keywords secondaires. */
   readonly note?: string;
 }

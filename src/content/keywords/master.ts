@@ -40,6 +40,8 @@ import { KW_AUDIT_EXPANSION, KW_WEB_EXPANSION } from "./g-expansion-audit-web";
 import { KW_PHASE3_TOPUP } from "./g-phase3-balance-topup";
 // 2026-06-02 — split implémentation EXISTANT (brownfield) vs NEUF (greenfield)
 import { KW_IMPL_EXISTANT_NEUF } from "./g3g-implementation-existant-neuf";
+// 2026-06-02 — segmentation audit par maturité IA (DÉCOUVERTE vs AVANCÉ)
+import { KW_AUDIT_MATURITE } from "./g1m-audit-maturite";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -192,6 +194,8 @@ export const ALL_KEYWORD_SEEDS: KeywordSeed[] = [
   ...KW_PHASE3_TOPUP.filter(isClean),
   // 2026-06-02 — implémentation EXISTANT vs NEUF + différenciateurs territoire bleu
   ...KW_IMPL_EXISTANT_NEUF.filter(isClean),
+  // 2026-06-02 — audit segmenté par maturité IA (DÉCOUVERTE / AVANCÉ / TRANSVERSE)
+  ...KW_AUDIT_MATURITE.filter(isClean),
 ];
 
 // ─── Filtres utiles pour le Content Engine ───────────────────────────────────
@@ -213,3 +217,11 @@ export const BY_SECTEUR = (slug: string) => ALL_KEYWORD_SEEDS.filter((s) => s.se
  */
 export const BY_IMPL_TYPE = (t: NonNullable<KeywordSeed["implementationType"]>) =>
   ALL_KEYWORD_SEEDS.filter((s) => s.implementationType === t);
+
+/**
+ * Filtre par maturité IA de la cible (decouverte/avance/transverse) — pour la
+ * génération de contenu et le routage anti-cannibalisation des audits selon
+ * que le prospect a déjà lancé un projet IA ou non.
+ */
+export const BY_MATURITY = (m: NonNullable<KeywordSeed["maturite_cible"]>) =>
+  ALL_KEYWORD_SEEDS.filter((s) => s.maturite_cible === m);
