@@ -241,7 +241,12 @@ jobs:
     name: Gate C · Docker smoke test
     needs: gate-a
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 30 → 60 (2026-06-02) : une fois l'ENOSPC réglé (step free-disk ci-dessus),
+    # le `docker build` complet (compile + 18k pages SSG ~12min + copie standalone
+    # + export image) + boot conteneur + healthcheck dépasse 30 min → le job était
+    # cancelled par timeout alors que le build réussissait. 60 min laisse la marge
+    # (cf. gate-b à 75). Permet enfin à Gate C de valider le boot du conteneur.
+    timeout-minutes: 60
     continue-on-error: true
     steps:
       - uses: actions/checkout@v6
