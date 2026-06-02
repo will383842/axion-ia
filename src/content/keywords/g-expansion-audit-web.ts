@@ -22,7 +22,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 2,
-    urlCible: "/fr/audit/paris",
+    urlCible: "/fr/audit/par-ville/paris",
   }),
   s({
     keyword: "audit IA Lyon Rhône-Alpes cabinet conseil",
@@ -31,7 +31,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/lyon",
+    urlCible: "/fr/audit/par-ville/lyon",
   }),
   s({
     keyword: "audit IA Bordeaux Nouvelle-Aquitaine",
@@ -40,7 +40,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/bordeaux",
+    urlCible: "/fr/audit/par-ville/bordeaux",
   }),
   s({
     keyword: "audit IA Marseille PACA consultant",
@@ -49,7 +49,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/marseille",
+    urlCible: "/fr/audit/par-ville/marseille",
   }),
   s({
     keyword: "audit IA Nantes Pays de Loire",
@@ -58,7 +58,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/nantes",
+    urlCible: "/fr/audit/par-ville/nantes",
   }),
   s({
     keyword: "audit IA Toulouse Occitanie PME",
@@ -67,7 +67,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/toulouse",
+    urlCible: "/fr/audit/par-ville/toulouse",
   }),
   s({
     keyword: "audit IA Lille Hauts-de-France",
@@ -76,7 +76,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/lille",
+    urlCible: "/fr/audit/par-ville/lille",
   }),
   s({
     keyword: "audit IA Strasbourg Grand Est",
@@ -85,7 +85,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/strasbourg",
+    urlCible: "/fr/audit/par-ville/strasbourg",
   }),
   s({
     keyword: "audit IA Rennes Bretagne cabinet",
@@ -94,7 +94,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/rennes",
+    urlCible: "/fr/audit/par-ville/rennes",
   }),
   s({
     keyword: "audit IA Grenoble innovation entreprise",
@@ -103,7 +103,7 @@ const AUDIT_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/grenoble",
+    urlCible: "/fr/audit/par-ville/grenoble",
   }),
 ];
 

@@ -87,7 +87,7 @@ for (const { nameNorm } of BY_NAME_SORTED) {
  * Extrait les codes INSEE des villes mentionnées dans un keyword/urlCible.
  *
  * @param keyword   Texte du keyword (ex: "audit IA Paris Île-de-France")
- * @param urlCible  URL cible (ex: "/fr/audit/paris")
+ * @param urlCible  URL cible (ex: "/fr/audit/par-ville/paris")
  * @returns         Codes INSEE uniques triés (ex: ["75056"])
  */
 export function extractCityInseeCodes(keyword: string, urlCible: string): string[] {
