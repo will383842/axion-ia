@@ -103,6 +103,7 @@ export default async function NoCodePage({ params }: Props) {
         isFr={isFr}
         accent="orange"
         hideFinalCta
+        hideFaq
         copy={copy}
         heroSchema={<IntentionHeroSchema variant={SLUG} ariaLabel={INTENTION_HERO_ARIA[SLUG]} />}
         midBand={<ImplementationContactBand isFr={isFr} trackSuffix={`-${SLUG}`} />}

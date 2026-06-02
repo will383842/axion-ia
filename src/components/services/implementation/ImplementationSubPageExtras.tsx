@@ -13,6 +13,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { getImplementation, type ImplementationSlug } from "@/content/implementation";
@@ -34,6 +35,13 @@ export function ImplementationSubPageExtras({
   const copy = isFr ? self.fr : self.en;
   const path = isFr ? self.pathFr : self.pathEn;
   const geo = IMPLEMENTATION_GEO_LABEL[slug];
+
+  // Titre FAQ coupé pour l'accent terracotta (dernier mot).
+  const faqWords = copy.faqTitle.trim().split(/\s+/);
+  const faqTitle =
+    faqWords.length > 1
+      ? { head: faqWords.slice(0, -1).join(" "), em: faqWords.slice(-1).join(" ") }
+      : { head: "", em: copy.faqTitle };
 
   const howToJsonLd = buildImplementationHowToJsonLd({ locale, path, copy });
 
@@ -100,6 +108,16 @@ export function ImplementationSubPageExtras({
 
       {/* Connaissances liées — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="implementation" />
+
+      {/* FAQ — tout en bas, juste avant le footer (Will 2026-06-02). Le
+          ProductPageTemplate la supprime via hideFaq. */}
+      <FaqBlock
+        title={faqTitle.head}
+        titleEm={faqTitle.em}
+        items={copy.faqs}
+        emitJsonLd={false}
+        tone="canvas"
+      />
     </>
   );
 }

@@ -118,6 +118,9 @@ interface ProductPageTemplateProps {
   /** Optionnel — bandeau (contact) inséré juste avant la section process
    *  « Comment ça se déroule » (sous-pages implémentation). */
   midBand?: React.ReactNode;
+  /** Optionnel — supprime la FAQ du template (rendue ailleurs, ex. tout en bas
+   *  de page, juste avant le footer, sur les sous-pages implémentation). */
+  hideFaq?: boolean;
 }
 
 // Coupe le dernier mot d'un titre pour le mettre en valeur (terracotta italique
@@ -141,6 +144,7 @@ export function ProductPageTemplate({
   jsonLd = [],
   hideFinalCta = false,
   midBand,
+  hideFaq = false,
 }: ProductPageTemplateProps) {
   const metricsVariant: "primary" | "purple" | "orange" | "green" = accent;
   const benefitsT = splitEm(copy.benefitsTitle);
@@ -253,13 +257,15 @@ export function ProductPageTemplate({
       {copy.maturity ? <MaturityLevelsSection maturity={copy.maturity} accent={accent} /> : null}
 
       {/* FAQ — canvas pour repos */}
-      <FaqBlock
-        title={splitEm(copy.faqTitle).head}
-        titleEm={splitEm(copy.faqTitle).em}
-        items={copy.faqs}
-        emitJsonLd={false}
-        tone="canvas"
-      />
+      {hideFaq ? null : (
+        <FaqBlock
+          title={splitEm(copy.faqTitle).head}
+          titleEm={splitEm(copy.faqTitle).em}
+          items={copy.faqs}
+          emitJsonLd={false}
+          tone="canvas"
+        />
+      )}
 
       {/* CTA final — mocha riche signature. Supprimable (hideFinalCta) quand la
           page rend son propre bandeau de contact (sous-pages implémentation). */}
