@@ -9,12 +9,17 @@
 //  - Typo serif italique sur les labels d'outils (cohérent identité Axion-IA
 //    éditoriale).
 //
-// viewBox 720×600 (vs 560×560 v1) — englobe les labels qui dépassaient en
-// horizontal du viewBox originel et faisaient expand le SVG, cassant le grid
-// 2-col du hero parent. Pas d'`overflow:visible` côté SVG : rendu propre dans
-// la grille.
+// viewBox 560×560 + `overflow:visible` + classe `.hero-schema` — aligné sur
+// ImplementationHeroSchema pour une taille/enveloppe IDENTIQUES (fix « cadre »
+// + parité de taille, 2026-06-02). Les labels qui dépassent l'horizontale sont
+// peints hors viewBox grâce à overflow:visible (plus besoin du viewBox élargi).
 //
-// Composant pur SVG inline (0 network call, 0 JS, ~7 KB gz), Server Component.
+// Harmonisation visuelle v4.1 (2026-06-02) : mêmes anneaux gyroscopiques,
+// connecteurs courbes à dégradé + marqueurs, anneau gradué et centre
+// multi-couches que les autres service heros — seuls les satellites diffèrent
+// (logos d'outils IA au lieu de dots/sphères concept).
+//
+// Composant pur SVG inline (0 network call, 0 JS), Server Component.
 // Pas d'animations CSS (les rotations CSS sur SVG ellipse via transform-origin
 // ont des comportements aléatoires cross-browser et débordaient). CLS = 0.
 
