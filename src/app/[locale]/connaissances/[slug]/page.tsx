@@ -170,9 +170,12 @@ export default async function ConnaissanceDetail({ params }: Props) {
               ) : null}
               {entry.readingTime ? <> · {entry.readingTime} min de lecture</> : null}
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Cta href="/contact" size="lg">
-                Parler à un expert →
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Cta href="/appel" size="lg">
+                Réserver un appel
+              </Cta>
+              <Cta href="/contact" variant="outline" size="lg">
+                Nous écrire
               </Cta>
             </div>
           </div>
