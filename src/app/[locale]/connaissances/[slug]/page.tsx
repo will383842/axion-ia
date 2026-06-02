@@ -28,6 +28,8 @@ import { ServiceOfferBlock } from "@/components/services/ServiceOfferBlock";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import { extractKeyFact } from "@/lib/knowledge/article-enrich";
+import { KeyFactCard } from "@/components/knowledge/KeyFactCard";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -105,6 +107,14 @@ export default async function ConnaissanceDetail({ params }: Props) {
   );
   // Titre-phrase (entrées "fait") → H1 plus petit pour ne pas être absurde.
   const titleLong = entry.title.length > 90;
+
+  // Encart chiffre-clé (fact / industry_use_case) — null si aucun chiffre
+  // détecté → carte non rendue (anti-doorway : pas de richesse fabriquée).
+  const keyFact = extractKeyFact({
+    type: entry.type,
+    title: entry.title,
+    excerpt: entry.excerpt,
+  });
 
   const articleJsonLd = buildArticleJsonLd({
     title: entry.title,
@@ -186,6 +196,7 @@ export default async function ConnaissanceDetail({ params }: Props) {
       <Section tone="paper" className="pt-12 pb-16 lg:pt-16 lg:pb-24">
         <Container>
           <article className="max-w-3xl">
+            {keyFact ? <KeyFactCard fact={keyFact} /> : null}
             <div
               className="prose prose-axionia max-w-none"
               // P0 audit KB 2026-05-29 : sanitize SSR anti-XSS (whitelist Tiptap).
