@@ -27,13 +27,15 @@ interface Review {
   readonly photographerUrl: string;
 }
 
-// 6 avis — 2 TPE, 2 PME, 2 ETI. Mêmes portraits/crédits que la page audit.
+// 6 avis — 2 TPE, 2 PME, 2 ETI. Quotes PROPRES à l'implémentation (anti-duplicate
+// vs /audit) : on parle du build, de l'intégration et de la propriété du code.
+// Portraits/crédits réutilisés (mêmes personnes, retours différents par page).
 const REVIEWS: ReadonlyArray<Review> = [
   {
     quoteFr:
-      "L'agent qui traite nos factures tourne tout seul. En trois mois, on a divisé par deux le temps de saisie — et le code est à nous.",
+      "On nous a livré un agent qui lit nos factures et les classe directement dans notre logiciel. Tout est documenté : on l'a repris en main sans dépendre de personne.",
     quoteEn:
-      "The agent that handles our invoices runs on its own. In three months we halved data-entry time — and the code is ours.",
+      "They delivered an agent that reads our invoices and files them straight into our software. Everything is documented: we took it over without depending on anyone.",
     author: "Catherine M.",
     roleFr: "Dirigeante, cabinet d'expertise comptable",
     roleEn: "Director, accounting firm",
@@ -43,9 +45,9 @@ const REVIEWS: ReadonlyArray<Review> = [
   },
   {
     quoteFr:
-      "Mon agent de devis rédige et envoie tout seul. Une équipe qui parle notre métier, pas du jargon — et un outil qui nous appartient.",
+      "Mon devis part en deux clics depuis le chantier. Ce qui m'a bluffé : ça s'est branché sur les outils que j'avais déjà, sans rien changer à mes habitudes.",
     quoteEn:
-      "My quoting agent drafts and sends on its own. A team that speaks our trade, not jargon — and a tool we own.",
+      "My quote goes out in two taps from the job site. What impressed me: it plugged into the tools I already had, with nothing to change in my habits.",
     author: "Marc D.",
     roleFr: "Gérant, artisan du bâtiment",
     roleEn: "Owner, construction craftsman",
@@ -55,9 +57,9 @@ const REVIEWS: ReadonlyArray<Review> = [
   },
   {
     quoteFr:
-      "Du concret, du mesurable, du livré. Pas de no-code qui casse : du vrai code, intégré à notre ERP, qui tient la charge.",
+      "Ils ont connecté l'IA à notre ERP proprement, avec une démo chaque semaine. Pas d'effet tunnel, et au bout un outil qui tient vraiment la charge en production.",
     quoteEn:
-      "Concrete, measurable, delivered. No no-code that breaks: real code, integrated into our ERP, that holds up.",
+      "They connected AI to our ERP cleanly, with a demo every week. No tunnel effect, and in the end a tool that really holds up in production.",
     author: "Thomas R.",
     roleFr: "Directeur, PME industrielle",
     roleEn: "Director, industrial SME",
@@ -67,9 +69,9 @@ const REVIEWS: ReadonlyArray<Review> = [
   },
   {
     quoteFr:
-      "Notre chatbot tourne 24/7 sans surcoût d'équipe. Première réponse sous deux minutes, branchée sur notre back-office.",
+      "Le chatbot répond à nos clients la nuit et passe la main au bon moment. Déployé en quelques semaines, hébergé chez nous, et aucun abonnement derrière.",
     quoteEn:
-      "Our chatbot runs 24/7 with no extra headcount. First reply under two minutes, wired into our back-office.",
+      "The chatbot answers our customers at night and hands over at the right moment. Deployed in a few weeks, hosted on our side, and no subscription behind it.",
     author: "Nadia B.",
     roleFr: "Fondatrice, e-commerce",
     roleEn: "Founder, e-commerce",
@@ -79,9 +81,9 @@ const REVIEWS: ReadonlyArray<Review> = [
   },
   {
     quoteFr:
-      "Enfin un partenaire qui pense ROI avant la techno. Les automatisations ont été livrées, documentées, et sans abonnement caché.",
+      "On a déployé plusieurs automatisations en parallèle. Chaque livraison était testée, formée, documentée — nos équipes sont autonomes derrière.",
     quoteEn:
-      "Finally a partner that thinks ROI before tech. The automations were delivered, documented, and with no hidden subscription.",
+      "We rolled out several automations in parallel. Each delivery was tested, trained, documented — our teams are autonomous afterwards.",
     author: "Sophie L.",
     roleFr: "Responsable transformation, groupe ETI",
     roleEn: "Transformation lead, mid-cap group",
@@ -91,9 +93,9 @@ const REVIEWS: ReadonlyArray<Review> = [
   },
   {
     quoteFr:
-      "Sur un groupe multi-sites, ils ont intégré l'IA à nos outils existants sans tout casser. Robuste, et conçu pour durer.",
+      "Sur plusieurs sites, ils ont standardisé le déploiement sans toucher à nos process existants. Du solide, vraiment pensé pour durer.",
     quoteEn:
-      "Across a multi-site group, they integrated AI into our existing tools without breaking anything. Robust, and built to last.",
+      "Across several sites, they standardised the rollout without touching our existing processes. Solid, genuinely built to last.",
     author: "Julien P.",
     roleFr: "Directeur des opérations, ETI multi-sites",
     roleEn: "Operations director, multi-site mid-cap",
@@ -125,9 +127,9 @@ export function ImplementationClientReviews({ isFr }: { isFr: boolean }): ReactN
   return (
     <Section
       tone="sand"
-      eyebrow={isFr ? "Ils nous font confiance" : "Trusted by"}
-      title={isFr ? "Des solutions qui tournent," : "Solutions that run,"}
-      titleEm={isFr ? "pas des promesses" : "not promises"}
+      eyebrow={isFr ? "Avis clients" : "Client reviews"}
+      title={isFr ? "Ce qu'ils en disent," : "What they say,"}
+      titleEm={isFr ? "une fois en production" : "once in production"}
       titleTail="."
     >
       <ul className="grid list-none gap-6 p-0 md:grid-cols-2 lg:grid-cols-3">

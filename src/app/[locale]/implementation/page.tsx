@@ -36,7 +36,6 @@ import { ImplementationContactBand } from "@/components/services/implementation/
 import { ImplementationMethodology } from "@/components/services/implementation/ImplementationMethodology";
 import { ImplementationWhyChooseUs } from "@/components/services/implementation/ImplementationWhyChooseUs";
 import { ImplementationFounderBand } from "@/components/services/implementation/ImplementationFounderBand";
-import { ImplementationRealisations } from "@/components/services/implementation/ImplementationRealisations";
 import { ImplementationClientReviews } from "@/components/services/implementation/ImplementationClientReviews";
 import { ImplementationFaq } from "@/components/services/implementation/ImplementationFaq";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
@@ -250,10 +249,7 @@ export default async function ImplementationListing({ params }: Props) {
       {/* POURQUOI TRAVAILLER AVEC NOUS — 4 raisons (cartes statiques) */}
       <ImplementationWhyChooseUs isFr={isFr} />
 
-      {/* PROJETS RÉALISÉS — marquee (illustratif) */}
-      <ImplementationRealisations isFr={isFr} />
-
-      {/* AVIS CLIENTS */}
+      {/* AVIS CLIENTS — quotes propres à l'implémentation (anti-duplicate /audit) */}
       <ImplementationClientReviews isFr={isFr} />
 
       {/* L'IMPLÉMENTATION & AGENTS IA PARTOUT EN FRANCE (pSEO levier 3) */}
