@@ -249,6 +249,7 @@ const ESSENTIELLE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-essentie
 const APPROFONDIE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!;
 const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
 const DIRIGEANTS_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+const CLAUDE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-claude").priceFlat!;
 
 export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   // -------------------------------------------------------------------------
@@ -352,8 +353,9 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     badgeEn: "Productivity",
   },
   {
-    // Will (audit /interventions 2026-05-12) — passe de Sur devis à 690 €
-    // fixe pour 2 à 8 personnes. Bookable direct calendrier.
+    // Will (audit /interventions 2026-05-12) — Bookable direct calendrier.
+    // 2026-06-02 — prix dérivé de la SSOT pricing.ts (`intervention-claude`,
+    // 990 € HT depuis 2026-05-24) au lieu d'un 690 € hardcodé devenu obsolète.
     slug: "intervention-claude",
     family: "collectives",
     duration: "1-jour",
@@ -365,8 +367,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "1 journée 100 % dédiée à Claude (Anthropic) — Chat · Cowork · Code. Petit groupe pour profondeur maximale, vos équipes ressortent autonomes sur l'outil de pointe IA.",
     taglineEn:
       "Full day 100 % focused on Claude (Anthropic) — Chat · Cowork · Code. Small group for maximum depth, your teams leave autonomous on the cutting-edge AI tool.",
-    priceFr: formatAmount(690, "fr"),
-    priceEn: formatAmount(690, "en"),
+    priceFr: formatAmount(CLAUDE_PRICE, "fr"),
+    priceEn: formatAmount(CLAUDE_PRICE, "en"),
     groupSizeFr: "2 à 8 personnes",
     groupSizeEn: "2 to 8 people",
     audienceFr: "Équipes qui veulent maîtriser Claude en profondeur",

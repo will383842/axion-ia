@@ -8,6 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ESSENTIELLE_TIERS, getIntervention } from "@/content/interventions";
 import {
@@ -116,6 +117,7 @@ export default async function Essentielle({ params }: Props) {
         copy={copy}
         ctaPrimaryHref="/reserver?intervention=essentielle"
         ctaSecondaryHref="/cas-concrets"
+        midBand={<FormationContactBand isFr={isFr} />}
         jsonLd={jsonLd}
       />
       {/* Section 3 tranches — bloc de différenciation tarifaire après le CTA mocha.

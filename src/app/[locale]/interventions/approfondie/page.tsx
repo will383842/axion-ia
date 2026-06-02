@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Layers, Sparkles, Target, Wrench } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
@@ -146,6 +147,7 @@ export default async function Approfondie({ params }: Props) {
         ctaPrimaryHref="/reserver?intervention=approfondie"
         ctaSecondaryHref="/interventions/essentielle"
         heroSchema={heroSchema}
+        midBand={<FormationContactBand isFr={isFr} />}
         jsonLd={jsonLd}
       />
       {/* Section 3 tranches — miroir de la page Essentielle. Will (audit
