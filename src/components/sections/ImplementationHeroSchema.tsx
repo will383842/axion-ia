@@ -176,6 +176,13 @@ export function ImplementationHeroSchema({
             </radialGradient>
           ))}
 
+          {/* Dégradé de l'anneau principal (fade gauche/droite). */}
+          <linearGradient id="im-orbit" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
+            <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.32" />
+            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
+          </linearGradient>
+
           {/* Ombre portée douce (profondeur). */}
           <filter id="im-soft-shadow" x="-60%" y="-60%" width="220%" height="220%">
             <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#3a2a22" floodOpacity="0.16" />
@@ -199,6 +206,41 @@ export function ImplementationHeroSchema({
         <circle cx={W - 90} cy={120} r={180} fill="url(#im-halo-pr)" />
         <circle cx={90} cy={H - 110} r={170} fill="url(#im-halo-sg)" />
 
+        {/* Anneaux gyroscopiques inclinés — profondeur d'un système en orbite */}
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx + 16}
+          ry={72}
+          transform={`rotate(32 ${cx} ${cy})`}
+          stroke="var(--color-primary)"
+          strokeOpacity="0.12"
+          strokeWidth="1"
+          fill="none"
+        />
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx + 16}
+          ry={72}
+          transform={`rotate(-32 ${cx} ${cy})`}
+          stroke="var(--color-sage)"
+          strokeOpacity="0.12"
+          strokeWidth="1"
+          fill="none"
+        />
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx + 8}
+          ry={108}
+          transform={`rotate(90 ${cx} ${cy})`}
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.08"
+          strokeWidth="1"
+          fill="none"
+        />
+
         {/* Anneau extérieur hairline pointillé */}
         <ellipse
           cx={cx}
@@ -217,9 +259,8 @@ export function ImplementationHeroSchema({
           cy={cy}
           rx={rx}
           ry={ry}
-          stroke="var(--color-terracotta)"
-          strokeOpacity="0.22"
-          strokeWidth="1"
+          stroke="url(#im-orbit)"
+          strokeWidth="1.25"
           fill="none"
         />
         {tickAngles.map((a) => {
@@ -265,15 +306,31 @@ export function ImplementationHeroSchema({
           const bow = 18;
           const ctrlX = mx + (-dyv / len) * bow;
           const ctrlY = my + (dxv / len) * bow;
+          // Point de mesure sur la courbe quadratique à t = 0.62.
+          const t = 0.62;
+          const mt = 1 - t;
+          const markX = mt * mt * cx + 2 * mt * t * ctrlX + t * t * pos.x;
+          const markY = mt * mt * cy + 2 * mt * t * ctrlY + t * t * pos.y;
           return (
-            <path
-              key={`l-${idx}`}
-              d={`M ${cx} ${cy} Q ${ctrlX} ${ctrlY} ${pos.x} ${pos.y}`}
-              fill="none"
-              stroke={`url(#im-spoke-${node.accent})`}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
+            <g key={`l-${idx}`}>
+              <path
+                d={`M ${cx} ${cy} Q ${ctrlX} ${ctrlY} ${pos.x} ${pos.y}`}
+                fill="none"
+                stroke={`url(#im-spoke-${node.accent})`}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              {/* Marqueur de mesure */}
+              <circle
+                cx={markX}
+                cy={markY}
+                r={3.2}
+                fill="var(--color-paper)"
+                stroke={accentColor[node.accent]}
+                strokeOpacity="0.6"
+                strokeWidth="1.4"
+              />
+            </g>
           );
         })}
 
@@ -337,6 +394,28 @@ export function ImplementationHeroSchema({
             </g>
           );
         })}
+
+        {/* Aura concentrique — le centre comme source d'énergie */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={98}
+          fill="none"
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.1"
+          strokeWidth="1"
+          strokeDasharray="1 7"
+        />
+        <circle
+          cx={cx}
+          cy={cy}
+          r={110}
+          fill="none"
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.06"
+          strokeWidth="1"
+          strokeDasharray="1 9"
+        />
 
         {/* Centre — sujet du schéma, multi-couches */}
         <g filter="url(#im-center-shadow)">

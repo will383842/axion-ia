@@ -76,6 +76,8 @@ const BRAND_LOGOS: Record<ToolNode["slug"], { path: string; mode: "fill" | "stro
   },
 };
 
+const ACCENTS: readonly Accent[] = ["terracotta", "primary", "sage", "mocha"];
+
 const accentColor: Record<Accent, string> = {
   terracotta: "var(--color-terracotta)",
   primary: "var(--color-primary)",
@@ -107,21 +109,23 @@ export function HeroOrbital({
   ariaLabel,
   className,
 }: HeroOrbitalProps): ReactNode {
-  // Canvas élargi 720×600 (vs 560×560 v1) — fix débordement labels qui faisait
-  // expand le SVG horizontalement et cassait le grid 2-col du hero. Les labels
-  // satellites sont positionnés à `pos.x ± 32` au-delà du satellite, ce qui
-  // dépassait le viewBox 560 par 50-60px en horizontal. Nouveau viewBox
-  // englobe largement les labels droit/gauche pour overflow:hidden propre.
-  const W = 720;
-  const H = 600;
+  // Canvas carré 560×560 — aligné sur ImplementationHeroSchema pour une taille
+  // affichée IDENTIQUE entre tous les service heros (un-a-un / audit / implem /
+  // collectives). Les labels qui dépassent à droite/gauche sont gérés par
+  // `overflow:visible` (le viewBox élargi 720×600 d'avant n'est plus nécessaire).
+  const W = 560;
+  const H = 560;
   const cx = W / 2;
   const cy = H / 2;
   const rx = 195;
-  const ry = 185;
+  const ry = 180;
 
   // 8 angles répartis sens horaire depuis le haut, écartés pour minimiser
   // les collisions visuelles entre satellites + leurs labels.
   const angles = [-90, -45, 0, 45, 90, 135, 180, -135];
+
+  // Ticks de l'anneau de précision (tous les 15°) — cohérence v4.1.
+  const tickAngles = Array.from({ length: 24 }, (_, i) => i * 15);
 
   function labelLayout(angle: number) {
     if (angle === -90) {
@@ -140,15 +144,14 @@ export function HeroOrbital({
     <div
       role="img"
       aria-label={ariaLabel}
-      className={
-        className ?? "hero-orbital pointer-events-none mx-auto w-full max-w-[640px] lg:max-w-none"
-      }
+      className={className ?? "hero-schema pointer-events-none"}
     >
       <svg
         viewBox={`0 0 ${W} ${H}`}
         xmlns="http://www.w3.org/2000/svg"
-        className="h-auto w-full"
+        className="h-auto w-full overflow-visible"
         preserveAspectRatio="xMidYMid meet"
+        overflow="visible"
       >
         <defs>
           {/* Halos atmosphériques diffus — terracotta centre, primary haut-droit,
@@ -203,6 +206,48 @@ export function HeroOrbital({
           <mask id="ho-vignette">
             <rect width="100%" height="100%" fill="url(#ho-grid-mask)" />
           </mask>
+
+          {/* Dégradé radial des connecteurs : faible au centre, vif au nœud.
+              userSpaceOnUse → s'aligne quel que soit l'angle. (cohérence v4.1) */}
+          {ACCENTS.map((a) => (
+            <radialGradient
+              key={`ho-spoke-${a}`}
+              id={`ho-spoke-${a}`}
+              gradientUnits="userSpaceOnUse"
+              cx={cx}
+              cy={cy}
+              r={rx}
+            >
+              <stop offset="0%" stopColor={accentColor[a]} stopOpacity="0.04" />
+              <stop offset="50%" stopColor={accentColor[a]} stopOpacity="0.20" />
+              <stop offset="100%" stopColor={accentColor[a]} stopOpacity="0.55" />
+            </radialGradient>
+          ))}
+
+          {/* Dégradé de l'anneau principal (fade gauche/droite). */}
+          <linearGradient id="ho-orbit" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
+            <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.32" />
+            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
+          </linearGradient>
+
+          {/* Sheen + base du centre (cohérence v4.1). */}
+          <radialGradient id="ho-center-sheen" cx="42%" cy="36%" r="68%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.85" />
+            <stop offset="55%" stopColor="var(--color-paper)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="var(--color-paper)" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Ombre portée du centre. */}
+          <filter id="ho-center-shadow" x="-60%" y="-60%" width="220%" height="220%">
+            <feDropShadow
+              dx="0"
+              dy="8"
+              stdDeviation="14"
+              floodColor="#3a2a22"
+              floodOpacity="0.18"
+            />
+          </filter>
         </defs>
 
         {/* Background grille avec masque vignette */}
@@ -213,54 +258,128 @@ export function HeroOrbital({
         <circle cx={W - 80} cy={110} r={200} fill="url(#ho-halo-pr)" />
         <circle cx={80} cy={H - 100} r={190} fill="url(#ho-halo-sg)" />
 
-        {/* Anneaux décoratifs concentriques — 3 couches pour profondeur.
-            Le plus extérieur est dashed (suggestion d'orbite). */}
+        {/* Anneaux gyroscopiques inclinés — profondeur d'un système en orbite */}
         <ellipse
           cx={cx}
           cy={cy}
-          rx={rx + 60}
-          ry={ry + 60}
+          rx={rx + 16}
+          ry={74}
+          transform={`rotate(32 ${cx} ${cy})`}
+          stroke="var(--color-primary)"
+          strokeOpacity="0.12"
+          strokeWidth="1"
+          fill="none"
+        />
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx + 16}
+          ry={74}
+          transform={`rotate(-32 ${cx} ${cy})`}
+          stroke="var(--color-sage)"
+          strokeOpacity="0.12"
+          strokeWidth="1"
+          fill="none"
+        />
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx + 8}
+          ry={112}
+          transform={`rotate(90 ${cx} ${cy})`}
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.08"
+          strokeWidth="1"
+          fill="none"
+        />
+
+        {/* Anneau extérieur hairline pointillé */}
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx + 56}
+          ry={ry + 56}
           stroke="var(--color-border-strong)"
           strokeOpacity="0.15"
           strokeDasharray="2 10"
           fill="none"
         />
+
+        {/* Anneau de précision gradué — ticks tous les 15°, longs aux nœuds */}
         <ellipse
           cx={cx}
           cy={cy}
           rx={rx}
           ry={ry}
-          stroke="var(--color-terracotta)"
-          strokeOpacity="0.35"
-          strokeDasharray="3 7"
+          stroke="url(#ho-orbit)"
+          strokeWidth="1.25"
           fill="none"
         />
+        {tickAngles.map((a) => {
+          const isNode = angles.includes(a) || angles.includes(a - 360);
+          const inner = ellipsePos(a, rx - (isNode ? 9 : 5), ry - (isNode ? 9 : 5), cx, cy);
+          const outer = ellipsePos(a, rx + (isNode ? 9 : 5), ry + (isNode ? 9 : 5), cx, cy);
+          return (
+            <line
+              key={`tick-${a}`}
+              x1={inner.x}
+              y1={inner.y}
+              x2={outer.x}
+              y2={outer.y}
+              stroke="var(--color-terracotta)"
+              strokeOpacity={isNode ? 0.42 : 0.2}
+              strokeWidth={isNode ? 1.6 : 1}
+              strokeLinecap="round"
+            />
+          );
+        })}
+
+        {/* Anneau intérieur plein subtil */}
         <ellipse
           cx={cx}
           cy={cy}
           rx={rx - 76}
           ry={ry - 72}
           stroke="var(--color-border-strong)"
-          strokeOpacity="0.28"
+          strokeOpacity="0.26"
           fill="none"
         />
 
-        {/* Liaisons centre → satellites — lignes radiales dashed */}
+        {/* Connecteurs courbes centre → satellites (dégradé radial + marqueur) */}
         {nodes.map((node, idx) => {
           const angle = angles[idx] ?? 0;
           const pos = ellipsePos(angle, rx, ry, cx, cy);
+          const mx = (cx + pos.x) / 2;
+          const my = (cy + pos.y) / 2;
+          const dxv = pos.x - cx;
+          const dyv = pos.y - cy;
+          const len = Math.hypot(dxv, dyv) || 1;
+          const bow = 18;
+          const ctrlX = mx + (-dyv / len) * bow;
+          const ctrlY = my + (dxv / len) * bow;
+          const t = 0.62;
+          const mt = 1 - t;
+          const markX = mt * mt * cx + 2 * mt * t * ctrlX + t * t * pos.x;
+          const markY = mt * mt * cy + 2 * mt * t * ctrlY + t * t * pos.y;
           return (
-            <line
-              key={`line-${idx}`}
-              x1={cx}
-              y1={cy}
-              x2={pos.x}
-              y2={pos.y}
-              stroke={accentColor[node.accent]}
-              strokeOpacity="0.40"
-              strokeWidth="1.2"
-              strokeDasharray="3 6"
-            />
+            <g key={`line-${idx}`}>
+              <path
+                d={`M ${cx} ${cy} Q ${ctrlX} ${ctrlY} ${pos.x} ${pos.y}`}
+                fill="none"
+                stroke={`url(#ho-spoke-${node.accent})`}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <circle
+                cx={markX}
+                cy={markY}
+                r={3.2}
+                fill="var(--color-paper)"
+                stroke={accentColor[node.accent]}
+                strokeOpacity="0.6"
+                strokeWidth="1.4"
+              />
+            </g>
           );
         })}
 
@@ -337,24 +456,65 @@ export function HeroOrbital({
           );
         })}
 
-        {/* Centre — votre équipe (sujet du schéma) */}
+        {/* Aura concentrique — le centre comme source d'énergie */}
         <circle
           cx={cx}
           cy={cy}
-          r={92}
-          fill="url(#ho-satellite-bg)"
+          r={98}
+          fill="none"
           stroke="var(--color-terracotta)"
-          strokeWidth="2.5"
-          filter="url(#ho-shadow)"
+          strokeOpacity="0.1"
+          strokeWidth="1"
+          strokeDasharray="1 7"
         />
         <circle
           cx={cx}
           cy={cy}
-          r={92}
+          r={110}
           fill="none"
           stroke="var(--color-terracotta)"
-          strokeOpacity="0.20"
-          strokeWidth="16"
+          strokeOpacity="0.06"
+          strokeWidth="1"
+          strokeDasharray="1 9"
+        />
+
+        {/* Centre — votre équipe (sujet du schéma), multi-couches */}
+        <g filter="url(#ho-center-shadow)">
+          {/* Anneau extérieur épais translucide */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={84}
+            fill="none"
+            stroke="var(--color-terracotta)"
+            strokeOpacity="0.14"
+            strokeWidth="14"
+          />
+          {/* Disque de base (gradient paper → sand) */}
+          <circle cx={cx} cy={cy} r={78} fill="url(#ho-satellite-bg)" />
+          {/* Anneau net */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={78}
+            fill="none"
+            stroke="var(--color-terracotta)"
+            strokeOpacity="0.55"
+            strokeWidth="1.5"
+          />
+        </g>
+        {/* Sheen intérieur (au-dessus, hors ombre) */}
+        <circle cx={cx} cy={cy} r={78} fill="url(#ho-center-sheen)" />
+        {/* Anneau hairline intérieur */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={66}
+          fill="none"
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.16"
+          strokeWidth="1"
+          strokeDasharray="2 6"
         />
         <text
           x={cx}
@@ -362,7 +522,7 @@ export function HeroOrbital({
           textAnchor="middle"
           fontFamily="var(--font-serif), serif"
           fontStyle="italic"
-          fontSize="28"
+          fontSize="26"
           fontWeight="500"
           fill="var(--color-terracotta)"
         >
@@ -373,7 +533,7 @@ export function HeroOrbital({
           y={cy + 22}
           textAnchor="middle"
           fontFamily="var(--font-manrope), system-ui, sans-serif"
-          fontSize="15"
+          fontSize="14"
           fontWeight="600"
           fill="var(--color-fg)"
         >
