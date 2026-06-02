@@ -38,6 +38,8 @@ import { KW_COACHING_EXPANSION, KW_IMPLEMENTATIONS_EXPANSION } from "./g-expansi
 import { KW_AUDIT_EXPANSION, KW_WEB_EXPANSION } from "./g-expansion-audit-web";
 // Phase 3 — Top-up équilibrage ≥250 par verticale
 import { KW_PHASE3_TOPUP } from "./g-phase3-balance-topup";
+// 2026-06-02 — split implémentation EXISTANT (brownfield) vs NEUF (greenfield)
+import { KW_IMPL_EXISTANT_NEUF } from "./g3g-implementation-existant-neuf";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -171,6 +173,8 @@ export const ALL_KEYWORD_SEEDS: KeywordSeed[] = [
   ...KW_WEB_EXPANSION.filter(isClean),
   // Phase 3 — top-up ≥250 par verticale
   ...KW_PHASE3_TOPUP.filter(isClean),
+  // 2026-06-02 — implémentation EXISTANT vs NEUF + différenciateurs territoire bleu
+  ...KW_IMPL_EXISTANT_NEUF.filter(isClean),
 ];
 
 // ─── Filtres utiles pour le Content Engine ───────────────────────────────────
@@ -184,3 +188,11 @@ export const BY_MODULE = (m: KeywordSeed["module"]) =>
 export const BY_CIBLE = (c: KeywordSeed["cible"]) => ALL_KEYWORD_SEEDS.filter((s) => s.cible === c);
 
 export const BY_SECTEUR = (slug: string) => ALL_KEYWORD_SEEDS.filter((s) => s.secteur === slug);
+
+/**
+ * Filtre par paradigme d'implémentation (existant/neuf/transverse) — pour la
+ * génération de contenu et le routage anti-cannibalisation des clusters
+ * implémentation.
+ */
+export const BY_IMPL_TYPE = (t: NonNullable<KeywordSeed["implementationType"]>) =>
+  ALL_KEYWORD_SEEDS.filter((s) => s.implementationType === t);

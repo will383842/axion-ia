@@ -87,6 +87,23 @@ export type KeywordNiveau = 1 | 2 | 3;
 
 export type KeywordSource = "gsc" | "autocomplete" | "concurrent" | "manuel";
 
+/**
+ * Paradigme d'implémentation (garde-fou anti-cannibalisation, 2026-06-02) :
+ *   - `existant`  : brownfield — greffer l'IA sur des outils déjà en place (CRM,
+ *     ERP, compta, site). Intentions « connecter l'IA à mon CRM », « automatiser
+ *     mes process existants ».
+ *   - `neuf`      : greenfield — construire la solution de A à Z (agent IA
+ *     sur-mesure, plateforme, système métier). Intentions « créer un agent IA
+ *     sur mesure », « développer une solution IA ».
+ *   - `transverse`: ne dépend pas du point de départ (différenciateurs, pilier
+ *     de routage, AEO génériques).
+ *
+ * RÈGLE : ne JAMAIS faire pointer un keyword `existant` et un keyword `neuf`
+ * vers la même `urlCible` (sinon Google fusionne et cannibalise les deux).
+ * Champ optionnel — par défaut `transverse` côté consommateurs.
+ */
+export type KeywordImplementationType = "existant" | "neuf" | "transverse";
+
 export interface KeywordInjection {
   /** H1 optimisé bénéfice — JAMAIS le keyword brut (règle anti-cannibalisation R5). */
   readonly h1?: string;
@@ -140,6 +157,11 @@ export interface KeywordSeed {
   readonly canonicalParent?: string;
   /** Origine du seed (manuel par défaut pour seeds générés par prompt master). */
   readonly source?: KeywordSource;
+  /**
+   * Paradigme d'implémentation (existant/neuf/transverse) — garde-fou
+   * anti-cannibalisation pour le module `implementation`. Optionnel.
+   */
+  readonly implementationType?: KeywordImplementationType;
   /** Contexte, contrainte, schema.org à appliquer, keywords secondaires. */
   readonly note?: string;
 }
