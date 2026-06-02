@@ -1,10 +1,18 @@
-// Server Component — schéma visuel du hero /implementation.
+// Server Component — schéma visuel du hero /implementation (et, via ServiceHero,
+// des hubs un-a-un / audit / sites-web / interventions collectives).
+//
 // Format carré 1:1 (560×560) — harmonisé doctrine `.hero-schema` v3.3
-// (2026-05-08). Orbite circulaire pour caser 8 satellites autour du centre
-// "Votre entreprise" sans collision de labels. Reprend la grammaire du
-// PageHeroDecoration / InterventionsHeroSchema (anneaux + halos terracotta /
-// primary / sage + particules) avec 8 fonctions métier en orbite, chacune
-// affichant son bénéfice concret (gain mesurable).
+// (2026-05-08). Orbite quasi-circulaire pour caser 8 satellites autour du
+// centre sans collision de labels.
+//
+// Refonte design v4 (2026-06-02, Will) — montée en gamme visuelle :
+//   • connecteurs COURBES (quadratic bezier) à dégradé radial qui s'estompe
+//     vers le centre → impression d'énergie qui irradie
+//   • satellites en SPHÈRES (anneau + cœur + reflet glossy + ombre douce)
+//     au lieu de dots plats
+//   • anneau de précision GRADUÉ (ticks tous les 15°, ticks longs aux nœuds)
+//   • centre MULTI-COUCHES : disque + halo intérieur + anneaux hairline
+//   • ombres portées douces (filter feDropShadow) pour la profondeur
 //
 // Pas d'animation ; SSR-friendly ; aria-label au niveau du wrapper.
 
@@ -13,9 +21,9 @@ import type { ReactNode } from "react";
 type Accent = "terracotta" | "primary" | "sage" | "mocha";
 
 export interface ImplementationHeroSchemaProps {
-  /** Label central (ex "Votre entreprise"). */
+  /** Label central (ex "Votre entreprise", "Vous"). */
   centerLabel: string;
-  /** Huit satellites — un par fonction métier. */
+  /** Huit satellites — un par fonction / objectif. */
   nodes: ReadonlyArray<{
     label: string;
     benefit: string;
@@ -25,6 +33,8 @@ export interface ImplementationHeroSchemaProps {
   ariaLabel: string;
   className?: string;
 }
+
+const ACCENTS: readonly Accent[] = ["terracotta", "primary", "sage", "mocha"];
 
 const accentColor: Record<Accent, string> = {
   terracotta: "var(--color-terracotta)",
@@ -55,17 +65,15 @@ export function ImplementationHeroSchema({
   const H = 560;
   const cx = W / 2;
   const cy = H / 2;
-  // Orbite quasi-circulaire (rx légèrement > ry) — proportions resserrées
-  // vs version 720×700 (rx 250→195, ry 230→180) pour tenir dans le carré 560
-  // sans débordement de labels à gauche/droite.
+  // Orbite quasi-circulaire (rx légèrement > ry).
   const rx = 195;
   const ry = 180;
 
   // 8 angles répartis pour minimiser les collisions de labels.
-  // Sens horaire depuis le haut. On évite 0° et 180° pile (= labels horizontaux
-  // qui se collent), on les décale légèrement vers le haut pour placer le
-  // sous-label en dessous sans empiéter sur le voisin.
   const angles = [-90, -45, 0, 45, 90, 135, 180, -135];
+
+  // Ticks de l'anneau de précision (tous les 15°).
+  const tickAngles = Array.from({ length: 24 }, (_, i) => i * 15);
 
   // Quadrant du satellite → anchor du texte + offset.
   function labelLayout(angle: number): {
@@ -74,20 +82,16 @@ export function ImplementationHeroSchema({
     dyTitle: number;
     dyBenefit: number;
   } {
-    // Top (~-90°) : label au-dessus du dot, centré.
     if (angle === -90) {
-      return { anchor: "middle", dx: 0, dyTitle: -34, dyBenefit: -16 };
+      return { anchor: "middle", dx: 0, dyTitle: -38, dyBenefit: -20 };
     }
-    // Bottom (~90°) : label en-dessous, centré.
     if (angle === 90) {
-      return { anchor: "middle", dx: 0, dyTitle: 32, dyBenefit: 50 };
+      return { anchor: "middle", dx: 0, dyTitle: 36, dyBenefit: 54 };
     }
-    // Côté droit (-45, 0, 45) : label à droite du dot.
     if (angle > -90 && angle < 90) {
-      return { anchor: "start", dx: 22, dyTitle: -3, dyBenefit: 16 };
+      return { anchor: "start", dx: 26, dyTitle: -3, dyBenefit: 16 };
     }
-    // Côté gauche (135, 180, -135) : label à gauche.
-    return { anchor: "end", dx: -22, dyTitle: -3, dyBenefit: 16 };
+    return { anchor: "end", dx: -26, dyTitle: -3, dyBenefit: 16 };
   }
 
   return (
@@ -104,126 +108,208 @@ export function ImplementationHeroSchema({
         overflow="visible"
       >
         <defs>
+          {/* Halos diffus de fond */}
           <radialGradient id="im-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.28" />
-            <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
+            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.26" />
+            <stop offset="55%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
             <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="im-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.14" />
+            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.16" />
             <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="im-halo-sg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.16" />
+            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
             <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
           </radialGradient>
-          <pattern id="im-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+
+          {/* Grille texturée + masque vignette */}
+          <pattern id="im-grid" width="44" height="44" patternUnits="userSpaceOnUse">
             <path
-              d="M 48 0 L 0 0 0 48"
+              d="M 44 0 L 0 0 0 44"
               fill="none"
               stroke="var(--color-border-strong)"
               strokeWidth="0.5"
-              strokeOpacity="0.18"
+              strokeOpacity="0.16"
             />
           </pattern>
           <radialGradient id="im-grid-mask" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.55" />
+            <stop offset="0%" stopColor="white" stopOpacity="0.5" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </radialGradient>
           <mask id="im-vignette-mask">
             <rect width="100%" height="100%" fill="url(#im-grid-mask)" />
           </mask>
+
+          {/* Reflet glossy réutilisable pour les sphères (highlight blanc). */}
+          <radialGradient id="im-node-gloss" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Halo intérieur du centre (sheen). */}
+          <radialGradient id="im-center-sheen" cx="42%" cy="36%" r="68%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.85" />
+            <stop offset="55%" stopColor="var(--color-paper)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="var(--color-paper)" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="im-center-base" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--color-paper)" />
+            <stop offset="78%" stopColor="var(--color-paper)" />
+            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.07" />
+          </radialGradient>
+
+          {/* Dégradé radial des connecteurs : faible au centre, vif au nœud.
+              userSpaceOnUse → s'aligne quel que soit l'angle du spoke. */}
+          {ACCENTS.map((a) => (
+            <radialGradient
+              key={`spoke-${a}`}
+              id={`im-spoke-${a}`}
+              gradientUnits="userSpaceOnUse"
+              cx={cx}
+              cy={cy}
+              r={rx}
+            >
+              <stop offset="0%" stopColor={accentColor[a]} stopOpacity="0.04" />
+              <stop offset="50%" stopColor={accentColor[a]} stopOpacity="0.20" />
+              <stop offset="100%" stopColor={accentColor[a]} stopOpacity="0.55" />
+            </radialGradient>
+          ))}
+
+          {/* Ombre portée douce (profondeur). */}
+          <filter id="im-soft-shadow" x="-60%" y="-60%" width="220%" height="220%">
+            <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#3a2a22" floodOpacity="0.16" />
+          </filter>
+          <filter id="im-center-shadow" x="-60%" y="-60%" width="220%" height="220%">
+            <feDropShadow
+              dx="0"
+              dy="8"
+              stdDeviation="14"
+              floodColor="#3a2a22"
+              floodOpacity="0.18"
+            />
+          </filter>
         </defs>
 
         {/* Grille texturée fade vignette */}
         <rect width={W} height={H} fill="url(#im-grid)" mask="url(#im-vignette-mask)" />
 
-        {/* Halos diffus — top-right primary, bottom-left sage, centre terracotta */}
+        {/* Halos diffus */}
         <circle cx={cx} cy={cy} r={360} fill="url(#im-halo-tc)" />
         <circle cx={W - 90} cy={120} r={180} fill="url(#im-halo-pr)" />
         <circle cx={90} cy={H - 110} r={170} fill="url(#im-halo-sg)" />
 
-        {/* Anneaux concentriques décoratifs */}
+        {/* Anneau extérieur hairline pointillé */}
         <ellipse
           cx={cx}
           cy={cy}
-          rx={rx + 50}
-          ry={ry + 50}
+          rx={rx + 52}
+          ry={ry + 52}
           stroke="var(--color-border-strong)"
-          strokeOpacity="0.18"
-          strokeDasharray="2 8"
+          strokeOpacity="0.16"
+          strokeDasharray="2 9"
           fill="none"
         />
+
+        {/* Anneau de précision gradué — ticks tous les 15°, longs aux nœuds */}
         <ellipse
           cx={cx}
           cy={cy}
           rx={rx}
           ry={ry}
           stroke="var(--color-terracotta)"
-          strokeOpacity="0.30"
-          strokeDasharray="3 6"
+          strokeOpacity="0.22"
+          strokeWidth="1"
           fill="none"
         />
-        <ellipse
-          cx={cx}
-          cy={cy}
-          rx={rx - 70}
-          ry={ry - 65}
-          stroke="var(--color-border-strong)"
-          strokeOpacity="0.30"
-          fill="none"
-        />
-
-        {/* Liaisons centre → satellites (pointillé doux accent) */}
-        {nodes.map((node, idx) => {
-          const angle = angles[idx] ?? 0;
-          const pos = ellipsePos(angle, rx, ry, cx, cy);
+        {tickAngles.map((a) => {
+          const isNode = angles.includes(a) || angles.includes(a - 360);
+          const inner = ellipsePos(a, rx - (isNode ? 9 : 5), ry - (isNode ? 9 : 5), cx, cy);
+          const outer = ellipsePos(a, rx + (isNode ? 9 : 5), ry + (isNode ? 9 : 5), cx, cy);
           return (
             <line
-              key={`l-${idx}`}
-              x1={cx}
-              y1={cy}
-              x2={pos.x}
-              y2={pos.y}
-              stroke={accentColor[node.accent]}
-              strokeOpacity="0.38"
-              strokeWidth="1.25"
-              strokeDasharray="3 6"
+              key={`tick-${a}`}
+              x1={inner.x}
+              y1={inner.y}
+              x2={outer.x}
+              y2={outer.y}
+              stroke="var(--color-terracotta)"
+              strokeOpacity={isNode ? 0.42 : 0.2}
+              strokeWidth={isNode ? 1.6 : 1}
+              strokeLinecap="round"
             />
           );
         })}
 
-        {/* Satellites — 8 nœuds fonction × bénéfice */}
+        {/* Anneau intérieur plein subtil */}
+        <ellipse
+          cx={cx}
+          cy={cy}
+          rx={rx - 72}
+          ry={ry - 66}
+          stroke="var(--color-border-strong)"
+          strokeOpacity="0.26"
+          fill="none"
+        />
+
+        {/* Connecteurs courbes centre → satellites (dégradé radial) */}
+        {nodes.map((node, idx) => {
+          const angle = angles[idx] ?? 0;
+          const pos = ellipsePos(angle, rx, ry, cx, cy);
+          // Point de contrôle = milieu décalé perpendiculairement (bow doux).
+          const mx = (cx + pos.x) / 2;
+          const my = (cy + pos.y) / 2;
+          const dxv = pos.x - cx;
+          const dyv = pos.y - cy;
+          const len = Math.hypot(dxv, dyv) || 1;
+          const bow = 18;
+          const ctrlX = mx + (-dyv / len) * bow;
+          const ctrlY = my + (dxv / len) * bow;
+          return (
+            <path
+              key={`l-${idx}`}
+              d={`M ${cx} ${cy} Q ${ctrlX} ${ctrlY} ${pos.x} ${pos.y}`}
+              fill="none"
+              stroke={`url(#im-spoke-${node.accent})`}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          );
+        })}
+
+        {/* Satellites — sphères fonction × bénéfice */}
         {nodes.map((node, idx) => {
           const angle = angles[idx] ?? 0;
           const pos = ellipsePos(angle, rx, ry, cx, cy);
           const layout = labelLayout(angle);
+          const col = accentColor[node.accent];
           return (
             <g key={`n-${idx}`}>
-              {/* Halos doubles autour du dot */}
+              {/* Glow diffus */}
+              <circle cx={pos.x} cy={pos.y} r={26} fill={col} fillOpacity="0.09" />
+              {/* Anneau fin de halo */}
               <circle
                 cx={pos.x}
                 cy={pos.y}
-                r={30}
-                fill={accentColor[node.accent]}
-                fillOpacity="0.10"
+                r={15.5}
+                fill="none"
+                stroke={col}
+                strokeOpacity="0.35"
+                strokeWidth="1"
               />
+              {/* Cœur (sphère) avec ombre douce */}
               <circle
                 cx={pos.x}
                 cy={pos.y}
-                r={20}
-                fill={accentColor[node.accent]}
-                fillOpacity="0.20"
-              />
-              {/* Dot principal */}
-              <circle
-                cx={pos.x}
-                cy={pos.y}
-                r={10}
-                fill={accentColor[node.accent]}
-                stroke="var(--color-bg)"
+                r={10.5}
+                fill={col}
+                stroke="var(--color-paper)"
                 strokeWidth="3"
+                filter="url(#im-soft-shadow)"
               />
+              {/* Reflet glossy haut-gauche */}
+              <circle cx={pos.x - 3.2} cy={pos.y - 3.6} r={4.2} fill="url(#im-node-gloss)" />
+
               {/* Label fonction (gras) */}
               <text
                 x={pos.x + layout.dx}
@@ -252,23 +338,43 @@ export function ImplementationHeroSchema({
           );
         })}
 
-        {/* Centre — votre entreprise, sujet du schéma */}
+        {/* Centre — sujet du schéma, multi-couches */}
+        <g filter="url(#im-center-shadow)">
+          {/* Anneau extérieur épais translucide */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={84}
+            fill="none"
+            stroke="var(--color-terracotta)"
+            strokeOpacity="0.14"
+            strokeWidth="14"
+          />
+          {/* Disque de base (dégradé subtil) */}
+          <circle cx={cx} cy={cy} r={78} fill="url(#im-center-base)" />
+          {/* Anneau net */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={78}
+            fill="none"
+            stroke="var(--color-terracotta)"
+            strokeOpacity="0.55"
+            strokeWidth="1.5"
+          />
+        </g>
+        {/* Sheen intérieur (au-dessus, hors ombre) */}
+        <circle cx={cx} cy={cy} r={78} fill="url(#im-center-sheen)" />
+        {/* Anneau hairline intérieur */}
         <circle
           cx={cx}
           cy={cy}
-          r={84}
-          fill="var(--color-paper)"
-          stroke="var(--color-terracotta)"
-          strokeWidth="2.5"
-        />
-        <circle
-          cx={cx}
-          cy={cy}
-          r={84}
+          r={66}
           fill="none"
           stroke="var(--color-terracotta)"
-          strokeOpacity="0.18"
-          strokeWidth="14"
+          strokeOpacity="0.16"
+          strokeWidth="1"
+          strokeDasharray="2 6"
         />
         <text
           x={cx}
@@ -276,7 +382,7 @@ export function ImplementationHeroSchema({
           textAnchor="middle"
           fontFamily="var(--font-serif), serif"
           fontStyle="italic"
-          fontSize="25"
+          fontSize="26"
           fontWeight="500"
           fill="var(--color-terracotta)"
         >
@@ -295,19 +401,19 @@ export function ImplementationHeroSchema({
         </text>
 
         {/* Particules décoratives */}
-        <circle cx={60} cy={90} r={2.5} fill="var(--color-terracotta)" opacity="0.55" />
-        <circle cx={W - 60} cy={H - 90} r={2.5} fill="var(--color-sage)" opacity="0.5" />
-        <circle cx={W - 80} cy={70} r={2} fill="var(--color-primary)" opacity="0.55" />
-        <circle cx={70} cy={H - 60} r={2} fill="var(--color-terracotta)" opacity="0.5" />
+        <circle cx={60} cy={90} r={2.5} fill="var(--color-terracotta)" opacity="0.5" />
+        <circle cx={W - 60} cy={H - 90} r={2.5} fill="var(--color-sage)" opacity="0.45" />
+        <circle cx={W - 80} cy={70} r={2} fill="var(--color-primary)" opacity="0.5" />
+        <circle cx={70} cy={H - 60} r={2} fill="var(--color-terracotta)" opacity="0.45" />
         <path
           d={`M ${W - 50} ${H / 2 - 100} l 2 5 l 5 2 l -5 2 l -2 5 l -2 -5 l -5 -2 l 5 -2 z`}
           fill="var(--color-terracotta)"
-          opacity="0.55"
+          opacity="0.5"
         />
         <path
           d={`M 50 ${H / 2 + 100} l 1.5 4 l 4 1.5 l -4 1.5 l -1.5 4 l -1.5 -4 l -4 -1.5 l 4 -1.5 z`}
           fill="var(--color-sage)"
-          opacity="0.5"
+          opacity="0.45"
         />
       </svg>
     </div>

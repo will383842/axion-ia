@@ -289,12 +289,12 @@ export default async function UnAUnHubPage({ params }: Props) {
       {/* HERO 2 colonnes — template aligné /interventions/collectives */}
       <ServiceHero
         eyebrow={isFr ? "Coaching individuel · 1-to-1" : "Individual coaching · 1-to-1"}
-        title={isFr ? "Une journée," : "One day,"}
-        titleEm={isFr ? "un maximum de valeur" : "maximum value"}
+        title={isFr ? "Un seul jour pour transformer" : "Just one day to transform"}
+        titleEm={isFr ? "votre façon de travailler" : "the way you work"}
         description={
           isFr
-            ? "Une journée en tête-à-tête avec un expert IA pour repenser votre organisation — pas seulement gagner du temps. On met à plat vos journées et vos semaines, on pense stratégie et automatisation, et vous repartez dès le premier jour avec des process concrets, utilisables tout de suite. Dirigeant ou collaborateur clé : vous n'avez qu'à y gagner."
-            : "Une journée en tête-à-tête avec un expert IA pour repenser votre organisation — pas seulement gagner du temps. On met à plat vos journées et vos semaines, on pense stratégie et automatisation, et vous repartez dès le premier jour avec des process concrets, utilisables tout de suite. Dirigeant ou collaborateur clé : vous n'avez qu'à y gagner."
+            ? "Une journée complète en tête-à-tête — dirigeant ou collaborateur clé : on met tout votre travail à plat pour automatiser, avec des agents IA, tout ce qui peut l'être."
+            : "A full day one-on-one — executive or key team member: we map your entire work to automate, with AI agents, everything that can be."
         }
         ctas={
           <>
