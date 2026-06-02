@@ -28,7 +28,7 @@ export async function FounderTrustSection({ isFr }: FounderTrustSectionProps) {
         <FadeInOnView>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Colonne gauche : copy */}
-            <div className="max-w-xl">
+            <div className="max-w-2xl">
               <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
                 <span
                   aria-hidden="true"

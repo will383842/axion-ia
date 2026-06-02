@@ -696,7 +696,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       >
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <div className="max-w-xl">
+            <div className="max-w-2xl">
               <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
                 <span className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {isFr ? "Votre coach IA" : "Your AI coach"}
