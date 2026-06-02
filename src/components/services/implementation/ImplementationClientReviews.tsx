@@ -4,8 +4,9 @@
  * réaliste, sans inventer de nom de société : prénom + initiale, fonction et
  * secteur. Couvre TPE / PME / ETI.
  *
- * Portraits + crédits photographes RÉUTILISÉS depuis la banque existante
- * (public/images/reviews/*) — mêmes fichiers, donc crédits Unsplash inchangés
+ * Portraits DISTINCTS d'/audit — 6 photos sourcées via l'API Unsplash (free
+ * tier, fit=facearea), `public/images/reviews/avis-impl-*.webp`. Trigger
+ * /photos/:id/download déclenché à la source + crédit photographe obligatoire
  * (compliance API §6, cf. docs/content-gen/UNSPLASH-COMPLIANCE.md).
  *
  * Server Component pur, zéro JS. Tokens uniquement. Aucun prix. FR canonique —
@@ -39,9 +40,9 @@ const REVIEWS: ReadonlyArray<Review> = [
     author: "Catherine M.",
     roleFr: "Dirigeante, cabinet d'expertise comptable",
     roleEn: "Director, accounting firm",
-    avatar: "/images/reviews/avis-catherine.webp",
-    photographer: "Craig Tidball",
-    photographerUrl: "https://unsplash.com/@devonshiremedia",
+    avatar: "/images/reviews/avis-impl-catherine.webp",
+    photographer: "Michael Dam",
+    photographerUrl: "https://unsplash.com/@michaeldam",
   },
   {
     quoteFr:
@@ -51,9 +52,9 @@ const REVIEWS: ReadonlyArray<Review> = [
     author: "Marc D.",
     roleFr: "Gérant, artisan du bâtiment",
     roleEn: "Owner, construction craftsman",
-    avatar: "/images/reviews/avis-marc.webp",
-    photographer: "Sergey Mikheev",
-    photographerUrl: "https://unsplash.com/@exegii",
+    avatar: "/images/reviews/avis-impl-marc.webp",
+    photographer: "Jurica Koletić",
+    photographerUrl: "https://unsplash.com/@juricakoletic",
   },
   {
     quoteFr:
@@ -63,9 +64,9 @@ const REVIEWS: ReadonlyArray<Review> = [
     author: "Thomas R.",
     roleFr: "Directeur, PME industrielle",
     roleEn: "Director, industrial SME",
-    avatar: "/images/reviews/avis-thomas.webp",
-    photographer: "Filip Rankovic Grobgaard",
-    photographerUrl: "https://unsplash.com/@filipgrobgaard",
+    avatar: "/images/reviews/avis-impl-thomas.webp",
+    photographer: "Joseph Gonzalez",
+    photographerUrl: "https://unsplash.com/@miracletwentyone",
   },
   {
     quoteFr:
@@ -75,9 +76,9 @@ const REVIEWS: ReadonlyArray<Review> = [
     author: "Nadia B.",
     roleFr: "Fondatrice, e-commerce",
     roleEn: "Founder, e-commerce",
-    avatar: "/images/reviews/avis-nadia.webp",
-    photographer: "Julia Potter",
-    photographerUrl: "https://unsplash.com/@juliapotter",
+    avatar: "/images/reviews/avis-impl-nadia.webp",
+    photographer: "Christina @ wocintechchat.com",
+    photographerUrl: "https://unsplash.com/@wocintechchat",
   },
   {
     quoteFr:
@@ -87,9 +88,9 @@ const REVIEWS: ReadonlyArray<Review> = [
     author: "Sophie L.",
     roleFr: "Responsable transformation, groupe ETI",
     roleEn: "Transformation lead, mid-cap group",
-    avatar: "/images/reviews/avis-sophie.webp",
-    photographer: "Abenezer Shewaga",
-    photographerUrl: "https://unsplash.com/@abenezer_shewaga",
+    avatar: "/images/reviews/avis-impl-sophie.webp",
+    photographer: "Olga Zhuravleva",
+    photographerUrl: "https://unsplash.com/@zabegina",
   },
   {
     quoteFr:
@@ -99,9 +100,9 @@ const REVIEWS: ReadonlyArray<Review> = [
     author: "Julien P.",
     roleFr: "Directeur des opérations, ETI multi-sites",
     roleEn: "Operations director, multi-site mid-cap",
-    avatar: "/images/reviews/avis-julien.webp",
-    photographer: "Makeen M. Alaa",
-    photographerUrl: "https://unsplash.com/@muhmedelbank",
+    avatar: "/images/reviews/avis-impl-julien.webp",
+    photographer: "LinkedIn Sales Solutions",
+    photographerUrl: "https://unsplash.com/@linkedinsalesnavigator",
   },
 ];
 
