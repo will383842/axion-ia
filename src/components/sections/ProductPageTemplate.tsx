@@ -147,8 +147,8 @@ export function ProductPageTemplate({
       <ProductHero
         eyebrow={copy.eyebrow}
         accent={accent}
-        title={copy.title}
-        {...(copy.titleEm ? { titleEm: copy.titleEm } : {})}
+        title={copy.titleEm ? copy.title : splitEm(copy.title).head}
+        titleEm={copy.titleEm ?? splitEm(copy.title).em}
         {...(copy.titleTail ? { titleTail: copy.titleTail } : {})}
         answer={copy.answer}
         {...(typeof copy.priceEur === "number"
@@ -410,7 +410,7 @@ function WhySection({
 }) {
   return (
     <Section
-      tone="paper"
+      tone="sand"
       eyebrow={isFr ? "L'enjeu" : "Why it matters"}
       title={why.title}
       {...(why.titleEm ? { titleEm: why.titleEm } : {})}
