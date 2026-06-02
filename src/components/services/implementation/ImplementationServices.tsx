@@ -184,7 +184,7 @@ export function ImplementationServices({ isFr }: ImplementationServicesProps): R
               : "The 4 pillars of Axion-IA AI implementation: Implementation, AI agents, Native integration and Performance."
           }
           width={1600}
-          height={485}
+          height={484}
           loading="lazy"
           decoding="async"
           sizes="(max-width: 1520px) 92vw, 1456px"
