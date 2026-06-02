@@ -188,32 +188,33 @@ export default async function ImplementationListing({ params }: Props) {
   });
 
   // ImageObject @graph — signal AEO Google Images + AI Overviews (sans prix).
+  // Synchronisé sur les 2 images RÉELLEMENT affichées sur la page (visuel des
+  // 4 piliers + portrait du fondateur), métadonnées exactes (dimensions /
+  // format / alt identiques au rendu).
   const implementationImagesJsonLd = buildImageGraphJsonLd({
     locale: loc,
     images: [
       {
-        src: "/illustrations/home-bandeau-team.avif",
+        src: "/illustrations/implementation-piliers-axion-ia.webp",
         name: isFr
-          ? "Équipe Axion-IA — implémentation IA opérationnelle pour entreprises"
-          : "Axion-IA team — operational AI implementation for companies",
+          ? "Les 4 piliers de l'implémentation IA Axion-IA"
+          : "The 4 pillars of Axion-IA AI implementation",
         alt: isFr
-          ? "Équipe Axion-IA en mission d'implémentation IA opérationnelle — agents IA, chatbots, automatisation back-office, intégration CRM/ERP, IA sur-mesure pour TPE, PME, ETI et grandes entreprises françaises."
-          : "Axion-IA team on operational AI implementation mission — AI agents, chatbots, back-office automation, CRM/ERP integration, custom AI for French SMEs, mid-caps and large enterprises.",
-        width: 1961,
-        height: 802,
-        encodingFormat: "image/avif",
+          ? "Les 4 piliers de l'implémentation IA Axion-IA : Implémentation (de la stratégie à la réalité), Agents IA (vos collaborateurs intelligents), Intégration native (dans votre écosystème) et Performance (mesurable, durable, réelle)."
+          : "The 4 pillars of Axion-IA AI implementation: Implementation (from strategy to reality), AI agents (your intelligent coworkers), Native integration (into your ecosystem) and Performance (measurable, lasting, real).",
+        width: 1600,
+        height: 484,
+        encodingFormat: "image/webp",
       },
       {
-        src: "/illustrations/home-founder-william.avif",
-        name: isFr
-          ? "William — Fondateur Axion-IA et architecte IA"
-          : "William — Axion-IA founder and AI architect",
+        src: "/illustrations/william-fondateur-axion-ia.webp",
+        name: isFr ? "William — Fondateur & CEO Axion-IA" : "William — Founder & CEO Axion-IA",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote les missions d'implémentation IA (agents IA, automatisations métier, RAG, intégrations CRM ERP) pour dirigeants TPE PME ETI grandes entreprises françaises."
-          : "Portrait of William, Axion-IA founder. Drives AI implementation missions (AI agents, business automations, RAG, CRM ERP integrations) for French SME mid-cap large enterprise executives.",
-        width: 800,
+          ? "Portrait de William, fondateur et CEO d'Axion-IA — pilote les implémentations IA (agents IA, automatisations, RAG, intégrations CRM/ERP) avec une exigence technique et une relation directe et humaine."
+          : "Portrait of William, Axion-IA founder and CEO — drives AI implementations (AI agents, automations, RAG, CRM/ERP integrations) with technical rigour and a direct, human relationship.",
+        width: 1000,
         height: 1000,
-        encodingFormat: "image/avif",
+        encodingFormat: "image/webp",
       },
     ],
   });

@@ -60,7 +60,7 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
               {isFr ? "Ce qui nous importe," : "What matters to us:"}
               <br />
               <span className="text-terracotta italic">
-                {isFr ? "c'est votre satisfaction" : "your satisfaction"}
+                {isFr ? "c'est la perfection" : "perfection"}
               </span>
             </h2>
             <p className="text-fg-soft mt-7 text-lg leading-relaxed">
