@@ -98,7 +98,8 @@ export default async function NoCodePage({ params }: Props) {
       </Container>
       <ProductPageTemplate
         isFr={isFr}
-        accent="purple"
+        accent="orange"
+        hideFinalCta
         copy={copy}
         ctaPrimaryHref="/contact?type=implementation&subType=no-code"
         ctaSecondaryHref="/cas-concrets"

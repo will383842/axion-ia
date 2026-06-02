@@ -100,7 +100,8 @@ export default async function DocumentsPage({ params }: Props) {
       </Container>
       <ProductPageTemplate
         isFr={isFr}
-        accent="purple"
+        accent="orange"
+        hideFinalCta
         copy={copy}
         ctaPrimaryHref="/contact?type=implementation&subType=documents"
         ctaSecondaryHref="/cas-concrets"

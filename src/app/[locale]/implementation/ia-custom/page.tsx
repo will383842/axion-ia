@@ -100,7 +100,8 @@ export default async function IaCustomPage({ params }: Props) {
       </Container>
       <ProductPageTemplate
         isFr={isFr}
-        accent="purple"
+        accent="orange"
+        hideFinalCta
         copy={copy}
         ctaPrimaryHref="/contact?type=implementation&subType=ia-custom"
         ctaSecondaryHref="/cas-concrets"

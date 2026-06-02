@@ -288,7 +288,7 @@ function makeFr(args: {
     eyebrow: args.eyebrow,
     title: args.title,
     answer: args.answer,
-    ctaPrimary: "Demander un devis",
+    ctaPrimary: "Décrire mon besoin",
     ctaSecondary: "Voir les cas concrets",
     benefitsTitle: "Ce que vous obtenez",
     benefits: args.benefits ?? [

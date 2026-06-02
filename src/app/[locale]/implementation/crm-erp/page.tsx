@@ -100,7 +100,8 @@ export default async function CrmErpPage({ params }: Props) {
       </Container>
       <ProductPageTemplate
         isFr={isFr}
-        accent="purple"
+        accent="orange"
+        hideFinalCta
         copy={copy}
         ctaPrimaryHref="/contact?type=implementation&subType=crm-erp"
         ctaSecondaryHref="/cas-concrets"

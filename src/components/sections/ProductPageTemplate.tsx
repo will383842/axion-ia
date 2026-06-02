@@ -99,6 +99,10 @@ interface ProductPageTemplateProps {
    * ou `<AuditDetailHeroSchema>` selon le module sans dupliquer le template. */
   heroSchema?: React.ReactNode;
   jsonLd?: ReadonlyArray<Record<string, unknown>>;
+  /** Optionnel — supprime le CtaBlock mocha final (les sous-pages
+   *  implémentation rendent à la place le bandeau terracotta
+   *  ImplementationContactBand « Réserver un appel / Nous écrire »). */
+  hideFinalCta?: boolean;
 }
 
 // Editorial v3 — alternance auto des sections paper/sand/halo-cool/canvas/mocha
@@ -112,6 +116,7 @@ export function ProductPageTemplate({
   ctaSecondaryHref,
   heroSchema,
   jsonLd = [],
+  hideFinalCta = false,
 }: ProductPageTemplateProps) {
   const metricsVariant: "primary" | "purple" | "orange" | "green" = accent;
   return (
@@ -209,18 +214,21 @@ export function ProductPageTemplate({
       {/* FAQ — canvas pour repos */}
       <FaqBlock title={copy.faqTitle} items={copy.faqs} emitJsonLd={false} tone="canvas" />
 
-      {/* CTA final — mocha riche signature */}
-      <CtaBlock
-        title={copy.ctaBlockTitle}
-        description={copy.ctaBlockDescription}
-        cta={
-          <Cta href={ctaPrimaryHref} size="lg">
-            {copy.ctaPrimary}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Cta>
-        }
-        tone="mocha"
-      />
+      {/* CTA final — mocha riche signature. Supprimable (hideFinalCta) quand la
+          page rend son propre bandeau de contact (sous-pages implémentation). */}
+      {hideFinalCta ? null : (
+        <CtaBlock
+          title={copy.ctaBlockTitle}
+          description={copy.ctaBlockDescription}
+          cta={
+            <Cta href={ctaPrimaryHref} size="lg">
+              {copy.ctaPrimary}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+          }
+          tone="mocha"
+        />
+      )}
 
       <Container>
         {jsonLd.map((schema, idx) => (
