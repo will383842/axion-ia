@@ -20,8 +20,10 @@ import { ContactBand } from "@/components/sections/ContactBand";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { Link } from "@/i18n/navigation";
+import { prisma } from "@/lib/prisma";
 import { buildProductMetadata } from "@/lib/seo";
-import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
+import { buildArticleJsonLd, buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
 import { getServiceForEntrySlug } from "@/lib/knowledge/readers";
 import { ServiceOfferBlock } from "@/components/services/ServiceOfferBlock";
@@ -97,6 +99,18 @@ export default async function ConnaissanceDetail({ params }: Props) {
 
   // KB V4.1 Service Binding — service rattaché (tag service:*) → CTA + Offer.
   const service = await getServiceForEntrySlug(slug);
+
+  // E-E-A-T (doctrine v2.1) — attribution à Manon (persona éditoriale IA
+  // disclosed), JAMAIS Will (anti-trompeur). Le byline visible + le node
+  // Person JSON-LD résolvent l'`@id` author/creator posé par buildArticleJsonLd.
+  // Stub-safe : au build (stub.invalid) → null → byline fallback "Manon" + pas
+  // de node Person (l'ISR runtime le réhydrate).
+  const author = await prisma.authorProfile
+    .findUnique({ where: { slug: "manon" } })
+    .catch(() => null);
+  const personJsonLd = author?.slug === "manon" ? buildPersonManonJsonLd(author) : null;
+  const authorName = author?.displayName ?? "Manon";
+  const authorTitle = author?.jobTitle ?? null;
 
   const publishedStr = formatDate(entry.publishedAt);
   const updatedStr = formatDate(entry.updatedAt);
@@ -182,7 +196,17 @@ export default async function ConnaissanceDetail({ params }: Props) {
               </p>
             ) : null}
             <p className="text-fg-muted mt-6 text-[13px]">
-              {publishedStr ? <>Publié le {publishedStr}</> : null}
+              <>
+                Par{" "}
+                <Link
+                  href={{ pathname: "/equipe/[slug]", params: { slug: "manon" } }}
+                  className="text-terracotta-deep font-medium underline-offset-2 hover:underline"
+                >
+                  {authorName}
+                </Link>
+                {authorTitle ? <>, {authorTitle}</> : null}
+              </>
+              {publishedStr ? <> · publié le {publishedStr}</> : null}
               {updatedStr && updatedStr !== publishedStr ? (
                 <> · mis à jour le {updatedStr}</>
               ) : null}
@@ -247,6 +271,7 @@ export default async function ConnaissanceDetail({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
 }
