@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { MessageSquare, FolderKanban, TerminalSquare } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -144,6 +145,7 @@ export default async function FormationClaude({ params }: Props) {
         ctaPrimaryHref="/reserver?intervention=intervention-claude"
         ctaSecondaryHref="/interventions/essentielle"
         heroSchema={heroSchema}
+        midBand={<FormationContactBand isFr={isFr} />}
         jsonLd={jsonLd}
       />
     </>

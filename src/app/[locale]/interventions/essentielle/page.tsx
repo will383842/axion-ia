@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Compass, FlaskConical, Lightbulb } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
+import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ESSENTIELLE_TIERS, getIntervention } from "@/content/interventions";
 import {
@@ -106,6 +107,45 @@ export default async function Essentielle({ params }: Props) {
     { href: "/interventions/essentielle", label: copy.title },
   ];
 
+  const heroSchema = (
+    <DetailHeroSchema
+      eyebrow={isFr ? "Une journée type" : "A typical day"}
+      title={isFr ? "Découvrir l'IA en 1 journée" : "Discover AI in 1 day"}
+      accent="primary"
+      blocks={[
+        {
+          icon: Compass,
+          prefix: isFr ? "Matin" : "Morning",
+          label: isFr ? "Découverte des outils" : "Tool discovery",
+          detail: isFr
+            ? "ChatGPT, Claude, Copilot, Gemini : à quoi ils servent et quand les choisir."
+            : "ChatGPT, Claude, Copilot, Gemini: what they do and when to pick each.",
+        },
+        {
+          icon: FlaskConical,
+          prefix: isFr ? "Midi" : "Noon",
+          label: isFr ? "Ateliers pratiques" : "Hands-on workshops",
+          detail: isFr
+            ? "Rédaction, recherche, analyse, synthèse — sur leurs vraies tâches métier."
+            : "Writing, research, analysis, synthesis — on their real business tasks.",
+        },
+        {
+          icon: Lightbulb,
+          prefix: isFr ? "Après-midi" : "Afternoon",
+          label: isFr ? "Idées d'usages" : "Usage ideas",
+          detail: isFr
+            ? "5 à 10 usages applicables repérés + boîte à outils remise en fin de journée."
+            : "5 to 10 applicable uses spotted + toolbox handed over at end of day.",
+        },
+      ]}
+      ariaLabel={
+        isFr
+          ? "Schéma : journée type Essentielle — matin découverte des outils IA, midi ateliers pratiques, après-midi idées d'usages applicables."
+          : "Diagram: typical Essentielle day — morning AI tool discovery, noon hands-on workshops, afternoon applicable usage ideas."
+      }
+    />
+  );
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -117,6 +157,7 @@ export default async function Essentielle({ params }: Props) {
         copy={copy}
         ctaPrimaryHref="/reserver?intervention=essentielle"
         ctaSecondaryHref="/cas-concrets"
+        heroSchema={heroSchema}
         midBand={<FormationContactBand isFr={isFr} />}
         jsonLd={jsonLd}
       />

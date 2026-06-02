@@ -840,7 +840,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     },
                     {
                       t: "Automatisations métier",
-                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, Make, Zapier, agents IA — on travaille uniquement sur vos vrais outils, vos vrais documents, vos vrais workflows.",
+                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, agents IA et automatisations métier sur mesure — on travaille uniquement sur vos vrais outils, vos vrais documents, vos vrais workflows.",
                     },
                     {
                       t: "ROI mesuré",
@@ -866,7 +866,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     },
                     {
                       t: "Business automations",
-                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, Make, Zapier, AI agents — we work only on your real tools, real documents, real workflows.",
+                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, AI agents and bespoke business automations — we work only on your real tools, real documents, real workflows.",
                     },
                     {
                       t: "Measured ROI",
