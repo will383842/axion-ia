@@ -46,6 +46,8 @@ import { KW_AUDIT_MATURITE } from "./g1m-audit-maturite";
 import { KW_FORMATION_CLUSTERS_V2 } from "./g2m-formation-clusters";
 // 2026-06-02 — CSV sites/saas : axe siteProjectType (AUGMENTATION vs NATIVE vs TRANSVERSE)
 import { KW_SITES_SAAS_CLUSTERS } from "./g3h-sites-saas-clusters";
+// 2026-06-02 — un-à-un (coaching 1-to-1) : extension keywords sur routes RÉELLES
+import { KW_UN_A_UN_V2 } from "./g6m-un-a-un-clusters";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -204,6 +206,8 @@ export const ALL_KEYWORD_SEEDS: KeywordSeed[] = [
   ...KW_FORMATION_CLUSTERS_V2.filter(isClean),
   // 2026-06-02 — CSV sites/saas : clusters AUGMENTATION / NATIVE / TRANSVERSE
   ...KW_SITES_SAAS_CLUSTERS.filter(isClean),
+  // 2026-06-02 — un-à-un (coaching 1-to-1) : extension sur routes réelles
+  ...KW_UN_A_UN_V2.filter(isClean),
 ];
 
 // ─── Filtres utiles pour le Content Engine ───────────────────────────────────

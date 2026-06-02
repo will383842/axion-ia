@@ -10,8 +10,9 @@ import { ALL_KEYWORD_SEEDS, BY_FORMATION_FORMAT, BY_SITE_PROJECT_TYPE } from "..
 import { validateAllSeeds } from "../validate";
 import { KW_FORMATION_CLUSTERS_V2 } from "../g2m-formation-clusters";
 import { KW_SITES_SAAS_CLUSTERS } from "../g3h-sites-saas-clusters";
+import { KW_UN_A_UN_V2 } from "../g6m-un-a-un-clusters";
 
-const NEW_SEEDS = [...KW_FORMATION_CLUSTERS_V2, ...KW_SITES_SAAS_CLUSTERS];
+const NEW_SEEDS = [...KW_FORMATION_CLUSTERS_V2, ...KW_SITES_SAAS_CLUSTERS, ...KW_UN_A_UN_V2];
 const norm = (k: string) => k.trim().toLowerCase();
 
 describe("CSV integration — validité", () => {
@@ -27,9 +28,16 @@ describe("CSV integration — validité", () => {
     expect(r.invalid).toBe(0);
   });
 
+  it("g6m-un-a-un-clusters : 0 seed invalide", () => {
+    const r = validateAllSeeds(KW_UN_A_UN_V2);
+    if (r.invalid > 0) console.error(JSON.stringify(r.errors, null, 2));
+    expect(r.invalid).toBe(0);
+  });
+
   it("volume minimal par fichier", () => {
     expect(KW_FORMATION_CLUSTERS_V2.length).toBeGreaterThanOrEqual(55);
     expect(KW_SITES_SAAS_CLUSTERS.length).toBeGreaterThanOrEqual(55);
+    expect(KW_UN_A_UN_V2.length).toBeGreaterThanOrEqual(40);
   });
 });
 
