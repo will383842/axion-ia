@@ -31,6 +31,7 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { ImplementationHero } from "@/components/services/implementation/ImplementationHero";
 import { ImplementationServices } from "@/components/services/implementation/ImplementationServices";
+import { ImplementationApproachPaths } from "@/components/services/implementation/ImplementationApproachPaths";
 import { ImplementationExpertises } from "@/components/services/implementation/ImplementationExpertises";
 import { ImplementationContactBand } from "@/components/services/implementation/ImplementationContactBand";
 import { ImplementationMethodology } from "@/components/services/implementation/ImplementationMethodology";
@@ -233,6 +234,10 @@ export default async function ImplementationListing({ params }: Props) {
 
       {/* NOS SERVICES — positionnement + 4 piliers natifs */}
       <ImplementationServices isFr={isFr} />
+
+      {/* DEUX APPROCHES — sur existant (EXISTANT) vs de bout en bout (NEUF).
+          Routage pilier keyword_master, anti-cannibalisation. */}
+      <ImplementationApproachPaths isFr={isFr} />
 
       {/* NOS EXPERTISES — 6 cartes + popup du champ des possibles */}
       <ImplementationExpertises isFr={isFr} />
