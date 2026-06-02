@@ -242,6 +242,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // (conformité Unsplash), pas du code du pipeline de génération. Whitelist comme
   // les autres consommateurs/refs-doc ci-dessus.
   /^src\/components\/services\/audit\/AuditClientReviews\.tsx$/,
+  // Sprint sites-web 2026-06-02 — twin sites-web de AuditClientReviews ci-dessus
+  // (le composant se déclare lui-même « identique à /audit »). Référence
+  // `docs/content-gen/UNSPLASH-COMPLIANCE.md` dans des commentaires (crédit +
+  // conformité Unsplash), pas du code du pipeline de génération. Même exception
+  // explicite que le composant audit.
+  /^src\/components\/services\/sites-web\/SitesWebReviews\.tsx$/,
 ];
 
 /**
