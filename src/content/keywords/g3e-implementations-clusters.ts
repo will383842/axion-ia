@@ -24,7 +24,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 2,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "créer chatbot IA support client PME",
@@ -33,7 +33,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "déploiement assistant IA interne entreprise",
@@ -42,7 +42,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "eti",
     priorite: 1,
     niveau: 2,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "chatbot IA service client automatisé France",
@@ -51,7 +51,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 2,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "intégration chatbot IA site web PME",
@@ -60,7 +60,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "prestataire chatbot IA entreprise France",
@@ -69,7 +69,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "comment créer un chatbot IA pour son entreprise ?",
@@ -78,7 +78,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "combien coûte un chatbot IA pour PME ?",
@@ -87,7 +87,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "définition chatbot IA entreprise vs bot classique",
@@ -96,7 +96,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "étapes déploiement chatbot IA entreprise en 6 phases",
@@ -105,7 +105,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "chatbot IA vs chatbot classique Crisp Intercom comparaison",
@@ -114,7 +114,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "gain productivité chatbot IA support client 60 % automatisé",
@@ -123,7 +123,7 @@ const IMPL_CHATBOT: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/chatbot-entreprise",
+    urlCible: "/fr/implementation/chatbot",
   }),
 ];
 
@@ -136,7 +136,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "ajouter IA dans son logiciel métier PME",
@@ -145,7 +145,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "API OpenAI Anthropic intégration SaaS entreprise",
@@ -154,7 +154,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "développement IA sur-mesure logiciel entreprise",
@@ -163,7 +163,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "comment intégrer ChatGPT dans son logiciel métier ?",
@@ -172,7 +172,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "qu'est-ce qu'une intégration LLM en entreprise ?",
@@ -181,7 +181,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "OpenAI vs Anthropic vs Mistral intégration SaaS comparatif",
@@ -190,7 +190,7 @@ const IMPL_LLM_SAAS: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/llm-saas",
+    urlCible: "/fr/implementation/ia-custom",
   }),
 ];
 
@@ -203,7 +203,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "eti",
     priorite: 1,
     niveau: 2,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "chatbot RAG documentation interne entreprise",
@@ -212,7 +212,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "base de connaissances IA interne entreprise",
@@ -221,7 +221,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "implémentation RAG données propriétaires PME",
@@ -230,7 +230,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "comment créer un chatbot sur sa documentation interne ?",
@@ -239,7 +239,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "définition RAG Retrieval Augmented Generation entreprise",
@@ -248,7 +248,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "étapes déploiement RAG interne entreprise en 5 points",
@@ -257,7 +257,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "productivité RAG interne entreprise gain 50 % recherche",
@@ -266,7 +266,7 @@ const IMPL_RAG: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rag-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
 ];
 
@@ -279,7 +279,7 @@ const IMPL_CRM: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/ia-crm",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "automatiser relances clients IA CRM entreprise",
@@ -288,7 +288,7 @@ const IMPL_CRM: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-crm",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "IA scoring prospects CRM PME",
@@ -297,7 +297,7 @@ const IMPL_CRM: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-crm",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "comment utiliser l'IA pour améliorer son CRM ?",
@@ -306,7 +306,7 @@ const IMPL_CRM: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-crm",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "gain commercial intégration IA CRM entreprise",
@@ -315,7 +315,7 @@ const IMPL_CRM: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-crm",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "intégration IA CRM Salesforce vs HubSpot comparatif",
@@ -324,7 +324,7 @@ const IMPL_CRM: KeywordSeed[] = [
     cible: "eti",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-crm",
+    urlCible: "/fr/implementation/crm-erp",
   }),
 ];
 
@@ -337,7 +337,7 @@ const IMPL_ERP: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/ia-erp",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "IA dans ERP automatisation processus métier",
@@ -346,7 +346,7 @@ const IMPL_ERP: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/ia-erp",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "connecteur IA ERP PME open source",
@@ -355,7 +355,7 @@ const IMPL_ERP: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-erp",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "comment connecter l'IA à son ERP d'entreprise ?",
@@ -364,7 +364,7 @@ const IMPL_ERP: KeywordSeed[] = [
     cible: "eti",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-erp",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "définition IA dans ERP bénéfices opérationnels",
@@ -373,7 +373,7 @@ const IMPL_ERP: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-erp",
+    urlCible: "/fr/implementation/crm-erp",
   }),
   s({
     keyword: "intégration IA ERP SAP vs Oracle vs Sage comparatif",
@@ -382,7 +382,7 @@ const IMPL_ERP: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/ia-erp",
+    urlCible: "/fr/implementation/crm-erp",
   }),
 ];
 
@@ -395,7 +395,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "RPA IA automatisation processus métier PME",
@@ -404,7 +404,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "automatiser processus répétitifs IA entreprise",
@@ -413,7 +413,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "quels processus automatiser en priorité avec l'IA ?",
@@ -422,7 +422,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "définition RPA vs IA automatisation différence",
@@ -431,7 +431,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "économies automatisation RPA IA entreprise 8 h par semaine",
@@ -440,7 +440,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "RPA classique vs RPA IA intelligent comparaison",
@@ -449,7 +449,7 @@ const IMPL_RPA: KeywordSeed[] = [
     cible: "eti",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
 ];
 
@@ -462,7 +462,7 @@ const IMPL_AGENTS: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/agents-ia",
+    urlCible: "/fr/implementation/agents",
   }),
   s({
     keyword: "développement agent IA autonome multi-tâches",
@@ -471,7 +471,7 @@ const IMPL_AGENTS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/agents-ia",
+    urlCible: "/fr/implementation/agents",
   }),
   s({
     keyword: "implémenter agent IA pour automatiser sa veille",
@@ -480,7 +480,7 @@ const IMPL_AGENTS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/agents-ia",
+    urlCible: "/fr/implementation/agents",
   }),
   s({
     keyword: "comment déployer un agent IA en production ?",
@@ -489,7 +489,7 @@ const IMPL_AGENTS: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/agents-ia",
+    urlCible: "/fr/implementation/agents",
   }),
   s({
     keyword: "définition agent IA autonome capabilities",
@@ -498,7 +498,7 @@ const IMPL_AGENTS: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/agents-ia",
+    urlCible: "/fr/implementation/agents",
   }),
   s({
     keyword: "agents IA Axion-IA vs UiPath vs Automation Anywhere",
@@ -507,7 +507,7 @@ const IMPL_AGENTS: KeywordSeed[] = [
     cible: "eti",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/agents-ia",
+    urlCible: "/fr/implementation/agents",
   }),
 ];
 
@@ -520,7 +520,7 @@ const IMPL_VOICE: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/voice-ia",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "implémentation voice IA centre d'appels PME",
@@ -529,7 +529,7 @@ const IMPL_VOICE: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/voice-ia",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "comment automatiser ses appels entrants avec l'IA ?",
@@ -538,7 +538,7 @@ const IMPL_VOICE: KeywordSeed[] = [
     cible: "pme",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/voice-ia",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "définition voice IA assistant vocal entreprise",
@@ -547,7 +547,7 @@ const IMPL_VOICE: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/voice-ia",
+    urlCible: "/fr/implementation/chatbot",
   }),
   s({
     keyword: "gain centre appels IA vocal 40 % appels automatisés",
@@ -556,7 +556,7 @@ const IMPL_VOICE: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/voice-ia",
+    urlCible: "/fr/implementation/chatbot",
   }),
 ];
 
@@ -569,7 +569,7 @@ const IMPL_PREDICTIVE: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/analyse-predictive",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "modèle prédictif churn clients IA PME",
@@ -578,7 +578,7 @@ const IMPL_PREDICTIVE: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/analyse-predictive",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "prédiction stocks IA logistique entreprise",
@@ -587,7 +587,7 @@ const IMPL_PREDICTIVE: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/analyse-predictive",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "comment utiliser l'IA pour prédire ses ventes ?",
@@ -596,7 +596,7 @@ const IMPL_PREDICTIVE: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/analyse-predictive",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "définition analyse prédictive machine learning PME",
@@ -605,7 +605,7 @@ const IMPL_PREDICTIVE: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/analyse-predictive",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "gain analyse prédictive IA stocks réduction 25 %",
@@ -614,7 +614,7 @@ const IMPL_PREDICTIVE: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/analyse-predictive",
+    urlCible: "/fr/implementation/ia-custom",
   }),
 ];
 
@@ -627,7 +627,7 @@ const IMPL_RECO: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/recommandation-ecommerce",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "personnalisation IA boutique en ligne PME",
@@ -636,7 +636,7 @@ const IMPL_RECO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/recommandation-ecommerce",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "comment augmenter son panier moyen avec l'IA ?",
@@ -645,7 +645,7 @@ const IMPL_RECO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/recommandation-ecommerce",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "définition moteur recommandation IA e-commerce",
@@ -654,7 +654,7 @@ const IMPL_RECO: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/recommandation-ecommerce",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "panier moyen augmenté IA recommandation 30 %",
@@ -663,7 +663,7 @@ const IMPL_RECO: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/recommandation-ecommerce",
+    urlCible: "/fr/implementation/ia-custom",
   }),
 ];
 
@@ -676,7 +676,7 @@ const IMPL_NLP: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/nlp-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "analyse automatique documents contrats IA",
@@ -685,7 +685,7 @@ const IMPL_NLP: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/nlp-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "extraction données PDF IA automatique entreprise",
@@ -694,7 +694,7 @@ const IMPL_NLP: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/nlp-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "comment automatiser la lecture de ses contrats avec l'IA ?",
@@ -703,7 +703,7 @@ const IMPL_NLP: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/nlp-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "définition NLP traitement langage naturel application entreprise",
@@ -712,7 +712,7 @@ const IMPL_NLP: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations/nlp-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
   s({
     keyword: "gain analyse NLP contrats juridiques 80 % plus rapide",
@@ -721,7 +721,7 @@ const IMPL_NLP: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/nlp-documentaire",
+    urlCible: "/fr/implementation/documents",
   }),
 ];
 
@@ -734,7 +734,7 @@ const IMPL_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/sans-technique",
+    urlCible: "/fr/implementation/no-code",
   }),
   s({
     keyword: "solutions IA clé en main petite entreprise",
@@ -743,7 +743,7 @@ const IMPL_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/sans-technique",
+    urlCible: "/fr/implementation/no-code",
   }),
   s({
     keyword: "IA sans code no-code pour TPE France",
@@ -752,7 +752,7 @@ const IMPL_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/sans-technique",
+    urlCible: "/fr/implementation/no-code",
   }),
   s({
     keyword: "peut-on implémenter l'IA sans développeur dans une petite entreprise ?",
@@ -761,7 +761,7 @@ const IMPL_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/sans-technique",
+    urlCible: "/fr/implementation/no-code",
   }),
   s({
     keyword: "liste outils IA no-code pour TPE 2026",
@@ -770,7 +770,7 @@ const IMPL_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/sans-technique",
+    urlCible: "/fr/implementation/no-code",
   }),
   s({
     keyword: "temps gagné IA no-code TPE artisan 5 heures semaine",
@@ -779,7 +779,7 @@ const IMPL_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/sans-technique",
+    urlCible: "/fr/implementation/no-code",
   }),
 ];
 

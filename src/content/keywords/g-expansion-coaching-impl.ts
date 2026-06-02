@@ -452,7 +452,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/paris",
+    urlCible: "/fr/implementation/par-ville/paris",
   }),
   s({
     keyword: "implémentation IA Lyon Rhône-Alpes",
@@ -461,7 +461,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/lyon",
+    urlCible: "/fr/implementation/par-ville/lyon",
   }),
   s({
     keyword: "implémentation IA Bordeaux Nouvelle-Aquitaine",
@@ -470,7 +470,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/bordeaux",
+    urlCible: "/fr/implementation/par-ville/bordeaux",
   }),
   s({
     keyword: "implémentation IA Marseille PACA entreprise",
@@ -479,7 +479,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/marseille",
+    urlCible: "/fr/implementation/par-ville/marseille",
   }),
   s({
     keyword: "implémentation IA Nantes Pays de Loire",
@@ -488,7 +488,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/nantes",
+    urlCible: "/fr/implementation/par-ville/nantes",
   }),
   s({
     keyword: "implémentation IA Toulouse Occitanie",
@@ -497,7 +497,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/toulouse",
+    urlCible: "/fr/implementation/par-ville/toulouse",
   }),
   s({
     keyword: "intégrateur IA PME France sur mesure",
@@ -506,7 +506,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 2,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "prestataire intégration IA ETI France",
@@ -515,7 +515,7 @@ const IMPL_GEO: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
 ];
 
@@ -527,7 +527,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/sante",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "IA en santé diagnostique imagerie médicale",
@@ -536,7 +536,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/sante",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "implémentation IA banque assurance finance",
@@ -545,7 +545,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/finance",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "IA détection fraude banque automatisation",
@@ -554,7 +554,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/finance",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "implémentation IA industrie 4.0 usine",
@@ -563,7 +563,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/industrie",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "IA maintenance prédictive industrie fabricant",
@@ -572,7 +572,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/industrie",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "implémentation IA retail e-commerce France",
@@ -581,7 +581,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/retail",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "IA optimisation supply chain logistique",
@@ -590,7 +590,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/logistique",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "implémentation IA BTP chantier construction",
@@ -599,7 +599,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/btp",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "IA immobilier estimation valorisation bien",
@@ -608,7 +608,7 @@ const IMPL_SECTEURS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/immobilier",
+    urlCible: "/fr/implementation",
   }),
 ];
 
@@ -620,7 +620,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/api",
+    urlCible: "/fr/implementation/par-techno",
   }),
   s({
     keyword: "déploiement modèle IA cloud Azure AWS GCP",
@@ -629,7 +629,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/cloud-ia",
+    urlCible: "/fr/implementation/par-techno",
   }),
   s({
     keyword: "MLOps déploiement production modèle IA",
@@ -638,7 +638,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/mlops",
+    urlCible: "/fr/implementation/par-techno",
   }),
   s({
     keyword: "fine-tuning LLM données propriétaires entreprise",
@@ -647,7 +647,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/fine-tuning",
+    urlCible: "/fr/implementation/ia-custom",
   }),
   s({
     keyword: "vector database Qdrant Pinecone Weaviate entreprise",
@@ -656,7 +656,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/vector-db",
+    urlCible: "/fr/implementation/par-techno",
   }),
   s({
     keyword: "IA on-premise données sensibles sécurisé",
@@ -665,7 +665,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "grand-compte",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/on-premise",
+    urlCible: "/fr/implementation/par-techno",
   }),
   s({
     keyword: "architecture multi-agent IA entreprise scalable",
@@ -674,7 +674,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/multi-agent",
+    urlCible: "/fr/implementation/agents",
   }),
   s({
     keyword: "observabilité monitoring LLM production",
@@ -683,7 +683,7 @@ const IMPL_TECHNIQUES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/monitoring-llm",
+    urlCible: "/fr/implementation/par-techno",
   }),
 ];
 
@@ -695,7 +695,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/facturation-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "automatisation relances clients IA CRM",
@@ -704,7 +704,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/implementations/relances-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "IA génération devis automatique PME",
@@ -713,7 +713,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/devis-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "automatisation onboarding client IA",
@@ -722,7 +722,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/onboarding-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "veille concurrentielle IA automatisée entreprise",
@@ -731,7 +731,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 2,
-    urlCible: "/fr/implementations/veille-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "rapport automatique IA données business",
@@ -740,7 +740,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/reporting-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "planification tournées IA livraison optimisation",
@@ -749,7 +749,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/logistique",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "triage emails IA priorité réponse automatique",
@@ -758,7 +758,7 @@ const IMPL_PROCESSUS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/email-ia",
+    urlCible: "/fr/implementation/processus",
   }),
 ];
 
@@ -770,7 +770,7 @@ const IMPL_QUESTIONS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "quels processus automatiser en priorité avec l'IA en PME ?",
@@ -779,7 +779,7 @@ const IMPL_QUESTIONS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations/rpa-ia",
+    urlCible: "/fr/implementation/processus",
   }),
   s({
     keyword: "quelle est la durée d'un projet IA en entreprise ?",
@@ -788,7 +788,7 @@ const IMPL_QUESTIONS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "combien coûte une implémentation IA complète pour PME ?",
@@ -797,7 +797,7 @@ const IMPL_QUESTIONS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "comment choisir son partenaire IA pour son entreprise ?",
@@ -806,7 +806,7 @@ const IMPL_QUESTIONS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "faut-il avoir des données pour implémenter l'IA ?",
@@ -815,7 +815,7 @@ const IMPL_QUESTIONS: KeywordSeed[] = [
     cible: "pme",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
 ];
 
@@ -827,7 +827,7 @@ const IMPL_SNIPPETS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "risques projet IA entreprise liste complète",
@@ -836,7 +836,7 @@ const IMPL_SNIPPETS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "budget moyen projet IA PME France 2026",
@@ -845,7 +845,7 @@ const IMPL_SNIPPETS: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "définition implémentation IA entreprise différences phases",
@@ -854,7 +854,7 @@ const IMPL_SNIPPETS: KeywordSeed[] = [
     cible: "toutes-cibles",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "Axion-IA vs intégrateur IA interne vs agence digitale",
@@ -863,7 +863,7 @@ const IMPL_SNIPPETS: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
 ];
 
@@ -875,7 +875,7 @@ const IMPL_BENEFICES: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "croissance CA implémentation IA entreprise",
@@ -884,7 +884,7 @@ const IMPL_BENEFICES: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "réduction coûts opérationnels IA entreprise 30 %",
@@ -893,7 +893,7 @@ const IMPL_BENEFICES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
   s({
     keyword: "ROI implémentation IA retour investissement mesurable",
@@ -902,7 +902,7 @@ const IMPL_BENEFICES: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/implementations",
+    urlCible: "/fr/implementation",
   }),
 ];
 
