@@ -17,8 +17,27 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
 
 const FR_LOCALE = "fr" as const;
+
+/**
+ * Filtre anti-leak public — SSOT. Toute lecture publique de la KB DOIT passer
+ * par ce prédicat (status=published + audience=public + confidentiality=public
+ * + deletedAt null + publishedAt <= now + embargo respecté). Centralisé ici
+ * pour qu'un nouveau reader (ex. maillage KB→KB) ne puisse pas diverger et
+ * fuiter des drafts/team. Cf. en-tête de fichier.
+ */
+export function publicEntryFilter(now: Date): Prisma.KnowledgeEntryWhereInput {
+  return {
+    status: "published",
+    audience: "public",
+    confidentiality: "public",
+    deletedAt: null,
+    publishedAt: { lte: now },
+    OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
+  };
+}
 
 interface PublicKbItem {
   slug: string;
@@ -34,14 +53,7 @@ export async function fetchPublicKbList(opts: { take?: number } = {}): Promise<P
   const now = new Date();
   try {
     const rows = await prisma.knowledgeEntry.findMany({
-      where: {
-        status: "published",
-        audience: "public",
-        confidentiality: "public",
-        deletedAt: null,
-        publishedAt: { lte: now },
-        OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
-      },
+      where: publicEntryFilter(now),
       orderBy: [{ pinned: "desc" }, { featured: "desc" }, { publishedAt: "desc" }],
       take,
       select: {
@@ -99,15 +111,8 @@ export async function fetchPublicKbBySlug(slugFr: string): Promise<PublicKbDetai
       where: {
         locale: FR_LOCALE,
         slug: slugFr,
-        // Triple filter sur l'entry parent — la garantie anti-leak.
-        entry: {
-          status: "published",
-          audience: "public",
-          confidentiality: "public",
-          deletedAt: null,
-          publishedAt: { lte: now },
-          OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
-        },
+        // Triple filter sur l'entry parent — la garantie anti-leak (SSOT).
+        entry: publicEntryFilter(now),
       },
       select: {
         slug: true,

@@ -39,6 +39,8 @@ import {
 import { KeyFactCard } from "@/components/knowledge/KeyFactCard";
 import { KbSources } from "@/components/knowledge/KbSources";
 import { KbToc } from "@/components/knowledge/KbToc";
+import { KbRelatedEntries } from "@/components/knowledge/KbRelatedEntries";
+import { findRelatedKbEntries } from "@/lib/knowledge/related-entries";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -146,6 +148,10 @@ export default async function ConnaissanceDetail({ params }: Props) {
   // Sommaire — détecte les h2 du body SANITISÉ, injecte ancres + data-speakable.
   // < 3 h2 → bodyHtml inchangé + toc vide (pas de sommaire sur entrée courte).
   const { html: bodyHtml, toc } = buildToc(sanitizeTiptapHtml(entry.body));
+
+  // Maillage KB→KB (cluster topique) — relations éditoriales → tags → domaine.
+  // Levier d'autorité topique. Masqué si < 2 voisins (composant).
+  const relatedKb = await findRelatedKbEntries(slug, { limit: 6 });
 
   // Image Article = carte OG dynamique (même image que le partage social) →
   // éligibilité rich result Article + Google Discover, à coût LCP nul (l'image
@@ -259,6 +265,9 @@ export default async function ConnaissanceDetail({ params }: Props) {
           </article>
         </Container>
       </Section>
+
+      {/* Cluster topique KB→KB — maillage interne d'autorité (masqué si < 2). */}
+      <KbRelatedEntries items={relatedKb} />
 
       {/* Articles connexes — évite le dead-end + réduit le bounce sur /connaissances/[slug]. */}
       <SuggestedContent
