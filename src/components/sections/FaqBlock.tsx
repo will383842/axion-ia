@@ -14,6 +14,8 @@ type FaqTone = "canvas" | "paper" | "sand";
 interface FaqBlockProps {
   eyebrow?: string;
   title?: React.ReactNode;
+  /** Portion de fin du titre, en terracotta italique serif (cohérence hubs). */
+  titleEm?: React.ReactNode;
   description?: React.ReactNode;
   items: ReadonlyArray<FaqEntry>;
   /** Disable JSON-LD if the page already emits its own FAQPage schema. */
@@ -35,6 +37,7 @@ const toneClasses: Record<FaqTone, string> = {
 export function FaqBlock({
   eyebrow = "FAQ",
   title,
+  titleEm,
   description,
   items,
   emitJsonLd = true,
@@ -53,6 +56,14 @@ export function FaqBlock({
         {title ? (
           <h2 className="text-fg text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-semibold tracking-tight">
             {title}
+            {titleEm ? (
+              <span
+                className="text-terracotta mx-2 italic"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {titleEm}
+              </span>
+            ) : null}
           </h2>
         ) : null}
         {description ? (

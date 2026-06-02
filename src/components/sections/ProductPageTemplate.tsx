@@ -253,7 +253,13 @@ export function ProductPageTemplate({
       {copy.maturity ? <MaturityLevelsSection maturity={copy.maturity} accent={accent} /> : null}
 
       {/* FAQ — canvas pour repos */}
-      <FaqBlock title={copy.faqTitle} items={copy.faqs} emitJsonLd={false} tone="canvas" />
+      <FaqBlock
+        title={splitEm(copy.faqTitle).head}
+        titleEm={splitEm(copy.faqTitle).em}
+        items={copy.faqs}
+        emitJsonLd={false}
+        tone="canvas"
+      />
 
       {/* CTA final — mocha riche signature. Supprimable (hideFinalCta) quand la
           page rend son propre bandeau de contact (sous-pages implémentation). */}
@@ -374,7 +380,8 @@ function TestimonialsSection({
     <Section
       tone="paper"
       eyebrow={eyebrow ?? (isFr ? "Témoignages" : "Customer voices")}
-      title={title ?? (isFr ? "Ils l'ont fait" : "They did it")}
+      title={splitEm(title ?? (isFr ? "Ils l'ont fait" : "They did it")).head}
+      titleEm={splitEm(title ?? (isFr ? "Ils l'ont fait" : "They did it")).em}
     >
       <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
         {items.slice(0, 3).map((t) => (
@@ -517,7 +524,8 @@ function MaturityLevelsSection({
     <Section
       tone="sand"
       eyebrow={maturity.eyebrow}
-      title={maturity.title}
+      title={splitEm(maturity.title).head}
+      titleEm={splitEm(maturity.title).em}
       description={maturity.intro}
     >
       <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
