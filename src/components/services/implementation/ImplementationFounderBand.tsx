@@ -98,13 +98,13 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
             <div className="w-full max-w-xs">
               <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
                 <Image
-                  src="/illustrations/home-founder-william.avif"
+                  src="/illustrations/william-fondateur-axion-ia.webp"
                   alt={
                     isFr
                       ? "Portrait de William, fondateur et CEO d'Axion-IA — pilote les implémentations IA avec une exigence technique et une relation directe et humaine."
                       : "Portrait of William, Axion-IA founder and CEO — drives AI implementations with technical rigour and a direct, human relationship."
                   }
-                  width={800}
+                  width={1000}
                   height={1000}
                   loading="lazy"
                   decoding="async"

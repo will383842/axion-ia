@@ -243,11 +243,11 @@ export default async function ImplementationListing({ params }: Props) {
       {/* NOTRE MÉTHODOLOGIE — 4 étapes, sans durée */}
       <ImplementationMethodology isFr={isFr} />
 
-      {/* POURQUOI TRAVAILLER AVEC NOUS — 4 raisons (cartes statiques) */}
-      <ImplementationWhyChooseUs isFr={isFr} />
-
       {/* BANDEAU WILLIAM — état d'esprit & satisfaction (adapté de la home) */}
       <ImplementationFounderBand isFr={isFr} />
+
+      {/* POURQUOI TRAVAILLER AVEC NOUS — 4 raisons (cartes statiques) */}
+      <ImplementationWhyChooseUs isFr={isFr} />
 
       {/* PROJETS RÉALISÉS — marquee (illustratif) */}
       <ImplementationRealisations isFr={isFr} />
