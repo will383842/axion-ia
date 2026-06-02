@@ -226,6 +226,39 @@ export function getImplementation(slug: ImplementationSlug): ImplementationConte
   return found;
 }
 
+/**
+ * Tronque proprement une meta description à ≤155 caractères (best practice SEO
+ * 2026 : Google rend ~155-160 car desktop). Coupe à une frontière de phrase si
+ * possible, sinon au dernier mot — jamais au milieu d'un mot, sans ponctuation
+ * orpheline. Remplace l'ancien `answer.slice(0, 160)` (coupe brute > 155).
+ */
+function clampMeta(text: string, max = 155): string {
+  if (text.length <= max) return text;
+  const window = text.slice(0, max + 1);
+  // Frontière de phrase (. ! ?) la plus tardive qui tient dans la fenêtre.
+  let sentenceEnd = -1;
+  const re = /[.!?](?=\s|$)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(window)) !== null) {
+    if (m.index <= max && m.index >= 80) sentenceEnd = m.index;
+  }
+  if (sentenceEnd >= 0) return text.slice(0, sentenceEnd + 1).trim();
+  // Sinon : dernier espace, ponctuation orpheline retirée.
+  let cut = text.lastIndexOf(" ", max);
+  if (cut < 80) cut = max;
+  let out = text
+    .slice(0, cut)
+    .replace(/[\s,;:.\-–—(«"']+$/u, "")
+    .trim();
+  while (out.length > max) {
+    const sp = out.lastIndexOf(" ");
+    out = (sp > 80 ? out.slice(0, sp) : out.slice(0, max))
+      .replace(/[\s,;:.\-–—(«"']+$/u, "")
+      .trim();
+  }
+  return out;
+}
+
 function makeFr(args: { eyebrow: string; title: string; answer: string }): PageCopy {
   return {
     eyebrow: args.eyebrow,
@@ -313,7 +346,7 @@ function makeFr(args: { eyebrow: string; title: string; answer: string }): PageC
     },
     metaSeo: {
       title: `${args.title} · Implémentation IA · Axion-IA`,
-      description: args.answer.slice(0, 160),
+      description: clampMeta(args.answer, 155),
     },
   };
 }
@@ -402,7 +435,7 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
     },
     metaSeo: {
       title: `${args.title} · AI implementation · Axion-IA`,
-      description: args.answer.slice(0, 160),
+      description: clampMeta(args.answer, 155),
     },
   };
 }
