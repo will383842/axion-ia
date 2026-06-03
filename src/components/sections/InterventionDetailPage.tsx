@@ -17,6 +17,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { ContactBand } from "@/components/sections/ContactBand";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
@@ -245,6 +246,20 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
       >
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
+
+      {/* BANDEAU CONTACT — orientation (parité pages-intention). */}
+      <ContactBand
+        isFr={isFr}
+        eyebrow={isFr ? "Une question sur ce format ?" : "A question about this format?"}
+        title={isFr ? "On vous oriente," : "We guide you,"}
+        titleEm={isFr ? "à votre rythme" : "at your pace"}
+        description={
+          isFr
+            ? "Un échange pour comprendre votre métier et vos objectifs, et vous dire l'accompagnement qui vous correspond. Sans engagement."
+            : "A chat to understand your role and goals, and tell you which support fits you. No commitment."
+        }
+        track="-un-a-un-detail"
+      />
 
       {/* FAQ */}
       <Section

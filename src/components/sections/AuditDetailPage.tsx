@@ -20,6 +20,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { ContactBand } from "@/components/sections/ContactBand";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
@@ -338,6 +339,20 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
       >
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
+
+      {/* BANDEAU CONTACT — orientation (parité pages-intention). */}
+      <ContactBand
+        isFr={isFr}
+        eyebrow={isFr ? "Pas sûr du bon niveau d'audit ?" : "Not sure which audit level?"}
+        title={isFr ? "On cadre votre audit IA," : "We scope your AI audit,"}
+        titleEm={isFr ? "au bon niveau" : "at the right level"}
+        description={
+          isFr
+            ? "Un échange pour comprendre votre contexte et vous orienter vers le format d'audit le plus adapté. Sans engagement."
+            : "A chat to understand your context and point you to the most suitable audit format. No commitment."
+        }
+        track="-audit-detail"
+      />
 
       {/* LIVRABLES — ce que le client repart avec (optionnel). tone sand. */}
       {config.deliverables ? (
