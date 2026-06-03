@@ -10,7 +10,10 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
@@ -296,6 +299,84 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
           </Link>
         </div>
       </Section>
+
+      {/* FAQ — FaqAccordion émet le FAQPage JSON-LD (AEO). */}
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? "Avant de" : "Before"}
+        titleEm={isFr ? "réserver" : "booking"}
+      >
+        <Container>
+          <FaqAccordion
+            className="mx-auto max-w-3xl"
+            items={
+              isFr
+                ? [
+                    {
+                      id: "pourquoi-1to1",
+                      question: "Pourquoi un format 1-to-1 plutôt qu'une formation collective ?",
+                      answer:
+                        "Parce que votre temps et vos décisions de dirigeant sont spécifiques. Le 1-to-1 se concentre sur VOUS : votre quotidien, vos dossiers, votre vision — pas sur un programme d'équipe standardisé.",
+                    },
+                    {
+                      id: "confidentiel",
+                      question: "C'est vraiment confidentiel ?",
+                      answer:
+                        "Oui, strictement. Vous êtes seul·e avec votre interlocuteur, sur vos vrais dossiers, y compris stratégiques. Aucune donnée n'est partagée ni réutilisée.",
+                    },
+                    {
+                      id: "choisir",
+                      question: "Comment choisir entre les 3 formats dirigeant ?",
+                      answer:
+                        "Productivité pour gagner des heures sur votre quotidien, Vision stratégique pour repérer les opportunités IA de votre marché, Claude pour maîtriser l'IA la plus avancée sur vos dossiers. Un appel de cadrage permet de trancher.",
+                    },
+                    {
+                      id: "repars",
+                      question: "Qu'est-ce que je repars avec ?",
+                      answer:
+                        "Des usages concrets activés dès la journée, puis un rapport sous quelques jours qui priorise les prochaines étapes et leurs gains attendus.",
+                    },
+                  ]
+                : [
+                    {
+                      id: "pourquoi-1to1",
+                      question: "Why a 1-to-1 format rather than collective training?",
+                      answer:
+                        "Because your time and decisions as an executive are specific. 1-to-1 focuses on YOU: your daily work, your files, your vision — not a standardised team programme.",
+                    },
+                    {
+                      id: "confidentiel",
+                      question: "Is it really confidential?",
+                      answer:
+                        "Yes, strictly. You are alone with your contact, on your real files, including strategic ones. No data is shared or reused.",
+                    },
+                    {
+                      id: "choisir",
+                      question: "How to choose between the 3 executive formats?",
+                      answer:
+                        "Productivity to save hours in your daily work, Strategic Vision to spot AI opportunities in your market, Claude to master the most advanced AI on your files. A framing call helps decide.",
+                    },
+                    {
+                      id: "repars",
+                      question: "What do I walk away with?",
+                      answer:
+                        "Concrete methods activated on the day itself, then a report within a few days that prioritises the next steps and their expected gains.",
+                    },
+                  ]
+            }
+          />
+        </Container>
+      </Section>
+
+      {/* COUVERTURE FRANCE + KB — maillage national (parité pages détail un-à-un). */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'accompagnement dirigeant 1-to-1"
+        serviceLabelEn="1-to-1 executive support"
+        serviceSlug="un-a-un"
+        tone="sand"
+      />
+      <RelatedKnowledge service="un-a-un" />
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}

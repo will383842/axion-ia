@@ -19,6 +19,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ContactBand } from "@/components/sections/ContactBand";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import { UnAUnSubPageExtras } from "@/components/services/un-a-un/UnAUnSubPageExtras";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
@@ -29,7 +30,7 @@ import {
   INTERVENTION_FORMATS,
   type InterventionFormatEntry,
 } from "@/content/interventions-taxonomy";
-import { buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 // ----------------------------------------------------------------------------
@@ -384,6 +385,22 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         })
       : null;
 
+  // HowTo JSON-LD — signal AEO « comment se déroule cette journée » dérivé du
+  // programme heure par heure (distinct par format → pas de duplicate). Aligne
+  // les 2 pages coaching individuel sur le standard /implementation.
+  const howToJsonLd = buildHowToJsonLd({
+    locale,
+    path: `/interventions/${slug}`,
+    name: isFr
+      ? `Comment se déroule ${config.titleFr.toLowerCase()}`
+      : `How ${config.titleEn.toLowerCase()} unfolds`,
+    description: isFr ? config.promiseFr : config.promiseEn,
+    steps: config.schedule.map((s) => ({
+      name: isFr ? s.titleFr : s.titleEn,
+      text: (isFr ? s.descriptionFr : s.descriptionEn) ?? (isFr ? s.titleFr : s.titleEn),
+    })),
+  });
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -518,6 +535,9 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
       />
       <RelatedKnowledge service="un-a-un" />
 
+      {/* Maillage interne — autres accompagnements 1-to-1 (parité /implementation). */}
+      <UnAUnSubPageExtras isFr={isFr} slug={slug} />
+
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
         title={
@@ -543,6 +563,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
 
       <JsonLd data={serviceJsonLd} />
       {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
+      <JsonLd data={howToJsonLd} />
     </>
   );
 }

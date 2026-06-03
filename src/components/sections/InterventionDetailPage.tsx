@@ -20,6 +20,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ContactBand } from "@/components/sections/ContactBand";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import { UnAUnSubPageExtras } from "@/components/services/un-a-un/UnAUnSubPageExtras";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
@@ -31,7 +32,7 @@ import {
 } from "@/content/intervention-detail-configs";
 import { getFamily } from "@/content/interventions-taxonomy";
 import { formatAmount } from "@/content/pricing";
-import { buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -104,6 +105,26 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
           items: config.faq.map((f) => ({
             question: isFr ? f.qFr : f.qEn,
             answer: isFr ? f.aFr : f.aEn,
+          })),
+        })
+      : null;
+
+  // HowTo JSON-LD — signal AEO « comment se déroule cette journée » dérivé du
+  // programme heure par heure (distinct par format → pas de duplicate). Aligne
+  // les pages détail un-à-un sur le standard /implementation. Omis pour les
+  // formats sans programme fixe (keynote événementielle, cadrage sur mesure).
+  const howToJsonLd =
+    config.schedule && config.schedule.length > 0
+      ? buildHowToJsonLd({
+          locale,
+          path: `/interventions/${slug}`,
+          name: isFr
+            ? `Comment se déroule ${config.titleFr.toLowerCase()}`
+            : `How ${config.titleEn.toLowerCase()} unfolds`,
+          description: isFr ? config.promiseFr : config.promiseEn,
+          steps: config.schedule.map((s) => ({
+            name: isFr ? s.titleFr : s.titleEn,
+            text: (isFr ? s.descriptionFr : s.descriptionEn) ?? (isFr ? s.titleFr : s.titleEn),
           })),
         })
       : null;
@@ -284,6 +305,9 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
       />
       <RelatedKnowledge service="un-a-un" />
 
+      {/* Maillage interne — autres accompagnements 1-to-1 (parité /implementation). */}
+      <UnAUnSubPageExtras isFr={isFr} slug={slug} />
+
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
         title={isFr ? primaryCtaLabelFr : primaryCtaLabelEn}
@@ -315,6 +339,7 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
 
       <JsonLd data={serviceJsonLd} />
       {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
+      {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
       {/* BreadcrumbList JSON-LD : déjà émis automatiquement par <Breadcrumbs>
           (cf. nav/Breadcrumbs.tsx:25). Ne pas redoubler ici sous peine d'erreur
           Google Rich Results « Duplicate Breadcrumb » (audit 2026-05-12). */}

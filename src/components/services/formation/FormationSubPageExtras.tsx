@@ -14,9 +14,11 @@ import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 import { Section } from "@/components/layout/Section";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import { buildHowToJsonLd } from "@/lib/seo";
 import { getIntervention } from "@/content/interventions";
 import {
   FORMATION_RELATED,
@@ -42,6 +44,30 @@ export function FormationSubPageExtras({
 }): ReactNode {
   const geo = FORMATION_GEO_LABEL[slug];
 
+  // HowTo JSON-LD — signal AEO « comment se déroule cette formation » dérivé du
+  // programme de la journée (daySchedule, distinct par formation → pas de
+  // duplicate, contrairement aux étapes de réservation génériques). Aligne les
+  // pages détail formation sur le standard /implementation. Omis si pas de
+  // programme (dégradation propre).
+  const self = getIntervention(slug);
+  const copy = isFr ? self.fr : self.en;
+  const scheduleItems = (copy.daySchedule?.days ?? []).flatMap((d) => d.items);
+  const howToJsonLd =
+    scheduleItems.length > 0
+      ? buildHowToJsonLd({
+          locale: isFr ? "fr" : "en",
+          path: isFr ? self.pathFr : self.pathEn,
+          name: isFr
+            ? `Comment se déroule ${copy.title.toLowerCase()}`
+            : `How ${copy.title.toLowerCase()} unfolds`,
+          description: copy.answer,
+          steps: scheduleItems.map((it) => ({
+            name: it.title,
+            text: it.description ?? it.title,
+          })),
+        })
+      : null;
+
   // 3 formations sœurs (distinctes par page) + 1 cross-link audit (funnel amont).
   const siblings = FORMATION_RELATED[slug].map((rs) => {
     const r = getIntervention(rs);
@@ -65,6 +91,8 @@ export function FormationSubPageExtras({
 
   return (
     <>
+      {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
+
       {/* Pages suggérées — maillage interne « Voir aussi » (4 cartes distinctes) */}
       <Section
         tone="paper"

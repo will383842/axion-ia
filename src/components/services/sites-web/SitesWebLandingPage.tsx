@@ -23,7 +23,12 @@ import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
 import { SitesWebSubPageExtras } from "@/components/services/sites-web/SitesWebSubPageExtras";
 import { getSitesWeb, type SitesWebSlug } from "@/content/sites-web";
-import { buildServiceJsonLd, buildFaqJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
+import {
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+  buildHowToJsonLd,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -102,6 +107,19 @@ export function SitesWebLandingPage({
     ],
   });
 
+  // HowTo JSON-LD — signal AEO « comment intégrer cette brique » dérivé des
+  // étapes process de la landing (distinct par brique → pas de duplicate).
+  // Aligne les landings sites-web/SaaS sur le standard /implementation.
+  const howToJsonLd = buildHowToJsonLd({
+    locale,
+    path,
+    name: isFr
+      ? `Intégrer ${copy.title.toLowerCase()} avec Axion-IA`
+      : `Integrate ${copy.title.toLowerCase()} with Axion-IA`,
+    description: copy.answer,
+    steps: copy.processSteps.map((s) => ({ name: s.title, text: s.description })),
+  });
+
   const jsonLd = [
     buildServiceJsonLd({
       locale,
@@ -113,6 +131,7 @@ export function SitesWebLandingPage({
       speakable: true,
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    howToJsonLd,
     imagesJsonLd,
   ];
 

@@ -13,9 +13,19 @@
 
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { ArrowRight, Calendar, FileText, Mail, Check, Clock, Package } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Calendar,
+  FileText,
+  Mail,
+  Check,
+  Clock,
+  Package,
+} from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
@@ -30,7 +40,7 @@ import { InterventionBenefitsGrid } from "@/components/sections/intervention-par
 import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { type AuditTier, getAuditTierMeta } from "@/content/audit-taxonomy";
-import { buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 
 interface Props {
   tier: AuditTier;
@@ -38,6 +48,14 @@ interface Props {
 }
 
 const TIGHT_X = "lg:px-6 xl:px-10";
+
+/** Ordre canonique des 4 tiers audit — pour le maillage « autres niveaux ». */
+const ALL_AUDIT_TIERS: ReadonlyArray<AuditTier> = [
+  "audit-flash",
+  "audit-cible",
+  "audit-strategique-pme",
+  "audit-strategique-eti",
+];
 
 export function AuditDetailPage({ tier, locale }: Props): ReactNode {
   const isFr = locale === "fr";
@@ -77,6 +95,53 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
       answer: isFr ? f.aFr : f.aEn,
     })),
   });
+
+  // HowTo JSON-LD — signal AEO « comment se déroule cet audit » dérivé du
+  // déroulé horaire (dayTimeline détaillé pour le Flash, sinon programme
+  // synthétique). Distinct par tier → pas de duplicate. Aligne /audit/* sur le
+  // standard /implementation.
+  const howToSteps = config.dayTimeline
+    ? config.dayTimeline.map((s) => ({
+        name: isFr ? s.titleFr : s.titleEn,
+        text: isFr ? s.descFr : s.descEn,
+      }))
+    : config.schedule.map((s) => ({
+        name: isFr ? s.titleFr : s.titleEn,
+        text: (isFr ? s.descriptionFr : s.descriptionEn) ?? (isFr ? s.titleFr : s.titleEn),
+      }));
+  const howToJsonLd =
+    howToSteps.length > 0
+      ? buildHowToJsonLd({
+          locale,
+          path: locale === "fr" ? meta.pathFr : meta.pathEn,
+          name: isFr
+            ? `Comment se déroule ${config.titleFr.toLowerCase()}`
+            : `How ${config.titleEn.toLowerCase()} unfolds`,
+          description: isFr ? config.promiseFr : config.promiseEn,
+          steps: howToSteps,
+        })
+      : null;
+
+  // Maillage interne — 3 autres niveaux d'audit + cross-link implémentation
+  // (funnel aval). Parité avec les SubPageExtras des autres verticales.
+  const relatedCards = [
+    ...ALL_AUDIT_TIERS.filter((t) => t !== tier).map((t) => {
+      const m = getAuditTierMeta(t);
+      const c = AUDIT_DETAIL_CONFIGS[t];
+      return {
+        href: locale === "fr" ? m.pathFr : m.pathEn,
+        label: isFr ? m.labelFr : m.labelEn,
+        description: isFr ? c.promiseFr : c.promiseEn,
+      };
+    }),
+    {
+      href: "/implementation",
+      label: isFr ? "Passer à l'implémentation IA" : "Move to AI implementation",
+      description: isFr
+        ? "Une fois l'audit cadré, déployer concrètement les cas d'usage priorisés."
+        : "Once the audit is framed, concretely deploy the prioritised use cases.",
+    },
+  ];
 
   return (
     <>
@@ -402,6 +467,34 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         <InterventionFaqList items={config.faq} isFr={isFr} />
       </Section>
 
+      {/* Maillage interne — autres niveaux d'audit + implémentation (parité /implementation). */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Autres niveaux d'audit" : "Other audit levels"}
+        title={isFr ? "Pour aller" : "Go"}
+        titleEm={isFr ? "plus loin" : "further"}
+        contentClassName={TIGHT_X}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {relatedCards.map((c) => (
+            <Link
+              key={c.href}
+              href={c.href as never}
+              className="border-border bg-bg hover:border-terracotta hover:shadow-card focus-visible:ring-terracotta flex h-full flex-col rounded-2xl border p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <p className="text-fg text-[15px] leading-snug font-semibold">{c.label}</p>
+              <p className="text-fg-soft mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">
+                {c.description}
+              </p>
+              <span className="text-terracotta-deep mt-4 inline-flex items-center gap-1 text-[13px] font-medium">
+                {isFr ? "Découvrir" : "Discover"}
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
       {/* COUVERTURE FRANCE + KB — maillage national (parité pages-intention). */}
       <LocalCoverageSection
         isFr={isFr}
@@ -439,6 +532,7 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
 
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={faqJsonLd} />
+      {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
     </>
   );
 }

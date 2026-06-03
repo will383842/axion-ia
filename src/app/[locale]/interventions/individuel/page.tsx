@@ -10,7 +10,10 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
@@ -337,6 +340,84 @@ export default async function IndividuelFamilyPage({ params }: Props) {
           </Link>
         </div>
       </Section>
+
+      {/* FAQ — FaqAccordion émet le FAQPage JSON-LD (AEO). */}
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? "Avant de" : "Before"}
+        titleEm={isFr ? "vous lancer" : "you start"}
+      >
+        <Container>
+          <FaqAccordion
+            className="mx-auto max-w-3xl"
+            items={
+              isFr
+                ? [
+                    {
+                      id: "a-qui",
+                      question: "À qui s'adresse le coaching IA individuel ?",
+                      answer:
+                        "À n'importe quel poste opérationnel — secrétariat, comptabilité, commercial, RH, métier créatif ou spécialisé, indépendant ou freelance. On part de vos vraies tâches répétitives, pas d'un programme générique.",
+                    },
+                    {
+                      id: "format",
+                      question: "Comment se passe un coaching individuel ?",
+                      answer:
+                        "Un parcours construit avec vous : on audite votre poste, on prend en main les bons outils sur vos vrais cas, et vous repartez avec des méthodes applicables tout de suite et un plan d'action priorisé.",
+                    },
+                    {
+                      id: "donnees",
+                      question: "Mes données restent-elles confidentielles ?",
+                      answer:
+                        "Oui. On travaille sur vos propres comptes et outils, et on évite tout service qui exporterait vos données. Un point confidentialité est fait en début d'accompagnement.",
+                    },
+                    {
+                      id: "apres",
+                      question: "Et si je veux aller plus loin après ?",
+                      answer:
+                        "Le plan que vous emportez chiffre ce qui reste à faire. Vous pouvez l'appliquer seul·e, ou nous confier la suite — formation d'équipe ou implémentation — sur devis.",
+                    },
+                  ]
+                : [
+                    {
+                      id: "a-qui",
+                      question: "Who is individual AI coaching for?",
+                      answer:
+                        "Any operational role — admin, accounting, sales, HR, creative or specialised work, independent or freelancer. We start from your real repetitive tasks, not a generic programme.",
+                    },
+                    {
+                      id: "format",
+                      question: "How does individual coaching work?",
+                      answer:
+                        "A journey built with you: we audit your workstation, get hands-on with the right tools on your real cases, and you leave with methods you can apply immediately and a prioritised action plan.",
+                    },
+                    {
+                      id: "donnees",
+                      question: "Does my data stay confidential?",
+                      answer:
+                        "Yes. We work on your own accounts and tools, and avoid any service that would export your data. A confidentiality check is done at the start of the programme.",
+                    },
+                    {
+                      id: "apres",
+                      question: "What if I want to go further afterwards?",
+                      answer:
+                        "The plan you take away quantifies what remains to do. You can apply it on your own, or commission us for what follows — team training or implementation — on request.",
+                    },
+                  ]
+            }
+          />
+        </Container>
+      </Section>
+
+      {/* COUVERTURE FRANCE + KB — maillage national (parité pages détail un-à-un). */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="Le coaching IA individuel"
+        serviceLabelEn="Individual AI coaching"
+        serviceSlug="un-a-un"
+        tone="sand"
+      />
+      <RelatedKnowledge service="un-a-un" />
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
