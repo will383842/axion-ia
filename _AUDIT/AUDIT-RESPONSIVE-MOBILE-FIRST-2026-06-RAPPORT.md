@@ -289,6 +289,28 @@ Tous les wrappers de contenu principal passés à `max-w-[1366px] px-4 sm:px-6 l
 
 ## 🛑 POINT DE VALIDATION (Phase 2)
 
-Correctifs appliqués et vérifiés localement. **Commit local créé sur `main` (aucun push)** — push = deploy prod, en attente ordre explicite Will.
-Décision Will : **dual-CTA conservé** via label nav raccourci (« Intégration IA »), CTA secondaire révélé dès 1400 px.
-Reste recommandé avant push : **confirmation visuelle dev server** sur la matrice 320→2560 (en particulier 1280 / 1400 / 1512 / 1728), + `pnpm lhci` (autorité Web Vitals) pour valider CLS=0 et First Load JS.
+Correctifs appliqués et **vérifiés visuellement (dev server + Playwright)**.
+
+### Vérification visuelle (Playwright, /fr home, mesures réelles)
+
+| Largeur | Scroll-H | Nav | Burger | CTA primaire | CTA secondaire | Bord header = bord contenu |
+|---|---|---|---|---|---|---|
+| 320 | 1px (sous-pixel) | — | ✓ | visible | — | 16 = 16 |
+| 360 / 390 / 414 | **0** | — | ✓ | visible | — | 16 = 16 |
+| 768 / 992 / 1180 | 0 | drawer | ✓ | (drawer) | (drawer) | aligné |
+| 1280 | 0 | ✓ | — | visible (fin @1256) | masqué (voulu) | 24 = 24 |
+| 1366 | 0 | ✓ | — | visible (@1342) | masqué (voulu) | 24 = 24 |
+| **1400** | 0 | ✓ | — | visible | **visible** | 41 = 41 |
+| **1512** (14″) | 0 | ✓ | — | visible | visible | **97 = 97** (marges premium) |
+| 1728 (16″) | 0 | ✓ | — | visible | visible | 205 = 205 |
+| 1920 | 0 | ✓ | — | visible | visible | 301 = 301 |
+
+✅ **B confirmé** : bord gauche header = bord gauche contenu à TOUTES les largeurs.
+✅ **C confirmé** : aucun scroll-H, nav à 1280 (plus à 992), CTA primaire jamais rogné, secondaire à 1400.
+✅ **A confirmé** : à 1512 (14″) le contenu démarre à 97 px (marges), plus de plein écran ; rendu éditorial premium.
+
+### Bonus corrigé pendant la vérif — scroll-H mobile (pré-existant, hors système de largeur)
+`LogosMarquee.tsx:57` : les `<img>` logos (`max-w-[150px]`) n'avaient pas `w-full` → dans une cellule de grille `grid-cols-4` à 360 px (~75 px), l'image débordait à 150 px → **19 px de scroll horizontal** sur la home mobile. Fix : ajout de `w-full` (l'image remplit sa cellule, `max-w` reste le plafond). Re-testé : 360/390/414 = 0 scroll. *Non causé par les changements de largeur ; surfacé par le test visuel.*
+> ⚠️ Même pattern probable (logo en cellule de grille sans `w-full`) sur `ClientLogosMarqueeBand.tsx` (`max-w-[132px]`, page /audit) et `SitesWebStackAdaptee.tsx` (`max-w-[112px]`) — **non testés** (autres pages) ; à vérifier/corriger si besoin.
+
+**Reste recommandé** : `pnpm lhci` (autorité Web Vitals) pour valider CLS=0 et First Load JS sur les pages stratégiques.

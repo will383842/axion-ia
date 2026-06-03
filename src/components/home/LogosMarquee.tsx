@@ -54,7 +54,7 @@ export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
               loading="lazy"
               decoding="async"
               sizes="(max-width: 640px) 25vw, (max-width: 1280px) 20vw, 180px"
-              className="max-h-12 max-w-[150px] object-contain opacity-75 transition-opacity duration-200 hover:opacity-100 sm:max-h-14 sm:max-w-[180px]"
+              className="max-h-12 w-full max-w-[150px] object-contain opacity-75 transition-opacity duration-200 hover:opacity-100 sm:max-h-14 sm:max-w-[180px]"
               data-client={logo.slug}
               data-brand={logo.name}
             />
