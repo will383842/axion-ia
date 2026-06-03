@@ -18,11 +18,12 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
-import { buildHowToJsonLd } from "@/lib/seo";
+import { buildHowToJsonLd, buildCourseJsonLd } from "@/lib/seo";
 import { getIntervention } from "@/content/interventions";
 import {
   FORMATION_RELATED,
   FORMATION_GEO_LABEL,
+  FORMATION_DURATION_ISO,
   type FormationDetailSlug,
 } from "@/content/interventions-subpages";
 
@@ -51,12 +52,14 @@ export function FormationSubPageExtras({
   // programme (dégradation propre).
   const self = getIntervention(slug);
   const copy = isFr ? self.fr : self.en;
+  const locale = isFr ? "fr" : "en";
+  const path = isFr ? self.pathFr : self.pathEn;
   const scheduleItems = (copy.daySchedule?.days ?? []).flatMap((d) => d.items);
   const howToJsonLd =
     scheduleItems.length > 0
       ? buildHowToJsonLd({
-          locale: isFr ? "fr" : "en",
-          path: isFr ? self.pathFr : self.pathEn,
+          locale,
+          path,
           name: isFr
             ? `Comment se déroule ${copy.title.toLowerCase()}`
             : `How ${copy.title.toLowerCase()} unfolds`,
@@ -67,6 +70,24 @@ export function FormationSubPageExtras({
           })),
         })
       : null;
+
+  // Course JSON-LD — chaque formation détail est un cours (signal AEO/LLM
+  // « formation X »). Le hub /interventions/collectives liste déjà les Courses
+  // par durée ; ici on émet le Course spécifique à la page. Durée ISO 8601 par
+  // format. priceEurHt dérivé de la SSOT (copy.priceEur, jamais hardcodé).
+  const courseJsonLd = buildCourseJsonLd({
+    locale,
+    path,
+    name: copy.title,
+    description: copy.answer,
+    courseMode: ["Onsite"],
+    duration: FORMATION_DURATION_ISO[slug],
+    audienceType: isFr
+      ? "Équipes, dirigeants et collaborateurs opérationnels (TPE, PME, ETI)"
+      : "Teams, executives and operational staff (small businesses, SMEs, mid-caps)",
+    ...(copy.priceEur ? { priceEurHt: copy.priceEur } : {}),
+    about: isFr ? "IA opérationnelle" : "Operational AI",
+  });
 
   // 3 formations sœurs (distinctes par page) + 1 cross-link audit (funnel amont).
   const siblings = FORMATION_RELATED[slug].map((rs) => {
@@ -92,6 +113,7 @@ export function FormationSubPageExtras({
   return (
     <>
       {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
+      <JsonLd data={courseJsonLd} />
 
       {/* Pages suggérées — maillage interne « Voir aussi » (4 cartes distinctes) */}
       <Section

@@ -43,6 +43,19 @@ export const FORMATION_GEO_LABEL: Record<FormationDetailSlug, { fr: string; en: 
   "intervention-claude": { fr: "La formation Claude", en: "Claude AI training" },
 };
 
+/**
+ * Durée ISO 8601 par format collectif — alimente le Course JSON-LD des pages
+ * détail (CourseInstance.courseWorkload). Aligné sur les durées réelles de la
+ * taxonomie (essentielle/gagner-du-temps/intervention-claude = 1 jour ≈ PT8H ;
+ * approfondie = 2 jours = P2D).
+ */
+export const FORMATION_DURATION_ISO: Record<FormationDetailSlug, string> = {
+  essentielle: "PT8H",
+  approfondie: "P2D",
+  "gagner-du-temps": "PT8H",
+  "intervention-claude": "PT8H",
+};
+
 /** Garde de type : ce slug intervention est-il une formation collective détail ? */
 export function isFormationDetailSlug(slug: InterventionSlug): slug is FormationDetailSlug {
   return (

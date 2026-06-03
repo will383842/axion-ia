@@ -78,8 +78,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "1-to-1 individual AI coaching · executive or team member",
     description:
       loc === "fr"
-        ? `Une journée en tête-à-tête avec un expert IA. Deux formules : coaching dirigeant ou coaching membre d'équipe. On met votre organisation à plat ; sous 7 jours, un rapport complet chiffre toutes les automatisations concrètes à mettre en place (gains de temps et d'argent). Partout en France. Dès ${entry}.`
-        : `Une journée en tête-à-tête avec un expert IA. Deux formules : coaching dirigeant ou coaching membre d'équipe. On met votre organisation à plat ; sous 7 jours, un rapport complet chiffre toutes les automatisations concrètes à mettre en place (gains de temps et d'argent). Partout en France. Dès ${entry}.`,
+        ? `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou membre d'équipe. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`
+        : `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou membre d'équipe. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`,
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });
 }
