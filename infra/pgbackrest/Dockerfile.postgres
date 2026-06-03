@@ -1,0 +1,15 @@
+# Image Postgres custom avec pgBackRest (ADR 0032 — PITR).
+# Utilisée UNIQUEMENT en prod via l'override Coolify, pour que `archive_command`
+# puisse appeler `pgbackrest` depuis le conteneur Postgres.
+#
+# Build (sur le VPS ou en CI dédiée — PAS le build app GHCR) :
+#   docker build -f infra/pgbackrest/Dockerfile.postgres -t axion-ia-postgres-pgbackrest:16 .
+FROM postgres:16-alpine
+
+# pgBackRest packagé dans Alpine. zstd pour compress-type=zst.
+RUN apk add --no-cache pgbackrest zstd \
+  && mkdir -p /var/log/pgbackrest /var/spool/pgbackrest /etc/pgbackrest \
+  && chown -R postgres:postgres /var/log/pgbackrest /var/spool/pgbackrest
+
+# La conf est montée en volume par l'override (/etc/pgbackrest/pgbackrest.conf).
+# archive_mode / archive_command sont passés via `command:` dans l'override.

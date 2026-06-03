@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 
 interface Alert {
-  source: "sentry" | "uptimerobot" | "coolify";
+  source: "sentry" | "uptimerobot" | "coolify" | "backups";
   severity: "critical" | "warning" | "info";
   title: string;
   detail: string;
@@ -43,6 +43,8 @@ function sourceLabel(source: Alert["source"]): string {
       return "UptimeRobot";
     case "coolify":
       return "Coolify";
+    case "backups":
+      return "Sauvegardes";
   }
 }
 

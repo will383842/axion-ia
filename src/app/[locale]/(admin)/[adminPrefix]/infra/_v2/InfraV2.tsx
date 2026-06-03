@@ -66,6 +66,21 @@ export function InfraV2({ adminPrefix, cards }: Props): React.ReactElement {
         }
       />
 
+      <Link
+        href={`/fr/${adminPrefix}/infra/backups`}
+        className="admin-card admin-infra-card mb-[var(--space-admin-5)] block"
+      >
+        <div className="admin-infra-card-head">
+          <strong>💾 Sauvegardes & DR</strong>
+          <span className="admin-status-pill admin-status-ok">● Suivi interne</span>
+        </div>
+        <p className="admin-meta-block">
+          Statut des sauvegardes par composant, historique, drills de restauration et alertes «
+          backup manqué ».
+        </p>
+        <p className="admin-meta">→ Ouvrir le tableau de bord Sauvegardes</p>
+      </Link>
+
       <div className="admin-kpi-grid">
         {cards.map((card) => (
           <CardItem key={card.name} card={card} />

@@ -14,6 +14,7 @@
 // Auth requise : redirect login si pas de session admin. Force-dynamic.
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { getBackupAlerts } from "@/server/backups/queries";
 import { AlertsV2 } from "./_v2/AlertsV2";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +24,7 @@ interface PageProps {
 }
 
 interface Alert {
-  source: "sentry" | "uptimerobot" | "coolify";
+  source: "sentry" | "uptimerobot" | "coolify" | "backups";
   severity: "critical" | "warning" | "info";
   title: string;
   detail: string;
@@ -206,21 +207,24 @@ export default async function AdminAlertsPage({ params }: PageProps) {
     redirect(`/fr/${adminPrefix}/login`);
   }
 
-  const [uptime, coolify, sentry] = await Promise.all([
+  const [uptime, coolify, sentry, backups] = await Promise.all([
     fetchUptimeRobotAlerts(),
     fetchCoolifyAlerts(),
     fetchSentryAlerts(),
+    getBackupAlerts(adminPrefix).catch(() => [] as Alert[]),
   ]);
 
-  const allAlerts = [...uptime.alerts, ...coolify.alerts, ...sentry.alerts].sort((a, b) => {
-    // critical > warning > info, then by date desc
-    const sevOrder: Record<Alert["severity"], number> = { critical: 0, warning: 1, info: 2 };
-    if (sevOrder[a.severity] !== sevOrder[b.severity])
-      return sevOrder[a.severity] - sevOrder[b.severity];
-    if (!a.createdAt) return 1;
-    if (!b.createdAt) return -1;
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+  const allAlerts = [...uptime.alerts, ...coolify.alerts, ...sentry.alerts, ...backups].sort(
+    (a, b) => {
+      // critical > warning > info, then by date desc
+      const sevOrder: Record<Alert["severity"], number> = { critical: 0, warning: 1, info: 2 };
+      if (sevOrder[a.severity] !== sevOrder[b.severity])
+        return sevOrder[a.severity] - sevOrder[b.severity];
+      if (!a.createdAt) return 1;
+      if (!b.createdAt) return -1;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    },
+  );
 
   const counts = {
     critical: allAlerts.filter((a) => a.severity === "critical").length,

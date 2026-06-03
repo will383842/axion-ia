@@ -252,6 +252,9 @@ export const env = createEnv({
     /// HMAC secret factory ingest API (cf. src/lib/knowledge/hmac.ts).
     /// Min 32 chars enforcé runtime par `getKbIngestSecret()` quand utilisé.
     KB_INGEST_SECRET: z.string().min(32).optional(),
+    /// HMAC secret ingestion statut backups depuis scripts cron VPS + CI (ADR 0032).
+    /// Min 32 chars enforcé runtime par `getBackupIngestSecret()` (src/lib/backups/hmac.ts).
+    BACKUP_INGEST_SECRET: z.string().min(32).optional(),
     /// Toggle publication immédiate KB depuis factory content-gen (V1 default OFF
     /// → audience='team' review manuel admin /connaissances/).
     KB_AUTO_PUBLISH: z
@@ -407,6 +410,7 @@ export const env = createEnv({
     UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
     VOYAGE_API_KEY: process.env.VOYAGE_API_KEY,
     KB_INGEST_SECRET: process.env.KB_INGEST_SECRET,
+    BACKUP_INGEST_SECRET: process.env.BACKUP_INGEST_SECRET,
     KB_AUTO_PUBLISH: process.env.KB_AUTO_PUBLISH,
     KB_BYPASS: process.env.KB_BYPASS,
     // Image Bank (Sprint M? — axionia-image-bank skill v1.0)

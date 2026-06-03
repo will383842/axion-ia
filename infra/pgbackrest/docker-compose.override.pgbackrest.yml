@@ -1,0 +1,41 @@
+# Override pgBackRest — À APPLIQUER UNIQUEMENT EN PROD (Coolify), ADR 0032.
+#
+# Active le WAL archiving Postgres → repo pgBackRest sur R2.
+# ⚠️ NE JAMAIS fusionner ce contenu dans docker-compose.production.yml :
+# le smoke-test local n'a pas de repo R2 → archive-push échouerait → Postgres
+# bloquerait les WAL → saturation disque (rappel incident CPX42).
+#
+# Usage (prod) :
+#   docker compose -f docker/docker-compose.production.yml \
+#                  -f infra/pgbackrest/docker-compose.override.pgbackrest.yml up -d postgres
+# (ou configurer Coolify pour utiliser ce fichier d'override.)
+
+services:
+  postgres:
+    image: axion-ia-postgres-pgbackrest:16
+    # wal_level=replica + archive_mode=on + archive_command pgBackRest.
+    command:
+      - postgres
+      - -c
+      - wal_level=replica
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_command=pgbackrest --stanza=axionia archive-push %p
+      - -c
+      - max_wal_senders=3
+      - -c
+      - archive_timeout=300
+    environment:
+      # pgBackRest lit ces ENV (mapping xxx-yyy → PGBACKREST_XXX_YYY).
+      PGBACKREST_REPO1_S3_KEY: ${PGBACKREST_REPO1_S3_KEY:?required}
+      PGBACKREST_REPO1_S3_KEY_SECRET: ${PGBACKREST_REPO1_S3_KEY_SECRET:?required}
+      PGBACKREST_REPO1_CIPHER_PASS: ${PGBACKREST_REPO1_CIPHER_PASS:?required}
+    volumes:
+      - ../../infra/pgbackrest/pgbackrest.conf:/etc/pgbackrest/pgbackrest.conf:ro
+      - pgbackrest_spool:/var/spool/pgbackrest
+      - pgbackrest_log:/var/log/pgbackrest
+
+volumes:
+  pgbackrest_spool:
+  pgbackrest_log:

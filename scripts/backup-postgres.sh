@@ -25,6 +25,15 @@
 
 set -euo pipefail
 
+# ─── Lib commune (ADR 0032) : ajoute healthcheck_ping + report_backup_run. ────
+# Sourcée en tête → les helpers locaux définis plus bas (notify_telegram,
+# record_fail/success) restent prioritaires (zéro changement de comportement).
+COMPONENT="postgres"
+COMPONENT_LABEL="POSTGRES-SB"
+FAIL_COUNT_FILE="/var/log/backup-fails-count.log"   # préserve le chemin historique
+# shellcheck source=scripts/backup-lib.sh
+source "$(dirname "$0")/backup-lib.sh" 2>/dev/null || true
+
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 BACKUP_DIR="${BACKUP_DIR:-/tmp/axion-ia-backups}"
@@ -184,5 +193,7 @@ rm -f "${BACKUP_PATH}"
 
 # 6. Telegram OK + reset compteur fails consécutifs
 record_success
+report_backup_run "success" "${LOCAL_SIZE}" "${DURATION}" "storagebox" "${REMOTE_PATH}" 2>/dev/null || true
+healthcheck_ping 2>/dev/null || true
 notify_telegram "Backup ${BACKUP_TYPE} OK : ${SIZE_HUMAN} en ${DURATION}s → ${REMOTE_PATH}" "🟢"
 echo "✅ Backup terminé."

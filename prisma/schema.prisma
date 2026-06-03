@@ -952,26 +952,26 @@ model BookingOption {
 // ============================================================
 
 model Article {
-  id              String        @id @default(uuid()) @db.Uuid
+  id                 String        @id @default(uuid()) @db.Uuid
   // Champs structurels (mêmes pour toutes les langues)
-  authorId        String?       @map("author_id") @db.Uuid
-  author          Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  categoryId      String?       @map("category_id") @db.Uuid
-  category        Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  featuredImage   String?       @map("featured_image") @db.VarChar(512)
+  authorId           String?       @map("author_id") @db.Uuid
+  author             Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId         String?       @map("category_id") @db.Uuid
+  category           Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage      String?       @map("featured_image") @db.VarChar(512)
   // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO/A11y additif pour
   // featured_image. Nullable (backward compat 100%). Pré-remplissable via
   // script seed `prisma/scripts/seed-image-alts-2026-05-28.ts` (Cf. audit
   // images cross-site Phase 1).
-  featuredImageAltFr String?    @map("featured_image_alt_fr") @db.VarChar(255)
-  featuredImageAltEn String?    @map("featured_image_alt_en") @db.VarChar(255)
-  status          PublishStatus @default(draft)
-  publishedAt     DateTime?     @map("published_at")
-  readingTime     Int?          @map("reading_time")
-  viewsCount      Int           @default(0) @map("views_count")
-  commentsEnabled Boolean       @default(false) @map("comments_enabled")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
+  featuredImageAltFr String?       @map("featured_image_alt_fr") @db.VarChar(255)
+  featuredImageAltEn String?       @map("featured_image_alt_en") @db.VarChar(255)
+  status             PublishStatus @default(draft)
+  publishedAt        DateTime?     @map("published_at")
+  readingTime        Int?          @map("reading_time")
+  viewsCount         Int           @default(0) @map("views_count")
+  commentsEnabled    Boolean       @default(false) @map("comments_enabled")
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
 
   // ====== CONTENT GENERATOR — Sprint 1 (v1.7 / v2.5) ======
   /// Pyramide indexation 3-tiers anti-doorway HCU (default tier-2 par sécurité).
@@ -4288,4 +4288,118 @@ enum CalendlyEventSource {
   webhook // réservé pour V2 future si upgrade Calendly Standard
 
   @@map("calendly_event_source")
+}
+
+// ============================================================
+// SAUVEGARDES & DR (module admin /infra/backups) — ADR 0032
+// Journal d'ops alimenté par scripts/backup-*.sh + restore-*-test*.sh
+// (cron VPS + CI) via POST HMAC /api/internal/backups[/drills].
+// Pas de FK : table autonome. cf. src/server/backups/**.
+// ============================================================
+
+/// Composant logique sauvegardé. Aligné sur le périmètre DR réel (ADR 0032).
+enum BackupComponent {
+  postgres // dump logique pg_dump
+  postgres_pitr // WAL / pgBackRest
+  redis // snapshot RDB
+  files_image_bank // originaux + variants banque d'images
+  docuseal // DB + PDF signés
+  plausible_pg // Postgres interne Plausible
+  plausible_clickhouse // events ClickHouse Plausible
+  secrets // archive chiffrée age (.secrets + env Coolify)
+  git_mirror // miroir repo off-GitHub
+
+  @@map("backup_component")
+}
+
+/// Cadence / nature du run. Aligné sur BACKUP_TYPE des scripts.
+enum BackupKind {
+  daily
+  weekly
+  monthly
+  pitr // full/diff pgBackRest
+  manual // déclenché depuis l'admin
+
+  @@map("backup_kind")
+}
+
+/// Issue d'un run de backup.
+enum BackupStatus {
+  success
+  warning // terminé mais anomalie non bloquante
+  failed
+  running // run en cours
+  skipped // composant volontairement désactivé
+
+  @@map("backup_status")
+}
+
+/// Issue d'un test de restauration (drill).
+enum RestoreDrillStatus {
+  passed
+  failed
+  partial // restauré mais vérifications partielles
+  running
+
+  @@map("restore_drill_status")
+}
+
+/// Un run de sauvegarde d'un composant. Journal append-only (transition
+/// running→final via idempotencyKey). Écrit par POST /api/internal/backups.
+model BackupRun {
+  id                  String          @id @default(cuid())
+  component           BackupComponent
+  kind                BackupKind
+  status              BackupStatus
+  startedAt           DateTime        @default(now())
+  finishedAt          DateTime?
+  durationSec         Int?
+  sizeBytes           BigInt?
+  checksum            String?         @db.VarChar(128)
+  /// Destinations réussies (ex. ["r2","storagebox"]). Multi-dest (ADR 0022).
+  destinations        String[]        @default([])
+  remotePath          String?         @db.Text
+  /// RPO cible du composant (minutes) au moment du run — enrichi serveur.
+  rpoTargetMin        Int?
+  /// Retard vs RPO en minutes (>0 = en retard) — enrichi serveur, pour le bandeau.
+  ageVsRpoMin         Int?
+  failReason          String?         @db.Text
+  consecutiveFailures Int             @default(0)
+  source              String          @default("cron_vps") @db.VarChar(32)
+  idempotencyKey      String?         @db.VarChar(64)
+  metadata            Json?
+  createdAt           DateTime        @default(now())
+
+  @@unique([idempotencyKey])
+  @@index([component, startedAt(sort: Desc)])
+  @@index([status, startedAt(sort: Desc)])
+  @@index([kind, startedAt(sort: Desc)])
+  @@map("backup_runs")
+}
+
+/// Un test de restauration (drill) d'un composant. Écrit par
+/// restore-*-test*.sh + restore-drill-monthly.yml via /api/internal/backups/drills.
+model RestoreDrill {
+  id             String             @id @default(cuid())
+  component      BackupComponent
+  status         RestoreDrillStatus
+  startedAt      DateTime           @default(now())
+  finishedAt     DateTime?
+  durationSec    Int?
+  /// Backup testé (clé/filename distant). Indicatif.
+  backupRef      String?            @db.Text
+  /// Total rows vérifiées (sanity check).
+  verifiedRows   BigInt?
+  /// Détail des vérifs (counts par table critique). Shape libre.
+  checks         Json?
+  failReason     String?            @db.Text
+  source         String             @default("cron_vps") @db.VarChar(32)
+  idempotencyKey String?            @db.VarChar(64)
+  metadata       Json?
+  createdAt      DateTime           @default(now())
+
+  @@unique([idempotencyKey])
+  @@index([component, startedAt(sort: Desc)])
+  @@index([status, startedAt(sort: Desc)])
+  @@map("restore_drills")
 }

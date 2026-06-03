@@ -40,6 +40,14 @@
 
 set -euo pipefail
 
+# ─── Lib commune (ADR 0032) : ajoute healthcheck_ping + report_backup_run. ────
+# Sourcée en tête → les helpers locaux définis plus bas restent prioritaires.
+COMPONENT="postgres"
+COMPONENT_LABEL="POSTGRES-R2"
+FAIL_COUNT_FILE="/var/log/backup-fails-r2-count.log"   # préserve le chemin historique
+# shellcheck source=scripts/backup-lib.sh
+source "$(dirname "$0")/backup-lib.sh" 2>/dev/null || true
+
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 BACKUP_TYPE="${BACKUP_TYPE:-daily}"
@@ -177,6 +185,7 @@ pg_dump --format=custom --no-owner --no-acl "${PG_URL_CLEAN}" \
       -out "${LOCAL_PATH}"
 
 SIZE_HUMAN=$(du -h "${LOCAL_PATH}" | cut -f1)
+SIZE_BYTES=$(stat -c%s "${LOCAL_PATH}" 2>/dev/null || echo null)
 echo "→ Taille chiffrée : ${SIZE_HUMAN}"
 
 echo "→ Upload R2 : ${REMOTE_KEY}"
@@ -198,5 +207,7 @@ while IFS= read -r KEY; do
 done <<< "${ALL}"
 
 record_success
+report_backup_run "success" "${SIZE_BYTES}" "null" "r2" "${REMOTE_KEY}" 2>/dev/null || true
+healthcheck_ping 2>/dev/null || true
 echo "✅ Backup OK : ${REMOTE_KEY} (${SIZE_HUMAN})"
 notify_telegram "✅ Backup ${BACKUP_TYPE} OK · ${SIZE_HUMAN} · ${BACKUP_NAME}"
