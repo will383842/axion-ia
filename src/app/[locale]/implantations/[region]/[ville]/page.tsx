@@ -492,7 +492,7 @@ export default async function VilleHubPage({ params }: Props) {
     height: hasCustomHeroImage ? 1200 : 1254,
     encodingFormat: "image/avif",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
-    copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
+    copyrightHolder: { "@type": "Organization", name: "Axion-IA" },
     license: "https://creativecommons.org/licenses/by/4.0/",
     acquireLicensePage: `${SITE_URL}/${loc}/galerie`,
     contentLocation: {

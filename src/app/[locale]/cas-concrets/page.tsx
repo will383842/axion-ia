@@ -23,7 +23,14 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import {
+  AUDIT_TIERS,
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  formatAmount,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
 import {
   CaseStudiesFilteredGrid,
   CaseStudiesFilterPills,
@@ -296,15 +303,14 @@ export default async function CaseStudiesListing({ params }: Props) {
                   {isFr ? "Par budget" : "By budget"}
                 </CardTitle>
                 <CardDescription>
-                  {/* TODO(pricing): valider avec Will — « audits 3-15 k€ » et « implémentations 5-50 k€ »
-                      sont des fourchettes marketing larges qui dépassent la grille pricing.ts officielle
-                      (audits 490 → 12 000 €, implémentations 990 → 80 000 €). Ranges laissés intacts
-                      car la conversion exacte est ambiguë (fourchettes marketing ≠ tiers SSOT). */}
-                  {
-                    isFr
-                      ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audits 3-15 k€, implémentations 5-50 k€. ROI documenté à chaque palier.` /* price-exempt: fourchettes marketing ROI larges, hors tiers SSOT (cf. TODO ci-dessus) */
-                      : `Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, audits €3-15k, implementations €5-50k. Documented ROI at every tier.` /* price-exempt: broad marketing ROI ranges, outside SSOT tiers */
-                  }
+                  {/* Prix 100 % dérivés du SSOT pricing.ts (décision Will : aucun
+                      prix hardcodé). Prix d'entrée par catégorie via getEntryPriceEur —
+                      audits dès 1 190 € (audit-flash), implémentations dès 990 €
+                      (impl-poc), paliers supérieurs sur devis. Aligner les bornes
+                      dans pricing.ts les propage ici automatiquement. */}
+                  {isFr
+                    ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audits à partir de ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "fr", { compact: true })}, implémentations à partir de ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "fr", { compact: true })}. ROI documenté à chaque palier.`
+                    : `Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, audits from ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "en", { compact: true })}, implementations from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "en", { compact: true })}. Documented ROI at every tier.`}
                 </CardDescription>
               </CardHeader>
             </Card>

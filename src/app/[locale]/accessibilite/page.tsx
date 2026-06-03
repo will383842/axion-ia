@@ -6,7 +6,9 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { Link } from "@/i18n/navigation";
+import { JsonLd } from "@/components/marketing/JsonLd";
+import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -54,7 +56,7 @@ export default async function AccessibilityPage({ params }: Props) {
         },
         {
           h: "État de conformité",
-          p: "Le site est en conformité partielle avec WCAG 2.2 AA. Un audit indépendant via axe-core et tests assistance technique (NVDA, VoiceOver) est planifié au Sprint 21 pour mesure complète de la conformité.",
+          p: "Axion-IA vise la conformité WCAG 2.2 AA / RGAA 4.1. Un audit de conformité complet n'a pas encore été réalisé ; le niveau actuel est donc déclaré en conformité partielle / non audité à ce jour. Un audit indépendant via axe-core et tests d'assistance technique (NVDA, VoiceOver) est prévu pour mesurer le taux de conformité réel.",
         },
         {
           h: "Contenus non accessibles connus",
@@ -80,7 +82,7 @@ export default async function AccessibilityPage({ params }: Props) {
         },
         {
           h: "Conformance status",
-          p: "The site partially conforms with WCAG 2.2 AA. An independent audit using axe-core and assistive-tech tests (NVDA, VoiceOver) is scheduled in Sprint 21 for complete conformance measurement.",
+          p: "Axion-IA aims for WCAG 2.2 AA / RGAA 4.1 conformance. A full conformance audit has not yet been carried out; the current level is therefore declared as partially conformant / not audited to date. An independent audit using axe-core and assistive-tech tests (NVDA, VoiceOver) is planned to measure the actual conformance level.",
         },
         {
           h: "Known non-accessible content",
@@ -100,8 +102,25 @@ export default async function AccessibilityPage({ params }: Props) {
         },
       ];
 
+  // WebPage JSON-LD (schema.org n'a pas de type dédié pour une déclaration
+  // d'accessibilité — on utilise WebPage). Le BreadcrumbList est émis par
+  // le composant Breadcrumbs ci-dessous, on ne le duplique pas.
+  const canonicalPath = isFr ? "/accessibilite" : "/accessibility";
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/${loc}${canonicalPath}`,
+    url: `${SITE_URL}/${loc}${canonicalPath}`,
+    name: isFr ? "Déclaration d'accessibilité" : "Accessibility statement",
+    inLanguage: loc,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    dateModified: BUILD_DATE,
+  };
+
   return (
     <>
+      <JsonLd data={webPageJsonLd} />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
@@ -119,6 +138,10 @@ export default async function AccessibilityPage({ params }: Props) {
 
       <Section>
         <Container className="max-w-3xl">
+          <p className="text-fg-muted mb-10 text-[11px] tracking-[0.16em] uppercase">
+            {isFr ? "Dernière mise à jour : " : "Last updated: "}
+            <time dateTime="2026-05-06">{isFr ? "6 mai 2026" : "May 6, 2026"}</time>
+          </p>
           <div className="space-y-10">
             {sections.map((s) => (
               <section key={s.h} className="space-y-3">
@@ -129,6 +152,33 @@ export default async function AccessibilityPage({ params }: Props) {
               </section>
             ))}
           </div>
+
+          <nav
+            aria-label={isFr ? "Voir aussi" : "See also"}
+            className="border-border mt-16 border-t pt-8"
+          >
+            <p className="text-fg-muted mb-4 text-[11px] tracking-[0.16em] uppercase">
+              {isFr ? "Voir aussi" : "See also"}
+            </p>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-terracotta hover:text-terracotta-deep text-sm font-medium underline-offset-4 hover:underline"
+                >
+                  {isFr ? "Contact" : "Contact"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/mentions-legales"
+                  className="text-terracotta hover:text-terracotta-deep text-sm font-medium underline-offset-4 hover:underline"
+                >
+                  {isFr ? "Mentions légales" : "Legal notice"}
+                </Link>
+              </li>
+            </ul>
+          </nav>
         </Container>
       </Section>
     </>

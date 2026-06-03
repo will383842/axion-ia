@@ -234,7 +234,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
               <div className="relative order-1 lg:order-2">
                 {/* Glow décoratif terracotta derrière le widget — pur ornement */}
                 <div
-                  className="from-terracotta/15 to-terracotta/5 pointer-events-none absolute -inset-3 rounded-[2rem] bg-gradient-to-br via-transparent opacity-60 blur-2xl"
+                  className="from-terracotta/15 to-terracotta/5 pointer-events-none absolute -inset-3 rounded-3xl bg-gradient-to-br via-transparent opacity-60 blur-2xl"
                   aria-hidden="true"
                 />
                 <div className="bg-paper ring-border shadow-terracotta/10 relative rounded-3xl p-1.5 shadow-2xl ring-1">

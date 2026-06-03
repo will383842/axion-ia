@@ -10,6 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSchema";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildHowToJsonLd, buildArticleJsonLd, BUILD_DATE } from "@/lib/seo";
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Axion-IA methodology · 4 steps to ROI",
     description:
       locale === "fr"
-        ? "Notre méthodologie : audit terrain, démos appliquées, plan chiffré, implémentation pilotée."
+        ? "La méthode Axion-IA en 4 étapes : cartographie terrain, audit en 5 jours, implémentation en 6-8 semaines, ROI mesuré. Découplée du contrat long. Demandez un audit."
         : "Our methodology: field audit, applied demos, costed plan, piloted implementation.",
     alternates: { fr: "/methodologie", en: "/methodology" },
   });
@@ -81,7 +82,13 @@ export default async function MethodologyPage({ params }: Props) {
       ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
       : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
     totalTime: "P12W",
-    estimatedCost: { currency: "EUR", value: "490" },
+    // Prix d'entrée de la méthode = tarif SSOT de l'intervention Essentielle
+    // (la « 1 journée d'intervention » de l'étape Identifier). Jamais hardcodé :
+    // dérivé de pricing.ts pour rester aligné si Will fait évoluer la grille.
+    estimatedCost: {
+      currency: "EUR",
+      value: String(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat),
+    },
     steps: isFr
       ? [
           {
@@ -194,6 +201,62 @@ export default async function MethodologyPage({ params }: Props) {
         {
           h: "Measured, not promised",
           p: "ROI is calculated on indicators agreed before deployment, not on marketing projections.",
+        },
+      ];
+
+  // FAQ AEO — Q/R factuelles citables (Google AI Overviews / Perplexity).
+  // FaqBlock émet automatiquement le FAQPage JSON-LD via FaqAccordion.
+  const methodoFaq = isFr
+    ? [
+        {
+          id: "duree-audit",
+          question: "Combien de temps dure un audit IA Axion-IA ?",
+          answer:
+            "L'audit IA Axion-IA se déroule sur 5 jours : cartographie complète des process, scoring ROI/complexité par opportunité et plan d'implémentation chiffré priorisé. Vous repartez avec un livrable PDF de 25 à 40 pages et un atelier de restitution.",
+        },
+        {
+          id: "arret-apres-audit",
+          question: "Peut-on s'arrêter après l'audit, sans poursuivre l'implémentation ?",
+          answer:
+            "Oui. La méthode est volontairement découplée du contrat long : vous pouvez vous arrêter après l'audit, après l'implémentation ou après la mesure. Aucun lock-in technique ni commercial, et le plan chiffré reste exploitable même si vous internalisez la suite.",
+        },
+        {
+          id: "roi-attendu",
+          question: "Quel ROI attendre d'une mission Axion-IA ?",
+          answer:
+            "Le ROI est calculé sur des indicateurs convenus avant le déploiement (heures économisées, coût économisé, impact qualitatif), pas sur des projections marketing. Il est mesuré sur vos process réels après mise en production, puis ajusté si une dérive de qualité est observée.",
+        },
+        {
+          id: "etapes",
+          question: "Quelles sont les étapes de la méthodologie Axion-IA ?",
+          answer:
+            "Quatre temps clairement séparés, chacun produisant un livrable concret : Identifier (cartographie terrain en 1 journée), Auditer (audit en 5 jours), Implémenter (mise en production en 6-8 semaines, support 30 jours inclus), Mesurer (ROI réel post-déploiement).",
+        },
+      ]
+    : [
+        {
+          id: "duree-audit",
+          question: "How long does an Axion-IA AI audit take?",
+          answer:
+            "The Axion-IA AI audit runs over 5 days: complete process mapping, ROI/complexity scoring per opportunity and a costed prioritised implementation plan. You leave with a 25-40 page PDF deliverable and a debrief workshop.",
+        },
+        {
+          id: "arret-apres-audit",
+          question: "Can we stop after the audit, without continuing the implementation?",
+          answer:
+            "Yes. The method is deliberately decoupled from long contracts: you can stop after the audit, after implementation or after measurement. Zero technical or commercial lock-in, and the costed plan stays usable even if you handle the rest in-house.",
+        },
+        {
+          id: "roi-attendu",
+          question: "What ROI should we expect from an Axion-IA engagement?",
+          answer:
+            "ROI is calculated on indicators agreed before deployment (hours saved, cost saved, qualitative impact), not on marketing projections. It is measured on your actual processes after go-live, then adjusted if quality drift is observed.",
+        },
+        {
+          id: "etapes",
+          question: "What are the steps of the Axion-IA methodology?",
+          answer:
+            "Four clearly separated phases, each producing a concrete deliverable: Identify (1-day field mapping), Audit (5-day audit), Implement (production in 6-8 weeks, 30-day support included), Measure (real post-deployment ROI).",
         },
       ];
 
@@ -368,6 +431,20 @@ export default async function MethodologyPage({ params }: Props) {
           </div>
         </Container>
       </Section>
+
+      {/* FAQ AEO — visible + FAQPage JSON-LD auto via FaqAccordion */}
+      <FaqBlock
+        tone="canvas"
+        eyebrow="FAQ"
+        title={isFr ? "Questions" : "Common"}
+        titleEm={isFr ? "fréquentes" : "questions"}
+        description={
+          isFr
+            ? "Durée d'audit, engagement, ROI — les réponses concrètes avant de démarrer."
+            : "Audit duration, commitment, ROI — concrete answers before you start."
+        }
+        items={methodoFaq}
+      />
 
       <CtaBlock
         title={isFr ? "Prêt à démarrer ?" : "Ready to start?"}

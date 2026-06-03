@@ -15,8 +15,10 @@
  *   6. Corrections (lien /corrections)
  *   7. Indépendance éditoriale (pas de sponsoring caché)
  *   8. Cadence de mise à jour (refresh annuel + saisonnier)
+ *   9. FAQ AEO (citabilité IA — écrit par IA ?, signaler erreur, indépendance)
  *
- * Server component, ISR 1j. JSON-LD WebPage + Article dateModified.
+ * Server component, ISR 1j. JSON-LD WebPage + Article (EEAT, author Person +
+ * publisher Organization, dateModified=BUILD_DATE) + FAQPage (via FaqAccordion).
  * Cohérent avec /transparence (hub IA Act) + /sous-processeurs (DPA).
  */
 
@@ -33,7 +35,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { buildProductMetadata, buildArticleJsonLd, BUILD_DATE, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
@@ -53,7 +56,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: isFr ? "/charte-editoriale" : "/editorial-policy",
-    title: isFr ? "Charte éditoriale — Axion-IA" : "Editorial policy — Axion-IA",
+    title: isFr
+      ? "Charte éditoriale & transparence IA — Axion-IA"
+      : "Editorial policy & AI transparency — Axion-IA",
     description: isFr
       ? "Mission éditoriale Axion-IA, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance. Charte publique mise à jour 2026-05-18."
       : "Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and independence. Public policy updated 2026-05-18.",
@@ -82,12 +87,88 @@ export default async function CharteEditorialePage({ params }: Props) {
     isPartOf: { "@id": `${SITE_URL}/#website` },
     publisher: { "@id": `${SITE_URL}/#organization` },
     datePublished: "2026-05-18",
-    dateModified: LAST_REVIEWED,
+    // BUILD_DATE = signal de fraîcheur AEO (re-render ISR quotidien). LAST_REVIEWED
+    // reste la date éditoriale affichée en UX (révision substantielle manuelle).
+    dateModified: BUILD_DATE,
     mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
     speakable: buildSpeakableSpecification({
       selectors: [".tldr-answer", '[data-aeo="tldr"]'],
     }),
   } as const;
+
+  // Article JSON-LD (EEAT) — la charte EST un document éditorial signé : author
+  // Person (Will) + publisher Organization + dateModified BUILD_DATE. Renforce la
+  // citabilité IA (« quelle est la politique éditoriale d'Axion-IA ? »).
+  const articleJsonLd = buildArticleJsonLd({
+    locale: isFr ? "fr" : "en",
+    path,
+    headline: isFr ? "Charte éditoriale Axion-IA" : "Axion-IA editorial policy",
+    description: isFr
+      ? "Mission, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance éditoriale d'Axion-IA."
+      : "Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and editorial independence.",
+    datePublished: "2026-05-18",
+    dateModified: BUILD_DATE,
+    articleSection: isFr ? "Transparence éditoriale" : "Editorial transparency",
+    keywords: isFr
+      ? ["charte éditoriale", "transparence IA", "AI Act art. 50", "EEAT", "corrections"]
+      : ["editorial policy", "AI transparency", "EU AI Act art. 50", "EEAT", "corrections"],
+  });
+
+  // FAQ AEO (citabilité IA) — questions idéales pour AI Overviews / Perplexity :
+  // « écrit par une IA ? », « signaler une erreur ? », « indépendance ? ».
+  const faqItems = isFr
+    ? [
+        {
+          id: "contenus-ia",
+          question: "Vos contenus sont-ils écrits par une IA ?",
+          answer:
+            "Nos contenus éditoriaux sont rédigés avec l'assistance d'IA générative supervisée, sous la persona « Manon », puis relus et validés par l'équipe Axion-IA avant publication. Cette assistance IA est divulguée (AI Act art. 50) sur chaque article et sur la page persona dédiée.",
+        },
+        {
+          id: "signaler-erreur",
+          question: "Comment signaler une erreur dans un contenu ?",
+          answer:
+            "Via notre page corrections : nous nous engageons à corriger sous 48 h ouvrées toute erreur factuelle, chiffre obsolète, citation mal attribuée ou lien cassé, et à dater l'amendement visiblement sur la page concernée.",
+        },
+        {
+          id: "independance",
+          question: "Êtes-vous indépendants éditorialement ?",
+          answer:
+            "Oui. Aucun contenu n'est sponsorisé ou pay-to-play. Aucune entreprise tierce ne nous paie pour une citation positive. Les outils recommandés sont sélectionnés sur critères opérationnels ; tout lien commercial éventuel est déclaré explicitement dans l'article concerné.",
+        },
+        {
+          id: "sources",
+          question: "Quelles sources utilisez-vous ?",
+          answer:
+            "Textes légaux (Légifrance, AI Act EU 2024/1689, RGPD), données statistiques (INSEE, Eurostat), publications académiques (MIT Sloan, Stanford AI Index, Nature) et médias business spécialisés. Chaque citation est datée et liée à son URL d'origine.",
+        },
+      ]
+    : [
+        {
+          id: "contenus-ia",
+          question: "Is your content written by an AI?",
+          answer:
+            "Our editorial content is drafted with supervised generative AI assistance under the « Manon » persona, then reviewed and validated by the Axion-IA team before publication. This AI assistance is disclosed (EU AI Act art. 50) on every article and on the dedicated persona page.",
+        },
+        {
+          id: "signaler-erreur",
+          question: "How do I report an error in your content?",
+          answer:
+            "Via our corrections page: we commit to fixing any factual error, outdated figure, misattributed citation or broken link within 48 business hours, and to dating the amendment visibly on the relevant page.",
+        },
+        {
+          id: "independance",
+          question: "Are you editorially independent?",
+          answer:
+            "Yes. No content is sponsored or pay-to-play. No third party pays us for a positive citation. Recommended tools are selected on operational criteria; any commercial link is declared explicitly in the relevant article.",
+        },
+        {
+          id: "sources",
+          question: "What sources do you use?",
+          answer:
+            "Legal texts (Légifrance, EU AI Act 2024/1689, GDPR), statistical data (INSEE, Eurostat), academic publications (MIT Sloan, Stanford AI Index, Nature) and specialized business media. Each citation is dated and linked to its original URL.",
+        },
+      ];
 
   const breadcrumbItems = [{ href: path, label: isFr ? "Charte éditoriale" : "Editorial policy" }];
 
@@ -283,6 +364,16 @@ export default async function CharteEditorialePage({ params }: Props) {
         </Container>
       </Section>
 
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? "FAQ — charte éditoriale" : "FAQ — editorial policy"}
+        tone="sand"
+      >
+        <Container>
+          <FaqAccordion items={faqItems} className="mx-auto max-w-3xl" />
+        </Container>
+      </Section>
+
       <CtaBlock
         title={isFr ? "Une question éditoriale ?" : "An editorial question?"}
         description={
@@ -299,6 +390,7 @@ export default async function CharteEditorialePage({ params }: Props) {
       />
 
       <JsonLd data={webPageJsonLd} />
+      <JsonLd data={articleJsonLd} />
     </>
   );
 }

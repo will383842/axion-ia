@@ -74,7 +74,7 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
                 <figure className="bg-bg relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={imgSrc}
-                    alt={t.alt ?? t.title ?? ""}
+                    alt={t.alt ?? t.title ?? "Visuel Axion-IA"}
                     fill
                     quality={85}
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

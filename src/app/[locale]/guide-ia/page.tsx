@@ -103,8 +103,8 @@ export default async function AiGuidePage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Lead magnet · gratuit" : "Lead magnet · free"}
-        title={isFr ? "Guide IA entreprise · 40 pages" : "Enterprise AI guide · 40"}
-        titleEm={isFr ? "opérationnelles" : "operational pages"}
+        title={isFr ? "Guide IA entreprise · 40 pages" : "Enterprise AI guide · 40 pages"}
+        titleEm={isFr ? "opérationnel" : "operational"}
         description={
           isFr
             ? "Tout ce qu'un dirigeant ou responsable opérations doit savoir avant de déployer l'IA en 2026. Téléchargement immédiat après inscription."

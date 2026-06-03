@@ -70,11 +70,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/sites-web-augmentes",
     title: isFr
-      ? "Sites web & plateformes SaaS augmentés par l'IA · chatbot RAG, agents, search sémantique"
-      : "AI-augmented websites & SaaS platforms · RAG chatbot, agents, semantic search",
+      ? "Sites web & SaaS augmentés par l'IA · Axion-IA"
+      : "AI-augmented websites & SaaS platforms · Axion-IA",
     description: isFr
-      ? "Axion-IA intègre l'IA dans vos sites web et plateformes SaaS — ou conçoit une plateforme IA-native sur mesure : chatbot RAG ancré sur vos contenus, search sémantique, agents, automatisations, personnalisation. Toute stack, hébergement UE, forfait fixe. TPE/PME/ETI."
-      : "Axion-IA integrates AI into your websites and SaaS platforms — or designs a bespoke AI-native platform: RAG chatbot grounded in your content, semantic search, agents, automations, personalisation. Any stack, EU hosting, fixed fee. SMB/enterprise.",
+      ? "Sites web et SaaS augmentés par l'IA : chatbot RAG ancré sur vos contenus, agents, recherche sémantique, automatisations. Toute stack, hébergement UE, devis 48 h."
+      : "AI-augmented websites and SaaS platforms: RAG chatbot grounded in your content, agents, semantic search, automations. Any stack, EU hosting, 48 h quote.",
     alternates: { fr: "/sites-web-augmentes", en: "/sites-web-augmentes" },
   });
 }

@@ -6,6 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
@@ -24,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Contact · Axion-IA · 48 business-hour reply",
     description:
       locale === "fr"
-        ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat. Réponse sous 24 h."
-        : "Contact Axion-IA — a single form for quote, audit, implementation, training, 1-on-1, partnership. Reply within 24 hours.",
+        ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat. Réponse sous 48 h ouvrées."
+        : "Contact Axion-IA — a single form for quote, audit, implementation, training, 1-on-1, partnership. Reply within 48 business hours.",
   });
 }
 
@@ -51,7 +52,17 @@ export default async function Contact({ params }: Props) {
     description: isFr
       ? "Formulaire de contact Axion-IA — réponse sous 48 h ouvrées, sans engagement, données stockées en UE."
       : "Axion-IA contact form — reply within 48 business hours, no commitment, data stored in the EU.",
-    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Axion-IA",
+      url: SITE_URL,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Paris",
+        addressCountry: "FR",
+      },
+    },
     mainEntity: {
       "@type": "ContactPoint",
       contactType: isFr ? "Service client" : "Customer service",
@@ -78,6 +89,10 @@ export default async function Contact({ params }: Props) {
     <div className="contact-minimal bg-halo-warm">
       <style dangerouslySetInnerHTML={{ __html: hideFooterCss }} />
 
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={[{ href: "/contact", label: isFr ? "Contact" : "Contact" }]} />
+      </Container>
+
       <section className="py-14 sm:py-20 lg:py-24">
         <Container className="max-w-2xl">
           <header className="mb-10 text-center sm:mb-12">
@@ -96,8 +111,8 @@ export default async function Contact({ params }: Props) {
             </h1>
             <p className="text-fg-soft mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Un formulaire unique pour toute demande. Réponse sous 24 h, sans engagement."
-                : "A single form for every request. Reply within 24 hours, no commitment."}
+                ? "Un formulaire unique pour toute demande. Réponse sous 48 h ouvrées, sans engagement."
+                : "A single form for every request. Reply within 48 business hours, no commitment."}
             </p>
           </header>
 

@@ -119,6 +119,28 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^\.env\.ci\.example$/,
   /^scripts\/content-gen\/isolation-check\.ts$/,
   /^tests\/e2e\/admin-baseline-screenshots\.spec\.ts$/,
+  // Exceptions ajoutées 2026-06-03 (audit footer) — références TEXTUELLES
+  // légitimes (commentaires/prose/registre), aucun couplage code réel :
+  //  - sentry-worker.ts : registre central des noms de workers (inclut les
+  //    identifiants `image-bank-*` des workers image-bank, type union SSOT).
+  //  - slug.ts : commentaire de doc listant les modules consommateurs.
+  //  - loader.ts : commentaire CGU Unsplash référence `ImageAsset` (lookup read-only).
+  //  - j-presse.ts : `note` descriptive mentionnant le pipeline image-bank.
+  /^src\/server\/queue\/lib\/sentry-worker\.ts$/,
+  /^src\/lib\/slug\.ts$/,
+  /^src\/server\/content-gen\/blog\/loader\.ts$/,
+  /^src\/content\/keywords\/j-presse\.ts$/,
+  // Routes sitemaps images — DOIVENT vivre à la racine `app/` pour le routing
+  // Next.js (URL = /sitemap-images-*.xml). Zone image-bank légitime ; le pattern
+  // `sitemaps/images-` (l.46) ne matchait pas le nom réel `sitemap-images-*`.
+  /^src\/app\/sitemap-images-.*\.xml\/route\.ts$/,
+  // Scripts infra image-bank/sitemaps images (génération, conversion, seed) —
+  // vivent dans scripts/ racine (référencés par leur chemin actuel ailleurs).
+  /^scripts\/image-bank-convert-all\.mjs$/,
+  /^scripts\/convert-images-batch\.mjs$/,
+  /^scripts\/generate-image-sitemap-t3-t4\.ts$/,
+  /^scripts\/extract-service-sitemap-data\.ts$/,
+  /^scripts\/seed-images\.cjs$/,
 ];
 
 const IMAGE_BANK_MARKERS: ReadonlyArray<string> = [

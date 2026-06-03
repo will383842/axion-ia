@@ -1298,10 +1298,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         tone="dark"
       />
 
-      {/* CTA mobile sticky (Sprint uniformisation 2026-05-24) */}
+      {/* CTA mobile sticky (Sprint uniformisation 2026-05-24).
+          Cohérence funnel 2026-06-03 (Will) — aligné sur /appel comme tout
+          le reste de la page (héros, bandeaux, CtaBlock) ; l'ancien /reserver
+          créait une divergence de funnel. */}
       <StickyMobileCta
-        href="/reserver"
-        label={isFr ? "Pré-réserver une formation" : "Pre-book a training"}
+        href="/appel"
+        label={isFr ? "Réserver un appel" : "Book a call"}
         track="interventions-collectives-sticky-mobile"
       />
 

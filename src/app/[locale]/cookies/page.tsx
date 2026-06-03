@@ -14,6 +14,10 @@ interface Props {
 }
 
 const SLUG = "cookies" as const;
+// Date de dernière révision éditoriale des pages légales (alignée sur la
+// déclaration d'accessibilité, 6 mai 2026). À mettre à jour à chaque révision
+// de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
+const LAST_UPDATED_ISO = "2026-05-06";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -47,10 +51,24 @@ export default async function Cookies({ params }: Props) {
       </Container>
       <LegalPageTemplate
         isFr={isFr}
+        locale={loc}
+        canonicalPath={isFr ? p.pathFr : p.pathEn}
         title={copy.title}
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
+        lastUpdated={isFr ? "6 mai 2026" : "May 6, 2026"}
+        lastUpdatedIso={LAST_UPDATED_ISO}
+        relatedLinks={[
+          {
+            href: "/preferences-cookies",
+            label: isFr ? "Préférences cookies" : "Cookie preferences",
+          },
+          {
+            href: "/politique-confidentialite",
+            label: isFr ? "Politique de confidentialité" : "Privacy policy",
+          },
+        ]}
       />
     </>
   );

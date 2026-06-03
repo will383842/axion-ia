@@ -11,6 +11,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 import { buildGalleryHubGraph } from "@/server/image-bank/services/image-jsonld-graph.service";
 import {
@@ -76,16 +77,22 @@ export async function generateMetadata({
   const canonicalPath = `/${locale}/galerie${buildQueryString(filters)}`;
   const canonicalUrl = `${siteUrl}${canonicalPath}`;
 
+  // EN désactivé (cf. en-to-fr-redirect) → ne pas émettre l'alternate `en-US`,
+  // aligné sur buildProductMetadata dans seo.ts. fr + x-default conservés.
+  const languages: Record<string, string> = {
+    "fr-FR": `${siteUrl}/fr/galerie${buildQueryString(filters)}`,
+    "x-default": `${siteUrl}/fr/galerie`,
+  };
+  if (!isEnLocaleDisabled()) {
+    languages["en-US"] = `${siteUrl}/en/gallery${buildQueryString(filters)}`;
+  }
+
   return {
     title,
     description,
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        "fr-FR": `${siteUrl}/fr/galerie${buildQueryString(filters)}`,
-        "en-US": `${siteUrl}/en/gallery${buildQueryString(filters)}`,
-        "x-default": `${siteUrl}/fr/galerie`,
-      },
+      languages,
     },
     openGraph: {
       title,

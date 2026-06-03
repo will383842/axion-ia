@@ -14,6 +14,10 @@
  *  - Art. 26 (FRIA) — NON applicable
  *
  * Pas de DB, full server component, ISR statique 1j. Cf. ADR 0024.
+ *
+ * JSON-LD : WebPage (publisher Organization + datePublished + dateModified
+ * BUILD_DATE + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
+ * symétrique vers /charte-editoriale.
  */
 
 import type { Metadata } from "next";
@@ -29,7 +33,9 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { buildProductMetadata, BUILD_DATE, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -141,6 +147,62 @@ export default async function TransparencePage({ params }: Props) {
     },
   ];
 
+  // FAQ AEO (conformité IA Act / RGPD) — questions idéales pour citation IA :
+  // « mes données dans un LLM ? », « AI Act ? », « droits RGPD ? » → /mes-donnees.
+  const faqItems = isFr
+    ? [
+        {
+          id: "donnees-llm",
+          question: "Mes données vont-elles dans un LLM ?",
+          answer:
+            "Non. Les prompts envoyés aux modèles d'IA ne contiennent aucune donnée personnelle de visiteur — un helper « pii-safe » et un hard gate au niveau du code l'interdisent. Aucune saisie de formulaire n'est utilisée pour entraîner un modèle.",
+        },
+        {
+          id: "ai-act",
+          question: "Êtes-vous concernés par l'AI Act ?",
+          answer:
+            "Oui, au titre de l'article 50 (transparence) : nos contenus éditoriaux IA-assistés sont divulgués comme tels. Nous ne sommes pas un système à haut risque (art. 52) et opérons en downstream user de modèles à usage général (art. 53). Détail : ADR 0024.",
+        },
+        {
+          id: "droits-rgpd",
+          question: "Comment exercer mes droits RGPD ?",
+          answer:
+            "Via notre self-service « mes données » ou en écrivant à contact@axion-ia.com. Vous disposez des droits d'accès, rectification, effacement, opposition, portabilité et limitation. Autorité de contrôle compétente : la CNIL (France).",
+        },
+        {
+          id: "supervision-humaine",
+          question: "Les contenus IA sont-ils relus par un humain ?",
+          answer:
+            "Oui. Chaque contenu IA-assisté (persona Manon) est supervisé par l'équipe Axion-IA avant publication : relecture éditoriale, vérification factuelle et alignement avec notre charte éditoriale.",
+        },
+      ]
+    : [
+        {
+          id: "donnees-llm",
+          question: "Does my data go into an LLM?",
+          answer:
+            "No. Prompts sent to AI models contain no visitor personal data — a « pii-safe » helper and a code-level hard gate prevent it. No form submission is used to train a model.",
+        },
+        {
+          id: "ai-act",
+          question: "Are you subject to the EU AI Act?",
+          answer:
+            "Yes, under article 50 (transparency): our AI-assisted editorial content is disclosed as such. We are not a high-risk system (art. 52) and operate as a downstream user of general-purpose models (art. 53). Details: ADR 0024.",
+        },
+        {
+          id: "droits-rgpd",
+          question: "How do I exercise my GDPR rights?",
+          answer:
+            "Via our « my data » self-service or by writing to contact@axion-ia.com. You have rights of access, rectification, erasure, objection, portability and restriction. Competent supervisory authority: the CNIL (France).",
+        },
+        {
+          id: "supervision-humaine",
+          question: "Is AI content reviewed by a human?",
+          answer:
+            "Yes. Every AI-assisted content piece (Manon persona) is supervised by the Axion-IA team before publication: editorial review, factual verification and alignment with our editorial policy.",
+        },
+      ];
+
   const url = `${SITE_URL}/${locale}/${isFr ? "transparence" : "transparency"}`;
   const webPageJsonLd = {
     "@context": "https://schema.org",
@@ -151,10 +213,20 @@ export default async function TransparencePage({ params }: Props) {
     description: tagline,
     inLanguage: isFr ? "fr-FR" : "en-US",
     isPartOf: { "@id": `${SITE_URL}/#website` },
+    // Aligné sur /charte-editoriale : publisher Organization + dates (freshness
+    // AEO). datePublished = création du hub (ADR 0024) ; dateModified = BUILD_DATE.
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    datePublished: "2026-05-18",
+    dateModified: BUILD_DATE,
     about: {
       "@type": "Thing",
       name: "EU AI Act 2024/1689 transparency",
     },
+    // Speakable AEO — cible le H1 (toujours présent) + les questions FAQ
+    // (sélecteur data-faq-q émis par FaqAccordion). Voice assistants + Perplexity.
+    speakable: buildSpeakableSpecification({
+      selectors: ["h1", "[data-faq-q]"],
+    }),
   };
 
   return (
@@ -204,6 +276,25 @@ export default async function TransparencePage({ params }: Props) {
               </article>
             );
           })}
+        </Container>
+      </Section>
+
+      {/* FAQ AEO — FaqAccordion injecte buildFaqJsonLd (FAQPage + Speakable) */}
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? "FAQ — transparence & conformité" : "FAQ — transparency & compliance"}
+        tone="sand"
+      >
+        <Container className="max-w-4xl">
+          <FaqAccordion items={faqItems} className="mx-auto max-w-3xl" />
+          <p className="text-fg-muted mt-10 text-sm">
+            <Link
+              href="/charte-editoriale"
+              className="text-terracotta-deep hover:text-terracotta underline underline-offset-4"
+            >
+              {isFr ? "→ Consulter notre charte éditoriale" : "→ Read our editorial policy"}
+            </Link>
+          </p>
         </Container>
       </Section>
 

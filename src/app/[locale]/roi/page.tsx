@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/roi",
     title:
       locale === "fr"
-        ? "Simulateur gains IA · combien d'heures vous gagnerez · Axion-IA"
+        ? "Simulateur gains IA · heures gagnées · Axion-IA"
         : "AI gains simulator · hours you'll save · Axion-IA",
     description:
       locale === "fr"
-        ? "Combien d'heures par jour, par personne, votre équipe gagnera après une formation IA ? 2 curseurs simples, gains concrets : heures rendues, jours libérés, emails écrits sans effort."
+        ? "Combien d'heures votre équipe gagnera après une formation IA ? 2 curseurs simples : heures rendues, jours libérés, emails écrits sans effort. Testez en direct."
         : "How many hours per day, per person, will your team save after an AI training? 2 simple sliders, concrete gains: hours freed, days back, effortless emails.",
   });
 }

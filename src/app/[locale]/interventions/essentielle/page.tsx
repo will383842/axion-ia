@@ -12,12 +12,22 @@ import { FormationContactBand } from "@/components/services/formation/FormationC
 import { FormationSubPageExtras } from "@/components/services/formation/FormationSubPageExtras";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { ESSENTIELLE_TIERS, getIntervention } from "@/content/interventions";
+import {
+  ESSENTIELLE_TIERS,
+  RESERVATION_STEPS_FR,
+  RESERVATION_STEPS_EN,
+  getIntervention,
+} from "@/content/interventions";
+// SSOT pricing — sous-tranches Essentielle (690/890/1490) pour offres JSON-LD.
+import { ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildFaqJsonLd,
   buildImageGraphJsonLd,
+  buildHowToJsonLd,
+  buildCourseJsonLd,
+  SITE_URL,
 } from "@/lib/seo";
 
 // ESSENTIELLE_TIERS importé de content/interventions.ts (source unique).
@@ -85,18 +95,76 @@ export default async function Essentielle({ params }: Props) {
     ],
   });
 
+  // Service JSON-LD — Sprint harmonisation kit hubs 2026-06-03 (Will). Le
+  // Service exposait un prix unique (`copy.priceEur`) alors qu'Essentielle a
+  // 3 sous-tranches d'effectif au tarif distinct (690/890/1490, SSOT
+  // `ESSENTIELLE_SUB_TIERS`). On construit le Service SANS `priceEur` (qui
+  // n'émet qu'une seule Offer) puis on attache un array `offers` dérivé du
+  // SSOT — aucun prix en dur, parité avec collectives/un-a-un.
+  const baseServiceJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path,
+    name: copy.title,
+    description: copy.answer,
+    serviceType: "AI consulting",
+    area: "Worldwide",
+  });
+  const serviceUrl = `${SITE_URL}/${loc}${path}`;
+  const serviceJsonLd = {
+    ...baseServiceJsonLd,
+    offers: ESSENTIELLE_SUB_TIERS.map((t) => ({
+      "@type": "Offer",
+      name: isFr ? t.labelFr : t.labelEn,
+      description: isFr ? t.rangeFr : t.rangeEn,
+      price: t.priceFlat.toString(),
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      url: serviceUrl,
+    })),
+  };
+
+  // HowTo JSON-LD « réservation » — parité collectives/un-a-un. Réutilise les
+  // étapes SSOT `RESERVATION_STEPS_FR/EN` (5 étapes : réservation → cadrage →
+  // acompte → journée → solde).
+  const howToReserverJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path,
+    name: isFr
+      ? "Comment réserver votre journée Essentielle IA"
+      : "How to book your Essentielle AI day",
+    description: isFr
+      ? "Les étapes pour réserver et dérouler la journée Essentielle IA sur site : réservation au calendrier, call de cadrage, acompte, journée d'intervention puis solde et frais annexes."
+      : "The steps to book and run your on-site Essentielle AI day: calendar booking, framing call, deposit, on-site session day, then balance and travel fees.",
+    steps: (isFr ? RESERVATION_STEPS_FR : RESERVATION_STEPS_EN).map((s) => ({
+      name: s.title,
+      text: s.description,
+    })),
+  });
+
+  // Course JSON-LD — Essentielle est une formation 1 jour. Miroir du pattern
+  // collectives (provider Organization, hasCourseInstance Onsite, Offer prix
+  // SSOT = tranche d'entrée 690 €). Permet la citation AEO « formation IA
+  // découverte 1 jour ».
+  const courseJsonLd = buildCourseJsonLd({
+    locale: loc,
+    path,
+    name: copy.title,
+    description: copy.answer,
+    courseMode: ["Onsite"],
+    duration: "PT8H",
+    audienceType: isFr
+      ? "Équipes TPE et PME, tous métiers — découverte de l'IA opérationnelle (B2B)"
+      : "Small business and SME teams, all roles — operational AI discovery (B2B)",
+    about: "IA opérationnelle (ChatGPT, Claude, Copilot, Gemini, automatisations métier)",
+    priceEurHt: ESSENTIELLE_SUB_TIERS[0]!.priceFlat,
+  });
+
   const jsonLd = [
-    buildServiceJsonLd({
-      locale: loc,
-      path,
-      name: copy.title,
-      description: copy.answer,
-      ...(copy.priceEur ? { priceEur: copy.priceEur } : {}),
-      serviceType: "AI consulting",
-      area: "Worldwide",
-    }),
+    serviceJsonLd,
     buildFaqJsonLd({ items: copy.faqs }),
     imagesJsonLd,
+    howToReserverJsonLd,
+    courseJsonLd,
   ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

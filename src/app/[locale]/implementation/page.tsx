@@ -24,8 +24,10 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
+  buildItemListJsonLd,
   buildImageGraphJsonLd,
   buildHowToJsonLd,
+  SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -79,7 +81,21 @@ export default async function ImplementationListing({ params }: Props) {
     },
   ];
 
-  // Service JSON-LD avec areasServed multi-régions + hasOfferCatalog (9 offres).
+  // Les 8 piliers/offres d'implémentation — source unique réutilisée par le
+  // `hasOfferCatalog` du Service ET le `buildItemListJsonLd` (parité AEO avec
+  // /audit qui émet un ItemList des tiers).
+  const IMPLEMENTATION_OFFERS: ReadonlyArray<{ nameFr: string; nameEn: string }> = [
+    { nameFr: "Agents IA", nameEn: "AI Agents" },
+    { nameFr: "Chatbots & assistants", nameEn: "Chatbots & assistants" },
+    { nameFr: "Automatisation des processus", nameEn: "Process automation" },
+    { nameFr: "Intégrations CRM / ERP", nameEn: "CRM / ERP integrations" },
+    { nameFr: "Traitement de documents", nameEn: "Document processing" },
+    { nameFr: "Recherche interne (RAG)", nameEn: "Internal search (RAG)" },
+    { nameFr: "Génération de contenu", nameEn: "Content generation" },
+    { nameFr: "IA Custom", nameEn: "Custom AI" },
+  ];
+
+  // Service JSON-LD avec areasServed multi-régions + hasOfferCatalog (8 offres).
   // Sans `priceEur` (cf. /audit Sprint 14.10.8 : éviter l'interprétation
   // « service gratuit »). Description sans montant.
   const serviceJsonLd = {
@@ -100,60 +116,29 @@ export default async function ImplementationListing({ params }: Props) {
       name: isFr
         ? "Services d'implémentation IA · Axion-IA"
         : "AI implementation services · Axion-IA",
-      itemListElement: [
-        {
-          "@type": "Offer",
-          itemOffered: { "@type": "Service", name: isFr ? "Agents IA" : "AI Agents" },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Chatbots & assistants" : "Chatbots & assistants",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Automatisation des processus" : "Process automation",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Intégrations CRM / ERP" : "CRM / ERP integrations",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Traitement de documents" : "Document processing",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Recherche interne (RAG)" : "Internal search (RAG)",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: isFr ? "Génération de contenu" : "Content generation",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: { "@type": "Service", name: isFr ? "IA Custom" : "Custom AI" },
-        },
-      ],
+      itemListElement: IMPLEMENTATION_OFFERS.map((o) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: isFr ? o.nameFr : o.nameEn },
+      })),
     },
   };
+
+  // ItemList JSON-LD — énumère les 8 piliers d'implémentation. Parité AEO avec
+  // /audit (qui émet un ItemList des tiers) : permet aux LLMs d'énumérer les
+  // offres quand on demande « quels services d'implémentation IA propose
+  // Axion-IA ? ». Dérivé de la même source `IMPLEMENTATION_OFFERS`.
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/implementation",
+    name: isFr
+      ? "Piliers de l'implémentation IA · Axion-IA"
+      : "AI implementation pillars · Axion-IA",
+    items: IMPLEMENTATION_OFFERS.map((o, idx) => ({
+      position: idx + 1,
+      name: isFr ? o.nameFr : o.nameEn,
+      url: `${SITE_URL}/${loc}/implementation`,
+    })),
+  });
 
   // HowTo JSON-LD — process d'implémentation IA en 3 étapes (AEO). Sans prix.
   const implementationHowToJsonLd = buildHowToJsonLd({
@@ -222,6 +207,7 @@ export default async function ImplementationListing({ params }: Props) {
   return (
     <>
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={itemListJsonLd} />
       <JsonLd data={implementationImagesJsonLd} />
       <JsonLd data={implementationHowToJsonLd} />
 

@@ -174,7 +174,11 @@ export default async function PressePage({ params }: Props) {
     sameAs: [p.linkedinUrl],
     knowsAbout: [...p.knowsAbout],
     knowsLanguage: p.languages.map((l) => (l === "fr" ? "French" : "English")),
-    worksFor: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+    // Consolidation knowledge graph (Sprint AEO 2026-06-03) : on relie chaque
+    // porte-parole à l'entité canonique Organization via son `@id` plutôt qu'un
+    // node Organization inline dupliqué — Google/Claude/Perplexity rattachent
+    // alors le Person au même nœud entité que le reste du site.
+    worksFor: { "@id": `${SITE_URL}/#organization` },
   }));
 
   const releasesItemList =

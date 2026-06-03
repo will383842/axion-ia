@@ -100,7 +100,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     address: {
       "@type": "PostalAddress",
       addressCountry: "FR",
-      addressLocality: "[Ville — France]",
+      addressLocality: "Paris",
     },
   };
 }

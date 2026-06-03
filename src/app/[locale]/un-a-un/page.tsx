@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       loc === "fr"
         ? `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou membre d'équipe. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`
-        : `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou membre d'équipe. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`,
+        : `A one-on-one day with an AI expert: executive or team-member coaching. Quantified report within 7 days. Anywhere in France. From ${entry}.`,
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });
 }
@@ -115,7 +115,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       labelFr: "Coaching dirigeant",
       labelEn: "Executive coaching",
       durationFr: "1 journée en tête-à-tête (7 à 8 h)",
-      durationEn: "1 journée en tête-à-tête (7 à 8 h)",
+      durationEn: "1 one-on-one day (7 to 8 h)",
       // Le visiteur dirigeant doit comprendre tout de suite : il ne sait
       // peut-être pas comment implémenter l'IA, ni tout ce qu'il peut en
       // tirer. Le but est SUR LUI — son temps, son argent, son quotidien.
@@ -150,7 +150,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       labelFr: "Coaching membre d'équipe",
       labelEn: "Team-member coaching",
       durationFr: "1 journée de travail à deux (7 à 8 h)",
-      durationEn: "1 journée de travail à deux (7 à 8 h)",
+      durationEn: "1 working day for two (7 to 8 h)",
       // Secrétaire, comptabilité, responsable achat ou tout autre poste : une
       // journée de travail pour analyser tout ce qu'on peut alléger. Ce n'est
       // PAS de l'implémentation, mais un plan concret de ce qui peut être mis
@@ -168,7 +168,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       featuresEn: [
         "Built around the role: admin, accounting, purchasing, HR…",
         "We target repetitive tasks, one by one",
-        "Des gains de temps repérés sur ses vraies tâches",
+        "Time savings spotted on their real tasks",
         "More autonomy, less friction",
       ],
       priceFr: `Dès ${membrePrice}`,
@@ -240,13 +240,13 @@ export default async function UnAUnHubPage({ params }: Props) {
         name: isFr ? "Journée en tête-à-tête" : "One-on-one day",
         text: isFr
           ? "Cadrage rapide par téléphone, puis votre coach passe la journée avec vous : on met votre organisation à plat, on pense stratégie et on met en place des process concrets que vous utilisez dès le premier jour."
-          : "Cadrage rapide par téléphone, puis votre coach passe la journée avec vous : on met votre organisation à plat, on pense stratégie et on met en place des process concrets que vous utilisez dès le premier jour.",
+          : "A quick scoping call, then your coach spends the day with you: we map out your organisation, think strategy and set up concrete processes you use from day one.",
       },
       {
         name: isFr ? "Rapport complet sous 7 jours" : "Complete report within 7 days",
         text: isFr
           ? "Sous 7 jours, vous recevez un rapport complet et détaillé : toutes les automatisations concrètes et réelles à mettre en place, priorisées, avec le chiffrage des gains attendus (temps gagné, argent économisé)."
-          : "Sous 7 jours, vous recevez un rapport complet et détaillé : toutes les automatisations concrètes et réelles à mettre en place, priorisées, avec le chiffrage des gains attendus (temps gagné, argent économisé).",
+          : "Within 7 days, you receive a complete, detailed report: all the concrete, real automations to put in place, prioritised, with the expected gains quantified (time saved, money saved).",
       },
     ],
   });
@@ -720,7 +720,7 @@ export default async function UnAUnHubPage({ params }: Props) {
               <p className="text-fg-soft mt-5 text-lg leading-relaxed">
                 {isFr
                   ? "Une journée entière à mettre vos journées de travail à plat : on analyse tout, on pense stratégie et automatisation des tâches — penser autrement pour de vrais résultats concrets. Dès le premier jour, on met en place des process concrets, utilisables tout de suite, qui vous font gagner du temps immédiatement. Puis, sous 7 jours, un rapport complet détaille toutes les automatisations à mettre en place, avec le chiffrage des gains (temps, argent). Un seul cap : du temps gagné, de l'argent économisé, des revenus complémentaires par l'automatisation."
-                  : "Une journée entière à mettre vos journées de travail à plat : on analyse tout, on pense stratégie et automatisation des tâches — penser autrement pour de vrais résultats concrets. Dès le premier jour, on met en place des process concrets, utilisables tout de suite, qui vous font gagner du temps immédiatement. Puis, sous 7 jours, un rapport complet détaille toutes les automatisations à mettre en place, avec le chiffrage des gains (temps, argent). Un seul cap : du temps gagné, de l'argent économisé, des revenus complémentaires par l'automatisation."}
+                  : "A full day mapping out your working days: we analyse everything, think strategy and task automation — thinking differently for real, concrete results. From day one, we set up concrete processes, usable right away, that save you time immediately. Then, within 7 days, a complete report details all the automations to put in place, with the gains quantified (time, money). One single goal: time saved, money saved, additional revenue through automation."}
               </p>
             </div>
 
@@ -763,9 +763,9 @@ export default async function UnAUnHubPage({ params }: Props) {
                   labelEn: "metropolitan + French-speaking abroad (1 week min.)",
                 },
                 {
-                  number: isFr ? "Dès le 1ᵉʳ jour" : "Dès le 1ᵉʳ jour",
+                  number: isFr ? "Dès le 1ᵉʳ jour" : "From day one",
                   labelFr: "des process concrets, utilisables tout de suite",
-                  labelEn: "des process concrets, utilisables tout de suite",
+                  labelEn: "concrete processes, usable right away",
                 },
                 {
                   number: isFr ? "1 personne" : "1 person",
@@ -865,14 +865,14 @@ export default async function UnAUnHubPage({ params }: Props) {
                 title: isFr ? "Journée en tête-à-tête" : "One-on-one day",
                 description: isFr
                   ? "Votre coach passe la journée avec vous : on met votre organisation à plat et on met en place des process concrets, utilisables dès le premier jour."
-                  : "Votre coach passe la journée avec vous : on met votre organisation à plat et on met en place des process concrets, utilisables dès le premier jour.",
+                  : "Your coach spends the day with you: we map out your organisation and set up concrete processes, usable from day one.",
               },
               {
                 id: "step-4-rapport",
-                title: isFr ? "Rapport chiffré sous 7 jours" : "Rapport chiffré sous 7 jours",
+                title: isFr ? "Rapport chiffré sous 7 jours" : "Quantified report within 7 days",
                 description: isFr
                   ? "Toutes les automatisations concrètes à mettre en place, priorisées, avec le chiffrage des gains (temps, argent)."
-                  : "Toutes les automatisations concrètes à mettre en place, priorisées, avec le chiffrage des gains (temps, argent).",
+                  : "All the concrete automations to put in place, prioritised, with the gains quantified (time, money).",
               },
             ]}
           />
@@ -972,19 +972,19 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "day-benefit",
                       question: "What do I leave with at the end of the day?",
                       answer:
-                        "Une vraie valeur dès le premier jour. On met votre organisation à plat et on met en place des process concrets, utilisables tout de suite, qui vous font gagner du temps immédiatement. Puis, sous 7 jours, un rapport chiffré liste les automatisations à mettre en place et les gains attendus (temps, argent).",
+                        "Real value from day one. We map out your organisation and set up concrete processes, usable right away, that save you time immediately. Then, within 7 days, a quantified report lists the automations to put in place and the expected gains (time, money).",
                     },
                     {
                       id: "report",
                       question: "Do you provide a report after the day?",
                       answer:
-                        "Oui, et c'est LE livrable clé. Sous 7 jours, vous recevez un rapport complet et détaillé : toutes les automatisations concrètes et réelles à mettre en place, priorisées, avec le chiffrage des gains attendus (temps gagné, argent économisé).",
+                        "Yes, and it's THE key deliverable. Within 7 days, you receive a complete, detailed report: all the concrete, real automations to put in place, prioritised, with the expected gains quantified (time saved, money saved).",
                     },
                     {
                       id: "duration",
                       question: "How long is a coaching day?",
                       answer:
-                        "Environ 7 à 8 h sur site, en tête-à-tête. La journée peut aussi se dérouler à distance ou en hybride selon votre préférence. Pour ancrer les usages dans la durée, on propose aussi un coaching régulier mensuel ou bi-mensuel, sur un contrat de 6, 12 ou 24 mois.",
+                        "About 7 to 8 h on site, one-on-one. The day can also run remotely or in hybrid mode depending on your preference. To embed the practices over time, we also offer recurring monthly or bi-monthly coaching, on a 6, 12 or 24-month contract.",
                     },
                     {
                       id: "tools",

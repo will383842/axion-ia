@@ -27,6 +27,7 @@ export async function Footer() {
       href: "/un-a-un" as const,
       label: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching",
     },
+    { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
   const resources = [
@@ -35,6 +36,8 @@ export async function Footer() {
     { href: "/blog", label: t("nav.blog") },
     { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
+    { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },
+    { href: "/comparaisons", label: isFr ? "Comparatifs" : "Comparisons" },
     { href: "/galerie", label: isFr ? "Banque d'images" : "Image bank" },
     { href: "/faq", label: "FAQ" },
   ];
@@ -45,6 +48,8 @@ export async function Footer() {
     { href: "/contact", label: t("nav.contact") },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
+    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
+    { href: "/reserver", label: isFr ? "Réserver un appel" : "Book a call" },
   ];
 
   const legal = [
@@ -53,6 +58,7 @@ export async function Footer() {
     { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
     { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
     { href: "/cookies", label: "Cookies" },
+    { href: "/sous-processeurs", label: isFr ? "Sous-traitants" : "Subprocessors" },
   ];
 
   // Top 6 régions par PIB + hub — maillage crawl sans surcharger le footer.
@@ -79,7 +85,7 @@ export async function Footer() {
         // V-04 P0h (Sprint Correctif 2026-05-22) — CSS containment.
         // Isole les shifts internes du footer (font-swap Fraunces/Manrope sur
         // bg mocha-rich, hydration LocaleSwitcher) de la contribution CLS de
-        // la page. Cible : ramener /tarifs (404 catchall) CLS 0.480 → ≤ 0.05.
+        // la page → CLS footer maintenu ≤ 0.05 sur toutes les routes.
         contain: "layout style",
       }}
     >
@@ -165,6 +171,10 @@ export async function Footer() {
               {isFr ? "Transparence IA" : "AI transparency"}
             </Link>
             <Dot />
+            <Link href="/corrections" className={linkCn}>
+              {isFr ? "Corrections" : "Corrections"}
+            </Link>
+            <Dot />
             <a href="/sitemap.xml" className={linkCn}>
               {t("footer.siteMap")}
             </a>
@@ -196,7 +206,7 @@ function FooterColumn({ title, items }: FooterColumnProps) {
           <li key={item.href}>
             <Link
               href={item.href as never}
-              className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] items-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {item.label}
             </Link>

@@ -23,7 +23,7 @@ import {
 } from "@/content/stack-ia";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
-import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildFaqSpeakableJsonLd, BUILD_DATE, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: locale === "fr" ? "/stack-ia" : "/ai-stack",
     title:
       locale === "fr"
-        ? "Stack IA opérationnelle 2026 · les IA déterminantes pour votre entreprise · cabinet Axion-IA"
-        : "Operational AI stack 2026 · the decisive AIs for your business · Axion-IA consultancy",
+        ? "Stack IA opérationnelle 2026 · cabinet Axion-IA"
+        : "Operational AI stack 2026 · Axion-IA consultancy",
     description:
       locale === "fr"
         ? "Pas un catalogue. Une sélection des IA les plus déterminantes en 2026 pour transformer votre entreprise, par fonction métier — penser, produire, capter, construire, orchestrer. Choix assumés, aucun partenariat commercial."
@@ -175,6 +175,21 @@ export default async function StackIaPage({ params }: Props) {
         publisher: { "@type": "Organization", name: tool.vendor },
       },
     })),
+  } as const;
+
+  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = BUILD_DATE),
+  // distinct de l'ItemList (catalogue) déjà émis. Décrit la page-collection
+  // elle-même pour l'AEO/GEO.
+  const collectionPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: isFr
+      ? "Stack IA opérationnelle 2026 · cabinet Axion-IA"
+      : "Operational AI stack 2026 · Axion-IA consultancy",
+    inLanguage: locale,
+    url: `${SITE_URL}/${locale}/${isFr ? "stack-ia" : "ai-stack"}`,
+    dateModified: BUILD_DATE,
+    isPartOf: { "@type": "WebSite", url: SITE_URL, name: "Axion-IA" },
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -821,6 +836,7 @@ export default async function StackIaPage({ params }: Props) {
       />
 
       {/* V-04 P1 — ItemList inline (catalogue principal SEO), FAQ déféré (-100 ms TBT). */}
+      <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-stack-ia-hub-faq" />
     </>

@@ -19,6 +19,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Illustration } from "@/components/visual/Illustration";
@@ -99,6 +100,18 @@ export default async function RegionPage({ params }: Props) {
   // Villes pilotes avec copy éditorial (V1 = 0 ou 1 par région : Paris IDF).
   const pilotVilles = villes.filter((v) => !!v.copy);
 
+  // ---- Données factuelles pour la FAQ régionale (anti-doorway) ----
+  // On ne génère AUCUNE prose templatée : la FAQ réutilise uniquement des
+  // données réelles déjà présentes sur la page (nb communes couvertes, nb
+  // départements, préfecture, top villes) + le prix d'entrée audit SSOT.
+  const deptCount = new Set(villes.map((v) => v.departementLabel ?? v.departement)).size;
+  // 3 plus grandes villes (factuel, sert d'exemples concrets dans la réponse).
+  const topVilleNames = topVilles.slice(0, 3).map((v) => v.nameFr);
+  // Prix d'entrée audit IA (SSOT pricing — JAMAIS hardcodé).
+  const auditEntryEur = getEntryPriceEur(AUDIT_TIERS);
+  const auditEntryLabel =
+    auditEntryEur != null ? formatAmount(auditEntryEur, isFr ? "fr" : "en") : null;
+
   const breadcrumbItems = [
     { href: "/implantations", label: isFr ? "Implantations" : "Locations" },
     { href: `/implantations/${region.slug}`, label: region.nameFr },
@@ -148,7 +161,7 @@ export default async function RegionPage({ params }: Props) {
     height: 1200,
     encodingFormat: "image/avif",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
-    copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
+    copyrightHolder: { "@type": "Organization", name: "Axion-IA" },
     license: "https://creativecommons.org/licenses/by/4.0/",
     acquireLicensePage: `${SITE_URL}/${loc}/galerie`,
     contentLocation: {
@@ -705,6 +718,56 @@ export default async function RegionPage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      {/* FAQ régionale — FACTUELLE & data-driven (anti-doorway). 2 Q/R max,
+          réponses construites uniquement à partir de données réelles déjà
+          affichées sur la page (nb communes/départements couverts, préfecture,
+          top villes) + prix d'entrée audit SSOT. Aucune prose templatée
+          interchangeable {region}. `FaqAccordion` émet son propre FAQPage
+          JSON-LD (Speakable auto-injecté) via `buildFaqJsonLd`.
+          TODO(will): enrichir FAQ régionale hand-crafted par région (Q3+
+          spécifiques au tissu économique local) quand priorisé. */}
+      {villes.length > 0 && auditEntryLabel ? (
+        <Section
+          eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+          title={isFr ? "L'IA" : "AI"}
+          titleEm={isFr ? `en ${region.nameFr}` : `in ${region.nameFr}`}
+          tone="sand"
+        >
+          <Container>
+            <FaqAccordion
+              className="mx-auto max-w-3xl"
+              items={
+                isFr
+                  ? [
+                      {
+                        id: "intervention-region",
+                        question: `Axion-IA intervient-il en ${region.nameFr} ?`,
+                        answer: `Oui. Nous couvrons ${villes.length} communes de plus de 5 000 habitants réparties sur ${deptCount} département${deptCount > 1 ? "s" : ""} en ${region.nameFr}${topVilleNames.length > 0 ? ` — dont ${topVilleNames.join(", ")}` : ""}. Nos interventions sur site, audits et missions d'implémentation sont disponibles partout dans la région, au départ de notre siège ${region.prefecture}.`,
+                      },
+                      {
+                        id: "prix-audit-region",
+                        question: `Combien coûte un audit IA en ${region.nameFr} ?`,
+                        answer: `Nos audits IA démarrent à ${auditEntryLabel} (audit Flash), aux mêmes tarifs publics qu'ailleurs en France métropolitaine — sans surcoût géographique en ${region.nameFr}. Quatre niveaux d'audit existent selon la taille de votre organisation ; le détail et les livrables figurent sur la page Audit IA.`,
+                      },
+                    ]
+                  : [
+                      {
+                        id: "intervention-region",
+                        question: `Does Axion-IA operate in ${region.nameFr}?`,
+                        answer: `Yes. We cover ${villes.length} communes of more than 5,000 inhabitants across ${deptCount} department${deptCount > 1 ? "s" : ""} in ${region.nameFr}${topVilleNames.length > 0 ? ` — including ${topVilleNames.join(", ")}` : ""}. On-site engagements, audits and implementation missions are available throughout the region, from our ${region.prefecture} office.`,
+                      },
+                      {
+                        id: "prix-audit-region",
+                        question: `How much does an AI audit cost in ${region.nameFr}?`,
+                        answer: `Our AI audits start at ${auditEntryLabel} (Flash audit), at the same public pricing as anywhere in metropolitan France — no geographic surcharge in ${region.nameFr}. Four audit tiers exist depending on the size of your organization; details and deliverables are on the AI audit page.`,
+                      },
+                    ]
+              }
+            />
+          </Container>
+        </Section>
+      ) : null}
 
       {/* CTA final */}
       <CtaBlock

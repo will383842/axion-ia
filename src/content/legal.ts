@@ -106,11 +106,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Conditions",
       titleEm: "générales",
       intro:
-        "Conditions générales de vente et d'utilisation des services Axion-IA. Règles applicables aux interventions, audits, implémentations IA.",
+        "Conditions générales de vente et d'utilisation des services Axion-IA. Règles applicables aux formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1 et conception de sites web et plateformes SaaS augmentés par l'IA.",
       sections: [
         {
           title: "Objet",
-          body: "Les présentes conditions régissent la vente et la prestation des services Axion-IA : interventions sur site, audits IA, implémentations IA. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
+          body: "Les présentes conditions régissent la vente et la prestation des services Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Les prestations s'adressent exclusivement à des clients professionnels (B2B) agissant dans le cadre de leur activité ; elles ne constituent pas une vente à des consommateurs. En conséquence, les dispositions du Code de la consommation (droit de rétractation, médiation de la consommation) ne s'appliquent pas. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
         },
         {
           title: "Devis et commande",
@@ -147,11 +147,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Terms &",
       titleEm: "conditions",
       intro:
-        "Terms of sale and use for Axion-IA services. Rules applicable to AI sessions, audits and implementations.",
+        "Terms of sale and use for Axion-IA services. Rules applicable to on-site AI trainings and sessions, AI audits, AI implementations, one-to-one individual coaching and AI-augmented websites and SaaS platforms.",
       sections: [
         {
           title: "Purpose",
-          body: "These terms govern the sale and provision of Axion-IA services: on-site sessions, AI audits, AI implementations. Any order implies full acceptance of these terms.",
+          body: "These terms govern the sale and provision of Axion-IA services: on-site AI trainings and sessions (group and individual), AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. The services are intended exclusively for professional (B2B) clients acting within their business activity; they do not constitute a sale to consumers. Accordingly, French Consumer Code provisions (right of withdrawal, consumer mediation) do not apply. Any order implies full acceptance of these terms.",
         },
         {
           title: "Quote and order",
@@ -196,7 +196,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Responsable du traitement",
-          body: "Axion-IA, société française. Email DPO : contact@axion-ia.com. Autorité de contrôle compétente : CNIL (Commission Nationale de l'Informatique et des Libertés).",
+          body: "Axion-IA, société française, agit en qualité de responsable du traitement. Contact RGPD : contact@axion-ia.com (aucun délégué à la protection des données — DPO — n'est désigné, la désignation n'étant pas obligatoire au regard de l'activité). Autorité de contrôle compétente : CNIL (Commission Nationale de l'Informatique et des Libertés).",
         },
         {
           title: "Données collectées",
@@ -245,7 +245,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Data controller",
-          body: "Axion-IA, French company. DPO email: contact@axion-ia.com. Competent supervisory authority: CNIL (Commission Nationale de l'Informatique et des Libertés).",
+          body: "Axion-IA, a French company, acts as data controller. GDPR contact: contact@axion-ia.com (no Data Protection Officer — DPO — has been appointed, as appointment is not mandatory given the activity). Competent supervisory authority: CNIL (Commission Nationale de l'Informatique et des Libertés).",
         },
         {
           title: "Data collected",
@@ -363,7 +363,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     fr: {
       title: "RGPD · droits utilisateurs",
       intro:
-        "Récapitulatif de vos droits RGPD applicables aux données traitées par Axion-IA. Réponse sous 30 jours par notre DPO.",
+        "Récapitulatif de vos droits RGPD applicables aux données traitées par Axion-IA. Réponse sous 30 jours par notre contact RGPD.",
       sections: [
         {
           title: "Droit d'accès (art. 15)",
@@ -403,7 +403,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     en: {
       title: "GDPR · user rights",
       intro:
-        "Summary of your GDPR rights applicable to data processed by Axion-IA. DPO reply within 30 days.",
+        "Summary of your GDPR rights applicable to data processed by Axion-IA. GDPR contact reply within 30 days.",
       sections: [
         {
           title: "Right of access (art. 15)",

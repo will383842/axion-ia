@@ -11,12 +11,19 @@ import { TimelineBlock } from "@/components/sections/TimelineBlock";
 import { TeamGrid } from "@/components/sections/TeamGrid";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { AboutHeroSchema } from "@/components/sections/AboutHeroSchema";
+import { FaqBlock } from "@/components/sections/FaqBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
-import { buildProductMetadata, buildPersonJsonLd, buildLocalBusinessJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildPersonJsonLd,
+  buildLocalBusinessJsonLd,
+  SITE_URL,
+  BUILD_DATE,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -34,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA — cabinet IA opérationnel pour entreprises. Mission, équipe, valeurs, parcours."
+        ? "Axion-IA, cabinet IA opérationnel basé à Paris : mission, équipe, valeurs E-E-A-T, hébergement UE et réponse humaine sous 48 h. Découvrez notre parcours depuis 2024."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
@@ -86,6 +93,84 @@ export default async function About({ params }: Props) {
       country: "FR",
     },
   });
+
+  // AboutPage JSON-LD — wrapper sémantique de la page « À propos ». Relie la
+  // page au #website (isPartOf) et à l'entité canonique #organization (about /
+  // mainEntity) pour consolider le knowledge graph (Google + AI Overviews
+  // rattachent la page d'autorité à l'entité Axion-IA). dateModified = signal
+  // de fraîcheur AEO 2026.
+  const aboutPageUrl = `${SITE_URL}/${loc}/a-propos`;
+  const aboutPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": aboutPageUrl,
+    url: aboutPageUrl,
+    inLanguage: loc,
+    name: isFr ? "À propos d'Axion-IA" : "About Axion-IA",
+    description: isFr
+      ? "Axion-IA, cabinet IA opérationnel basé à Paris : mission, équipe, valeurs E-E-A-T et parcours depuis 2024."
+      : "Axion-IA, an operational AI consultancy based in Paris: mission, team, E-E-A-T values and journey since 2024.",
+    dateModified: BUILD_DATE,
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    mainEntity: { "@id": `${SITE_URL}/#organization` },
+    about: { "@id": `${SITE_URL}/#organization` },
+  } as const;
+
+  // FAQ AEO — Q/R factuelles citables sur l'entité Axion-IA (siège, ancienneté,
+  // périmètre). FaqBlock émet automatiquement le FAQPage JSON-LD via FaqAccordion.
+  const aboutFaq = isFr
+    ? [
+        {
+          id: "siege",
+          question: "Où est le siège d'Axion-IA ?",
+          answer:
+            "Le siège d'Axion-IA est à Paris, France. C'est un cabinet IA opérationnel français, qui intervient sur toute la France auprès des TPE, PME, ETI et grands comptes.",
+        },
+        {
+          id: "depuis-quand",
+          question: "Depuis quand Axion-IA existe-t-il ?",
+          answer:
+            "Axion-IA a été fondé en 2024. Le cabinet a été créé en France pour la stabilité juridique et la proximité avec les entreprises françaises et européennes.",
+        },
+        {
+          id: "perimetre",
+          question: "Quel est le périmètre d'intervention d'Axion-IA ?",
+          answer:
+            "Axion-IA couvre les interventions IA, les audits, les implémentations en production, le coaching 1-à-1 et les sites web augmentés. Les données sont hébergées dans l'Union européenne (Hetzner Frankfurt).",
+        },
+        {
+          id: "delai-reponse",
+          question: "En combien de temps Axion-IA répond-il à une demande ?",
+          answer:
+            "Toute demande de devis ou de contact reçoit une réponse humaine sous 48 heures ouvrées, sans engagement.",
+        },
+      ]
+    : [
+        {
+          id: "siege",
+          question: "Where is Axion-IA's head office?",
+          answer:
+            "Axion-IA's head office is in Paris, France. It is a French operational AI consultancy serving the whole of France for small businesses, SMEs, mid-caps and large accounts.",
+        },
+        {
+          id: "depuis-quand",
+          question: "How long has Axion-IA existed?",
+          answer:
+            "Axion-IA was founded in 2024. The consultancy was created in France for legal stability and proximity to French and European companies.",
+        },
+        {
+          id: "perimetre",
+          question: "What is Axion-IA's scope of work?",
+          answer:
+            "Axion-IA covers AI sessions, audits, production implementations, 1-to-1 coaching and AI-augmented websites. Data is hosted in the European Union (Hetzner Frankfurt).",
+        },
+        {
+          id: "delai-reponse",
+          question: "How quickly does Axion-IA reply to a request?",
+          answer:
+            "Every quote or contact request gets a human reply within 48 business hours, with no commitment.",
+        },
+      ];
 
   return (
     <>
@@ -318,6 +403,21 @@ export default async function About({ params }: Props) {
         </Container>
       </Section>
 
+      {/* FAQ AEO — entité Axion-IA (siège, ancienneté, périmètre) + FAQPage
+         JSON-LD auto via FaqAccordion */}
+      <FaqBlock
+        tone="canvas"
+        eyebrow="FAQ"
+        title={isFr ? "Questions sur" : "Questions about"}
+        titleEm="Axion-IA"
+        description={
+          isFr
+            ? "Siège, ancienneté, périmètre, délai de réponse — l'essentiel sur le cabinet."
+            : "Head office, history, scope, response time — the essentials about the consultancy."
+        }
+        items={aboutFaq}
+      />
+
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
         title={
@@ -336,6 +436,7 @@ export default async function About({ params }: Props) {
         tone="dark"
       />
 
+      <JsonLd data={aboutPageJsonLd} scriptId="jsonld-axion-ia-aboutpage" />
       <JsonLd data={personJsonLd} />
       <JsonLd data={localBusinessRootJsonLd} scriptId="jsonld-axion-ia-root-localbusiness" />
     </>

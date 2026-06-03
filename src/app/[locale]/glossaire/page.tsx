@@ -4,12 +4,13 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight, BookText, Mic, RefreshCw, Quote } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getGlossaryTerms } from "@/lib/knowledge/readers";
 
@@ -59,6 +60,8 @@ export default async function GlossaryPage({ params }: Props) {
     name: isFr ? "Glossaire IA Axion-IA" : "Axion-IA AI glossary",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/glossaire`,
+    // DefinedTermSet ⊂ CreativeWork → dateModified valide (signal de fraîcheur AEO/GEO).
+    dateModified: BUILD_DATE,
     speakable: buildSpeakableSpecification({
       selectors: ["[data-aeo='glossary-intro']"],
     }),
@@ -143,7 +146,14 @@ export default async function GlossaryPage({ params }: Props) {
           <dl className="border-border divide-border space-y-0 divide-y border-y">
             {terms.map((t) => (
               <div key={t.slug} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                <dt className="text-fg font-mono text-sm font-semibold">{t.term}</dt>
+                <dt className="font-mono text-sm font-semibold">
+                  <Link
+                    href={{ pathname: "/glossaire/[slug]", params: { slug: t.slug } }}
+                    className="text-fg hover:text-primary"
+                  >
+                    {t.term}
+                  </Link>
+                </dt>
                 <dd className="text-fg-soft text-base leading-relaxed">{t[loc]}</dd>
               </div>
             ))}

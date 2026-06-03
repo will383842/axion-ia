@@ -334,6 +334,9 @@ export function buildFaqJsonLd({ items, speakable = true }: FaqJsonLdInput) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // Signal de fraîcheur AEO 2026 (AI Overviews / Perplexity privilégient le
+    // contenu daté récent). FAQPage ⊂ WebPage ⊂ CreativeWork → dateModified valide.
+    dateModified: BUILD_DATE,
     mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
@@ -421,11 +424,7 @@ export function buildOrganizationJsonLd({
     // Wikidata Q-number prepended si WIKIDATA_QNUMBER_AXIONIA configuré
     // (Sprint v7 Phase 10 — Knowledge Graph triangulation). Fallback safe :
     // sans env var, retombe sur les 2 sources sociales historiques.
-    sameAs: [
-      ...buildOrganizationSameAs(),
-      "https://www.linkedin.com/company/axion-ia",
-      "https://www.facebook.com/axionia",
-    ],
+    sameAs: [...buildOrganizationSameAs(), "https://www.linkedin.com/company/axion-ia"],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
@@ -761,6 +760,8 @@ export function buildFaqSpeakableJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // Signal de fraîcheur AEO 2026 (cohérent avec buildFaqJsonLd).
+    dateModified: BUILD_DATE,
     // `numberOfItems` : recommandé Google Search Console (rich results validator
     // émet warning sans). Aligne avec audit AEO 2026-05-24 (P1-4).
     numberOfItems: items.length,

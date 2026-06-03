@@ -108,7 +108,7 @@ export default async function ImplantationsHub({ params }: Props) {
       "Carte de France stylisée du réseau Axion-IA — architectes IA seniors, 13 régions métropolitaines, 5 DROM et entreprises francophones à l'étranger, 5 services sur site.",
     encodingFormat: "image/png",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
-    copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
+    copyrightHolder: { "@type": "Organization", name: "Axion-IA" },
     license: "https://creativecommons.org/licenses/by/4.0/",
     acquireLicensePage: `${SITE_URL}/${loc}/galerie`,
     contentLocation: { "@type": "Country", name: "France" },
