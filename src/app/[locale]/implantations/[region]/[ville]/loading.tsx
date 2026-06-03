@@ -7,7 +7,7 @@ export default function VilleLoading() {
     <>
       {/* Hero zone */}
       <section className="bg-halo-warm relative overflow-hidden pt-10 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="bg-border h-4 w-32 animate-pulse rounded-xs" aria-hidden="true" />
           <div
             className="bg-border mt-6 h-14 w-3/4 animate-pulse rounded-xs sm:h-16"
@@ -18,13 +18,13 @@ export default function VilleLoading() {
       </section>
       {/* Breadcrumbs */}
       <div className="bg-bg py-3">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="bg-border h-3 w-1/2 animate-pulse rounded-xs" aria-hidden="true" />
         </div>
       </div>
       {/* 3 sections réservées (interventions / méthodologie / tarifs) */}
       <div className="bg-paper py-16">
-        <div className="mx-auto w-full max-w-[1280px] space-y-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1366px] space-y-12 px-4 sm:px-6 lg:px-10 xl:px-16">
           {[0, 1, 2].map((i) => (
             <div
               key={i}

@@ -38,9 +38,14 @@ export async function Header() {
     },
     { href: "/audit", label: t("nav.companyAudit"), multiline: false },
     {
+      // Label court dédié au header (`implementationNav` = « Intégration IA »)
+      // — 2026-06-03 (audit responsive C). L'ancien « Intégration d'agents IA
+      // sur-mesure » (~190 px) faisait déborder la barre dans le cap 1366 et
+      // empêchait le dual-CTA de tenir. La clé longue `implementationShort`
+      // reste utilisée ailleurs (titre /tarifs).
       href: "/implementation",
-      label: t("nav.implementationShort").replace(" sur-mesure", "\nsur-mesure"),
-      multiline: true,
+      label: t("nav.implementationNav"),
+      multiline: false,
     },
     {
       href: "/sites-web-augmentes",
@@ -75,12 +80,19 @@ export async function Header() {
         className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
       {/* Layout 2026 : Logo + tagline + Nav clusterisés à GAUCHE | dual-CTA à
-          DROITE (Contact ghost + Appel primary), pattern Linear/Stripe. */}
-      <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:gap-8 lg:px-10 xl:gap-10 xl:px-14">
+          DROITE (Contact ghost + Appel primary), pattern Linear/Stripe.
+
+          Largeur — 2026-06-03 (audit responsive, Option A) : le contenu interne
+          est wrappé sur le MÊME cap (`max-w-[1366px] mx-auto`) et la MÊME rampe
+          de gouttières (`px-4 sm:px-6 lg:px-10 xl:px-16`) que `Container`. Le
+          fond terracotta reste bord-à-bord (header full-width), mais les bords
+          gauche/droit du contenu s'alignent désormais parfaitement avec le body
+          et le footer (corrige le désalignement >1366 px). */}
+      <div className="relative mx-auto flex h-20 w-full max-w-[1366px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
         {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
             Layout colonne → libère l'espace horizontal pour la nav (vs ancien
-            layout row qui occupait ~200px de plus). Tagline visible à tous les
-            breakpoints desktop (plus de compromis xl-only). */}
+            layout row qui occupait ~200px de plus). Visibilité de la tagline :
+            cf. classes du <span> ci-dessous (drawer 992–1280 + ≥1536). */}
         <div className="flex shrink-0 flex-col items-start gap-1">
           <Link
             href={ROUTES.home}
@@ -101,10 +113,16 @@ export async function Header() {
             </span>
           </Link>
           {/* Tagline B2B sous le logo — signal d'audience cible (TPE/PME/ETI).
-              Serif italique pour cohérence éditoriale avec le « IA » du logo. */}
+              Serif italique pour cohérence éditoriale avec le « IA » du logo.
+              Visibilité — 2026-06-03 (audit responsive C) : affichée en mode
+              drawer (lg 992–1280, large) ET en très grand écran (2xl ≥1536),
+              mais MASQUÉE dans la bande 1280–1400 où la nav desktop + le CTA
+              primaire apparaissent et l'espace est serré. Réapparaît dès 1400 px
+              (= au cap 1366 atteint, largeur intérieure constante ≈1238 px où
+              tout tient), avec le dual-CTA. Évite tout rognage du header. */}
           <span
             aria-hidden="true"
-            className="text-mocha-fg hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic lg:block"
+            className="text-mocha-fg hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic min-[1400px]:block lg:block xl:hidden"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {taglineB2B}
@@ -112,11 +130,17 @@ export async function Header() {
         </div>
 
         {/* Nav principale clusterisée à GAUCHE (collée au logo) — pattern 2026.
-            Gaps généreux gap-10/xl:gap-14 (40/56 px) pour aérer la barre. */}
-        <nav
-          aria-label={t("nav.primaryLabel")}
-          className="hidden items-center gap-12 lg:flex xl:gap-16"
-        >
+            Breakpoint — 2026-06-03 (audit responsive C) : la nav desktop
+            apparaît désormais à `xl` (1280) et non plus `lg` (992). Entre 992 et
+            1280, le contenu (logo + 6 items + dual-CTA) débordait et le CTA
+            primaire « Réserver un appel » était rogné/poussé hors écran avant la
+            bascule mobile. < 1280 = drawer mobile (cf. trigger `xl:hidden`).
+            Gap fixe gap-6 (24 px, ex-48/64) : au-delà du cap, la largeur
+            intérieure du header est CONSTANTE ≈1238 px, donc on ne fait PAS
+            croître le gap (ça volerait la place du dual-CTA révélé à 1400). Avec
+            le label court « Intégration IA », nav + dual-CTA + tagline tiennent
+            dans 1238 px. */}
+        <nav aria-label={t("nav.primaryLabel")} className="hidden items-center gap-6 xl:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -128,19 +152,34 @@ export async function Header() {
         </nav>
 
         {/* Bloc dual-CTA à DROITE — ml-auto pour pousser à l'extrême droite,
-            gap-3 entre les 2 CTAs pour les lire comme un groupe distinct. */}
-        <div className="ml-auto hidden shrink-0 items-center gap-3 lg:flex">
+            gap-3 entre les 2 CTAs pour les lire comme un groupe distinct.
+            Breakpoint — 2026-06-03 (audit responsive C) : le bloc est visible à
+            `xl` (1280), aligné sur l'apparition de la nav desktop. Le CTA
+            primaire « Réserver un appel » est TOUJOURS présent (conversion). Le
+            CTA secondaire « Nous écrire » n'apparaît qu'à partir de 1400 px (cf.
+            son `min-[1400px]:inline-flex` ci-dessous) : entre 1280 et 1400 px
+            l'espace est trop serré pour le dual-CTA dans le cap 1366. En drawer
+            (< xl) les deux CTA sont rendus dans le menu mobile. */}
+        <div className="ml-auto hidden shrink-0 items-center gap-3 xl:flex">
           {/* CTA secondaire → /contact (formulaire).
               Fond ivoire bg-paper + texte terracotta : cohérent avec le badge
               logo, lisible sur fond terracotta du header. Engagement plus doux
               que l'appel (asynchrone) — hiérarchie préservée car le CTA primary
-              porte le bleu + glow shadow (signal d'action fort). */}
+              porte le bleu + glow shadow (signal d'action fort).
+              Visibilité — 2026-06-03 (audit responsive C) : `hidden` par défaut,
+              révélé à `min-[1400px]:inline-flex`. Le label nav court
+              « Intégration IA » (vs ex-« Intégration d'agents IA sur-mesure »)
+              libère assez de place pour que le dual-CTA tienne dans le cap 1366
+              dès que la largeur intérieure du header est pleine (~1238 px, à
+              partir de 1400 px de viewport). En dessous de 1400 px (1280–1399)
+              seul le CTA primaire est affiché ; « Nous écrire » reste dans le
+              drawer mobile (< xl). */}
           <Link
             href={ROUTES.contact}
             aria-label={t("cta.contactAria")}
             data-cta="header-secondary"
             data-cta-tracking="cta_header_contact_click"
-            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta hidden h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none min-[1400px]:inline-flex"
           >
             <Mail className="h-4 w-4" aria-hidden="true" />
             <span>{isFr ? "Nous écrire" : "Email us"}</span>
@@ -161,8 +200,11 @@ export async function Header() {
           </Link>
         </div>
 
-        {/* Mobile drawer trigger (mobile only) */}
-        <div className="ml-auto lg:hidden">
+        {/* Mobile drawer trigger — affiché jusqu'à `xl` (1280) inclus.
+            2026-06-03 (audit responsive C) : ex-`lg:hidden`. La nav desktop
+            n'apparaissant qu'à xl, le drawer couvre désormais aussi la plage
+            tablette/petit-laptop 992–1280 (où le header desktop débordait). */}
+        <div className="ml-auto xl:hidden">
           <MobileNav>
             <nav aria-label={t("nav.primaryLabel")} className="flex flex-col gap-1 text-base">
               {/* Tagline B2B affichée en tête du drawer mobile pour le signal

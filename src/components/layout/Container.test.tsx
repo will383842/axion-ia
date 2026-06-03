@@ -6,7 +6,7 @@ describe("<Container>", () => {
   it("renders a div by default with the max-width and responsive padding", () => {
     render(<Container>hello</Container>);
     const node = screen.getByText("hello");
-    expect(node.className).toContain("max-w-[1520px]");
+    expect(node.className).toContain("max-w-[1366px]");
     expect(node.className).toContain("mx-auto");
     expect(node.className).toContain("px-4");
   });

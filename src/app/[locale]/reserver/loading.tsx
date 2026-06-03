@@ -9,7 +9,7 @@ export default function ReserverLoading() {
     <>
       {/* Hero zone — eyebrow + h1 + paragraphe */}
       <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="bg-border h-4 w-40 animate-pulse rounded-xs" aria-hidden="true" />
           <div
             className="bg-border mt-8 h-16 w-3/4 animate-pulse rounded-xs sm:h-20"
@@ -21,14 +21,19 @@ export default function ReserverLoading() {
 
       {/* Breadcrumbs zone */}
       <div className="bg-bg py-4">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="bg-border h-4 w-1/3 animate-pulse rounded-xs" aria-hidden="true" />
         </div>
       </div>
 
-      {/* Calendar zone — réserve la hauteur réelle (~800 px desktop) */}
+      {/* Calendar zone — réserve la hauteur réelle (~800 px desktop).
+          2026-06-03 (audit responsive) : le wrapper était `max-w-[1680px]` alors
+          que la vraie page calendrier (`reserver/page.tsx:464`) est en
+          `max-w-7xl` (≈1280, volontaire « pour tenir sur un écran ») → saut de
+          ~400 px skeleton→page au swap. Aligné sur la vraie largeur du
+          calendrier. */}
       <div className="bg-bg py-8 sm:py-10">
-        <div className="mx-auto w-full max-w-[1680px] px-4 sm:px-6 lg:px-8 xl:px-10">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div
             className="bg-paper border-border min-h-[800px] w-full animate-pulse rounded-2xl border"
             aria-hidden="true"

@@ -82,7 +82,7 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
         }
         width={1983}
         height={793}
-        sizes="(max-width: 1520px) 92vw, 1456px"
+        sizes="(max-width: 1366px) 92vw, 1238px"
         quality={90}
         figureClassName="mt-2 w-full"
         zoomLabel={isFr ? "Agrandir" : "Enlarge"}

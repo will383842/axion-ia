@@ -187,7 +187,7 @@ export function ImplementationServices({ isFr }: ImplementationServicesProps): R
           height={484}
           loading="lazy"
           decoding="async"
-          sizes="(max-width: 1520px) 92vw, 1456px"
+          sizes="(max-width: 1366px) 92vw, 1238px"
           className="h-auto w-full"
         />
       </figure>

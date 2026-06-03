@@ -31,7 +31,7 @@ export function MobileNav({ children }: MobileNavProps) {
         <button
           type="button"
           aria-label={t("openMenu")}
-          className="text-fg hover:bg-border/50 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none lg:hidden"
+          className="text-fg hover:bg-border/50 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none xl:hidden"
         >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>

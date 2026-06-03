@@ -5,7 +5,7 @@ export default function ContactLoading() {
   return (
     <>
       <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="bg-border h-4 w-32 animate-pulse rounded-xs" aria-hidden="true" />
           <div
             className="bg-border mt-8 h-16 w-2/3 animate-pulse rounded-xs sm:h-20"

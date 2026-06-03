@@ -94,7 +94,13 @@ export async function Footer() {
         className="bg-terracotta/40 pointer-events-none absolute inset-x-0 top-0 block h-px"
       />
 
-      <div className="px-6 py-10 md:px-8 lg:px-12 lg:py-14 xl:px-16">
+      {/* Largeur — 2026-06-03 (audit responsive, Option A) : contenu interne
+          wrappé sur le MÊME cap (`max-w-[1366px] mx-auto`) et la MÊME rampe de
+          gouttières (`px-4 sm:px-6 lg:px-10 xl:px-16`) que `Container`/Header.
+          Le fond mocha-rich reste bord-à-bord (footer full-width via le
+          `<footer>` parent), mais les bords du contenu s'alignent désormais
+          avec le body et le header. Padding vertical py-10/lg:py-14 conservé. */}
+      <div className="mx-auto w-full max-w-[1366px] px-4 py-10 sm:px-6 lg:px-10 lg:py-14 xl:px-16">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
           {/* Brand */}
           <div className="lg:w-60 lg:shrink-0">

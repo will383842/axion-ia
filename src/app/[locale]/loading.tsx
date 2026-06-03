@@ -24,7 +24,7 @@ export default function LocaleLoading() {
           Padding doit matcher Section.tsx ligne 86 :
           `pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32`. */}
       <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           {/* eyebrow */}
           <div className="bg-border h-4 w-32 animate-pulse rounded-xs" aria-hidden="true" />
           {/* h1 — 2 lignes possibles mobile, 1 ligne desktop. Matche
@@ -65,7 +65,7 @@ export default function LocaleLoading() {
       {/* Section secondaire — réserve l'emplacement d'un FeatureGrid /
           ProcessSteps / Stats qu'on retrouve sur 80 % des pages éditoriales. */}
       <div className="bg-paper py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto w-full max-w-[1366px] px-4 sm:px-6 lg:px-10 xl:px-16">
           <div
             className="bg-bg border-border h-60 w-full animate-pulse rounded-2xl border sm:h-64"
             aria-hidden="true"
