@@ -11,7 +11,9 @@ export type SitesWebSlug =
   | "chatbot-rag"
   | "recherche-semantique"
   | "sans-refonte"
-  | "plateforme-native";
+  | "plateforme-native"
+  | "recommandation"
+  | "wordpress";
 
 export type SitesWebProjectType = "augmentation" | "native" | "transverse";
 
@@ -1104,6 +1106,491 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
             title: "Native is a product, not a patch",
             description:
               "Architecture, data and experience designed for AI — a real product edge, not a demo.",
+          },
+        ],
+      },
+    },
+  },
+  // ── BRIQUE : Recommandation produit IA (transverse, e-commerce) ────────────
+  {
+    slug: "recommandation",
+    projectType: "transverse",
+    pathFr: "/sites-web-augmentes/recommandation",
+    pathEn: "/sites-web-augmentes/recommandation",
+    accent: "green",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "Le bon produit, au bon visiteur",
+      titleEn: "The right product, to the right visitor",
+      blocks: [
+        {
+          icon: "Sparkles",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "Comprend le visiteur",
+          labelEn: "Understands the visitor",
+          detailFr: "Navigation, panier, historique : l'IA lit l'intention en temps réel.",
+          detailEn: "Browsing, cart, history: AI reads intent in real time.",
+        },
+        {
+          icon: "Search",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Suggère par le sens",
+          labelEn: "Suggests by meaning",
+          detailFr: "Produits complémentaires pertinents, pas des « bestsellers » génériques.",
+          detailEn: "Relevant complementary products, not generic bestsellers.",
+        },
+        {
+          icon: "Rocket",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Augmente le panier",
+          labelEn: "Lifts the cart",
+          detailFr: "Cross-sell et up-sell automatiques sur chaque page.",
+          detailEn: "Automatic cross-sell and up-sell on every page.",
+        },
+      ],
+      ariaFr:
+        "Schéma : l'IA comprend l'intention du visiteur et suggère les produits complémentaires pertinents, augmentant le panier moyen.",
+      ariaEn:
+        "Diagram: AI understands visitor intent and suggests relevant complementary products, lifting average cart.",
+    },
+    fr: {
+      eyebrow: "Brique IA · Recommandation produit",
+      title: "Des recommandations",
+      titleEm: "qui vendent",
+      answer:
+        "On ajoute à votre site ou e-commerce un moteur de recommandation IA qui comprend l'intention de chaque visiteur et suggère les bons produits complémentaires — cross-sell et up-sell automatiques. Résultat : un panier moyen plus élevé, sans effort manuel.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Panier moyen en hausse",
+          description:
+            "Chaque page propose les produits réellement pertinents pour ce visiteur-là, pas une liste figée de bestsellers.",
+        },
+        {
+          title: "Personnalisé, sans cookie tiers",
+          description:
+            "La pertinence vient du comportement sur votre site, pas du pistage publicitaire — conforme RGPD.",
+        },
+        {
+          title: "Zéro maintenance manuelle",
+          description:
+            "Plus de règles « si A alors B » à maintenir : le moteur s'adapte à votre catalogue et à vos ventes en continu.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On branche votre catalogue",
+          description: "Produits, catégories, historique de ventes : indexés pour le moteur.",
+        },
+        {
+          title: "On définit les emplacements",
+          description: "Fiche produit, panier, page d'accueil : où les recommandations comptent.",
+        },
+        {
+          title: "On met en ligne et on mesure",
+          description: "Taux de clic sur les reco, impact sur le panier moyen, itérations.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "+", suffix: "panier", label: "Panier moyen en hausse" },
+        { number: "0", suffix: "cookie", label: "Sans pistage tiers, RGPD" },
+        { number: "UE", suffix: "", label: "Hébergement conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "ecommerce",
+          question: "C'est seulement pour l'e-commerce ?",
+          answer:
+            "Non. La reco vaut aussi pour un catalogue de services, une base d'articles ou de ressources — partout où orienter le visiteur vers le bon contenu augmente la conversion.",
+        },
+        {
+          id: "cookie",
+          question: "Faut-il des cookies tiers ?",
+          answer:
+            "Non. La pertinence vient du comportement sur votre propre site (pages vues, panier), pas du pistage publicitaire — conforme RGPD.",
+        },
+        {
+          id: "stack",
+          question: "Compatible avec ma boutique ?",
+          answer:
+            "Oui, sur n'importe quelle stack (WordPress/WooCommerce, Shopify, Next.js, Laravel…), sans refonte.",
+        },
+        {
+          id: "maj",
+          question: "Et les nouveaux produits ?",
+          answer:
+            "Ils entrent automatiquement dans le moteur dès qu'ils sont dans votre catalogue — aucune règle à recréer.",
+        },
+      ],
+      ctaBlockTitle: "Des recommandations qui augmentent le panier",
+      ctaBlockDescription:
+        "Décrivez votre site ou boutique : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Les reco « bestsellers »",
+        titleEm: "ne marchent plus",
+        intro:
+          "Afficher les mêmes « meilleures ventes » à tout le monde ignore l'intention du visiteur — et laisse du chiffre d'affaires sur la table.",
+        points: [
+          {
+            title: "Une liste figée rate la cible",
+            description:
+              "Le visiteur qui regarde un produit précis n'a pas besoin des bestsellers : il a besoin du complément pertinent.",
+          },
+          {
+            title: "Les règles manuelles ne tiennent pas",
+            description:
+              "Maintenir des règles de cross-sell produit par produit est intenable. Le moteur IA s'en charge, et s'adapte.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "AI brick · Product recommendation",
+      title: "Recommendations",
+      titleEm: "that sell",
+      answer:
+        "We add to your site or store an AI recommendation engine that understands each visitor's intent and suggests the right complementary products — automatic cross-sell and up-sell. Result: a higher average cart, with no manual effort.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "Higher average cart",
+          description:
+            "Every page suggests the products truly relevant to that visitor, not a fixed bestseller list.",
+        },
+        {
+          title: "Personalised, no third-party cookie",
+          description:
+            "Relevance comes from behaviour on your site, not ad tracking — GDPR-compliant.",
+        },
+        {
+          title: "Zero manual maintenance",
+          description:
+            "No more « if A then B » rules to maintain: the engine adapts to your catalogue and sales continuously.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We connect your catalogue",
+          description: "Products, categories, sales history: indexed for the engine.",
+        },
+        {
+          title: "We define the placements",
+          description: "Product page, cart, home: where recommendations matter.",
+        },
+        {
+          title: "We ship and measure",
+          description: "Click-through on reco, impact on average cart, iterations.",
+        },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "+", suffix: "cart", label: "Higher average cart" },
+        { number: "0", suffix: "cookie", label: "No third-party tracking, GDPR" },
+        { number: "EU", suffix: "", label: "GDPR-compliant hosting" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "ecommerce",
+          question: "Is it only for e-commerce?",
+          answer:
+            "No. Recommendation also works for a service catalogue or a content/resource base — anywhere guiding visitors to the right item lifts conversion.",
+        },
+        {
+          id: "cookie",
+          question: "Are third-party cookies needed?",
+          answer:
+            "No. Relevance comes from behaviour on your own site, not ad tracking — GDPR-compliant.",
+        },
+        {
+          id: "stack",
+          question: "Compatible with my store?",
+          answer:
+            "Yes, on any stack (WordPress/WooCommerce, Shopify, Next.js, Laravel…), no rebuild.",
+        },
+        {
+          id: "maj",
+          question: "What about new products?",
+          answer:
+            "They enter the engine automatically once in your catalogue — no rules to recreate.",
+        },
+      ],
+      ctaBlockTitle: "Recommendations that lift the cart",
+      ctaBlockDescription:
+        "Describe your site or store: we come back within 48 h with a scope, fixed fee and timeline.",
+      why: {
+        title: "Bestseller recommendations",
+        titleEm: "no longer work",
+        intro:
+          "Showing everyone the same « top sellers » ignores visitor intent — and leaves revenue on the table.",
+        points: [
+          {
+            title: "A fixed list misses the target",
+            description:
+              "A visitor looking at a specific product doesn't need bestsellers: they need the relevant complement.",
+          },
+          {
+            title: "Manual rules don't scale",
+            description:
+              "Maintaining cross-sell rules product by product is unsustainable. The AI engine handles it, and adapts.",
+          },
+        ],
+      },
+    },
+  },
+
+  // ── AUGMENTATION : chatbot IA WordPress (stack, fort volume) ────────────────
+  {
+    slug: "wordpress",
+    projectType: "augmentation",
+    pathFr: "/sites-web-augmentes/wordpress",
+    pathEn: "/sites-web-augmentes/wordpress",
+    accent: "orange",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "L'IA sur votre WordPress, sans refonte",
+      titleEn: "AI on your WordPress, no rebuild",
+      blocks: [
+        {
+          icon: "Plug",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "On garde votre WordPress",
+          labelEn: "We keep your WordPress",
+          detailFr: "Thème, contenus, extensions : rien n'est cassé.",
+          detailEn: "Theme, content, plugins: nothing broken.",
+        },
+        {
+          icon: "MessageSquare",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Chatbot ancré sur vos pages",
+          labelEn: "Chatbot grounded in your pages",
+          detailFr: "Réponses sourcées depuis vos articles et pages, sans invention.",
+          detailEn: "Sourced answers from your posts and pages, no invention.",
+        },
+        {
+          icon: "ShieldCheck",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Hébergé en UE",
+          labelEn: "EU-hosted",
+          detailFr: "Données chez vous, conforme RGPD.",
+          detailEn: "Data yours, GDPR-compliant.",
+        },
+      ],
+      ariaFr:
+        "Schéma : un chatbot IA ancré sur les contenus de votre WordPress, ajouté sans refonte, hébergé en UE.",
+      ariaEn:
+        "Diagram: an AI chatbot grounded in your WordPress content, added without rebuild, EU-hosted.",
+    },
+    fr: {
+      eyebrow: "Stack · WordPress",
+      title: "Un chatbot IA sur votre",
+      titleEm: "WordPress",
+      answer:
+        "Votre site est sur WordPress ? On y greffe un chatbot IA ancré sur vos vrais contenus (articles, pages, FAQ), sans toucher à votre thème ni à vos extensions. Réponses sourcées, hébergement UE, en ligne en quelques semaines.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Sur votre WordPress actuel",
+          description:
+            "Pas de migration, pas de refonte : on ajoute l'IA par-dessus votre site et vos extensions existantes.",
+        },
+        {
+          title: "Réponses ancrées, fiables",
+          description:
+            "Le chatbot répond depuis vos articles et pages, en citant ses sources — il n'invente pas.",
+        },
+        {
+          title: "Léger, sans ralentir le site",
+          description:
+            "Intégration optimisée : aucune dégradation des performances ni de votre SEO existant.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On audite votre WordPress",
+          description: "Thème, extensions, contenus : ce qui sert de source au chatbot.",
+        },
+        {
+          title: "On indexe vos contenus",
+          description: "Articles, pages, FAQ : transformés en source de réponse.",
+        },
+        {
+          title: "On intègre proprement",
+          description: "Widget léger, sans conflit d'extension, testé sur vos vrais cas.",
+        },
+        {
+          title: "On met en ligne et on suit",
+          description: "Mesure des réponses, ajustements, relais humain si besoin.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "0", suffix: "refonte", label: "On garde votre WordPress" },
+        { number: "0", suffix: "", label: "Réponse inventée (sourcé ou rien)" },
+        { number: "UE", suffix: "", label: "Hébergement conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "theme",
+          question: "Faut-il changer de thème ou d'extensions ?",
+          answer:
+            "Non. On greffe le chatbot par-dessus votre WordPress existant, sans toucher à votre thème ni à vos extensions.",
+        },
+        {
+          id: "perf",
+          question: "Ça va ralentir mon site ?",
+          answer:
+            "Non. L'intégration est optimisée (chargement léger, asynchrone) pour préserver vos performances et votre SEO.",
+        },
+        {
+          id: "woocommerce",
+          question: "Et si j'ai WooCommerce ?",
+          answer:
+            "Le chatbot peut s'appuyer sur vos fiches produit et vos pages pour répondre aux questions clients, en plus du support.",
+        },
+        {
+          id: "rgpd",
+          question: "Où sont les données ?",
+          answer:
+            "En Union européenne, conforme RGPD. Vos contenus ne servent pas à entraîner un modèle tiers.",
+        },
+      ],
+      ctaBlockTitle: "Un chatbot IA sur votre WordPress",
+      ctaBlockDescription:
+        "Décrivez votre site WordPress : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Refondre un WordPress qui marche,",
+        titleEm: "inutile",
+        intro:
+          "Votre WordPress fonctionne et est référencé ? Le refaire pour ajouter de l'IA serait un risque inutile.",
+        points: [
+          {
+            title: "Une refonte met votre SEO en jeu",
+            description:
+              "Changer de site, c'est risquer de perdre votre référencement acquis. L'augmentation le préserve.",
+          },
+          {
+            title: "L'IA se greffe, point",
+            description:
+              "On ajoute la valeur (chatbot ancré) sur l'existant, sans toucher à ce qui marche déjà.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "Stack · WordPress",
+      title: "An AI chatbot on your",
+      titleEm: "WordPress",
+      answer:
+        "Your site runs on WordPress? We graft an AI chatbot grounded in your real content (posts, pages, FAQ), without touching your theme or plugins. Sourced answers, EU hosting, live in a few weeks.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "On your current WordPress",
+          description:
+            "No migration, no rebuild: we add AI on top of your existing site and plugins.",
+        },
+        {
+          title: "Grounded, reliable answers",
+          description:
+            "The chatbot answers from your posts and pages, citing sources — it doesn't invent.",
+        },
+        {
+          title: "Light, no slowdown",
+          description: "Optimised integration: no degradation of performance or your existing SEO.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We audit your WordPress",
+          description: "Theme, plugins, content: what feeds the chatbot.",
+        },
+        {
+          title: "We index your content",
+          description: "Posts, pages, FAQ: turned into answer source.",
+        },
+        {
+          title: "We integrate cleanly",
+          description: "Light widget, no plugin conflict, tested on your real cases.",
+        },
+        {
+          title: "We ship and monitor",
+          description: "Answer measurement, tuning, human handover if needed.",
+        },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "0", suffix: "rebuild", label: "We keep your WordPress" },
+        { number: "0", suffix: "", label: "Invented answer (sourced or nothing)" },
+        { number: "EU", suffix: "", label: "GDPR-compliant hosting" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "theme",
+          question: "Do I need to change theme or plugins?",
+          answer:
+            "No. We graft the chatbot on top of your existing WordPress, without touching your theme or plugins.",
+        },
+        {
+          id: "perf",
+          question: "Will it slow my site?",
+          answer:
+            "No. The integration is optimised (light, async loading) to preserve your performance and SEO.",
+        },
+        {
+          id: "woocommerce",
+          question: "What if I use WooCommerce?",
+          answer:
+            "The chatbot can draw on your product sheets and pages to answer customer questions, on top of support.",
+        },
+        {
+          id: "rgpd",
+          question: "Where is the data?",
+          answer:
+            "In the EU, GDPR-compliant. Your content is not used to train a third-party model.",
+        },
+      ],
+      ctaBlockTitle: "An AI chatbot on your WordPress",
+      ctaBlockDescription:
+        "Describe your WordPress site: we come back within 48 h with a scope, fixed fee and timeline.",
+      why: {
+        title: "Rebuilding a WordPress that works,",
+        titleEm: "pointless",
+        intro: "Your WordPress works and ranks? Rebuilding it to add AI would be a needless risk.",
+        points: [
+          {
+            title: "A rebuild risks your SEO",
+            description:
+              "Changing site risks losing your earned ranking. Augmentation preserves it.",
+          },
+          {
+            title: "AI just grafts on",
+            description:
+              "We add the value (grounded chatbot) on the existing, without touching what already works.",
           },
         ],
       },

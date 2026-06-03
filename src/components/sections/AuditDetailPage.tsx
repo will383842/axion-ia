@@ -21,6 +21,8 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ContactBand } from "@/components/sections/ContactBand";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
@@ -399,6 +401,16 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
       >
         <InterventionFaqList items={config.faq} isFr={isFr} />
       </Section>
+
+      {/* COUVERTURE FRANCE + KB — maillage national (parité pages-intention). */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'audit IA"
+        serviceLabelEn="AI audit"
+        serviceSlug="audit"
+        tone="sand"
+      />
+      <RelatedKnowledge service="audit" />
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}

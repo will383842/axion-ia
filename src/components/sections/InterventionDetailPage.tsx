@@ -18,6 +18,8 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ContactBand } from "@/components/sections/ContactBand";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
@@ -271,6 +273,16 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
       >
         <InterventionFaqList items={config.faq} isFr={isFr} />
       </Section>
+
+      {/* COUVERTURE FRANCE + KB — maillage national (parité pages-intention). */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'accompagnement IA individuel"
+        serviceLabelEn="Individual AI coaching"
+        serviceSlug="un-a-un"
+        tone="sand"
+      />
+      <RelatedKnowledge service="un-a-un" />
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}

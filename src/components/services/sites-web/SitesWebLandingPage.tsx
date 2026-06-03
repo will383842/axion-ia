@@ -23,7 +23,7 @@ import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
 import { SitesWebSubPageExtras } from "@/components/services/sites-web/SitesWebSubPageExtras";
 import { getSitesWeb, type SitesWebSlug } from "@/content/sites-web";
-import { buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildServiceJsonLd, buildFaqJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -69,6 +69,39 @@ export function SitesWebLandingPage({
     />
   );
 
+  // ImageObject @graph — visibilité Google Images + AI Overviews (réutilise les
+  // visuels home équipe + fondateur, comme les pages formation/implementation).
+  const label = [copy.title, copy.titleEm, copy.titleTail].filter(Boolean).join(" ").trim();
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? `Équipe Axion-IA — ${label} pour sites web et SaaS`
+          : `Axion-IA team — ${label} for websites and SaaS`,
+        alt: isFr
+          ? `Équipe Axion-IA en conception de site web augmenté IA : ${copy.answer}`
+          : `Axion-IA team designing an AI-augmented website: ${copy.answer}`,
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, architecte sites web IA"
+          : "William — Axion-IA founder, AI website architect",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA, qui pilote l'intégration IA des sites web et SaaS pour TPE, PME et ETI françaises."
+          : "Portrait of William, Axion-IA founder, driving AI integration of websites and SaaS for French SMEs and mid-caps.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
+
   const jsonLd = [
     buildServiceJsonLd({
       locale,
@@ -77,8 +110,10 @@ export function SitesWebLandingPage({
       description: copy.answer,
       serviceType: isFr ? "Augmentation IA de site web & SaaS" : "AI website & SaaS augmentation",
       areasServed: buildServiceAreasServed(locale),
+      speakable: true,
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
 
   return (

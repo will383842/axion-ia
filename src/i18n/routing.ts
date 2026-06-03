@@ -191,6 +191,8 @@ export const routing = defineRouting({
     "/sites-web-augmentes/recherche-semantique": "/sites-web-augmentes/recherche-semantique",
     "/sites-web-augmentes/sans-refonte": "/sites-web-augmentes/sans-refonte",
     "/sites-web-augmentes/plateforme-native": "/sites-web-augmentes/plateforme-native",
+    "/sites-web-augmentes/recommandation": "/sites-web-augmentes/recommandation",
+    "/sites-web-augmentes/wordpress": "/sites-web-augmentes/wordpress",
 
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
