@@ -86,7 +86,22 @@ Coller la sortie réelle ci-dessous à chaque relevé.
 - ✅ `BACKUP_INGEST_SECRET` : posé dans Coolify (RUN) + GitHub Actions secret (même valeur).
 - ✅ Secrets CI drill posés dans GitHub : `R2_*` (5), `BACKUP_ENCRYPTION_PASSPHRASE`, `TELEGRAM_*`.
 - ✅ Var GitHub `MONTHLY_RESTORE_DRILL_ENABLED=true` ; `NIGHTLY_BACKUP_DRILL_ENABLED` absent = activé par défaut.
-- ⏳ **À FAIRE (prod-shell, validation Will requise)** : injecter `BACKUP_REPORT_URL=https://axion-ia.com`
-  + `BACKUP_INGEST_SECRET` dans `run-r2-backup.sh` (pour que le dump Postgres remonte au dashboard) ;
-  déployer les wrappers des nouveaux composants (redis/docuseal/plausible/secrets/mirror) sur le même
-  modèle + cron ; pgBackRest (downtime Postgres) ; buckets R2 + Object Lock ; clé age ; Healthchecks.io.
+- ✅ **FAIT 2026-06-03** : `run-r2-backup.sh` injecte `BACKUP_REPORT_URL` + `BACKUP_INGEST_SECRET`
+  + télécharge `backup-lib.sh` → le dump Postgres remonte au dashboard (testé OK).
+- ✅ **FAIT 2026-06-03** : `/opt/axion-ia/run-docuseal-backup.sh` (Docuseal volume entier, tar
+  crash-consistent → AES → R2 `docuseal/daily/`, cron 02:45) + `/opt/axion-ia/run-secrets-backup.sh`
+  (export env Coolify via API → AES → R2 `secrets/`, cron 02:00). Tous deux testés OK + reporting dashboard.
+- ⏳ **Reste (non fait)** : redis/plausible (reconstructibles, non-critiques) ; pgBackRest (downtime
+  Postgres) ; buckets R2 + Object Lock (tokens sans droit) ; clé age asymétrique (AES utilisé en
+  attendant) ; Healthchecks.io (pas de compte) ; mirror Git (pas de 2e provider).
+- ⚠️ **image-bank** : l'app n'a AUCUN volume local + pas de `HETZNER_STORAGE_*` en env Coolify →
+  stockage image non configuré en prod (probablement inutilisé). Si l'image-bank devient actif,
+  configurer le stockage + son backup off-Hetzner.
+
+### Nouvelles entrées cron (2026-06-03)
+```cron
+0 2 * * *   /opt/axion-ia/run-secrets-backup.sh        >> /var/log/secrets-backup.log 2>&1
+45 2 * * *  /opt/axion-ia/run-docuseal-backup.sh daily  >> /var/log/docuseal-backup.log 2>&1
+```
+Wrappers self-contained (container postgres:16-alpine éphémère + auto-pull backup-lib.sh GitHub main +
+reporting HMAC dashboard). Déchiffrement : AES-256 avec `BACKUP_ENCRYPTION_PASSPHRASE` (coffre).
