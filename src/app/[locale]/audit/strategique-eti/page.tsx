@@ -13,7 +13,8 @@ import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 const TIER = "audit-strategique-eti" as const;
 
-// SSOT prix — dérivé de pricing.ts (audit-strategique-eti : priceMin 12000).
+// SSOT prix — dérivé de pricing.ts (audit-strategique-eti : « À partir de 1 900 € »
+// depuis 2026-06-03 ; ex-12 000 €, cf. décision Will).
 const ETI_TIER = getTierById(AUDIT_TIERS, "audit-strategique-eti");
 const ETI_MIN = ETI_TIER.priceMin ?? 0;
 

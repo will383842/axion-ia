@@ -302,7 +302,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "ROI d'un audit IA pour une petite entreprise — chiffres réels, pas de promesses vagues",
       metaTitle: "ROI audit IA petite entreprise | Axion-IA",
       metaDescription:
-        "Un audit IA coûte 490 €. Les gains identifiés représentent en moyenne 3 à 8 h/semaine récupérées. Calculez votre ROI en 2 minutes.",
+        "Un audit IA coûte 1 190 € (Flash, 1 jour). Les gains identifiés représentent en moyenne 3 à 8 h/semaine récupérées. Calculez votre ROI en 2 minutes.",
       h2Variants: [
         "Comment calculer le ROI d'un audit IA pour une petite entreprise ?",
         "Quels gains concrets attendre d'un audit IA TPE ?",
@@ -686,8 +686,8 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     },
     variables: {
       process: "tarification audit",
-      resultat: "tarif transparent demi-journée",
-      chiffre: "490",
+      resultat: "tarif transparent 1 journée",
+      chiffre: "1190",
       unite: "€",
       delai: "devis en 24 h",
     },
@@ -1408,7 +1408,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Quel est le ROI d'un audit IA pour une PME ? — Chiffres réels",
       metaTitle: "ROI audit IA PME : combien ça rapporte ? | Axion-IA",
       metaDescription:
-        "Un audit IA PME coûte 490-990 €. Les gains identifiés représentent en moyenne 40-80 k€/an. ROI > 10× sur 12 mois pour une PME de 20 salariés.",
+        "Un audit IA PME coûte à partir de 1 900 €. Les gains identifiés représentent en moyenne 40-80 k€/an. ROI > 10× sur 12 mois pour une PME de 20 salariés.",
       h2Variants: [
         "Comment calculer le ROI d'un audit IA pour une PME ?",
         "Exemples de ROI d'audit IA dans des PME françaises",

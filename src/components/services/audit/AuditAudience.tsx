@@ -50,10 +50,21 @@ const FLASH_PRICE = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFl
   compact: true,
 });
 
-// Prix d'entrée audit (PME/ETI) — SSOT pricing.ts (audit-cible priceMin).
+// Prix d'entrée audit PME — SSOT pricing.ts (audit-cible priceMin).
 const ENTRY_PRICE = formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", {
   compact: true,
 });
+
+// Prix d'entrée audit ETI — SSOT pricing.ts (audit-strategique-eti priceMin).
+// Will 2026-06-03 — corrige le bug qui réutilisait ENTRY_PRICE (tier PME) ;
+// la carte ETI dérive désormais de son propre tier.
+const ETI_ENTRY_PRICE = formatAmount(
+  getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
+  "fr",
+  {
+    compact: true,
+  },
+);
 
 const CARDS: ReadonlyArray<AudienceCard> = [
   {
@@ -97,8 +108,8 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous pilotez des enjeux multi-sites. On cartographie l'ensemble, on priorise par ROI, et on cadre la gouvernance IA (AI Act, RGPD, conduite du changement).",
     bodyEn:
       "You steer multi-site challenges. We map everything, prioritise by ROI, and frame AI governance (AI Act, GDPR, change management).",
-    metaFr: `À partir de ${ENTRY_PRICE} · sur devis`,
-    metaEn: `From ${ENTRY_PRICE} · on quote`,
+    metaFr: `À partir de ${ETI_ENTRY_PRICE} · sur devis`,
+    metaEn: `From ${ETI_ENTRY_PRICE} · on quote`,
     detailHref: "/audit/strategique-eti",
   },
 ];

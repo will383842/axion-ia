@@ -9,7 +9,7 @@
 // + programme demi-journée 9 h–13 h + FAQ + JSON-LD Service + FAQPage.
 
 import type { ReactNode } from "react";
-import { ArrowRight, Mail, Sparkles, Compass, Target, TrendingUp, Wrench } from "lucide-react";
+import { ArrowRight, Mail, Sparkles, Compass, Target, TrendingUp } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
@@ -36,7 +36,8 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 // Configs spécifiques aux 2 formations 4 h.
 // ----------------------------------------------------------------------------
 
-export type CollectiveTrainingSlug = "demarrage-ia-express" | "atelier-ia-cible";
+// Atelier IA ciblé supprimé le 2026-06-03 (Will) — une seule formation 4 h.
+export type CollectiveTrainingSlug = "demarrage-ia-express";
 
 interface TrainingBenefit {
   icon: typeof Compass;
@@ -188,126 +189,6 @@ const TRAINING_CONFIGS: Record<CollectiveTrainingSlug, TrainingConfig> = {
       },
     ],
   },
-  "atelier-ia-cible": {
-    slug: "atelier-ia-cible",
-    contactObject: "atelier-ia-cible",
-    titleFr: "Atelier IA ciblé",
-    titleEn: "Targeted AI Workshop",
-    titleEmFr: "4 heures sur un cas précis",
-    titleEmEn: "4 hours on a specific case",
-    promiseFr:
-      "Une demi-journée (4 h) focalisée sur UN cas d'usage métier précis (rédaction commerciale, analyse de documents, structuration de reporting, traduction…). À la fin, chaque participant repart avec le cas implémenté sur son poste de travail, prêt à utiliser.",
-    promiseEn:
-      "A half-day (4 h) focused on ONE specific business case (sales writing, document analysis, reporting structuring, translation…). By the end, each participant leaves with the case implemented on their workstation, ready to use.",
-    chipsFr: [
-      "1 cas d'usage précis",
-      "Implémenté sur chaque poste",
-      "Prêt à utiliser le soir même",
-    ],
-    chipsEn: [
-      "1 specific use case",
-      "Implemented on each workstation",
-      "Ready to use that evening",
-    ],
-    benefits: [
-      {
-        icon: Target,
-        titleFr: "1 cas d'usage métier, profondeur maximale",
-        titleEn: "1 business case, maximum depth",
-        bodyFr:
-          "On ne survole pas. La demi-journée entière est consacrée à UN cas d'usage précis (que vous choisissez en amont). Résultat : maîtrise réelle au lieu d'une vague vue d'ensemble.",
-        bodyEn:
-          "We don't skim. The entire half-day is dedicated to ONE specific use case (you choose it upstream). Result: real mastery instead of a vague overview.",
-      },
-      {
-        icon: Wrench,
-        titleFr: "Implémenté sur chaque poste",
-        titleEn: "Implemented on each workstation",
-        bodyFr:
-          "Chaque participant configure le cas sur son propre poste, avec ses propres accès. Pas de démo regardée passivement — on fait, on teste, on corrige ensemble.",
-        bodyEn:
-          "Each participant configures the case on their own workstation, with their own logins. No passive demo — we do, test, fix together.",
-      },
-      {
-        icon: Sparkles,
-        titleFr: "Templates + prompts maison",
-        titleEn: "Templates + custom prompts",
-        bodyFr:
-          "À la fin, vous repartez avec les templates et prompts construits ensemble, documentés et prêts à être partagés au reste de l'équipe.",
-        bodyEn:
-          "By the end, you leave with the templates and prompts built together, documented and ready to share with the rest of the team.",
-      },
-      {
-        icon: TrendingUp,
-        titleFr: "Opérationnel dès le soir même",
-        titleEn: "Operational that evening",
-        bodyFr:
-          "Pas d'attente, pas de POC. Le cas est testé sur vos vraies données pendant la séance. Le soir même, l'outil tourne déjà sur vos workflows réels.",
-        bodyEn:
-          "No waiting, no POC. The case is tested on your real data during the session. That very evening, the tool is already running on your real workflows.",
-      },
-    ],
-    schedule: [
-      {
-        time: "9 h 00",
-        titleFr: "Accueil + cadrage du cas d'usage",
-        titleEn: "Welcome + use case framing",
-      },
-      {
-        time: "9 h 30",
-        titleFr: "Démo du cas en action",
-        titleEn: "Demo of the case in action",
-        descriptionFr: "Présentation du workflow IA cible — comment ça marche, sur quels outils.",
-        descriptionEn: "Presentation of the target AI workflow — how it works, on which tools.",
-      },
-      {
-        time: "10 h 15",
-        titleFr: "Installation + configuration sur les postes",
-        titleEn: "Setup + configuration on workstations",
-        descriptionFr: "Chaque participant configure les outils sur son poste avec ses accès.",
-        descriptionEn:
-          "Each participant configures the tools on their workstation with their logins.",
-      },
-      {
-        time: "11 h 30",
-        titleFr: "Pause",
-        titleEn: "Break",
-      },
-      {
-        time: "11 h 45",
-        titleFr: "Pratique sur vos vrais cas",
-        titleEn: "Practice on your real cases",
-        descriptionFr:
-          "Application du workflow sur les vraies données métier de chaque participant.",
-        descriptionEn: "Application of the workflow on each participant's real business data.",
-      },
-      {
-        time: "12 h 45",
-        titleFr: "Synthèse + templates remis + clôture",
-        titleEn: "Synthesis + templates shared + close",
-      },
-    ],
-    faq: [
-      {
-        qFr: "Quels cas d'usage pouvez-vous traiter ?",
-        qEn: "What use cases can you handle?",
-        aFr: "Rédaction commerciale et marketing, analyse de documents (contrats, CV, devis), automatisation de reporting, traduction professionnelle, synthèse de réunions, génération d'images, recherche, gestion de mails… On valide le cas en cadrage avant la séance pour s'assurer qu'il colle au format 4 h.",
-        aEn: "Sales and marketing writing, document analysis (contracts, CVs, quotes), reporting structuring, professional translation, meeting synthesis, image generation, research, email management… We validate the case in framing before the session to ensure it fits the 4-h format.",
-      },
-      {
-        qFr: "Et si le cas s'avère trop large pour 4 h ?",
-        qEn: "What if the case turns out too broad for 4 h?",
-        aFr: "On peut soit splitter sur 2 demi-journées (devis adapté), soit basculer vers le format Approfondie 2 jours qui permet de creuser plusieurs cas en parallèle. On décide ensemble en cadrage.",
-        aEn: "We can either split over 2 half-days (quote adjusted), or switch to the 2-day Deep Dive format which allows several cases in parallel. We decide together in framing.",
-      },
-      {
-        qFr: "Quel niveau IA est requis pour les participants ?",
-        qEn: "What AI level is required for participants?",
-        aFr: "Aucun. Le format est conçu pour démarrer de zéro sur un cas précis. Si vos équipes sont déjà à l'aise avec ChatGPT/Claude, on creuse les fonctionnalités avancées (prompts complexes, agents, Code).",
-        aEn: "None. The format is designed to start from scratch on a specific case. If your teams are already comfortable with ChatGPT/Claude, we go deeper into advanced features (complex prompts, agents, Code).",
-      },
-    ],
-  },
 };
 
 // ----------------------------------------------------------------------------
@@ -423,7 +304,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
                 {isFr ? priceFr : priceEn}
               </span>
               <span className="text-fg-soft text-[13px]">
-                {isFr ? "2 à 20 personnes · sur site" : "2 to 20 people · on site"}
+                {isFr ? "2 à 12 personnes · sur site" : "2 to 12 people · on site"}
               </span>
             </div>
 
@@ -506,8 +387,8 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
         title={isFr ? "Réservez cette formation 4 heures" : "Book this 4-hour training"}
         description={
           isFr
-            ? `${priceFr} pour 2 à 20 personnes sur site. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
-            : `${priceEn} for 2 to 20 people on site. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
+            ? `${priceFr} pour 2 à 12 personnes sur site. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+            : `${priceEn} for 2 to 12 people on site. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
         }
         cta={
           <Cta

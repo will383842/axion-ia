@@ -18,11 +18,11 @@ export const INTERVENTION_SLUGS = [
   // Sprint 14.10.8 (Will 2026-05-12) — audit Flash sur site (890 €) réservable
   // directement sur le calendrier depuis le hub /audit refondu.
   "audit-flash-onsite",
-  // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe (cf.
-  // pricing.ts intervention-4h, 590 € HT) promues bookables direct calendrier
-  // (au lieu du formulaire générique).
+  // Will (audit /interventions 2026-05-12) — formation 4 h prix fixe (cf.
+  // pricing.ts intervention-4h, 690 € HT depuis 2026-06-03) promue bookable
+  // direct calendrier (au lieu du formulaire générique). Atelier IA ciblé
+  // supprimé le 2026-06-03 (une seule formation 4 h).
   "demarrage-ia-express",
-  "atelier-ia-cible",
 ] as const;
 
 export type InterventionSlug = (typeof INTERVENTION_SLUGS)[number];
@@ -52,6 +52,8 @@ import {
   INTERVENTION_TIERS,
   ESSENTIELLE_SUB_TIERS,
   APPROFONDIE_SUB_TIERS,
+  TEMPS_SUB_TIERS,
+  CLAUDE_SUB_TIERS,
   AUDIT_TIERS,
 } from "@/content/pricing";
 
@@ -65,10 +67,9 @@ const SLUG_TO_TIER_ID: Record<InterventionSlug, string> = {
   "intervention-claude": "intervention-claude",
   // Audit Flash terrain — mappe vers le tier audit-flash, sous-tier audit-flash-onsite.
   "audit-flash-onsite": "audit-flash",
-  // Will (audit /interventions 2026-05-12) — 2 formations 4 h partagent le
-  // même tier `intervention-4h` (590 € flat, cf. pricing.ts intervention-4h).
+  // Will (audit /interventions 2026-05-12) — formation 4 h sur le tier
+  // `intervention-4h` (690 € flat depuis 2026-06-03, cf. pricing.ts).
   "demarrage-ia-express": "intervention-4h",
-  "atelier-ia-cible": "intervention-4h",
 };
 
 /**
@@ -76,16 +77,21 @@ const SLUG_TO_TIER_ID: Record<InterventionSlug, string> = {
  * Renvoie l'id du sub-tier matchant ou null si hors brackets.
  */
 function bracketSubTierId(slug: InterventionSlug, participantsCount: number): string | null {
+  // Will 2026-06-03 — 2 paliers canoniques (2-15 / 16-30) partagés par les 4
+  // formats collectifs : Essentielle, Approfondie, Gagner du temps, Claude.
   const subTiers =
     slug === "essentielle"
       ? ESSENTIELLE_SUB_TIERS
       : slug === "approfondie"
         ? APPROFONDIE_SUB_TIERS
-        : null;
+        : slug === "gagner-du-temps"
+          ? TEMPS_SUB_TIERS
+          : slug === "intervention-claude"
+            ? CLAUDE_SUB_TIERS
+            : null;
   if (!subTiers) return null;
-  if (participantsCount >= 2 && participantsCount <= 8) return subTiers[0]?.id ?? null;
-  if (participantsCount >= 9 && participantsCount <= 15) return subTiers[1]?.id ?? null;
-  if (participantsCount >= 16 && participantsCount <= 30) return subTiers[2]?.id ?? null;
+  if (participantsCount >= 2 && participantsCount <= 15) return subTiers[0]?.id ?? null;
+  if (participantsCount >= 16 && participantsCount <= 30) return subTiers[1]?.id ?? null;
   return null;
 }
 

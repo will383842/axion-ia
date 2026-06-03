@@ -249,6 +249,8 @@ const ESSENTIELLE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-essentie
 const APPROFONDIE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!;
 const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
 const DIRIGEANTS_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+const DIRIGEANT_VISION_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision");
+const CLAUDE_DIRIGEANT_TIER = getTierById(INTERVENTION_TIERS, "intervention-claude-dirigeant");
 const CLAUDE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-claude").priceFlat!;
 
 export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
@@ -274,37 +276,17 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "Half-day (4 h) to demystify AI: 2026 tools panorama, live demos on real cases from your sector, 2-3 operational prompts tested together. Your teams leave with a clear vision and quick-wins ready to apply.",
     priceFr: formatAmount(FOUR_H_PRICE, "fr"),
     priceEn: formatAmount(FOUR_H_PRICE, "en"),
-    groupSizeFr: "2 à 20 personnes",
-    groupSizeEn: "2 to 20 people",
+    groupSizeFr: "2 à 12 personnes",
+    groupSizeEn: "2 to 12 people",
     audienceFr: "Équipes qui découvrent l'IA · TPE, PME",
     audienceEn: "Teams discovering AI · small businesses",
     accent: "terracotta",
     badgeFr: "Découverte · 4 h",
     badgeEn: "Discovery · 4 h",
   },
-  {
-    slug: "atelier-ia-cible",
-    family: "collectives",
-    duration: "4h",
-    // Sprint 14.10.7 fix Will (2026-05-11) : page détail indexable dédiée.
-    pathFr: "/interventions/atelier-ia-cible",
-    pathEn: "/interventions/targeted-ai-workshop",
-    labelFr: "Atelier IA ciblé",
-    labelEn: "Targeted AI Workshop",
-    taglineFr:
-      "Demi-journée (4 h) focalisée sur UN cas d'usage métier précis : rédaction commerciale, analyse de documents, automatisation reporting, traduction… À l'issue, chaque participant repart avec le cas implémenté sur son poste.",
-    taglineEn:
-      "Half-day (4 h) focused on ONE specific business case: sales writing, document analysis, reporting automation, translation… By the end, each participant leaves with the case implemented on their workstation.",
-    priceFr: formatAmount(FOUR_H_PRICE, "fr"),
-    priceEn: formatAmount(FOUR_H_PRICE, "en"),
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    audienceFr: "Équipe avec besoin métier précis",
-    audienceEn: "Team with a specific business need",
-    accent: "terracotta",
-    badgeFr: "Cas d'usage · 4 h",
-    badgeEn: "Use case · 4 h",
-  },
+  // Atelier IA ciblé supprimé le 2026-06-03 (Will) — le palier 4 h ne garde
+  // qu'une seule formation (Démarrage IA Express). 301 vers /collectives/4h
+  // (cf. next.config.ts redirects).
 
   // -------------------------------------------------------------------------
   // FAMILLE : Collectives / Palier 1 jour
@@ -342,10 +324,10 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "Automatiser vos tâches répétitives à l'IA — gain mesurable dès le retour au bureau, plusieurs heures par personne et par semaine.",
     taglineEn:
       "Automate your recurring tasks with AI — measurable gain from day one back, hours per person every week.",
-    priceFr: formatPrice(TEMPS_TIER, "fr"),
-    priceEn: formatPrice(TEMPS_TIER, "en"),
-    groupSizeFr: "2 à 20 personnes",
-    groupSizeEn: "2 to 20 people",
+    priceFr: `À partir de ${formatAmount(TEMPS_TIER.priceFlat!, "fr")}`,
+    priceEn: `Starting at ${formatAmount(TEMPS_TIER.priceFlat!, "en")}`,
+    groupSizeFr: "2 à 30 personnes",
+    groupSizeEn: "2 to 30 people",
     audienceFr: "Équipes opérationnelles · TPE, PME, ETI",
     audienceEn: "Operational teams · small to mid-market",
     accent: "terracotta",
@@ -364,13 +346,13 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     labelFr: "Intervention Claude",
     labelEn: "Claude intervention",
     taglineFr:
-      "1 journée 100 % dédiée à Claude (Anthropic) — Chat · Cowork · Code. Petit groupe pour profondeur maximale, vos équipes ressortent autonomes sur l'outil de pointe IA.",
+      "1 journée 100 % dédiée à Claude (Anthropic) — Chat · Cowork · Code. Jusqu'à 30 personnes (tarif dégressif), vos équipes ressortent autonomes sur l'outil de pointe IA.",
     taglineEn:
-      "Full day 100 % focused on Claude (Anthropic) — Chat · Cowork · Code. Small group for maximum depth, your teams leave autonomous on the cutting-edge AI tool.",
-    priceFr: formatAmount(CLAUDE_PRICE, "fr"),
-    priceEn: formatAmount(CLAUDE_PRICE, "en"),
-    groupSizeFr: "2 à 8 personnes",
-    groupSizeEn: "2 to 8 people",
+      "Full day 100 % focused on Claude (Anthropic) — Chat · Cowork · Code. Up to 30 people (scaling price), your teams leave autonomous on the cutting-edge AI tool.",
+    priceFr: `À partir de ${formatAmount(CLAUDE_PRICE, "fr")}`,
+    priceEn: `Starting at ${formatAmount(CLAUDE_PRICE, "en")}`,
+    groupSizeFr: "2 à 30 personnes",
+    groupSizeEn: "2 to 30 people",
     audienceFr: "Équipes qui veulent maîtriser Claude en profondeur",
     audienceEn: "Teams that want to master Claude in depth",
     accent: "claude",
@@ -452,8 +434,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "1 journée 1-to-1 pour ouvrir les yeux du dirigeant sur ce que l'IA change DANS SON SECTEUR. Panorama des opportunités stratégiques, ce que font vraiment vos concurrents, quelles automatisations chercher, comment penser différemment l'entreprise. Pas un audit complet — un déclic stratégique.",
     taglineEn:
       "1-on-1 day to open the executive's eyes to what AI changes IN THEIR SECTOR. Strategic opportunity panorama, what competitors actually do, automations to look for, how to think the company differently. Not a full audit — a strategic shift.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
+    priceFr: formatPrice(DIRIGEANT_VISION_TIER, "fr"),
+    priceEn: formatPrice(DIRIGEANT_VISION_TIER, "en"),
     groupSizeFr: "1 dirigeant (1-to-1)",
     groupSizeEn: "1 executive (1-on-1)",
     audienceFr: "Dirigeant qui veut anticiper la vague IA sur son secteur",
@@ -478,8 +460,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "1 journée 1-to-1 avec le dirigeant 100 % dédiée à Claude (Anthropic) — Chat avancé, Projects + mémoire stratégique, Claude Code CLI pour vos dossiers confidentiels. À la sortie, vous maîtrisez l'outil IA de pointe pour vos décisions.",
     taglineEn:
       "1-on-1 executive day 100 % focused on Claude (Anthropic) — advanced Chat, Projects + strategic memory, Claude Code CLI for your confidential files. You leave with full mastery of the cutting-edge AI tool for your decisions.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
+    priceFr: formatPrice(CLAUDE_DIRIGEANT_TIER, "fr"),
+    priceEn: formatPrice(CLAUDE_DIRIGEANT_TIER, "en"),
     groupSizeFr: "1 dirigeant (1-to-1)",
     groupSizeEn: "1 executive (1-on-1)",
     audienceFr: "Dirigeant qui veut maîtriser Claude pour ses propres dossiers",

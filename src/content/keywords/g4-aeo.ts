@@ -66,7 +66,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Durée d'un audit IA : de 1 jour à 6 semaines selon la formule",
       metaTitle: "Durée audit IA : 1 jour à 6 semaines | Axion-IA",
       metaDescription:
-        "Un audit IA Flash prend 1 jour (490 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines.",
+        "Un audit IA Flash prend 1 jour (1 190 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines.",
       h2Variants: [
         "Durée de l'audit sur place (1 jour)",
         "Durée de l'audit Stratégique PME",
@@ -144,7 +144,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Audit IA Flash vs Stratégique : comment choisir en 2026 ?",
       metaTitle: "Audit sur place vs Stratégique : choisir | Axion-IA",
       metaDescription:
-        "L'audit sur place (490 €, 1 jour) convient aux TPE/PME pressées. L'audit Stratégique (4 900-12 000 €, 3-6 semaines) s'impose dès 20 salariés ou un enjeu de",
+        "L'audit sur place (1 190 €, 1 jour) convient aux TPE/PME pressées. L'audit Stratégique (à partir de 4 900 €, 3-6 semaines) s'impose dès 20 salariés ou un enjeu de",
       h2Variants: [
         "L'audit sur place : pour qui et pour quoi ?",
         "L'audit Stratégique PME : critères de choix",
@@ -169,13 +169,13 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prix d'un audit IA entreprise en France en 2026",
       metaTitle: "Prix audit IA entreprise 2026 | Axion-IA",
       metaDescription:
-        "Un audit IA coûte entre 490 € (Flash 1 jour) et 12 000 € (Stratégique ETI). Le marché pratique 1 500 à 25 000 € ; Axion-IA est positionné PME avec des",
+        "Un audit IA Axion-IA démarre à 1 190 € (Flash, 1 jour) ; Ciblé, Stratégique PME et ETI sur devis. Le marché pratique 1 500 à 25 000 €, Axion-IA est positionné PME avec des",
       h2Variants: [
         "Tableau des tarifs audit IA Axion-IA",
         "Marché des prix : comparatif cabinets IA",
       ],
     },
-    variables: { resultat: "490 € à 12 000 €", delai: "selon taille entreprise" },
+    variables: { resultat: "à partir de 1 190 €", delai: "selon taille entreprise" },
     urlCible: "/fr/faq/prix-audit-ia-entreprise",
     canonicalParent: "/fr/audit",
     source: "manuel",

@@ -46,6 +46,8 @@ import { cn } from "@/lib/utils";
 import {
   APPROFONDIE_SUB_TIERS,
   ESSENTIELLE_SUB_TIERS,
+  TEMPS_SUB_TIERS,
+  CLAUDE_SUB_TIERS,
   AUDIT_TIERS,
   INTERVENTION_TIERS,
   getTierById,
@@ -97,7 +99,6 @@ type InterventionOption = {
     | "audit-flash-onsite"
     | "gagner-du-temps"
     | "demarrage-ia-express"
-    | "atelier-ia-cible"
     | "intervention-claude";
   fr: string;
   en: string;
@@ -156,17 +157,18 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     // temps rejoint les formats bookables direct. Enum DB `gagner_du_temps`
     // déjà présent dans prisma/schema.prisma.
     slug: "gagner-du-temps",
-    fr: `Gagner du temps · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr", { compact: true })}`,
-    en: `Save Time · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
+    fr: `Gagner du temps · à partir de ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr", { compact: true })}`,
+    en: `Save Time · from ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: `Journée · 9 h – 17 h · sur site · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
+    scheduleHintFr: `Journée · 9 h – 17 h · sur site · à partir de ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · from ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
   },
   {
-    // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe.
-    // 2026-05-24 (Will) : passage 390 € → 590 €.
-    // Bug réparé : les 2 formations 4 h câblaient leurs CTAs sur /interventions/demande
-    // alors que le tarif est fixe. Promues bookables direct calendrier. Enum DB
+    // Will (audit /interventions 2026-05-12) — formation 4 h prix fixe.
+    // 2026-06-03 (Will) : passage 590 € → 690 €, effectif plafonné à 12 pers.
+    // Atelier IA ciblé supprimé (une seule formation 4 h désormais).
+    // Bug réparé : la formation 4 h câblait son CTA sur /interventions/demande
+    // alors que le tarif est fixe. Promue bookable direct calendrier. Enum DB
     // `demarrage_ia_express` ajouté via migration 20260512120000_collective_4h_enum_values.
     slug: "demarrage-ia-express",
     fr: `Démarrage IA Express · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr", { compact: true })}`,
@@ -176,23 +178,15 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     scheduleHintEn: `Half-day · 9 a.m. – 1 p.m. · on site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
   },
   {
-    slug: "atelier-ia-cible",
-    fr: `Atelier IA ciblé · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr", { compact: true })}`,
-    en: `Targeted AI Workshop · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
-    durationDays: 1,
-    scheduleHintFr: `Demi-journée · 9 h – 13 h · sur site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Half-day · 9 a.m. – 1 p.m. · on site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
-  },
-  {
     // Will (audit /interventions 2026-05-12) — Formation Claude équipe passe
     // de Sur devis à prix fixe pour 2 à 8 personnes, bookable direct calendrier
     // (cf. pricing.ts intervention-claude). 2026-05-24 : alignement à 990 € HT.
     slug: "intervention-claude",
-    fr: `Formation Claude · 2-8 pers. · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr", { compact: true })}`,
-    en: `Claude Training · 2-8 ppl · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
+    fr: `Formation Claude · à partir de ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr", { compact: true })}`,
+    en: `Claude Training · from ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: `Journée · 9 h – 17 h · sur site · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
+    scheduleHintFr: `Journée · 9 h – 17 h · sur site · à partir de ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · from ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
   },
 ];
 
@@ -263,8 +257,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Star,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr"),
-    priceEn: formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true }),
+    priceFr: `À partir de ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr")}`,
+    priceEn: `Starting at ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
     previewFr:
       "1 journée équipe · automatisations tâches récurrentes · plusieurs heures gagnées/semaine",
     previewEn: "1 team day · recurring task automations · hours reclaimed each week",
@@ -278,25 +272,16 @@ const INTERVENTION_VISUAL: Record<
     previewFr: "Demi-journée · démystifier l'IA · panorama 2026 · 2-3 prompts opérationnels testés",
     previewEn: "Half-day · demystify AI · 2026 panorama · 2-3 working prompts tested",
   },
-  "atelier-ia-cible": {
-    icon: Sparkles,
-    accentBg: "bg-terracotta-soft",
-    accentFg: "text-terracotta-deep",
-    priceFr: formatAmount(INTERVENTION_4H_PRICE_EUR, "fr"),
-    priceEn: formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true }),
-    previewFr: "Demi-journée · 1 cas d'usage métier · implémenté sur chaque poste",
-    previewEn: "Half-day · 1 business case · implemented on each workstation",
-  },
   "intervention-claude": {
     icon: Sparkles,
     // hex-ok: brand-anthropic-claude — couleurs Anthropic imposées pour
     // la Formation Claude (cohérent avec la card listing InterventionFormatCard).
     accentBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     accentFg: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
-    priceFr: formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr"),
-    priceEn: formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true }),
-    previewFr: "1 journée 100 % Claude · 2-8 pers. · Chat + Projects + Code CLI",
-    previewEn: "1 day 100 % Claude · 2-8 ppl · Chat + Projects + Code CLI",
+    priceFr: `À partir de ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr")}`,
+    priceEn: `Starting at ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
+    previewFr: "1 journée 100 % Claude · jusqu'à 30 pers. · Chat + Projects + Code CLI",
+    previewEn: "1 day 100 % Claude · up to 30 ppl · Chat + Projects + Code CLI",
   },
 };
 
@@ -310,7 +295,8 @@ const INTERVENTION_VISUAL: Record<
 // pour Approfondie → `getInterventionPriceCents` fallback sur priceFlat=880
 // (palier 2-8). Conséquence : 25 personnes Approfondie facturées 880 € au
 // lieu de 2140 €. Manque à gagner jusqu'à 1260 €/booking.
-export type EssentielleTier = "intimiste" | "standard" | "complete";
+// Will 2026-06-03 — 2 paliers (2-15 / 16-30). `intimiste` (ex-bracket 2-8) supprimé.
+export type EssentielleTier = "standard" | "complete";
 // Will (audit /interventions 2026-05-12) — alias plus parlant. Garde aussi
 // EssentielleTier pour la rétrocompat (export utilisé ailleurs).
 export type ParticipantsTier = EssentielleTier;
@@ -351,12 +337,47 @@ const APPROFONDIE_TIERS: ReadonlyArray<TierEntry> = APPROFONDIE_SUB_TIERS.map((t
   };
 });
 
+// Will 2026-06-03 — Gagner du temps + Intervention Claude passent à 2 paliers
+// (mêmes brackets 2-15 / 16-30). Mêmes shortIds standard/complete.
+const TEMPS_TIERS: ReadonlyArray<TierEntry> = TEMPS_SUB_TIERS.map((t) => {
+  const shortId = t.id.replace(/^temps-/, "") as ParticipantsTier;
+  return {
+    id: shortId,
+    labelFr: t.labelFr,
+    labelEn: t.labelEn,
+    sizeFr: t.rangeFr,
+    sizeEn: t.rangeEn,
+    priceEur: t.priceFlat,
+    ...(t.isFeatured ? { isFeatured: true as const } : {}),
+  };
+});
+
+const CLAUDE_TIERS: ReadonlyArray<TierEntry> = CLAUDE_SUB_TIERS.map((t) => {
+  const shortId = t.id.replace(/^claude-/, "") as ParticipantsTier;
+  return {
+    id: shortId,
+    labelFr: t.labelFr,
+    labelEn: t.labelEn,
+    sizeFr: t.rangeFr,
+    sizeEn: t.rangeEn,
+    priceEur: t.priceFlat,
+    ...(t.isFeatured ? { isFeatured: true as const } : {}),
+  };
+});
+
 /** Slugs qui exposent un sélecteur de paliers prix (effectif → prix). */
-const TIERED_SLUGS: ReadonlySet<string> = new Set(["essentielle", "approfondie"]);
+const TIERED_SLUGS: ReadonlySet<string> = new Set([
+  "essentielle",
+  "approfondie",
+  "gagner-du-temps",
+  "intervention-claude",
+]);
 
 /** Retourne la liste de paliers pour un slug donné. */
 function getTiersForSlug(slug: string): ReadonlyArray<TierEntry> {
   if (slug === "approfondie") return APPROFONDIE_TIERS;
+  if (slug === "gagner-du-temps") return TEMPS_TIERS;
+  if (slug === "intervention-claude") return CLAUDE_TIERS;
   return ESSENTIELLE_TIERS;
 }
 
@@ -845,18 +866,15 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   }
 
   // === SUBMIT — wired to createBookingAction (P0-1 fix) ===
-  // Map tier → participantsCount mid-bracket :
-  //   intimiste 2-8   → 5   ; standard 9-15 → 12   ; complete 16-30 → 20
-  // Will (audit /interventions 2026-05-12) — étendu à Approfondie. Avant,
-  // Approfondie retombait sur `return 1` ce qui faisait facturer 880 €
-  // systématiquement (palier 1) au lieu de 880/1420/2140 € selon effectif.
-  // Pour les slugs sans paliers (conference/dirigeants/4h/gagner-du-temps/
-  // audit-flash-onsite), on envoie 1 (le prix est flat ou onQuote).
+  // Map tier → participantsCount mid-bracket (Will 2026-06-03, 2 paliers) :
+  //   standard 2-15 → 8   ; complete 16-30 → 23
+  // S'applique aux 4 formats à paliers (Essentielle, Approfondie, Gagner du
+  // temps, Intervention Claude). Pour les slugs sans paliers (conference/
+  // dirigeants/4h/audit-flash-onsite), on envoie 1 (prix flat ou onQuote).
   function getParticipantsForSubmission(): number {
     if (!TIERED_SLUGS.has(preselectedOpt.slug)) return 1;
-    if (selectedTier === "intimiste") return 5;
-    if (selectedTier === "standard") return 12;
-    return 20; // complete
+    if (selectedTier === "standard") return 8;
+    return 23; // complete (16-30)
   }
 
   const [submitError, setSubmitError] = React.useState<string | null>(null);
@@ -1547,10 +1565,22 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                         showTierSelector={TIERED_SLUGS.has(preselectedOpt.slug)}
                         tierEntries={getTiersForSlug(preselectedOpt.slug)}
                         tierFormatLabelFr={
-                          preselectedOpt.slug === "approfondie" ? "Approfondie" : "Essentielle"
+                          preselectedOpt.slug === "approfondie"
+                            ? "Approfondie"
+                            : preselectedOpt.slug === "gagner-du-temps"
+                              ? "Gagner du temps"
+                              : preselectedOpt.slug === "intervention-claude"
+                                ? "Intervention Claude"
+                                : "Essentielle"
                         }
                         tierFormatLabelEn={
-                          preselectedOpt.slug === "approfondie" ? "Deep Dive" : "Essential"
+                          preselectedOpt.slug === "approfondie"
+                            ? "Deep Dive"
+                            : preselectedOpt.slug === "gagner-du-temps"
+                              ? "Save Time"
+                              : preselectedOpt.slug === "intervention-claude"
+                                ? "Claude Intervention"
+                                : "Essential"
                         }
                         selectedTier={selectedTier}
                         onPickTier={pickTier}
@@ -1766,10 +1796,10 @@ function StepCompany(props: {
           </Label>
           <p className="text-fg-soft mb-4 text-sm leading-relaxed">
             {isFr
-              ? `Le tarif dépend de l'effectif présent à la journée ${formatLabel}. Programme identique pour les 3 tranches.`
-              : `The price depends on the headcount on the day (${formatLabel}). Same programme for all 3 tiers.`}
+              ? `Le tarif dépend de l'effectif présent à la journée ${formatLabel}. Programme identique pour les 2 tranches.`
+              : `The price depends on the headcount on the day (${formatLabel}). Same programme for both tiers.`}
           </p>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             {tiers.map((t) => {
               const isSel = t.id === props.selectedTier;
               return (

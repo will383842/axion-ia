@@ -44,14 +44,11 @@ export const routing = defineRouting({
       fr: "/interventions/collectives/3-jours-plus",
       en: "/interventions/team-trainings/3-days-plus",
     },
-    // Pages détail indexables des 2 formations 4 h (Sprint 14.10.7 fix).
+    // Page détail indexable de l'unique formation 4 h (Sprint 14.10.7 fix).
+    // Atelier IA ciblé supprimé le 2026-06-03 (Will) — 301 via next.config.ts.
     "/interventions/demarrage-ia-express": {
       fr: "/interventions/demarrage-ia-express",
       en: "/interventions/ai-express-kickoff",
-    },
-    "/interventions/atelier-ia-cible": {
-      fr: "/interventions/atelier-ia-cible",
-      en: "/interventions/targeted-ai-workshop",
     },
     // Page dédiée formulaire interventions (pattern miroir de /audit/demande).
     // Sprint 14.10.7 — Will exige une page indexable, pas un scroll anchor.

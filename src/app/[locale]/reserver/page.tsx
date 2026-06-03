@@ -63,11 +63,10 @@ async function loadDbBookedSlots(): Promise<BookedSlot[]> {
       // Sprint 14.10.8 (Will 2026-05-12) — audit Flash terrain affichable
       // dans le calendrier social-proof feed.
       "audit-flash-onsite",
-      // Will (audit /interventions 2026-05-12) — Gagner du temps + formations
+      // Will (audit /interventions 2026-05-12) — Gagner du temps + formation
       // 4 h + Formation Claude rejoignent les formats bookables direct calendrier.
       "gagner-du-temps",
       "demarrage-ia-express",
-      "atelier-ia-cible",
       "intervention-claude",
     ]);
     const out: BookedSlot[] = [];

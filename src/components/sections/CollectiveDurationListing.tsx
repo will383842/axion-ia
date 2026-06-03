@@ -106,7 +106,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           id: "4h-effectif",
           question: "Combien de participants en 4 heures ?",
           answer:
-            "De 2 à 20 personnes en prix fixe. Au-delà, on bascule sur le palier 1 jour ou Conférence pour garder de l'interaction.",
+            "De 2 à 12 personnes en prix fixe. Au-delà, on bascule sur le palier 1 jour ou Conférence pour garder de l'interaction.",
         },
         {
           id: "4h-frais",
@@ -131,7 +131,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           id: "4h-effectif",
           question: "How many participants in 4 hours?",
           answer:
-            "From 2 to 20 people, flat price. Beyond that, switch to the 1-day tier or Conference to keep interaction.",
+            "From 2 to 12 people, flat price. Beyond that, switch to the 1-day tier or Conference to keep interaction.",
         },
         {
           id: "4h-frais",

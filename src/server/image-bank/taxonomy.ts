@@ -62,7 +62,6 @@ export const SUB_MODULES_INTERVENTIONS = [
   "conference",
   "conference-pleniere",
   "conference-keynote",
-  "atelier-ia-cible",
   "demarrage-ia-express",
   "gagner-du-temps",
   "coaching-decouverte",

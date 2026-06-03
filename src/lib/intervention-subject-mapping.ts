@@ -61,7 +61,6 @@ export function mapObjetToSubject(objet: string | undefined): string {
     objet.includes("cadrage-2-jours") ||
     objet.includes("cadrage-3-jours") ||
     objet.includes("demarrage-ia-express") ||
-    objet.includes("atelier-ia-cible") ||
     objet.includes("essentielle") ||
     objet.includes("approfondie") ||
     objet.includes("gagner-du-temps") ||

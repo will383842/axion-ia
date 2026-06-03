@@ -3,10 +3,9 @@
 // données de maillage (pages sœurs suggérées) et le label géo du pack de contenu
 // principal (interventions.ts). Consommé par FormationSubPageExtras.
 //
-// Périmètre = formations COLLECTIVES uniquement (1 jour / 2 jours). Les pages
-// 4 h (demarrage-ia-express / atelier-ia-cible) ont leur propre template
-// (CollectiveTrainingPage) ; le coaching/dirigeants/individuel relève du module
-// un-à-un (hors périmètre).
+// Périmètre = formations COLLECTIVES uniquement (1 jour / 2 jours). La page
+// 4 h (demarrage-ia-express) a son propre template (CollectiveTrainingPage) ;
+// le coaching/dirigeants/individuel relève du module un-à-un (hors périmètre).
 
 import type { InterventionSlug } from "./interventions";
 

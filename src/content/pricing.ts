@@ -174,7 +174,9 @@ export const AUDIT_STRATEGIQUE_ETI_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "1-2 BU · 1-2 sites",
     rangeFr: "3-4 services",
     rangeEn: "3-4 services",
-    priceFlat: 12000,
+    // Will 2026-06-03 — l'ETI n'est plus un prix plancher fixe : « à partir de
+    // 1 900 € · sur devis » (le chiffrage réel se fait au cas par cas).
+    priceFlat: 1900,
     isFeatured: true,
   },
 ];
@@ -196,8 +198,9 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
     id: "audit-cible",
     labelFr: "Audit Ciblé",
     labelEn: "Targeted audit",
+    // Will 2026-06-03 — affichage « À partir de 1 900 € · sur devis » (suppression
+    // de la borne haute ; les sous-tiers Solo/Standard/Avancé restent détaillés).
     priceMin: 1900,
-    priceMax: 3900,
     subTiers: AUDIT_CIBLE_SUB_TIERS,
     descriptionFr: "Audit focalisé sur un département ou une fonction.",
     descriptionEn: "Audit focused on one department or function.",
@@ -207,8 +210,10 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
     id: "audit-strategique-pme",
     labelFr: "Audit Stratégique PME",
     labelEn: "SME Strategic audit",
-    priceMin: 4900,
-    priceMax: 9900,
+    // Will 2026-06-03 — en-tête uniforme « À partir de 1 900 € · sur devis »
+    // (comme Ciblé et ETI). Les sous-tiers détaillés 20-50 (4 900 €) / 50-250
+    // (9 900 €) restent visibles sur la page détail.
+    priceMin: 1900,
     subTiers: AUDIT_STRATEGIQUE_PME_SUB_TIERS,
     descriptionFr: "Audit complet multi-départements pour PME ambitieuses.",
     descriptionEn: "Full multi-department audit for ambitious SMEs.",
@@ -218,7 +223,8 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
     id: "audit-strategique-eti",
     labelFr: "Audit Stratégique ETI",
     labelEn: "Mid-cap Strategic audit",
-    priceMin: 12000,
+    // Will 2026-06-03 — passage de 12 000 € à « À partir de 1 900 € · sur devis ».
+    priceMin: 1900,
     subTiers: AUDIT_STRATEGIQUE_ETI_SUB_TIERS,
     descriptionFr: "Audit transverse + gouvernance IA pour ETI et grandes entreprises.",
     descriptionEn: "Transverse audit + AI governance for mid-caps and large enterprises.",
@@ -238,111 +244,129 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
 // ============================================================================
 
 /**
- * Sous-tiers Essentielle (1 jour) — Sprint 14.10.5c (Will 2026-05-08).
+ * Sous-tiers Essentielle (1 jour) — refonte tarifaire Will 2026-06-03.
  *
- * Brackets canoniques imposés par Will : 2-8 / 9-15 / 16-30 personnes.
- * Identiques à Approfondie (même grille pour tous les formats).
+ * Nouveaux brackets canoniques : 2 paliers identiques pour tous les formats
+ * collectifs (Essentielle, Gagner du temps, Intervention Claude, Approfondie) :
+ *   2 à 15 personnes  : 2 450 € HT (prix d'entrée)
+ *   16 à 30 personnes : 3 950 € HT (grande équipe)
  *
- *   2-8 pers   :   690 € HT (prix d'entrée flagship)
- *   9-15 pers  :   890 € HT (recommandé · effectif moyen)
- *   16-30 pers : 1 490 € HT (grande équipe)
- *
- * Dégressivité €/pers (au pire de chaque bracket) :
- *     86 € → 59 € → 50 €/pers ✅ vraiment dégressif
- *
- * Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
- *
- * IDs `essentielle-intimiste/standard/complete` conservés pour compat
- * avec les URLs `?tier=intimiste` du BookingCalendar (les LABELS décrivent
- * le type de groupe — petit / moyen / grand — pas la fourchette précise).
+ * IDs `essentielle-standard` (2-15) / `essentielle-complete` (16-30) conservés
+ * pour compat avec le shortId du BookingCalendar (`standard` / `complete`) et
+ * les URLs `?tier=`. Le palier `intimiste` (3e bracket) est supprimé.
  */
 export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
-    id: "essentielle-intimiste",
-    labelFr: "Intimiste",
-    labelEn: "Intimate",
-    rangeFr: "2 à 8 personnes",
-    rangeEn: "2 to 8 people",
-    priceFlat: 690,
-  },
-  {
     id: "essentielle-standard",
-    labelFr: "Standard",
-    labelEn: "Standard",
-    rangeFr: "9 à 15 personnes",
-    rangeEn: "9 to 15 people",
-    priceFlat: 890,
+    labelFr: "Petit groupe",
+    labelEn: "Small group",
+    rangeFr: "2 à 15 personnes",
+    rangeEn: "2 to 15 people",
+    priceFlat: 2450,
     isFeatured: true,
   },
   {
     id: "essentielle-complete",
-    labelFr: "Complète",
-    labelEn: "Complete",
+    labelFr: "Grand groupe",
+    labelEn: "Large group",
     rangeFr: "16 à 30 personnes",
     rangeEn: "16 to 30 people",
-    priceFlat: 1490,
+    priceFlat: 3950,
   },
 ];
 
 /**
- * Sous-tiers Approfondie (2 jours) — Sprint 14.10.5c (Will 2026-05-08).
- *
- * Brackets identiques à Essentielle (Will : « pas 2-4 mais 2-8, pas 5-6
- * mais 9-15, pas 7-8 mais 16-30 »). Cohérence stricte avec Essentielle —
- * le 2e jour reflète le coût marginal (prof déjà mobilisé, logement+repas
- * déjà payés, pas doublement strict).
- *
- *   2-8 pers   : 1 190 € HT
- *   9-15 pers  : 1 590 € HT
- *   16-30 pers : 2 490 € HT
- *
- * Dégressivité €/pers (au pire de chaque bracket) :
- *     149 € → 106 € → 83 €/pers ✅ vraiment dégressif
- *
- * Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
+ * Sous-tiers Approfondie (2 jours) — refonte tarifaire Will 2026-06-03.
+ * Mêmes 2 brackets que les autres formats collectifs :
+ *   2 à 15 personnes  : 3 250 € HT
+ *   16 à 30 personnes : 4 850 € HT
  */
 export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
-    id: "approfondie-intimiste",
-    labelFr: "Intimiste",
-    labelEn: "Intimate",
-    rangeFr: "2 à 8 personnes",
-    rangeEn: "2 to 8 people",
-    priceFlat: 1190,
-  },
-  {
     id: "approfondie-standard",
-    labelFr: "Standard",
-    labelEn: "Standard",
-    rangeFr: "9 à 15 personnes",
-    rangeEn: "9 to 15 people",
-    priceFlat: 1590,
+    labelFr: "Petit groupe",
+    labelEn: "Small group",
+    rangeFr: "2 à 15 personnes",
+    rangeEn: "2 to 15 people",
+    priceFlat: 3250,
     isFeatured: true,
   },
   {
     id: "approfondie-complete",
-    labelFr: "Complète",
-    labelEn: "Complete",
+    labelFr: "Grand groupe",
+    labelEn: "Large group",
     rangeFr: "16 à 30 personnes",
     rangeEn: "16 to 30 people",
-    priceFlat: 2490,
+    priceFlat: 4850,
+  },
+];
+
+/**
+ * Sous-tiers Gagner du temps (1 jour) — refonte tarifaire Will 2026-06-03.
+ * Format passé d'un prix unique à 2 paliers (mêmes brackets que les autres).
+ *   2 à 15 personnes  : 2 450 € HT
+ *   16 à 30 personnes : 3 950 € HT
+ */
+export const TEMPS_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
+  {
+    id: "temps-standard",
+    labelFr: "Petit groupe",
+    labelEn: "Small group",
+    rangeFr: "2 à 15 personnes",
+    rangeEn: "2 to 15 people",
+    priceFlat: 2450,
+    isFeatured: true,
+  },
+  {
+    id: "temps-complete",
+    labelFr: "Grand groupe",
+    labelEn: "Large group",
+    rangeFr: "16 à 30 personnes",
+    rangeEn: "16 to 30 people",
+    priceFlat: 3950,
+  },
+];
+
+/**
+ * Sous-tiers Intervention Claude (1 jour) — refonte tarifaire Will 2026-06-03.
+ * Format passé d'un prix unique (2-8 pers) à 2 paliers jusqu'à 30 personnes.
+ *   2 à 15 personnes  : 2 650 € HT
+ *   16 à 30 personnes : 4 250 € HT
+ */
+export const CLAUDE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
+  {
+    id: "claude-standard",
+    labelFr: "Petit groupe",
+    labelEn: "Small group",
+    rangeFr: "2 à 15 personnes",
+    rangeEn: "2 to 15 people",
+    priceFlat: 2650,
+    isFeatured: true,
+  },
+  {
+    id: "claude-complete",
+    labelFr: "Grand groupe",
+    labelEn: "Large group",
+    rangeFr: "16 à 30 personnes",
+    rangeEn: "16 to 30 people",
+    priceFlat: 4250,
   },
 ];
 
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
-    // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Prix
-    // unique partagé par les 2 formations 4 h actuelles (Démarrage IA
-    // Express + Atelier IA ciblé). Si plus tard Will différencie les
-    // tarifs, splitter en 2 tiers distincts.
+    // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Tier porté
+    // par l'unique formation 4 h restante (Démarrage IA Express). Atelier IA
+    // ciblé supprimé le 2026-06-03 (Will). Prix passé de 590 à 690 € HT et
+    // effectif plafonné à 12 personnes (Will 2026-06-03).
     id: "intervention-4h",
     labelFr: "Formation 4 heures",
     labelEn: "4-hour training",
-    priceFlat: 590,
+    priceFlat: 690,
     durationFr: "Demi-journée (4 h)",
     durationEn: "Half-day (4 h)",
-    groupSizeFr: "2 à 20 personnes",
-    groupSizeEn: "2 to 20 people",
+    groupSizeFr: "2 à 12 personnes",
+    groupSizeEn: "2 to 12 people",
     descriptionFr:
       "Format express demi-journée pour découvrir l'IA ou cadrer un cas d'usage métier précis.",
     descriptionEn: "Half-day express format to discover AI or frame a specific business use case.",
@@ -352,7 +376,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-essentielle",
     labelFr: "Essentielle",
     labelEn: "Essential",
-    priceFlat: 690,
+    // Will 2026-06-03 — prix d'entrée = palier 2-15 pers (2 450 €).
+    priceFlat: 2450,
     durationFr: "1 journée",
     durationEn: "1 day",
     groupSizeFr: "2 à 30 personnes",
@@ -365,11 +390,14 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-temps",
     labelFr: "Gagner du temps",
     labelEn: "Save Time",
-    priceFlat: 990,
+    // Will 2026-06-03 — passage à 2 paliers (prix d'entrée 2-15 pers = 2 450 €),
+    // effectif élargi à 30 personnes.
+    priceFlat: 2450,
     durationFr: "1 journée",
     durationEn: "1 day",
-    groupSizeFr: "2 à 20 personnes",
-    groupSizeEn: "2 to 20 people",
+    groupSizeFr: "2 à 30 personnes",
+    groupSizeEn: "2 to 30 people",
+    subTiers: TEMPS_SUB_TIERS,
     descriptionFr:
       "Une journée pour gagner du temps concrètement : automatisations IA sur les tâches récurrentes et intégration dans le flux de travail quotidien.",
     descriptionEn:
@@ -380,16 +408,16 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-approfondie",
     labelFr: "Approfondie",
     labelEn: "Deep dive",
-    priceFlat: 1190,
+    // Will 2026-06-03 — prix d'entrée = palier 2-15 pers (3 250 €).
+    priceFlat: 3250,
     durationFr: "2 jours",
     durationEn: "2 days",
     groupSizeFr: "2 à 30 personnes",
     groupSizeEn: "2 to 30 people",
     subTiers: APPROFONDIE_SUB_TIERS,
     descriptionFr:
-      "Approfondissement IA sur deux journées consécutives — même grille d'effectif qu'Essentielle (2-8 / 9-15 / 16-30 personnes), tarif × 1.8 pour le 2e jour.",
-    descriptionEn:
-      "Two-day AI deep dive — same headcount grid as Essential (2-8 / 9-15 / 16-30 people), price × 1.8 for the 2nd day.",
+      "Approfondissement IA sur deux journées consécutives — même grille d'effectif qu'Essentielle (2-15 / 16-30 personnes).",
+    descriptionEn: "Two-day AI deep dive — same headcount grid as Essential (2-15 / 16-30 people).",
   },
   {
     id: "intervention-conference",
@@ -408,7 +436,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-dirigeants",
     labelFr: "Dirigeants",
     labelEn: "Executives",
-    priceFlat: 990,
+    // Will 2026-06-03 — journée 1-to-1 dirigeant portée de 990 à 1 190 € HT.
+    priceFlat: 1190,
     durationFr: "1 journée",
     durationEn: "1 day",
     groupSizeFr: "1 dirigeant (1-to-1)",
@@ -445,16 +474,46 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-claude",
     labelFr: "Intervention Claude",
     labelEn: "Claude intervention",
-    priceFlat: 990,
+    // Will 2026-06-03 — passage à 2 paliers (prix d'entrée 2-15 pers = 2 650 €),
+    // effectif élargi à 30 personnes.
+    priceFlat: 2650,
     durationFr: "1 journée",
     durationEn: "1 day",
-    groupSizeFr: "2 à 8 personnes",
-    groupSizeEn: "2 to 8 people",
-    descriptionFr:
-      "Une journée 100 % dédiée à Claude (Anthropic) : Chat · Cowork · Code. Petit groupe pour profondeur maximale.",
-    descriptionEn:
-      "A full day 100 % focused on Claude (Anthropic): Chat · Cowork · Code. Small group for maximum depth.",
+    groupSizeFr: "2 à 30 personnes",
+    groupSizeEn: "2 to 30 people",
+    subTiers: CLAUDE_SUB_TIERS,
+    descriptionFr: "Une journée 100 % dédiée à Claude (Anthropic) : Chat · Cowork · Code.",
+    descriptionEn: "A full day 100 % focused on Claude (Anthropic): Chat · Cowork · Code.",
     audienceSizes: ["tpe", "pme"],
+  },
+  {
+    // Will 2026-06-03 — 1-to-1 dirigeant « Vision IA stratégique », prix fixe.
+    id: "intervention-dirigeant-vision",
+    labelFr: "Vision IA stratégique",
+    labelEn: "Strategic AI vision",
+    priceFlat: 1390,
+    durationFr: "1 journée",
+    durationEn: "1 day",
+    groupSizeFr: "1 dirigeant (1-to-1)",
+    groupSizeEn: "1 executive (1-on-1)",
+    descriptionFr:
+      "Journée 1-to-1 pour ouvrir les yeux du dirigeant sur les opportunités IA de son secteur.",
+    descriptionEn: "1-on-1 day to open the executive's eyes to AI opportunities in their sector.",
+    audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
+  },
+  {
+    // Will 2026-06-03 — 1-to-1 dirigeant 100 % Claude, prix fixe.
+    id: "intervention-claude-dirigeant",
+    labelFr: "Intervention Claude · Dirigeant",
+    labelEn: "Claude Intervention · Executive",
+    priceFlat: 1190,
+    durationFr: "1 journée",
+    durationEn: "1 day",
+    groupSizeFr: "1 dirigeant (1-to-1)",
+    groupSizeEn: "1 executive (1-on-1)",
+    descriptionFr: "Journée 1-to-1 dirigeant 100 % dédiée à Claude (Anthropic).",
+    descriptionEn: "1-on-1 executive day 100 % focused on Claude (Anthropic).",
+    audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
     id: "intervention-sur-demande",

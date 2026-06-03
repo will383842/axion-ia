@@ -24,7 +24,6 @@ const CALENDAR_SUPPORTED_SLUGS: ReadonlySet<string> = new Set([
   "audit-flash-onsite",
   "gagner-du-temps",
   "demarrage-ia-express",
-  "atelier-ia-cible",
   "intervention-claude",
 ]);
 

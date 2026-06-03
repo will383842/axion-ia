@@ -40,7 +40,6 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
 
   // Interventions — coaching individuel + autres slugs FR ≠ EN
   ["/en/interventions/ai-express-kickoff", "/fr/interventions/demarrage-ia-express"],
-  ["/en/interventions/targeted-ai-workshop", "/fr/interventions/atelier-ia-cible"],
   ["/en/interventions/request", "/fr/interventions/demande"],
   ["/en/interventions/individual", "/fr/interventions/individuel"],
   ["/en/interventions/discovery-coaching", "/fr/interventions/coaching-decouverte"],

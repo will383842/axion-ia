@@ -102,11 +102,6 @@ describe("mapEnToFr", () => {
         "/fr/interventions/demarrage-ia-express",
       );
     });
-    it("/en/interventions/targeted-ai-workshop → /fr/interventions/atelier-ia-cible", () => {
-      expect(mapEnToFr("/en/interventions/targeted-ai-workshop")).toBe(
-        "/fr/interventions/atelier-ia-cible",
-      );
-    });
     it("/en/interventions/request → /fr/interventions/demande", () => {
       expect(mapEnToFr("/en/interventions/request")).toBe("/fr/interventions/demande");
     });

@@ -7,6 +7,7 @@ import { fmtNumber } from "@/lib/intl";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
+  IMPLEMENTATION_TIERS,
   MAINTENANCE_TIERS,
   formatAmount,
   formatAmountRange,
@@ -25,6 +26,10 @@ const flash = getTierById(AUDIT_TIERS, "audit-flash");
 const cible = getTierById(AUDIT_TIERS, "audit-cible");
 const conference = getTierById(INTERVENTION_TIERS, "intervention-conference");
 const maintenance = getTierById(MAINTENANCE_TIERS, "maintenance-standard");
+// Will 2026-06-03 — les tiers audit sont passés en « à partir de » (sans borne
+// haute). Pour tester le mode `range`, on utilise impl-poc qui garde une vraie
+// fourchette (990–4 900 €).
+const poc = getTierById(IMPLEMENTATION_TIERS, "impl-poc");
 
 describe("hasPriceToken", () => {
   it("détecte un token, ignore le texte sans token", () => {
@@ -52,8 +57,8 @@ describe("resolvePriceTokens — modes", () => {
   });
 
   it("range → formatAmountRange des bornes", () => {
-    expect(resolvePriceTokens("{{price:audit-cible|range}}", "fr")).toBe(
-      formatAmountRange(cible.priceMin!, cible.priceMax!, "fr"),
+    expect(resolvePriceTokens("{{price:impl-poc|range}}", "fr")).toBe(
+      formatAmountRange(poc.priceMin!, poc.priceMax!, "fr"),
     );
   });
 
@@ -152,13 +157,13 @@ describe("resolvePriceTokensDeep", () => {
     const input = {
       title: "Offre",
       price: "{{price:audit-flash|flat}}",
-      nested: { faq: ["Q ?", "Tarif {{price:audit-cible|range}}."] },
+      nested: { faq: ["Q ?", "Tarif {{price:impl-poc|range}}."] },
       keep: 42,
     };
     const out = resolvePriceTokensDeep(input, "fr");
     expect(out.title).toBe("Offre");
     expect(out.price).toBe(formatAmount(flash.priceFlat!, "fr"));
-    expect(out.nested.faq[1]).toContain(formatAmountRange(cible.priceMin!, cible.priceMax!, "fr"));
+    expect(out.nested.faq[1]).toContain(formatAmountRange(poc.priceMin!, poc.priceMax!, "fr"));
     expect(out.keep).toBe(42);
     // immutabilité : l'entrée n'est pas mutée
     expect(input.price).toBe("{{price:audit-flash|flat}}");

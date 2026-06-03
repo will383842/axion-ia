@@ -160,16 +160,16 @@ export default async function Approfondie({ params }: Props) {
       <Section
         tone="paper"
         eyebrow={isFr ? "Choisissez votre tranche" : "Pick your tier"}
-        title={isFr ? "3 tarifs selon" : "3 prices for"}
+        title={isFr ? "2 tarifs selon" : "2 prices for"}
         titleEm={isFr ? "votre effectif" : "your headcount"}
         description={
           isFr
-            ? "Programme identique pour les 3 tranches. Le prix dépend uniquement du nombre de participants présents sur les 2 jours."
-            : "Same programme for all 3 tiers. Price depends only on the number of participants on the 2 days."
+            ? "Programme identique pour les 2 tranches. Le prix dépend uniquement du nombre de participants présents sur les 2 jours."
+            : "Same programme for both tiers. Price depends only on the number of participants on the 2 days."
         }
       >
         <Container className="max-w-5xl">
-          <ul className="grid gap-5 sm:gap-6 lg:grid-cols-3">
+          <ul className="grid gap-5 sm:gap-6 lg:grid-cols-2">
             {APPROFONDIE_TIERS.map((t) => {
               const label = isFr ? t.labelFr : t.labelEn;
               const size = isFr ? t.sizeFr : t.sizeEn;

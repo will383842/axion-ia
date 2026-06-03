@@ -356,6 +356,18 @@ const nextConfig: NextConfig = {
         destination: "/:locale/interventions/collectives",
         permanent: true,
       },
+      // Suppression Atelier IA ciblé 2026-06-03 (Will) — le palier 4 h ne garde
+      // qu'une formation. 301 de l'ancien slug (FR + EN miroir) vers la page 4 h.
+      {
+        source: "/:locale(fr|en)/interventions/atelier-ia-cible",
+        destination: "/:locale/interventions/collectives/4h",
+        permanent: true,
+      },
+      {
+        source: "/en/interventions/targeted-ai-workshop",
+        destination: "/fr/interventions/collectives/4h",
+        permanent: true,
+      },
     ];
   },
   async headers() {
