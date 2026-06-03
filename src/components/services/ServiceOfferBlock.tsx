@@ -25,9 +25,14 @@ export function ServiceOfferBlock({ service }: ServiceOfferBlockProps) {
   const label = cta.labelFr.replace(/^Découvrir /, "");
 
   return (
-    <Section tone="sand" eyebrow="Aller plus loin" title="Concrétisez avec" titleEm={`« ${label} »`}>
+    <Section
+      tone="sand"
+      eyebrow="Aller plus loin"
+      title="Concrétisez avec"
+      titleEm={`« ${label} »`}
+    >
       <p className="text-fg-soft -mt-10 mb-8 max-w-2xl text-lg leading-relaxed">
-        Ce sujet fait partie de notre expertise. Passez à l'action avec un accompagnement Axion-IA,
+        Ce sujet fait partie de notre expertise. Passez à l’action avec un accompagnement Axion-IA,
         sur vos vrais cas.
       </p>
       <Cta href={cta.href as never} size="lg">

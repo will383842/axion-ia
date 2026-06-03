@@ -145,7 +145,7 @@ function ChatbotFlow(): ReactNode {
       {/* moteur RAG (centre) */}
       <Card x={186} y={236} w={188} h={88} accent r={44} />
       <Title x={280} y={278} anchor="middle">
-        L'assistant
+        L’assistant
       </Title>
       <Sub x={280} y={302} anchor="middle">
         cherche la bonne réponse
@@ -266,7 +266,7 @@ function EnrichFlow(): ReactNode {
       />
       <circle cx={280} cy={281} r={18} fill="var(--color-terracotta)" fillOpacity={0.85} />
       <Sub x={280} y={344} anchor="middle">
-        L'IA complète & vérifie
+        L’IA complète & vérifie
       </Sub>
       <Flow d="M 324 281 H 362" />
       {/* fiche enrichie */}
@@ -326,7 +326,7 @@ function ParsePipeline(): ReactNode {
         />
       ))}
       <Sub x={280} y={372} anchor="middle">
-        L'IA lit & extrait
+        L’IA lit & extrait
       </Sub>
       <Flow d="M 336 280 H 372" />
       {/* JSON */}
@@ -341,7 +341,7 @@ function ParsePipeline(): ReactNode {
         strokeLinejoin="round"
       />
       <Sub x={438} y={296} anchor="middle">
-        Infos prêtes à l'emploi
+        Infos prêtes à l’emploi
       </Sub>
       <Sub x={438} y={318} anchor="middle">
         directement dans vos outils
@@ -500,7 +500,7 @@ function HubSpoke(): ReactNode {
       />
       <circle cx={280} cy={280} r={24} fill="var(--color-terracotta)" fillOpacity={0.85} />
       <Sub x={280} y={356} anchor="middle">
-        Tous vos outils reliés à l'IA
+        Tous vos outils reliés à l’IA
       </Sub>
     </g>
   );
