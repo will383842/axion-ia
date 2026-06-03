@@ -193,6 +193,9 @@ export const routing = defineRouting({
     "/sites-web-augmentes/plateforme-native": "/sites-web-augmentes/plateforme-native",
     "/sites-web-augmentes/recommandation": "/sites-web-augmentes/recommandation",
     "/sites-web-augmentes/wordpress": "/sites-web-augmentes/wordpress",
+    "/sites-web-augmentes/creer-saas-ia": "/sites-web-augmentes/creer-saas-ia",
+    "/sites-web-augmentes/shopify": "/sites-web-augmentes/shopify",
+    "/sites-web-augmentes/personnalisation": "/sites-web-augmentes/personnalisation",
 
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },

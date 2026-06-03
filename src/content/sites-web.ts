@@ -13,7 +13,10 @@ export type SitesWebSlug =
   | "sans-refonte"
   | "plateforme-native"
   | "recommandation"
-  | "wordpress";
+  | "wordpress"
+  | "creer-saas-ia"
+  | "shopify"
+  | "personnalisation";
 
 export type SitesWebProjectType = "augmentation" | "native" | "transverse";
 
@@ -1591,6 +1594,741 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
             title: "AI just grafts on",
             description:
               "We add the value (grounded chatbot) on the existing, without touching what already works.",
+          },
+        ],
+      },
+    },
+  },
+  // ── NATIVE : créer un SaaS IA sur mesure (angle produit) ───────────────────
+  {
+    slug: "creer-saas-ia",
+    projectType: "native",
+    pathFr: "/sites-web-augmentes/creer-saas-ia",
+    pathEn: "/sites-web-augmentes/creer-saas-ia",
+    accent: "purple",
+    hero: {
+      eyebrowFr: "De l'idée au produit",
+      eyebrowEn: "From idea to product",
+      titleFr: "Votre SaaS IA, conçu et livré",
+      titleEn: "Your AI SaaS, designed and delivered",
+      blocks: [
+        {
+          icon: "Layers",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "On cadre le produit",
+          labelEn: "We frame the product",
+          detailFr: "Utilisateurs, flux, rôle de l'IA, premier jalon livrable.",
+          detailEn: "Users, flows, AI role, first deliverable milestone.",
+        },
+        {
+          icon: "Rocket",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "On construit par jalons",
+          labelEn: "We build by milestones",
+          detailFr: "Livraisons régulières testables, pas un tunnel de plusieurs mois.",
+          detailEn: "Regular testable deliveries, not a multi-month tunnel.",
+        },
+        {
+          icon: "ShieldCheck",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Code et propriété à vous",
+          labelEn: "Code and ownership yours",
+          detailFr: "Hébergé en UE, conforme RGPD, aucune dépendance.",
+          detailEn: "EU-hosted, GDPR-compliant, no lock-in.",
+        },
+      ],
+      ariaFr:
+        "Schéma : on cadre le produit, on construit par jalons testables, et on livre un SaaS dont le code et la propriété sont à vous, hébergé en UE.",
+      ariaEn:
+        "Diagram: we frame the product, build by testable milestones, and deliver a SaaS whose code and ownership are yours, EU-hosted.",
+    },
+    fr: {
+      eyebrow: "Native · créer un SaaS IA",
+      title: "Créez votre SaaS IA",
+      titleEm: "sur mesure",
+      answer:
+        "Vous avez une idée de produit où l'IA est centrale ? On conçoit et développe votre SaaS sur mesure, pensé autour de l'IA dès le départ, livré par jalons testables. Code et propriété intégralement à vous, hébergé en UE.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Un vrai produit, pas un POC jetable",
+          description:
+            "Architecture pensée pour durer et grandir — pas une démo qu'on jette après le test.",
+        },
+        {
+          title: "Livré par jalons",
+          description:
+            "Vous voyez le produit grandir et arbitrez en continu, plutôt que d'attendre une livraison finale.",
+        },
+        {
+          title: "Vous en êtes propriétaire",
+          description:
+            "Code livré, documentation, hébergement UE — vous pouvez le faire évoluer avec qui vous voulez.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On cadre le produit",
+          description: "Utilisateurs, flux, rôle exact de l'IA, périmètre du premier jalon.",
+        },
+        {
+          title: "On conçoit l'architecture",
+          description: "Fondations IA + données, sécurité et conformité intégrées.",
+        },
+        {
+          title: "On construit par jalons",
+          description: "Livraisons régulières testables, retours intégrés en continu.",
+        },
+        {
+          title: "On livre et on transfère",
+          description: "Code, documentation, propriété — vous gardez la main.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "IA", suffix: "first", label: "Au cœur du produit" },
+        { number: "100%", suffix: "", label: "Propriété du code à vous" },
+        { number: "UE", suffix: "", label: "Hébergement conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "vs-plateforme",
+          question: "Différence avec « plateforme IA-native » ?",
+          answer:
+            "C'est le même paradigme (build from scratch autour de l'IA). « Créer un SaaS IA » insiste sur l'angle produit commercialisable ; « plateforme native » sur l'angle outil métier interne. On vous aide à cadrer au démarrage.",
+        },
+        {
+          id: "mvp",
+          question: "Peut-on commencer petit (MVP) ?",
+          answer:
+            "Oui, c'est recommandé : un premier jalon resserré, mis entre les mains d'utilisateurs réels, puis on itère. Pas de tunnel de plusieurs mois.",
+        },
+        {
+          id: "propriete",
+          question: "À qui appartient le code ?",
+          answer:
+            "À vous, intégralement. On livre code et documentation — aucune dépendance technique à Axion-IA.",
+        },
+        {
+          id: "rgpd",
+          question: "Et la conformité ?",
+          answer:
+            "RGPD et hébergement UE pensés dès la conception — y compris comme argument vis-à-vis de vos propres clients.",
+        },
+      ],
+      ctaBlockTitle: "Donnez vie à votre SaaS IA",
+      ctaBlockDescription:
+        "Décrivez votre idée de produit : on revient sous 48 h avec un premier jalon cadré, un forfait fixe et un délai garanti.",
+      why: {
+        title: "Un SaaS IA bricolé",
+        titleEm: "ne tient pas",
+        intro:
+          "Assembler vite un produit IA sans architecture finit par coincer dès les premiers vrais utilisateurs.",
+        points: [
+          {
+            title: "Le « vite fait » plafonne",
+            description:
+              "Sans fondations pensées pour l'IA et la donnée, le produit cale en perfs, en coûts et en évolutivité.",
+          },
+          {
+            title: "Un produit se conçoit",
+            description:
+              "Architecture, données et expérience pensées dès le départ — un vrai avantage produit, pas une démo.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "Native · build an AI SaaS",
+      title: "Build your AI SaaS",
+      titleEm: "bespoke",
+      answer:
+        "Have a product idea where AI is central? We design and develop your bespoke SaaS, built around AI from day one, delivered by testable milestones. Code and ownership fully yours, EU-hosted.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "A real product, not a throwaway POC",
+          description:
+            "Architecture built to last and grow — not a demo you discard after the test.",
+        },
+        {
+          title: "Delivered by milestones",
+          description:
+            "You watch the product grow and steer continuously, rather than waiting for a final delivery.",
+        },
+        {
+          title: "You own it",
+          description:
+            "Code delivered, documentation, EU hosting — you can evolve it with whoever you want.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We frame the product",
+          description: "Users, flows, exact AI role, first milestone scope.",
+        },
+        {
+          title: "We design the architecture",
+          description: "AI + data foundations, security and compliance built in.",
+        },
+        {
+          title: "We build by milestones",
+          description: "Regular testable deliveries, feedback integrated continuously.",
+        },
+        {
+          title: "We deliver and hand over",
+          description: "Code, documentation, ownership — you keep control.",
+        },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "AI", suffix: "first", label: "At the product core" },
+        { number: "100%", suffix: "", label: "Code ownership yours" },
+        { number: "EU", suffix: "", label: "GDPR-compliant hosting" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "vs-plateforme",
+          question: "Difference from « AI-native platform »?",
+          answer:
+            "Same paradigm (build from scratch around AI). « Build an AI SaaS » stresses the marketable product angle; « native platform » the internal business tool angle. We help you frame it at kickoff.",
+        },
+        {
+          id: "mvp",
+          question: "Can we start small (MVP)?",
+          answer:
+            "Yes, recommended: a tight first milestone, in real users' hands, then iterate. No multi-month tunnel.",
+        },
+        {
+          id: "propriete",
+          question: "Who owns the code?",
+          answer: "You, entirely. We deliver code and docs — no technical lock-in to Axion-IA.",
+        },
+        {
+          id: "rgpd",
+          question: "What about compliance?",
+          answer:
+            "GDPR and EU hosting designed from the start — including as an argument toward your own customers.",
+        },
+      ],
+      ctaBlockTitle: "Bring your AI SaaS to life",
+      ctaBlockDescription:
+        "Describe your product idea: we come back within 48 h with a scoped first milestone, a fixed fee and a guaranteed timeline.",
+      why: {
+        title: "A patched-together AI SaaS",
+        titleEm: "won't hold",
+        intro:
+          "Quickly assembling an AI product without architecture eventually jams with the first real users.",
+        points: [
+          {
+            title: "« Quick and dirty » hits a ceiling",
+            description:
+              "Without foundations built for AI and data, the product stalls on performance, cost and scalability.",
+          },
+          {
+            title: "A product must be designed",
+            description:
+              "Architecture, data and experience designed from the start — a real product edge, not a demo.",
+          },
+        ],
+      },
+    },
+  },
+
+  // ── AUGMENTATION : chatbot/IA sur Shopify (stack e-commerce) ────────────────
+  {
+    slug: "shopify",
+    projectType: "augmentation",
+    pathFr: "/sites-web-augmentes/shopify",
+    pathEn: "/sites-web-augmentes/shopify",
+    accent: "green",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "L'IA sur votre Shopify, sans refonte",
+      titleEn: "AI on your Shopify, no rebuild",
+      blocks: [
+        {
+          icon: "Plug",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "On garde votre Shopify",
+          labelEn: "We keep your Shopify",
+          detailFr: "Thème, apps, catalogue : rien n'est cassé.",
+          detailEn: "Theme, apps, catalogue: nothing broken.",
+        },
+        {
+          icon: "Sparkles",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Chatbot + reco produit",
+          labelEn: "Chatbot + product reco",
+          detailFr: "Assistant d'achat ancré sur vos fiches + suggestions pertinentes.",
+          detailEn: "Shopping assistant grounded in your sheets + relevant suggestions.",
+        },
+        {
+          icon: "Rocket",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Panier en hausse",
+          labelEn: "Higher cart",
+          detailFr: "Moins de questions support, plus de ventes complémentaires.",
+          detailEn: "Fewer support questions, more add-on sales.",
+        },
+      ],
+      ariaFr:
+        "Schéma : sur votre boutique Shopify existante, on greffe un assistant d'achat IA et des recommandations produit, sans refonte, pour augmenter le panier.",
+      ariaEn:
+        "Diagram: on your existing Shopify store, we graft an AI shopping assistant and product recommendations, no rebuild, to lift the cart.",
+    },
+    fr: {
+      eyebrow: "Stack · Shopify",
+      title: "Boostez votre",
+      titleEm: "Shopify avec l'IA",
+      answer:
+        "Votre boutique est sur Shopify ? On y greffe un assistant d'achat IA (ancré sur vos fiches produit) et des recommandations pertinentes, sans toucher à votre thème ni à vos apps. Moins de questions support, un panier moyen plus élevé.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Un vendeur IA 24/7",
+          description:
+            "L'assistant répond aux questions produit (tailles, délais, compatibilités) et oriente vers le bon article — depuis vos fiches, sans inventer.",
+        },
+        {
+          title: "Panier moyen en hausse",
+          description:
+            "Recommandations pertinentes (cross-sell, up-sell) sur fiche et panier, adaptées à chaque visiteur.",
+        },
+        {
+          title: "Sur votre Shopify actuel",
+          description:
+            "Pas de migration ni de refonte : on ajoute l'IA par-dessus votre boutique et vos apps existantes.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On audite votre boutique",
+          description: "Catalogue, fiches, apps, questions clients récurrentes.",
+        },
+        {
+          title: "On indexe votre catalogue",
+          description: "Fiches produit transformées en source de réponse + reco.",
+        },
+        {
+          title: "On intègre proprement",
+          description: "Sans conflit d'app, testé sur vos vrais parcours d'achat.",
+        },
+        {
+          title: "On met en ligne et on mesure",
+          description: "Taux de réponse, impact sur le panier, itérations.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "24/7", suffix: "", label: "Assistant d'achat" },
+        { number: "+", suffix: "panier", label: "Cross-sell pertinent" },
+        { number: "0", suffix: "refonte", label: "On garde votre Shopify" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "apps",
+          question: "Faut-il changer mon thème ou mes apps ?",
+          answer:
+            "Non. On greffe l'IA par-dessus votre Shopify existant, sans toucher à votre thème ni à vos apps.",
+        },
+        {
+          id: "fiches",
+          question: "Sur quoi répond l'assistant ?",
+          answer:
+            "Sur vos fiches produit, vos pages (livraison, retours) et votre FAQ — sources que vous choisissez. Il cite, ne invente pas.",
+        },
+        {
+          id: "reco",
+          question: "Les recommandations, ça marche vraiment ?",
+          answer:
+            "Elles s'appuient sur le comportement réel sur votre boutique (sans cookie tiers) et votre catalogue — bien plus pertinentes qu'une liste de bestsellers figée.",
+        },
+        {
+          id: "perf",
+          question: "Ça ralentit la boutique ?",
+          answer:
+            "Non : intégration légère et asynchrone, pensée pour préserver les performances et la conversion.",
+        },
+      ],
+      ctaBlockTitle: "Un vendeur IA sur votre Shopify",
+      ctaBlockDescription:
+        "Décrivez votre boutique Shopify : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Refondre une boutique qui vend,",
+        titleEm: "risqué",
+        intro:
+          "Votre Shopify tourne et convertit ? Le refaire pour ajouter de l'IA serait un risque inutile.",
+        points: [
+          {
+            title: "Une migration met vos ventes en jeu",
+            description:
+              "Changer de boutique, c'est risquer SEO, apps et tunnel de conversion rodés. L'augmentation préserve tout.",
+          },
+          {
+            title: "L'IA se greffe sur l'existant",
+            description:
+              "On ajoute la valeur (assistant + reco) sur votre Shopify actuel, sans rien casser.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "Stack · Shopify",
+      title: "Boost your",
+      titleEm: "Shopify with AI",
+      answer:
+        "Your store runs on Shopify? We graft an AI shopping assistant (grounded in your product sheets) and relevant recommendations, without touching your theme or apps. Fewer support questions, a higher average cart.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "A 24/7 AI seller",
+          description:
+            "The assistant answers product questions (sizes, delays, compatibility) and guides to the right item — from your sheets, no invention.",
+        },
+        {
+          title: "Higher average cart",
+          description:
+            "Relevant recommendations (cross-sell, up-sell) on sheet and cart, tailored to each visitor.",
+        },
+        {
+          title: "On your current Shopify",
+          description: "No migration or rebuild: we add AI on top of your store and existing apps.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We audit your store",
+          description: "Catalogue, sheets, apps, recurring customer questions.",
+        },
+        {
+          title: "We index your catalogue",
+          description: "Product sheets turned into answer + reco source.",
+        },
+        {
+          title: "We integrate cleanly",
+          description: "No app conflict, tested on your real purchase journeys.",
+        },
+        { title: "We ship and measure", description: "Answer rate, cart impact, iterations." },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "24/7", suffix: "", label: "Shopping assistant" },
+        { number: "+", suffix: "cart", label: "Relevant cross-sell" },
+        { number: "0", suffix: "rebuild", label: "We keep your Shopify" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "apps",
+          question: "Do I need to change my theme or apps?",
+          answer:
+            "No. We graft AI on top of your existing Shopify, without touching theme or apps.",
+        },
+        {
+          id: "fiches",
+          question: "What does the assistant answer on?",
+          answer:
+            "Your product sheets, pages (shipping, returns) and FAQ — sources you choose. It cites, doesn't invent.",
+        },
+        {
+          id: "reco",
+          question: "Do recommendations really work?",
+          answer:
+            "They rely on real behaviour on your store (no third-party cookie) and your catalogue — far more relevant than a fixed bestseller list.",
+        },
+        {
+          id: "perf",
+          question: "Will it slow the store?",
+          answer: "No: light, async integration designed to preserve performance and conversion.",
+        },
+      ],
+      ctaBlockTitle: "An AI seller on your Shopify",
+      ctaBlockDescription:
+        "Describe your Shopify store: we come back within 48 h with a scope, fixed fee and timeline.",
+      why: {
+        title: "Rebuilding a store that sells,",
+        titleEm: "risky",
+        intro: "Your Shopify works and converts? Rebuilding it to add AI would be a needless risk.",
+        points: [
+          {
+            title: "A migration risks your sales",
+            description:
+              "Changing store risks SEO, apps and a tuned conversion funnel. Augmentation preserves it all.",
+          },
+          {
+            title: "AI grafts onto the existing",
+            description:
+              "We add the value (assistant + reco) on your current Shopify, without breaking anything.",
+          },
+        ],
+      },
+    },
+  },
+
+  // ── BRIQUE : Personnalisation dynamique (transverse, sans cookie tiers) ─────
+  {
+    slug: "personnalisation",
+    projectType: "transverse",
+    pathFr: "/sites-web-augmentes/personnalisation",
+    pathEn: "/sites-web-augmentes/personnalisation",
+    accent: "primary",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "Le bon contenu, à chaque visiteur",
+      titleEn: "The right content, to each visitor",
+      blocks: [
+        {
+          icon: "Sparkles",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "Lit l'intention",
+          labelEn: "Reads intent",
+          detailFr: "Comportement sur votre site, en temps réel — sans cookie tiers.",
+          detailEn: "On-site behaviour, in real time — no third-party cookie.",
+        },
+        {
+          icon: "Layers",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Adapte la page",
+          labelEn: "Adapts the page",
+          detailFr: "Mise en avant, CTA, contenus ajustés au profil du visiteur.",
+          detailEn: "Highlights, CTA, content adjusted to visitor profile.",
+        },
+        {
+          icon: "Rocket",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Convertit mieux",
+          labelEn: "Converts better",
+          detailFr: "Un message pertinent au bon moment, plus de conversions.",
+          detailEn: "A relevant message at the right time, more conversions.",
+        },
+      ],
+      ariaFr:
+        "Schéma : l'IA lit l'intention du visiteur (comportement sur site, sans cookie tiers) et adapte le contenu de la page pour mieux convertir.",
+      ariaEn:
+        "Diagram: AI reads visitor intent (on-site behaviour, no third-party cookie) and adapts the page content to convert better.",
+    },
+    fr: {
+      eyebrow: "Brique IA · Personnalisation",
+      title: "Un site qui s'adapte",
+      titleEm: "à chaque visiteur",
+      answer:
+        "On rend votre site capable d'adapter ses contenus et ses appels à l'action selon l'intention de chaque visiteur, comprise en temps réel — sans cookie tiers ni pistage publicitaire. Un message pertinent au bon moment, donc plus de conversions, conforme RGPD.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Pertinence en temps réel",
+          description:
+            "Le site met en avant le contenu, l'offre ou le CTA les plus utiles à CE visiteur, selon son comportement.",
+        },
+        {
+          title: "Sans cookie tiers",
+          description:
+            "La personnalisation vient du comportement sur votre propre site, pas du pistage publicitaire — conforme RGPD.",
+        },
+        {
+          title: "Plus de conversions",
+          description:
+            "Un message adapté au bon moment convertit davantage qu'une page identique pour tout le monde.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "On définit les segments utiles",
+          description: "Quels profils, quelles intentions, quels contenus à adapter.",
+        },
+        {
+          title: "On branche les signaux",
+          description: "Comportement on-site (pages, parcours) sans cookie tiers.",
+        },
+        {
+          title: "On personnalise les zones clés",
+          description: "Hero, mises en avant, CTA : adaptés en temps réel.",
+        },
+        {
+          title: "On mesure et on affine",
+          description: "Impact sur la conversion par segment, itérations.",
+        },
+      ],
+      metricsTitle: "Ce qu'on observe",
+      metrics: [
+        { number: "+", suffix: "conversion", label: "Message pertinent par profil" },
+        { number: "0", suffix: "cookie", label: "Sans pistage tiers, RGPD" },
+        { number: "UE", suffix: "", label: "Hébergement conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "cookie",
+          question: "Faut-il des cookies tiers ?",
+          answer:
+            "Non. La personnalisation s'appuie sur le comportement sur votre propre site (pages vues, parcours), pas sur le pistage publicitaire — conforme RGPD.",
+        },
+        {
+          id: "quoi",
+          question: "Qu'est-ce qui se personnalise ?",
+          answer:
+            "Les zones à fort impact : hero, mises en avant, recommandations, CTA. On cible ce qui bouge l'aiguille, pas tout le site.",
+        },
+        {
+          id: "stack",
+          question: "Compatible avec mon site ?",
+          answer:
+            "Oui, sur n'importe quelle stack (WordPress, Shopify, Next.js, Laravel…), sans refonte.",
+        },
+        {
+          id: "mesure",
+          question: "Comment mesure-t-on le gain ?",
+          answer:
+            "Par comparaison avant/après et par segment : taux de conversion, engagement. On affine selon les résultats réels.",
+        },
+      ],
+      ctaBlockTitle: "Un site qui parle à chaque visiteur",
+      ctaBlockDescription:
+        "Décrivez votre site et vos objectifs : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Une page identique pour tous,",
+        titleEm: "une occasion ratée",
+        intro:
+          "Afficher exactement le même contenu à un primo-visiteur et à un client fidèle laisse de la conversion sur la table.",
+        points: [
+          {
+            title: "Le générique convertit moins",
+            description:
+              "Un message « moyen » pour tout le monde ne parle vraiment à personne. La pertinence, elle, déclenche l'action.",
+          },
+          {
+            title: "La perso sans pistage est possible",
+            description:
+              "Pas besoin de cookies tiers : le comportement sur votre site suffit à adapter, en respectant le RGPD.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "AI brick · Personalisation",
+      title: "A site that adapts",
+      titleEm: "to each visitor",
+      answer:
+        "We make your site able to adapt its content and calls to action to each visitor's intent, understood in real time — without third-party cookies or ad tracking. A relevant message at the right moment, so more conversions, GDPR-compliant.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "Real-time relevance",
+          description:
+            "The site highlights the content, offer or CTA most useful to THIS visitor, based on behaviour.",
+        },
+        {
+          title: "No third-party cookie",
+          description:
+            "Personalisation comes from behaviour on your own site, not ad tracking — GDPR-compliant.",
+        },
+        {
+          title: "More conversions",
+          description:
+            "A message tailored at the right time converts better than the same page for everyone.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "We define useful segments",
+          description: "Which profiles, intents, content to adapt.",
+        },
+        {
+          title: "We wire the signals",
+          description: "On-site behaviour (pages, journey) without third-party cookies.",
+        },
+        {
+          title: "We personalise key zones",
+          description: "Hero, highlights, CTA: adapted in real time.",
+        },
+        {
+          title: "We measure and refine",
+          description: "Conversion impact per segment, iterations.",
+        },
+      ],
+      metricsTitle: "What we observe",
+      metrics: [
+        { number: "+", suffix: "conversion", label: "Relevant message per profile" },
+        { number: "0", suffix: "cookie", label: "No third-party tracking, GDPR" },
+        { number: "EU", suffix: "", label: "GDPR-compliant hosting" },
+      ],
+      faqTitle: "Frequently asked",
+      faqs: [
+        {
+          id: "cookie",
+          question: "Are third-party cookies needed?",
+          answer:
+            "No. Personalisation relies on behaviour on your own site (pages viewed, journey), not ad tracking — GDPR-compliant.",
+        },
+        {
+          id: "quoi",
+          question: "What gets personalised?",
+          answer:
+            "High-impact zones: hero, highlights, recommendations, CTA. We target what moves the needle, not the whole site.",
+        },
+        {
+          id: "stack",
+          question: "Compatible with my site?",
+          answer: "Yes, on any stack (WordPress, Shopify, Next.js, Laravel…), no rebuild.",
+        },
+        {
+          id: "mesure",
+          question: "How do we measure the gain?",
+          answer:
+            "By before/after and per-segment comparison: conversion rate, engagement. We refine on real results.",
+        },
+      ],
+      ctaBlockTitle: "A site that speaks to each visitor",
+      ctaBlockDescription:
+        "Describe your site and goals: we come back within 48 h with a scope, fixed fee and timeline.",
+      why: {
+        title: "One identical page for all,",
+        titleEm: "a missed chance",
+        intro:
+          "Showing the exact same content to a first-time visitor and a loyal customer leaves conversion on the table.",
+        points: [
+          {
+            title: "Generic converts less",
+            description:
+              "An « average » message for everyone truly speaks to no one. Relevance triggers action.",
+          },
+          {
+            title: "Personalisation without tracking is possible",
+            description:
+              "No third-party cookies needed: on-site behaviour is enough to adapt, GDPR-compliant.",
           },
         ],
       },

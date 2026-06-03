@@ -8,9 +8,12 @@ export const SITESWEB_RELATED: Record<SitesWebSlug, SitesWebSlug[]> = {
   "chatbot-rag": ["recherche-semantique", "wordpress"],
   "recherche-semantique": ["chatbot-rag", "recommandation"],
   "sans-refonte": ["wordpress", "plateforme-native"],
-  "plateforme-native": ["sans-refonte", "chatbot-rag"],
-  recommandation: ["recherche-semantique", "chatbot-rag"],
-  wordpress: ["chatbot-rag", "sans-refonte"],
+  "plateforme-native": ["creer-saas-ia", "sans-refonte"],
+  recommandation: ["recherche-semantique", "personnalisation"],
+  wordpress: ["chatbot-rag", "shopify"],
+  "creer-saas-ia": ["plateforme-native", "sans-refonte"],
+  shopify: ["wordpress", "recommandation"],
+  personnalisation: ["recommandation", "recherche-semantique"],
 };
 
 /** Label de la brique pour la couverture nationale (« {label} disponible partout en France »). */
@@ -21,4 +24,7 @@ export const SITESWEB_GEO_LABEL: Record<SitesWebSlug, { fr: string; en: string }
   "plateforme-native": { fr: "La plateforme SaaS IA-native", en: "The AI-native SaaS platform" },
   recommandation: { fr: "La recommandation produit IA", en: "AI product recommendation" },
   wordpress: { fr: "Le chatbot IA WordPress", en: "WordPress AI chatbot" },
+  "creer-saas-ia": { fr: "La création de SaaS IA", en: "AI SaaS creation" },
+  shopify: { fr: "L'IA pour Shopify", en: "AI for Shopify" },
+  personnalisation: { fr: "La personnalisation de site IA", en: "AI site personalisation" },
 };
