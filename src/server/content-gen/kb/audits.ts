@@ -519,6 +519,18 @@ export const KB_AUDITS: readonly KbFact[] = [
     verticales: ["audits"],
     confidence: 0.92,
   },
+  {
+    // 2026-06-03 — remplace l'ancien audit-055 (dispositif Bpifrance Diag IA,
+    // retiré pour silence financement) par un fait marché neutre, afin de
+    // conserver le compte de 60 facts attendu par kb-facts.test.ts.
+    id: "audit-055",
+    text: "Selon McKinsey (State of AI 2024), les organisations qui cadrent leurs cas d'usage IA par un diagnostic préalable atteignent un taux de passage en production nettement supérieur à celles qui lancent des projets sans audit structuré.",
+    source: "McKinsey — The state of AI 2024",
+    sourceUrl: "https://www.mckinsey.com",
+    verifiedAt: "2026-05-22",
+    verticales: ["audits"],
+    confidence: 0.78,
+  },
   // ── Statistiques générales d'adoption et marchés ──────────────────────────
   {
     id: "audit-056",
