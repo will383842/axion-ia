@@ -39,30 +39,15 @@ export class EmbeddingConfidentialityRefusal extends Error {
   }
 }
 
-/**
- * Génère un embedding pour un texte.
- * V1 : implémentation stub (retourne vecteur déterministe pseudo-aléatoire) car
- * le wiring Voyage AI nécessite clé API env `VOYAGE_API_KEY` + node-fetch.
- * Sprint KB-13 V4 cablera l'appel réel quand Will fournira la clé.
- *
- * Le stub permet de :
- * - tester le pipeline de bout en bout (dedup, queue, audit log)
- * - dev locale sans coûts API
- * - définir le contrat I/O propre
- *
- * Production : remplacer le body de cette fonction par un appel Voyage AI réel.
- */
-export async function generateEmbedding(
-  text: string,
-  confidentiality: KbConfidentiality = "public",
-): Promise<EmbeddingResult> {
-  // Refus dur (Agent 10 §10.5 + Agent 9 §9.10 audit Phase A V3).
-  if (!isExternalApiAllowed(confidentiality)) {
-    throw new EmbeddingConfidentialityRefusal(confidentiality);
-  }
+/** Endpoint Voyage AI embeddings (T-04). */
+const VOYAGE_API_URL = "https://api.voyageai.com/v1/embeddings";
 
-  // V1 stub déterministe : hash sha-256 → vecteur normalisé.
-  // Permet dedup tests (textes identiques = mêmes vecteurs).
+/**
+ * Stub déterministe (hash sha-256 → vecteur L2-normalisé). Utilisé quand
+ * `VOYAGE_API_KEY` est absente (dev/test sans coût API) ; garde le dedup testable
+ * (textes identiques = mêmes vecteurs).
+ */
+async function stubEmbedding(text: string): Promise<EmbeddingResult> {
   const crypto = await import("node:crypto");
   const hash = crypto.createHash("sha256").update(text).digest();
   const embedding: number[] = [];
@@ -72,11 +57,8 @@ export async function generateEmbedding(
     const seed = (byteValue + i * 7) % 256;
     embedding.push((seed - 128) / 128); // [-1, 1]
   }
-
-  // Normaliser L2 pour cosine similarity stable
   const norm = Math.sqrt(embedding.reduce((s, v) => s + v * v, 0)) || 1;
   const normalized = embedding.map((v) => v / norm);
-
   return {
     embedding: normalized,
     model: EMBEDDING_MODEL_NAME,
@@ -84,6 +66,71 @@ export async function generateEmbedding(
     dimensionality: EMBEDDING_DIMENSION,
     tokensUsed: Math.ceil(text.length / 4),
   };
+}
+
+/**
+ * Appel réel Voyage AI `voyage-3-lite` (1024-dim). Lève en cas d'erreur HTTP ou
+ * de dimension inattendue (pas de fallback dimension-incompatible : OpenAI = 1536
+ * ≠ 1024 → poisonnerait l'index vector(1024) ; le worker BullMQ retente).
+ */
+async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingResult> {
+  const res = await fetch(VOYAGE_API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      input: [text],
+      model: EMBEDDING_MODEL_NAME,
+      input_type: "document",
+    }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`[embeddings] Voyage HTTP ${res.status} ${res.statusText} ${detail}`.trim());
+  }
+  const json = (await res.json()) as {
+    data?: Array<{ embedding?: number[] }>;
+    usage?: { total_tokens?: number };
+  };
+  const embedding = json.data?.[0]?.embedding;
+  if (!embedding || embedding.length !== EMBEDDING_DIMENSION) {
+    throw new Error(
+      `[embeddings] Voyage dimension inattendue : ${embedding?.length ?? "absent"} (attendu ${EMBEDDING_DIMENSION})`,
+    );
+  }
+  return {
+    embedding,
+    model: EMBEDDING_MODEL_NAME,
+    modelVersion: EMBEDDING_MODEL_VERSION,
+    dimensionality: EMBEDDING_DIMENSION,
+    tokensUsed: json.usage?.total_tokens ?? Math.ceil(text.length / 4),
+  };
+}
+
+/**
+ * Génère un embedding 1024-dim pour un texte (KB dedup + RAG chatbot).
+ *
+ * - `VOYAGE_API_KEY` présente → appel réel `voyage-3-lite` (T-04) ;
+ * - sinon → stub déterministe (dev/test sans clé → KB tests inchangés).
+ *
+ * Refus dur : ne JAMAIS envoyer une entrée `confidential`/`secret` à l'API externe.
+ */
+export async function generateEmbedding(
+  text: string,
+  confidentiality: KbConfidentiality = "public",
+): Promise<EmbeddingResult> {
+  // Refus dur (Agent 10 §10.5 + Agent 9 §9.10 audit Phase A V3) — AVANT tout appel réseau.
+  if (!isExternalApiAllowed(confidentiality)) {
+    throw new EmbeddingConfidentialityRefusal(confidentiality);
+  }
+
+  const apiKey = process.env.VOYAGE_API_KEY;
+  if (apiKey) {
+    return embedWithVoyage(text, apiKey);
+  }
+  return stubEmbedding(text);
 }
 
 /**
