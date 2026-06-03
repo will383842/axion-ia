@@ -33,6 +33,7 @@ import { SitesWebHero } from "@/components/services/sites-web/SitesWebHero";
 import { SitesWebTrustPills } from "@/components/services/sites-web/SitesWebTrustPills";
 import { SitesWebWhy } from "@/components/services/sites-web/SitesWebWhy";
 import { SitesWebModules } from "@/components/services/sites-web/SitesWebModules";
+import { SitesWebLandingLinks } from "@/components/services/sites-web/SitesWebLandingLinks";
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
 import { SitesWebRealisations } from "@/components/services/sites-web/SitesWebRealisations";
@@ -218,6 +219,9 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
 
       {/* MODULES — 4 briques IA chiffrées + popup « tout ce que l'IA peut faire » */}
       <SitesWebModules isFr={isFr} />
+
+      {/* LIENS LANDINGS — maillage descendant vers les pages détail (anti-orphelin) */}
+      <SitesWebLandingLinks isFr={isFr} />
 
       {/* MÉTHODOLOGIE — 5 étapes (audit → livraison) + HowTo JSON-LD */}
       <SitesWebMethodology isFr={isFr} />

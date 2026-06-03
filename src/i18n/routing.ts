@@ -185,6 +185,12 @@ export const routing = defineRouting({
     // de l'ancien `/codage-developpement` (+ sous-page `/web-digital`) dans cette
     // page — voir 301 dans next.config.ts. Anti-cannibalisation keyword.
     "/sites-web-augmentes": "/sites-web-augmentes",
+    // 2026-06-03 — landings pages-intention sites/SaaS (déclarées ici pour
+    // inclusion sitemap + canonical/hreflang ; fr=en, pas de mapping fr≠en).
+    "/sites-web-augmentes/chatbot-rag": "/sites-web-augmentes/chatbot-rag",
+    "/sites-web-augmentes/recherche-semantique": "/sites-web-augmentes/recherche-semantique",
+    "/sites-web-augmentes/sans-refonte": "/sites-web-augmentes/sans-refonte",
+    "/sites-web-augmentes/plateforme-native": "/sites-web-augmentes/plateforme-native",
 
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
