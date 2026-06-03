@@ -44,6 +44,11 @@ Ces éléments NE sont PAS sur le VPS. Vérifier qu'ils sont accessibles **avant
 
 ### Étape 2 — Restaurer Postgres
 
+> ⚠️ **Prérequis extensions** : le dump contient des colonnes `vector` (table `KnowledgeEmbedding`,
+> pgvector) + `citext`/`pg_trgm`/`unaccent`/`uuid-ossp`. Le Postgres cible DOIT avoir **pgvector**
+> installé (image `pgvector/pgvector:pg16`, pas `postgres:16-alpine`), sinon `pg_restore` échoue à
+> créer les tables extension-dépendantes (`relation … does not exist`). Le drill CI mensuel le vérifie.
+
 **Option A — PITR (RPO < 1h, recommandé)** : 5. Configurer pgBackRest (`infra/pgbackrest/pgbackrest.conf` + creds R2 + cipher pass).
 
 ```bash

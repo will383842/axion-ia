@@ -24,7 +24,11 @@ jobs:
     if: ${{ vars.MONTHLY_RESTORE_DRILL_ENABLED != 'false' }}
     services:
       postgres:
-        image: postgres:16-alpine
+        # pgvector/pgvector:pg16 (pas postgres:16-alpine) : le dump prod contient
+        # la table KnowledgeEmbedding (type `vector`). Sans l'extension pgvector,
+        # le pg_restore échoue à créer les tables extension-dépendantes → drill faux
+        # négatif. Cf. runbook R33 (un cold-restore réel exige aussi pgvector).
+        image: pgvector/pgvector:pg16
         env:
           POSTGRES_USER: axionia_drill
           POSTGRES_PASSWORD: drill

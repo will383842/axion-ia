@@ -4,9 +4,9 @@
 > À compléter via `ssh <vps> 'crontab -l'` (et `crontab -l -u <user>` pour chaque user concerné).
 > Mettre à jour à chaque ajout/suppression de cron. Référencé par ADR 0022 / ADR 0032.
 
-- **Dernière vérification** : ⚠️ À RENSEIGNER (jamais inventorié au 2026-06-03)
-- **Hôte** : VPS Hetzner CPX42 (à confirmer ; doc historique mentionne aussi CPX32)
-- **Vérifié par** : —
+- **Dernière vérification** : 2026-06-03 (via SSH root, Claude Opus 4.8)
+- **Hôte** : VPS Hetzner **CPX42** confirmé (`axionia-web`, id 130002660, IP 178.105.55.15, Ubuntu 6.8, disque 150G à 34%)
+- **Hetzner Backups Auto** : ✅ **ACTIVÉ** (backup_window 10-14 UTC) — confirmé via API Hetzner.
 
 ---
 
@@ -53,7 +53,40 @@ ssh <vps> 'ls -la /etc/cron.d/ /etc/cron.daily/'   # cron système
 
 Coller la sortie réelle ci-dessous à chaque relevé.
 
-### Relevé du <date>
+### Relevé du 2026-06-03 (crontab root réel)
+```cron
+0 3 * * *   /opt/axion-ia/run-r2-backup.sh daily   >> /var/log/r2-backup.log 2>&1
+0 4 * * 0   /opt/axion-ia/run-r2-backup.sh weekly  >> /var/log/r2-backup.log 2>&1
+0 5 1 * *   /opt/axion-ia/run-r2-backup.sh monthly >> /var/log/r2-backup.log 2>&1
+0 */6 * * * docker image prune -af   >> /var/log/docker-image-prune.log 2>&1
+0 */6 * * * docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
+*/30 * * * * <alerte disque si usage / > 80% via logger>
 ```
-⚠️ À COMPLÉTER
-```
+
+### Mécanisme réel des backups (important)
+- `/opt/axion-ia/run-r2-backup.sh` (script maison, **PAS** un checkout git) lance un container
+  **`postgres:16-alpine` éphémère** sur le réseau `coolify`, injecte l'env depuis le container app
+  (`docker exec <app> printenv …`), puis **télécharge `scripts/backup-postgres-r2.sh` depuis GitHub
+  `main`** (`raw.githubusercontent.com`) et l'exécute. → Le script repo à jour est donc toujours
+  celui qui tourne (auto-pull). Aucun outil backup n'est requis sur l'hôte.
+- ⚠️ **Seul le backup Postgres → R2 est planifié.** La variante **Hetzner Storage Box**
+  (`backup-postgres.sh`) **n'est PAS dans le cron** → contrairement à ADR 0022, il n'y a en pratique
+  qu'**une seule destination de dump** (R2). À corriger (ajouter le cron Storage Box) ou acter.
+- Outils hôte : `docker`, `openssl`, `rsync`, `curl` présents ; **absents** : `age`, `aws`,
+  `pgbackrest`, `sqlite3`, `pg_dump`, `redis-cli` (tous obtenus via container éphémère).
+
+### Containers identifiés (2026-06-03)
+- App Next : `mqbmlz1bcwsdwi3t9fxsllqt-112101635989`
+- App Postgres : `u7zlql3bpb1xy5t4kg6jnvpm` (postgres:16-alpine)
+- App Redis : `hdfknlij6yqebr09p379m9q6` (redis:7-alpine)
+- Plausible : `plausible_db-…`, `plausible_events-…`, `plausible-…` (service Coolify `plausible-ce`)
+- Mail : `mail-vl41…`
+
+### État du provisioning backup étendu (ADR 0032) au 2026-06-03
+- ✅ `BACKUP_INGEST_SECRET` : posé dans Coolify (RUN) + GitHub Actions secret (même valeur).
+- ✅ Secrets CI drill posés dans GitHub : `R2_*` (5), `BACKUP_ENCRYPTION_PASSPHRASE`, `TELEGRAM_*`.
+- ✅ Var GitHub `MONTHLY_RESTORE_DRILL_ENABLED=true` ; `NIGHTLY_BACKUP_DRILL_ENABLED` absent = activé par défaut.
+- ⏳ **À FAIRE (prod-shell, validation Will requise)** : injecter `BACKUP_REPORT_URL=https://axion-ia.com`
+  + `BACKUP_INGEST_SECRET` dans `run-r2-backup.sh` (pour que le dump Postgres remonte au dashboard) ;
+  déployer les wrappers des nouveaux composants (redis/docuseal/plausible/secrets/mirror) sur le même
+  modèle + cron ; pgBackRest (downtime Postgres) ; buckets R2 + Object Lock ; clé age ; Healthchecks.io.
