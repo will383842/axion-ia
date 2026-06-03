@@ -14,7 +14,8 @@
 
 | Date (UTC) | Composant | Source | Méthode | RTO mesuré | Rows / intégrité | Résultat | Opérateur | Notes |
 |---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | ⚠️ Aucun drill loggé avant 2026-06-03 (script existait mais récurrence non prouvée — cf. audit) |
+| 2026-06-03 14:20 | postgres | R2 daily | restore-drill-monthly.yml → restore-postgres-test-r2.sh (PG éphémère pgvector) | **4 s** | 345 rows (articles 5, knowledge_entries 340, bookings 0, author_profiles 0) ; pg_restore --list OK | ✅ **PASSED** | CI (workflow_dispatch) | 1er drill prouvé. RestoreDrill écrit au dashboard. 3 bugs corrigés ce jour : passphrase périmée, image sans pgvector, comptage noms de modèles au lieu des tables @@map. |
+| — | — | — | — | — | — | — | — | ⚠️ Aucun drill loggé AVANT 2026-06-03 (script existait mais n'avait jamais tourné — passphrase CI absente) |
 
 ## Modèle d'entrée
 
