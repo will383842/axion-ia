@@ -164,7 +164,7 @@ function derivePriceRange(tier: PricingTier): {
   }
   if (points.length === 0) return {};
   return {
-    prixFlat: tier.priceFlat,
+    ...(tier.priceFlat !== undefined && { prixFlat: tier.priceFlat }),
     prixMin: Math.min(...points),
     prixMax: Math.max(...points),
   };
@@ -183,23 +183,26 @@ function toOffer(
   const { jours, heures } = parseDuree(tier.durationFr);
   const { prixFlat, prixMin, prixMax } = derivePriceRange(tier);
 
+  const sujet = deriveSujet(tier);
+  // exactOptionalPropertyTypes : on OMET les clés optionnelles undefined
+  // (spread conditionnel) plutôt que de leur assigner `undefined`.
   return {
     id: tier.id,
     vertical,
     titre: tier.labelFr,
-    prixFlat,
-    prixMin,
-    prixMax,
     onQuote: tier.onQuote === true && prixFlat === undefined && prixMin === undefined,
-    dureeFr: tier.durationFr,
-    dureeJours: jours,
-    dureeHeures: heures,
     format: deriveFormat(tier, vertical),
-    effectifMin,
-    effectifMax,
-    sujet: deriveSujet(tier),
-    audienceSizes: tier.audienceSizes,
     urlFR: resolveOfferUrl(tier.id),
+    ...(prixFlat !== undefined && { prixFlat }),
+    ...(prixMin !== undefined && { prixMin }),
+    ...(prixMax !== undefined && { prixMax }),
+    ...(tier.durationFr !== undefined && { dureeFr: tier.durationFr }),
+    ...(jours !== undefined && { dureeJours: jours }),
+    ...(heures !== undefined && { dureeHeures: heures }),
+    ...(effectifMin !== undefined && { effectifMin }),
+    ...(effectifMax !== undefined && { effectifMax }),
+    ...(sujet !== undefined && { sujet }),
+    ...(tier.audienceSizes !== undefined && { audienceSizes: tier.audienceSizes }),
   };
 }
 

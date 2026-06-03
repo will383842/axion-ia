@@ -118,13 +118,13 @@ describe("T-35 toOfferResult & handler", () => {
     expect(toOfferResult(getOfferById("intervention-conference")!).prix).toBe("Sur devis");
   });
 
-  it("handler valide l'input puis cherche (0 résultat = liste vide, replied false avant T-36)", async () => {
+  it("handler : 0 match exact → repli (T-36), jamais une liste vide", async () => {
     const { offres, replied } = await rechercherOffres(
       { vertical: "formation", prixMax: 100 },
       ctx,
     );
-    expect(offres).toEqual([]);
-    expect(replied).toBe(false);
+    expect(replied).toBe(true);
+    expect(offres.length).toBeGreaterThan(0);
   });
 
   it("toutes les offres du catalogue se mappent sans erreur", () => {

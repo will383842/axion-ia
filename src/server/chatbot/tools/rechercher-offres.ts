@@ -65,6 +65,8 @@ export interface RechercherOffresResult {
   readonly replied: boolean;
   /** Stratégie de repli appliquée (T-36), si replied. */
   readonly repliStrategy?: string;
+  /** true → la réponse devrait aussi proposer un RDV découverte (repli faible). */
+  readonly proposeRdv?: boolean;
 }
 
 // ── Moteur de recherche pur (déterministe) ────────────────────────────────
@@ -150,17 +152,19 @@ export function toOfferResult(o: Offer): OfferResult {
         : `${o.effectifMin} à ${o.effectifMax} personnes`
       : undefined;
 
+  const prixMinNum = o.onQuote ? undefined : (o.prixMin ?? o.prixFlat);
+  // exactOptionalPropertyTypes : omettre les clés optionnelles undefined.
   return {
     id: o.id,
     titre: o.titre,
     vertical: o.vertical,
     prix,
-    prixMinNum: o.onQuote ? undefined : (o.prixMin ?? o.prixFlat),
-    dureeFr: o.dureeFr,
-    effectifFr,
     format: o.format,
     urlFR: o.urlFR,
     onQuote: o.onQuote,
+    ...(prixMinNum !== undefined && { prixMinNum }),
+    ...(o.dureeFr !== undefined && { dureeFr: o.dureeFr }),
+    ...(effectifFr !== undefined && { effectifFr }),
   };
 }
 
@@ -171,8 +175,7 @@ export interface ToolContext {
 
 /**
  * Handler du tool `rechercher_offres`. Valide l'input (Zod), cherche dans le
- * catalogue ; si 0 résultat exact, délègue au repli (T-36 — câblé dans le commit
- * T-36, ici fallback vide en attendant pour garder le commit atomique).
+ * catalogue ; si 0 résultat exact, délègue au repli (T-36) — jamais de « non » sec.
  */
 export async function rechercherOffres(
   rawInput: unknown,
@@ -183,6 +186,13 @@ export async function rechercherOffres(
   if (matches.length > 0) {
     return { offres: matches.map(toOfferResult), replied: false };
   }
-  // T-36 (repli) câblera ici la recherche de l'alternative la plus proche.
-  return { offres: [], replied: false };
+  // 0 match exact → repli (cross-sell / alternative la plus proche).
+  const { repli } = await import("@/server/chatbot/catalog/repli");
+  const fallback = repli(input);
+  return {
+    offres: fallback.offres.map(toOfferResult),
+    replied: true,
+    repliStrategy: fallback.strategy,
+    proposeRdv: fallback.proposeRdv,
+  };
 }
