@@ -154,11 +154,13 @@ echo "▶ Row counts tables critiques…"
 declare -A counts
 # Liste alignée avec le restore-postgres-test.sh historique (Storage Box variant)
 # + tables content-gen P0 (Article, KnowledgeEntry) cf. ADR 0023.
+# Noms réels des tables = snake_case (Prisma @@map), pas les noms de modèles
+# PascalCase. Cf. schema.prisma : Article -> articles, etc.
 TABLES=(
-  "\"Article\""
-  "\"KnowledgeEntry\""
-  "\"Booking\""
-  "\"AuthorProfile\""
+  "articles"
+  "knowledge_entries"
+  "bookings"
+  "author_profiles"
 )
 
 TOTAL=0
