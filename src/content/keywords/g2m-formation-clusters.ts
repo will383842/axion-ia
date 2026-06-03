@@ -11,7 +11,7 @@
 // Garde-fous (cf. [[refonte-pages-intention]]) :
 //   - PONCTUEL et RECURRENT ne partagent JAMAIS une urlCible (anti-cannibalisation).
 //   - urlCible = routes formation planifiées `/fr/formations/*` (même convention que
-//     g2c-formations-clusters ; annotation content-gen, jamais émise au sitemap).
+//     g2c-formations-clusters ; annotation de génération, jamais émise au sitemap).
 //   - AUCUN claim de financement (Qualiopi/OPCO/CPF/aide/subvention) — Axion-IA n'en
 //     a aucun ; filtré aussi par isClean() de master.ts.
 //   - Outils no-code de marque (Make / n8n) écartés (BANNED_TERMS) — les requêtes

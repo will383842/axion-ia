@@ -12,7 +12,7 @@
 //   - AUGMENTATION et NATIVE ne partagent JAMAIS une urlCible (anti-cannibalisation).
 //   - urlCible = routes planifiées sous le hub réel `/fr/sites-web-augmentes/*`
 //     (distinct du prefix `/fr/web-digital/*` de g3f, qui couvre SEO/AEO/GEO web-
-//     marketing ; annotation content-gen, jamais émise au sitemap).
+//     marketing ; annotation de génération, jamais émise au sitemap).
 //   - AUCUN claim de financement — filtré aussi par isClean() de master.ts.
 //   - keyword AEO reformulé en question (termine par "?").
 
