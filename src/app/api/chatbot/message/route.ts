@@ -11,6 +11,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { isBanned, recordViolation } from "@/server/chatbot/security/ban";
 import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
@@ -186,16 +187,28 @@ export async function POST(req: NextRequest): Promise<Response> {
     : null;
   const isNewSession = !existingConvo;
 
-  // Anti-abus (REQ-062) — quotas glissants par IP puis par session (fail-open si
-  // Redis indisponible, cf. checkRateLimit). 429 propre → le widget affiche un
-  // message d'attente, jamais d'erreur brute.
+  // Anti-abus (REQ-062) — bannissement temporaire (T-29) AU-DESSUS du rate-limit :
+  // une source bannie (trop de dépassements répétés) est rejetée tôt.
   const ipKey = ipHash ?? ip;
+  if (ipKey !== "unknown" && (await isBanned(ipKey))) {
+    return jsonError("rate_limited", 429, corsOut);
+  }
+
+  // Quotas glissants par IP puis par session (fail-open si Redis down). Au
+  // dépassement, on enregistre une violation → ban si répété. 429 propre → le
+  // widget affiche un message d'attente, jamais d'erreur brute.
   if (ipKey !== "unknown") {
     const ipLimited = await checkRateLimit(`chatbot:ip:${ipKey}`, RATE_LIMIT_IP);
-    if (!ipLimited.allowed) return jsonError("rate_limited", 429, corsOut);
+    if (!ipLimited.allowed) {
+      await recordViolation(ipKey);
+      return jsonError("rate_limited", 429, corsOut);
+    }
   }
   const sessLimited = await checkRateLimit(`chatbot:sess:${sessionUuid}`, RATE_LIMIT_SESSION);
-  if (!sessLimited.allowed) return jsonError("rate_limited", 429, corsOut);
+  if (!sessLimited.allowed) {
+    if (ipKey !== "unknown") await recordViolation(ipKey);
+    return jsonError("rate_limited", 429, corsOut);
+  }
 
   // Turnstile (REQ-062) — vérifié à l'OUVERTURE de session (1er message) quand
   // activé. Gated par CHATBOT_TURNSTILE_ENABLED pour activation conjointe avec
