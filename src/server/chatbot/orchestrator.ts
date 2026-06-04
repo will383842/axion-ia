@@ -22,6 +22,7 @@ import {
   type OfferResult,
 } from "@/server/chatbot/tools/rechercher-offres";
 import { hybridSearch, type RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
+import { assessConfidence } from "@/server/chatbot/retrieval/confidence";
 import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/output-guard";
 import { assembleSystemPrompt } from "@/server/chatbot/generation/system-prompt";
 import { generateAnswer, type GenerateAnswerFn } from "@/server/chatbot/generation/generate-stream";
@@ -172,7 +173,9 @@ export async function handleTurn(
     case "explication":
     default: {
       const chunks: RetrievedChunk[] = await retrieve(tenantId, message, { topK: RERANK_TOP_N });
-      if (chunks.length === 0) {
+      // T-11 : seuil de confiance → escalade SANS appel LLM si retrieval faible.
+      const confidence = assessConfidence(chunks, ctx.tenant.settings.confidenceThreshold);
+      if (!confidence.confident) {
         return {
           ...base,
           intent: "explication",

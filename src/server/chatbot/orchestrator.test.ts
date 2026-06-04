@@ -142,4 +142,12 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.escalate).toBe(true);
     expect(r.rdvUrl).toBe("/fr/appel");
   });
+
+  it("T-11 : confiance trop faible → escalade SANS appel LLM", async () => {
+    const weak = vi.fn(async () => [{ ...chunks[0]!, score: 0.0005 }]);
+    const llm = vi.fn();
+    const r = await handleTurn("c'est quoi un audit ?", { tenant }, { retrieve: weak, generateAnswer: llm });
+    expect(r.escalate).toBe(true);
+    expect(llm).not.toHaveBeenCalled(); // pas de génération sous le seuil
+  });
 });

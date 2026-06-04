@@ -105,7 +105,12 @@ export async function POST(req: NextRequest): Promise<Response> {
 
         const result = await handleTurn(
           message,
-          { tenant, conversationId: convo.id, previousSlots, linkFlow },
+          {
+            tenant,
+            conversationId: convo.id,
+            linkFlow,
+            ...(previousSlots ? { previousSlots } : {}),
+          },
           {
             // streaming token-par-token vers le widget (typing).
             generateAnswer: (opts) => generateAnswer({ ...opts, onChunk: (c) => send({ type: "delta", text: c }) }),
