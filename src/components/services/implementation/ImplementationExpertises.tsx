@@ -20,7 +20,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Section } from "@/components/layout/Section";
-import { ImplementationExpertisesDialog } from "@/components/services/implementation/ImplementationExpertisesDialog";
 
 interface Expertise {
   readonly icon: LucideIcon;
@@ -119,15 +118,12 @@ export function ImplementationExpertises({ isFr }: ImplementationExpertisesProps
         })}
       </ul>
 
-      {/* CTA → popup du champ des possibles (toutes les expertises) */}
-      <div className="mt-12 flex flex-col items-center gap-3 text-center">
-        <ImplementationExpertisesDialog isFr={isFr} />
-        <p className="text-fg-muted text-[13px]">
-          {isFr
-            ? "Vision, génération de contenu, prévision, tableaux de bord… on passe chaque besoin au crible."
-            : "Vision, content generation, forecasting, dashboards… we comb through every need."}
-        </p>
-      </div>
+      {/* Pont vers la grille complète des expertises (rendue on-page juste après) */}
+      <p className="text-fg-muted mx-auto mt-12 max-w-2xl text-center text-[13px] leading-relaxed">
+        {isFr
+          ? "Ce ne sont que les 6 plus demandées. Vision, génération de contenu, prévision, tableaux de bord, finance, RH, logistique… on passe chaque besoin au crible — voir le champ des possibles ci-dessous."
+          : "These are just the 6 most requested. Vision, content generation, forecasting, dashboards, finance, HR, logistics… we comb through every need — see the field of possibilities below."}
+      </p>
     </Section>
   );
 }

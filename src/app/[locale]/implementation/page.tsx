@@ -35,6 +35,7 @@ import { ImplementationHero } from "@/components/services/implementation/Impleme
 import { ImplementationServices } from "@/components/services/implementation/ImplementationServices";
 import { ImplementationApproachPaths } from "@/components/services/implementation/ImplementationApproachPaths";
 import { ImplementationExpertises } from "@/components/services/implementation/ImplementationExpertises";
+import { ImplementationExpertisesGrid } from "@/components/services/implementation/ImplementationExpertisesGrid";
 import { ImplementationContactBand } from "@/components/services/implementation/ImplementationContactBand";
 import { ImplementationMethodology } from "@/components/services/implementation/ImplementationMethodology";
 import { ImplementationWhyChooseUs } from "@/components/services/implementation/ImplementationWhyChooseUs";
@@ -225,8 +226,11 @@ export default async function ImplementationListing({ params }: Props) {
           Routage pilier keyword_master, anti-cannibalisation. */}
       <ImplementationApproachPaths isFr={isFr} />
 
-      {/* NOS EXPERTISES — 6 cartes + popup du champ des possibles */}
+      {/* NOS EXPERTISES — 6 cartes phares */}
       <ImplementationExpertises isFr={isFr} />
+
+      {/* CHAMP DES POSSIBLES — grille on-page des 16 domaines (vision, prévision, métier…) */}
+      <ImplementationExpertisesGrid isFr={isFr} />
 
       {/* BANDEAU CONTACT (orientation) */}
       <ImplementationContactBand isFr={isFr} trackSuffix="-mid" />
