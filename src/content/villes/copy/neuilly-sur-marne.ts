@@ -49,6 +49,183 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
       en: "Accompagnement un-à-un dirigeant à Neuilly-sur-Marne dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour piloter l'intégration de l'IA dans votre TPE ou PME.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les organisations de Neuilly-sur-Marne (93330), en bordure de Marne à 13,1 km à l'est de Paris. La ville concentre un pôle public de santé mentale unique en Seine-Saint-Denis — l'EPS de Ville-Évrard (environ 2 537 agents, son IFSI) et l'EPS de Maison Blanche, tous deux sur le même domaine — auquel s'ajoutent l'éco-quartier du Parc de Maison Blanche (env. 40 000 m² d'activités tertiaires créées sur 58,6 ha d'ancien foncier hospitalier) et la Z.I. des Chanoux (37,68 ha, environ 664 entreprises). Pour ces structures médico-sociales, ces PME industrielles et ces commerces nivéens, nous construisons en code custom : portails patients/usagers, intranets, e-commerce multi-CMS et interfaces IA — UX/UI, mobile et hébergement UE conformes RGPD compris.",
+        whyHere: [
+          "Pôle santé mentale dominant : l'EPS de Ville-Évrard et l'EPS de Maison Blanche, ainsi que les cabinets, IFSI et structures médico-sociales de leur écosystème, ont des besoins très spécifiques — portails de prise de rendez-vous, espaces usagers, gestion documentaire réglementée — que nous traitons en code custom avec hébergement UE et données minimisées.",
+          "Parc de Maison Blanche : l'éco-quartier livre progressivement environ 40 000 m² d'activités tertiaires et artisanales et 5 500 m² de commerces de proximité ; les nouvelles structures qui s'y implantent ont besoin de sites vitrines, d'e-commerce local et d'applications mobiles que nous livrons clés en main.",
+          "Z.I. des Chanoux (37,68 ha, environ 664 entreprises, gare RER A Neuilly-Plaisance) : pour les PME industrielles, logistiques et de commerce de gros de la zone, nous construisons des plateformes B2B — catalogues produits, portails revendeurs, devis automatisés, chatbots techniques sur leurs propres données.",
+          "Position dans l'Est francilien : à proximité immédiate de Noisy-le-Grand (pôle tertiaire majeur du Grand Paris), Bry-sur-Marne, Gagny et Rosny-sous-Bois, accessible via RER A, RER E et A4/A86 ; nous nous déplaçons sur site pour le cadrage et la recette.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Neuilly-sur-Marne",
+            detail:
+              "Réunion de lancement sur site — au centre-ville, dans la Z.I. des Chanoux, sur le domaine de Ville-Évrard / Maison Blanche ou au Parc de Maison Blanche. On cartographie vos parcours réels (patients/usagers pour le médico-social, revendeurs pour les PME des Chanoux, clients pour les commerces) et on fixe le périmètre fonctionnel.",
+          },
+          {
+            step: "Architecture et choix de stack",
+            detail:
+              "Choix entre développement sur mesure et CMS (WordPress, Shopify, Strapi, Medusa) selon votre besoin e-commerce ou éditorial. Pour les structures médico-sociales liées à Ville-Évrard et Maison Blanche, on intègre dès l'architecture la conformité RGPD, l'hébergement UE et la minimisation des données de santé.",
+          },
+          {
+            step: "Design UX/UI et maquettage mobile-first",
+            detail:
+              "Maquettes interactives validées avec vous avant tout développement. Interface pensée mobile d'abord — un commerce du centre-ville nivéen ou une PME des Chanoux est consultée majoritairement depuis un smartphone — avec accessibilité renforcée pour les portails usagers du secteur médico-social.",
+          },
+          {
+            step: "Développement et intégration IA",
+            detail:
+              "Construction en code custom : front, back, e-commerce et briques IA (chatbot RAG sur vos documents, recherche sémantique, génération de fiches, qualification de demandes). Intégration à vos outils existants — agenda, CRM, ERP, logiciels métier hospitaliers ou industriels.",
+          },
+          {
+            step: "Recette, mise en ligne et transfert",
+            detail:
+              "Tests d'acceptation sur site à Neuilly-sur-Marne, mise en production sur hébergement UE, formation de vos équipes et remise de la documentation. Vous gardez la main sur le code et les accès — aucun verrou éditeur, projet repris en interne ou par tout prestataire francilien.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou e-commerce essentiel",
+            detail:
+              "Pour les commerces du centre-ville nivéen, artisans et indépendants — site vitrine, prise de rendez-vous, boutique en ligne simple, optimisée mobile et référencement local.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Plateforme métier ou e-commerce avancé",
+            detail:
+              "Pour les PME de la Z.I. des Chanoux (industrie, logistique, commerce de gros) et les structures qui s'implantent au Parc de Maison Blanche — portail B2B, catalogue, espace revendeurs, devis automatisés, premières briques IA.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "SaaS sur mesure et portails usagers",
+            detail:
+              "Pour les organisations d'ampleur de l'Est francilien et l'écosystème médico-social de Ville-Évrard / Maison Blanche — portails patients/usagers, intranets, applications métier IA-native intégrées au SI existant, conformité RGPD santé.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme plateforme multi-sites",
+            detail:
+              "Pour les établissements publics de santé et grands comptes multi-implantations — refonte de plateforme à fort trafic, gouvernance IA, intégrations LIMS/ERP/DPI, design system et accompagnement pluriannuel.",
+          },
+        ],
+        faq: [
+          {
+            q: "Travaillez-vous avec les structures médico-sociales liées à Ville-Évrard et Maison Blanche ?",
+            a: "Oui. L'écosystème des EPS de Ville-Évrard et Maison Blanche — cabinets, structures paramédicales, médico-social, IFSI — a des besoins web et SaaS spécifiques (portails usagers, prise de rendez-vous, gestion documentaire). Nous construisons ces plateformes en code custom avec hébergement UE, minimisation des données de santé et conformité RGPD traitée dès l'architecture.",
+          },
+          {
+            q: "Faites-vous de l'e-commerce pour les commerces et PME de Neuilly-sur-Marne ?",
+            a: "Oui, en multi-CMS (Shopify, WooCommerce, Medusa) ou en développement sur mesure selon votre volume. Que vous soyez un commerce du centre-ville nivéen, une PME de la Z.I. des Chanoux ou une structure qui s'implante au Parc de Maison Blanche, on cale la solution sur votre catalogue, votre logistique et votre clientèle réelle — mobile d'abord.",
+          },
+          {
+            q: "Quel délai pour un devis sur un projet de site ou SaaS à Neuilly-sur-Marne ?",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine de commerce nivéen, c'est rapide ; pour une plateforme SaaS intégrée au SI d'une structure liée à Ville-Évrard, le chiffrage demande un cadrage technique préalable.",
+          },
+          {
+            q: "Où hébergez-vous les données et sites de Neuilly-sur-Marne ?",
+            a: "Sur des infrastructures dans l'Union européenne, avec chiffrement, registre des traitements et minimisation des données. C'est un prérequis non négociable pour les portails du secteur médico-social de Ville-Évrard et Maison Blanche, et appliqué par défaut à tous nos projets nivéens, e-commerce comme vitrines.",
+          },
+          {
+            q: "Intervenez-vous dans les communes voisines de Neuilly-sur-Marne ?",
+            a: "Oui : Noisy-le-Grand, Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Rosny-sous-Bois et Villemomble, et plus largement l'Est francilien via RER A, RER E et A4/A86. Nous nous déplaçons sur site pour le cadrage et la recette, y compris dans la Z.I. des Chanoux et au Parc de Maison Blanche.",
+          },
+        ],
+        guarantees:
+          "Tous nos sites et plateformes SaaS sont développés en code custom, hébergés dans l'Union européenne et conformes RGPD — minimisation des données, chiffrement et registre des traitements, traités dès l'architecture, ce qui est impératif pour les structures médico-sociales de l'écosystème Ville-Évrard / Maison Blanche. Devis à partir de 24 à 48 h selon la complexité. Vous conservez la pleine propriété du code, des données et des accès : aucun verrou éditeur, le projet est repris en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, mobile et e-commerce multi-CMS autant que l'IA, sans dépendance plateforme imposée.",
+      },
+      en: {
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les organisations de Neuilly-sur-Marne (93330), en bordure de Marne à 13,1 km à l'est de Paris. La ville concentre un pôle public de santé mentale unique en Seine-Saint-Denis — l'EPS de Ville-Évrard (environ 2 537 agents, son IFSI) et l'EPS de Maison Blanche, tous deux sur le même domaine — auquel s'ajoutent l'éco-quartier du Parc de Maison Blanche (env. 40 000 m² d'activités tertiaires créées sur 58,6 ha d'ancien foncier hospitalier) et la Z.I. des Chanoux (37,68 ha, environ 664 entreprises). Pour ces structures médico-sociales, ces PME industrielles et ces commerces nivéens, nous construisons en code custom : portails patients/usagers, intranets, e-commerce multi-CMS et interfaces IA — UX/UI, mobile et hébergement UE conformes RGPD compris.",
+        whyHere: [
+          "Pôle santé mentale dominant : l'EPS de Ville-Évrard et l'EPS de Maison Blanche, ainsi que les cabinets, IFSI et structures médico-sociales de leur écosystème, ont des besoins très spécifiques — portails de prise de rendez-vous, espaces usagers, gestion documentaire réglementée — que nous traitons en code custom avec hébergement UE et données minimisées.",
+          "Parc de Maison Blanche : l'éco-quartier livre progressivement environ 40 000 m² d'activités tertiaires et artisanales et 5 500 m² de commerces de proximité ; les nouvelles structures qui s'y implantent ont besoin de sites vitrines, d'e-commerce local et d'applications mobiles que nous livrons clés en main.",
+          "Z.I. des Chanoux (37,68 ha, environ 664 entreprises, gare RER A Neuilly-Plaisance) : pour les PME industrielles, logistiques et de commerce de gros de la zone, nous construisons des plateformes B2B — catalogues produits, portails revendeurs, devis automatisés, chatbots techniques sur leurs propres données.",
+          "Position dans l'Est francilien : à proximité immédiate de Noisy-le-Grand (pôle tertiaire majeur du Grand Paris), Bry-sur-Marne, Gagny et Rosny-sous-Bois, accessible via RER A, RER E et A4/A86 ; nous nous déplaçons sur site pour le cadrage et la recette.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Neuilly-sur-Marne",
+            detail:
+              "Réunion de lancement sur site — au centre-ville, dans la Z.I. des Chanoux, sur le domaine de Ville-Évrard / Maison Blanche ou au Parc de Maison Blanche. On cartographie vos parcours réels (patients/usagers pour le médico-social, revendeurs pour les PME des Chanoux, clients pour les commerces) et on fixe le périmètre fonctionnel.",
+          },
+          {
+            step: "Architecture et choix de stack",
+            detail:
+              "Choix entre développement sur mesure et CMS (WordPress, Shopify, Strapi, Medusa) selon votre besoin e-commerce ou éditorial. Pour les structures médico-sociales liées à Ville-Évrard et Maison Blanche, on intègre dès l'architecture la conformité RGPD, l'hébergement UE et la minimisation des données de santé.",
+          },
+          {
+            step: "Design UX/UI et maquettage mobile-first",
+            detail:
+              "Maquettes interactives validées avec vous avant tout développement. Interface pensée mobile d'abord — un commerce du centre-ville nivéen ou une PME des Chanoux est consultée majoritairement depuis un smartphone — avec accessibilité renforcée pour les portails usagers du secteur médico-social.",
+          },
+          {
+            step: "Développement et intégration IA",
+            detail:
+              "Construction en code custom : front, back, e-commerce et briques IA (chatbot RAG sur vos documents, recherche sémantique, génération de fiches, qualification de demandes). Intégration à vos outils existants — agenda, CRM, ERP, logiciels métier hospitaliers ou industriels.",
+          },
+          {
+            step: "Recette, mise en ligne et transfert",
+            detail:
+              "Tests d'acceptation sur site à Neuilly-sur-Marne, mise en production sur hébergement UE, formation de vos équipes et remise de la documentation. Vous gardez la main sur le code et les accès — aucun verrou éditeur, projet repris en interne ou par tout prestataire francilien.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou e-commerce essentiel",
+            detail:
+              "Pour les commerces du centre-ville nivéen, artisans et indépendants — site vitrine, prise de rendez-vous, boutique en ligne simple, optimisée mobile et référencement local.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Plateforme métier ou e-commerce avancé",
+            detail:
+              "Pour les PME de la Z.I. des Chanoux (industrie, logistique, commerce de gros) et les structures qui s'implantent au Parc de Maison Blanche — portail B2B, catalogue, espace revendeurs, devis automatisés, premières briques IA.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "SaaS sur mesure et portails usagers",
+            detail:
+              "Pour les organisations d'ampleur de l'Est francilien et l'écosystème médico-social de Ville-Évrard / Maison Blanche — portails patients/usagers, intranets, applications métier IA-native intégrées au SI existant, conformité RGPD santé.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme plateforme multi-sites",
+            detail:
+              "Pour les établissements publics de santé et grands comptes multi-implantations — refonte de plateforme à fort trafic, gouvernance IA, intégrations LIMS/ERP/DPI, design system et accompagnement pluriannuel.",
+          },
+        ],
+        faq: [
+          {
+            q: "Travaillez-vous avec les structures médico-sociales liées à Ville-Évrard et Maison Blanche ?",
+            a: "Oui. L'écosystème des EPS de Ville-Évrard et Maison Blanche — cabinets, structures paramédicales, médico-social, IFSI — a des besoins web et SaaS spécifiques (portails usagers, prise de rendez-vous, gestion documentaire). Nous construisons ces plateformes en code custom avec hébergement UE, minimisation des données de santé et conformité RGPD traitée dès l'architecture.",
+          },
+          {
+            q: "Faites-vous de l'e-commerce pour les commerces et PME de Neuilly-sur-Marne ?",
+            a: "Oui, en multi-CMS (Shopify, WooCommerce, Medusa) ou en développement sur mesure selon votre volume. Que vous soyez un commerce du centre-ville nivéen, une PME de la Z.I. des Chanoux ou une structure qui s'implante au Parc de Maison Blanche, on cale la solution sur votre catalogue, votre logistique et votre clientèle réelle — mobile d'abord.",
+          },
+          {
+            q: "Quel délai pour un devis sur un projet de site ou SaaS à Neuilly-sur-Marne ?",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine de commerce nivéen, c'est rapide ; pour une plateforme SaaS intégrée au SI d'une structure liée à Ville-Évrard, le chiffrage demande un cadrage technique préalable.",
+          },
+          {
+            q: "Où hébergez-vous les données et sites de Neuilly-sur-Marne ?",
+            a: "Sur des infrastructures dans l'Union européenne, avec chiffrement, registre des traitements et minimisation des données. C'est un prérequis non négociable pour les portails du secteur médico-social de Ville-Évrard et Maison Blanche, et appliqué par défaut à tous nos projets nivéens, e-commerce comme vitrines.",
+          },
+          {
+            q: "Intervenez-vous dans les communes voisines de Neuilly-sur-Marne ?",
+            a: "Oui : Noisy-le-Grand, Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Rosny-sous-Bois et Villemomble, et plus largement l'Est francilien via RER A, RER E et A4/A86. Nous nous déplaçons sur site pour le cadrage et la recette, y compris dans la Z.I. des Chanoux et au Parc de Maison Blanche.",
+          },
+        ],
+        guarantees:
+          "Tous nos sites et plateformes SaaS sont développés en code custom, hébergés dans l'Union européenne et conformes RGPD — minimisation des données, chiffrement et registre des traitements, traités dès l'architecture, ce qui est impératif pour les structures médico-sociales de l'écosystème Ville-Évrard / Maison Blanche. Devis à partir de 24 à 48 h selon la complexité. Vous conservez la pleine propriété du code, des données et des accès : aucun verrou éditeur, le projet est repris en interne ou par tout prestataire francilien. Nous revendiquons UX/UI, mobile et e-commerce multi-CMS autant que l'IA, sans dépendance plateforme imposée.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Neuilly-sur-Marne ?",
