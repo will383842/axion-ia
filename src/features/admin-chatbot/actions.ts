@@ -14,8 +14,8 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { requireAdminRead, requireAdminWrite } from "@/server/actions/knowledge/_guards";
-import { getDefaultTenant } from "@/server/chatbot/tenant";
-import type { TenantSettings } from "@/server/chatbot/constants";
+import { mergeSettings } from "@/server/chatbot/tenant";
+import { CHATBOT_TENANT_KEY, type TenantSettings } from "@/server/chatbot/constants";
 import {
   activatePromptVersion,
   createPromptVersion,
@@ -152,15 +152,104 @@ export interface ChatbotSettingsView {
 
 export async function getChatbotSettings(): Promise<ChatbotSettingsView | null> {
   await requireAdminRead();
-  const tenant = await getDefaultTenant();
-  if (!tenant) return null;
+  // Requête directe (≠ getDefaultTenant qui filtre actif=true) : l'admin doit
+  // pouvoir consulter/éditer les réglages même tenant désactivé.
+  const t = await prisma.chatTenant.findUnique({ where: { cle: CHATBOT_TENANT_KEY } });
+  if (!t) return null;
   return {
-    tenantCle: tenant.cle,
-    tenantNom: tenant.nom,
-    domaine: tenant.domaine,
-    actif: tenant.actif,
-    settings: tenant.settings,
+    tenantCle: t.cle,
+    tenantNom: t.nom,
+    domaine: t.domaine,
+    actif: t.actif,
+    settings: mergeSettings(t.reglages),
   };
+}
+
+export type UpdateSettingsState = { ok: true } | { ok: false; error: string };
+
+const settingsSchema = z.object({
+  actif: z.coerce.boolean(),
+  confidenceThreshold: z.coerce.number().min(0).max(1),
+  conversionCursor: z.coerce.number().min(0).max(1),
+  maxOfferCards: z.coerce.number().int().min(1).max(10),
+  confirmBeforeLinks: z.coerce.boolean(),
+  cacheEnabled: z.coerce.boolean(),
+  cacheSimilarityThreshold: z.coerce.number().min(0).max(1),
+  cacheTtlHours: z.coerce.number().int().min(1).max(720),
+  costCapUsdPerMonth: z.coerce.number().min(0).max(100000),
+  retentionMonths: z.coerce.number().int().min(1).max(120),
+});
+
+export async function updateChatbotSettingsAction(
+  _prev: UpdateSettingsState,
+  formData: FormData,
+): Promise<UpdateSettingsState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  // Les checkboxes absentes du FormData = false.
+  const parsed = settingsSchema.safeParse({
+    actif: formData.get("actif") === "on",
+    confidenceThreshold: formData.get("confidenceThreshold"),
+    conversionCursor: formData.get("conversionCursor"),
+    maxOfferCards: formData.get("maxOfferCards"),
+    confirmBeforeLinks: formData.get("confirmBeforeLinks") === "on",
+    cacheEnabled: formData.get("cacheEnabled") === "on",
+    cacheSimilarityThreshold: formData.get("cacheSimilarityThreshold"),
+    cacheTtlHours: formData.get("cacheTtlHours"),
+    costCapUsdPerMonth: formData.get("costCapUsdPerMonth"),
+    retentionMonths: formData.get("retentionMonths"),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Valeurs invalides." };
+  }
+  const d = parsed.data;
+
+  try {
+    const tenant = await prisma.chatTenant.findUnique({ where: { cle: CHATBOT_TENANT_KEY } });
+    if (!tenant) return { ok: false, error: "Tenant introuvable." };
+
+    // Merge dans les réglages existants (préserve llmTier, pages, etc. non édités).
+    const current = (tenant.reglages ?? {}) as Record<string, unknown>;
+    const reglages = {
+      ...current,
+      confidenceThreshold: d.confidenceThreshold,
+      conversionCursor: d.conversionCursor,
+      maxOfferCards: d.maxOfferCards,
+      confirmBeforeLinks: d.confirmBeforeLinks,
+      costCapUsdPerMonth: d.costCapUsdPerMonth,
+      retentionMonths: d.retentionMonths,
+      cache: {
+        ...((current.cache as Record<string, unknown>) ?? {}),
+        enabled: d.cacheEnabled,
+        similarityThreshold: d.cacheSimilarityThreshold,
+        ttlHours: d.cacheTtlHours,
+      },
+    };
+
+    await prisma.chatTenant.update({
+      where: { id: tenant.id },
+      data: { reglages: reglages as object, actif: d.actif },
+    });
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "chatbot.settings.updated",
+        targetType: "chat_tenant",
+        targetId: tenant.id,
+        changes: { actif: d.actif, confidenceThreshold: d.confidenceThreshold },
+        ipAddress: await getClientIp(),
+      },
+    });
+    revalidatePath(adminPath("fr", "chatbot/reglages"));
+    revalidatePath(adminPath("fr", "chatbot"));
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Erreur interne." };
+  }
 }
 
 // ── Conversations ─────────────────────────────────────────────────────────────
