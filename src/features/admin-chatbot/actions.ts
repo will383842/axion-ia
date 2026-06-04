@@ -24,6 +24,40 @@ import {
 
 const PAGE_SIZE = 25;
 
+// ── Ingestion knowledge ───────────────────────────────────────────────────────
+
+export type TriggerIngestionState = { ok: true } | { ok: false; error: string };
+
+export async function triggerIngestionAction(
+  _prev: TriggerIngestionState,
+  _formData: FormData,
+): Promise<TriggerIngestionState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  try {
+    // Enqueue un job d'ingestion (chunk → embed → chat_kb_chunks). Le worker
+    // chatbot-ingest le traite (actif si CHATBOT_ENABLED=true). No-op propre si
+    // BullMQ indisponible (build / Redis down).
+    const { enqueueChatbotIngest } = await import("@/server/queue/queues");
+    await enqueueChatbotIngest();
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "chatbot.ingestion.triggered",
+        targetType: "chat_kb_chunks",
+        ipAddress: await getClientIp(),
+      },
+    });
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Échec du lancement de l'ingestion." };
+  }
+}
+
 // ── Dashboard ───────────────────────────────────────────────────────────────
 
 export interface ChatbotDashboardStats {
