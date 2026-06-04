@@ -58,18 +58,33 @@ const inconsolata = Inconsolata({
 // P0 audit Perfection 2026 — CLS / LCP fix.
 //
 // `.display-editorial` + `.italic-editorial` utilisent Fraunces weight 500
-// + letter-spacing: -0.035em. Avec `display: "swap"`, le passage fallback →
-// Fraunces génère un reflow visible (CLS > 0.05 mesuré sur /audit, /home,
-// /a-propos, /methodologie). Avec `display: "optional"`, le navigateur
-// utilise le fallback de façon permanente si Fraunces n'est pas déjà en
-// cache, et passe à Fraunces sur les visites suivantes (zéro reflow = CLS 0).
-// Trade-off : première visite sur connexion lente → fallback serif (Iowan
-// Old Style, Palatino). Acceptable : fallbacks sont des serifs de qualité et
-// `adjustFontFallback` (défaut true) minimise le delta de métriques.
+// + letter-spacing: -0.035em.
+//
+// Décision Will 2026-06-03 (révise le choix `optional` du P0 audit Perfection
+// 2026) — passage à `display: "swap"`. Raisons :
+//   1. `optional` refusait Fraunces tant qu'elle n'était pas prête en ~100 ms
+//      — y compris CACHE CHAUD. Conséquence réelle constatée : TOUS les
+//      visiteurs (même récurrents) revoyaient le fallback serif (Iowan /
+//      Palatino, plus fin → titres « pas gras ») à chaque réouverture de page.
+//      Inacceptable pour une marque dont l'identité repose sur la typo.
+//   2. La mesure historique « CLS > 0.05 avec swap » a été prise alors que la
+//      chaîne de fallback était cassée (auto-réf `--font-serif: var(--font-serif)`,
+//      cf. P-105 globals.css). Cette chaîne est désormais réparée
+//      (`--font-fraunces` → fallback métrique next/font → Iowan…), donc le
+//      reflow au swap est aujourd'hui fortement réduit.
+//   3. `adjustFontFallback: true` (explicite ci-dessous) génère un @font-face
+//      fallback aux métriques calées sur Fraunces (size-adjust / overrides)
+//      → swap fallback → Fraunces ≈ 0 décalage. Technique « FOUT métriques
+//      calées » standard des sites premium.
+// Trade-off assumé : CLS peut passer de 0 strict (cible interne) à ~0.0-0.02
+// (très en dessous du « good » Google = 0.1). À valider par le gate Lighthouse
+// CI (job `lhci`, autorité Web Vitals) au prochain deploy ; rollback = remettre
+// `display: "optional"` si régression au-delà du budget.
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
-  display: "optional",
+  display: "swap",
+  adjustFontFallback: true,
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
 });
