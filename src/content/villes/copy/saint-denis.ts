@@ -456,6 +456,94 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances. Si la première séance ne délivre pas de valeur concrète mesurable, remboursement intégral.",
 };
 
+// === SITES WEB AUGMENTÉS ===
+const SITESWEB_FR: VilleServiceCopyLocale = {
+  hero: "Axion-IA conçoit et augmente à Saint-Denis des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Denis, itérations à distance.",
+  whyHere: [
+    "Projets web & SaaS dyonisiens : cluster audiovisuel & créatif (studios, sociétés de production — Plaine Saint-Denis), logistique, BTP Grand Paris, ESS, hub Pleyel, grandes directions de Plaine Commune.",
+    "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
+    "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
+    "Audiovisuel & créatif : plateformes média, gestion de production, recherche dans les contenus, agents — un terrain naturel à la Plaine Saint-Denis. Hébergement UE, RGPD strict.",
+  ],
+  methodology: [
+    {
+      step: "Cadrage à Saint-Denis",
+      detail:
+        "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+    },
+    {
+      step: "Conception UX/UI",
+      detail:
+        "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement.",
+    },
+    {
+      step: "Développement par sprints",
+      detail:
+        "Greffe IA sur l'existant ou build IA-native : chatbot RAG, search, agents, e-commerce. Démos hebdomadaires.",
+    },
+    {
+      step: "Recette + mise en ligne",
+      detail:
+        "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime.",
+    },
+    {
+      step: "Livraison + autonomie",
+      detail:
+        "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : c'est à vous.",
+    },
+  ],
+  pricing: [
+    {
+      sizeLabel: "TPE",
+      price: "Brique IA greffée",
+      detail:
+        "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+    },
+    {
+      sizeLabel: "PME",
+      price: "Site / application sur mesure",
+      detail:
+        "Conception ou refonte d'un site ou d'une application avec UX/UI et IA intégrée, pour studios, structures ESS et PME dyonisiennes.",
+    },
+    {
+      sizeLabel: "ETI",
+      price: "Plateforme SaaS IA-native",
+      detail:
+        "Plateforme métier, média ou portail logistique sur mesure, IA intégrée, branchée sur votre SI (CRM, ERP, TMS, datalake).",
+    },
+    {
+      sizeLabel: "Grande entreprise",
+      price: "Programme produit",
+      detail:
+        "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit.",
+    },
+  ],
+  faq: [
+    {
+      q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
+      a: "Oui. On conçoit l'expérience complète à Saint-Denis — research, wireframes, design system, maquettes Figma, prototype — pour un site, une app ou une plateforme SaaS, avec ou sans brique IA. C'est un métier à part entière chez nous.",
+    },
+    {
+      q: "Vous travaillez pour l'audiovisuel, le créatif et la logistique ?",
+      a: "Oui : plateformes média, gestion de production, recherche sémantique dans les contenus, portails logistiques et agents — un terrain naturel à la Plaine Saint-Denis (studios, production) et dans la logistique Grand Paris. Hébergement UE, RGPD strict.",
+    },
+    {
+      q: "Peut-on augmenter un site existant sans le refondre ?",
+      a: "Oui, dans la grande majorité des cas. On greffe les briques IA via une API, un widget ou un plugin, sans toucher au design ni à la structure, dès lors que votre CMS expose une API ou un flux de données. Aucune refonte ni downtime.",
+    },
+    {
+      q: "Le devis est-il ferme et le tarif fixe ?",
+      a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme étendue. Pas de régie, pas de dérive horaire cachée.",
+    },
+    {
+      q: "Avec quelles technologies travaillez-vous ?",
+      a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. On choisit la meilleure stack selon vos objectifs et on s'adapte à votre existant, jamais l'inverse.",
+    },
+  ],
+  guarantees:
+    "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région parisienne ou repris en interne.",
+};
+
 // === EXPORT ===
 export const SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
@@ -538,5 +626,6 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     interventions: { fr: INTERVENTIONS_FR, en: INTERVENTIONS_FR },
     implementation: { fr: IMPLEMENTATION_FR, en: IMPLEMENTATION_FR },
     unAUn: { fr: UN_A_UN_FR, en: UN_A_UN_FR },
+    sitesWeb: { fr: SITESWEB_FR, en: SITESWEB_FR },
   },
 };
