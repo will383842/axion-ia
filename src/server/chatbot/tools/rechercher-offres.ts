@@ -171,6 +171,10 @@ export function toOfferResult(o: Offer): OfferResult {
 /** Contexte serveur du tool (tenant injecté serveur ; catalogue partagé au MVP). */
 export interface ToolContext {
   readonly tenantId: string;
+  /** Conversation courante (pour idempotence des actions, ipHash, etc.). */
+  readonly conversationId?: string;
+  /** IP hashée (RGPD) propagée aux Submissions créées. */
+  readonly ipHash?: string;
 }
 
 /**

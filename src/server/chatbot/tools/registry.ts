@@ -16,6 +16,7 @@ import {
   rechercherOffres,
   type ToolContext,
 } from "@/server/chatbot/tools/rechercher-offres";
+import { CapturerLeadInputSchema, capturerLead } from "@/server/chatbot/tools/capturer-lead";
 
 export type { ToolContext };
 
@@ -100,4 +101,14 @@ chatbotTools.register<typeof RechercherOffresInputSchema._type>({
     "prestation par critères (« formations entre X et Y € », « le moins cher », etc.).",
   schema: RechercherOffresInputSchema,
   handler: (input, ctx) => rechercherOffres(input, ctx),
+});
+
+chatbotTools.register<typeof CapturerLeadInputSchema._type>({
+  name: "capturer_lead",
+  description:
+    "Enregistre un prospect (lead) après consentement RGPD explicite. Idempotent " +
+    "(pas de doublon en cas de retry). À utiliser quand le visiteur fournit ses " +
+    "coordonnées et accepte d'être recontacté.",
+  schema: CapturerLeadInputSchema,
+  handler: (input, ctx) => capturerLead(input, ctx),
 });
