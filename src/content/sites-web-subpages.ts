@@ -17,6 +17,7 @@ export const SITESWEB_RELATED: Record<SitesWebSlug, SitesWebSlug[]> = {
   "ux-ui-product-design": ["creer-saas-ia", "plateforme-native"],
   woocommerce: ["shopify", "recommandation"],
   prestashop: ["woocommerce", "recommandation"],
+  magento: ["prestashop", "recommandation"],
 };
 
 /** Label de la brique pour la couverture nationale (« {label} disponible partout en France »). */
@@ -33,4 +34,5 @@ export const SITESWEB_GEO_LABEL: Record<SitesWebSlug, { fr: string; en: string }
   "ux-ui-product-design": { fr: "Le design UX/UI sur mesure", en: "Bespoke UX/UI design" },
   woocommerce: { fr: "L'IA pour WooCommerce", en: "AI for WooCommerce" },
   prestashop: { fr: "L'IA pour PrestaShop", en: "AI for PrestaShop" },
+  magento: { fr: "L'IA pour Magento", en: "AI for Magento" },
 };
