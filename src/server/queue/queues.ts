@@ -423,6 +423,28 @@ export const imageBankCronsQueue: Queue<ImageBankCronJobData, void, ImageBankCro
     : null;
 
 // ============================================================
+// Chatbot (T-05) — ingestion RAG chat_kb_chunks (env-gated CHATBOT_ENABLED côté worker).
+// ============================================================
+
+export const chatbotIngestQueue: Queue | null = connection
+  ? new Queue("chatbot-ingest", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 2 },
+    })
+  : null;
+
+/** Enqueue une reconstruction de l'index RAG chatbot. No-op si BullMQ off. */
+export async function enqueueChatbotIngest(): Promise<void> {
+  if (!chatbotIngestQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn("[bullmq] no connection, skipping enqueueChatbotIngest");
+    }
+    return;
+  }
+  await chatbotIngestQueue.add("ingest", { tick: new Date().toISOString() });
+}
+
+// ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
 
