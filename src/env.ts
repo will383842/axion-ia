@@ -341,6 +341,16 @@ export const env = createEnv({
     // donc cookies déposés uniquement post-accept visiteur. No-op si non défini.
     // DPA Microsoft à signer côté Will + entry dans `subprocessors.ts` (déclarée).
     NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
+    // Kill-switch PUBLIC du widget chatbot (T-08). "true" → la bulle se monte
+    // côté client (île idle). Tant que non défini / != "true", le widget ne
+    // monte rien et n'émet aucune requête. Pendant client de la garde serveur
+    // `CHATBOT_ENABLED` (route SSE) — D-PROD : Will active les deux pour la prod.
+    NEXT_PUBLIC_CHATBOT_ENABLED: z.enum(["true", "false"]).optional(),
+    // Canary par page (T-25) : liste de préfixes de chemin séparés par des
+    // virgules où le widget est autorisé (ex. "/fr/audit,/fr/implementation").
+    // Vide / non défini = toutes les pages (rollout global). Permet d'activer
+    // d'abord sur une page avant généralisation.
+    NEXT_PUBLIC_CHATBOT_PAGES: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -427,6 +437,8 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_API_URL: process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
+    NEXT_PUBLIC_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_CHATBOT_ENABLED,
+    NEXT_PUBLIC_CHATBOT_PAGES: process.env.NEXT_PUBLIC_CHATBOT_PAGES,
   },
   emptyStringAsUndefined: true,
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true",

@@ -75,3 +75,61 @@ export async function eraseNewsletterForEmail(email: string): Promise<EraseNewsl
   const result = await prisma.newsletterSubscriber.deleteMany({ where: { email } });
   return { deleted: result.count };
 }
+
+export interface EraseChatResult {
+  /** Conversations chatbot supprimées (messages cascade). */
+  readonly conversationsDeleted: number;
+  /** Escalades dont l'email a été anonymisé. */
+  readonly escalationsAnonymized: number;
+}
+
+/**
+ * Efface les données chatbot (`chat_*`) liées à une personne (RGPD art. 17).
+ *
+ * Doctrine chatbot (≠ Submission) : pas de legal-hold business sur le contenu
+ * conversationnel → **hard-delete** des conversations rattachées aux leads
+ * (Submissions) de cette personne ; `chat_messages` (contenu = PII) part en
+ * cascade via la FK `ON DELETE CASCADE`. Le lead lui-même reste dans Submission
+ * (anonymisé par `eraseSubmissionsForEmail`) pour l'audit comptable.
+ *
+ * Les `chat_escalations` portant l'email en clair sont anonymisées (email hashé,
+ * contexte libre vidé) — l'escalade reste pour l'analyse des trous de KB.
+ *
+ * ⚠️ À appeler AVANT `eraseSubmissionsForEmail` (qui hashe le `contactEmail`),
+ * sinon le rattachement conversation↔lead par email serait déjà rompu.
+ */
+export async function eraseChatDataForEmail(email: string): Promise<EraseChatResult> {
+  const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
+
+  // Ancres pour rattacher une conversation à la personne :
+  //  - leads (Submission) de cet email → conversations via submissionId (backlink) ;
+  //  - escalades de cet email → conversation référencée (conversation_id).
+  const subs = await prisma.submission.findMany({
+    where: { contactEmail: email },
+    select: { id: true },
+  });
+  const subIds = subs.map((s) => s.id);
+
+  const escs = await prisma.chatEscalation.findMany({
+    where: { contactEmail: email, conversationId: { not: null } },
+    select: { conversationId: true },
+  });
+  const escConvIds = escs.map((e) => e.conversationId).filter((id): id is string => id !== null);
+
+  const orClauses: Array<Record<string, unknown>> = [];
+  if (subIds.length > 0) orClauses.push({ submissionId: { in: subIds } });
+  if (escConvIds.length > 0) orClauses.push({ id: { in: escConvIds } });
+
+  let conversationsDeleted = 0;
+  if (orClauses.length > 0) {
+    const del = await prisma.chatConversation.deleteMany({ where: { OR: orClauses } });
+    conversationsDeleted = del.count;
+  }
+
+  const esc = await prisma.chatEscalation.updateMany({
+    where: { contactEmail: email },
+    data: { contactEmail: hashedEmail, contexte: null },
+  });
+
+  return { conversationsDeleted, escalationsAnonymized: esc.count };
+}

@@ -441,5 +441,32 @@
       "previewTitle": "Preview (draft)",
       "previewNoindex": "This page is not indexed. Admin preview only."
     }
+  },
+  "chatbot": {
+    "bubbleLabel": "Open the Axion-IA assistant",
+    "closeLabel": "Close the assistant",
+    "title": "Axion-IA assistant",
+    "aiDisclaimer": "You are chatting with an AI. Please verify important information.",
+    "intro": "Hi 👋 Ask me about our AI sessions, audits or implementation work — I'll point you to the right offer.",
+    "placeholder": "Ask your question…",
+    "sendLabel": "Send",
+    "sourcesLabel": "Sources",
+    "offerCta": "View offer",
+    "rdvCta": "Book a call",
+    "escalated": "I'm forwarding your question to an advisor — we'll get back to you.",
+    "errorRetry": "Something went wrong. Please try again in a moment.",
+    "leadCta": "Get a callback",
+    "leadTitle": "Leave your details and we'll get back to you.",
+    "leadName": "Name",
+    "leadEmail": "Email",
+    "leadPhone": "Phone (optional)",
+    "leadNeed": "Your need in brief",
+    "leadConsent": "I agree to be contacted by Axion-IA about my request (GDPR).",
+    "leadSubmit": "Send",
+    "leadSending": "Sending…",
+    "leadCancel": "Cancel",
+    "leadClose": "Close",
+    "leadSuccess": "Thank you! We'll get back to you shortly.",
+    "leadError": "Could not send. Please check your details and try again."
   }
 }

@@ -29,6 +29,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
+import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -114,6 +115,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Sprint Correctif S+1 (P0-S1-2) : KB data RGPD art. 15 (bookmarks).
   const kb = await exportKbDataForEmail(email);
 
+  // Données chatbot RGPD art. 15 (T-23) : conversations + messages + escalades.
+  const chat = await exportChatDataForEmail(email);
+
   // Activity log RGPD : tracé de l'export self-service
   await prisma.activityLog.create({
     data: {
@@ -126,6 +130,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         submissionsCount: submissions.length,
         newsletterPresent: !!newsletter,
         kbBookmarksCount: kb.bookmarks.length,
+        chatConversationsCount: chat.conversations.length,
+        chatEscalationsCount: chat.escalations.length,
       },
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
@@ -138,6 +144,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     submissions,
     newsletter,
     kb,
+    chat,
     notice: {
       excludedTables: [
         "generation_logs (audit trail technique content-gen, sans PII visiteur)",

@@ -22,7 +22,14 @@
 //   emojis pour ne pas casser le rendu V1 et permettre une migration
 //   incrémentale.
 
-export type AdminNavGroup = "main" | "content" | "image-bank" | "engagement" | "ops" | "system";
+export type AdminNavGroup =
+  | "main"
+  | "content"
+  | "image-bank"
+  | "chatbot"
+  | "engagement"
+  | "ops"
+  | "system";
 
 export interface AdminNavItem {
   href: string;
@@ -39,6 +46,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   content: "Contenu",
   "image-bank": "Banque d'images",
+  chatbot: "Chatbot",
   engagement: "Engagement",
   ops: "Ops & monitoring",
   system: "Système",
@@ -48,6 +56,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "content",
   "image-bank",
+  "chatbot",
   "engagement",
   "ops",
   "system",
@@ -143,6 +152,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "image-bank",
     },
     { href: `${base}/image-bank/settings`, label: "Settings", icon: "⚙️", group: "image-bank" },
+    // ── chatbot (console conversationnelle) ──────────────────────────────
+    { href: `${base}/chatbot`, label: "Tableau de bord", icon: "🤖", group: "chatbot" },
+    { href: `${base}/chatbot/escalades`, label: "Escalades", icon: "🆘", group: "chatbot" },
+    {
+      href: `${base}/chatbot/conversations`,
+      label: "Conversations",
+      icon: "💬",
+      group: "chatbot",
+    },
+    { href: `${base}/chatbot/prompt`, label: "Prompt versionné", icon: "📝", group: "chatbot" },
+    { href: `${base}/chatbot/reglages`, label: "Réglages", icon: "⚙️", group: "chatbot" },
     // ── engagement ───────────────────────────────────────────────────────
     { href: `${base}/newsletter`, label: "Newsletter", icon: "📧", group: "engagement" },
     // ── ops & monitoring ─────────────────────────────────────────────────

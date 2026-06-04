@@ -255,6 +255,12 @@
       ],
       "limit": "72 KB",
       "running": false
+    },
+    {
+      "name": "Widget chatbot (T-08) — chunk dynamique ssr:false, île idle, HORS First Load ≤ 30 KB gz",
+      "path": ".next/static/chunks/chatbot-widget*.js",
+      "limit": "30 KB",
+      "running": false
     }
   ],
   "pnpm": {

@@ -51,6 +51,19 @@ enum SubmissionType {
   quote_request
 }
 
+/// Chatbot (D-LEAD-SOURCE, verrouillé Will 2026-06-01) — origine d'une Submission.
+/// Colonne `Submission.source` ADDITIVE nullable (défaut NULL → toutes les
+/// Submissions historiques restent valides, 0 régression). Le tool chatbot
+/// `capturer_lead` pose `source = chatbot`. Permet à la console admin de filtrer
+/// les leads issus du chatbot. Migration groupée avec `chatbot_core` (T-01).
+enum SubmissionSource {
+  form
+  contact_page
+  api
+  import
+  chatbot
+}
+
 enum SubmissionStatus {
   /// Statut hérité V0 (générique). Conservé pour audit/implementation/intervention/contact.
   new
@@ -654,6 +667,10 @@ model Submission {
   userAgent          String?          @map("user_agent") @db.Text
   referer            String?          @db.Text
   turnstileScore     Decimal?         @map("turnstile_score") @db.Decimal(4, 3)
+  /// Chatbot D-LEAD-SOURCE (2026-06-01) — origine du lead. NULL par défaut pour
+  /// toutes les Submissions existantes/formulaires (rétro-compatible). Le tool
+  /// `capturer_lead` pose `chatbot`. Filtrable en console admin.
+  source             SubmissionSource? @map("source")
   // Timestamps
   submittedAt        DateTime         @default(now()) @map("submitted_at")
   updatedAt          DateTime         @updatedAt @map("updated_at")
@@ -4402,4 +4419,176 @@ model RestoreDrill {
   @@index([component, startedAt(sort: Desc)])
   @@index([status, startedAt(sort: Desc)])
   @@map("restore_drills")
+}
+
+// ============================================================
+// CHATBOT (ADR-CB-03, doc 03) — 8 tables chat_* cloisonnées.
+// Migration core `chatbot_core` (T-01) : crée toutes les colonnes SAUF les
+// colonnes pgvector / tsvector (`embedding`, `tsv`, `question_embedding`), qui
+// sont ajoutées + indexées (HNSW + GIN) via `migrations_fts/*_chatbot_fts.sql`
+// (T-02, appliqué par psql), exactement comme `knowledge_translations.search_vector`
+// et `knowledge_embeddings.embedding`. Ces colonnes Unsupported sont déclarées
+// ici (visibilité client + cohérence schéma) mais lues via $queryRaw (Prisma ne
+// gère ni cosine ni tsvector dans son API de query).
+// Multi-tenant : `tenant_id` sur toutes les tables (MVP : 1 tenant `axion-ia`).
+// Flag global `CHATBOT_ENABLED=false` jusqu'à activation (D-PROD).
+// ============================================================
+
+/// Tenant chatbot (MVP : un seul « axion-ia » seedé ; conçu multi-tenant pour Ulixai).
+model ChatTenant {
+  id        String   @id @default(uuid()) @db.Uuid
+  cle       String   @unique @db.VarChar(120) // clé transmise par le widget
+  nom       String   @db.VarChar(200)
+  domaine   String?  @db.VarChar(255) // CORS (ex. axion-ia.com)
+  reglages  Json? // seuils, ton, budget, curseur conversion, palier LLM (D-LLM-TIER)
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  conversations  ChatConversation[]
+  kbChunks       ChatKbChunk[]
+  semanticCache  ChatSemanticCache[]
+  promptVersions ChatPromptVersion[]
+  escalations    ChatEscalation[]
+
+  @@map("chat_tenants")
+}
+
+/// Chunks RAG vectorisés (amorcés depuis KnowledgeEntry/KbFact/FAQ/pages services).
+/// `embedding vector(1024)` + `tsv tsvector` ajoutés via migrations_fts (T-02).
+model ChatKbChunk {
+  id         String      @id @default(uuid()) @db.Uuid
+  tenantId   String      @map("tenant_id") @db.Uuid
+  tenant     ChatTenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sourceType String      @map("source_type") @db.VarChar(40) // knowledge_entry | kb_fact | faq | service_page | article
+  sourceRef  String      @map("source_ref") @db.VarChar(255) // id/slug de la source
+  categorie  String      @db.VarChar(60) // prestations|tarifs|faq|methodo|cas|...
+  priorite   String      @default("moyenne") @db.VarChar(20)
+  contenu    String      @db.Text
+  contexte   String?     @db.Text // phrase de contextualisation (cahier §9)
+  // Colonnes ajoutées via migrations_fts (T-02), lues via $queryRaw :
+  embedding  Unsupported("vector(1024)")?
+  tsv        Unsupported("tsvector")?
+  version    Int         @default(1)
+  actif      Boolean     @default(true)
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  @@unique([tenantId, sourceType, sourceRef, version])
+  @@index([tenantId, categorie])
+  @@index([tenantId, actif])
+  @@map("chat_kb_chunks")
+}
+
+/// Cache sémantique (ADR-CB-05) — `question_embedding vector(1024)` via migrations_fts (T-02).
+model ChatSemanticCache {
+  id                String     @id @default(uuid()) @db.Uuid
+  tenantId          String     @map("tenant_id") @db.Uuid
+  tenant            ChatTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  question          String     @db.Text
+  questionEmbedding Unsupported("vector(1024)")? @map("question_embedding")
+  reponse           String     @db.Text
+  sources           Json?
+  valideJusqu       DateTime?  @map("valide_jusqu")
+  hits              Int        @default(0)
+  knowledgeVersion  Int        @map("knowledge_version") // pour invalidation par version
+  createdAt         DateTime   @default(now()) @map("created_at")
+
+  @@index([tenantId, knowledgeVersion])
+  @@map("chat_semantic_cache")
+}
+
+/// Prompt système versionné + rollback (console admin, T-20).
+model ChatPromptVersion {
+  id        String     @id @default(uuid()) @db.Uuid
+  tenantId  String     @map("tenant_id") @db.Uuid
+  tenant    ChatTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  contenu   String     @db.Text
+  version   Int
+  actif     Boolean    @default(false)
+  note      String?    @db.Text
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  @@unique([tenantId, version])
+  @@index([tenantId, actif])
+  @@map("chat_prompt_versions")
+}
+
+/// Conversation (état serveur, stateless). Champs MVP5 (T-38) `searchSlots`/
+/// `proposedOffers`/`linkState` inclus dès T-01 (migration additive groupée).
+model ChatConversation {
+  id            String     @id @default(uuid()) @db.Uuid
+  tenantId      String     @map("tenant_id") @db.Uuid
+  tenant        ChatTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sessionUuid   String     @map("session_uuid") @db.Uuid
+  persona       String?    @db.VarChar(60)
+  statut        String     @default("active") @db.VarChar(20)
+  pageContext   String?    @map("page_context") @db.Text // page d'origine (accueil proactif)
+  submissionId  String?    @map("submission_id") @db.Uuid // lien lead capturé (Submission interne)
+  resume        String?    @db.Text // contexte long résumé
+  ipHash        String?    @map("ip_hash") @db.VarChar(64) // SHA-256 salée
+  // MVP2 qualification non-intrusive (T-13, qualifier_prospect) — profil prospect :
+  prospectProfile Json?    @map("prospect_profile") // type_structure/secteur/besoin/maturite_ia/urgence
+  // MVP5 « cœur vendeur-conseiller » (T-38) — état de la boucle catalogue :
+  searchSlots   Json?      @map("search_slots") // critères extraits (prix/durée/effectif/sujet/format/vertical)
+  proposedOffers Json?     @map("proposed_offers") // offres proposées au tour courant
+  linkState     String?    @map("link_state") @db.VarChar(20) // null|proposed|confirmed|sent
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  messages    ChatMessage[]
+  escalations ChatEscalation[]
+
+  @@unique([sessionUuid])
+  @@index([tenantId, statut])
+  @@map("chat_conversations")
+}
+
+/// Message (persistance latence/modèle/coût/sources, T-07).
+model ChatMessage {
+  id              String           @id @default(uuid()) @db.Uuid
+  conversationId  String           @map("conversation_id") @db.Uuid
+  conversation    ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role            String           @db.VarChar(20) // user | assistant | system
+  contenu         String           @db.Text
+  sources         Json? // chunks cités
+  toolCalls       Json?            @map("tool_calls")
+  feedback        Int? // pouce +1/-1
+  latenceMs       Int?             @map("latence_ms")
+  modele          String?          @db.VarChar(80)
+  coutEstime      Decimal?         @map("cout_estime") @db.Decimal(10, 5)
+  servedFromCache Boolean          @default(false) @map("served_from_cache")
+  createdAt       DateTime         @default(now()) @map("created_at")
+
+  @@index([conversationId, createdAt])
+  @@map("chat_messages")
+}
+
+/// Escalade vers l'équipe (trou KB / score faible) — T-14.
+model ChatEscalation {
+  id             String            @id @default(uuid()) @db.Uuid
+  tenantId       String            @map("tenant_id") @db.Uuid
+  tenant         ChatTenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  conversationId String?           @map("conversation_id") @db.Uuid
+  conversation   ChatConversation? @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  question       String            @db.Text
+  contexte       String?           @db.Text
+  contactEmail   String?           @map("contact_email") @db.Citext
+  statut         String            @default("ouverte") @db.VarChar(20)
+  emailEnvoye    Boolean           @default(false) @map("email_envoye")
+  submissionId   String?           @map("submission_id") @db.Uuid // si converti en lead
+  createdAt      DateTime          @default(now()) @map("created_at")
+
+  @@index([tenantId, statut])
+  @@map("chat_escalations")
+}
+
+/// Idempotency des actions outillées (capturer_lead, T-17). cle = sha256(conversationId+outil+payload).
+model ChatActionIdempotency {
+  cle       String   @id @db.VarChar(64)
+  resultat  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("chat_action_idempotency")
 }

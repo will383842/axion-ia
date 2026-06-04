@@ -1,0 +1,168 @@
+// Registre des tools chatbot (T-12, ADR-CB-09/CB-10).
+//
+// Chaque tool = { name, description, schema Zod, handler }. Le registre :
+//   - valide l'input LLM via Zod (refus déterministe des payloads invalides) ;
+//   - INJECTE `tenant_id` côté serveur (jamais depuis le payload LLM) ;
+//   - dispatch vers le handler typé.
+// Évolutivité (ADR-CB-10) : ajouter un tool = 1 register(), zéro autre changement.
+//
+// MVP : seul `rechercher_offres` (T-35) est câblé. Les 5 autres tools
+// (qualifier_prospect, capturer_lead, proposer_rdv, chercher_ressource,
+// escalader_question — MVP2/3, DB/Calendly/email) s'enregistreront ici.
+
+import type { z } from "zod";
+import {
+  RechercherOffresInputSchema,
+  rechercherOffres,
+  type ToolContext,
+} from "@/server/chatbot/tools/rechercher-offres";
+import { CapturerLeadInputSchema, capturerLead } from "@/server/chatbot/tools/capturer-lead";
+import { ProposerRdvInputSchema, proposerRdv } from "@/server/chatbot/tools/proposer-rdv";
+import {
+  ChercherRessourceInputSchema,
+  chercherRessource,
+} from "@/server/chatbot/tools/chercher-ressource";
+import {
+  QualifierProspectInputSchema,
+  qualifierProspect,
+} from "@/server/chatbot/tools/qualifier-prospect";
+import {
+  EscaladerQuestionInputSchema,
+  escaladerQuestion,
+} from "@/server/chatbot/tools/escalader-question";
+
+export type { ToolContext };
+
+/** Définition d'un tool. `I` = type de l'input validé. */
+export interface ToolDefinition<I = unknown> {
+  readonly name: string;
+  readonly description: string;
+  /** Schéma Zod de l'input fourni par le LLM (sans `tenant_id` — injecté serveur). */
+  readonly schema: z.ZodType<I>;
+  /** Handler exécuté avec l'input validé + le contexte serveur (tenant injecté). */
+  readonly handler: (input: I, ctx: ToolContext) => Promise<unknown>;
+}
+
+export class ToolValidationError extends Error {
+  constructor(
+    public readonly toolName: string,
+    public readonly issues: unknown,
+  ) {
+    super(`[chatbot:tool] payload invalide pour "${toolName}"`);
+    this.name = "ToolValidationError";
+  }
+}
+
+export class UnknownToolError extends Error {
+  constructor(public readonly toolName: string) {
+    super(`[chatbot:tool] tool inconnu : "${toolName}"`);
+    this.name = "UnknownToolError";
+  }
+}
+
+export class ToolRegistry {
+  private readonly tools = new Map<string, ToolDefinition<unknown>>();
+
+  register<I>(def: ToolDefinition<I>): void {
+    if (this.tools.has(def.name)) {
+      throw new Error(`[chatbot:tool] tool déjà enregistré : "${def.name}"`);
+    }
+    this.tools.set(def.name, def as ToolDefinition<unknown>);
+  }
+
+  has(name: string): boolean {
+    return this.tools.has(name);
+  }
+
+  get(name: string): ToolDefinition<unknown> | undefined {
+    return this.tools.get(name);
+  }
+
+  /** Liste des noms de tools enregistrés. */
+  names(): string[] {
+    return [...this.tools.keys()];
+  }
+
+  /** Définitions (pour exposer les schémas au LLM via l'orchestrateur). */
+  list(): ReadonlyArray<ToolDefinition<unknown>> {
+    return [...this.tools.values()];
+  }
+
+  /**
+   * Valide l'input (Zod), injecte le contexte serveur (tenant_id), dispatche.
+   * Throw `UnknownToolError` / `ToolValidationError` (refus déterministe).
+   */
+  async dispatch(name: string, rawInput: unknown, ctx: ToolContext): Promise<unknown> {
+    const def = this.tools.get(name);
+    if (!def) throw new UnknownToolError(name);
+    const parsed = def.schema.safeParse(rawInput);
+    if (!parsed.success) throw new ToolValidationError(name, parsed.error.issues);
+    return def.handler(parsed.data, ctx);
+  }
+}
+
+// ── Registre par défaut (tools du MVP) ─────────────────────────────────────
+
+export const chatbotTools = new ToolRegistry();
+
+chatbotTools.register<typeof RechercherOffresInputSchema._type>({
+  name: "rechercher_offres",
+  description:
+    "Recherche déterministe dans le catalogue d'offres Axion-IA par facettes " +
+    "(prix, durée, effectif, sujet/outil, format, audience, tri). Retourne des " +
+    "offres avec prix exact (SSOT) et lien FR. Utiliser pour toute demande de " +
+    "prestation par critères (« formations entre X et Y € », « le moins cher », etc.).",
+  schema: RechercherOffresInputSchema,
+  handler: (input, ctx) => rechercherOffres(input, ctx),
+});
+
+chatbotTools.register<typeof CapturerLeadInputSchema._type>({
+  name: "capturer_lead",
+  description:
+    "Enregistre un prospect (lead) après consentement RGPD explicite. Idempotent " +
+    "(pas de doublon en cas de retry). À utiliser quand le visiteur fournit ses " +
+    "coordonnées et accepte d'être recontacté.",
+  schema: CapturerLeadInputSchema,
+  handler: (input, ctx) => capturerLead(input, ctx),
+});
+
+chatbotTools.register<typeof ProposerRdvInputSchema._type>({
+  name: "proposer_rdv",
+  description:
+    "Renvoie le lien de prise de rendez-vous (échange découverte ou réservation). " +
+    "N'effectue aucune réservation serveur — oriente vers la page FR.",
+  schema: ProposerRdvInputSchema,
+  handler: async (input) => proposerRdv(input),
+});
+
+chatbotTools.register<typeof ChercherRessourceInputSchema._type>({
+  name: "chercher_ressource",
+  description:
+    "Cherche un article de blog ou un cas client PUBLIÉ pertinent sur un sujet, " +
+    "et renvoie son titre, son lien FR et un extrait. Utiliser pour appuyer une " +
+    "explication par une ressource concrète. Renvoie rien si aucune ressource " +
+    "pertinente — ne jamais inventer de lien.",
+  schema: ChercherRessourceInputSchema,
+  handler: (input, ctx) => chercherRessource(input, ctx),
+});
+
+chatbotTools.register<typeof QualifierProspectInputSchema._type>({
+  name: "qualifier_prospect",
+  description:
+    "Enregistre, sans interrogatoire, ce que le visiteur révèle sur son profil " +
+    "(type de structure, secteur, besoin, maturité IA, urgence). Tous les champs " +
+    "sont optionnels et cumulés au fil de la conversation. À appeler dès qu'un " +
+    "élément de profil est exprimé.",
+  schema: QualifierProspectInputSchema,
+  handler: (input, ctx) => qualifierProspect(input, ctx),
+});
+
+chatbotTools.register<typeof EscaladerQuestionInputSchema._type>({
+  name: "escalader_question",
+  description:
+    "Escalade une question à laquelle tu ne peux PAS répondre de façon fiable " +
+    "(info absente du contexte, hors périmètre catalogue). Crée une demande pour " +
+    "l'équipe et la notifie. À utiliser plutôt que d'inventer une réponse.",
+  schema: EscaladerQuestionInputSchema,
+  handler: (input, ctx) => escaladerQuestion(input, ctx),
+});

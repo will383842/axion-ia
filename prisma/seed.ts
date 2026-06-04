@@ -20,6 +20,7 @@ import { PrismaClient } from "./generated/client";
 import { hashPassword } from "../src/lib/auth-password";
 import { seedAuthorProfile } from "./seeds/content-gen/author-profile";
 import { seedKbFacts } from "./seeds/content-gen/seed-kb-facts";
+import { seedChatbotTenant } from "./seeds/chatbot";
 
 const prisma = new PrismaClient();
 
@@ -1039,6 +1040,9 @@ async function main() {
   // service vide. Idempotent (upsert par slug). Retourne le nb de faits seedés.
   const kbFactsCount = await seedKbFacts(prisma);
   console.log(`✓ KB facts seeded (${kbFactsCount} faits services).`);
+  // Chatbot (T-03) — tenant unique « axion-ia » + réglages par défaut (idempotent).
+  await seedChatbotTenant(prisma);
+  console.log("✓ Chatbot tenant seeded (axion-ia).");
   console.log("✓ Seed complete.");
 }
 

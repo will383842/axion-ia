@@ -92,6 +92,8 @@ export type WorkerName =
   // Sprint Site Explorer Admin 2026-05-22
   | "site-route-inspector"
   | "site-route-anomaly-detector"
+  // Chatbot (T-05) — ingestion RAG chat_kb_chunks
+  | "chatbot-ingest"
   // Sprint v7 Phase 9 — GSC HCU monitoring daily cron
   | "gsc-hcu-monitor"
   // Sprint v7 Phase 13 — Content refresh monthly cron

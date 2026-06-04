@@ -32,7 +32,13 @@ export type FunnelEvent =
   | "Cancellation Started"
   | "Cancellation Completed"
   | "Reschedule Started"
-  | "Reschedule Completed";
+  | "Reschedule Completed"
+  // Chatbot (T-22)
+  | "Chat Started"
+  | "Chat Qualified"
+  | "Chat RDV"
+  | "Chat Lead"
+  | "Chat Escalated";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).

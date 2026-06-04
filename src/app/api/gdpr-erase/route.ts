@@ -28,7 +28,11 @@ import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { eraseKbDataForEmail } from "@/lib/knowledge/rgpd-export";
-import { eraseNewsletterForEmail, eraseSubmissionsForEmail } from "@/lib/rgpd-erase";
+import {
+  eraseChatDataForEmail,
+  eraseNewsletterForEmail,
+  eraseSubmissionsForEmail,
+} from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 
 export const runtime = "nodejs";
@@ -67,6 +71,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
   }
 
+  // Données chatbot (chat_*) AVANT l'anonymisation des Submissions : le
+  // rattachement conversation↔lead se fait par `contactEmail`, qui sera hashé
+  // par eraseSubmissionsForEmail.
+  const chatResult = await eraseChatDataForEmail(email);
+
   // Exécution des effacements
   const [submissionsResult, newsletterResult, kbResult] = await Promise.all([
     eraseSubmissionsForEmail(email),
@@ -86,6 +95,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         submissionsAnonymized: submissionsResult.anonymized,
         newsletterDeleted: newsletterResult.deleted,
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
+        chatConversationsDeleted: chatResult.conversationsDeleted,
+        chatEscalationsAnonymized: chatResult.escalationsAnonymized,
       },
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
@@ -94,7 +105,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
   try {
     await alertIncident(
-      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${kbResult.bookmarksDeleted} KB bookmarks.`,
+      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées.`,
       { userId: v.jti },
     );
   } catch {
@@ -108,6 +119,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       submissionsAnonymized: submissionsResult.anonymized,
       newsletterDeleted: newsletterResult.deleted,
       kbBookmarksDeleted: kbResult.bookmarksDeleted,
+      chatConversationsDeleted: chatResult.conversationsDeleted,
+      chatEscalationsAnonymized: chatResult.escalationsAnonymized,
     },
     notice: {
       explanation:

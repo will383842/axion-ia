@@ -27,6 +27,7 @@
 //   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
 //   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
 //   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
+//   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
 
@@ -45,6 +46,7 @@ const DEFAULTS = {
   costLedger: 24,
   webVitals: 6,
   imageLogs: 12,
+  chat: 12,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -83,6 +85,10 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         webVitals: 0,
         imageUsageLogs: 0,
         imageDownloadLogs: 0,
+        chatConversations: 0,
+        chatEscalations: 0,
+        chatSemanticCache: 0,
+        chatIdempotency: 0,
       };
 
       // 1) activity_logs ancients
@@ -202,12 +208,37 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       counts.imageUsageLogs = imageUsageResult.count;
       counts.imageDownloadLogs = imageDownloadResult.count;
 
+      // 9) chat_* anciens (RGPD — chatbot). Le contenu (chat_messages.contenu,
+      // chat_conversations.{prospect_profile, resume, ip_hash}, chat_escalations.
+      // contact_email) est de la PII. Les chat_messages partent en CASCADE avec
+      // la conversation (FK ON DELETE CASCADE). Cache sémantique + clés
+      // d'idempotence = housekeeping non-PII.
+      const chatMonths = readMonths("RETENTION_CHAT_MONTHS", DEFAULTS.chat);
+      const chatConvResult = await prisma.chatConversation.deleteMany({
+        where: { updatedAt: { lt: monthsAgo(chatMonths) } },
+      });
+      counts.chatConversations = chatConvResult.count;
+      const chatEscResult = await prisma.chatEscalation.deleteMany({
+        where: { createdAt: { lt: monthsAgo(chatMonths) } },
+      });
+      counts.chatEscalations = chatEscResult.count;
+      const chatCacheResult = await prisma.chatSemanticCache.deleteMany({
+        where: { createdAt: { lt: monthsAgo(chatMonths) } },
+      });
+      counts.chatSemanticCache = chatCacheResult.count;
+      const chatIdemResult = await prisma.chatActionIdempotency.deleteMany({
+        where: { createdAt: { lt: monthsAgo(chatMonths) } },
+      });
+      counts.chatIdempotency = chatIdemResult.count;
+
       console.log(
         `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
           `newsletter=${counts.newsletter} bookings=${counts.bookings} ` +
           `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
           `webVitals=${counts.webVitals} ` +
-          `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs}`,
+          `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs} ` +
+          `chatConversations=${counts.chatConversations} chatEscalations=${counts.chatEscalations} ` +
+          `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency}`,
       );
     },
     {
