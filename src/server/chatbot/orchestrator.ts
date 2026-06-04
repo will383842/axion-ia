@@ -9,7 +9,11 @@
 // LLM injecté (generateAnswer) → testable sans appel réseau. Les intentions
 // déterministes (recherche_offre, rdv, hors_sujet, lead) ne consomment PAS de LLM.
 
-import { extractSlots, type ChatIntent, type SearchSlots } from "@/server/chatbot/catalog/slot-filling";
+import {
+  extractSlots,
+  type ChatIntent,
+  type SearchSlots,
+} from "@/server/chatbot/catalog/slot-filling";
 import {
   detectLinkSignal,
   onSearchResults,
@@ -17,16 +21,14 @@ import {
   INITIAL_FLOW,
   type LinkFlowState,
 } from "@/server/chatbot/catalog/link-flow";
-import {
-  rechercherOffres,
-  type OfferResult,
-} from "@/server/chatbot/tools/rechercher-offres";
+import { rechercherOffres, type OfferResult } from "@/server/chatbot/tools/rechercher-offres";
 import { hybridSearch, type RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
+import { rerankChunks } from "@/server/chatbot/retrieval/rerank";
 import { assessConfidence } from "@/server/chatbot/retrieval/confidence";
 import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/output-guard";
 import { assembleSystemPrompt } from "@/server/chatbot/generation/system-prompt";
 import { generateAnswer, type GenerateAnswerFn } from "@/server/chatbot/generation/generate-stream";
-import { RERANK_TOP_N } from "@/server/chatbot/constants";
+import { RERANK_TOP_N, RETRIEVAL_TOP_K } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 
 /** Lien RDV découverte (route FR connue). */
@@ -62,6 +64,7 @@ export interface TurnResult {
 export interface OrchestratorDeps {
   readonly generateAnswer?: GenerateAnswerFn;
   readonly retrieve?: typeof hybridSearch;
+  readonly rerank?: typeof rerankChunks;
 }
 
 const OK_GUARD: OutputGuardResult = { ok: true, violations: [] };
@@ -74,6 +77,7 @@ export async function handleTurn(
 ): Promise<TurnResult> {
   const llm = deps.generateAnswer ?? generateAnswer;
   const retrieve = deps.retrieve ?? hybridSearch;
+  const rerank = deps.rerank ?? rerankChunks;
   const max = ctx.tenant.settings.maxOfferCards;
   const tenantId = ctx.tenant.id;
 
@@ -81,7 +85,11 @@ export async function handleTurn(
   const signal = detectLinkSignal(message);
   const incoming = ctx.linkFlow ?? INITIAL_FLOW;
 
-  const base = { slots, sources: [] as Array<{ sourceType: string; sourceRef: string }>, guard: OK_GUARD };
+  const base = {
+    slots,
+    sources: [] as Array<{ sourceType: string; sourceRef: string }>,
+    guard: OK_GUARD,
+  };
 
   // — Confirmation d'un envoi de liens en attente —
   if (incoming.linkState === "proposed" && (signal === "confirm" || signal === "shortcut_direct")) {
@@ -116,7 +124,10 @@ export async function handleTurn(
       const res = await rechercherOffres(slots, { tenantId });
       const cards = res.offres.slice(0, max);
       const direct = signal === "shortcut_direct";
-      const flow = onSearchResults(cards.map((c) => c.id), { directShortcut: direct });
+      const flow = onSearchResults(
+        cards.map((c) => c.id),
+        { directShortcut: direct },
+      );
       const sent = flow.state.linkState === "sent";
       const text = res.replied
         ? "Je n'ai pas d'offre exactement dans ces critères, mais voici ce qui s'en rapproche :"
@@ -172,7 +183,12 @@ export async function handleTurn(
 
     case "explication":
     default: {
-      const chunks: RetrievedChunk[] = await retrieve(tenantId, message, { topK: RERANK_TOP_N });
+      // T-06 récupère RETRIEVAL_TOP_K candidats (RRF) ; T-10 les re-classe via
+      // Voyage rerank → top-N injecté au prompt (repli RRF si Voyage down).
+      const candidates: RetrievedChunk[] = await retrieve(tenantId, message, {
+        topK: RETRIEVAL_TOP_K,
+      });
+      const chunks: RetrievedChunk[] = await rerank(message, candidates, { topN: RERANK_TOP_N });
       // T-11 : seuil de confiance → escalade SANS appel LLM si retrieval faible.
       const confidence = assessConfidence(chunks, ctx.tenant.settings.confidenceThreshold);
       if (!confidence.confident) {
