@@ -16,6 +16,7 @@ import { adminPath } from "@/lib/admin-path";
 import { requireAdminRead, requireAdminWrite } from "@/server/actions/knowledge/_guards";
 import {
   activatePromptVersion,
+  createPromptVersion,
   listPromptVersions,
 } from "@/server/chatbot/generation/prompt-version";
 
@@ -137,11 +138,143 @@ export async function resolveEscalationAction(
   }
 }
 
+// ── Conversations ─────────────────────────────────────────────────────────────
+
+export interface ConversationRow {
+  readonly id: string;
+  readonly sessionUuid: string;
+  readonly statut: string;
+  readonly messageCount: number;
+  readonly hasLead: boolean;
+  readonly createdAt: Date;
+}
+
+export interface ConversationListResult {
+  readonly items: ReadonlyArray<ConversationRow>;
+  readonly total: number;
+  readonly page: number;
+  readonly totalPages: number;
+}
+
+export async function listConversations(opts: { page?: number }): Promise<ConversationListResult> {
+  await requireAdminRead();
+  const page = Math.max(1, opts.page ?? 1);
+  const [rows, total] = await Promise.all([
+    prisma.chatConversation.findMany({
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+      select: {
+        id: true,
+        sessionUuid: true,
+        statut: true,
+        submissionId: true,
+        createdAt: true,
+        _count: { select: { messages: true } },
+      },
+    }),
+    prisma.chatConversation.count(),
+  ]);
+  const items = rows.map((r) => ({
+    id: r.id,
+    sessionUuid: r.sessionUuid,
+    statut: r.statut,
+    messageCount: r._count.messages,
+    hasLead: r.submissionId !== null,
+    createdAt: r.createdAt,
+  }));
+  return { items, total, page, totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)) };
+}
+
+export interface ConversationMessageRow {
+  readonly id: string;
+  readonly role: string;
+  readonly contenu: string;
+  readonly servedFromCache: boolean;
+  readonly createdAt: Date;
+}
+
+export interface ConversationDetail {
+  readonly id: string;
+  readonly sessionUuid: string;
+  readonly statut: string;
+  readonly resume: string | null;
+  readonly createdAt: Date;
+  readonly messages: ReadonlyArray<ConversationMessageRow>;
+}
+
+export async function getConversationDetail(id: string): Promise<ConversationDetail | null> {
+  await requireAdminRead();
+  return prisma.chatConversation.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      sessionUuid: true,
+      statut: true,
+      resume: true,
+      createdAt: true,
+      messages: {
+        orderBy: { createdAt: "asc" },
+        select: { id: true, role: true, contenu: true, servedFromCache: true, createdAt: true },
+      },
+    },
+  });
+}
+
 // ── Prompt versionné (rollback) ───────────────────────────────────────────────
 
 export async function listChatbotPromptVersions(tenantId: string) {
   await requireAdminRead();
   return listPromptVersions(tenantId);
+}
+
+export type CreatePromptState = { ok: true; version: number } | { ok: false; error: string };
+
+const createSchema = z.object({
+  tenantId: z.string().uuid(),
+  contenu: z.string().min(20).max(20000),
+  note: z.string().max(200).optional(),
+});
+
+export async function createPromptVersionAction(
+  _prev: CreatePromptState,
+  formData: FormData,
+): Promise<CreatePromptState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  const parsed = createSchema.safeParse({
+    tenantId: formData.get("tenantId"),
+    contenu: formData.get("contenu"),
+    note: formData.get("note") || undefined,
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
+  }
+  try {
+    const { version } = await createPromptVersion(
+      parsed.data.tenantId,
+      parsed.data.contenu,
+      parsed.data.note,
+    );
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "chatbot.prompt.created",
+        targetType: "chat_prompt_version",
+        targetId: `${parsed.data.tenantId}:v${version}`,
+        changes: { version },
+        ipAddress: await getClientIp(),
+      },
+    });
+    revalidatePath(adminPath("fr", "chatbot/prompt"));
+    return { ok: true, version };
+  } catch {
+    return { ok: false, error: "Erreur interne." };
+  }
 }
 
 export type ActivatePromptState = { ok: true } | { ok: false; error: string };
