@@ -9,9 +9,9 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   pitchEn:
     "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Champagne-sur-Oise est une commune résidentielle du nord du Val-d'Oise, en bord d'Oise à proximité immédiate de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP.",

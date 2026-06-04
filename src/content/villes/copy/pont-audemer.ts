@@ -9,9 +9,9 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
   pitchEn:
     "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
   seoHook: "TPE & PME Eure",
   ecosystemFr:
     "Pont-Audemer est une sous-préfecture de l'Eure surnommée la « Venise normande » grâce aux canaux de la Risle qui traversent son centre médiéval. Économie historiquement liée à la tannerie et au cuir, aujourd'hui diversifiée : industrie, commerces de centre-ville labellisé, tourisme fluvial et patrimonial, artisanat, services aux entreprises.",

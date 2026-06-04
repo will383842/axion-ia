@@ -9,9 +9,9 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "tourisme thermal & hôtellerie golf",
   ecosystemFr:
     "Divonne-les-Bains est une station thermale historique du pays de Gex avec casino, à la frontière suisse (vue lac Léman et Mont-Blanc). Tissu tourisme thermal haut de gamme (thermes, hôtellerie, casino, golf), économie frontalière Genève, PME tertiaires, TPE artisanat BTP, commerces.",

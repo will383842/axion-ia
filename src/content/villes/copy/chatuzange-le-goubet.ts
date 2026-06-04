@@ -9,9 +9,9 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
   pitchEn:
     "Chatuzange-le-Goubet (26), commune de la Drôme des Collines à proximité de Romans-sur-Isère, fait partie de Valence Romans Agglo. Tissu mixte agriculture, PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune du bassin Romans-Valence.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chatuzange-le-Goubet (26). Nous accompagnons tous types d'activités : PME industrielles diversifiées bassin Romans, agriculteurs Drôme des Collines, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Valence Romans Agglo.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chatuzange-le-Goubet (26). Nous accompagnons tous types d'activités : PME industrielles diversifiées bassin Romans, agriculteurs Drôme des Collines, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Valence Romans Agglo.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chatuzange-le-Goubet (26). Nous accompagnons tous types d'activités : PME industrielles diversifiées bassin Romans, agriculteurs Drôme des Collines, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Valence Romans Agglo.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chatuzange-le-Goubet (26). Nous accompagnons tous types d'activités : PME industrielles diversifiées bassin Romans, agriculteurs Drôme des Collines, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Valence Romans Agglo.",
   seoHook: "bassin romans-valence",
   ecosystemFr:
     "Chatuzange-le-Goubet est intégrée à Valence Romans Agglo, située dans la Drôme des Collines (paysage vallonné caractéristique du nord-Drôme). Tissu mixte agriculture et péri-urbain : exploitations agricoles diversifiées, PME industrielles (lien filière chaussure/cuir bassin Romans), TPE artisanat BTP, commerces de proximité.",

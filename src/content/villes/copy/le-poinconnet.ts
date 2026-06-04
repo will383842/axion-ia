@@ -9,9 +9,9 @@ export const LE_POINCONNET_COPY: VilleCopy = {
   pitchEn:
     "Le PoinÃ§onnet (36), commune rÃ©sidentielle de l'agglomÃ©ration de ChÃ¢teauroux dans l'Indre, bÃ©nÃ©ficie de la proximitÃ© immÃ©diate de la prÃ©fecture. Tissu TPE artisans BTP, commerces de proximitÃ©, PME services aux entreprises, professions libÃ©rales santÃ©. Axion-IA y intervient pour tous types d'activitÃ©s.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au PoinÃ§onnet (36). Nous accompagnons tous types d'activitÃ©s : TPE artisans BTP, commerces de proximitÃ©, PME services aux entreprises agglo ChÃ¢teauroux, professions libÃ©rales santÃ©, prestataires logistique et sous-traitants industriels du bassin castelroussin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au PoinÃ§onnet (36). Nous accompagnons tous types d'activitÃ©s : TPE artisans BTP, commerces de proximitÃ©, PME services aux entreprises agglo ChÃ¢teauroux, professions libÃ©rales santÃ©, prestataires logistique et sous-traitants industriels du bassin castelroussin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au PoinÃ§onnet (36). Nous accompagnons tous types d'activitÃ©s : TPE artisans BTP, commerces de proximitÃ©, PME services aux entreprises agglo ChÃ¢teauroux, professions libÃ©rales santÃ©, prestataires logistique et sous-traitants industriels du bassin castelroussin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au PoinÃ§onnet (36). Nous accompagnons tous types d'activitÃ©s : TPE artisans BTP, commerces de proximitÃ©, PME services aux entreprises agglo ChÃ¢teauroux, professions libÃ©rales santÃ©, prestataires logistique et sous-traitants industriels du bassin castelroussin.",
   seoHook: "commerce proximitã© & professions libã©rales",
   ecosystemFr:
     "Le PoinÃ§onnet est une commune rÃ©sidentielle de l'agglomÃ©ration de ChÃ¢teauroux (sud immÃ©diat). ProximitÃ© zones d'activitÃ©s castelroussines. Tissu TPE artisans BTP, commerces de proximitÃ©, PME services aux entreprises, professions libÃ©rales santÃ©, sous-traitants industriels aÃ©ronautique (bassin ChÃ¢teauroux-DÃ©ols).",

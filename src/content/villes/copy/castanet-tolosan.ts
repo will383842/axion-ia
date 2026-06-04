@@ -9,9 +9,9 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   pitchEn:
     "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA répond aux besoins de toutes les entreprises du Sicoval.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit sur place sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Castanet-Tolosan est le siège de la communauté d'agglomération du Sicoval. Commune résidentielle et commerçante du sud-est de Toulouse, traversée par le canal du Midi. TPE artisans, PME de services, cabinets de professions libérales, commerces de centre-ville, quelques entreprises technologiques liées au pôle spatial toulousain.",

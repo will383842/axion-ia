@@ -9,9 +9,9 @@ export const TERGNIER_COPY: VilleCopy = {
   pitchEn:
     "Tergnier (02), commune de l''Aisne, nœud ferroviaire SNCF historique et capitale cheminote de Picardie, héritière des ateliers ferroviaires et d''une forte tradition ouvrière. Tissu TPE/PME logistique ferroviaire, sous-traitance industrielle, BTP, commerces de proximité, services et artisanat. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Tergnier (02). Nous accompagnons tous types d''activités : TPE/PME logistique et maintenance ferroviaire, sous-traitants industriels, artisans BTP, commerces de proximité et professions de services du Saint-Quentinois et Chaunois.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Tergnier (02). Nous accompagnons tous types d''activités : TPE/PME logistique et maintenance ferroviaire, sous-traitants industriels, artisans BTP, commerces de proximité et professions de services du Saint-Quentinois et Chaunois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Tergnier (02). Nous accompagnons tous types d''activités : TPE/PME logistique et maintenance ferroviaire, sous-traitants industriels, artisans BTP, commerces de proximité et professions de services du Saint-Quentinois et Chaunois.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Tergnier (02). Nous accompagnons tous types d''activités : TPE/PME logistique et maintenance ferroviaire, sous-traitants industriels, artisans BTP, commerces de proximité et professions de services du Saint-Quentinois et Chaunois.",
   ecosystemFr:
     "Tergnier est une commune-clé de l''Aisne, nœud ferroviaire majeur sur l''axe Paris–Maubeuge et capitale cheminote héritière des grands ateliers SNCF. Tissu TPE/PME logistique ferroviaire, maintenance, sous-traitance industrielle, BTP, commerces de proximité, services et artisanat. Bassin de vie ouvrier et péri-urbain.",
   ecosystemEn:

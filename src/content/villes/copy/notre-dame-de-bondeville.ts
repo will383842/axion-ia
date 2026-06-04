@@ -10,9 +10,9 @@ export const NOTRE_DAME_DE_BONDEVILLE_COPY: VilleCopy = {
     "Notre-Dame-de-Bondeville (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 7 070 habitants. Ville residentielle et commercante au nord de Rouen, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Rouen nord",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Notre-Dame-de-Bondeville fait partie de la Metropole Rouen Normandie, au nord de Rouen. Tissu economique de proximite : commerces de centre-ville, TPE de services, artisanat, professions liberales et PME tertiaires. Acces direct tramway T1 et A150 vers Le Havre.",
   ecosystemEn:

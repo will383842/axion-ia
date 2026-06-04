@@ -9,9 +9,9 @@ export const FENAIN_COPY: VilleCopy = {
   pitchEn:
     "Fenain (59), commune du bassin minier du Nord inscrit au patrimoine mondial UNESCO, conserve un héritage industriel reconverti. Tissu TPE artisans, PME logistique et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Fenain est une commune du bassin minier du Nord entre Douai et Denain, inscrite dans le périmètre UNESCO du bassin minier Nord-Pas-de-Calais. L'héritage industriel minier s'est reconverti vers la logistique, les services et le BTP. Tissu dense de TPE artisans, PME logistique et services aux entreprises, commerces de proximité et professions libérales.",
   ecosystemEn:

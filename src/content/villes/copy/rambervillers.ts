@@ -9,9 +9,9 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
   pitchEn:
     "Rambervillers (88), bourg vosgien de la Plaine des Vosges, ville historique connue pour sa faïence et son patrimoine, située entre Épinal et Saint-Dié-des-Vosges. Tissu TPE/PME industrie céramique/faïence, bois, sous-traitance, BTP, commerces de proximité, services et artisanat. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Rambervillers (88). Nous accompagnons tous types d''activités : TPE/PME industrie céramique/faïence, filière bois, sous-traitants, artisans BTP, commerces de proximité et professions de services de la Plaine des Vosges.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Rambervillers (88). Nous accompagnons tous types d''activités : TPE/PME industrie céramique/faïence, filière bois, sous-traitants, artisans BTP, commerces de proximité et professions de services de la Plaine des Vosges.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Rambervillers (88). Nous accompagnons tous types d''activités : TPE/PME industrie céramique/faïence, filière bois, sous-traitants, artisans BTP, commerces de proximité et professions de services de la Plaine des Vosges.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Rambervillers (88). Nous accompagnons tous types d''activités : TPE/PME industrie céramique/faïence, filière bois, sous-traitants, artisans BTP, commerces de proximité et professions de services de la Plaine des Vosges.",
   ecosystemFr:
     "Rambervillers est un bourg de la Plaine des Vosges, ville d''art et d''histoire connue pour sa tradition faïencière et son patrimoine architectural. Tissu TPE/PME industrie (céramique, faïence, bois), sous-traitance, BTP, commerces de proximité, services et artisanat. Bassin de vie rural et péri-urbain entre Épinal et Saint-Dié.",
   ecosystemEn:

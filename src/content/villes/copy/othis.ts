@@ -9,9 +9,9 @@ export const OTHIS_COPY: VilleCopy = {
   pitchEn:
     "Othis (77), commune résidentielle du nord Seine-et-Marne aux portes de Roissy-CDG, accueille des TPE artisanales, PME de services logistiques et transport, commerçants de proximité, professions libérales et prestataires liés au hub aéroportuaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Othis (77). Nous accompagnons TPE et PME : prestataires logistiques Roissy, TPE artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Othis (77). Nous accompagnons TPE et PME : prestataires logistiques Roissy, TPE artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Othis (77). Nous accompagnons TPE et PME : prestataires logistiques Roissy, TPE artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Othis (77). Nous accompagnons TPE et PME : prestataires logistiques Roissy, TPE artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
   seoHook: "transport logistique & artisanat rénovation",
   ecosystemFr:
     "Othis se situe dans le nord de la Seine-et-Marne, à proximité immédiate de l'aéroport Roissy-Charles de Gaulle. Commune résidentielle limitrophe de Dammartin-en-Goële et Moussy-le-Neuf. Tissu économique marqué par la logistique aéroportuaire, les TPE artisanales BTP, les PME de transport et services, les commerces de bourg et les professions libérales. Accès direct N2 et A1 vers Paris et Roissy.",

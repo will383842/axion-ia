@@ -9,9 +9,9 @@ export const LIMOURS_COPY: VilleCopy = {
   pitchEn:
     "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu TPE artisans BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",

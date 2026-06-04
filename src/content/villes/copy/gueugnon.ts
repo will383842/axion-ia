@@ -9,9 +9,9 @@ export const GUEUGNON_COPY: VilleCopy = {
   pitchEn:
     "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
   seoHook: "TPE & PME Saône-et-Loire",
   ecosystemFr:
     "Gueugnon est une commune industrielle du val d'Arroux en Saône-et-Loire, historiquement liée à la métallurgie (aciers spéciaux, laminage). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services.",

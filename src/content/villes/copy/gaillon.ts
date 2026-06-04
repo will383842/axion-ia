@@ -9,9 +9,9 @@ export const GAILLON_COPY: VilleCopy = {
   pitchEn:
     "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillon (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gaillon (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillon (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gaillon (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   seoHook: "industrie logistique & agriculture grandes",
   ecosystemFr:
     "Gaillon est une commune de l'Eure sur les bords de Seine, célèbre pour son château Renaissance (premier château de style Renaissance en France). Position stratégique sur l'axe Seine entre Paris et Rouen. Zones d'activité industrielles et logistiques, agriculture, commerces de proximité. Seine Normandie Agglomération.",

@@ -10,9 +10,9 @@ export const CHENOVE_COPY: VilleCopy = {
     "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération dijonnaise.",
   seoHook: "commerce, artisanat & viticulture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Chenôve est la deuxième ville de Dijon Métropole, positionnée au sud immédiat de Dijon au pied de la Côte de Nuits. Tissu économique dominé par le commerce de proximité, l'artisanat, les services aux entreprises, la logistique périurbaine et un héritage viticole notable (ancienne cuverie des ducs de Bourgogne, proximité Marsannay-la-Côte).",
   ecosystemEn:

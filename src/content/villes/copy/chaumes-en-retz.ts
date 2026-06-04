@@ -9,9 +9,9 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   pitchEn:
     "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
   seoHook: "pays de retz",
   ecosystemFr:
     "Chaumes-en-Retz est une commune nouvelle du Pays de Retz, née de la fusion d'Arthon-en-Retz et Chéméré. Proximité Côte de Jade et Pornic. Tissu TPE artisans, exploitations agricoles, commerces de proximité, PME tourisme littoral, services et professions libérales.",

@@ -9,9 +9,9 @@ export const BERCK_COPY: VilleCopy = {
   pitchEn:
     "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   seoHook: "côte d'opale",
   ecosystemFr:
     "Berck est une station balnéaire majeure de la Côte d'Opale, historiquement liée à la médecine et la rééducation (hôpital maritime fondé au XIXe siècle). Le tissu économique mêle tourisme saisonnier (hôtellerie, restauration, activités de plage), établissements de santé et rééducation, commerces de proximité et professions paramédicales. Accès A16 vers Boulogne-sur-Mer (30 min) et Calais (50 min).",

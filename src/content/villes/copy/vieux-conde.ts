@@ -9,9 +9,9 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
   pitchEn:
     "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   seoHook: "industrielles & logistique fluviale",
   ecosystemFr:
     "Vieux-Condé est intégrée à l'agglomération de Valenciennes, sur les bords de l'Escaut. Tissu péri-urbain frontalier : TPE artisanat BTP, PME industrielles (sous-traitance auto, métallurgie, logistique fluviale Escaut), commerces de proximité, professions libérales, échanges transfrontaliers belges.",

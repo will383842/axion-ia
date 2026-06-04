@@ -9,9 +9,9 @@ export const GORGES_COPY: VilleCopy = {
   pitchEn:
     "Gorges (44), commune du vignoble nantais au sud-est de Nantes, se situe au cœur de l'appellation Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, artisans, commerçants, PME agroalimentaires et industrielles, services aux entreprises du sud-est nantais. Axion-IA y intervient pour tous types d'activités du vignoble nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit sur place accessible.",
   seoHook: "viticulture muscadet & agroalimentaire négoce",
   ecosystemFr:
     "Gorges est une commune de plus de 5 200 habitants dans le vignoble nantais, limitrophe de Clisson. L'économie locale est structurée autour de la viticulture (Muscadet Sèvre-et-Maine, crus communaux), l'agroalimentaire, les PME industrielles de la zone de Clisson, l'artisanat BTP et les commerces. Proximité immédiate du pôle économique clissonnais.",

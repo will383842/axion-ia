@@ -10,9 +10,9 @@ export const SAINTE_ADRESSE_COPY: VilleCopy = {
     "Sainte-Adresse (76), commune residentielle de prestige de l'agglomeration havraise en Seine-Maritime, reunit pres de 7 000 habitants. Surnommee le Nice havrais pour ses vues sur mer, elle accueille des professions liberales, des TPE de services, des commerces et des acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "prestige littoral, professions liberales & tourisme",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Sainte-Adresse est la commune residentielle de prestige du Havre, surnommee le Nice havrais pour son front de mer et ses villas. Tissu economique domine par les professions liberales, TPE de services, commerces de proximite, hebergements touristiques et artisanat. Acces direct Le Havre centre.",
   ecosystemEn:

@@ -10,9 +10,9 @@ export const LOOS_EN_GOHELLE_COPY: VilleCopy = {
     "Loos-en-Gohelle (62), ville pionniere du developpement durable dans le Pas-de-Calais, reunit pres de 6 800 habitants. Connue pour ses terrils jumeaux inscrits au patrimoine mondial UNESCO, son economie associe TPE eco-responsables, PME innovantes, economie sociale et solidaire et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "terrils UNESCO, innovation durable & ESS",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Loos-en-Gohelle est reconnue nationalement pour sa transition ecologique (terrils jumeaux UNESCO, base 11/19). Tissu economique oriente developpement durable : PME eco-innovantes, structures ESS, TPE artisanales, commerces responsables et services. Proximite Lens (5 km) et Lievin.",
   ecosystemEn:

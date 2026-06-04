@@ -9,9 +9,9 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-de-Boiseau (44), commune résidentielle en bords de Loire au sud-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA opère pour entreprises et indépendants du secteur du sud-ouest nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "Saint-Jean-de-Boiseau est une commune résidentielle en bords de Loire, entre Bouguenais et Le Pellerin. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie Loire attractif, proximité Nantes Métropole.",

@@ -10,9 +10,9 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
     "Fresnes-sur-Escaut (59), commune de la vallee de l'Escaut dans le bassin minier du Nord, reunit pres de 7 350 habitants. Ancienne cite miniere reconvertie, son tissu economique associe TPE artisans, PME industrielles, commerces de proximite et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & vallee Escaut",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Fresnes-sur-Escaut est situee dans la vallee de l'Escaut, en plein bassin minier du Nord (inscrit UNESCO). Reconversion industrielle post-charbon vers PME industrielles diversifiees, TPE artisanat BTP, commerces et services. Proximite de Valenciennes (10 km) et du parc naturel Scarpe-Escaut.",
   ecosystemEn:

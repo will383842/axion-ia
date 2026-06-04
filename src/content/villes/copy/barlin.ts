@@ -9,9 +9,9 @@ export const BARLIN_COPY: VilleCopy = {
   pitchEn:
     "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Barlin est une commune résidentielle du bassin minier entre Béthune et Bruay-la-Buissière. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et l'artisanat.",

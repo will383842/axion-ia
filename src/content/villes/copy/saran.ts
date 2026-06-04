@@ -9,9 +9,9 @@ export const SARAN_COPY: VilleCopy = {
   pitchEn:
     "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
   ecosystemFr:
     "Saran est un pôle économique majeur du nord orléanais avec de grandes zones commerciales et logistiques (Saran-Nord, Cap Saran). Entrepôts logistique, commerces grande distribution, PME services aux entreprises, TPE artisanat.",
   ecosystemEn:

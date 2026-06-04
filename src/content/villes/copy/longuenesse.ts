@@ -9,9 +9,9 @@ export const LONGUENESSE_COPY: VilleCopy = {
   pitchEn:
     "Longuenesse (62), commune de l'agglomération de Saint-Omer dans le Pas-de-Calais, accueille zones commerciales, PME de services, TPE artisanales et professions libérales du bassin audomarois. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Longuenesse est la principale extension urbaine de Saint-Omer, concentrant zones commerciales, centres de services et activités tertiaires de l'agglomération audomaroise. TPE artisanales, PME de services aux entreprises, professions libérales santé et juridiques, et commerces de proximité.",

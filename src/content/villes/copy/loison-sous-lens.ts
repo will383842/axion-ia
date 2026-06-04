@@ -10,9 +10,9 @@ export const LOISON_SOUS_LENS_COPY: VilleCopy = {
     "Loison-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 170 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les TPE de services, les commerces de proximite, l'artisanat et les professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & proximite",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Loison-sous-Lens est situee dans l'agglomeration de Lens (4 km), au coeur du bassin minier. Tissu economique compose de TPE de services, commerces de proximite, artisans BTP, professions liberales et services a la personne. Commune residentielle du bassin lensois.",
   ecosystemEn:

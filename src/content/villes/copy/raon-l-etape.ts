@@ -9,9 +9,9 @@ export const RAON_L_ETAPE_COPY: VilleCopy = {
   pitchEn:
     "Raon-l''Étape (88), commune vosgienne de la vallée de la Meurthe, ville-carrefour entre Saint-Dié-des-Vosges et Baccarat, héritière d''une longue tradition papetière et de la filière bois. Tissu TPE/PME industrie papier/bois, scieries, sous-traitance, BTP, commerces de proximité, services et artisanat. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Raon-l''Étape (88). Nous accompagnons tous types d''activités : TPE/PME industrie papier/bois, scieries et filière forêt, sous-traitants, artisans BTP, commerces de proximité et professions de services de la vallée de la Meurthe.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Raon-l''Étape (88). Nous accompagnons tous types d''activités : TPE/PME industrie papier/bois, scieries et filière forêt, sous-traitants, artisans BTP, commerces de proximité et professions de services de la vallée de la Meurthe.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Raon-l''Étape (88). Nous accompagnons tous types d''activités : TPE/PME industrie papier/bois, scieries et filière forêt, sous-traitants, artisans BTP, commerces de proximité et professions de services de la vallée de la Meurthe.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Raon-l''Étape (88). Nous accompagnons tous types d''activités : TPE/PME industrie papier/bois, scieries et filière forêt, sous-traitants, artisans BTP, commerces de proximité et professions de services de la vallée de la Meurthe.",
   ecosystemFr:
     "Raon-l''Étape est une commune vosgienne de la vallée de la Meurthe, à la croisée des routes entre Saint-Dié-des-Vosges et Baccarat. Tradition forte de papeterie et de filière bois (scieries, exploitations forestières, transformation). Tissu TPE/PME industrie, sous-traitance, BTP, commerces, services et artisanat.",
   ecosystemEn:

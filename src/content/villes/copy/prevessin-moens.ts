@@ -9,9 +9,9 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
   pitchEn:
     "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
   seoHook: "technologiques & économie frontalière",
   ecosystemFr:
     "Prévessin-Moëns est positionnée dans le pays de Gex, à la frontière suisse. Proximité immédiate du CERN (site principal côté français à Prévessin). Économie frontalière dynamique : PME technologiques et tertiaires, commerces transfrontaliers, TPE artisanat BTP.",

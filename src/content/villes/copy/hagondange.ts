@@ -9,9 +9,9 @@ export const HAGONDANGE_COPY: VilleCopy = {
   pitchEn:
     "Hagondange (57), commune du pays Orne-Fensch dans la vallée de l'Orne mosellane, marquée par un héritage sidérurgique reconverti en pôle tertiaire et logistique. Tissu TPE/PME services, commerce, BTP, logistique, professions libérales et artisanat. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hagondange (57). Nous accompagnons tous types d'activités : TPE/PME services et commerce, artisans BTP, logisticiens, professions libérales et acteurs de la reconversion industrielle de la vallée de l'Orne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hagondange (57). Nous accompagnons tous types d'activités : TPE/PME services et commerce, artisans BTP, logisticiens, professions libérales et acteurs de la reconversion industrielle de la vallée de l'Orne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hagondange (57). Nous accompagnons tous types d'activités : TPE/PME services et commerce, artisans BTP, logisticiens, professions libérales et acteurs de la reconversion industrielle de la vallée de l'Orne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hagondange (57). Nous accompagnons tous types d'activités : TPE/PME services et commerce, artisans BTP, logisticiens, professions libérales et acteurs de la reconversion industrielle de la vallée de l'Orne.",
   ecosystemFr:
     "Hagondange est une commune de la vallée de l'Orne mosellane entre Metz et Thionville, héritière de la sidérurgie lorraine reconvertie en pôle tertiaire et logistique. Tissu TPE/PME services, commerce, BTP, logistique, professions libérales et artisanat. Zone d'activités Sainte-Agathe et proximité Amnéville.",
   ecosystemEn:

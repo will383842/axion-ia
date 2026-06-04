@@ -9,9 +9,9 @@ export const LAMORLAYE_COPY: VilleCopy = {
   pitchEn:
     "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit sur place sur mesure.",
   ecosystemFr:
     "Lamorlaye est une commune résidentielle prisée en lisière de la forêt de Chantilly, au cœur du bassin hippique de l'Oise. Son économie s'appuie sur la filière équestre (centres d'entraînement, haras, prestataires équins), les services aux particuliers, le commerce de proximité et les professions libérales. Le bassin d'emploi s'articule avec Chantilly, Gouvieux et Coye-la-Forêt, et bénéficie de la proximité de la gare TER Chantilly-Gouvieux et de l'aéroport Paris-CDG.",
   ecosystemEn:

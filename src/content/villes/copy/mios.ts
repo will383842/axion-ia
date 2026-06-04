@@ -9,9 +9,9 @@ export const MIOS_COPY: VilleCopy = {
   pitchEn:
     "Mios (33), commune du sud du Bassin d'Arcachon en pleine forêt landaise, connaît un essor démographique et économique avec un tissu de TPE/PME artisanales, commerces de proximité et services aux habitants. Axion-IA collabore avec toutes les structures locales du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Mios est une commune en forte croissance au sud du Bassin d'Arcachon. Économie résidentielle dynamique, tissu TPE artisanat BTP dense (construction neuve), commerces de proximité, services à la personne et exploitation forestière (pin maritime).",

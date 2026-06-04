@@ -9,9 +9,9 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-d'Irube (64), commune de l'agglomération de Bayonne, 5 900 habitants. Tissu résidentiel et commercial adossé au bassin d'emploi bayonnais, TPE artisans, PME de services et commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de l'agglomération Pays Basque.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   seoHook: "restauration",
   ecosystemFr:
     "Saint-Pierre-d'Irube est une commune résidentielle de 5 900 habitants dans l'agglomération bayonnaise. Tissu de TPE artisans BTP, PME de services aux entreprises, commerces de proximité, professions libérales et quelques zones d'activités. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",

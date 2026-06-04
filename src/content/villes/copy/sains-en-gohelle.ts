@@ -10,9 +10,9 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
     "Sains-en-Gohelle (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 950 habitants. Situee entre Lens et Bethune, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & sante",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Sains-en-Gohelle est situee dans le bassin minier entre Lens (8 km) et Bethune (10 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Commune residentielle avec activites de proximite.",
   ecosystemEn:

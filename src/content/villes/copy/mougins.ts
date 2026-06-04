@@ -9,9 +9,9 @@ export const MOUGINS_COPY: VilleCopy = {
   pitchEn:
     "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
   seoHook: "tech startups & gastronomie étoilée",
   ecosystemFr:
     "Mougins est commune résidentielle et gastronomique des Alpes-Maritimes (~19 800 hab), entre Cannes, Grasse et la technopole Sophia Antipolis. Village historique perché avec restaurants étoilés Michelin, galeries d'art (Musée de la Photographie, mémoire Picasso). PME tech/startups (débordement Sophia Antipolis), TPE artisans, hôtellerie haut de gamme, professions libérales et commerces.",

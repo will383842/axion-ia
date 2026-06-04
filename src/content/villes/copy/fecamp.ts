@@ -9,9 +9,9 @@ export const FECAMP_COPY: VilleCopy = {
   pitchEn:
     "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du littoral cauchois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit sur place sur mesure.",
   seoHook: "port de pêche, agroalimentaire & tourisme littoral",
   ecosystemFr:
     "Fécamp est un port de pêche historique de la Côte d'Albâtre en Pays de Caux. Industrie agroalimentaire (pêche, transformation), tourisme littoral (Palais Bénédictine, falaises), tissu TPE artisans BTP, commerces de centre-ville et professions libérales.",

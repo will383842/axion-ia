@@ -9,9 +9,9 @@ export const VILLERUPT_COPY: VilleCopy = {
   pitchEn:
     "Villerupt (54), commune du Pays Haut en Meurthe-et-Moselle, est frontalière du Luxembourg et marquée par son héritage sidérurgique et son festival du film italien. Tissu TPE/PME services, commerces, travailleurs frontaliers, artisans BTP, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerupt (54). Nous accompagnons tous types d'activités : TPE/PME du Pays Haut, commerces de proximité, artisans BTP, professions de santé et prestataires de services aux travailleurs frontaliers Luxembourg.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villerupt (54). Nous accompagnons tous types d'activités : TPE/PME du Pays Haut, commerces de proximité, artisans BTP, professions de santé et prestataires de services aux travailleurs frontaliers Luxembourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerupt (54). Nous accompagnons tous types d'activités : TPE/PME du Pays Haut, commerces de proximité, artisans BTP, professions de santé et prestataires de services aux travailleurs frontaliers Luxembourg.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villerupt (54). Nous accompagnons tous types d'activités : TPE/PME du Pays Haut, commerces de proximité, artisans BTP, professions de santé et prestataires de services aux travailleurs frontaliers Luxembourg.",
   ecosystemFr:
     "Villerupt est une commune du Pays Haut frontalière du Luxembourg, héritière de la sidérurgie lorraine reconvertie vers les services et le commerce transfrontalier. Tissu TPE/PME services aux frontaliers, commerces, artisanat BTP, professions de santé, restauration.",
   ecosystemEn:

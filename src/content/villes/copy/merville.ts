@@ -9,9 +9,9 @@ export const MERVILLE_COPY: VilleCopy = {
   pitchEn:
     "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
   seoHook: "agriculture & agroalimentaire transformation",
   ecosystemFr:
     "Merville est positionnée en Flandre française sur les bords de la Lys, entre Béthune (15 min sud) et Hazebrouck (15 min nord). Pôle agricole de la plaine de la Lys structuré autour du maraîchage, élevage et grandes cultures, avec aérodrome Merville-Calonne. Tissu TPE/PME exploitations agricoles, agroalimentaire, commerces de proximité, artisans BTP, services. Accès A25 vers Lille (35 min), proche Belgique frontalière.",

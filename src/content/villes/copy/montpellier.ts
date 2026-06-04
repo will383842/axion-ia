@@ -43,14 +43,14 @@ export const MONTPELLIER_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI héraultaises — site vitrine premium pour acteurs santé-biotech (Euromédecine, Sanofi R&D), portail client B2B pour scale-ups French Tech Méditerranée (Cap Omega, Cap Alpha), dashboard métier pour studios jeux vidéo et agritech connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Hérault SMEs and mid-caps — premium showcase site for health-biotech players (Euromédecine, Sanofi R&D), B2B client portal for French Tech Méditerranée scale-ups (Cap Omega, Cap Alpha), business dashboard for video-game studios and agritech connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Hérault SMEs and mid-caps — premium showcase site for health-biotech players (Euromédecine, Sanofi R&D), B2B client portal for French Tech Méditerranée scale-ups (Cap Omega, Cap Alpha), business dashboard for video-game studios and agritech connected to your CRM/ERP. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpellier (34) sur site dans la métropole et le bassin héraultais. Nous accompagnons les TPE du numérique (Cap Omega, Cap Alpha), les PME et ETI santé-biotech (Euromédecine, CHU, Sanofi R&D), les studios jeux vidéo, les acteurs de l'agritech et les groupes IT (Dell, IBM) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montpellier (34) sur site dans la métropole et le bassin héraultais. Nous accompagnons les TPE du numérique (Cap Omega, Cap Alpha), les PME et ETI santé-biotech (Euromédecine, CHU, Sanofi R&D), les studios jeux vidéo, les acteurs de l'agritech et les groupes IT (Dell, IBM) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy delivering on site in Montpellier (34) across the metropolis and the Hérault basin. We support digital micro-businesses (Cap Omega, Cap Alpha), health-biotech SMEs and mid-caps (Euromédecine, CHU, Sanofi R&D), video-game studios, agritech players and IT groups (Dell, IBM) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy delivering on site in Montpellier (34) across the metropolis and the Hérault basin. We support digital micro-businesses (Cap Omega, Cap Alpha), health-biotech SMEs and mid-caps (Euromédecine, CHU, Sanofi R&D), video-game studios, agritech players and IT groups (Dell, IBM) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "medtech, agronomie & numérique",
 

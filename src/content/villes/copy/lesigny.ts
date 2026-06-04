@@ -9,9 +9,9 @@ export const LESIGNY_COPY: VilleCopy = {
   pitchEn:
     "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
     "Lésigny est une commune résidentielle du sud-est de la Seine-et-Marne, entre Brie-Comte-Robert et Pontault-Combault. Cadre verdoyant avec le golf de Lésigny et les espaces boisés. Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales, PME de services aux entreprises. Accès rapide à la Francilienne (N104) et à la zone commerciale Val d'Europe/Marne-la-Vallée.",

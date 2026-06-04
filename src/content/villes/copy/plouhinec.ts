@@ -9,9 +9,9 @@ export const PLOUHINEC_COPY: VilleCopy = {
   pitchEn:
     "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
   ecosystemFr:
     "Plouhinec est une commune littorale entre la ria d'Étel et l'océan Atlantique, connue pour la barre d'Étel (passe maritime dangereuse et spectaculaire). Patrimoine mégalithique remarquable (alignements, dolmens). Économie tournée vers la pêche artisanale, l'ostréiculture ria d'Étel, le tourisme balnéaire (plages océan, campings) et le tourisme vert. Tissu TPE artisans maritimes, PME hébergement, commerces saisonniers.",
   ecosystemEn:

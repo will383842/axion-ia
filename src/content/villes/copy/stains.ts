@@ -9,9 +9,9 @@ export const STAINS_COPY: VilleCopy = {
   pitchEn:
     "Stains, ville du nord de la Seine-Saint-Denis (93), concentre PME services, économie sociale et solidaire, logistique de proximité et tissu artisanal. Axion-IA y intervient pour les TPE/PME franciliennes, structures de l'ESS et entreprises de services du bassin Plaine Commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les TPE/PME stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les TPE/PME stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les TPE/PME stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les TPE/PME stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
   seoHook: "services aux & économie sociale",
   ecosystemFr:
     "Stains s'intègre au territoire Plaine Commune (Saint-Denis, Aubervilliers, Pierrefitte), un des pôles économiques majeurs de Seine-Saint-Denis. Tissu d'artisans, PME de services, structures d'économie sociale (associations, entreprises d'insertion), logistique métropolitaine. Proximité immédiate avec le pôle tertiaire de La Plaine-Saint-Denis.",

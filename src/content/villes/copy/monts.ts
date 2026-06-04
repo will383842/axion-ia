@@ -9,9 +9,9 @@ export const MONTS_COPY: VilleCopy = {
   pitchEn:
     "Monts (37), commune résidentielle du sud de Tours dans la vallée de l'Indre, bénéficie de la proximité immédiate de l'agglomération tourangelle. Cadre de vie attractif entre coteaux et rivière. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monts (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, prestataires de services, indépendants et entreprises de la vallée de l'Indre sud-tourangelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Monts (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, prestataires de services, indépendants et entreprises de la vallée de l'Indre sud-tourangelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monts (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, prestataires de services, indépendants et entreprises de la vallée de l'Indre sud-tourangelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Monts (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, prestataires de services, indépendants et entreprises de la vallée de l'Indre sud-tourangelle.",
   seoHook: "artisanat second & tertiaires services",
   ecosystemFr:
     "Monts est une commune résidentielle dynamique du sud de l'agglomération de Tours, traversée par l'Indre. Sa proximité immédiate avec Tours (15 min) attire des actifs et des entreprises de services. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services. Zone d'activités économiques au croisement des axes Tours-Chinon et Tours-Loches.",

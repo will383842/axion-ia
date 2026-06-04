@@ -9,9 +9,9 @@ export const THUIR_COPY: VilleCopy = {
   pitchEn:
     "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie son expertise pour toutes les organisations du piémont catalan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
   seoHook: "massif du",
   ecosystemFr:
     "Thuir est le bourg-centre des Aspres, piémont entre la plaine du Roussillon et le massif du Canigou. Célèbre pour les caves Byrrh (patrimoine industriel). Viticulture (Côtes du Roussillon), arboriculture (pêches, abricots), TPE artisanat, commerces de centre-bourg, tourisme patrimoine.",

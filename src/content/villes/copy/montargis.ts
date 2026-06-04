@@ -9,9 +9,9 @@ export const MONTARGIS_COPY: VilleCopy = {
   pitchEn:
     "Montargis (45), sous-prefecture du Loiret surnommee la Venise du Gatinais pour ses canaux, est un pole economique du sud de l'Ile-de-France elargie. Tissu de TPE et PME du commerce, de l'agroalimentaire, des services aux entreprises, de l'artisanat et du tourisme fluvial. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Montargis est la sous-prefecture du Loiret, surnommee la Venise du Gatinais grace a ses 131 ponts et passerelles enjambant canaux et rivieres. Pole economique du Gatinais, son tissu repose sur le commerce de centre-ville, l'agroalimentaire (celebres pralines de Montargis), les services aux entreprises, l'artisanat et le tourisme fluvial. Communes voisines : Amilly, Chalette-sur-Loing, Villemandeur, Pannes, Conflans-sur-Loing.",
   ecosystemEn:

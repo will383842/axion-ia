@@ -9,9 +9,9 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
   pitchEn:
     "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
   seoHook: "services & logistique entreposage",
   ecosystemFr:
     "Brou-sur-Chantereine est une commune résidentielle limitrophe de Chelles, bien connectée par le RER E et la Francilienne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités logistiques.",

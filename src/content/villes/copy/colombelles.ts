@@ -9,9 +9,9 @@ export const COLOMBELLES_COPY: VilleCopy = {
   pitchEn:
     "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
   seoHook: "services aux & industrie reconversion",
   ecosystemFr:
     "Colombelles est une commune de l'agglomération caennaise est, marquée par la reconversion de l'ancienne friche sidérurgique. Les espaces culturels et créatifs (le Wip, le Big Band Café) symbolisent cette transformation. Tissu TPE artisans BTP, PME services et industrie, commerces de proximité, professions libérales.",

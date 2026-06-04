@@ -9,9 +9,9 @@ export const GUERET_COPY: VilleCopy = {
   pitchEn:
     "Guéret (23), préfecture de la Creuse, ville administrative et commerciale entre Limoges et Montluçon. Tissu TPE/PME commerce, services publics, artisanat, agriculture et tourisme vert. Proximité tapisseries d'Aubusson (UNESCO). Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Guéret, préfecture de la Creuse, est le centre administratif et commercial du département. Économie structurée autour des services publics (préfecture, hôpital, tribunal), du commerce de proximité, de l'artisanat, de l'agriculture (élevage bovin limousin, ovins) et du tourisme vert. Rayonnement culturel avec la Cité internationale de la tapisserie d'Aubusson (UNESCO) à 40 km.",
   ecosystemEn:

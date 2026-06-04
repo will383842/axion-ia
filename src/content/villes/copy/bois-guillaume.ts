@@ -9,9 +9,9 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   pitchEn:
     "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA collabore avec toutes les structures locales de l'agglo rouennaise nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
   seoHook: "tertiaire, professions libérales & santé",
   ecosystemFr:
     "Bois-Guillaume est une commune résidentielle prisée au nord de Rouen, membre de la Métropole Rouen Normandie. Forte concentration de professions libérales, cabinets médicaux, PME tertiaires et de services, commerces de proximité.",

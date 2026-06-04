@@ -9,9 +9,9 @@ export const FORCALQUIER_COPY: VilleCopy = {
   pitchEn:
     "Forcalquier (04), sous-préfecture des Alpes-de-Haute-Provence, est ville-phare de la Haute-Provence avec sa filière cosmétique naturelle, sa lavande et son marché provençal reconnu. Tissu TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles, commerçants et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Forcalquier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Forcalquier (04). Nous accompagnons tous types d'activités : TPE artisans, PME cosmétique naturelle et distillation, agriculteurs lavandicoles, commerçants, indépendants et services aux entreprises de la sous-préfecture de Haute-Provence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Forcalquier (04). Nous accompagnons tous types d'activités : TPE artisans, PME cosmétique naturelle et distillation, agriculteurs lavandicoles, commerçants, indépendants et services aux entreprises de la sous-préfecture de Haute-Provence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Forcalquier (04). Nous accompagnons tous types d'activités : TPE artisans, PME cosmétique naturelle et distillation, agriculteurs lavandicoles, commerçants, indépendants et services aux entreprises de la sous-préfecture de Haute-Provence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Forcalquier (04). Nous accompagnons tous types d'activités : TPE artisans, PME cosmétique naturelle et distillation, agriculteurs lavandicoles, commerçants, indépendants et services aux entreprises de la sous-préfecture de Haute-Provence.",
   seoHook: "cosmétique naturelle & lavande plantes",
   ecosystemFr:
     "Forcalquier est sous-préfecture des Alpes-de-Haute-Provence (~5 220 hab), pôle de la Haute-Provence entre Lure et Luberon. Filière cosmétique naturelle forte (laboratoires, distilleries huiles essentielles lavande), agriculteurs lavandicoles, TPE artisans BTP, marché provençal lundi très fréquenté, commerces et services sous-préfectoraux.",

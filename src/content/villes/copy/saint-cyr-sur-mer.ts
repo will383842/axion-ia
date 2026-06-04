@@ -7,9 +7,9 @@ export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cyr-sur-Mer (83, Var), station balnéaire de la baie des Lecques au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y conduit ses missions auprès des entreprises locales de l'Ouest varois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "viticulture bandol & hôtellerie restauration",
   ecosystemFr:
     "Saint-Cyr-sur-Mer est une station balnéaire de la baie des Lecques entre Bandol et La Ciotat, au cœur du vignoble AOC Bandol. Tissu de TPE viticoles, PME hôtellerie-restauration, commerces touristiques, professions libérales, activités nautiques (port des Lecques) et résidences secondaires.",

@@ -9,9 +9,9 @@ export const SECLIN_COPY: VilleCopy = {
   pitchEn:
     "Seclin (59), commune au sud de la Métropole Européenne de Lille, à proximité de l'aéroport Lille-Lesquin et du centre hospitalier. Tissu économique : TPE et PME de la santé et du médico-social, logistique et transport, agroalimentaire, commerce, services aux entreprises. Axion-IA opère pour entreprises et indépendants du secteur du sud de l'agglo lilloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
   seoHook: "santé médico-social & logistique transport",
   ecosystemFr:
     "Seclin est une commune du sud de la Métropole Européenne de Lille, connue pour son centre hospitalier (un des plus importants du département) et sa proximité avec l'aéroport Lille-Lesquin. L'économie locale combine TPE et PME du secteur santé-médico-social (cliniques, EHPAD, prestataires), logistique et transport (zone aéroportuaire, A1), agroalimentaire (brasserie et filière alimentaire historique), commerce de centre-ville et services aux entreprises. Pôle péri-urbain dynamique bénéficiant de la desserte autoroutière A1 Paris-Lille.",

@@ -9,9 +9,9 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   pitchEn:
     "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
   seoHook: "TPE & PME Eure-et-Loir",
   ecosystemFr:
     "Auneau-Bleury-Saint-Symphorien est une commune nouvelle née en 2016 de la fusion d'Auneau, Bleury et Saint-Symphorien, au cœur de la Beauce céréalière. L'économie locale repose sur l'agriculture grandes cultures (blé, colza, orge), l'agroalimentaire, l'artisanat BTP, les commerces de bourg et les services de proximité.",

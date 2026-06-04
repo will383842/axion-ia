@@ -9,9 +9,9 @@ export const MARSEILLAN_COPY: VilleCopy = {
   pitchEn:
     "Marseillan (34), commune héraultaise entre l'étang de Thau et la Méditerranée, berceau du Noilly Prat. Vignoble AOC Languedoc, port ostréicole, Marseillan-Plage (tourisme balnéaire). Tissu TPE commerçants, PME viticoles et ostréicoles, artisans, hôtellerie-restauration. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marseillan (34). Nous accompagnons TPE commerçants, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marseillan (34). Nous accompagnons TPE commerçants, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marseillan (34). Nous accompagnons TPE commerçants, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marseillan (34). Nous accompagnons TPE commerçants, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
   ecosystemFr:
     "Marseillan est une commune entre l'étang de Thau et la Méditerranée, berceau historique du vermouth Noilly Prat. Port ostréicole sur l'étang de Thau (conchyliculture), vignoble AOC Languedoc, Marseillan-Plage (tourisme balnéaire, campings). Tissu TPE commerçants, PME viticoles et ostréicoles, artisans, hôtellerie-restauration saisonnière.",
   ecosystemEn:

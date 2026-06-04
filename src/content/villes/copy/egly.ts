@@ -9,9 +9,9 @@ export const EGLY_COPY: VilleCopy = {
   pitchEn:
     "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Essonne / Hurepoix.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Égly (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de services, agriculteurs et indépendants du sud Essonne entre Arpajon et Brétigny-sur-Orge, cœur du Hurepoix.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Égly (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de services, agriculteurs et indépendants du sud Essonne entre Arpajon et Brétigny-sur-Orge, cœur du Hurepoix.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Égly (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de services, agriculteurs et indépendants du sud Essonne entre Arpajon et Brétigny-sur-Orge, cœur du Hurepoix.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Égly (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de services, agriculteurs et indépendants du sud Essonne entre Arpajon et Brétigny-sur-Orge, cœur du Hurepoix.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Égly (7 166 hab) est une commune résidentielle du Hurepoix, intégrée à la communauté d'agglomération Cœur d'Essonne. Positionnée sur l'axe RN20 entre Arpajon et Brétigny-sur-Orge, elle bénéficie de la proximité de la base aérienne de Brétigny et des zones d'emploi sud-essonniennes. Tissu TPE artisanat, commerces, professions libérales et PME de services.",

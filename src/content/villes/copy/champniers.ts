@@ -9,9 +9,9 @@ export const CHAMPNIERS_COPY: VilleCopy = {
   pitchEn:
     "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   seoHook: "logistique transport & industrielles zones",
   ecosystemFr:
     "Champniers est une commune du nord de l'agglomération GrandAngoulême concentrant plusieurs zones d'activités (parc Agora, zones industrielles). PME industrielles, logistique et transport, TPE artisans BTP, commerces, services aux entreprises. Nœud routier (N10/N141) facilitant l'accès au bassin angoumoisin.",

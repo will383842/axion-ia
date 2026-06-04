@@ -9,9 +9,9 @@ export const VALLEIRY_COPY: VilleCopy = {
   pitchEn:
     "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   seoHook: "agglomération genève",
   ecosystemFr:
     "Valleiry est une commune frontalière du Grand Genève, à quelques minutes de la douane suisse. Forte croissance résidentielle portée par les travailleurs frontaliers. Tissu économique : PME de services tertiaires (conseil, comptabilité, IT), TPE artisanat BTP, commerces de proximité, professions libérales et activités liées au transit transfrontalier. Zone commerciale locale dynamique.",

@@ -10,9 +10,9 @@ export const WAZIERS_COPY: VilleCopy = {
     "Waziers (59), commune limitrophe de Douai dans le bassin minier du Nord, reunit pres de 7 270 habitants. Ancienne cite miniere, son economie s'est diversifiee vers PME industrielles, TPE artisans BTP, commerces, services tertiaires et logistique. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & agglo Douai",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Waziers (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Waziers (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Waziers (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Waziers (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Waziers est integree a Douaisis Agglo, formant avec Douai un pole economique du bassin minier. Reconversion post-charbon vers industrie diversifiee, logistique (plateforme Delta 3 a proximite), TPE artisanat BTP, commerces et services tertiaires. Zone d'activites Dorignies-Waziers.",
   ecosystemEn:

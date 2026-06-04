@@ -9,9 +9,9 @@ export const CARVIN_COPY: VilleCopy = {
   pitchEn:
     "Carvin (62), commune du bassin minier du Pas-de-Calais, bénéficie d'une position stratégique sur l'autoroute A1 (Paris-Lille) avec des zones logistiques et d'activités majeures. Tissu TPE artisanales, PME logistique et transport, commerce, services et reconversion industrielle. Axion-IA opère pour entreprises et indépendants du secteur du bassin minier / axe A1.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carvin (62). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport (axe A1), commerçants, indépendants, professions libérales, entreprises de services et acteurs de la reconversion industrielle du bassin minier.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carvin (62). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport (axe A1), commerçants, indépendants, professions libérales, entreprises de services et acteurs de la reconversion industrielle du bassin minier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carvin (62). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport (axe A1), commerçants, indépendants, professions libérales, entreprises de services et acteurs de la reconversion industrielle du bassin minier.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carvin (62). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport (axe A1), commerçants, indépendants, professions libérales, entreprises de services et acteurs de la reconversion industrielle du bassin minier.",
   seoHook: "logistique transport & commerce proximité",
   ecosystemFr:
     "Carvin est située au carrefour de l'A1 (Paris-Lille) et de l'A21, en plein bassin minier du Pas-de-Calais (patrimoine UNESCO). Zones d'activités logistiques (plateforme Carvin-Libercourt), PME transport et entreposage, TPE artisanat BTP, commerces, services aux entreprises. Proximité directe de Lens (15 min), Lille (25 min A1) et Douai (20 min).",

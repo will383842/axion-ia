@@ -11,9 +11,9 @@ export const LANESTER_COPY: VilleCopy = {
   pitchEn:
     "Lanester (56), 3e commune du Morbihan (23 263 habitants), forme avec Lorient une agglomération naval et portuaire majeure de Bretagne sud. Tissu économique structuré autour de la construction navale (Naval Group, Kership, Chantiers Piriou), de l'arsenal militaire et des zones d'activités Kerpont-Kerrous et Kerpont-Manebos. Axion-IA accompagne en priorité TPE et PME lanestériennes — commerce, artisanat, sous-traitance navale, services — puis les ETI.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
   seoHook: "construction navale, commerce & artisanat",
   ecosystemFr:
     "Lanester est séparée de Lorient par le Scorff et structurée autour de plusieurs pôles : le port militaire du Rohu, l'arsenal, les zones commerciales et artisanales Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec, ainsi qu'un grand centre commercial proche de Caudan. La construction navale civile et militaire (Naval Group, Kership Lorient construisant 12 navires anti-mines, Chantiers Piriou) tire un écosystème dense de sous-traitants TPE-PME.",
@@ -71,7 +71,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Faites-vous du no-code ou du code sur mesure ?",
-      a: "Code sur mesure exclusivement (Python, TypeScript, intégrations API métier). Pas de no-code générique : nous livrons des briques adaptées à votre activité, maintenables, sans dépendance lock-in. Approche cabinet d'architectes IA seniors.",
+      a: "Code sur mesure exclusivement (Python, TypeScript, intégrations API métier). Pas de no-code générique : nous livrons des briques adaptées à votre activité, maintenables, sans dépendance lock-in. Approche cabinet d'experts IA seniors.",
     },
   ],
 };

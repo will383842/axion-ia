@@ -46,14 +46,14 @@ export const METZ_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI messines â€” site vitrine premium pour industrie automobile, banque et numÃ©rique, espace client transfrontalier FR/DE/LU, dashboard mÃ©tier connectÃ© Ã  votre CRM/ERP et systÃ¨mes industriels. Architectes seniors, design system Axion-IA, hÃ©bergement europÃ©en.",
-      en: "Custom web platforms and SaaS AI for Metz SMEs and mid-caps â€” premium showcase site for automotive industry, banking and digital, cross-border FR/DE/LU customer space, business dashboard connected to your CRM/ERP and industrial systems. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Metz SMEs and mid-caps â€” premium showcase site for automotive industry, banking and digital, cross-border FR/DE/LU customer space, business dashboard connected to your CRM/ERP and industrial systems. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Metz (57) sur site â€” TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy et communes de l'EuromÃ©tropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises messines (industrie automobile, banque, numÃ©rique, services) sur leurs cas IA opÃ©rationnels : diagnostic chiffrÃ©, dÃ©mos sur vos vraies donnÃ©es, plan d'action concret. Aucun lock-in technologique, vos Ã©quipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient Ã  Metz (57) sur site â€” TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy et communes de l'EuromÃ©tropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises messines (industrie automobile, banque, numÃ©rique, services) sur leurs cas IA opÃ©rationnels : diagnostic chiffrÃ©, dÃ©mos sur vos vraies donnÃ©es, plan d'action concret. Aucun lock-in technologique, vos Ã©quipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Metz (57) on site â€” TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy and EuromÃ©tropole communes. We support Metz micro-businesses, SMEs, mid-caps and large enterprises (automotive industry, banking, digital, services) on their operational AI use cases â€” costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Metz (57) on site â€” TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy and EuromÃ©tropole communes. We support Metz micro-businesses, SMEs, mid-caps and large enterprises (automotive industry, banking, digital, services) on their operational AI use cases â€” costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "transfrontalier, automotive & numérique",
 

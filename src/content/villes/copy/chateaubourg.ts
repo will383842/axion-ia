@@ -9,9 +9,9 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
   pitchEn:
     "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "vallée vilaine",
   ecosystemFr:
     "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, TPE artisans BTP et services aux entreprises. Bords de Vilaine attractifs.",

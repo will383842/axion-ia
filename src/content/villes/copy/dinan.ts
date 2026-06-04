@@ -9,9 +9,9 @@ export const DINAN_COPY: VilleCopy = {
   pitchEn:
     "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
   seoHook: "tourisme, hôtellerie & artisanat d'art",
   ecosystemFr:
     "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : TPE artisans d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",

@@ -9,9 +9,9 @@ export const JEUMONT_COPY: VilleCopy = {
   pitchEn:
     "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
   seoHook: "vallée sambre",
   ecosystemFr:
     "Jeumont est située dans la vallée de la Sambre, à la frontière belge. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, électromécanique), commerces de proximité, professions libérales, échanges transfrontaliers belges (Erquelinnes, Mons).",

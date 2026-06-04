@@ -9,9 +9,9 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
   seoHook: "santé psychiatrie & professions libérales",
   ecosystemFr:
     "Saint-Égrève est positionnée stratégiquement à la jonction de la vallée de l'Isère et du massif de la Chartreuse (sommet du Néron). Le Centre hospitalier Alpes-Isère (CHAI) est un acteur majeur de santé psychiatrique régional. Tissu de PME tertiaires et services, TPE artisanat dense, commerces de proximité. Label « Ville internet 5@ » et « trois fleurs » villes fleuries.",

@@ -9,9 +9,9 @@ export const COUTRAS_COPY: VilleCopy = {
   pitchEn:
     "Coutras (33), commune du Libournais au carrefour ferroviaire Bordeaux-Angoulême-Périgueux, combine tissu industriel, vignoble bordelais, artisanat et commerce de bourg actif. Axion-IA répond aux besoins de toutes les entreprises : TPE viticoles, PME industrielles, artisans, commerçants et professions libérales du nord Libournais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "vignoble bordelais",
   ecosystemFr:
     "Coutras est un noeud ferroviaire majeur du Libournais (croisement lignes Bordeaux-Angoulême et Coutras-Périgueux). Tissu PME industriel, vignoble bordelais, commerce de bourg dynamique et artisanat. Proximité Libourne (15 min) et Périgueux (50 min).",

@@ -9,9 +9,9 @@ export const LESNEVEN_COPY: VilleCopy = {
   pitchEn:
     "Lesneven (29), bourg-centre du Pays de Léon dans le nord Finistère, est un pôle de services et de commerces pour tout le bassin lesnevien. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit sur place à",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit sur place à",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit sur place à",
   seoHook: "agroalimentaire filière & agriculture élevage",
   ecosystemFr:
     "Lesneven est le bourg-centre historique du Pays de Léon, dans le nord Finistère. La commune joue un rôle de pôle de services, de commerces et d'équipements pour les communes environnantes (Ploudaniel, Le Folgoët, Plouider). Tissu économique diversifié: TPE artisans BTP, PME agroalimentaires (filière légumière bretonne), commerces, professions libérales et agriculture.",

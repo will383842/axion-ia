@@ -9,9 +9,9 @@ export const SURZUR_COPY: VilleCopy = {
   pitchEn:
     "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
   ecosystemFr:
     "Surzur est située aux portes nord de la presqu'île de Rhuys, à mi-chemin entre Vannes et Sarzeau, avec un accès direct au golfe du Morbihan. Commune à dominante rurale et résidentielle en croissance. Tissu d'exploitations agricoles (maraîchage, élevage bovin), TPE artisans BTP (construction neuve, rénovation), PME de services, commerces de proximité et hébergements touristiques (gîtes, campings). Proximité Vannes (15 min).",
   ecosystemEn:

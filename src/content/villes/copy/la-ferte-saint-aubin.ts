@@ -9,9 +9,9 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   pitchEn:
     "La Ferté-Saint-Aubin (45), porte d'entrée de la Sologne entre Orléans et Lamotte-Beuvron, est connue pour son château XVIIe classé, ses forêts giboyeuses et ses étangs solognots. Tissu TPE artisans, commerçants de proximité, PME forestières et agro-alimentaires, hébergeurs tourisme nature, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
   seoHook: "forêt, tourisme Sologne & agro-alimentaire",
   ecosystemFr:
     "La Ferté-Saint-Aubin est la porte nord de la Sologne (7 284 hab.), à 20 km au sud d'Orléans sur la RN20. Tissu TPE artisans et commerçants de centre-bourg, PME filière bois-forêt et agro-alimentaires, hébergeurs et restaurateurs tourisme nature (château classé, chasse, pêche, étangs solognots). Proximité Orléans Métropole favorise les navetteurs et professions libérales.",

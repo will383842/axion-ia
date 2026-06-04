@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
   pitchFr:
-    "Beaupréau-en-Mauges (49), commune nouvelle au cœur des Mauges, conjugue un héritage industriel chaussure-textile, un solide tissu agroalimentaire et de nombreuses TPE et PME familiales d'artisanat, de transformation et de commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME mauclésiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui sert les métiers de terrain sans complexité inutile ni dépendance technique.",
+    "Beaupréau-en-Mauges (49), commune nouvelle au cœur des Mauges, conjugue un héritage industriel chaussure-textile, un solide tissu agroalimentaire et de nombreuses TPE et PME familiales d'artisanat, de transformation et de commerce. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME mauclésiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui sert les métiers de terrain sans complexité inutile ni dépendance technique.",
   pitchEn:
-    "Beaupréau-en-Mauges (49), commune nouvelle au cœur des Mauges, conjugue un héritage industriel chaussure-textile, un solide tissu agroalimentaire et de nombreuses TPE et PME familiales d'artisanat, de transformation et de commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME mauclésiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui sert les métiers de terrain sans complexité inutile ni dépendance technique.",
+    "Beaupréau-en-Mauges (49), commune nouvelle au cœur des Mauges, conjugue un héritage industriel chaussure-textile, un solide tissu agroalimentaire et de nombreuses TPE et PME familiales d'artisanat, de transformation et de commerce. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME mauclésiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui sert les métiers de terrain sans complexité inutile ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaupréau-en-Mauges (49) auprès des TPE et PME des Mauges : ateliers chaussure et textile, agroalimentaire, artisanat, industrie et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaupréau-en-Mauges (49) auprès des TPE et PME des Mauges : ateliers chaussure et textile, agroalimentaire, artisanat, industrie et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaupréau-en-Mauges (49) auprès des TPE et PME des Mauges : ateliers chaussure et textile, agroalimentaire, artisanat, industrie et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaupréau-en-Mauges (49) auprès des TPE et PME des Mauges : ateliers chaussure et textile, agroalimentaire, artisanat, industrie et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "chaussure-textile & agroalimentaire",
   ecosystemFr:
     "Beaupréau-en-Mauges, commune nouvelle issue de la fusion de plusieurs bourgs des Mauges, s'appuie sur un héritage industriel chaussure et textile reconverti, un agroalimentaire dynamique et de petites industries familiales. Les zones d'activité locales accueillent des TPE et PME de transformation, de mécanique, de logistique et de commerce. Ce tissu rural-industriel, dense et tourné vers l'export régional, constitue un terrain idéal pour une IA appliquée à la production, à la qualité et à la gestion.",
@@ -53,7 +53,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaupréau-en-Mauges ?",
-      a: "Oui, Axion-IA intervient à Beaupréau-en-Mauges et dans les Mauges (Cholet, Chemillé, Montrevault, Sèvremoine). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Beaupréau-en-Mauges et dans les Mauges (Cholet, Chemillé, Montrevault, Sèvremoine). Nos experts IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Beaupréau-en-Mauges ?",

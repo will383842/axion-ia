@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ANTIBES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Antibes — yachting de Port Vauban, hôtellerie-restauration du Cap d'Antibes et de Juan-les-Pins, commerces de la vieille ville, artisans du BTP de rénovation prestige et acteurs tech proches de Sophia Antipolis — avec des architectes IA seniors qui interviennent sur site pour cadrer les bons cas d'usage et industrialiser des solutions concrètes, sans buzzword ni dépendance technique.",
+    "Axion-IA accompagne les TPE et PME d'Antibes — yachting de Port Vauban, hôtellerie-restauration du Cap d'Antibes et de Juan-les-Pins, commerces de la vieille ville, artisans du BTP de rénovation prestige et acteurs tech proches de Sophia Antipolis — avec des experts IA seniors qui interviennent sur site pour cadrer les bons cas d'usage et industrialiser des solutions concrètes, sans buzzword ni dépendance technique.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Antibes — yachting de Port Vauban, hôtellerie-restauration du Cap d'Antibes et de Juan-les-Pins, commerces de la vieille ville, artisans du BTP de rénovation prestige et acteurs tech proches de Sophia Antipolis — avec des architectes IA seniors qui interviennent sur site pour cadrer les bons cas d'usage et industrialiser des solutions concrètes, sans buzzword ni dépendance technique.",
+    "Axion-IA accompagne les TPE et PME d'Antibes — yachting de Port Vauban, hôtellerie-restauration du Cap d'Antibes et de Juan-les-Pins, commerces de la vieille ville, artisans du BTP de rénovation prestige et acteurs tech proches de Sophia Antipolis — avec des experts IA seniors qui interviennent sur site pour cadrer les bons cas d'usage et industrialiser des solutions concrètes, sans buzzword ni dépendance technique.",
   directAnswerFr:
-    "À Antibes, Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit sur place sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
+    "À Antibes, Axion-IA est un cabinet d'experts IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit sur place sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
   directAnswerEn:
-    "À Antibes, Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit sur place sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
+    "À Antibes, Axion-IA est un cabinet d'experts IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit sur place sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
   seoHook: "yachting, hôtellerie & tech",
   ecosystemFr:
     "Antibes (75 000 habitants, 2e ville des Alpes-Maritimes) conjugue Port Vauban — premier port de plaisance d'Europe avec 1 700 anneaux dont 19 dédiés aux méga-yachts — une économie touristique premium (Juan-les-Pins, Festival de Jazz, Cap d'Antibes), un tissu dense d'artisans et de commerçants en vieille ville, et un effet de débordement direct de Sophia Antipolis, premier technopôle européen IT et biotech situé à 7 km (Amadeus, SAP, ARM, IBM, Bayer).",
@@ -30,8 +30,8 @@ export const ANTIBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Antibes : un architecte senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
-      en: "Audit sur place IA à Antibes : un architecte senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
+      fr: "Audit sur place IA à Antibes : un expert senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
+      en: "Audit sur place IA à Antibes : un expert senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Antibes pour débloquer un sujet IA précis : automatisation devis chantier BTP, traitement multilingue des demandes clients yachting, optimisation réservations hôtellerie ou tri des emails commerciaux.",
@@ -53,7 +53,7 @@ export const ANTIBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il vraiment sur site à Antibes ?",
-      a: "Oui. Nos architectes seniors se déplacent à Antibes pour les ateliers d'audit et les interventions clés, que vous soyez en vieille ville, à Juan-les-Pins, au Cap d'Antibes ou en bord de Port Vauban. Le suivi mensuel et les itérations rapides se font ensuite en visio pour optimiser votre budget.",
+      a: "Oui. Nos experts seniors se déplacent à Antibes pour les ateliers d'audit et les interventions clés, que vous soyez en vieille ville, à Juan-les-Pins, au Cap d'Antibes ou en bord de Port Vauban. Le suivi mensuel et les itérations rapides se font ensuite en visio pour optimiser votre budget.",
     },
     {
       q: "Quels secteurs d'Antibes accompagnez-vous le plus ?",

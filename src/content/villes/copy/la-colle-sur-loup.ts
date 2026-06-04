@@ -9,9 +9,9 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   pitchEn:
     "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
   seoHook: "pays de saint-paul-de-vence",
   ecosystemFr:
     "La Colle-sur-Loup est une commune résidentielle et touristique de l'arrière-pays azuréen, voisine de Saint-Paul-de-Vence (village d'art et de galeries). Traversée par le Loup, la commune offre un cadre provençal préservé. Économie portée par le tourisme, l'hôtellerie-restauration, l'artisanat, les commerces de proximité et les professions libérales. Accès rapide à Nice et Cagnes-sur-Mer.",

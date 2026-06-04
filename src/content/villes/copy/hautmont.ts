@@ -9,9 +9,9 @@ export const HAUTMONT_COPY: VilleCopy = {
   pitchEn:
     "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   seoHook: "bassin sambre-avesnois",
   ecosystemFr:
     "Hautmont est une commune industrielle de l'agglomération de Maubeuge dans la vallée de la Sambre (Sambre-Avesnois). L'économie locale est marquée par l'héritage métallurgique et sidérurgique (forges historiques, transformation des métaux), la sous-traitance industrielle automobile liée à l'usine Toyota de Maubeuge-Onnaing, les PME de mécanique et chaudronnerie, les artisans, commerces de proximité et professions libérales. Le parc naturel régional de l'Avesnois et la proximité de la frontière belge (Erquelinnes) complètent le tissu économique local.",

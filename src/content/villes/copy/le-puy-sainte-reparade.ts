@@ -9,9 +9,9 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   pitchEn:
     "Le Puy-Sainte-Réparade (13), commune viticole de la vallée de la Durance au nord d'Aix-en-Provence, conjugue domaines AOC Coteaux d'Aix prestigieux, agriculture, TPE artisans, PME tertiaires et professions libérales. Bassin résidentiel haut de gamme. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "viticulture AOC & PME vallée Durance",
   ecosystemFr:
     "Le Puy-Sainte-Réparade s'étend dans la vallée de la Durance au nord d'Aix-en-Provence. Économie locale dominée par les domaines viticoles AOC Coteaux d'Aix-en-Provence (dont des propriétés prestigieuses), l'agriculture, l'oléiculture, les TPE artisans, les PME tertiaires et les professions libérales. Cadre rural de qualité, attractif pour cadres et résidences haut de gamme.",

@@ -9,9 +9,9 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jacques-de-la-Lande (35), commune du sud de Rennes Métropole, accueille l'aéroport Rennes-Bretagne et un tissu économique diversifié entre logistique aéroportuaire, services, TPE/PME et commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jacques-de-la-Lande (35). Nous accompagnons tous types d'activités : TPE et PME logistiques aéroportuaires, entreprises de services, commerçants, artisans, indépendants, professions libérales et activités tertiaires du sud de la métropole rennaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jacques-de-la-Lande (35). Nous accompagnons tous types d'activités : TPE et PME logistiques aéroportuaires, entreprises de services, commerçants, artisans, indépendants, professions libérales et activités tertiaires du sud de la métropole rennaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jacques-de-la-Lande (35). Nous accompagnons tous types d'activités : TPE et PME logistiques aéroportuaires, entreprises de services, commerçants, artisans, indépendants, professions libérales et activités tertiaires du sud de la métropole rennaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jacques-de-la-Lande (35). Nous accompagnons tous types d'activités : TPE et PME logistiques aéroportuaires, entreprises de services, commerçants, artisans, indépendants, professions libérales et activités tertiaires du sud de la métropole rennaise.",
   seoHook: "proche rennes",
   ecosystemFr:
     "Saint-Jacques-de-la-Lande est la commune d'accueil de l'aéroport Rennes-Bretagne, porte aérienne de la Bretagne. Zone économique aéroportuaire (logistique, fret, services voyageurs), complétée par un tissu TPE/PME de services, commerces et activités tertiaires. Développement urbain rapide avec l'arrivée du métro ligne B, quartier de la Courrouze.",

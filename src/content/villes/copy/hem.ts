@@ -9,9 +9,9 @@ export const HEM_COPY: VilleCopy = {
   pitchEn:
     "Hem (59), commune résidentielle de la Métropole Européenne de Lille à l'est, conjugue tissu pavillonnaire, ZA dynamiques, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, professions libérales, commerçants et sous-traitants industriels rayonnent entre Roubaix, Lys-lez-Lannoy et Croix. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit sur place sur mesure.",
   seoHook: "artisanat second & sous-traitance textile",
   ecosystemFr:
     "Hem est une commune résidentielle de la Métropole Européenne de Lille, située à l'est entre Roubaix et la frontière belge. Économie portée par les ZA (Hem-Centre, Trois Baudets), l'artisanat BTP, les sous-traitants industriels héritiers du bassin textile roubaisien et un tissu dense de TPE/PME de services. Patrimoine architectural moderne (chapelle de Sainte-Thérèse) et proximité immédiate Roubaix.",

@@ -9,9 +9,9 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
   pitchEn:
     "Montpon-Ménestérol (24), bourg de la Double en Dordogne au confluent de l'Isle et de la Crempse, entre Périgueux et Libourne. Tissu TPE/PME commerce, artisanat, agroalimentaire, BTP et services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Montpon-Ménestérol est un bourg-centre de la Double périgourdine, au confluent de l'Isle et de la Crempse. Pôle commercial pour le secteur ouest de la Dordogne, entre Périgueux et Libourne. Économie : commerce, artisanat BTP, agroalimentaire (viticulture, élevage, cultures), petite industrie et services de proximité.",
   ecosystemEn:

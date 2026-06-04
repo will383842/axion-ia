@@ -9,9 +9,9 @@ export const VALLET_COPY: VilleCopy = {
   pitchEn:
     "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
   seoHook: "viticulture muscadet & négoce vins",
   ecosystemFr:
     "Vallet est la « capitale du Muscadet », coeur de l'appellation AOC Muscadet Sèvre-et-Maine (premier vignoble nantais en surface). Foire du Muscadet (rendez-vous oenotouristique annuel). Filière viticole complète : viticulteurs, négoce, tonnellerie, embouteillage. Tissu TPE viticoles, PME négoce/agroalimentaire, commerces de bourg, artisanat, tourisme vitivinicole.",

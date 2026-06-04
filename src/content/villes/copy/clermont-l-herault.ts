@@ -9,9 +9,9 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
   pitchEn:
     "Clermont-l'Hérault (34), sous-préfecture de l'Hérault, porte du lac du Salagou et du Lodévois-Larzac. Vignoble AOC Languedoc (Terrasses du Larzac), tourisme nature, commerces de centre-ville. Tissu TPE commerçants, PME viticoles, artisans, professions libérales, services publics. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont-l'Hérault (34). Nous accompagnons TPE commerçants de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Clermont-l'Hérault (34). Nous accompagnons TPE commerçants de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont-l'Hérault (34). Nous accompagnons TPE commerçants de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Clermont-l'Hérault (34). Nous accompagnons TPE commerçants de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
   ecosystemFr:
     "Clermont-l'Hérault est une sous-préfecture de l'Hérault, carrefour entre Montpellier, Béziers et Lodève. Porte d'entrée du lac du Salagou (tourisme nature, sports outdoor) et du Lodévois-Larzac. Vignoble AOC Terrasses du Larzac réputé. Centre-ville commerçant dynamique, marché hebdomadaire. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services publics.",
   ecosystemEn:

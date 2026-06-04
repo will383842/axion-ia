@@ -9,9 +9,9 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes stéphanoises ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
   seoHook: "TPE & PME Loire",
   ecosystemFr:
     "Saint-Genest-Lerpt est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture périphérique.",

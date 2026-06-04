@@ -9,9 +9,9 @@ export const BEUVRAGES_COPY: VilleCopy = {
   pitchEn:
     "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
   seoHook: "industrielles & logistique",
   ecosystemFr:
     "Beuvrages est intégrée à l'agglomération de Valenciennes (Valenciennes Métropole). Tissu péri-urbain du bassin valenciennois : TPE artisanat BTP, PME industrielles (sous-traitance automobile, métallurgie, logistique), commerces de proximité, professions libérales, services aux ménages, héritage du bassin minier reconverti.",

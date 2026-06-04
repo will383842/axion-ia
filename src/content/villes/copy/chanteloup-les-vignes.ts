@@ -9,9 +9,9 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
   pitchEn:
     "Chanteloup-les-Vignes (78), commune des bords de Seine entre Poissy et Conflans-Sainte-Honorine, compte plus de 10 800 habitants. TPE artisanat BTP, PME services et maintenance, commerces de quartier, professions libérales, restauration rapide. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "services maintenance & commerce quartier",
   ecosystemFr:
     "Chanteloup-les-Vignes est une commune des bords de Seine entre Poissy et Conflans-Sainte-Honorine, bénéficiant du programme de renouvellement urbain ANRU. Tissu TPE artisanat BTP, PME services et maintenance, commerces de quartier, professions libérales.",

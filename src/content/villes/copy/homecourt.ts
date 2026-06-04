@@ -9,9 +9,9 @@ export const HOMECOURT_COPY: VilleCopy = {
   pitchEn:
     "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & artisanat second",
   ecosystemFr:
     "Homécourt est située dans la vallée de l'Orne, au cœur du Pays Haut lorrain, ancien bassin sidérurgique reconverti. Située à 25 km de la frontière luxembourgeoise, la ville bénéficie de l'attractivité transfrontalière (travailleurs frontaliers, sous-traitance industrielle). L'économie locale repose sur l'industrie reconvertie, l'artisanat BTP, le commerce de proximité, les services et l'activité frontalière. Intégration à la Communauté de communes Orne Lorraine Confluences.",

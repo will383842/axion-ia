@@ -9,9 +9,9 @@ export const DRUSENHEIM_COPY: VilleCopy = {
   pitchEn:
     "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
   seoHook: "industrie chimique & logistique fluviale",
   ecosystemFr:
     "Drusenheim est un pôle industriel et logistique du nord-est Alsace, en bord de Rhin face à l'Allemagne. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique, PME sous-traitants industriels, logistique fluviale (port rhénan), TPE artisans, commerces, services transfrontaliers.",

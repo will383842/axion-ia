@@ -9,9 +9,9 @@ export const GIGNAC_COPY: VilleCopy = {
   pitchEn:
     "Gignac (34), bourg de la vallée de l'Hérault entre Montpellier et Lodève, connu pour son pont classé et son vignoble AOC Languedoc (Terrasses du Larzac). Carrefour commercial A750. Tissu TPE commerçants, PME viticoles, artisans, professions libérales, services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac (34). Nous accompagnons TPE commerçants, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gignac (34). Nous accompagnons TPE commerçants, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac (34). Nous accompagnons TPE commerçants, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gignac (34). Nous accompagnons TPE commerçants, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
   ecosystemFr:
     "Gignac est un bourg de la vallée de l'Hérault, carrefour entre Montpellier et Lodève (A750). Pont de Gignac classé Monument Historique. Vignoble AOC Terrasses du Larzac réputé. Zone commerciale active, marché hebdomadaire. Tissu TPE commerçants, PME viticoles, artisans, professions libérales.",
   ecosystemEn:

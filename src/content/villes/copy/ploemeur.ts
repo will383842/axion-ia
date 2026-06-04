@@ -10,9 +10,9 @@ export const PLOEMEUR_COPY: VilleCopy = {
     "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA répond aux besoins de toutes les entreprises du pays de Lorient.",
   seoHook: "littoral, nautisme & tourisme pays de Lorient",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Ploemeur, 4e commune du Morbihan et 14e de Bretagne, fait partie de Lorient Agglomération. Son économie repose sur le tourisme balnéaire (plages du Fort-Bloqué, Kerroc'h, Lomener), le nautisme (port de Lomener, plaisance), les TPE/PME résidentielles, l'artisanat, le commerce de proximité, l'hôtellerie-restauration et les professions libérales rayonnant sur le bassin lorientais.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const VERNOUILLET_COPY: VilleCopy = {
   pitchEn:
     "Vernouillet (28), commune d'Eure-et-Loir dans l'agglomération de Dreux, est une ville résidentielle dynamique adossée au bassin économique drouais. Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone Dreux, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
   seoHook: "tertiaires & industrielles bassin",
   ecosystemFr:
     "Vernouillet est une commune résidentielle de l'agglomération Dreux (Eure-et-Loir). Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone d'activités drouaise, services aux entreprises, artisanat BTP.",

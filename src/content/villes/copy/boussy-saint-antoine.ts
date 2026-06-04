@@ -9,9 +9,9 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   pitchEn:
     "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
   seoHook: "services & tertiaire sud-est",
   ecosystemFr:
     "Boussy-Saint-Antoine est une commune résidentielle de l'Essonne en lisière de la forêt de Sénart, à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités tertiaires.",

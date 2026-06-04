@@ -9,9 +9,9 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
   pitchEn:
     "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   seoHook: "commerce centre-ville & santé professions",
   ecosystemFr:
     "Sainte-Savine est une commune résidentielle et commerciale de l'agglo Troyes, dotée d'un tissu économique de proximité actif. TPE/PME diversifiées : commerce centre-ville, services, restauration, artisanat, professions libérales, santé, sous-traitance industrielle.",

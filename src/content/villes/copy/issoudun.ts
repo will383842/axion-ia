@@ -9,9 +9,9 @@ export const ISSOUDUN_COPY: VilleCopy = {
   pitchEn:
     "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
   seoHook: "industrie mécanique, & artisanat services",
   ecosystemFr:
     "Issoudun, sous-préfecture de l'Indre, est un pôle industriel et de services au coeur du Berry. L'économie locale repose sur l'industrie (métallurgie, mécanique, aéronautique avec le site Safran), l'agroalimentaire, l'artisanat BTP, le commerce de centre-ville, les services publics et de santé, et un patrimoine culturel notable (musée de l'Hospice Saint-Roch, tour Blanche médiévale).",

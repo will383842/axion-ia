@@ -9,9 +9,9 @@ export const VENTABREN_COPY: VilleCopy = {
   pitchEn:
     "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre les activités professionnelles du bassin du bassin aixois ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
   seoHook: "TPE, PME & libéraux ouest aixois",
   ecosystemFr:
     "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Proximité immédiate gare TGV Aix et technopôle de l'Arbois (cleantech, environnement).",

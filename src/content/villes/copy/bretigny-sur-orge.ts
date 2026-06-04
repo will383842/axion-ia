@@ -9,9 +9,9 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Brétigny-sur-Orge, ville de l'Essonne (91) au sud de Paris, en pleine reconversion (ancienne base aérienne 217 transformée en ZAC Clause-Bois Badeau, 130 ha). Tissu PME tertiaires, pôle santé en développement, TPE artisanales et commerces. Axion-IA y intervient pour les TPE, indépendants, PME bréthignolaises et entreprises sud-IDF.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brétigny-sur-Orge (91) en banlieue sud parisienne. Nous accompagnons les TPE indépendantes, PME tertiaires bréthignolaises, structures de santé (centre hospitalier, professions libérales) et entreprises de la ZAC Clause-Bois Badeau sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brétigny-sur-Orge (91) en banlieue sud parisienne. Nous accompagnons les TPE indépendantes, PME tertiaires bréthignolaises, structures de santé (centre hospitalier, professions libérales) et entreprises de la ZAC Clause-Bois Badeau sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brétigny-sur-Orge (91) en banlieue sud parisienne. Nous accompagnons les TPE indépendantes, PME tertiaires bréthignolaises, structures de santé (centre hospitalier, professions libérales) et entreprises de la ZAC Clause-Bois Badeau sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brétigny-sur-Orge (91) en banlieue sud parisienne. Nous accompagnons les TPE indépendantes, PME tertiaires bréthignolaises, structures de santé (centre hospitalier, professions libérales) et entreprises de la ZAC Clause-Bois Badeau sur leurs cas IA opérationnels.",
   seoHook: "tertiaires sud-essonne & santé professions",
   ecosystemFr:
     "Brétigny-sur-Orge est en pleine transformation urbaine : reconversion de la base aérienne 217 (1300 ha au total) en ZAC Clause-Bois Badeau (130 ha, 6500 logements, pôle économique). Tissu existant de PME tertiaires, TPE artisanales, commerces, centre hospitalier sud-Essonne. Bassin d'emploi élargi vers Évry-Courcouronnes et Massy.",

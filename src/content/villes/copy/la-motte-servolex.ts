@@ -9,9 +9,9 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
   pitchEn:
     "La Motte-Servolex (73), 2e commune de l'agglomération de Chambéry en Savoie, est un pôle résidentiel dynamique doté de zones d'activités commerciales et tertiaires. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
   seoHook: "tertiaires services & zones d'activités",
   ecosystemFr:
     "La Motte-Servolex est la 2e commune de l'agglomération de Chambéry (12 000 habitants). Pôle résidentiel dynamique, elle accueille plusieurs zones d'activités commerciales et tertiaires qui concentrent PME de services, professions libérales, TPE artisanat BTP et commerces. Proximité immédiate de Chambéry centre et accès rapide à l'aéroport Chambéry-Savoie.",

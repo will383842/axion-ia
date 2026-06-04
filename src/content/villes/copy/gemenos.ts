@@ -9,9 +9,9 @@ export const GEMENOS_COPY: VilleCopy = {
   pitchEn:
     "Gémenos (13), commune entre Aubagne et la Sainte-Baume, allie patrimoine naturel (parc de Saint-Pons) et dynamisme économique (zone d'activités technologique). Tissu de PME tech, TPE artisans, commerçants et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit sur place sur mesure.",
   seoHook: "technologiques numérique & artisanat services",
   ecosystemFr:
     "Gémenos accueille une zone d'activités dynamique (technologie, services aux entreprises, logistique) au pied du massif de la Sainte-Baume. Parc de Saint-Pons (abbaye cistercienne, forêt classée). Tissu de PME tech et services, TPE artisans, professions libérales et résidentiel de cadres travaillant à Aubagne ou Marseille.",

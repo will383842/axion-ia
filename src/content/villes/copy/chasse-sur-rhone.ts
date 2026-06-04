@@ -9,9 +9,9 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
   pitchEn:
     "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
   seoHook: "industrie rhodanienne & logistique axe",
   ecosystemFr:
     "Chasse-sur-Rhône est positionnée à l'extrémité ouest du département de l'Isère et de l'arrondissement de Vienne, sur la rive est du Rhône. Position stratégique entre Lyon (30 min) et Vienne (10 min). Tissu PME industrielles et logistiques rhodaniennes, TPE artisanat BTP, agriculture vallée du Rhône (vignobles AOC Côte-Rôtie et Condrieu à proximité immédiate sur la rive droite), commerces.",

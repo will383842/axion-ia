@@ -9,9 +9,9 @@ export const CLERMONT_COPY: VilleCopy = {
   pitchEn:
     "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit sur place sur mesure.",
   ecosystemFr:
     "Clermont est une sous-préfecture de l'Oise à mi-chemin entre Paris et Amiens, pôle administratif et commercial du Clermontois. Son économie repose sur les services publics (sous-préfecture, hôpital, tribunal), le commerce de centre-ville, l'artisanat, la santé et les services aux entreprises. Le bassin d'emploi s'articule avec Breuil-le-Sec, Agnetz et Liancourt, bénéficiant de la proximité de l'A1 et de la gare TER Clermont-de-l'Oise.",
   ecosystemEn:

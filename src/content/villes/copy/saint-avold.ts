@@ -9,9 +9,9 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
   pitchEn:
     "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
   ecosystemFr:
     "Saint-Avold est une sous-préfecture mosellane du bassin houiller, reconvertie autour de la plateforme chimique Carling–Saint-Avold (pétrochimie, polymères). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces, services, artisanat. Position stratégique frontalière Sarre.",
   ecosystemEn:

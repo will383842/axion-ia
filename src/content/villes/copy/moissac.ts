@@ -9,9 +9,9 @@ export const MOISSAC_COPY: VilleCopy = {
   pitchEn:
     "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y travaille avec les organisations du territoire du Moissagais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place sur mesure.",
   seoHook: "TPE & PME Tarn-et-Garonne",
   ecosystemFr:
     "Moissac (13 419 hab) est une cité d'art UNESCO du Tarn-et-Garonne, célèbre pour son abbaye romane et le chasselas AOP. Économie structurée autour de l'arboriculture fruitière (chasselas, prune, pomme), du tourisme patrimonial et de Compostelle, des commerces et services. Sur le canal latéral à la Garonne et le Tarn. Proximité Castelsarrasin (10 min), Montauban (30 min).",

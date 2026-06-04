@@ -9,9 +9,9 @@ export const ROUSSET_COPY: VilleCopy = {
   pitchEn:
     "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit sur place sur mesure.",
   seoHook: "aoc côtes-de-",
   ecosystemFr:
     "Rousset est positionnée à l'est d'Aix-en-Provence, au pied de la Sainte-Victoire, et accueille l'une des plus grandes zones industrielles microélectronique de France avec STMicroelectronics, ATMEL (Microchip), salles blanches et sous-traitants semi-conducteurs. Tissu économique de PME industrielles, sous-traitants high-tech, TPE artisans (BTP, services à la personne), PME tertiaires, viticulture AOP Côtes-de-Provence Sainte-Victoire et commerces de proximité.",

@@ -9,9 +9,9 @@ export const LEMPDES_COPY: VilleCopy = {
   pitchEn:
     "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   seoHook: "logistique aéroportuaire & zones d'activités",
   ecosystemFr:
     "Lempdes bénéficie d'une localisation stratégique à l'est de Clermont-Ferrand, à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. La commune concentre des zones d'activités importantes avec logistique aéroportuaire, PME industrielles, sociétés tertiaires et bureaux. Tissu TPE artisanat actif, commerces de proximité. Accès rapide Pont-du-Château et Cournon-d'Auvergne.",

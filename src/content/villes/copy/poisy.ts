@@ -9,9 +9,9 @@ export const POISY_COPY: VilleCopy = {
   pitchEn:
     "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
   seoHook: "agriculture formation & tertiaires bassin",
   ecosystemFr:
     "Poisy est une commune résidentielle de l'ouest d'Annecy, connue pour le campus ISETA (lycée agricole et technologique, formation agroalimentaire). Tissu agriculture/formation, PME tertiaires bassin annécien, TPE artisanat, commerces, professions libérales (cabinets, indépendants).",

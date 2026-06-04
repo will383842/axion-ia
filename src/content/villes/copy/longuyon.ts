@@ -9,9 +9,9 @@ export const LONGUYON_COPY: VilleCopy = {
   pitchEn:
     "Longuyon (54), commune du Pays Haut dans le nord de la Meurthe-et-Moselle, est un nœud ferroviaire historique proche des frontières belge et luxembourgeoise. Tissu TPE/PME commerces, artisans, services, transport et logistique transfrontaliers, sous-traitance industrielle, travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : TPE/PME commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : TPE/PME commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : TPE/PME commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : TPE/PME commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
   ecosystemFr:
     "Longuyon est une commune du Pays Haut au nord de la Meurthe-et-Moselle, nœud ferroviaire historique aux portes de la Belgique et du Luxembourg. Tissu TPE/PME commerces, artisanat, services, transport et logistique transfrontaliers, sous-traitance industrielle, économie marquée par les travailleurs frontaliers.",
   ecosystemEn:

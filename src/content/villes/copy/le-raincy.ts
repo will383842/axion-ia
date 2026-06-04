@@ -9,9 +9,9 @@ export const LE_RAINCY_COPY: VilleCopy = {
   pitchEn:
     "Le Raincy (93), sous-préfecture de Seine-Saint-Denis, est une commune résidentielle atypique du département avec son allée de tilleuls, son église Notre-Dame (béton armé des frères Perret) et son tissu de professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-Saint-Denis",
   ecosystemFr:
     "Le Raincy est la sous-préfecture de Seine-Saint-Denis, commune résidentielle atypique du département avec un cadre verdoyant et une forte proportion de professions libérales. L'église Notre-Dame du Raincy (1923, frères Perret) est classée monument historique. Tissu TPE commerces, professions libérales, cabinets juridiques et médicaux, PME tertiaires. Proximité de Villemomble, Gagny et du pôle commercial de Rosny-sous-Bois.",

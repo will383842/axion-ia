@@ -9,9 +9,9 @@ export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
   pitchEn:
     "Saint-André-de-Sangonis (34), commune de la vallée de l'Hérault, entre vignoble AOC Languedoc et garrigue. Accès A750, forte croissance résidentielle. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
   ecosystemFr:
     "Saint-André-de-Sangonis est une commune de la vallée de l'Hérault en forte croissance résidentielle, entre Gignac et Clermont-l'Hérault. Vignoble AOC Languedoc, accès A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services.",
   ecosystemEn:

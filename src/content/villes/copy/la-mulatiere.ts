@@ -9,9 +9,9 @@ export const LA_MULATIERE_COPY: VilleCopy = {
   pitchEn:
     "La Mulatière (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position à la confluence Saône-Rhône (rive droite). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires sud",
   ecosystemFr:
     "La Mulatière est intégrée à la Métropole de Lyon, en banlieue sud immédiate (confluence Saône-Rhône, rive droite). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales.",

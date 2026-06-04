@@ -9,9 +9,9 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   pitchEn:
     "Ensuès-la-Redonne (13), commune de la Côte Bleue entre Marseille et Martigues, conjugue port de pêche traditionnel, calanques préservées et tissu de TPE tourisme, PME services et commerces de proximité. Port de la Redonne, criques, viticulture côtière et résidences secondaires. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit sur place sur mesure.",
   seoHook: "tourisme restauration & plaisance activités",
   ecosystemFr:
     "Ensuès-la-Redonne est positionnée sur la Côte Bleue, entre Marseille et Martigues, avec ses calanques (Méjean, La Redonne, Niolon à proximité) et son port de pêche traditionnel. Tissu économique de TPE tourisme (locations saisonnières, restauration de bord de mer), pêche artisanale, plaisance et activités nautiques, viticulture AOC Côtes-de-Provence, PME services et commerces de proximité.",

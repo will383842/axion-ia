@@ -10,9 +10,9 @@ export const GRENAY_COPY: VilleCopy = {
     "Grenay (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 640 habitants. Situee entre Lens et Bethune le long de l'A21, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et la logistique de proximite. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, logistique & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Grenay est situee sur l'axe Lens-Bethune (A21), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, activites logistiques et de transport. Zone d'activites beneficiant de la desserte autoroutiere A21/A26.",
   ecosystemEn:

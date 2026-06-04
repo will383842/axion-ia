@@ -9,9 +9,9 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
   pitchEn:
     "Le Loroux-Bottereau (44), bourg du vignoble Muscadet à l'est de Nantes en Loire-Atlantique, vit de la viticulture, du maraîchage, de l'artisanat et des commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du vignoble nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "vignoble muscadet",
   ecosystemFr:
     "Le Loroux-Bottereau est au coeur du vignoble Muscadet, entre Nantes et Ancenis. Tissu TPE viticoles et maraîchères, artisans, commerces de proximité, PME agroalimentaires et de services. Bassin d'emploi nantais est, dynamisme rural et périurbain.",

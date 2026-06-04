@@ -9,9 +9,9 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
   pitchEn:
     "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
   ecosystemFr:
     "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu TPE artisans, PME services, commerces et professions libérales.",
   ecosystemEn:

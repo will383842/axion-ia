@@ -9,9 +9,9 @@ export const WISSEMBOURG_COPY: VilleCopy = {
   pitchEn:
     "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
   ecosystemFr:
     "Wissembourg est une sous-préfecture bas-rhinoise frontalière de l'Allemagne (Palatinat), cité médiévale au patrimoine remarquable. Tissu TPE/PME industrie, viticulture, tourisme transfrontalier, BTP, commerces, services, artisanat. Dynamique économique portée par le bilinguisme franco-allemand et l'attractivité patrimoniale.",
   ecosystemEn:

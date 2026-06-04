@@ -9,9 +9,9 @@ export const COURTHEZON_COPY: VilleCopy = {
   pitchEn:
     "Courthézon (84), commune viticole du Vaucluse rhodanien aux portes de Châteauneuf-du-Pape, conjugue viticulture prestigieuse AOC Châteauneuf-du-Pape et Côtes du Rhône, tissu artisanal rural et fonction périurbaine d'Orange. TPE artisans, vignerons AOC, PME tourisme oenologique, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit sur place sur mesure.",
   seoHook: "aoc châteauneuf-du-",
   ecosystemFr:
     "Courthézon est positionnée dans le Vaucluse rhodanien, aux portes de Châteauneuf-du-Pape, entre Orange et Avignon. Son économie repose principalement sur la viticulture prestigieuse (AOC Châteauneuf-du-Pape, Côtes du Rhône, Côtes du Rhône Villages), les TPE artisans (BTP, métiers d'art viticole), les PME oenotouristiques et hôtellerie-restauration, les commerces de centre-bourg et professions libérales.",

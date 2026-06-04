@@ -9,9 +9,9 @@ export const MELESSE_COPY: VilleCopy = {
   pitchEn:
     "Melesse (35), commune résidentielle au nord de Rennes en Ille-et-Vilaine, bénéficie de la dynamique de Rennes Métropole. Tissu TPE artisans, PME services, commerces de proximité, professions libérales et entreprises tertiaires. Axion-IA y travaille avec les organisations du territoire du nord rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Melesse est intégrée à Rennes Métropole (~460 000 hab) et profite de la dynamique économique rennaise (numérique, cybersécurité, agroalimentaire). Commune résidentielle attractive avec tissu TPE artisans, PME de services aux entreprises, commerces de proximité et professions libérales. Proximité immédiate de la zone nord de Rennes (La Chapelle-des-Fougeretz, Pacé, Betton).",

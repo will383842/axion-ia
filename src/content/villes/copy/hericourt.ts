@@ -9,9 +9,9 @@ export const HERICOURT_COPY: VilleCopy = {
   pitchEn:
     "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises du nord Franche-Comté.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
   seoHook: "TPE & PME Hte-Saône",
   ecosystemFr:
     "Héricourt est intégrée à l'aire urbaine de Montbéliard (~120 000 hab), pôle industriel majeur de Franche-Comté. Tissu de TPE/PME sous-traitance automobile (proximité Stellantis Sochaux), mécanique de précision, plasturgie, logistique transfrontalière (Suisse à 30 km). Zones d'activités dynamiques, commerces et services aux entreprises.",

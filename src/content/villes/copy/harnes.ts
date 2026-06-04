@@ -9,9 +9,9 @@ export const HARNES_COPY: VilleCopy = {
   pitchEn:
     "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
   seoHook: "artisanat & logistique transport",
   ecosystemFr:
     "Harnes est intégrée à l'agglomération Lens-Liévin, au cœur du bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique mixte : TPE artisanat BTP, PME logistique et industrie reconvertie, commerces de proximité, services tertiaires. Proximité immédiate de Lens et du Louvre-Lens. Accès A21 vers Lille (25 min) et Douai (15 min).",

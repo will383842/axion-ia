@@ -9,9 +9,9 @@ export const THIERS_COPY: VilleCopy = {
   pitchEn:
     "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
   seoHook: "coutellerie couteaux & métallurgie fine",
   ecosystemFr:
     "Thiers est la capitale mondiale de la coutellerie, sous-préfecture du Puy-de-Dôme. Plus de 100 entreprises coutelières, métallurgie fine, TPE artisans couteliers, tourisme industriel (vallée des usines classée), commerces centre-ville historique.",

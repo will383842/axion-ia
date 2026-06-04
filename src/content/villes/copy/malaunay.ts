@@ -10,9 +10,9 @@ export const MALAUNAY_COPY: VilleCopy = {
     "Malaunay (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 6 220 habitants. Reconnue pour son engagement en developpement durable et transition ecologique, elle accueille des TPE de services, des PME engagees, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "developpement durable, services & transition",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Malaunay (76). Nous accompagnons les TPE, PME et independants de cette commune pionniere en transition ecologique : commercants, artisans, prestataires de services et acteurs du developpement durable. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Malaunay (76). Nous accompagnons les TPE, PME et independants de cette commune pionniere en transition ecologique : commercants, artisans, prestataires de services et acteurs du developpement durable. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Malaunay (76). Nous accompagnons les TPE, PME et independants de cette commune pionniere en transition ecologique : commercants, artisans, prestataires de services et acteurs du developpement durable. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Malaunay (76). Nous accompagnons les TPE, PME et independants de cette commune pionniere en transition ecologique : commercants, artisans, prestataires de services et acteurs du developpement durable. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Malaunay est une commune pionniere en developpement durable et transition ecologique, au nord de Rouen. Partie de la Metropole Rouen Normandie, elle dispose d'un tissu de TPE de services, PME engagees RSE, commerces, artisanat et acteurs de l'economie circulaire. Acces A150.",
   ecosystemEn:

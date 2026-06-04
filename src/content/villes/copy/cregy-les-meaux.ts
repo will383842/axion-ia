@@ -9,9 +9,9 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   pitchEn:
     "Crégy-lès-Meaux (77), commune limitrophe de Meaux en Seine-et-Marne, avec zones commerciales et tissu résidentiel dynamique. TPE commerce, PME services, artisanat BTP, restauration, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit sur place sur mesure.",
   seoHook: "commerce zones & services",
   ecosystemFr:
     "Crégy-lès-Meaux est une commune limitrophe de Meaux disposant de zones commerciales actives et d'un tissu résidentiel dynamique. TPE commerce et restauration, PME services, artisanat BTP, professions libérales.",

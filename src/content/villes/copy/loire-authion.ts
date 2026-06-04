@@ -9,9 +9,9 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
   pitchEn:
     "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
   seoHook: "bassin horticole de",
   ecosystemFr:
     "Loire-Authion se situe dans le val d'Authion à l'est d'Angers, au cœur du premier bassin horticole de France. L'économie locale est dominée par l'horticulture et les pépinières (roses, plantes ornementales, semences), complétée par le maraîchage, l'arboriculture fruitière, l'artisanat BTP, les commerces et les services. Le pôle végétal angevin (Végépolys Valley) irrigue tout le territoire.",

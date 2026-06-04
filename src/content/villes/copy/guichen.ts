@@ -9,9 +9,9 @@ export const GUICHEN_COPY: VilleCopy = {
   pitchEn:
     "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie son expertise pour toutes les organisations du sud de Rennes Métropole.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guichen (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire sud Rennes, professions libérales, indépendants et exploitants agricoles périurbains du sud de Rennes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guichen (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire sud Rennes, professions libérales, indépendants et exploitants agricoles périurbains du sud de Rennes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guichen (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire sud Rennes, professions libérales, indépendants et exploitants agricoles périurbains du sud de Rennes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guichen (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire sud Rennes, professions libérales, indépendants et exploitants agricoles périurbains du sud de Rennes Métropole.",
   seoHook: "artisanat services & commerce proximité",
   ecosystemFr:
     "Guichen est une commune résidentielle du sud de Rennes Métropole dans la vallée de la Vilaine, en croissance démographique. L'économie locale repose sur les TPE artisans BTP, le commerce de proximité, les PME de services aux entreprises et le tertiaire, les professions libérales et l'agriculture périurbaine. Proximité directe de Rennes et de ses pôles économiques.",

@@ -9,9 +9,9 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   pitchEn:
     "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération yonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit sur place sur mesure.",
   seoHook: "industrie & commerce détail",
   ecosystemFr:
     "Mouilleron-le-Captif (5 273 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération), au nord de la préfecture vendéenne. Économie diversifiée : industrie, services aux entreprises, BTP, commerces, événementiel (Vendéspace) et professions libérales. Proximité immédiate La Roche-sur-Yon (5 min), Nantes (55 min), Les Sables-d'Olonne (45 min).",

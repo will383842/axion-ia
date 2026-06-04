@@ -9,9 +9,9 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
   pitchEn:
     "Sucé-sur-Erdre (44), commune résidentielle en bords d'Erdre au nord de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin nantais nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Sucé-sur-Erdre est une commune résidentielle prisée en bords d'Erdre, au nord de Nantes Métropole. Cadre fluvial attractif pour les professions libérales, TPE artisanales, PME tertiaires et commerces de proximité. Proximité La Chapelle-sur-Erdre (5 min) et Nantes centre (20 min).",

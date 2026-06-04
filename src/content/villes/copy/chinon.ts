@@ -9,9 +9,9 @@ export const CHINON_COPY: VilleCopy = {
   pitchEn:
     "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
   seoHook: "viticulture chinon & tourisme patrimonial",
   ecosystemFr:
     "Chinon est une cité médiévale surplombée par la forteresse royale des Plantagenêts, où Jeanne d'Arc rencontra Charles VII en 1429. L'appellation AOC Chinon produit des vins rouges de cabernet franc réputés internationalement. Tissu viticole dense (plus de 2 300 ha en AOC), tourisme patrimonial (forteresse, vieux Chinon, caves troglodytiques), TPE artisans, commerçants, restaurateurs, PME agroalimentaires et hôteliers.",

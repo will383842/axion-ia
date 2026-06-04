@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Chaville (92), commune résidentielle des Hauts-de-Seine nichée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles, abrite un tissu dense de TPE et PME : commerce de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites activités tech. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME chavilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Chaville (92), commune résidentielle des Hauts-de-Seine nichée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles, abrite un tissu dense de TPE et PME : commerce de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites activités tech. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME chavilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Chaville (92), commune résidentielle des Hauts-de-Seine nichée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles, abrite un tissu dense de TPE et PME : commerce de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites activités tech. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME chavilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Chaville (92), commune résidentielle des Hauts-de-Seine nichée entre la forêt de Meudon et le bois de Fausses-Reposes sur l'axe Paris-Versailles, abrite un tissu dense de TPE et PME : commerce de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites activités tech. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME chavilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaville (92) auprès des TPE et PME : commerces de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites structures tech. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chaville (92) auprès des TPE et PME : commerces de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites structures tech. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaville (92) auprès des TPE et PME : commerces de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites structures tech. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chaville (92) auprès des TPE et PME : commerces de proximité, services aux particuliers et aux entreprises, professions libérales, conseil et petites structures tech. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "services & professions libérales",
   ecosystemFr:
     "Chaville, commune résidentielle aisée des Hauts-de-Seine entre la forêt de Meudon et le bois de Fausses-Reposes, se situe sur l'axe stratégique Paris-Versailles. Son économie repose sur un commerce de proximité actif, des services aux particuliers et aux entreprises, de nombreuses professions libérales, du conseil indépendant et de petites activités tech portées par des cadres et entrepreneurs travaillant à Paris ou à La Défense. Ce tissu de TPE et PME de services constitue un terrain idéal pour une IA appliquée à la productivité et à la relation client.",
@@ -53,7 +53,7 @@ export const CHAVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chaville ?",
-      a: "Oui, Axion-IA intervient à Chaville et dans l'ouest parisien (Sèvres, Viroflay, Vélizy, Ville-d'Avray). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Chaville et dans l'ouest parisien (Sèvres, Viroflay, Vélizy, Ville-d'Avray). Nos experts IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Chaville ?",

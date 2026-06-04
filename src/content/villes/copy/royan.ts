@@ -9,9 +9,9 @@ export const ROYAN_COPY: VilleCopy = {
   pitchEn:
     "Royan (17), station balnéaire emblématique de la Côte de Beauté en Charente-Maritime, architecture moderniste des années 50, estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, conchyliculture, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin royannais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Royan (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Royan (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Royan (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Royan (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
   seoHook: "bassin royannais",
   ecosystemFr:
     "Royan est une station balnéaire majeure de la Côte de Beauté, classée pour son architecture moderniste des années 50. Économie touristique (hôtellerie, restauration, plages), conchyliculture estuaire de la Gironde, commerces saisonniers, TPE artisans BTP, PME services, professions libérales. Bac Royan-Le Verdon reliant la Gironde.",

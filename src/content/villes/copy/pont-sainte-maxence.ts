@@ -9,9 +9,9 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
   pitchEn:
     "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
   ecosystemFr:
     "Pont-Sainte-Maxence est une commune des bords de l'Oise en lisière de la forêt d'Halatte, à mi-chemin entre Senlis, Creil et Compiègne. Économie diversifiée : commerce, artisanat, BTP, logistique fluviale (port sur l'Oise) et routière (RN17), industries légères, services. Position de carrefour attractif pour les entreprises.",
   ecosystemEn:

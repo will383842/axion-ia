@@ -9,9 +9,9 @@ export const USSEL_COPY: VilleCopy = {
   pitchEn:
     "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
   ecosystemFr:
     "Ussel, sous-préfecture de la Corrèze, est la porte d'entrée du plateau de Millevaches (PNR). Économie locale : commerce et artisanat de proximité, filière bois-forêt (scieries, exploitation forestière), services de santé (hôpital, maisons médicales), BTP montagne et tourisme nature (randonnée, lac de Séchemailles).",
   ecosystemEn:

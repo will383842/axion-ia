@@ -9,9 +9,9 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
   pitchEn:
     "Le Puy-en-Velay (43), préfecture de la Haute-Loire, est une ville patrimoine inscrite UNESCO (cathédrale, rocher Corneille). Réputée pour la dentelle du Puy, la lentille verte AOP et le départ de la Via Podiensis (Compostelle). Tissu tourisme pèlerin, artisanat dentelle, agroalimentaire lentille verte, TPE commerces, PME tertiaires. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-en-Velay (43). Nous accompagnons TPE et PME : acteurs tourisme pèlerin (Via Podiensis Compostelle), artisans dentelle du Puy, producteurs lentille verte AOP, administration préfecture, commerçants centre-ville et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Puy-en-Velay (43). Nous accompagnons TPE et PME : acteurs tourisme pèlerin (Via Podiensis Compostelle), artisans dentelle du Puy, producteurs lentille verte AOP, administration préfecture, commerçants centre-ville et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-en-Velay (43). Nous accompagnons TPE et PME : acteurs tourisme pèlerin (Via Podiensis Compostelle), artisans dentelle du Puy, producteurs lentille verte AOP, administration préfecture, commerçants centre-ville et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Puy-en-Velay (43). Nous accompagnons TPE et PME : acteurs tourisme pèlerin (Via Podiensis Compostelle), artisans dentelle du Puy, producteurs lentille verte AOP, administration préfecture, commerçants centre-ville et services aux entreprises.",
   seoHook: "tourisme pèlerin & artisanat dentelle",
   ecosystemFr:
     "Le Puy-en-Velay est la préfecture de la Haute-Loire, au cœur du Velay (Massif central). Patrimoine UNESCO (cathédrale, statue Notre-Dame de France sur le rocher Corneille). Économie : tourisme pèlerin (départ Via Podiensis), artisanat dentelle du Puy, agroalimentaire (lentille verte du Puy AOP, verveine du Velay), TPE commerces, PME tertiaires.",

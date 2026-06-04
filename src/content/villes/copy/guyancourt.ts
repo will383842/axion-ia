@@ -9,9 +9,9 @@ export const GUYANCOURT_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Guyancourt, pôle majeur de Saint-Quentin-en-Yvelines. Sur ce territoire d'ingénierie et de R&D structuré par le Technocentre Renault, le siège de Bouygues et la présence de Thales, nous aidons bureaux d'études, prestataires techniques, sous-traitants et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, reporting, documentation, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Guyancourt, dans les Yvelines, au cœur de Saint-Quentin-en-Yvelines. Autour du Technocentre Renault, premier centre de R&D automobile d'Europe, du siège de Bouygues et de Thales, gravite un dense écosystème d'ingénierie : bureaux d'études, prestataires techniques, sous-traitants. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, reporting, documentation technique, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Guyancourt, dans les Yvelines, au cœur de Saint-Quentin-en-Yvelines. Autour du Technocentre Renault, premier centre de R&D automobile d'Europe, du siège de Bouygues et de Thales, gravite un dense écosystème d'ingénierie : bureaux d'études, prestataires techniques, sous-traitants. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, reporting, documentation technique, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Guyancourt, dans les Yvelines, au cœur de Saint-Quentin-en-Yvelines. Autour du Technocentre Renault, premier centre de R&D automobile d'Europe, du siège de Bouygues et de Thales, gravite un dense écosystème d'ingénierie : bureaux d'études, prestataires techniques, sous-traitants. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, reporting, documentation technique, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Guyancourt, dans les Yvelines, au cœur de Saint-Quentin-en-Yvelines. Autour du Technocentre Renault, premier centre de R&D automobile d'Europe, du siège de Bouygues et de Thales, gravite un dense écosystème d'ingénierie : bureaux d'études, prestataires techniques, sous-traitants. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, reporting, documentation technique, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "ingénierie & R&D auto",
   ecosystemFr:
     "Guyancourt est l'un des moteurs de Saint-Quentin-en-Yvelines, dominé par le Technocentre Renault — premier centre de recherche et développement automobile d'Europe — auquel s'ajoutent le siège de Bouygues, la présence de Thales et l'Université de Versailles Saint-Quentin-en-Yvelines. Cette concentration d'ingénierie et de R&D attire une nuée de bureaux d'études, de prestataires techniques et de sous-traitants. Ces TPE et PME affrontent des tâches répétitives — devis, reporting, documentation, veille — qui se prêtent particulièrement bien à des automatisations ciblées et rentables qu'Axion-IA priorise, l'ETI restant marginale.",
@@ -42,8 +42,8 @@ export const GUYANCOURT_COPY: VilleCopy = {
       en: "Implémentation à Guyancourt : nous connectons l'IA aux outils déjà utilisés par les bureaux d'études et prestataires techniques — gestion de projet, PLM, CRM — pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Guyancourt : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA dans l'ingénierie et la R&D et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Guyancourt : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA dans l'ingénierie et la R&D et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Guyancourt : un dirigeant de TPE ou PME, un expert IA senior, pour clarifier les usages réellement utiles de l'IA dans l'ingénierie et la R&D et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Guyancourt : un dirigeant de TPE ou PME, un expert IA senior, pour clarifier les usages réellement utiles de l'IA dans l'ingénierie et la R&D et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Guyancourt : pour les bureaux d'études, prestataires techniques et sociétés de services, nous bâtissons des sites dopés à l'IA — qualification de contacts, documentation assistée, contenus techniques — pensés pour convertir une clientèle exigeante.",
@@ -61,7 +61,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Guyancourt ?",
-      a: "Oui. Guyancourt est à une trentaine de minutes de Paris-Montparnasse via Saint-Quentin-en-Yvelines, et reliée par l'A12 et la N12. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Guyancourt est à une trentaine de minutes de Paris-Montparnasse via Saint-Quentin-en-Yvelines, et reliée par l'A12 et la N12. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Guyancourt ?",

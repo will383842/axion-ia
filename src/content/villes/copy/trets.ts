@@ -9,9 +9,9 @@ export const TRETS_COPY: VilleCopy = {
   pitchEn:
     "Trets (13), commune provençale à l'est d'Aix-en-Provence dans les Bouches-du-Rhône, au pied de la montagne Sainte-Victoire, conjugue agriculture, artisanat et vie résidentielle. TPE viticulteurs et artisans, PME services, commerces de bourg et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'est aixois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trets (13). Nous accompagnons TPE viticulteurs et artisans, PME de services de l'est d'Aix-en-Provence, commerçants et professions libérales au pied de la Sainte-Victoire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trets (13). Nous accompagnons TPE viticulteurs et artisans, PME de services de l'est d'Aix-en-Provence, commerçants et professions libérales au pied de la Sainte-Victoire. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trets (13). Nous accompagnons TPE viticulteurs et artisans, PME de services de l'est d'Aix-en-Provence, commerçants et professions libérales au pied de la Sainte-Victoire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trets (13). Nous accompagnons TPE viticulteurs et artisans, PME de services de l'est d'Aix-en-Provence, commerçants et professions libérales au pied de la Sainte-Victoire. Audit sur place sur mesure, sans engagement.",
   seoHook: "viticulture, Sainte-Victoire & artisanat",
   ecosystemFr:
     "Trets est une commune provençale au pied de la Sainte-Victoire, à l'est d'Aix-en-Provence. Économie locale autour de la viticulture (AOC Côtes de Provence Sainte-Victoire), de l'artisanat et des services. TPE viticulteurs, artisans du bâtiment, commerces de bourg, professions libérales.",

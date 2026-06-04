@@ -9,9 +9,9 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
   pitchEn:
     "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y mène ses missions auprès des organisations locales du sud blésois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
   seoHook: "viticulture touraine & agriculture céréalière",
   ecosystemFr:
     "Le Controis-en-Sologne est une commune nouvelle née de la fusion de plusieurs bourgs en Sologne viticole. Viticulture AOC Touraine, agriculture céréalière, tourisme vert (châteaux de la Loire proches), artisanat BTP et commerces de proximité.",

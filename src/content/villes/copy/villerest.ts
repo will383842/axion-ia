@@ -9,9 +9,9 @@ export const VILLEREST_COPY: VilleCopy = {
   pitchEn:
     "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
   seoHook: "tourisme loisirs & tertiaires roannais",
   ecosystemFr:
     "Villerest est intégrée à Roannais Agglomération (~99 000 hab), en banlieue sud-ouest de Roanne. Position remarquable : barrage de Villerest (grand aménagement hydraulique sur la Loire avec plan d'eau, site touristique régional). Tissu PME tertiaires, TPE artisanat BTP, tourisme/loisirs, commerces.",

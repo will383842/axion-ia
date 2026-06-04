@@ -9,9 +9,9 @@ export const SOULEUVRE_EN_BOCAGE_COPY: VilleCopy = {
   pitchEn:
     "Souleuvre en Bocage (14), commune nouvelle du Calvados au cœur du bocage normand, est connue pour le viaduc de la Souleuvre (saut à l'élastique, tyrolienne). Territoire rural dynamique, tissu TPE artisans BTP, PME agroalimentaires et agricoles, commerces de proximité, tourisme vert. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Souleuvre en Bocage (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, PME agroalimentaires, exploitations agricoles, acteurs du tourisme vert (viaduc de la Souleuvre), professions libérales et services aux entreprises rurales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Souleuvre en Bocage (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, PME agroalimentaires, exploitations agricoles, acteurs du tourisme vert (viaduc de la Souleuvre), professions libérales et services aux entreprises rurales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Souleuvre en Bocage (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, PME agroalimentaires, exploitations agricoles, acteurs du tourisme vert (viaduc de la Souleuvre), professions libérales et services aux entreprises rurales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Souleuvre en Bocage (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, PME agroalimentaires, exploitations agricoles, acteurs du tourisme vert (viaduc de la Souleuvre), professions libérales et services aux entreprises rurales.",
   seoHook: "agriculture élevage & agroalimentaire normand",
   ecosystemFr:
     "Souleuvre en Bocage est une commune nouvelle du bocage normand (Calvados), regroupant plusieurs communes rurales depuis 2016. Le viaduc de la Souleuvre (gustave Eiffel, reconverti en site de loisirs extrêmes) attire le tourisme vert. Territoire agricole et agroalimentaire, TPE artisans BTP, commerces de proximité.",

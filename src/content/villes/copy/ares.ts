@@ -9,9 +9,9 @@ export const ARES_COPY: VilleCopy = {
   pitchEn:
     "Arès (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme familial, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA y intervient pour tous types d'activités du nord du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "tourisme hébergement & ostréiculture",
   ecosystemFr:
     "Arès est une station balnéaire familiale du nord du Bassin d'Arcachon. Tourisme (campings, locations, plages), ostréiculture (port ostréicole), commerces saisonniers, artisanat BTP et professions libérales. Réserve naturelle des prés salés.",

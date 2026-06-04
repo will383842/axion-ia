@@ -9,9 +9,9 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu TPE artisanat BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",

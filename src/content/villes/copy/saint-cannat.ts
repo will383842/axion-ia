@@ -9,9 +9,9 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cannat (13), commune résidentielle de la plaine d'Aix entre Aix-en-Provence et Salon-de-Provence, accueille cadres et familles du bassin aixois. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et viticulteurs. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit sur place sur mesure.",
   seoHook: "viticulture coteaux & professions libérales",
   ecosystemFr:
     "Saint-Cannat est une commune résidentielle de la plaine d'Aix, sur l'axe Aix-Salon via la D7n. Vignobles AOC Coteaux d'Aix-en-Provence, agriculture (oliviers, amandiers), artisanat et commerces de proximité. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois.",

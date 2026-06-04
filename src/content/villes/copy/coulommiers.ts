@@ -9,9 +9,9 @@ export const COULOMMIERS_COPY: VilleCopy = {
   pitchEn:
     "Coulommiers (77), sous-préfecture de Seine-et-Marne, est un bassin économique structurant de l'est francilien. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-ville, services aux entreprises et professions libérales. Ville connue pour le Brie de Coulommiers et son marché. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
   seoHook: "agroalimentaire filière & commerce détail",
   ecosystemFr:
     "Coulommiers, sous-préfecture de Seine-et-Marne, est un pôle structurant de l'est francilien. Tissu économique diversifié : filière agroalimentaire (Brie de Coulommiers), artisanat BTP, commerces de centre-ville, services aux entreprises, professions libérales de santé. Zone d'activités des Musiciens et parc Coutevroult à proximité.",

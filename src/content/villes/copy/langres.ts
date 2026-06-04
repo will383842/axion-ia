@@ -9,9 +9,9 @@ export const LANGRES_COPY: VilleCopy = {
   pitchEn:
     "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   seoHook: "artisanat coutellerie & agroalimentaires",
   ecosystemFr:
     "Langres est une cité fortifiée historique, sous-préfecture de la Haute-Marne sur le plateau de Langres. Berceau de Diderot. Coutellerie centenaire, PME agroalimentaires, TPE artisanat, tourisme patrimonial, commerces et services publics.",

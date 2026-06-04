@@ -9,9 +9,9 @@ export const ROYE_COPY: VilleCopy = {
   pitchEn:
     "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y travaille avec les organisations du territoire du Santerre Est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
   seoHook: "TPE & PME Somme",
   ecosystemFr:
     "Roye est un bourg picard au cœur du Santerre (Somme), historiquement lié à l'agroalimentaire (conserveries, sucreries betteravières). Tissu agricole dominant (céréales, betteraves sucrières, pommes de terre), PME industrielles agroalimentaires, logistique (carrefour A1/RN17/RN334), TPE artisans, commerces de centre-ville.",

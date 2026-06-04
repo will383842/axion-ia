@@ -9,9 +9,9 @@ export const QUIMPERLE_COPY: VilleCopy = {
   pitchEn:
     "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
   seoHook: "agroalimentaire breton & industrie papetière",
   ecosystemFr:
     "Quimperlé (12 469 hab) est le pôle économique du sud Finistère, au confluent de l'Ellé et de l'Isole formant la Laïta. Héritage industriel papetier (anciens moulins à papier reconvertis), tissu PME agroalimentaires bretonnes, TPE artisans BTP, commerces de centre-ville historique et tourisme patrimonial (abbaye Sainte-Croix romane). Communauté d'agglomération Quimperlé Communauté (~57 000 hab).",

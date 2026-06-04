@@ -9,9 +9,9 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côte d'Azur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit sur place sur mesure.",
   seoHook: "côte d'azur",
   ecosystemFr:
     "Villefranche-sur-Mer (5 008 hab) est une commune littorale de la Riviera, limitrophe de Nice. Économie centrée sur tourisme haut de gamme (hôtellerie de luxe, yachting, croisières internationales), patrimoine culturel (chapelle Cocteau), restauration gastronomique, commerces, art et services. Proximité immédiate Nice (15 min), Monaco (20 min), Cannes (45 min). Forte saisonnalité internationale.",

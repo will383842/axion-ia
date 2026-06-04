@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
+    "Axion-IA accompagne les TPE et PME d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
+    "Axion-IA accompagne les TPE et PME d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui aide les TPE et PME d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui aide les TPE et PME d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
   seoHook: "tertiaire & santé caennaise",
   ecosystemFr:
     "Hérouville-Saint-Clair forme avec Caen un bassin d'emploi tourné vers le tertiaire, les services aux entreprises et la santé. La ville accueille des zones d'activités, un tissu de commerces et un secteur médico-social dense, à proximité immédiate de l'Université de Caen Normandie et du CHU. Cet environnement génère beaucoup de tâches administratives, de prise de rendez-vous et de gestion de dossiers, terrains idéaux pour l'IA. Axion-IA cible en priorité les TPE de services et de soins, puis les PME du commerce et du tertiaire local.",
@@ -53,7 +53,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Hérouville-Saint-Clair ?",
-      a: "Oui. Notre cabinet d'architectes IA se déplace directement dans vos locaux à Hérouville-Saint-Clair et dans l'agglomération caennaise, généralement sous cinq jours ouvrés après validation de la mission.",
+      a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à Hérouville-Saint-Clair et dans l'agglomération caennaise, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à une TPE de services à Hérouville-Saint-Clair ?",

@@ -9,9 +9,9 @@ export const FOURMIES_COPY: VilleCopy = {
   pitchEn:
     "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fourmies (59). Nous accompagnons TPE et PME de l'Avesnois : industrie reconvertie textile-plasturgie, agroalimentaire, BTP, commerces de proximité, artisans et professions libérales du sud du Nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fourmies (59). Nous accompagnons TPE et PME de l'Avesnois : industrie reconvertie textile-plasturgie, agroalimentaire, BTP, commerces de proximité, artisans et professions libérales du sud du Nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fourmies (59). Nous accompagnons TPE et PME de l'Avesnois : industrie reconvertie textile-plasturgie, agroalimentaire, BTP, commerces de proximité, artisans et professions libérales du sud du Nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fourmies (59). Nous accompagnons TPE et PME de l'Avesnois : industrie reconvertie textile-plasturgie, agroalimentaire, BTP, commerces de proximité, artisans et professions libérales du sud du Nord.",
   ecosystemFr:
     "Fourmies est une ville de l'Avesnois (sud du Nord), héritière de la tradition textile de la laine peignée qui en fit l'un des centres industriels majeurs du XIXe siècle. L'économie locale s'est reconvertie vers la plasturgie, l'agroalimentaire, le BTP et les services. Tissu TPE/PME, commerces de proximité, artisanat. Proximité de la frontière belge (Chimay, Couvin).",
   ecosystemEn:

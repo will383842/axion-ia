@@ -9,9 +9,9 @@ export const AUSSONNE_COPY: VilleCopy = {
   pitchEn:
     "Aussonne (31), commune du nord-ouest de Toulouse avec près de 8 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Aussonne est une commune résidentielle du nord-ouest de Toulouse, entre Beauzelle et Cornebarrieu. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité du pôle aéroportuaire et de Blagnac.",

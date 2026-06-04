@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const POISSY_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Poissy, dans les Yvelines, pour les TPE et PME du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Poissy, dans les Yvelines, pour les TPE et PME du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Poissy, dans les Yvelines, pour les TPE et PME du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Poissy, dans les Yvelines, pour les TPE et PME du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
   seoHook: "automobile & sous-traitance industrielle",
   ecosystemFr:
     "Poissy est marquée par l'usine automobile Stellantis, héritière directe de l'historique site PSA Peugeot Citroën, qui irrigue un dense réseau de sous-traitants et de fournisseurs de rang 2 et 3 dans toute la Seine aval. Autour de ce socle industriel cohabitent les commerces du centre ancien, près de la collégiale Notre-Dame, et un tissu de PME de services et de logistique. Ces petites structures, soumises à la pression de cadence et de qualité de la filière auto, ont tout à gagner à industrialiser leurs tâches administratives avec l'IA.",
@@ -57,7 +57,7 @@ export const POISSY_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il dans vos locaux à Poissy ?",
-      a: "Oui, nos architectes IA interviennent sur site à Poissy, des ateliers de la Seine aval aux commerces du centre historique. L'observation terrain reste le meilleur point de départ pour cibler les automatisations réellement utiles.",
+      a: "Oui, nos experts IA interviennent sur site à Poissy, des ateliers de la Seine aval aux commerces du centre historique. L'observation terrain reste le meilleur point de départ pour cibler les automatisations réellement utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité à Poissy ?",

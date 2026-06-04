@@ -9,9 +9,9 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Villeneuve-la-Garenne, commune des bords de Seine au nord des Hauts-de-Seine. Sur ce territoire mêlant grand pôle commercial Qwartz, zones d'activités et logistique, nous aidons commerces, artisans, sociétés de services et petites entreprises de distribution à transformer une envie d'IA en automatisations concrètes : devis, relances, gestion des commandes. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "commerce & logistique",
   ecosystemFr:
     "Villeneuve-la-Garenne s'étire le long de la Seine, à l'extrémité nord des Hauts-de-Seine, autour de son grand pôle commercial Qwartz et de zones d'activités tournées vers le commerce, l'artisanat et la logistique fluviale et routière. Ce tissu local de TPE et de PME — boutiques, prestataires de services, petites entreprises de distribution — affronte au quotidien des tâches répétitives de gestion de commandes, de relances et de devis. Ces irritants se prêtent bien à des automatisations ciblées et rentables, qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale.",
@@ -42,8 +42,8 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
       en: "Implémentation à Villeneuve-la-Garenne : nous intégrons l'IA aux outils déjà utilisés par les commerces et logisticiens locaux — caisse, CRM, gestion de stock — pour un déploiement documenté, sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de TPE ou PME, un architecte IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de TPE ou PME, un architecte IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Villeneuve-la-Garenne : pour les commerces et distributeurs locaux, nous bâtissons des sites et boutiques dopés à l'IA — recommandations, qualification de contacts, contenus assistés — orientés conversion.",
@@ -61,7 +61,7 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Villeneuve-la-Garenne ?",
-      a: "Oui. La commune est reliée au tramway T1, au RER C à proximité et à l'A86. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
+      a: "Oui. La commune est reliée au tramway T1, au RER C à proximité et à l'A86. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Villeneuve-la-Garenne ?",

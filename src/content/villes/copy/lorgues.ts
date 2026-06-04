@@ -9,9 +9,9 @@ export const LORGUES_COPY: VilleCopy = {
   pitchEn:
     "Lorgues (83), bourg du centre-Var réputé pour son marché provençal du mardi et son vignoble Côtes de Provence, structure un tissu de TPE viticulteurs, restaurateurs, artisans et PME du tourisme rural. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & marché provençal",
   ecosystemFr:
     "Lorgues est un bourg agricole et touristique du centre-Var, ancré dans la viticulture Côtes de Provence (domaines AOC, vente directe). Marché provençal du mardi parmi les plus réputés du département. Économie tirée par les TPE viticoles, l'artisanat, la restauration gastronomique et le tourisme rural haut de gamme.",

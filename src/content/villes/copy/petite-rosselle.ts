@@ -9,9 +9,9 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
   pitchEn:
     "Petite-Rosselle (57), commune de l'agglomération de Forbach dans le Bassin houiller lorrain en Moselle, célèbre pour le parc Explor Wendel et le musée de la mine. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA accompagne tout le tissu professionnel local de la Moselle-Est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Petite-Rosselle est une commune de l'agglomération de Forbach dans le Warndt, à la frontière sarroise. Marquée par son histoire minière, elle abrite le parc Explor Wendel et le musée de la mine, témoins du patrimoine industriel. Tissu TPE artisans BTP, PME industrielles et sous-traitance, commerces de proximité, professions libérales et indépendants. Bassin de vie transfrontalier Moselle-Est / Sarre.",

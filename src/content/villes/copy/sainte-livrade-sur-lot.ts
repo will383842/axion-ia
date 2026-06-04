@@ -9,9 +9,9 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
   pitchEn:
     "Sainte-Livrade-sur-Lot (47), commune de 6 541 habitants dans le Lot-et-Garonne, est un bourg dynamique de la vallée du Lot, entre Villeneuve-sur-Lot et Agen. Son économie repose sur un tissu de TPE agricoles et maraîchères, PME agroalimentaires, commerces de proximité, artisans BTP et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Livrade-sur-Lot (47). Nous accompagnons TPE et PME de la vallée du Lot : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans et professions libérales du bassin livradais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sainte-Livrade-sur-Lot (47). Nous accompagnons TPE et PME de la vallée du Lot : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans et professions libérales du bassin livradais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Livrade-sur-Lot (47). Nous accompagnons TPE et PME de la vallée du Lot : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans et professions libérales du bassin livradais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sainte-Livrade-sur-Lot (47). Nous accompagnons TPE et PME de la vallée du Lot : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans et professions libérales du bassin livradais. Audit sur place sur mesure.",
   ecosystemFr:
     "Sainte-Livrade-sur-Lot est un bourg de la vallée du Lot, entre Villeneuve-sur-Lot (10 min) et Agen (25 min). Son économie s'appuie sur les filières agricoles (maraîchage, arboriculture, pruneaux d'Agen), l'agroalimentaire, le commerce de proximité, l'artisanat BTP et les services. La commune bénéficie de la plaine alluviale fertile du Lot, moteur de l'activité agricole locale.",
   ecosystemEn:

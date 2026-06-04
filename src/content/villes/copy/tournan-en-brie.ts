@@ -9,9 +9,9 @@ export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
   pitchEn:
     "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce centre-bourg",
   ecosystemFr:
     "Tournan-en-Brie est un bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce pour les communes alentour. Son tissu économique associe TPE artisans, PME de services, commerces de centre-bourg et professions libérales. Proximité avec Gretz-Armainvilliers, Ozoir-la-Ferrière, Pontault-Combault et Fontenay-Trésigny.",

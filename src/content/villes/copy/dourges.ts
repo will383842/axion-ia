@@ -10,9 +10,9 @@ export const DOURGES_COPY: VilleCopy = {
     "Dourges (62), commune du Pas-de-Calais, reunit pres de 6 140 habitants. Connue pour sa plateforme multimodale Delta 3 (route-rail-voie d'eau), son economie associe PME logistiques, TPE de services, artisanat et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "plateforme Delta 3, logistique & multimodal",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Dourges est connue pour Delta 3, plus grande plateforme trimodale du nord de la France (route, rail, voie d'eau). Tissu economique oriente logistique et transport : PME de fret, entreposage, distribution. Egalement TPE de services, artisanat et commerces de proximite.",
   ecosystemEn:

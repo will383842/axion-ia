@@ -9,9 +9,9 @@ export const BILLERE_COPY: VilleCopy = {
   pitchEn:
     "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération Pau Béarn Pyrénées.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
   seoHook: "services aux & commerces proximité",
   ecosystemFr:
     "Billère est une commune résidentielle de 14 384 habitants directement limitrophe ouest de Pau. Tissu économique de proximité : TPE artisans BTP, commerces de quartier, professions libérales (santé, juridique), PME de services tertiaires. Bassin d'emploi commun avec Pau, accès direct à la zone Hélioparc (technopole).",

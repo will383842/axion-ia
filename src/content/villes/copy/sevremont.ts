@@ -9,9 +9,9 @@ export const SEVREMONT_COPY: VilleCopy = {
   pitchEn:
     "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   seoHook: "TPE & PME Vendée",
   ecosystemFr:
     "Sèvremont est une commune nouvelle du haut bocage vendéen (fusion 2016 de La Flocellière, Saint-Michel-Mont-Mercure, La Pommeraie-sur-Sèvre et Le Boupère). Point culminant de la Vendée (Mont Mercure, 290 m). Industries, agriculture, artisanat. Les Herbiers à 15 min, Pouzauges à 10 min.",

@@ -9,9 +9,9 @@ export const VEAUCHE_COPY: VilleCopy = {
   pitchEn:
     "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "proche saint-étienne",
   ecosystemFr:
     "Veauche est intégrée à Saint-Étienne Métropole, dans la plaine du Forez à l'ouest de Saint-Étienne. Héritage industriel verrier important (production de verre, bouteilles, conditionnement — savoir-faire local ancré). Tissu PME industrielles diversifiées contemporaines, agriculture plaine Forez, TPE artisanat BTP, commerces.",

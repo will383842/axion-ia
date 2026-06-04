@@ -9,9 +9,9 @@ export const LE_TEICH_COPY: VilleCopy = {
   pitchEn:
     "Le Teich (33), commune du sud du Bassin d'Arcachon réputée pour son parc ornithologique et son écotourisme, combine activités touristiques, ostréiculture, artisanat BTP et tissu résidentiel en croissance. Axion-IA accompagne tout le tissu professionnel local du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "écotourisme hébergement & ostréiculture",
   ecosystemFr:
     "Le Teich est connu pour son parc ornithologique (réserve naturelle, écotourisme) au sud du Bassin d'Arcachon. Économie touristique (hébergements, activités nature), ostréiculture, tissu TPE artisanat BTP et commerces. Gare TER Le Teich sur la ligne Bordeaux-Arcachon.",

@@ -9,9 +9,9 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
   pitchEn:
     "Livarot-Pays-d'Auge (14), commune nouvelle du Calvados, est le berceau du fromage Livarot AOP, l'un des quatre grands fromages normands. Au cœur du Pays d'Auge, terre de traditions laitières, cidricoles et calvados. Tissu TPE artisans, PME fromagères, exploitations agricoles, commerces de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Livarot-Pays-d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères (Livarot AOP) et laitières, exploitations agricoles, cidreries, professions libérales et services aux entreprises du Pays d'Auge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Livarot-Pays-d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères (Livarot AOP) et laitières, exploitations agricoles, cidreries, professions libérales et services aux entreprises du Pays d'Auge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Livarot-Pays-d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères (Livarot AOP) et laitières, exploitations agricoles, cidreries, professions libérales et services aux entreprises du Pays d'Auge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Livarot-Pays-d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères (Livarot AOP) et laitières, exploitations agricoles, cidreries, professions libérales et services aux entreprises du Pays d'Auge.",
   seoHook: "fromagerie & agriculture élevage",
   ecosystemFr:
     "Livarot-Pays-d'Auge est une commune nouvelle au cœur du Pays d'Auge (Calvados), berceau du fromage Livarot AOP (dit « le colonel » pour ses cinq bandelettes de laîche). Terre de traditions laitières, cidricoles et de calvados. Tissu PME fromagères, exploitations agricoles, TPE artisans, commerces de proximité, tourisme gastronomique.",

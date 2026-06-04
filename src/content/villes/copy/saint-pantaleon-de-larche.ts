@@ -9,9 +9,9 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pantaléon-de-Larche (19), commune du sud de l'agglomération briviste en Corrèze, à proximité de l'A20. Tissu TPE/PME artisanat, commerce de proximité, services, agriculture et BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Pantaléon-de-Larche est une commune résidentielle et artisanale du sud de l'agglomération de Brive-la-Gaillarde, traversée par l'A20. Zones artisanales et d'activités, commerces de proximité, services, exploitations agricoles (noix, élevage) et BTP. Cadre de vie attractif entre vallées de la Corrèze et de la Vézère.",
   ecosystemEn:

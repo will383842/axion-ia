@@ -9,9 +9,9 @@ export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
   pitchEn:
     "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagnères-de-Bigorre (65). Nous accompagnons tous types d'activités : établissements thermaux, PME hôtelières, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales et acteurs du tourisme montagne pyrénéen.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bagnères-de-Bigorre (65). Nous accompagnons tous types d'activités : établissements thermaux, PME hôtelières, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales et acteurs du tourisme montagne pyrénéen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagnères-de-Bigorre (65). Nous accompagnons tous types d'activités : établissements thermaux, PME hôtelières, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales et acteurs du tourisme montagne pyrénéen.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bagnères-de-Bigorre (65). Nous accompagnons tous types d'activités : établissements thermaux, PME hôtelières, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales et acteurs du tourisme montagne pyrénéen.",
   seoHook: "station thermale",
   ecosystemFr:
     "Bagnères-de-Bigorre est une station thermale historique des Hautes-Pyrénées, au pied du col du Tourmalet et du Pic du Midi de Bigorre (observatoire astronomique). Thermalisme (Aquensis), cyclisme (étape Tour de France), tourisme montagne été/hiver. Tissu TPE artisans, PME thermalisme et hôtellerie, commerces, restauration, professions libérales.",

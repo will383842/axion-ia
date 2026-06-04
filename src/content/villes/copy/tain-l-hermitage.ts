@@ -9,9 +9,9 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
   pitchEn:
     "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "viticulture hermitage & négoce vins",
   ecosystemFr:
     "Tain-l'Hermitage est positionnée dans la vallée du Rhône drômoise, face à Tournon-sur-Rhône (Ardèche). Capitale historique des grands crus septentrionaux du Rhône : AOC Hermitage (cru emblématique), Crozes-Hermitage, et Saint-Joseph en rive opposée. Tissu viticole haut de gamme, oenotourisme prestige, PME agroalimentaires (filière chocolat notamment), TPE artisanat BTP.",

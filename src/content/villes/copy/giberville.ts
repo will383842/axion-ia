@@ -9,9 +9,9 @@ export const GIBERVILLE_COPY: VilleCopy = {
   pitchEn:
     "Giberville (14), commune de l'agglomération Caen est en Calvados, pôle urbain dynamique adossé à la métropole caennaise. Tissu TPE artisans BTP, PME industrie et logistique zone Colombelles, commerces, services aux entreprises, professionnels de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
   seoHook: "industrie logistique & artisanat second",
   ecosystemFr:
     "Giberville est une commune de l'agglomération Caen la Mer, positionnée à l'est de la métropole caennaise. Proximité immédiate des zones d'activité Colombelles et Mondeville (logistique, industrie, tertiaire). Tissu TPE/PME diversifié, commerces de proximité, professionnels libéraux et de santé.",

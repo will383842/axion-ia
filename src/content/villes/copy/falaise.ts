@@ -9,9 +9,9 @@ export const FALAISE_COPY: VilleCopy = {
   pitchEn:
     "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
   seoHook: "industrie & agroalimentaire normand",
   ecosystemFr:
     "Falaise est une sous-préfecture du Calvados, célèbre comme ville natale de Guillaume le Conquérant (château XIIe siècle). Pôle économique entre bocage normand et plaine de Caen. Tissu PME industrielles (plasturgie, métallurgie), agroalimentaire, TPE artisans BTP, commerces centre-ville, tourisme patrimoine.",

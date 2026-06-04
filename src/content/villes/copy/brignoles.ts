@@ -9,9 +9,9 @@ export const BRIGNOLES_COPY: VilleCopy = {
   pitchEn:
     "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
   seoHook: "industrielles zones & viticulture côtes",
   ecosystemFr:
     "Brignoles est la sous-préfecture et le pôle économique du centre-Var, héritière d'une histoire bauxitière, aujourd'hui dynamisée par ses zones d'activités, son tissu industriel et viticole Côtes de Provence. PME, TPE et commerces. Toulon à 45 min, Aix-en-Provence à 45 min, A8 directe.",

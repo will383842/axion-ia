@@ -9,9 +9,9 @@ export const L_HOPITAL_COPY: VilleCopy = {
   pitchEn:
     "L'Hôpital (57), commune de 5 183 habitants en Moselle, ancrée dans le bassin houiller lorrain et à proximité immédiate de la frontière franco-allemande, conserve l'héritage minier reconverti vers l'industrie, la logistique et l'artisanat. Tissu TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces de proximité, artisans, services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Hôpital (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin houiller de Moselle-est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Hôpital (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin houiller de Moselle-est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Hôpital (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin houiller de Moselle-est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Hôpital (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin houiller de Moselle-est.",
   ecosystemFr:
     "L'Hôpital est une commune du bassin houiller lorrain, en Moselle-est, à proximité immédiate de la frontière franco-allemande. Tissu TPE/PME industrie reconvertie après la fin de l'exploitation minière, sous-traitance, logistique transfrontalière, commerces de proximité, artisanat, services. Bassin de vie tourné vers Saint-Avold, Forbach et la Sarre.",
   ecosystemEn:

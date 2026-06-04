@@ -9,9 +9,9 @@ export const ONDRES_COPY: VilleCopy = {
   pitchEn:
     "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ondres (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs saisonniers, campings, commerçants, artisans BTP, professions libérales et prestataires de services du littoral landais sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ondres (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs saisonniers, campings, commerçants, artisans BTP, professions libérales et prestataires de services du littoral landais sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ondres (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs saisonniers, campings, commerçants, artisans BTP, professions libérales et prestataires de services du littoral landais sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ondres (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs saisonniers, campings, commerçants, artisans BTP, professions libérales et prestataires de services du littoral landais sud.",
   seoHook: "littoral, tourisme & résidentiel Bayonne",
   ecosystemFr:
     "Ondres est un village touristique du littoral landais, intégré à l'agglomération Pays Basque. La commune dispose d'une plage océane et d'un cadre résidentiel prisé entre Bayonne et Tarnos. Économie portée par le tourisme balnéaire saisonnier (campings, hébergements), les services résidentiels, TPE artisans BTP, commerces de proximité, professions libérales. Accès A63.",

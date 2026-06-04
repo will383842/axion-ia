@@ -9,9 +9,9 @@ export const LAILLE_COPY: VilleCopy = {
   pitchEn:
     "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit sur place sur mesure.",
   ecosystemFr:
     "Laillé est une commune résidentielle et rurale du sud de Rennes Métropole (Ille-et-Vilaine), attractive pour les familles avec un cadre de vie verdoyant. L'économie locale associe TPE artisanales, exploitations agricoles (maraîchage, élevage), commerces de proximité et PME de services tirant parti de la proximité rennaise.",
   ecosystemEn:

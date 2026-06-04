@@ -43,14 +43,14 @@ export const AMIENS_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI du bassin amiénois — site vitrine premium pour industrie manufacturière, agroalimentaire et bioéconomie, portail fournisseurs et qualité, dashboard métier connecté à votre CRM/ERP/GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for SMEs and mid-caps in the Amiens basin — premium showcase site for manufacturing, agri-food and bioeconomy, suppliers and quality portal, business dashboard connected to your CRM/ERP/CMMS. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for SMEs and mid-caps in the Amiens basin — premium showcase site for manufacturing, agri-food and bioeconomy, suppliers and quality portal, business dashboard connected to your CRM/ERP/CMMS. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Amiens (80) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin amiénois — industrie manufacturière (P&G, Valeo), R&D (Nestlé Purina), bioéconomie (B4C), commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Amiens (80) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin amiénois — industrie manufacturière (P&G, Valeo), R&D (Nestlé Purina), bioéconomie (B4C), commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Amiens (80) on site. We support micro-businesses, SMEs, mid-caps and large enterprises in the Amiens basin — manufacturing (P&G, Valeo), R&D (Nestlé Purina), bioeconomy (B4C), trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Amiens (80) on site. We support micro-businesses, SMEs, mid-caps and large enterprises in the Amiens basin — manufacturing (P&G, Valeo), R&D (Nestlé Purina), bioeconomy (B4C), trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "agro, mécanique & santé",
 

@@ -9,9 +9,9 @@ export const SOMAIN_COPY: VilleCopy = {
   pitchEn:
     "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Somain (59). Nous accompagnons TPE et PME du bassin minier : logistique et transport ferroviaire, industrie agroalimentaire, BTP reconversion, commerces de proximité, artisans et professions libérales du Douaisis-Valenciennois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Somain (59). Nous accompagnons TPE et PME du bassin minier : logistique et transport ferroviaire, industrie agroalimentaire, BTP reconversion, commerces de proximité, artisans et professions libérales du Douaisis-Valenciennois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Somain (59). Nous accompagnons TPE et PME du bassin minier : logistique et transport ferroviaire, industrie agroalimentaire, BTP reconversion, commerces de proximité, artisans et professions libérales du Douaisis-Valenciennois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Somain (59). Nous accompagnons TPE et PME du bassin minier : logistique et transport ferroviaire, industrie agroalimentaire, BTP reconversion, commerces de proximité, artisans et professions libérales du Douaisis-Valenciennois.",
   ecosystemFr:
     "Somain est une commune du bassin minier du Nord-Pas-de-Calais (patrimoine mondial UNESCO), historiquement liée à l'extraction houillère et au nœud ferroviaire Douai–Valenciennes. L'économie locale s'est reconvertie vers la logistique, le transport, l'agroalimentaire, le BTP et les services. Tissu TPE/PME diffus, commerces de proximité et artisanat.",
   ecosystemEn:

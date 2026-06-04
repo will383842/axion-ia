@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ANGLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "surf & tourisme Côte basque",
   ecosystemFr:
     "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de TPE et PME couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",

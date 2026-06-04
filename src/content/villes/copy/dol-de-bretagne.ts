@@ -9,9 +9,9 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   pitchEn:
     "Dol-de-Bretagne (35), cité médiévale d'Ille-et-Vilaine célèbre pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol, conjugue tourisme patrimonial, artisanat, commerces de centre-ville historique, agriculture maraîchère et PME de services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Dol-de-Bretagne est une cité médiévale d'Ille-et-Vilaine entre Rennes et Saint-Malo, reconnue pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol. Son économie mêle tourisme patrimonial, hôtellerie-restauration, commerces du centre historique, artisanat, agriculture maraîchère fertile et PME de services aux entreprises.",
   ecosystemEn:

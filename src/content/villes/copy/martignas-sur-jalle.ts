@@ -9,9 +9,9 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
   pitchEn:
     "Martignas-sur-Jalle (33), commune de l'ouest de Bordeaux Métropole, est un pôle aéronautique et défense majeur (proximité site industriel de Saint-Médard-en-Jalles) avec un tissu de PME sous-traitantes, artisans et commerces. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "aéronautique défense & industrie précision",
   ecosystemFr:
     "Martignas-sur-Jalle bénéficie de la proximité du pôle aéronautique et défense de Saint-Médard-en-Jalles. Tissu PME sous-traitantes aéronautique, industries de précision, artisanat BTP et commerces résidentiels. En lisière de forêt, accès rocade A630 et aéroport Mérignac.",

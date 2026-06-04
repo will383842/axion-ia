@@ -50,14 +50,14 @@ export const NANTES_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI du Grand Ouest — site vitrine premium pour acteurs aéronautiques et agroalimentaires (Airbus, LU), portail client pour scale-ups French Tech Île de Nantes, dashboard métier connecté à votre CRM/ERP/PLM. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Greater West SMEs and mid-caps — premium showcase site for aeronautics and agri-food players (Airbus, LU), client portal for Île de Nantes French Tech scale-ups, business dashboard connected to your CRM/ERP/PLM. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Greater West SMEs and mid-caps — premium showcase site for aeronautics and agri-food players (Airbus, LU), client portal for Île de Nantes French Tech scale-ups, business dashboard connected to your CRM/ERP/PLM. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nantes (44) sur site dans les entreprises de la métropole et du Grand Ouest. Nous accompagnons les TPE, PME, ETI et grandes entreprises nantaises — industrie (Airbus, aéronautique, naval), agroalimentaire (LU, conserveries), numérique (French Tech, Île de Nantes), biotech (Atlanpole) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nantes (44) sur site dans les entreprises de la métropole et du Grand Ouest. Nous accompagnons les TPE, PME, ETI et grandes entreprises nantaises — industrie (Airbus, aéronautique, naval), agroalimentaire (LU, conserveries), numérique (French Tech, Île de Nantes), biotech (Atlanpole) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Nantes (44) on site across the metropolitan area and Greater West. We support Nantes micro-businesses, SMEs, mid-caps and large enterprises — industry (Airbus, aeronautics, shipyards), agri-food (LU, canneries), digital (French Tech, Île de Nantes), biotech (Atlanpole) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Nantes (44) on site across the metropolitan area and Greater West. We support Nantes micro-businesses, SMEs, mid-caps and large enterprises — industry (Airbus, aeronautics, shipyards), agri-food (LU, canneries), digital (French Tech, Île de Nantes), biotech (Atlanpole) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "naval, agroalimentaire & numérique",
 

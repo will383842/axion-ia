@@ -9,9 +9,9 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   pitchEn:
     "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants samauritaines et du sud-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice-l'Exil (38). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques du bassin rhodanien, TPE artisans BTP, commerçants, agriculteurs/arboriculteurs vallée du Rhône, indépendants, professions libérales et services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Maurice-l'Exil (38). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques du bassin rhodanien, TPE artisans BTP, commerçants, agriculteurs/arboriculteurs vallée du Rhône, indépendants, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice-l'Exil (38). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques du bassin rhodanien, TPE artisans BTP, commerçants, agriculteurs/arboriculteurs vallée du Rhône, indépendants, professions libérales et services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Maurice-l'Exil (38). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques du bassin rhodanien, TPE artisans BTP, commerçants, agriculteurs/arboriculteurs vallée du Rhône, indépendants, professions libérales et services.",
   seoHook: "bassin industriel rhodanien",
   ecosystemFr:
     "Saint-Maurice-l'Exil est positionnée dans le bassin industriel sud-Isère (axe rhodanien), en proximité immédiate de Roussillon et de plateformes industrielles historiques importantes du couloir Lyon-Valence. Tissu PME industrielles et sous-traitants techniques, logistique (axe A7), TPE artisanat BTP, agriculture vallée du Rhône (vergers, maraîchage), commerces.",

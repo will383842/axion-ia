@@ -9,9 +9,9 @@ export const CHESSY_COPY: VilleCopy = {
   pitchEn:
     "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
   seoHook: "tourisme loisirs & hôtellerie-restauration",
   ecosystemFr:
     "Chessy est la commune d'implantation de Disneyland Paris et de la gare internationale Marne-la-Vallée-Chessy (TGV + RER A + Eurostar). Le pôle touristique génère un écosystème dense : hôtellerie-restauration, commerce Val d'Europe, prestataires événementiels, services aux visiteurs et logistique. TPE et PME constituent le tissu économique local.",

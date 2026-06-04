@@ -10,9 +10,9 @@ export const EU_COPY: VilleCopy = {
     "Eu (76), cite historique de Seine-Maritime, reunit pres de 6 500 habitants. Dotee de son chateau royal et de sa foret domaniale, la ville est un pole de services et de tourisme patrimonial aux portes du Treport. TPE de services, PME commerciales, artisans et acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "patrimoine, tourisme & foret",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Eu (76). Nous accompagnons les TPE, PME et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Eu (76). Nous accompagnons les TPE, PME et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Eu (76). Nous accompagnons les TPE, PME et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Eu (76). Nous accompagnons les TPE, PME et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Eu est une cite historique situee aux portes du Treport et de Mers-les-Bains, dotee d'un chateau royal (musee Louis-Philippe) et d'une foret domaniale. Pole de services pour le bassin local : commerces, professions liberales, TPE de services, artisanat, tourisme patrimonial et balneaire.",
   ecosystemEn:

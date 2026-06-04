@@ -9,9 +9,9 @@ export const BRIANCON_COPY: VilleCopy = {
   pitchEn:
     "Briançon (05), sous-préfecture des Hautes-Alpes, est la plus haute ville de France (1 326 m) avec ses fortifications Vauban classées UNESCO. Tissu TPE artisans, PME tourisme/ski (Serre Chevalier), commerçants, professionnels de santé montagne et services. Axion-IA y intervient pour tous types d'activités du Briançonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Briançon (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Briançon (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Briançon (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Briançon (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
   seoHook: "tourisme ski & hôtellerie hébergement",
   ecosystemFr:
     "Briançon est sous-préfecture des Hautes-Alpes (~11 400 hab), plus haute ville de France à 1 326 m d'altitude. Fortifications Vauban classées UNESCO (cité haute). Station Serre Chevalier (domaine 250 km pistes) et proximité Montgenèvre. Économie dominée par le tourisme hivernal/estival, PME hébergement/restauration, TPE artisans BTP montagne, commerces et centre hospitalier alpin.",

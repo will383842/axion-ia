@@ -9,9 +9,9 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
   pitchEn:
     "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce gros",
   ecosystemFr:
     "Moissy-Cramayel est un pôle économique de l'agglomération Grand Paris Sud, avec plusieurs zones d'activités (Chanteloup, Lugny, Plain de l'Aunette). Tissu TPE/PME logistique, transport, commerce de gros et détail, services aux entreprises, artisanat BTP. Proximité de Sénart et de la Francilienne (N104).",

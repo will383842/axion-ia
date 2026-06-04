@@ -9,9 +9,9 @@ export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
   seoHook: "industrie laitière & agriculture élevage",
   ecosystemFr:
     "Saint-Pierre-en-Auge est une commune nouvelle du Pays d'Auge (Calvados), regroupant plusieurs communes depuis 2016. Cœur de la production fromagère normande AOP (Camembert, Pont-l'Évêque, Livarot). Bassin laitier et cidricole, exploitations agricoles, TPE artisans, commerces de proximité, tourisme rural.",

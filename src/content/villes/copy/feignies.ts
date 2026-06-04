@@ -9,9 +9,9 @@ export const FEIGNIES_COPY: VilleCopy = {
   pitchEn:
     "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
   ecosystemFr:
     "Feignies est une commune de l'agglomération Maubeuge-Val de Sambre, proche de la frontière belge et des fortifications Vauban classées UNESCO. Tissu TPE/PME artisanat BTP, industrie métallurgique, sous-traitance automobile (filière historique Sambre-Avesnois), commerces de proximité, services. Accès N2 vers Maubeuge (5 min), Valenciennes (30 min), Mons (Belgique, 20 min).",
   ecosystemEn:

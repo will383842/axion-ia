@@ -9,9 +9,9 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
   pitchEn:
     "Saint-Gilles (35), commune résidentielle de l'ouest rennais en Ille-et-Vilaine, accueille un tissu économique de proximité : TPE artisanales, PME de services, commerces locaux, professions libérales et prestataires du bassin rennais. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Gilles est une commune résidentielle de l'ouest de Rennes Métropole (Ille-et-Vilaine), prisée des familles et cadres du bassin rennais. L'économie locale repose sur les TPE artisanales, les commerces de proximité, les professions libérales et les PME de services adossées à la dynamique de la métropole rennaise.",
   ecosystemEn:

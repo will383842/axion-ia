@@ -9,9 +9,9 @@ export const FOIX_COPY: VilleCopy = {
   pitchEn:
     "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA répond aux besoins de toutes les entreprises du bassin fuxéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit sur place sur mesure.",
   seoHook: "tourisme patrimonial & secteur public",
   ecosystemFr:
     "Foix est la préfecture de l'Ariège, ville médiévale dominée par le château des comtes de Foix (haut lieu cathare). Économie portée par le secteur public (préfecture, hôpital, administrations), le tourisme patrimonial et de montagne, l'artisanat, le commerce centre-ville et les services. Agriculture montagne (élevage bovin/ovin, fromages) dans les vallées environnantes.",

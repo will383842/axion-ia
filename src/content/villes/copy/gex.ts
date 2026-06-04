@@ -9,9 +9,9 @@ export const GEX_COPY: VilleCopy = {
   pitchEn:
     "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
   seoHook: "économie frontalière & administration",
   ecosystemFr:
     "Gex est la sous-préfecture de l'Ain et chef-lieu du pays de Gex, positionnée au pied du massif du Jura avec panorama Mont-Blanc. Proximité frontière suisse / Genève (20 min). Tissu économie frontalière dynamique, administration, PME tertiaires, tourisme montagne Jura (station Lélex-Crozet), TPE artisanat BTP, commerces.",

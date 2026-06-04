@@ -9,9 +9,9 @@ export const ERSTEIN_COPY: VilleCopy = {
   pitchEn:
     "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit sur place sur mesure.",
   seoHook: "vallée ill",
   ecosystemFr:
     "Erstein, ville du sud Bas-Rhin au cœur de la plaine du Ried, est marquée par son héritage agro-industriel — la sucrerie d'Erstein, fleuron historique de la transformation betteravière alsacienne. Tissu mixte : exploitations agricoles du Ried, agroalimentaire et coopératives, commerces de centre-ville, artisans BTP, professions libérales et services aux entreprises. Bords de l'Ill, patrimoine naturel et activités tertiaires.",

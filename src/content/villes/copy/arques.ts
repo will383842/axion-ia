@@ -9,9 +9,9 @@ export const ARQUES_COPY: VilleCopy = {
   pitchEn:
     "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "industrie verrière & industrielles mécaniques",
   ecosystemFr:
     "Arques est une commune industrielle de l'agglomération audomaroise, connue pour son ascenseur à bateaux des Fontinettes et la cristallerie Arc (anciennement Arc International). Tissu PME industrielles (verrerie, mécanique), TPE artisanales, commerces et services liés au bassin industriel.",

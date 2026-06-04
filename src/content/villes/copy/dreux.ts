@@ -9,9 +9,9 @@ export const DREUX_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "industrie & sous-traitance",
   ecosystemFr:
     "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de TPE et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale dans notre portefeuille.",
@@ -42,8 +42,8 @@ export const DREUX_COPY: VilleCopy = {
       en: "Implémentation à Dreux : nous connectons l'IA aux ERP et outils de production déjà en place dans les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Dreux : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
@@ -61,7 +61,7 @@ export const DREUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Dreux ?",
-      a: "Oui. Dreux est à un peu plus d'une heure de Paris-Montparnasse et reliée à l'Île-de-France par la N12. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
+      a: "Oui. Dreux est à un peu plus d'une heure de Paris-Montparnasse et reliée à l'Île-de-France par la N12. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Dreux ?",

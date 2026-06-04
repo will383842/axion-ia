@@ -9,9 +9,9 @@ export const LUISANT_COPY: VilleCopy = {
   pitchEn:
     "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   seoHook: "professions libérales & conseil indépendants",
   ecosystemFr:
     "Luisant est une commune résidentielle prisée au sud de Chartres (Chartres Métropole), avec un cadre de vie attractif (parc de Mainvilliers-Luisant, forêt domaniale). L'économie locale repose sur les TPE/PME de services, professions libérales (santé, juridique, comptable), artisans BTP, commerces de proximité et indépendants.",

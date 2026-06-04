@@ -9,9 +9,9 @@ export const SALLAUMINES_COPY: VilleCopy = {
   pitchEn:
     "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Sallaumines est une commune résidentielle du bassin minier, limitrophe de Lens. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Proximité du Louvre-Lens et du stade Bollaert-Delelis.",

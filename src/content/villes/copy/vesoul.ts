@@ -9,9 +9,9 @@ export const VESOUL_COPY: VilleCopy = {
   pitchEn:
     "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
   seoHook: "TPE & PME Hte-Saône",
   ecosystemFr:
     "Vesoul est la préfecture de la Haute-Saône, ville administrative et commerciale au pied de la colline de la Motte. Tissu économique structuré autour de l'industrie automobile (centre logistique pièces de rechange majeur en Europe), de la sous-traitance mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics départementaux.",

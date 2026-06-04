@@ -9,9 +9,9 @@ export const LIVERDUN_COPY: VilleCopy = {
   pitchEn:
     "Liverdun (54), cité médiévale perchée sur un méandre de la Moselle en Meurthe-et-Moselle, est connue pour son viaduc ferroviaire et son patrimoine historique. Tissu TPE/PME artisans, commerces, services, tourisme patrimonial, viticulture locale et acteurs résidentiels. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liverdun (54). Nous accompagnons tous types d'activités : TPE/PME artisans et commerces, professions de services, acteurs du tourisme patrimonial, viticulteurs et entrepreneurs liverdunois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Liverdun (54). Nous accompagnons tous types d'activités : TPE/PME artisans et commerces, professions de services, acteurs du tourisme patrimonial, viticulteurs et entrepreneurs liverdunois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liverdun (54). Nous accompagnons tous types d'activités : TPE/PME artisans et commerces, professions de services, acteurs du tourisme patrimonial, viticulteurs et entrepreneurs liverdunois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Liverdun (54). Nous accompagnons tous types d'activités : TPE/PME artisans et commerces, professions de services, acteurs du tourisme patrimonial, viticulteurs et entrepreneurs liverdunois.",
   ecosystemFr:
     "Liverdun est une cité médiévale perchée sur un méandre de la Moselle, à l'ouest de Nancy, célèbre pour son viaduc ferroviaire et son patrimoine. Tissu TPE/PME artisans, commerces de proximité, services, tourisme patrimonial, viticulture des Côtes-de-Toul, dynamique résidentielle.",
   ecosystemEn:

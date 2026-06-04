@@ -10,9 +10,9 @@ export const DOUVRIN_COPY: VilleCopy = {
     "Douvrin (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 870 habitants. Situee pres de Bethune et de la zone industrielle de Douvrin-Billy-Berclau, son economie associe PME industrielles, TPE de services, artisanat, commerce et sous-traitance automobile. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie auto, bassin minier & PME",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Douvrin abrite une zone industrielle historique (moteurs automobiles) et des PME sous-traitantes. Tissu economique mixte : PME industrielles, TPE artisanales BTP, commerces de proximite et services. Proximite de Bethune (8 km) et de la Gohelle.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
   seoHook: "santé médico-social & commerce proximité",
   ecosystemFr:
     "Saint-Maurice est une commune résidentielle en bordure du Bois de Vincennes, marquée par la présence des hôpitaux nationaux de Saint-Maurice (Esquirol). Tissu économique de proximité orienté santé, professions libérales, commerces, restauration et services à la personne. Accès direct Paris 12e par le pont de Charenton.",

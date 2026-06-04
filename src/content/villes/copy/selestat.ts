@@ -9,9 +9,9 @@ export const SELESTAT_COPY: VilleCopy = {
   pitchEn:
     "Sélestat (67), sous-préfecture du Bas-Rhin de 19 589 habitants, ville d'art et d'histoire dotée de la Bibliothèque humaniste inscrite à l'UNESCO Mémoire du monde, ancrée dans la plaine d'Alsace au cœur du vignoble entre Strasbourg et Colmar. Tissu TPE/PME industrie diversifiée, viticulture, tourisme patrimonial, commerces de centre médiéval, artisans, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : TPE/PME industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : TPE/PME industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : TPE/PME industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : TPE/PME industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
   ecosystemFr:
     "Sélestat est sous-préfecture du Bas-Rhin, troisième ville d'Alsace pour la richesse patrimoniale médiévale, dotée de la Bibliothèque humaniste UNESCO et située sur la route des vins d'Alsace. Tissu TPE/PME industrie diversifiée, viticulture, tourisme patrimonial, hôtellerie-restauration, commerces de centre médiéval, artisans, services. Bassin de vie entre Strasbourg (30 km) et Colmar (20 km).",
   ecosystemEn:

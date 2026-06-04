@@ -9,9 +9,9 @@ export const UNIEUX_COPY: VilleCopy = {
   pitchEn:
     "Unieux (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel métallurgique fort (vallée Ondaine historiquement bassin sidérurgique). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales vallée Ondaine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "bassin sidérurgique",
   ecosystemFr:
     "Unieux est intégrée à Saint-Étienne Métropole, dans la vallée de l'Ondaine (limitrophe Firminy). Héritage industriel métallurgique fort : la vallée Ondaine a constitué l'un des grands bassins sidérurgiques français historiques. Tissu contemporain PME industrielles diversifiées, TPE artisanat BTP, commerces de proximité.",

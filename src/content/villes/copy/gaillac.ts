@@ -9,9 +9,9 @@ export const GAILLAC_COPY: VilleCopy = {
   pitchEn:
     "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   seoHook: "viticulture oenologie & commerce détail",
   ecosystemFr:
     "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu TPE vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",

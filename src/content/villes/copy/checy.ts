@@ -9,9 +9,9 @@ export const CHECY_COPY: VilleCopy = {
   pitchEn:
     "Checy (45), commune de l'agglomeration d'Orleans en bords de Loire a l'est, allie cadre ligérien et dynamisme economique metropolitain. Tissu TPE/PME industrie, services, commerce, artisanat, viticulture. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Checy est situee en bords de Loire a l'est d'Orleans Metropole, sur l'axe logistique Orleans-Montargis. L'economie locale s'appuie sur des PME industrielles, les services aux entreprises, le commerce, l'artisanat du batiment et la viticulture AOC Orleans-Clery en bordure du Val de Loire UNESCO.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const NANDY_COPY: VilleCopy = {
   pitchEn:
     "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie son expertise pour toutes les organisations du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
   seoHook: "artisanat bâtiment & commerce proximité",
   ecosystemFr:
     "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun et de l'A5/Francilienne pour les échanges logistiques.",

@@ -9,9 +9,9 @@ export const AMBERT_COPY: VilleCopy = {
   pitchEn:
     "Ambert (63), sous-préfecture du Puy-de-Dôme, est la capitale de la Fourme d'Ambert AOP (fromage emblématique du Livradois-Forez, mairie ronde médiévale). Tissu agroalimentaire fromager, agriculture Livradois, TPE artisanat, administration sous-préfecture, tourisme vert Livradois-Forez. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit sur place sur mesure.",
   seoHook: "TPE & PME Puy-de-Dôme",
   ecosystemFr:
     "Ambert est la sous-préfecture du Puy-de-Dôme et la capitale de la Fourme d'Ambert AOP. Tissu agroalimentaire fromager, agriculture de montagne Livradois, TPE artisanat, administration, tourisme vert Parc Livradois-Forez.",

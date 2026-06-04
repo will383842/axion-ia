@@ -9,9 +9,9 @@ export const BARR_COPY: VilleCopy = {
   pitchEn:
     "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
   ecosystemFr:
     "Barr est une commune viticole emblématique de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile, marquée par les domaines viticoles, l'héritage des tanneries historiques et le tourisme œnologique. Tissu TPE/PME viticulture, tourisme, artisanat, commerces de proximité, restauration.",
   ecosystemEn:

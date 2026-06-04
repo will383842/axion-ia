@@ -9,9 +9,9 @@ export const TOURVES_COPY: VilleCopy = {
   pitchEn:
     "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & artisanat",
   ecosystemFr:
     "Tourves est positionnée dans le Centre-Var, sur l'axe Brignoles–Saint-Maximin, en bordure de l'A8. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles et oléicoles, professions libérales et commerces de proximité. Bassin d'emploi double : Brignoles à l'est, Saint-Maximin à l'ouest.",

@@ -9,9 +9,9 @@ export const PEROLS_COPY: VilleCopy = {
   pitchEn:
     "Pérols (34), commune de l'agglomération sud de Montpellier, bordée par l'étang de Méjean et proche du littoral méditerranéen. Zone commerciale majeure, Parc des Expositions de Montpellier. Tissu TPE commerçants, PME services et distribution, artisans, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pérols (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans, professions libérales et acteurs du tourisme littoral de l'agglomération sud de Montpellier.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pérols (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans, professions libérales et acteurs du tourisme littoral de l'agglomération sud de Montpellier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pérols (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans, professions libérales et acteurs du tourisme littoral de l'agglomération sud de Montpellier.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pérols (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans, professions libérales et acteurs du tourisme littoral de l'agglomération sud de Montpellier.",
   ecosystemFr:
     "Pérols se situe au sud de Montpellier, entre l'étang de Méjean (réserve naturelle) et le littoral (Palavas à 5 min). La commune accueille une zone commerciale majeure et le Parc des Expositions de Montpellier. Tissu dynamique de TPE commerçants, PME de distribution et services, artisans BTP, professions libérales. Forte attractivité résidentielle et commerciale.",
   ecosystemEn:

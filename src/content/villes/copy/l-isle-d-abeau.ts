@@ -9,9 +9,9 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
   pitchEn:
     "L'Isle-d'Abeau (38), ville nouvelle créée en 1968 par décision du CIAT (gouvernement Pompidou), est le siège de la Communauté d'agglomération Porte de l'Isère (CAPI) et appartient à l'aire urbaine de Lyon (20 km). Tissu PME logistique, services aux entreprises, TPE artisans et commerces. Axion-IA y intervient pour tous secteurs Nord-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-d'Abeau (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires lilôtes, opérateurs logistiques (axe Lyon-Saint-Exupéry), industriels Nord-Isère, agriculteurs et services publics du siège CAPI.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Isle-d'Abeau (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires lilôtes, opérateurs logistiques (axe Lyon-Saint-Exupéry), industriels Nord-Isère, agriculteurs et services publics du siège CAPI.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-d'Abeau (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires lilôtes, opérateurs logistiques (axe Lyon-Saint-Exupéry), industriels Nord-Isère, agriculteurs et services publics du siège CAPI.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Isle-d'Abeau (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires lilôtes, opérateurs logistiques (axe Lyon-Saint-Exupéry), industriels Nord-Isère, agriculteurs et services publics du siège CAPI.",
   seoHook: "agglomération porte",
   ecosystemFr:
     "L'Isle-d'Abeau est ville-centre de la Communauté d'agglomération Porte de l'Isère (CAPI, ~106 000 hab), troisième agglomération du département. Issue de la ville nouvelle conçue en 1968 sous Pompidou, elle a conservé son caractère urbanisé tout en gardant des zones agricoles. Tissu PME logistique (axe Lyon-Saint-Exupéry à 15 min), industriels, services aux entreprises et TPE.",

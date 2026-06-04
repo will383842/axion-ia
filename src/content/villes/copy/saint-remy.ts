@@ -9,9 +9,9 @@ export const SAINT_REMY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Rémy (71), commune résidentielle de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, bénéficie de la dynamique économique chalonnaise. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
   seoHook: "tertiaires grand & artisanat",
   ecosystemFr:
     "Saint-Rémy est une commune résidentielle de l'agglomération Chalon-sur-Saône, bénéficiant de la dynamique économique du Grand Chalon. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales.",

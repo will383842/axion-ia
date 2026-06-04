@@ -45,14 +45,14 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI altoséquanaises — site vitrine premium pour groupes médias et audiovisuel du Quai du Point-du-Jour, espace client interactif pour cabinets conseil et PME numériques du Trapèze, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Hauts-de-Seine SMEs/mid-caps — premium showcase site for Quai du Point-du-Jour media and broadcasting groups, interactive customer space for Trapèze consulting firms and digital SMEs, business dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Hauts-de-Seine SMEs/mid-caps — premium showcase site for Quai du Point-du-Jour media and broadcasting groups, interactive customer space for Trapèze consulting firms and digital SMEs, business dashboard connected to your CRM/ERP. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boulogne-Billancourt (92) sur site — quartier Trapèze, Île Seguin, Quai du Point-du-Jour, centre-ville et communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). Nous accompagnons les TPE, PME, ETI et grandes entreprises boulonnaises (automobile, audiovisuel, finance, conseil, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Boulogne-Billancourt (92) sur site — quartier Trapèze, Île Seguin, Quai du Point-du-Jour, centre-ville et communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). Nous accompagnons les TPE, PME, ETI et grandes entreprises boulonnaises (automobile, audiovisuel, finance, conseil, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Boulogne-Billancourt (92) on site — Trapèze district, Île Seguin, Quai du Point-du-Jour, town centre and surrounding communes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). We support Boulogne micro-businesses, SMEs, mid-caps and large enterprises (automotive, media, finance, consulting, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Boulogne-Billancourt (92) on site — Trapèze district, Île Seguin, Quai du Point-du-Jour, town centre and surrounding communes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). We support Boulogne micro-businesses, SMEs, mid-caps and large enterprises (automotive, media, finance, consulting, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "conseil, ingénierie & audiovisuel, médias",
   topSectorsNaf: [

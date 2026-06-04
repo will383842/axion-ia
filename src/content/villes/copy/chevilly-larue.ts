@@ -9,9 +9,9 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
   pitchEn:
     "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Val-de-Marne",
   ecosystemFr:
     "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe TPE artisans, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",

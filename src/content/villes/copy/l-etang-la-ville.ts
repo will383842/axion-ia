@@ -9,9 +9,9 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
   pitchEn:
     "L'Étang-la-Ville (78), commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Tissu de TPE artisans et commerçants, PME de services et conseil, professions libérales, immobilier et activités de bien-être. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit sur place sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "L'Étang-la-Ville est une commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Cadre naturel prisé, habitat pavillonnaire. Tissu économique : TPE artisans, commerces de proximité, PME de services et conseil, professions libérales, immobilier, bien-être. Communes voisines : Mareil-Marly, Saint-Germain-en-Laye, Noisy-le-Roi, Bailly.",

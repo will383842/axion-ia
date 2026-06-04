@@ -9,9 +9,9 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
   pitchEn:
     "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
   seoHook: "industrielles & artisanat services",
   ecosystemFr:
     "Nueil-les-Aubiers se situe dans le bocage bressuirais, territoire rural industrieux du nord des Deux-Sèvres. Tissu PME industrielles (métallurgie, agroalimentaire), TPE artisans, exploitations agricoles (élevage bovin, polyculture), commerces de proximité. Proximité de Bressuire, pôle économique du bocage.",

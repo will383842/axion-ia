@@ -10,9 +10,9 @@ export const BREBIERES_COPY: VilleCopy = {
     "Brebieres (62), commune du Pas-de-Calais situee entre Douai et Arras, reunit pres de 5 280 habitants. Son economie beneficie de la double proximite Douai-Arras : PME tertiaires, TPE de services, commerces, artisanat BTP et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "axe Douai-Arras, tertiaire & logistique",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Brebieres est situee entre Douai (8 km) et Arras (15 km), sur l'axe A1/A26. Tissu economique mixte : PME tertiaires, TPE de services, commerces de proximite, artisanat BTP et activites logistiques liees a la desserte autoroutiere.",
   ecosystemEn:

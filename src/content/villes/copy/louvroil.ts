@@ -9,9 +9,9 @@ export const LOUVROIL_COPY: VilleCopy = {
   pitchEn:
     "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvroil (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME industrie métallurgique et mécanique, sous-traitants, commerçants et entreprises du bassin industriel Maubeuge-Val de Sambre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Louvroil (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME industrie métallurgique et mécanique, sous-traitants, commerçants et entreprises du bassin industriel Maubeuge-Val de Sambre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvroil (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME industrie métallurgique et mécanique, sous-traitants, commerçants et entreprises du bassin industriel Maubeuge-Val de Sambre.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Louvroil (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME industrie métallurgique et mécanique, sous-traitants, commerçants et entreprises du bassin industriel Maubeuge-Val de Sambre.",
   ecosystemFr:
     "Louvroil est une commune de l'agglomération Maubeuge-Val de Sambre à l'héritage industriel fort (métallurgie, sidérurgie, mécanique). Tissu TPE/PME artisanat BTP, industrie métallurgique et mécanique de précision, sous-traitance, commerces de proximité, services. Reconversion industrielle en cours. Accès Maubeuge (5 min), Valenciennes (25 min), frontière belge proche.",
   ecosystemEn:

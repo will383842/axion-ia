@@ -9,9 +9,9 @@ export const ROMAGNAT_COPY: VilleCopy = {
   pitchEn:
     "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
   seoHook: "tertiaires services & patrimoine tourisme",
   ecosystemFr:
     "Romagnat est une commune résidentielle prisée au sud immédiat de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. Le château d'Opme (monument historique classé, jardins à la française attribués à Le Nôtre) est un atout patrimonial majeur. Tissu professions libérales dense, PME tertiaires de services, TPE artisans BTP, commerces de proximité. Proximité directe Beaumont et Ceyrat.",

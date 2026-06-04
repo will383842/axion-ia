@@ -10,9 +10,9 @@ export const SAINT_MARTIN_LEZ_TATINGHEM_COPY: VilleCopy = {
     "Saint-Martin-lez-Tatinghem (62), commune de l'agglomeration de Saint-Omer dans le Pas-de-Calais, reunit pres de 5 840 habitants. Son economie beneficie de la proximite de Saint-Omer : TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Saint-Omer, tertiaire & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Martin-lez-Tatinghem jouxte Saint-Omer (3 km), au bord du marais audomarois. Tissu economique mixte : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Cadre de vie attractif avec le marais UNESCO a proximite.",
   ecosystemEn:

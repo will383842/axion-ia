@@ -9,9 +9,9 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
   pitchEn:
     "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y travaille avec les organisations du territoire de l'agglo limougeaude sud-ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
   seoHook: "artisanat construction & industrielles",
   ecosystemFr:
     "Aixe-sur-Vienne (5 890 hab) est une commune du confluent Vienne-Aixette, au sud-ouest de Limoges. Patrimoine industriel (papeterie historique), tissu PME, TPE artisans BTP, agriculture (élevage limousin, polyculture), commerces centre-bourg, professions libérales. Intégrée à Limoges Métropole, elle est desservie par le TER Limoges-Angoulême.",

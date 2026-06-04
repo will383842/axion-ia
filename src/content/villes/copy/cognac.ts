@@ -9,9 +9,9 @@ export const COGNAC_COPY: VilleCopy = {
   pitchEn:
     "Cognac (16), sous-préfecture de la Charente, capitale mondiale des eaux-de-vie AOC. Tissu de TPE artisans tonneliers, PME viticoles et négoce, maisons de cognac, tourisme patrimonial et œnotourisme, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin cognaçais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
   seoHook: "bassin cognaçais",
   ecosystemFr:
     "Cognac est la capitale mondiale des eaux-de-vie AOC, sous-préfecture de la Charente. Filière cognac complète : viticulteurs, distillateurs, tonneliers, maisons de négoce, logistique export. Œnotourisme en forte croissance, patrimoine bords de Charente, TPE artisans, PME services, commerces de centre-ville.",

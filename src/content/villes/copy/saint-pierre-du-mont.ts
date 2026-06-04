@@ -9,9 +9,9 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Mont (40). Nous accompagnons TPE et PME des zones d'activités commerciales, commerces grande distribution, professions libérales, artisans BTP, prestataires de services et entreprises tertiaires de l'agglomération montoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-du-Mont (40). Nous accompagnons TPE et PME des zones d'activités commerciales, commerces grande distribution, professions libérales, artisans BTP, prestataires de services et entreprises tertiaires de l'agglomération montoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Mont (40). Nous accompagnons TPE et PME des zones d'activités commerciales, commerces grande distribution, professions libérales, artisans BTP, prestataires de services et entreprises tertiaires de l'agglomération montoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-du-Mont (40). Nous accompagnons TPE et PME des zones d'activités commerciales, commerces grande distribution, professions libérales, artisans BTP, prestataires de services et entreprises tertiaires de l'agglomération montoise.",
   seoHook: "commerce, tertiaire & agglo Mont-de-Marsan",
   ecosystemFr:
     "Saint-Pierre-du-Mont est la deuxième commune de l'agglomération montoise, adossée à Mont-de-Marsan (préfecture des Landes). Pôle commercial majeur avec plusieurs zones d'activités et centres commerciaux. Tissu TPE services aux entreprises, PME tertiaires, professions libérales, artisans BTP, restauration. Proximité des administrations préfectorales et des services publics.",

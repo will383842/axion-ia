@@ -9,9 +9,9 @@ export const POUZAUGES_COPY: VilleCopy = {
   pitchEn:
     "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Pouzauges est la capitale du haut bocage vendéen, perchée sur les collines à 290 m d'altitude. Bassin économique structuré autour de l'agroalimentaire (volaille, charcuterie, produits laitiers), de l'industrie mécanique, de l'artisanat BTP et d'un tissu PME familial dynamique typique du modèle économique vendéen.",

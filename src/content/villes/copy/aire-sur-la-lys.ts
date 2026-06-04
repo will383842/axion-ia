@@ -9,9 +9,9 @@ export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
   pitchEn:
     "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "agriculture agroalimentaire & commerce détail",
   ecosystemFr:
     "Aire-sur-la-Lys est une cité historique au confluent de la Lys et de la Laquette, dont le beffroi est inscrit au patrimoine UNESCO. Économie mêlant agriculture (grandes cultures), agroalimentaire, commerces de bourg, TPE artisanales et professions libérales. Sous-préfecture naturelle du secteur.",

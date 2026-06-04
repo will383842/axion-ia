@@ -9,9 +9,9 @@ export const SIGEAN_COPY: VilleCopy = {
   pitchEn:
     "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit sur place sur mesure.",
   seoHook: "tourisme animalier & viticulture corbières",
   ecosystemFr:
     "Sigean est une commune audoise réputée pour sa Réserve Africaine, parc animalier attirant plus de 300 000 visiteurs par an. Économie mixte : tourisme animalier et balnéaire (étang de Bages-Sigean, port de plaisance), viticulture AOC Corbières, ostréiculture, TPE artisans BTP, commerces de proximité, hôtellerie-restauration saisonnière.",

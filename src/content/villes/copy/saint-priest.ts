@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRIEST_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Saint-Priest : sous-traitants industriels de l'est lyonnais, PME du Parc Technologique de Lyon, prestataires logistiques. On structure des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Priest : sous-traitants industriels de l'est lyonnais, PME du Parc Technologique de Lyon, prestataires logistiques. On structure des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Saint-Priest : sous-traitants industriels de l'est lyonnais, PME du Parc Technologique de Lyon, prestataires logistiques. On structure des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Priest : sous-traitants industriels de l'est lyonnais, PME du Parc Technologique de Lyon, prestataires logistiques. On structure des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Saint-Priest, dans le Rhône, pour les TPE et PME de l'est lyonnais : sous-traitants industriels et de la mécanique, PME tech et de services du Parc Technologique de Lyon, prestataires logistiques et d'entreposage, dans un bassin marqué par la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, plannings, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Saint-Priest, dans le Rhône, pour les TPE et PME de l'est lyonnais : sous-traitants industriels et de la mécanique, PME tech et de services du Parc Technologique de Lyon, prestataires logistiques et d'entreposage, dans un bassin marqué par la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, plannings, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Saint-Priest, dans le Rhône, pour les TPE et PME de l'est lyonnais : sous-traitants industriels et de la mécanique, PME tech et de services du Parc Technologique de Lyon, prestataires logistiques et d'entreposage, dans un bassin marqué par la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, plannings, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Saint-Priest, dans le Rhône, pour les TPE et PME de l'est lyonnais : sous-traitants industriels et de la mécanique, PME tech et de services du Parc Technologique de Lyon, prestataires logistiques et d'entreposage, dans un bassin marqué par la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, plannings, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
   seoHook: "industrie & logistique est lyonnais",
   ecosystemFr:
     "Saint-Priest, au cœur de l'est de la métropole de Lyon, est un pôle industriel et logistique majeur. Son Parc Technologique de Lyon réunit PME tech, bureaux d'études et entreprises de services, tandis que ses zones d'activités concentrent sous-traitance mécanique, travail des métaux et plateformes logistiques. Le bassin profite de la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Ce maillage dense de petites structures, soumises à la pression de cadence de la filière industrielle, constitue une cible naturelle pour des automatisations IA à effet rapide.",
@@ -57,7 +57,7 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Saint-Priest ?",
-      a: "Oui, nos architectes IA interviennent dans vos locaux, des zones industrielles au Parc Technologique de Lyon. L'audit terrain reste le meilleur moyen de cibler des automatisations réellement utiles à votre métier.",
+      a: "Oui, nos experts IA interviennent dans vos locaux, des zones industrielles au Parc Technologique de Lyon. L'audit terrain reste le meilleur moyen de cibler des automatisations réellement utiles à votre métier.",
     },
     {
       q: "Accompagnez-vous les PME tech du Parc Technologique de Lyon ?",

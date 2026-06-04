@@ -45,14 +45,14 @@ export const LIMOGES_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI de la Haute-Vienne — site vitrine premium pour manufactures de porcelaine IGP (Bernardaud, Haviland, Royal Limoges) et négoce, espace client B2B pour fournisseurs industrie électrique (Legrand) et céramique technique, dashboard métier connecté à votre CRM/ERP/MES. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Haute-Vienne SMEs and mid-caps — premium showcase site for GI porcelain manufacturers (Bernardaud, Haviland, Royal Limoges) and traders, B2B client portal for electrical industry (Legrand) and technical ceramics suppliers, business dashboard connected to your CRM/ERP/MES. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Haute-Vienne SMEs and mid-caps — premium showcase site for GI porcelain manufacturers (Bernardaud, Haviland, Royal Limoges) and traders, B2B client portal for electrical industry (Legrand) and technical ceramics suppliers, business dashboard connected to your CRM/ERP/MES. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoges (87) sur site — centre-ville, ESTER Technopole, zones industrielles et communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). Nous accompagnons les TPE, PME, ETI et grandes entreprises limougeaudes (industrie électrique, porcelaine, céramique, agroalimentaire, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Limoges (87) sur site — centre-ville, ESTER Technopole, zones industrielles et communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). Nous accompagnons les TPE, PME, ETI et grandes entreprises limougeaudes (industrie électrique, porcelaine, céramique, agroalimentaire, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Limoges (87) on site — city centre, ESTER Technopole, industrial zones and basin communes (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). We support Limoges micro-businesses, SMEs, mid-caps and large enterprises (electrical industry, porcelain, ceramics, agri-food, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Limoges (87) on site — city centre, ESTER Technopole, industrial zones and basin communes (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). We support Limoges micro-businesses, SMEs, mid-caps and large enterprises (electrical industry, porcelain, ceramics, agri-food, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "porcelaine, cuir & santé",
 

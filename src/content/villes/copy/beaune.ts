@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEAUNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes IA seniors intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
+    "Axion-IA accompagne les TPE et PME de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'experts IA seniors intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes IA seniors intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
+    "Axion-IA accompagne les TPE et PME de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'experts IA seniors intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE et PME viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne les TPE et PME de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE et PME viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE et PME viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne les TPE et PME de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE et PME viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   seoHook: "viticulture & oenotourisme prestige",
   ecosystemFr:
     "Beaune concentre un tissu de TPE et PME unique en France, structuré autour de la viticulture et du négoce : plus de 100 maisons de négoce (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), 8 000 hectares d'AOC Côte de Beaune (Meursault, Puligny-Montrachet, Pommard, Volnay, Aloxe-Corton), siège du BIVB (Bureau Interprofessionnel des Vins de Bourgogne), Cité des Climats et Vins de Bourgogne (2023), Hospices de Beaune (Hôtel-Dieu 1443, vente aux enchères mondiale Christie's 3e dimanche de novembre) et Climats de Bourgogne inscrits à l'UNESCO depuis 2015. Filière agroalimentaire bourguignonne associée (cassis, pain d'épices, moutarde) et hôtellerie-restauration étoilée Michelin.",
@@ -53,7 +53,7 @@ export const BEAUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Beaune et dans le vignoble bourguignon ?",
-      a: "Oui, nos architectes IA seniors se déplacent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise à 45 km pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors se déplacent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise à 45 km pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Beaune ?",
@@ -69,11 +69,11 @@ export const BEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Beaune ?",
-      a: "Nous démarrons une mission à Beaune sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos architectes seniors et la complexité du projet. La gare SNCF de Beaune et l'A6 facilitent les venues hebdomadaires depuis Paris (2h15 TGV via Dijon) ou Lyon (1h45 par autoroute).",
+      a: "Nous démarrons une mission à Beaune sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet. La gare SNCF de Beaune et l'A6 facilitent les venues hebdomadaires depuis Paris (2h15 TGV via Dijon) ou Lyon (1h45 par autoroute).",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Beaune ?",
-      a: "Oui, toutes nos interventions à Beaune intègrent par défaut la conformité RGPD et le règlement européen AI Act. Nos architectes IA seniors documentent les traitements, les fournisseurs de modèles et les risques, avec une traçabilité auditable pour les TPE et PME viticoles, hôtelières et agroalimentaires de Côte-d'Or.",
+      a: "Oui, toutes nos interventions à Beaune intègrent par défaut la conformité RGPD et le règlement européen AI Act. Nos experts IA seniors documentent les traitements, les fournisseurs de modèles et les risques, avec une traçabilité auditable pour les TPE et PME viticoles, hôtelières et agroalimentaires de Côte-d'Or.",
     },
   ],
 };

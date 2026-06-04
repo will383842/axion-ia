@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
   pitchFr:
-    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
+    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
   pitchEn:
-    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
+    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "services, santé & numérique nord Lyon",
   ecosystemFr:
     "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les TPE/PME de services et les indépendants.",

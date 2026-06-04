@@ -10,9 +10,9 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
     "Fontaine-lès-Dijon (21), commune résidentielle prisée au nord de Dijon, lieu de naissance de Saint Bernard de Clairvaux, accueille un tissu de TPE/PME tertiaires, professions libérales et commerces de quartier. Axion-IA y intervient pour tous types d'activités du nord dijonnais.",
   seoHook: "tertiaire, professions libérales & résidentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Fontaine-lès-Dijon est une commune résidentielle aisée du nord de Dijon Métropole, connue pour être le lieu de naissance de Saint Bernard de Clairvaux. Économie locale dominée par les professions libérales (santé, conseil, juridique), les TPE tertiaires, le commerce de proximité et les services à la personne. Quartiers pavillonnaires recherchés.",
   ecosystemEn:

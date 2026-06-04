@@ -9,9 +9,9 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Aubin-de-Médoc (33), commune résidentielle du nord-ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales, commerces et activités équestres. Axion-IA y intervient pour tous types d'activités de l'entrée du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit sur place sur mesure.",
   seoHook: "services personne & activités équestres",
   ecosystemFr:
     "Saint-Aubin-de-Médoc est une commune résidentielle prisée du nord-ouest bordelais, en lisière de forêt. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité, activités équestres et services à la personne. Proximité Le Taillan-Médoc et Saint-Médard-en-Jalles.",

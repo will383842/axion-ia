@@ -10,9 +10,9 @@ export const LESTREM_COPY: VilleCopy = {
     "Lestrem (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit environ 5 010 habitants. Situee entre Bethune et Armentieres dans la plaine de la Lys, son economie associe TPE artisanales, PME industrielles (agroalimentaire, chimie), agriculture et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agroalimentaire, chimie & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Lestrem est situee dans la plaine de la Lys, entre Bethune (15 km) et Armentieres (20 km). Tissu economique mixte : PME agroalimentaires (Roquette Freres historiquement implantee), chimie fine, TPE artisanat BTP, exploitations agricoles (grandes cultures, betteraves), commerces de bourg et services.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
   pitchEn:
     "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
   seoHook: "agriculture viticulture & tourisme loisirs",
   ecosystemFr:
     "Cuges-les-Pins est un village de garrigue et de collines au piémont de la Sainte-Baume, entre Aubagne et Signes. Économie locale : agriculture (vignes, oliviers, maraîchage), tourisme (parc OK Corral, randonnées Sainte-Baume), artisanat et commerces de proximité. Résidentiel familial en croissance.",

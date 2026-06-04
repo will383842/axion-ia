@@ -9,9 +9,9 @@ export const LUNEVILLE_COPY: VilleCopy = {
   pitchEn:
     "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
   seoHook: "TPE & PME Meurthe-et-Moselle",
   ecosystemFr:
     "Lunéville est sous-préfecture de Meurthe-et-Moselle, connue pour son château (Versailles lorrain) et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics.",

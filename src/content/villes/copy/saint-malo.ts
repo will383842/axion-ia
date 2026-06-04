@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MALO_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les TPE et PME de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les TPE et PME de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les TPE et PME de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les TPE et PME de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
   seoHook: "tourisme, port & agroalimentaire",
   ecosystemFr:
     "Saint-Malo, cité corsaire et port d'Ille-et-Vilaine, vit du tourisme et de l'hôtellerie-restauration concentrés autour d'Intra-Muros, d'une activité portuaire dense (ferries transmanche vers l'Angleterre, pêche, nautisme et départ de la Route du Rhum) et d'un solide socle agroalimentaire — le groupe Roullier, via Timac Agro, y a son siège historique. Ce tissu mêle TPE saisonnières, commerces, PME agroalimentaires et acteurs du nautisme. Pour ces structures à forte charge administrative et saisonnalité marquée, l'IA bien cadrée fluidifie la gestion.",
@@ -57,7 +57,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Saint-Malo ?",
-      a: "Oui, nos architectes IA interviennent dans vos locaux, d'Intra-Muros aux zones d'activités du pays malouin et aux sites du port. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
+      a: "Oui, nos experts IA interviennent dans vos locaux, d'Intra-Muros aux zones d'activités du pays malouin et aux sites du port. L'audit terrain reste le meilleur moyen de cibler des automatisations vraiment utiles à votre métier.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bassin malouin ?",

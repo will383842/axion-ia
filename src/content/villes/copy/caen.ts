@@ -45,14 +45,14 @@ export const CAEN_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI caennaises — site vitrine premium pour électronique embarquée, semi-conducteurs et automobile (NXP, Bosch, Renault Trucks), espace client interactif R&D EffiScience ou filière équine Hippolia, dashboard métier connecté à votre CRM/ERP ou systèmes industriels. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Caen SMEs/mid-caps — premium showcase site for embedded electronics, semiconductors and automotive (NXP, Bosch, Renault Trucks), interactive customer space for EffiScience R&D or Hippolia equine cluster, business dashboard connected to your CRM/ERP or industrial systems. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Caen SMEs/mid-caps — premium showcase site for embedded electronics, semiconductors and automotive (NXP, Bosch, Renault Trucks), interactive customer space for EffiScience R&D or Hippolia equine cluster, business dashboard connected to your CRM/ERP or industrial systems. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caen (14) sur site — hypercentre, technopôle EffiScience, plateau Nord (UCN/ENSICAEN/CHU), ZAC Presqu'île et communes du bassin Caen la Mer. Nous accompagnons les TPE, PME, ETI et grandes entreprises caennaises (industrie, électronique, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Caen (14) sur site — hypercentre, technopôle EffiScience, plateau Nord (UCN/ENSICAEN/CHU), ZAC Presqu'île et communes du bassin Caen la Mer. Nous accompagnons les TPE, PME, ETI et grandes entreprises caennaises (industrie, électronique, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Caen (14) on site — city centre, EffiScience technopole, Plateau Nord (UCN/ENSICAEN/CHU), ZAC Presqu'île and communes across the Caen la Mer area. We support Caen micro-businesses, SMEs, mid-caps and large enterprises (industry, electronics, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Caen (14) on site — city centre, EffiScience technopole, Plateau Nord (UCN/ENSICAEN/CHU), ZAC Presqu'île and communes across the Caen la Mer area. We support Caen micro-businesses, SMEs, mid-caps and large enterprises (industry, electronics, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "agro, défense & santé",
 

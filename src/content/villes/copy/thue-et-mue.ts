@@ -9,9 +9,9 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
   pitchEn:
     "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thue et Mue (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services agglomération caennaise, exploitations céréalières plaine de Caen, professions libérales, indépendants et services aux entreprises périurbaines.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thue et Mue (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services agglomération caennaise, exploitations céréalières plaine de Caen, professions libérales, indépendants et services aux entreprises périurbaines.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thue et Mue (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services agglomération caennaise, exploitations céréalières plaine de Caen, professions libérales, indépendants et services aux entreprises périurbaines.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thue et Mue (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services agglomération caennaise, exploitations céréalières plaine de Caen, professions libérales, indépendants et services aux entreprises périurbaines.",
   seoHook: "services aux & agriculture céréalière",
   ecosystemFr:
     "Thue et Mue est une commune nouvelle de la plaine de Caen nord-ouest (Calvados), regroupant plusieurs villages (Bretteville-l'Orgueilleuse, Putot-en-Bessin, Rots, etc.). Territoire résidentiel périurbain en croissance, entre Caen et Bayeux. Agriculture céréalière, TPE artisans BTP, PME services, commerces de proximité.",

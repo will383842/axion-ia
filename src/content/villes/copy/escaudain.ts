@@ -9,9 +9,9 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   pitchEn:
     "Escaudain (59), commune du bassin minier reconverti du Nord, entre Valenciennes et Douai, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Escaudain est une commune du bassin minier reconverti du Nord, entre Valenciennes et Douai, classée au patrimoine mondial UNESCO. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",

@@ -9,9 +9,9 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
   seoHook: "vallée seine",
   ecosystemFr:
     "Romilly-sur-Seine est une sous-préfecture auboise au passé bonnetier marqué, à proximité immédiate de la Seine. Tissu TPE/PME diversifié : textile et confection, sous-traitance industrielle, logistique, artisanat, commerce de centre-ville et services aux entreprises.",

@@ -9,9 +9,9 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   pitchEn:
     "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce zone",
   ecosystemFr:
     "Varennes-Vauzelles est la principale zone d'activités de l'agglomération de Nevers, en bordure nord de la préfecture nivernaise. Elle accueille des entrepôts logistiques, des commerces de zone, des entreprises de transport, des artisans BTP, des professions libérales et des prestataires de services aux entreprises. Position stratégique au carrefour A77 (Paris-Nevers) et RN7.",

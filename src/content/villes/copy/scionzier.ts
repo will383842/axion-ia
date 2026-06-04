@@ -9,9 +9,9 @@ export const SCIONZIER_COPY: VilleCopy = {
   pitchEn:
     "Scionzier (74), commune de la vallée de l'Arve en Haute-Savoie, est un bastion historique du décolletage et de la micromécanique de précision. Tissu dense de PME industrielles, sous-traitants vallée de l'Arve, TPE artisans, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la communauté de communes Cluses-Arve-Montagnes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scionzier (74). Nous accompagnons TPE et PME : industriels du décolletage et de la micromécanique, sous-traitants vallée de l'Arve, artisans, commerçants et prestataires de services du bassin de Cluses.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Scionzier (74). Nous accompagnons TPE et PME : industriels du décolletage et de la micromécanique, sous-traitants vallée de l'Arve, artisans, commerçants et prestataires de services du bassin de Cluses.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scionzier (74). Nous accompagnons TPE et PME : industriels du décolletage et de la micromécanique, sous-traitants vallée de l'Arve, artisans, commerçants et prestataires de services du bassin de Cluses.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Scionzier (74). Nous accompagnons TPE et PME : industriels du décolletage et de la micromécanique, sous-traitants vallée de l'Arve, artisans, commerçants et prestataires de services du bassin de Cluses.",
   seoHook: "vallée arve",
   ecosystemFr:
     "Scionzier est au coeur de la vallée de l'Arve, à 3 km de Cluses, dans la communauté de communes Cluses-Arve-Montagnes. Berceau mondial du décolletage et de la micromécanique de précision, la commune concentre un tissu dense de PME industrielles, sous-traitants spécialisés, TPE artisanales et commerces alimentés par le dynamisme industriel local.",

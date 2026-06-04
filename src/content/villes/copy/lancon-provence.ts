@@ -9,9 +9,9 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
   pitchEn:
     "Lançon-Provence (13), commune provençale aux portes de la Crau et de l'étang de Berre, accueille zones logistiques stratégiques sur l'axe A7-A8. Tissu de TPE artisans, PME logistique et transport, commerçants, professions libérales, entrepôts et exploitations agricoles. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit sur place sur mesure.",
   seoHook: "logistique transport & entrepôts supply",
   ecosystemFr:
     "Lançon-Provence est positionnée sur l'axe A7-A8 entre Salon-de-Provence et Marseille, avec zones d'activités logistiques et entrepôts (Clésud à proximité). Vignobles AOC Coteaux d'Aix, oliveraies, élevage en Crau et agriculture céréalière. Tissu PME tertiaires et services aux entreprises de l'aire Aix-Marseille-Salon.",

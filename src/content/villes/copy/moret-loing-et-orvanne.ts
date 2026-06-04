@@ -9,9 +9,9 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
   pitchEn:
     "Moret-Loing-et-Orvanne (77), commune nouvelle creee en 2017, reunit la cite medievale de Moret-sur-Loing (ville des impressionnistes, Sisley) et les bourgs d'Ecuelles, Episy et Orvanne. Tissu TPE/PME tourisme patrimonial, artisanat d'art, commerce, agriculture, services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "tourisme patrimonial & artisanat d'art",
   ecosystemFr:
     "Moret-Loing-et-Orvanne est une commune nouvelle (2017) du sud Seine-et-Marne, dont le coeur historique est la cite medievale de Moret-sur-Loing, celebre pour les peintres impressionnistes (Alfred Sisley). Tourisme patrimonial, artisanat d'art (sucre d'orge de Moret), commerce de proximite, agriculture et services composent le tissu economique local.",

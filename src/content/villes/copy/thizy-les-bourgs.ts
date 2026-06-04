@@ -9,9 +9,9 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
   pitchEn:
     "Thizy-les-Bourgs (69), commune du haut-Beaujolais dans le Rhône (commune nouvelle issue de la fusion de Thizy et communes voisines), est positionnée dans les monts du Beaujolais. Héritage textile historique fort. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "industrielles & agriculture montagne",
   ecosystemFr:
     "Thizy-les-Bourgs est positionnée dans les monts du Beaujolais (haut-Beaujolais). Commune nouvelle issue de la fusion de Thizy et communes voisines. Héritage textile historique fort (filature, tissage). Tissu PME industrielles diversifiées, agriculture montagne, TPE artisanat BTP, commerces.",

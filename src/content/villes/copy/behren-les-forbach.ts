@@ -9,9 +9,9 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
   pitchEn:
     "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   ecosystemFr:
     "Behren-lès-Forbach est une commune mosellane du Bassin houiller, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat. Dynamique transfrontalière vers Sarrebruck et le Land de Sarre.",
   ecosystemEn:

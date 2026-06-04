@@ -9,9 +9,9 @@ export const BRESSUIRE_COPY: VilleCopy = {
   pitchEn:
     "Bressuire (79), sous-préfecture des Deux-Sèvres, 19 970 habitants. Capitale du bocage bressuirais, pôle agroalimentaire majeur (viande bovine, volaille, lait), tissu de TPE artisans, PME industrielles et commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bocage deux-sévrien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & élevage agriculture",
   ecosystemFr:
     "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), TPE artisans, commerces de centre-ville et services de santé.",

@@ -9,9 +9,9 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
   pitchEn:
     "Romorantin-Lanthenay (41), sous-préfecture du Loir-et-Cher au cœur de la Sologne, est historiquement liée à l'industrie automobile (Matra, aujourd'hui reconversion industrielle). Musée Matra, rivière Sauldre, patrimoine Renaissance. Tissu PME industrielles, TPE artisans, commerces, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romorantin-Lanthenay (41). Nous accompagnons tous types d'activités : PME industrielles en reconversion, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme solognot, professions libérales, indépendants et services aux entreprises de la sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Romorantin-Lanthenay (41). Nous accompagnons tous types d'activités : PME industrielles en reconversion, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme solognot, professions libérales, indépendants et services aux entreprises de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romorantin-Lanthenay (41). Nous accompagnons tous types d'activités : PME industrielles en reconversion, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme solognot, professions libérales, indépendants et services aux entreprises de la sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Romorantin-Lanthenay (41). Nous accompagnons tous types d'activités : PME industrielles en reconversion, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme solognot, professions libérales, indépendants et services aux entreprises de la sous-préfecture.",
   seoHook: "TPE & PME Loir-et-Cher",
   ecosystemFr:
     "Romorantin-Lanthenay est la sous-préfecture du Loir-et-Cher (18 373 habitants), capitale historique de la Sologne. La ville a été marquée par l'industrie automobile Matra (Espace, Murena — usine fermée 2003, reconversion en cours). Musée Matra. Tissu PME industrielles en reconversion, agroalimentaire solognot, TPE artisans BTP, commerces, tourisme chasse/nature, professions libérales. Patrimoine Renaissance (château de François Ier).",

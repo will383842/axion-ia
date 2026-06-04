@@ -9,9 +9,9 @@ export const LURE_COPY: VilleCopy = {
   pitchEn:
     "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   seoHook: "industrie métallurgique & artisanat second",
   ecosystemFr:
     "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",

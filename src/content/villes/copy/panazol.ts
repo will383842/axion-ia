@@ -9,9 +9,9 @@ export const PANAZOL_COPY: VilleCopy = {
   pitchEn:
     "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglo limougeaude est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Panazol (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Panazol (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Panazol (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Panazol (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges est.",
   seoHook: "commerce grande & tertiaires services",
   ecosystemFr:
     "Panazol (11 342 hab) est la troisième commune de Haute-Vienne, résidentielle et commerciale à l'est de Limoges. Zone commerciale importante (enseignes nationales), tissu PME tertiaires, TPE artisans, professions libérales (santé, juridique). Intégrée à Limoges Métropole, elle bénéficie de la proximité directe du centre-ville (10 min) et du campus universitaire.",

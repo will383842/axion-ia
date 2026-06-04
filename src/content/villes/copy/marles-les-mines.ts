@@ -10,9 +10,9 @@ export const MARLES_LES_MINES_COPY: VilleCopy = {
     "Marles-les-Mines (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 410 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les activites liees a la reconversion miniere. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, reconversion & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Marles-les-Mines est situee dans le bassin minier entre Calonne-Ricouart (3 km) et Auchel (2 km). Tissu economique en reconversion : TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Heritage minier reconverti progressivement.",
   ecosystemEn:

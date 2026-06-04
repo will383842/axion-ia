@@ -51,14 +51,14 @@ export const STRASBOURG_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour institutions européennes, biotech Alsace BioValley et ETI industrielles strasbourgeoises — site multilingue FR/DE/EN, portail métier biotech, dashboard connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for European institutions, Alsace BioValley biotech firms and Strasbourg industrial mid-caps — FR/DE/EN multilingual site, biotech business portal, dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for European institutions, Alsace BioValley biotech firms and Strasbourg industrial mid-caps — FR/DE/EN multilingual site, biotech business portal, dashboard connected to your CRM/ERP. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Strasbourg (67) sur site, de la Presqu'île européenne au Parc d'Innovation d'Illkirch en passant par le Quartier Wacken-Europe. Nous accompagnons les TPE, PME, ETI et grandes organisations strasbourgeoises — institutions européennes, biotech Alsace BioValley, groupes industriels (Hager, Schmidt, Kronenbourg), médias (ARTE) et Crédit Mutuel — sur leurs cas IA opérationnels. Diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Strasbourg (67) sur site, de la Presqu'île européenne au Parc d'Innovation d'Illkirch en passant par le Quartier Wacken-Europe. Nous accompagnons les TPE, PME, ETI et grandes organisations strasbourgeoises — institutions européennes, biotech Alsace BioValley, groupes industriels (Hager, Schmidt, Kronenbourg), médias (ARTE) et Crédit Mutuel — sur leurs cas IA opérationnels. Diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Strasbourg (67) on site, from the European Peninsula to the Illkirch Innovation Park and the Wacken-Europe Business District. We support Strasbourg micro-businesses, SMEs, mid-caps and large organisations — European institutions, Alsace BioValley biotech, industrial groups (Hager, Schmidt, Kronenbourg), media (ARTE) and Crédit Mutuel — on their operational AI use cases. Costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Strasbourg (67) on site, from the European Peninsula to the Illkirch Innovation Park and the Wacken-Europe Business District. We support Strasbourg micro-businesses, SMEs, mid-caps and large organisations — European institutions, Alsace BioValley biotech, industrial groups (Hager, Schmidt, Kronenbourg), media (ARTE) and Crédit Mutuel — on their operational AI use cases. Costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "institutions EU, biotech & frontalier",
 

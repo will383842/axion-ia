@@ -9,9 +9,9 @@ export const LAUNAGUET_COPY: VilleCopy = {
   pitchEn:
     "Launaguet (31), commune résidentielle du nord de Toulouse avec plus de 9 100 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat",
   ecosystemFr:
     "Launaguet est une commune résidentielle du nord immédiat de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone Borderouge et du métro ligne B.",

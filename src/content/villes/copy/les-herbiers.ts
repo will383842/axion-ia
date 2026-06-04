@@ -9,9 +9,9 @@ export const LES_HERBIERS_COPY: VilleCopy = {
   pitchEn:
     "Les Herbiers (85), commune de Vendée dans le bocage vendéen, rassemble plus de 16 500 habitants. Pôle industriel majeur (mécanique, agroalimentaire, plasturgie) à proximité du Puy du Fou, tissu dense de TPE artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
   seoHook: "TPE & PME Vendée",
   ecosystemFr:
     "Les Herbiers est un pôle économique majeur du bocage vendéen. Industries mécaniques, agroalimentaires et plasturgiques de rang national. Proximité du Puy du Fou (10 min), 2e parc à thème français. Taux de chômage parmi les plus bas de France. Cholet à 30 min, Nantes à 1h, La Roche-sur-Yon à 40 min.",

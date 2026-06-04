@@ -9,9 +9,9 @@ export const VAUREAL_COPY: VilleCopy = {
   pitchEn:
     "Vauréal, commune résidentielle du Val-d'Oise (95) au cœur de la ville nouvelle de Cergy-Pontoise. Tissu TPE artisans, commerçants de quartier, PME de services, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune du bassin Cergy-Pontoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce quartier",
   ecosystemFr:
     "Vauréal est une commune résidentielle de la ville nouvelle de Cergy-Pontoise (200 000 hab), entre Jouy-le-Moutier et Cergy. Son tissu économique s'appuie sur les commerces de quartier, TPE artisanales, PME de services aux entreprises, professions libérales et indépendants. Accès direct RER A branche Cergy.",

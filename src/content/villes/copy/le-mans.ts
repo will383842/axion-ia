@@ -50,14 +50,14 @@ export const LE_MANS_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI sarthoises — site vitrine premium pour assurance mutualiste, mobilité et automobile (Covéa/MMA, ACO, Renault ACI), espace client interactif Novaxis ou pôle iD4CAR, dashboard métier connecté à votre CRM/ERP ou systèmes assurance. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Sarthe SMEs/mid-caps — premium showcase site for mutual insurance, mobility and automotive (Covéa/MMA, ACO, Renault ACI), interactive customer space for Novaxis or iD4CAR cluster, business dashboard connected to your CRM/ERP or insurance systems. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Sarthe SMEs/mid-caps — premium showcase site for mutual insurance, mobility and automotive (Covéa/MMA, ACO, Renault ACI), interactive customer space for Novaxis or iD4CAR cluster, business dashboard connected to your CRM/ERP or insurance systems. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mans (72) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises de la Sarthe — groupes d'assurance (Covéa/MMA), industrie automobile (Renault ACI), PME de services et structures de recherche (LAUM, ENSIM) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Mans (72) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises de la Sarthe — groupes d'assurance (Covéa/MMA), industrie automobile (Renault ACI), PME de services et structures de recherche (LAUM, ENSIM) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Le Mans (72) on site. We support Sarthe micro-businesses, SMEs, mid-caps and large enterprises — insurance groups (Covéa/MMA), automotive manufacturing (Renault ACI), service SMEs and research organisations (LAUM, ENSIM) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Le Mans (72) on site. We support Sarthe micro-businesses, SMEs, mid-caps and large enterprises — insurance groups (Covéa/MMA), automotive manufacturing (Renault ACI), service SMEs and research organisations (LAUM, ENSIM) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "assurance mutuelles & automobile mobilité",
   topSectorsNaf: [

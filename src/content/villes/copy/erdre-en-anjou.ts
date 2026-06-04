@@ -9,9 +9,9 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Erdre-en-Anjou (49), commune nouvelle du Maine-et-Loire au nord d'Angers entre vallée de l'Erdre et Segréen, réunit un tissu de TPE artisans, PME agricoles et agroalimentaires, commerces ruraux, exploitations d'élevage et prestataires de services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erdre-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme rural entre Erdre et Segréen.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Erdre-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme rural entre Erdre et Segréen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erdre-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme rural entre Erdre et Segréen.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Erdre-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme rural entre Erdre et Segréen.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Erdre-en-Anjou est une commune nouvelle née de la fusion de Brain-sur-l'Authion, Gené, L'Hôtellerie-de-Flée, Vern-d'Anjou et Gene. Située au nord d'Angers dans la vallée de l'Erdre, son économie repose sur l'agriculture (élevage, polyculture), l'agroalimentaire, l'artisanat BTP et les commerces de proximité.",

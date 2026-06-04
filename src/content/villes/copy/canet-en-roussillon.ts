@@ -9,9 +9,9 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
   pitchEn:
     "Canet-en-Roussillon (66), station balnéaire majeure de la côte méditerranéenne catalane, fait partie de Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME nautisme et hôtellerie-restauration, commerces saisonniers, activités portuaires. Axion-IA y intervient pour tous types d'activités du littoral roussillonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canet-en-Roussillon (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques et portuaires, indépendants et professions libérales du littoral catalan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Canet-en-Roussillon (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques et portuaires, indépendants et professions libérales du littoral catalan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canet-en-Roussillon (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques et portuaires, indépendants et professions libérales du littoral catalan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Canet-en-Roussillon (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques et portuaires, indépendants et professions libérales du littoral catalan.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Canet-en-Roussillon est une station balnéaire méditerranéenne de Perpignan Méditerranée Métropole, dotée d'un port de plaisance et d'une longue plage. Économie touristique dominante : hôtellerie, campings, restauration, nautisme, commerces saisonniers. TPE et PME tertiaires, services aux entreprises côté village.",

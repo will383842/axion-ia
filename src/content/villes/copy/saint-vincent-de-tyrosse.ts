@@ -9,9 +9,9 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
   seoHook: "commerce, artisanat & Pays tyrossais",
   ecosystemFr:
     "Saint-Vincent-de-Tyrosse est le chef-lieu du canton du Pays tyrossais (11 communes). Bourg landais dynamique entre littoral (Capbreton, Hossegor à 15 min) et arrière-pays. Traditions taurines (corrida, fêtes de la Madeleine). Économie diversifiée : commerce de proximité, artisanat BTP, PME services, professions libérales, agriculture (maïs, élevage), restauration.",

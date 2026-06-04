@@ -9,9 +9,9 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   pitchEn:
     "Bourg-de-Péage (26), commune voisine de Romans-sur-Isère dans la Drôme, est intégrée à Valence Romans Agglo. Historiquement liée à la filière chaussure du bassin Romans, elle a diversifié vers un tissu PME industrielles, tertiaires, TPE artisans BTP et commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
   seoHook: "bassin romans",
   ecosystemFr:
     "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, TPE artisanat BTP, commerces et agriculture périphérique (vallée de l'Isère).",

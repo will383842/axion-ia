@@ -9,9 +9,9 @@ export const AUCHEL_COPY: VilleCopy = {
   pitchEn:
     "Auchel (62), commune du bassin minier du Pas-de-Calais, a entamé sa reconversion vers l'artisanat, le commerce et les services. TPE, PME de proximité et professions libérales. Axion-IA y travaille avec les organisations du territoire du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Auchel est une commune minière entre Béthune et Bruay-la-Buissière. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Tissu de TPE et micro-entreprises caractéristique du bassin minier en transformation.",

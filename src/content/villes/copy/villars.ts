@@ -9,9 +9,9 @@ export const VILLARS_COPY: VilleCopy = {
   pitchEn:
     "Villars (42), commune en banlieue nord-ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales stéphanoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villars (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest stéphanoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villars (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest stéphanoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villars (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest stéphanoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villars (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest stéphanoise.",
   seoHook: "proche saint-étienne",
   ecosystemFr:
     "Villars est intégrée à Saint-Étienne Métropole, en banlieue nord-ouest immédiate de Saint-Étienne. Tissu péri-urbain mixte : PME tertiaires et industrielles diversifiées, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture résiduelle.",

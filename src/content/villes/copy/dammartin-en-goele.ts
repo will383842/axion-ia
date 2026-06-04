@@ -9,9 +9,9 @@ export const DAMMARTIN_EN_GOELE_COPY: VilleCopy = {
   pitchEn:
     "Dammartin-en-Goele (77), bourg historique du pays de Goele au nord de la Seine-et-Marne, beneficie de la proximite immediate de l'aeroport Roissy-CDG. Tissu TPE/PME logistique aeroportuaire, transport, commerce, artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "pays de goele",
   ecosystemFr:
     "Dammartin-en-Goele est un bourg historique du pays de Goele, au nord de la Seine-et-Marne, a proximite directe de l'aeroport Roissy-CDG. L'economie locale beneficie de l'ecosysteme aeroportuaire (logistique, transport, hotellerie) et conserve un tissu de TPE commerce, artisanat BTP, services et agriculture cerealiere.",

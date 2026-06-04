@@ -9,9 +9,9 @@ export const BARBERAZ_COPY: VilleCopy = {
   pitchEn:
     "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   seoHook: "tertiaires services",
   ecosystemFr:
     "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",

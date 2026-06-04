@@ -9,9 +9,9 @@ export const DOULLENS_COPY: VilleCopy = {
   pitchEn:
     "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   seoHook: "TPE & PME Somme",
   ecosystemFr:
     "Doullens est sous-préfecture historique de la Somme, bourg picard au nord du département marqué par sa citadelle classée et le souvenir de 1918 (commandement unifié Foch). Tissu agricole (grandes cultures, élevage), TPE artisans BTP, PME industrielles, commerces de centre-ville, services de santé et médico-social.",

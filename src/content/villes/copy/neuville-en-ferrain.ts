@@ -9,9 +9,9 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
   pitchEn:
     "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-en-Ferrain (59). Nous accompagnons TPE et PME : commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile-confection, services aux entreprises, artisans et commerçants de proximité de l'agglo tourquennoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Neuville-en-Ferrain (59). Nous accompagnons TPE et PME : commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile-confection, services aux entreprises, artisans et commerçants de proximité de l'agglo tourquennoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-en-Ferrain (59). Nous accompagnons TPE et PME : commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile-confection, services aux entreprises, artisans et commerçants de proximité de l'agglo tourquennoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Neuville-en-Ferrain (59). Nous accompagnons TPE et PME : commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile-confection, services aux entreprises, artisans et commerçants de proximité de l'agglo tourquennoise.",
   seoHook: "commerce gros & logistique franco-belge",
   ecosystemFr:
     "Neuville-en-Ferrain est une commune de la Métropole Européenne de Lille, limitrophe de Tourcoing et directement accolée à la frontière belge (Mouscron-Rekkem à 2 min). L'économie locale repose sur le commerce de gros et la logistique transfrontalière franco-belge, la sous-traitance industrielle textile-confection héritée du bassin roubaisien-tourquennois, les services aux entreprises B2B, le commerce de détail et l'artisanat. Zone d'activité attractive pour TPE et PME cross-border.",

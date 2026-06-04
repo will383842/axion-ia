@@ -9,9 +9,9 @@ export const MONDELANGE_COPY: VilleCopy = {
   pitchEn:
     "Mondelange (57), commune mosellane de la vallée de la Moselle, formant avec Hagondange un pôle urbain de tradition sidérurgique reconvertie. Tissu TPE/PME industrie, sous-traitance métallurgique, logistique, BTP, commerces, services et nombreux frontaliers luxembourgeois. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Mondelange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, logistique, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de l''agglomération Hagondange-Mondelange.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Mondelange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, logistique, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de l''agglomération Hagondange-Mondelange.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Mondelange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, logistique, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de l''agglomération Hagondange-Mondelange.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Mondelange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, logistique, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de l''agglomération Hagondange-Mondelange.",
   ecosystemFr:
     "Mondelange est une commune mosellane de la vallée de la Moselle, intégrée à l''agglomération Hagondange-Mondelange à l''héritage sidérurgique reconverti. Tissu TPE/PME industrie, logistique, BTP, commerces de proximité, services. Forte dynamique frontalière liée au bassin économique luxembourgeois proche.",
   ecosystemEn:

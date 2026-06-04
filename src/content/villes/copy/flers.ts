@@ -9,9 +9,9 @@ export const FLERS_COPY: VilleCopy = {
   pitchEn:
     "Flers (61), sous-préfecture de l'Orne en Normandie, est une ville industrielle historiquement liée au textile (drap, toile), aujourd'hui reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles reconverties, commerces centre-ville. Axion-IA opère pour toutes les structures économiques de la commune du bocage ornais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit sur place sur mesure.",
   seoHook: "industrie reconvertie & bocage normand",
   ecosystemFr:
     "Flers est la sous-préfecture ouest de l'Orne, au coeur du bocage normand. Ancienne capitale textile reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",

@@ -9,9 +9,9 @@ export const BELLEVIGNY_COPY: VilleCopy = {
   pitchEn:
     "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
   seoHook: "industrielles zones & artisanat construction",
   ecosystemFr:
     "Bellevigny est une commune nouvelle vendéenne (fusion 2019 Belleville-sur-Vie / Saligny), en périphérie nord de La Roche-sur-Yon. Zones d'activités artisanales et industrielles, agriculture bocagère, commerces. Croissance démographique dynamique. La Roche centre à 10 min, Nantes à 50 min.",

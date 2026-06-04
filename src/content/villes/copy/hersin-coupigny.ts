@@ -10,9 +10,9 @@ export const HERSIN_COUPIGNY_COPY: VilleCopy = {
     "Hersin-Coupigny (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 080 habitants. Situee entre Barlin et Noeux-les-Mines, son economie repose sur les TPE artisanales, les PME industrielles, le commerce de proximite et les services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Hersin-Coupigny est situee dans le bassin minier entre Barlin (2 km) et Noeux-les-Mines (3 km). Tissu economique compose de TPE artisanales BTP, PME de petite industrie, commerces de centre-bourg, services de proximite et professions de sante.",
   ecosystemEn:

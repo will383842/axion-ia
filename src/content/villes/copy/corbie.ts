@@ -10,9 +10,9 @@ export const CORBIE_COPY: VilleCopy = {
     "Corbie (80), commune de la vallee de la Somme, reunit environ 5 980 habitants. Connue pour son abbaye millenaire et sa position sur les bords de Somme, c'est un bourg de services entre Amiens et Albert. Son economie associe TPE artisanales, PME de services, agriculture picarde, patrimoine et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "patrimoine, agriculture & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Corbie est situee dans la vallee de la Somme, entre Amiens (15 km) et Albert (20 km). Tissu economique de bourg relais : TPE artisanat BTP, PME services aux entreprises, exploitations agricoles (grandes cultures, maraichage), activites liees au patrimoine (abbaye de Corbie, tourisme fluvial) et commerces de centre-bourg.",
   ecosystemEn:

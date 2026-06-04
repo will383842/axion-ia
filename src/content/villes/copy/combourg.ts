@@ -9,9 +9,9 @@ export const COMBOURG_COPY: VilleCopy = {
   pitchEn:
     "Combourg (35), petite ville du nord de l'Ille-et-Vilaine célèbre pour son château où vécut Chateaubriand, conjugue tourisme patrimonial et tissu économique rural. TPE artisans, commerces de bourg, PME de services, professions libérales, exploitants agricoles (polyculture-élevage laitier) et acteurs tourisme littéraire. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Combourg (35). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (château de Chateaubriand), TPE artisans et commerçants du bourg, PME de services, professions libérales, exploitants agricoles et acteurs agroalimentaires du pays de Combourg.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Combourg (35). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (château de Chateaubriand), TPE artisans et commerçants du bourg, PME de services, professions libérales, exploitants agricoles et acteurs agroalimentaires du pays de Combourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Combourg (35). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (château de Chateaubriand), TPE artisans et commerçants du bourg, PME de services, professions libérales, exploitants agricoles et acteurs agroalimentaires du pays de Combourg.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Combourg (35). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (château de Chateaubriand), TPE artisans et commerçants du bourg, PME de services, professions libérales, exploitants agricoles et acteurs agroalimentaires du pays de Combourg.",
   seoHook: "tourisme patrimonial & artisanat construction",
   ecosystemFr:
     "Combourg est une petite ville du nord de l'Ille-et-Vilaine, célèbre pour son château classé où vécut Chateaubriand (Mémoires d'outre-tombe). L'économie locale associe tourisme patrimonial et littéraire (château, lac Tranquille), TPE artisans BTP, commerces de bourg, PME de services, professions libérales et agriculture (polyculture-élevage laitier breton). Carrefour entre Rennes, Saint-Malo et Dinan.",

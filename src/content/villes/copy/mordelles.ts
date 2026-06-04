@@ -10,9 +10,9 @@ export const MORDELLES_COPY: VilleCopy = {
     "Mordelles (35), commune de l'ouest de Rennes Métropole peuplée de 7 911 habitants, allie cadre résidentiel verdoyant et tissu économique de proximité. TPE, PME, artisans, commerces et professions libérales y constituent le coeur de l'activité. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
   seoHook: "résidentiel & proximité ouest Rennes",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Mordelles est l'une des 43 communes de Rennes Métropole, située à l'ouest de Rennes. Ancien chef-lieu de canton jusqu'en 2015, la commune conserve une vocation résidentielle marquée avec son tissu de pavillons et son centre-bourg dynamique. L'économie locale s'appuie sur l'artisanat, le commerce de proximité, les services aux particuliers, les TPE/PME et les professions libérales.",
   ecosystemEn:

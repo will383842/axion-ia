@@ -9,9 +9,9 @@ export const HAUBOURDIN_COPY: VilleCopy = {
   pitchEn:
     "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises de l'ouest lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Haubourdin est une commune résidentielle et industrielle de la Métropole Européenne de Lille, sur les bords de la Deûle à l'ouest de Lille. Tissu TPE artisans BTP, PME logistique et services aux entreprises, commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position stratégique sur le canal de la Deûle et l'axe Lille-Béthune.",

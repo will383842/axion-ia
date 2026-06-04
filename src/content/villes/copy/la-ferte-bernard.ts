@@ -9,9 +9,9 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
   pitchEn:
     "La Ferté-Bernard (72), bourg du Perche sarthois au patrimoine Renaissance remarquable (église Notre-Dame-des-Marais), concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
   seoHook: "agroalimentaire & industrie fabrication",
   ecosystemFr:
     "La Ferté-Bernard est un bourg du Perche sarthois, au patrimoine Renaissance exceptionnel (église Notre-Dame-des-Marais, portes fortifiées). Pôle agroalimentaire (volaille, charcuterie, plats préparés), industrie, artisanat, commerces de centre-ville. Carrefour A11/RN23 entre Le Mans et Chartres.",

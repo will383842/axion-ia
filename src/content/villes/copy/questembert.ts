@@ -9,9 +9,9 @@ export const QUESTEMBERT_COPY: VilleCopy = {
   pitchEn:
     "Questembert (56), bourg du pays vannetais célèbre pour ses halles classées du XVe siècle, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises agricoles, agroalimentaires et touristiques du Morbihan rural. Axion-IA opère pour toutes les structures économiques de la commune du pays de Vannes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Questembert (56). Nous accompagnons TPE et PME : artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles, PME agroalimentaires et entreprises touristiques du pays vannetais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Questembert (56). Nous accompagnons TPE et PME : artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles, PME agroalimentaires et entreprises touristiques du pays vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Questembert (56). Nous accompagnons TPE et PME : artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles, PME agroalimentaires et entreprises touristiques du pays vannetais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Questembert (56). Nous accompagnons TPE et PME : artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles, PME agroalimentaires et entreprises touristiques du pays vannetais.",
   seoHook: "artisanat construction & commerce proximité",
   ecosystemFr:
     "Questembert se situe dans le pays vannetais, à 25 km à l'est de Vannes, sur l'axe Vannes-Redon. Bourg rural patrimonial avec ses halles XVe siècle classées Monument historique, la commune (8 133 habitants) anime un bassin de vie élargi. Tissu économique : TPE artisans BTP, commerces de proximité, professions libérales (santé, conseil), exploitations agricoles, PME agroalimentaires et entreprises touristiques liées au patrimoine local.",

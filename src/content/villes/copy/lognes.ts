@@ -9,9 +9,9 @@ export const LOGNES_COPY: VilleCopy = {
   pitchEn:
     "Lognes (77), commune de la ville nouvelle de Marne-la-Vallée en Seine-et-Marne, passée de 248 habitants en 1975 à plus de 15 000 aujourd'hui. Zones d'activités économiques, TPE artisans et prestataires, PME services et technologie, commerçants, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lognes (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services et technologie des zones d'activités Marne-la-Vallée, commerçants, professions libérales et entreprises du secteur tertiaire de l'est francilien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lognes (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services et technologie des zones d'activités Marne-la-Vallée, commerçants, professions libérales et entreprises du secteur tertiaire de l'est francilien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lognes (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services et technologie des zones d'activités Marne-la-Vallée, commerçants, professions libérales et entreprises du secteur tertiaire de l'est francilien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lognes (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services et technologie des zones d'activités Marne-la-Vallée, commerçants, professions libérales et entreprises du secteur tertiaire de l'est francilien. Audit sur place sur mesure.",
   seoHook: "services aux & informatique prestataires",
   ecosystemFr:
     "Lognes incarne la dynamique de Marne-la-Vallée : passée de village rural (248 habitants en 1975) à commune urbaine de plus de 15 000 habitants. Zones d'activités économiques accueillant PME tertiaires, prestataires informatiques et services aux entreprises. Proximité Disneyland Paris et du pôle Val d'Europe. Communes voisines : Torcy, Noisiel, Emerainville, Champs-sur-Marne.",
