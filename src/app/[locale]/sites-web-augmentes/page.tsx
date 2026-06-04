@@ -34,6 +34,7 @@ import { SitesWebTrustPills } from "@/components/services/sites-web/SitesWebTrus
 import { SitesWebWhy } from "@/components/services/sites-web/SitesWebWhy";
 import { SitesWebModules } from "@/components/services/sites-web/SitesWebModules";
 import { SitesWebCapabilitiesGrid } from "@/components/services/sites-web/SitesWebCapabilitiesGrid";
+import { SitesWebVisualShowcase } from "@/components/services/sites-web/SitesWebVisualShowcase";
 import { SitesWebLandingLinks } from "@/components/services/sites-web/SitesWebLandingLinks";
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
@@ -223,6 +224,9 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
 
       {/* CHAMP DES POSSIBLES — grille on-page 14 domaines (design, mobile, e-commerce, IA) */}
       <SitesWebCapabilitiesGrid isFr={isFr} />
+
+      {/* EN IMAGES — bande visuelle 6 photos Unsplash (design/dev/e-commerce/mobile/data/équipe) */}
+      <SitesWebVisualShowcase isFr={isFr} />
 
       {/* LIENS LANDINGS — maillage descendant vers les pages détail (anti-orphelin) */}
       <SitesWebLandingLinks isFr={isFr} />
