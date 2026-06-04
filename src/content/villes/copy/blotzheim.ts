@@ -9,9 +9,9 @@ export const BLOTZHEIM_COPY: VilleCopy = {
   pitchEn:
     "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit sur place sur mesure.",
   ecosystemFr:
     "Blotzheim est une commune frontalière de Saint-Louis Agglomération à la jonction des trois frontières (France, Suisse, Allemagne). Son économie est portée par la zone d'activité de l'EuroAirport (maintenance aéronautique, fret, logistique), la sous-traitance pour les groupes pharmaceutiques et chimiques bâlois, les services aux travailleurs frontaliers, l'artisanat et un commerce de proximité dynamisé par la clientèle suisse.",
   ecosystemEn:

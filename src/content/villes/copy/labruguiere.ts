@@ -9,9 +9,9 @@ export const LABRUGUIERE_COPY: VilleCopy = {
   pitchEn:
     "Labruguière (81), commune de l'agglomération de Castres dans le Tarn, plus de 6 500 habitants. Tissu TPE artisans, PME industrie et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales du bassin castrais sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit sur place sur mesure.",
   seoHook: "artisanat bâtiment & industrie services",
   ecosystemFr:
     "Labruguière (6 584 hab) est une commune résidentielle et industrielle de l'agglomération de Castres, en entrée sud. Zones d'activités avec PME industrie, services et artisanat. Proximité immédiate Castres (10 min). Tissu TPE artisans BTP, commerces de bourg, professions libérales, agriculture. Cadre de vie attractif entre ville et campagne tarnaise.",

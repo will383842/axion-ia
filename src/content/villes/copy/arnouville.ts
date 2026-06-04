@@ -9,9 +9,9 @@ export const ARNOUVILLE_COPY: VilleCopy = {
   pitchEn:
     "Arnouville (95), anciennement Arnouville-lès-Gonesse, est une commune du Val-d'Oise située au nord de Paris entre Sarcelles et Gonesse. Tissu TPE artisans, commerçants, PME tertiaires et de services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
   seoHook: "artisanat services & commerce proximité",
   ecosystemFr:
     "Arnouville (anciennement Arnouville-lès-Gonesse) est positionnée au nord de Paris entre Sarcelles et Gonesse, à proximité de l'aéroport Roissy-CDG. Tissu TPE artisans, commerces de proximité, PME tertiaires et services aux entreprises, professions libérales tournées vers le bassin économique nord-francilien.",

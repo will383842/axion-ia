@@ -9,9 +9,9 @@ export const LUYNES_COPY: VilleCopy = {
   pitchEn:
     "Luynes (37), commune de l'ouest de Tours Métropole en bords de Loire, est connue pour son château médiéval surplombant la vallée et son vignoble AOC Touraine. Tissu TPE artisans, viticulteurs, commerces, professions libérales et PME de services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luynes (37). Nous accompagnons tous types d'activités : viticulteurs AOC Touraine, TPE artisans BTP, commerçants, professions libérales, hébergeurs touristiques bords de Loire, indépendants et PME de services de Tours Métropole ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luynes (37). Nous accompagnons tous types d'activités : viticulteurs AOC Touraine, TPE artisans BTP, commerçants, professions libérales, hébergeurs touristiques bords de Loire, indépendants et PME de services de Tours Métropole ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luynes (37). Nous accompagnons tous types d'activités : viticulteurs AOC Touraine, TPE artisans BTP, commerçants, professions libérales, hébergeurs touristiques bords de Loire, indépendants et PME de services de Tours Métropole ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luynes (37). Nous accompagnons tous types d'activités : viticulteurs AOC Touraine, TPE artisans BTP, commerçants, professions libérales, hébergeurs touristiques bords de Loire, indépendants et PME de services de Tours Métropole ouest.",
   seoHook: "viticulture touraine & tourisme patrimonial",
   ecosystemFr:
     "Luynes est une commune résidentielle de l'ouest de Tours Métropole (5 062 habitants), dominée par son château médiéval (XIIe-XVe siècle) surplombant la Loire. Vignoble AOC Touraine, aqueduc gallo-romain. Tissu TPE/PME : viticulture, artisanat BTP, commerces de proximité, hébergement touristique, professions libérales, services aux entreprises.",

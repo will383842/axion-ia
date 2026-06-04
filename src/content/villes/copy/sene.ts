@@ -10,9 +10,9 @@ export const SENE_COPY: VilleCopy = {
     "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération vannetaise.",
   seoHook: "écotourisme, maritime & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Séné est une commune littorale de l'agglomération de Vannes, porte d'entrée de la réserve naturelle du Golfe du Morbihan. L'économie locale s'appuie sur les activités maritimes (ostréiculture, pêche, nautisme), l'écotourisme, les services aux entreprises du bassin vannetais, l'artisanat et les professions libérales. La proximité immédiate de Vannes offre un accès aux services urbains.",
   ecosystemEn:

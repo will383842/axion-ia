@@ -9,9 +9,9 @@ export const VETRAZ_MONTHOUX_COPY: VilleCopy = {
   pitchEn:
     "Vetraz-Monthoux (74), commune residentielle de l'agglomeration d'Annemasse au coeur du Grand Geneve, beneficie de la dynamique transfrontaliere a 10 minutes de Geneve. Tissu TPE/PME de services, commerce, professions liberales et artisanat BTP. Axion-IA y intervient pour tous types d'activites de l'agglomeration annemassienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "agglomération geneve",
   ecosystemFr:
     "Vetraz-Monthoux est une commune residentielle dynamique de l'agglomeration d'Annemasse, a 10 minutes de Geneve. Integree au Grand Geneve, elle beneficie du flux economique transfrontalier : TPE/PME tertiaires, commerces, professions liberales et artisanat BTP. Proximite Annemasse et Geneve favorise les services aux entreprises et le commerce de proximite.",

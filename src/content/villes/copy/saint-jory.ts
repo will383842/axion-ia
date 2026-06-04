@@ -9,9 +9,9 @@ export const SAINT_JORY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jory (31), commune des bords de Garonne au nord de Toulouse, plus de 8 600 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Proximité Castelnau-d'Estrétefonds et de l'axe A62.",

@@ -9,9 +9,9 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
   pitchEn:
     "Baume-les-Dames (25), petite ville de la vallée du Doubs en Franche-Comté, est connue pour son abbaye historique et ses activités de plein air dont le canoë-kayak. TPE artisans, PME industrielles, commerces de centre-bourg, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités de la vallée du Doubs.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baume-les-Dames (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles de la vallée du Doubs, commerçants de centre-bourg, hébergeurs et prestataires touristiques, professions libérales, indépendants et exploitants agricoles du secteur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Baume-les-Dames (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles de la vallée du Doubs, commerçants de centre-bourg, hébergeurs et prestataires touristiques, professions libérales, indépendants et exploitants agricoles du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baume-les-Dames (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles de la vallée du Doubs, commerçants de centre-bourg, hébergeurs et prestataires touristiques, professions libérales, indépendants et exploitants agricoles du secteur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Baume-les-Dames (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles de la vallée du Doubs, commerçants de centre-bourg, hébergeurs et prestataires touristiques, professions libérales, indépendants et exploitants agricoles du secteur.",
   seoHook: "artisanat services & petite industrie",
   ecosystemFr:
     "Baume-les-Dames est un bourg-centre de la vallée du Doubs entre Besançon et Montbéliard. L'économie locale repose sur la petite industrie, l'artisanat BTP, le commerce de proximité, le tourisme vert (canoë-kayak, randonnée, patrimoine abbatial) et l'agriculture. La commune joue un rôle de pôle de services pour les communes rurales environnantes.",

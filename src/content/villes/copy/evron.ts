@@ -9,9 +9,9 @@ export const EVRON_COPY: VilleCopy = {
   pitchEn:
     "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
   seoHook: "agroalimentaire laitier & industrie",
   ecosystemFr:
     "Évron est un bourg du centre-Mayenne marqué par son abbaye bénédictine (fondée au VIIe siècle) et sa basilique Notre-Dame-de-l'Épine. Économie : agroalimentaire laitier, industrie (conditionnement, mécanique), élevage bovin, artisanat, commerces de proximité, tourisme patrimonial.",

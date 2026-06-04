@@ -9,9 +9,9 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie son expertise pour toutes les organisations des Yvelines ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
   seoHook: "commerce distribution & services aux",
   ecosystemFr:
     "Les Clayes-sous-Bois est une commune résidentielle et commerçante de l'ouest francilien, à mi-chemin entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique diversifié : commerces de centre-ville et zones commerciales, TPE artisanat et services, professions libérales, PME tertiaires. Proximité du Technocentre Renault (Guyancourt) et du pôle d'activités de Saint-Quentin-en-Yvelines (SQY).",

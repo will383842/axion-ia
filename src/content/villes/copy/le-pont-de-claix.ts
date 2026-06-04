@@ -9,9 +9,9 @@ export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
   pitchEn:
     "Le Pont-de-Claix (38), au sud immédiat de Grenoble, est ancré dans le bassin industriel historique de la vallée du Drac. Tissu industriel manufacturier, TPE artisans BTP, commerces, PME services aux industriels et professions libérales. Axion-IA y intervient pour tous types d'activités pontoises et du sud grenoblois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
   seoHook: "industrie & sous-traitance industrielle",
   ecosystemFr:
     "Le Pont-de-Claix est un des principaux pôles industriels de Grenoble-Alpes Métropole : plateforme industrielle historique de la vallée du Drac (sites industriels successifs depuis le XXe siècle), tissu dense de sous-traitants techniques, PME services aux industriels, TPE artisanat BTP, commerces de proximité. Position stratégique au sud du Y grenoblois, sur l'axe vers Vizille et la vallée de la Romanche.",

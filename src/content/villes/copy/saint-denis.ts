@@ -489,7 +489,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis (93) sur site — Plaine Saint-Denis, Stade de France, centre-ville et communes Plaine Commune limitrophes (Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte). Nous accompagnons TPE, PME, ETI et grandes entreprises dyonisiennes (logistique, audiovisuel, BTP Grand Paris, services publics, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Denis (93) sur site — Plaine Saint-Denis, Stade de France, centre-ville et communes Plaine Commune limitrophes (Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte). Nous accompagnons TPE, PME, ETI et grandes entreprises dyonisiennes (logistique, audiovisuel, BTP Grand Paris, services publics, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
 
   topSectorsNaf: [
     "Logistique, Transport & Distribution",

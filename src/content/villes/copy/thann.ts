@@ -9,9 +9,9 @@ export const THANN_COPY: VilleCopy = {
   pitchEn:
     "Thann (68), sous-préfecture du Haut-Rhin, est connue pour sa collégiale Saint-Thiébaut et son vignoble grand cru Rangen, le plus méridional d'Alsace. Tissu de TPE/PME en industrie chimique et mécanique, viticulture, tourisme patrimonial, artisanat et services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit sur place sur mesure.",
   seoHook: "industrie chimique & viticulture domaines",
   ecosystemFr:
     "Thann, sous-préfecture du Haut-Rhin, est située à l'entrée de la vallée de la Thur, au pied des Vosges. La ville accueille des sites industriels historiques (Cristel pour la cuisine, ex-DuPont/Thann Chemicals pour la chimie du dioxyde de titane), un patrimoine viticole remarquable avec le grand cru Rangen, et un tourisme patrimonial autour de la collégiale Saint-Thiébaut. Tissu complet TPE/PME : industrie, viticulture, artisanat BTP, commerce et services.",

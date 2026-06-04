@@ -9,9 +9,9 @@ export const KEMBS_COPY: VilleCopy = {
   pitchEn:
     "Kembs (68), commune située sur les bords du Rhin avec ses écluses historiques, en zone frontalière France-Allemagne-Suisse au sud du Haut-Rhin. Tissu TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers, restaurateurs et indépendants du Sud-Alsace. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat commerce",
   ecosystemFr:
     "Kembs est une commune située sur les bords du Rhin, marquée par ses écluses historiques et sa position frontalière entre la France, l'Allemagne et la Suisse. Son tissu économique mêle TPE artisanat et commerce, PME logistique et services frontaliers, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Mulhouse, Bâle (Suisse) et l'Allemagne.",

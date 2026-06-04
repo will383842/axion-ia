@@ -41,14 +41,14 @@ export const GRENOBLE_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI grenobloises — site vitrine premium pour deeptech Minatec et spin-offs CEA-Leti, espace client interactif, dashboard métier connecté à votre CRM/ERP/PLM. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Grenoble SMEs and mid-caps — premium showcase site for Minatec deeptech and CEA-Leti spin-offs, interactive customer space, business dashboard connected to your CRM/ERP/PLM. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Grenoble SMEs and mid-caps — premium showcase site for Minatec deeptech and CEA-Leti spin-offs, interactive customer space, business dashboard connected to your CRM/ERP/PLM. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenoble (38) sur site, couvrant la ville et le bassin grenoblois (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). Nous accompagnons les TPE tech et les spin-offs CEA/CNRS, les PME industrielles et de services, les ETI deep-tech (Soitec, Poma, Petzl et leurs sous-traitants) ainsi que les grands groupes (STMicroelectronics, Schneider Electric, Atos) sur leurs chantiers IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action béton. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grenoble (38) sur site, couvrant la ville et le bassin grenoblois (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). Nous accompagnons les TPE tech et les spin-offs CEA/CNRS, les PME industrielles et de services, les ETI deep-tech (Soitec, Poma, Petzl et leurs sous-traitants) ainsi que les grands groupes (STMicroelectronics, Schneider Electric, Atos) sur leurs chantiers IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action béton. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an senior AI architects consultancy that intervenes in Grenoble (38) on site, covering the city and the Grenoble basin (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). We support deep-tech micro-businesses and CEA/CNRS spin-offs, industrial and services SMEs, deep-tech mid-caps (Soitec, Poma, Petzl and their supply chains) plus large groups (STMicroelectronics, Schneider Electric, Atos) on their operational AI initiatives — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is an senior AI experts consultancy that intervenes in Grenoble (38) on site, covering the city and the Grenoble basin (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). We support deep-tech micro-businesses and CEA/CNRS spin-offs, industrial and services SMEs, deep-tech mid-caps (Soitec, Poma, Petzl and their supply chains) plus large groups (STMicroelectronics, Schneider Electric, Atos) on their operational AI initiatives — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "nano, hydrogène & sports nature",
 

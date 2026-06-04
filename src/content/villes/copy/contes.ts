@@ -9,9 +9,9 @@ export const CONTES_COPY: VilleCopy = {
   pitchEn:
     "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
   seoHook: "agriculture oléiculture & services aux",
   ecosystemFr:
     "Contes est un bourg-centre de la vallée du Paillon, à 20 km de Nice dans le moyen-pays. La commune regroupe commerces de proximité, artisanat BTP, professions libérales et quelques exploitations oléicoles. Le moulin à huile de Contes perpétue la tradition provençale. Position de carrefour entre littoral niçois et arrière-pays montagneux (Lucéram, L'Escarène).",

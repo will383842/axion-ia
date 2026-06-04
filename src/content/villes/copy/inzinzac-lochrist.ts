@@ -9,9 +9,9 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
   pitchEn:
     "Inzinzac-Lochrist (56), commune de la vallée du Blavet héritière des historiques forges d'Hennebont, accueille un tissu de TPE/PME industrielles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises tertiaires de l'agglomération lorientaise. Axion-IA opère pour toutes les structures économiques de la commune du bassin lorientais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Inzinzac-Lochrist (56). Nous accompagnons TPE et PME : PME industrielles héritières des forges, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Inzinzac-Lochrist (56). Nous accompagnons TPE et PME : PME industrielles héritières des forges, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Inzinzac-Lochrist (56). Nous accompagnons TPE et PME : PME industrielles héritières des forges, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Inzinzac-Lochrist (56). Nous accompagnons TPE et PME : PME industrielles héritières des forges, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
   seoHook: "industrielles héritage & agroalimentaire",
   ecosystemFr:
     "Inzinzac-Lochrist se situe dans la vallée du Blavet, à 8 km au nord d'Hennebont et 15 km de Lorient, dans Lorient Agglomération. Commune (6 691 habitants) marquée par son héritage industriel (Écomusée des Forges d'Hennebont), elle conserve un tissu industriel actif et bénéficie de la dynamique du bassin lorientais. Tissu économique : PME industrielles, PME agroalimentaires, TPE artisans BTP, commerces de proximité, professions libérales et entreprises tertiaires liées à l'agglomération.",

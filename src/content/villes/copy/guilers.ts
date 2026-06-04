@@ -9,9 +9,9 @@ export const GUILERS_COPY: VilleCopy = {
   pitchEn:
     "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole brestoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilers (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants guilériens, PME de services de Brest Métropole, professions libérales, indépendants et prestataires implantés sur la commune.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guilers (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants guilériens, PME de services de Brest Métropole, professions libérales, indépendants et prestataires implantés sur la commune.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilers (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants guilériens, PME de services de Brest Métropole, professions libérales, indépendants et prestataires implantés sur la commune.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guilers (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants guilériens, PME de services de Brest Métropole, professions libérales, indépendants et prestataires implantés sur la commune.",
   ecosystemFr:
     "Guilers est une commune résidentielle de Brest Métropole, en périphérie ouest de Brest. Son tissu économique repose sur les commerces de proximité, TPE artisanales BTP, professions libérales et PME de services. La commune bénéficie pleinement du dynamisme économique de la métropole brestoise, notamment les secteurs maritime, défense et numérique.",
   ecosystemEn:

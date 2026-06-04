@@ -9,9 +9,9 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
   pitchEn:
     "Vindry-sur-Turdine (69), commune nouvelle du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, TPE artisans BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "industrielles lyonnais & agriculture montagne",
   ecosystemFr:
     "Vindry-sur-Turdine est une commune nouvelle du NO lyonnais, vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, agriculture montagne, TPE artisanat BTP, commerces.",

@@ -9,9 +9,9 @@ export const MORNANT_COPY: VilleCopy = {
   pitchEn:
     "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
   seoHook: "pays mornantais",
   ecosystemFr:
     "Mornant est le bourg-centre du pays mornantais (SO lyonnais). Tissu mixte : PME tertiaires, agriculture et viticulture (coteaux du Lyonnais — AOC Coteaux-du-Lyonnais), TPE artisanat BTP, commerces de proximité.",

@@ -9,9 +9,9 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
   pitchEn:
     "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants du Haut-Doubs.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
   seoHook: "bassin horloger du",
   ecosystemFr:
     "Villers-le-Lac s'inscrit dans le bassin horloger du Val de Morteau, héritier d'un savoir-faire séculaire partagé avec la Suisse voisine. L'économie locale repose sur la micro-mécanique de précision, l'horlogerie, le tourisme vert autour du Saut du Doubs, les TPE artisanales et le commerce transfrontalier. Proximité directe de la Chaux-de-Fonds (Suisse) et de Morteau.",

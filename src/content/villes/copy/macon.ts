@@ -5,22 +5,22 @@ import type { VilleCopy } from "./types";
 
 export const MACON_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les ETI restent un complément marginal de notre activité.",
   seoHook: "vins du Mâconnais & agroalimentaire",
   ecosystemFr:
     "Mâcon vit au rythme du vignoble Mâconnais et de ses AOP prestigieuses comme le Pouilly-Fuissé, structuré autour de caves coopératives et de maisons de négoce qui exportent dans le monde entier. La Saône irrigue une logistique fluviale et un tissu agroalimentaire actif, tandis que le commerce et les services portent l'économie d'une ville chère à Lamartine. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi des stocks et la relation client sans alourdir des structures déjà sobres.",
   ecosystemEn:
     "Mâcon vit au rythme du vignoble Mâconnais et de ses AOP prestigieuses comme le Pouilly-Fuissé, structuré autour de caves coopératives et de maisons de négoce qui exportent dans le monde entier. La Saône irrigue une logistique fluviale et un tissu agroalimentaire actif, tandis que le commerce et les services portent l'économie d'une ville chère à Lamartine. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi des stocks et la relation client sans alourdir des structures déjà sobres.",
   distancesFr:
-    "Mâcon est reliée par la gare TGV de Mâcon-Loché à environ 7 km du centre, plaçant Lyon Part-Dieu à 40 minutes et Paris en 1h40. L'autoroute A6 longe la ville et l'aéroport Lyon-Saint Exupéry est accessible en une heure de route. Nos architectes se déplacent sur site dans toute la Saône-et-Loire sud, de Charnay-lès-Mâcon à Tournus.",
+    "Mâcon est reliée par la gare TGV de Mâcon-Loché à environ 7 km du centre, plaçant Lyon Part-Dieu à 40 minutes et Paris en 1h40. L'autoroute A6 longe la ville et l'aéroport Lyon-Saint Exupéry est accessible en une heure de route. Nos experts se déplacent sur site dans toute la Saône-et-Loire sud, de Charnay-lès-Mâcon à Tournus.",
   distancesEn:
-    "Mâcon est reliée par la gare TGV de Mâcon-Loché à environ 7 km du centre, plaçant Lyon Part-Dieu à 40 minutes et Paris en 1h40. L'autoroute A6 longe la ville et l'aéroport Lyon-Saint Exupéry est accessible en une heure de route. Nos architectes se déplacent sur site dans toute la Saône-et-Loire sud, de Charnay-lès-Mâcon à Tournus.",
+    "Mâcon est reliée par la gare TGV de Mâcon-Loché à environ 7 km du centre, plaçant Lyon Part-Dieu à 40 minutes et Paris en 1h40. L'autoroute A6 longe la ville et l'aéroport Lyon-Saint Exupéry est accessible en une heure de route. Nos experts se déplacent sur site dans toute la Saône-et-Loire sud, de Charnay-lès-Mâcon à Tournus.",
   topSectorsNaf: [
     "Viticulture & négoce de vins",
     "Industries agroalimentaires",
@@ -53,7 +53,7 @@ export const MACON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il vraiment sur site à Mâcon ?",
-      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Mâcon et dans le sud de la Saône-et-Loire, de Charnay-lès-Mâcon à Tournus, pour observer vos processus réels avant toute recommandation.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Mâcon et dans le sud de la Saône-et-Loire, de Charnay-lès-Mâcon à Tournus, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Travaillez-vous avec les domaines viticoles du Mâconnais ?",

@@ -9,9 +9,9 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
   pitchEn:
     "Château-Thierry (02), sous-préfecture de l''Aisne sur les bords de la Marne, porte sud du vignoble de Champagne et ville natale de Jean de La Fontaine. Tissu TPE/PME viticulture champenoise, agroalimentaire, tourisme, BTP, commerces de proximité, services et artisanat. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Château-Thierry (02). Nous accompagnons tous types d''activités : TPE/PME viticulture champenoise, vignerons et caves, agroalimentaire, professionnels du tourisme et patrimoine, artisans BTP, commerces de proximité et professions de services.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Château-Thierry (02). Nous accompagnons tous types d''activités : TPE/PME viticulture champenoise, vignerons et caves, agroalimentaire, professionnels du tourisme et patrimoine, artisans BTP, commerces de proximité et professions de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Château-Thierry (02). Nous accompagnons tous types d''activités : TPE/PME viticulture champenoise, vignerons et caves, agroalimentaire, professionnels du tourisme et patrimoine, artisans BTP, commerces de proximité et professions de services.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Château-Thierry (02). Nous accompagnons tous types d''activités : TPE/PME viticulture champenoise, vignerons et caves, agroalimentaire, professionnels du tourisme et patrimoine, artisans BTP, commerces de proximité et professions de services.",
   ecosystemFr:
     "Château-Thierry est une sous-préfecture de l''Aisne, ville-pôle de l''Omois et porte sud du vignoble de Champagne. Tradition viticole champenoise (vignerons, caves, coopératives), agroalimentaire, tourisme patrimonial (La Fontaine, château médiéval, mémoire 14-18). Tissu TPE/PME viticulture, BTP, commerces, services et artisanat.",
   ecosystemEn:

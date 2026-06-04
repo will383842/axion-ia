@@ -9,9 +9,9 @@ export const CASSIS_COPY: VilleCopy = {
   pitchEn:
     "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
   seoHook: "viticulture cassis & tourisme haut",
   ecosystemFr:
     "Cassis est une station balnéaire prestigieuse aux portes du Parc national des Calanques. Viticulture AOC Cassis (l'une des plus anciennes AOC de France, vin blanc renommé), tourisme haut de gamme, restauration gastronomique, nautisme et plongée. Économie saisonnière forte avec un tissu de TPE/PME tourisme et artisanat.",

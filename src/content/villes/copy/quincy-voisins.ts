@@ -9,9 +9,9 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   pitchEn:
     "Quincy-Voisins (77), commune résidentielle au nord de Meaux en Seine-et-Marne, entre plaines céréalières et bassin d'emploi meldois. TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit sur place sur mesure.",
   seoHook: "services & agriculture céréalière",
   ecosystemFr:
     "Quincy-Voisins est une commune résidentielle du nord de Meaux en Seine-et-Marne, adossée aux plaines céréalières de la Brie. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitations agricoles.",

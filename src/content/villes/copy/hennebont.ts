@@ -9,9 +9,9 @@ export const HENNEBONT_COPY: VilleCopy = {
   pitchEn:
     "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & commerce centre-ville",
   ecosystemFr:
     "Hennebont est une commune morbihannaise des bords du Blavet, intégrée à Lorient Agglomération. Cité médiévale (basilique Notre-Dame-du-Paradis, remparts, haras national) et tissu TPE/PME : industrie, commerce de centre-ville historique, artisanat, services à la personne, tourisme.",

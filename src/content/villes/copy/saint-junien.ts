@@ -9,9 +9,9 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
   pitchEn:
     "Saint-Junien (87), deuxième ville de Haute-Vienne sur les bords de la Vienne, est historiquement liée à la ganterie et à la mégisserie (travail du cuir). Tissu PME industrielles cuir/textile, TPE artisans, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du Haut-Limousin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Junien (87). Nous accompagnons tous types d'activités : PME industrielles cuir et textile, TPE artisans, commerçants, professions libérales, indépendants et services aux entreprises du Haut-Limousin occidental.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Junien (87). Nous accompagnons tous types d'activités : PME industrielles cuir et textile, TPE artisans, commerçants, professions libérales, indépendants et services aux entreprises du Haut-Limousin occidental.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Junien (87). Nous accompagnons tous types d'activités : PME industrielles cuir et textile, TPE artisans, commerçants, professions libérales, indépendants et services aux entreprises du Haut-Limousin occidental.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Junien (87). Nous accompagnons tous types d'activités : PME industrielles cuir et textile, TPE artisans, commerçants, professions libérales, indépendants et services aux entreprises du Haut-Limousin occidental.",
   seoHook: "industrie cuir & manufacturières mécanique",
   ecosystemFr:
     "Saint-Junien (11 415 hab) est la deuxième ville de Haute-Vienne, sous-préfecture historique de l'industrie du cuir (ganterie, mégisserie) sur les bords de la Vienne. Tissu PME industrielles (cuir, textile, mécanique), TPE artisans, commerces centre-ville, professions libérales. Position stratégique entre Limoges (30 min) et Angoulême (1h), axe RN141.",

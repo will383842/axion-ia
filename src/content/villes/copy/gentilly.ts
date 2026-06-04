@@ -9,9 +9,9 @@ export const GENTILLY_COPY: VilleCopy = {
   pitchEn:
     "Gentilly (94), commune limitrophe sud de Paris en Val-de-Marne, adossée à la Cité internationale universitaire et au campus de Gentilly. Tissu TPE prestataires tertiaires, PME conseil et services numériques, commerçants, professions libérales et startups. Axion-IA accompagne tout le tissu professionnel local du sud parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit sur place sur mesure.",
   seoHook: "conseil services & prestataires tertiaires",
   ecosystemFr:
     "Gentilly est une commune dynamique limitrophe du 13e et 14e arrondissements de Paris, adossée à la Cité internationale universitaire. Son tissu économique mêle TPE prestataires tertiaires, PME de conseil et services numériques, commerces de proximité et professions libérales. Proximité directe avec Arcueil, Le Kremlin-Bicêtre et Montrouge.",

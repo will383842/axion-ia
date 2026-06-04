@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHALLANS_COPY: VilleCopy = {
   pitchFr:
-    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "volaille & agroalimentaire vendéen",
   ecosystemFr:
     "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de TPE et PME, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
@@ -53,7 +53,7 @@ export const CHALLANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Challans ?",
-      a: "Oui, Axion-IA intervient à Challans et dans le nord-ouest vendéen (Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie, Machecoul, Noirmoutier). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Challans et dans le nord-ouest vendéen (Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie, Machecoul, Noirmoutier). Nos experts IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Challans ?",

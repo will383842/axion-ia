@@ -9,9 +9,9 @@ export const GOUESNOU_COPY: VilleCopy = {
   pitchEn:
     "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération brestoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouesnou (29). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services, professions libérales, enseignes de distribution et indépendants de l'agglomération brestoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gouesnou (29). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services, professions libérales, enseignes de distribution et indépendants de l'agglomération brestoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouesnou (29). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services, professions libérales, enseignes de distribution et indépendants de l'agglomération brestoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gouesnou (29). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services, professions libérales, enseignes de distribution et indépendants de l'agglomération brestoise.",
   seoHook: "zones d'activités & commerce agglo Brest",
   ecosystemFr:
     "Gouesnou est une commune périurbaine de Brest Métropole, connue pour ses grandes zones commerciales et d'activités (zone de Kergaradec). L'économie locale repose sur le commerce de détail et de gros, la logistique, les services aux entreprises, l'artisanat BTP et les professions libérales. Sa position en entrée nord de Brest en fait un pôle d'emplois et de flux commerciaux majeur de la métropole.",

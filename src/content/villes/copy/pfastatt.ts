@@ -9,9 +9,9 @@ export const PFASTATT_COPY: VilleCopy = {
   pitchEn:
     "Pfastatt (68), commune de la première couronne nord de Mulhouse dans le Haut-Rhin, est marquée par son héritage textile industriel et accueille aujourd'hui un tissu diversifié de TPE/PME en industrie, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place sur mesure.",
   seoHook: "industrie sous-traitance & textile technique",
   ecosystemFr:
     "Pfastatt s'inscrit dans la première couronne nord de Mulhouse, au sein de Mulhouse Alsace Agglomération (m2A). Ancienne place forte de l'industrie textile alsacienne (DMC, ex-manufactures), la commune a diversifié son tissu vers la sous-traitance industrielle, la mécanique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Proximité immédiate des zones d'activités mulhousiennes.",

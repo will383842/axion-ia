@@ -9,9 +9,9 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Sanary-sur-Mer est une station balnéaire dynamique du Var ouest, mêlant port de pêche actif, marché provençal réputé et économie touristique. Tissu de TPE artisanales, PME hôtellerie-restauration, commerces de bord de mer. Toulon à 25 min, Bandol à 5 min, A50 directe.",

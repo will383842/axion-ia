@@ -9,9 +9,9 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur des rias du Belon et de l'Aven.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moëlan-sur-Mer (29). Nous accompagnons tous types d'activités : TPE ostréicoles des rias du Belon et de l'Aven, PME touristiques, artisans, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moëlan-sur-Mer (29). Nous accompagnons tous types d'activités : TPE ostréicoles des rias du Belon et de l'Aven, PME touristiques, artisans, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moëlan-sur-Mer (29). Nous accompagnons tous types d'activités : TPE ostréicoles des rias du Belon et de l'Aven, PME touristiques, artisans, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moëlan-sur-Mer (29). Nous accompagnons tous types d'activités : TPE ostréicoles des rias du Belon et de l'Aven, PME touristiques, artisans, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   seoHook: "huîtres Belon & tourisme littoral",
   ecosystemFr:
     "Moëlan-sur-Mer est une commune littorale du sud Finistère nichée entre les estuaires du Belon et de l'Aven. L'économie locale repose sur l'ostréiculture de renommée mondiale (huîtres plates Belon), le tourisme balnéaire et nautique (ports de Brigneau et Merrien), l'agriculture et l'artisanat. La commune bénéficie de la proximité de Quimperlé et du dynamisme touristique de la côte sud bretonne.",

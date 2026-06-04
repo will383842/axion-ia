@@ -9,9 +9,9 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   pitchEn:
     "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-ville",
   ecosystemFr:
     "Condé-sur-l'Escaut est une ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge. Patrimoine historique remarquable et tissu TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration.",

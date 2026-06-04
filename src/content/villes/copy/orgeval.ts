@@ -9,9 +9,9 @@ export const ORGEVAL_COPY: VilleCopy = {
   pitchEn:
     "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
   seoHook: "artisanat services & conseil prestataires",
   ecosystemFr:
     "Orgeval est une commune résidentielle prisée de la plaine de Versailles, entre Poissy et Villennes-sur-Seine. Cadre verdoyant à proximité de l'A13 et du bassin d'emploi de Saint-Germain-en-Laye / Poissy. Tissu économique : TPE artisanat et services à domicile, PME conseil et prestataires tertiaires, commerces de village, professions libérales (santé, juridique), auto-entrepreneurs et freelances installés en résidentiel.",

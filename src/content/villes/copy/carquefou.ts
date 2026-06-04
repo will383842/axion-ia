@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CARQUEFOU_COPY: VilleCopy = {
   pitchFr:
-    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME carquefoliennes, les ETI en complément.",
+    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME carquefoliennes, les ETI en complément.",
   pitchEn:
-    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME carquefoliennes, les ETI en complément.",
+    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME carquefoliennes, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "industrie, commerce de gros & logistique",
   ecosystemFr:
     "Carquefou est un pôle d'activités industriel et logistique du nord nantais, structuré autour du parc de la Fleuriaye : PMI, sous-traitance, commerce de gros, distribution et services aux entreprises. Le tissu est dominé par les TPE/PME, complété par quelques ETI industrielles.",

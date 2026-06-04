@@ -9,9 +9,9 @@ export const VALDOIE_COPY: VilleCopy = {
   pitchEn:
     "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
   seoHook: "TPE & PME Territ. Belfort",
   ecosystemFr:
     "Valdoie est positionnée dans l'agglomération belfortaine, en première couronne nord. Commune principalement résidentielle. Économie : TPE artisanat, commerces de proximité, services, PME sous-traitantes des industries Belfort-Montbéliard (énergie GE/Alstom, ferroviaire, automobile PSA).",

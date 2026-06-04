@@ -9,9 +9,9 @@ export const JURANCON_COPY: VilleCopy = {
   pitchEn:
     "Jurançon (64), commune de l'agglomération de Pau, 7 040 habitants. Capitale du vin blanc AOC Jurançon, tissu de TPE viticoles, artisans, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération paloise et du vignoble jurançonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit sur place sur mesure.",
   seoHook: "viticulture jurançon & agroalimentaire caves",
   ecosystemFr:
     "Jurançon est la commune éponyme de l'AOC Jurançon (vin blanc sec et moelleux), 7 040 habitants, directement limitrophe sud de Pau. Tissu de TPE viticoles (domaines, caves coopératives), PME agroalimentaires, artisans, commerces de proximité et professions libérales. Bassin d'emploi commun avec Pau.",

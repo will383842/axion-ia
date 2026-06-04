@@ -9,9 +9,9 @@ export const ITTEVILLE_COPY: VilleCopy = {
   pitchEn:
     "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce rural",
   ecosystemFr:
     "Itteville est une commune résidentielle rurale du sud de l'Essonne, entre Mennecy et La Ferté-Alais. Cadre verdoyant à 38 km de Paris. Tissu économique local : TPE artisans BTP, commerces de proximité, professions libérales, PME services aux particuliers, exploitations agricoles céréalières.",

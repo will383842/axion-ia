@@ -9,9 +9,9 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
   pitchEn:
     "Berre-l'Étang (13), commune industrielle sur les rives de l'étang de Berre dans les Bouches-du-Rhône, s'inscrit dans le bassin pétrochimique et logistique de l'ouest marseillais. TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg. Axion-IA y travaille avec les organisations du territoire du pourtour de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   seoHook: "pétrochimie, industrie & étang de Berre",
   ecosystemFr:
     "Berre-l'Étang est une commune industrielle sur le pourtour de l'étang de Berre, dans le bassin pétrochimique ouest-marseillais. Tissu TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg et services aux entreprises. Proximité directe de la raffinerie et des zones logistiques.",

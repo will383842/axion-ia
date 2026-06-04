@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MENTON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Menton, Perle de la France à la frontière italienne. Nos architectes IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
+    "Axion-IA accompagne les TPE et PME de Menton, Perle de la France à la frontière italienne. Nos experts IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Menton, Perle de la France à la frontière italienne. Nos architectes IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
+    "Axion-IA accompagne les TPE et PME de Menton, Perle de la France à la frontière italienne. Nos experts IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
   directAnswerFr:
-    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'architectes IA seniors. Nous accompagnons en priorité les TPE et PME locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
+    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'experts IA seniors. Nous accompagnons en priorité les TPE et PME locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
   directAnswerEn:
-    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'architectes IA seniors. Nous accompagnons en priorité les TPE et PME locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
+    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'experts IA seniors. Nous accompagnons en priorité les TPE et PME locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
   seoHook: "hôtellerie prestige & frontaliers Monaco",
   ecosystemFr:
     "Menton conjugue tourisme de prestige (Royal Riviera, palaces 4/5 étoiles), commerce du centre historique baroque et marchés bi-nationaux, restauration gastronomique méditerranéenne, et un tissu unique de travailleurs frontaliers Monaco (près de 40 % de la population active). Le Citron de Menton IGP et la Fête du Citron (200 000 visiteurs depuis 1934) structurent l'économie saisonnière. Microclimat sub-tropical, jardins botaniques (Val Rahmeh, Serre de la Madone) et résidentiel Belle Époque haut de gamme complètent l'écosystème TPE/PME.",
@@ -61,7 +61,7 @@ export const MENTON_COPY: VilleCopy = {
     },
     {
       q: "Sous combien de temps intervenez-vous sur la Côte d'Azur depuis Menton ?",
-      a: "Nos architectes IA seniors se déplacent sur Menton et l'ensemble de la Côte d'Azur (Monaco, Nice, Cap-d'Ail, Roquebrune-Cap-Martin) sous 5 jours ouvrés en moyenne. Pour les TPE et PME du Vieux Menton ou du front de mer, nous combinons visites sur site et travail distant sécurisé.",
+      a: "Nos experts IA seniors se déplacent sur Menton et l'ensemble de la Côte d'Azur (Monaco, Nice, Cap-d'Ail, Roquebrune-Cap-Martin) sous 5 jours ouvrés en moyenne. Pour les TPE et PME du Vieux Menton ou du front de mer, nous combinons visites sur site et travail distant sécurisé.",
     },
     {
       q: "Travaillez-vous avec les commerces et restaurants du centre historique de Menton ?",
@@ -69,7 +69,7 @@ export const MENTON_COPY: VilleCopy = {
     },
     {
       q: "Les ETI sont-elles aussi accompagnées par Axion-IA à Menton ?",
-      a: "Oui, en complément. Notre cœur d'activité reste les TPE et PME locales — hôtellerie, commerce, restauration, BTP, services frontaliers. Nous travaillons aussi avec des ETI installées dans les Alpes-Maritimes lorsque le besoin IA correspond à notre savoir-faire d'architectes seniors et à un cadre RGPD strict.",
+      a: "Oui, en complément. Notre cœur d'activité reste les TPE et PME locales — hôtellerie, commerce, restauration, BTP, services frontaliers. Nous travaillons aussi avec des ETI installées dans les Alpes-Maritimes lorsque le besoin IA correspond à notre savoir-faire d'experts seniors et à un cadre RGPD strict.",
     },
     {
       q: "Vos prestations à Menton respectent-elles le RGPD et la spécificité bi-nationale ?",

@@ -9,9 +9,9 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
   pitchEn:
     "Mouans-Sartoux (06), pionnière nationale du 100 % bio en restauration scolaire et organisatrice du Festival international du livre, allie engagement environnemental et dynamisme culturel entre Grasse et Cannes. Tissu TPE/PME agriculture bio, commerce équitable, artisanat, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouans-Sartoux (06). Nous accompagnons tous types d'activités : TPE agriculture bio et commerce équitable, artisans, commerçants, professions libérales, PME services et entreprises culturelles du bassin Grasse-Cannes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mouans-Sartoux (06). Nous accompagnons tous types d'activités : TPE agriculture bio et commerce équitable, artisans, commerçants, professions libérales, PME services et entreprises culturelles du bassin Grasse-Cannes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouans-Sartoux (06). Nous accompagnons tous types d'activités : TPE agriculture bio et commerce équitable, artisans, commerçants, professions libérales, PME services et entreprises culturelles du bassin Grasse-Cannes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mouans-Sartoux (06). Nous accompagnons tous types d'activités : TPE agriculture bio et commerce équitable, artisans, commerçants, professions libérales, PME services et entreprises culturelles du bassin Grasse-Cannes.",
   seoHook: "agriculture bio & commerce équitable",
   ecosystemFr:
     "Mouans-Sartoux est une référence nationale en alimentation durable : première commune de France à servir 100 % bio dans ses cantines scolaires (régie municipale agricole). Le Festival international du livre attire 50 000 visiteurs annuels. Située entre Grasse (parfumerie) et Cannes (événementiel), la commune offre un cadre résidentiel prisé avec un tissu de TPE/PME diversifié.",

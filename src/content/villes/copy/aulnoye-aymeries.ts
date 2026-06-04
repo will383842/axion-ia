@@ -9,9 +9,9 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
   pitchEn:
     "Aulnoye-Aymeries (59), commune de la vallée de la Sambre dans l'Avesnois, nœud ferroviaire historique du Nord. Tissu économique : TPE et PME de l'industrie métallurgique et mécanique héritières du bassin sambrien, artisanat, commerce de centre-bourg, services de proximité, transport ferroviaire et logistique. Axion-IA répond aux besoins de toutes les entreprises du bassin sambrien et de l'Avesnois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aulnoye-Aymeries (59). Nous accompagnons TPE et PME : industrie métallurgique et mécanique du bassin sambrien, artisans, commerçants de centre-bourg, prestataires logistiques ferroviaires et services de proximité de l'Avesnois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aulnoye-Aymeries (59). Nous accompagnons TPE et PME : industrie métallurgique et mécanique du bassin sambrien, artisans, commerçants de centre-bourg, prestataires logistiques ferroviaires et services de proximité de l'Avesnois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aulnoye-Aymeries (59). Nous accompagnons TPE et PME : industrie métallurgique et mécanique du bassin sambrien, artisans, commerçants de centre-bourg, prestataires logistiques ferroviaires et services de proximité de l'Avesnois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aulnoye-Aymeries (59). Nous accompagnons TPE et PME : industrie métallurgique et mécanique du bassin sambrien, artisans, commerçants de centre-bourg, prestataires logistiques ferroviaires et services de proximité de l'Avesnois.",
   seoHook: "industrie métallurgique & artisanat local",
   ecosystemFr:
     "Aulnoye-Aymeries est une commune de la vallée de la Sambre dans l'Avesnois, nœud ferroviaire historique (gare de jonction TER Lille-Maubeuge-Jeumont). L'économie locale s'appuie sur un tissu de TPE et PME de l'industrie métallurgique et mécanique héritières du bassin sambrien (sidérurgie reconvertie), l'artisanat, le commerce de centre-bourg, les services de proximité et la logistique ferroviaire. Territoire en reconversion industrielle avec dynamique de diversification.",

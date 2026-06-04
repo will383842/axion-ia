@@ -5,22 +5,22 @@ import type { VilleCopy } from "./types";
 
 export const SUCY_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
   seoHook: "commerces & services de proximité",
   ecosystemFr:
     "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   ecosystemEn:
     "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   distancesFr:
-    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos architectes se déplacent sur site dans tout le sud-est du Val-de-Marne.",
+    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos experts se déplacent sur site dans tout le sud-est du Val-de-Marne.",
   distancesEn:
-    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos architectes se déplacent sur site dans tout le sud-est du Val-de-Marne.",
+    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos experts se déplacent sur site dans tout le sud-est du Val-de-Marne.",
   topSectorsNaf: [
     "Commerce de détail de proximité",
     "Artisanat & construction",
@@ -53,7 +53,7 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Sucy-en-Brie ?",
-      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Sucy-en-Brie et dans le sud-est du Val-de-Marne, pour observer vos processus réels avant toute recommandation.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Sucy-en-Brie et dans le sud-est du Val-de-Marne, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Un commerce ou un cabinet libéral peut-il vraiment profiter de l'IA ?",

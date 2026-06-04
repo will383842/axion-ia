@@ -9,9 +9,9 @@ export const GARCHES_COPY: VilleCopy = {
   pitchEn:
     "Garches (92), commune résidentielle bourgeoise de l'ouest parisien dans les Hauts-de-Seine, accueille un tissu de PME tertiaires, professions libérales de santé (pôle hospitalier Raymond-Poincaré), TPE artisans, commerces et cabinets conseil. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
   seoHook: "professions libérales & tertiaires cabinets",
   ecosystemFr:
     "Garches est une commune résidentielle haut de gamme de l'ouest des Hauts-de-Seine, entre Saint-Cloud et Vaucresson. Présence marquée du secteur médical (hôpital Raymond-Poincaré AP-HP, médecins spécialistes, paramédicaux). Tissu économique : PME tertiaires et cabinets conseil, professions libérales (santé, juridique, patrimoine), TPE artisanat bâtiment, commerces de centre-ville. Proximité immédiate de La Défense et du quartier d'affaires.",

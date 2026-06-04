@@ -9,9 +9,9 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
   pitchEn:
     "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blainville-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et logistiques canal de Caen, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération caennaise nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blainville-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et logistiques canal de Caen, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération caennaise nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blainville-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et logistiques canal de Caen, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération caennaise nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blainville-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et logistiques canal de Caen, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération caennaise nord.",
   seoHook: "industrie logistique & services aux",
   ecosystemFr:
     "Blainville-sur-Orne est une commune de l'agglomération caennaise, traversée par le canal de Caen à la mer et l'Orne. Zone d'activités industrielles et logistiques (proximité port de Caen-Ouistreham). Tissu TPE artisans BTP, PME services et industrie, commerces de proximité, professions libérales.",

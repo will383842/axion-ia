@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BAGNEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "tertiaire & BTP Grand Paris",
   ecosystemFr:
     "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de TPE et PME de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",

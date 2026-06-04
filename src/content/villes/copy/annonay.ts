@@ -9,9 +9,9 @@ export const ANNONAY_COPY: VilleCopy = {
   pitchEn:
     "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "industrielles & agriculture montagne",
   ecosystemFr:
     "Annonay est la sous-préfecture du nord-Ardèche, berceau des frères Montgolfier (invention montgolfière 1783). Héritage industriel papetier et tanneur (savoir-faire local historique). Tissu PME industrielles diversifiées, agriculture montagne ardéchoise, TPE artisanat BTP, commerces.",

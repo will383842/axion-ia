@@ -9,9 +9,9 @@ export const VALENTON_COPY: VilleCopy = {
   pitchEn:
     "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Val-de-Marne",
   ecosystemFr:
     "Valenton est une commune du sud du Val-de-Marne structurée autour de la gare de triage de Villeneuve-Saint-Georges/Valenton, la plus grande d'Île-de-France. Zones logistiques et industrielles actives, PME transport, TPE artisans BTP, commerces de proximité et services aux entreprises.",

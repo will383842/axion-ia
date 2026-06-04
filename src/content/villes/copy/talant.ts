@@ -10,9 +10,9 @@ export const TALANT_COPY: VilleCopy = {
     "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre les activités professionnelles du bassin de l'ouest dijonnais.",
   seoHook: "tertiaire, santé & commerces",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Talant est une commune résidentielle de Dijon Métropole perchée sur le plateau nord-ouest, surplombant le lac Kir et la vallée de l'Ouche. Économie locale tournée vers les services : professions libérales (santé, juridique), commerces de proximité, TPE tertiaires, services à la personne, quelques activités artisanales.",
   ecosystemEn:

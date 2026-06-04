@@ -10,9 +10,9 @@ export const SAINT_AUBIN_LES_ELBEUF_COPY: VilleCopy = {
     "Saint-Aubin-les-Elbeuf (76), commune de l'agglomeration d'Elbeuf en Seine-Maritime, reunit pres de 8 440 habitants. Ville residentielle et commercante en bord de Seine, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Elbeuf",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Aubin-les-Elbeuf fait partie de la Metropole Rouen Normandie, dans le secteur d'Elbeuf. Tissu economique de proximite : commerces, TPE de services, artisanat, professions liberales et PME de l'agglo elbeuvienne. Gare ferroviaire et acces A13.",
   ecosystemEn:

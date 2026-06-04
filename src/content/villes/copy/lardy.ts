@@ -9,9 +9,9 @@ export const LARDY_COPY: VilleCopy = {
   pitchEn:
     "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre les activités professionnelles du bassin de la vallée de la Juine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
   seoHook: "artisanat commerce & agriculture vallée",
   ecosystemFr:
     "Lardy est une commune résidentielle rurale dans la vallée de la Juine (Essonne), à 38 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, exploitations agricoles, PME tertiaires, indépendants. Bassin d'emploi élargi vers Arpajon, Étampes et Brétigny-sur-Orge.",

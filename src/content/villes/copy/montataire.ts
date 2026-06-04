@@ -9,9 +9,9 @@ export const MONTATAIRE_COPY: VilleCopy = {
   pitchEn:
     "Montataire (60), commune industrielle de l'agglomération creilloise dans l'Oise, héritière de la métallurgie lourde reconvertie vers les services, la logistique et le BTP. Tissu TPE/PME industrie, sous-traitance, commerce, artisanat et économie sociale. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit sur place sur mesure.",
   ecosystemFr:
     "Montataire est une commune du bassin creillois, marquée par l'héritage de la métallurgie lourde (ancienne sidérurgie) reconvertie vers l'industrie légère, la sous-traitance, le BTP et la logistique. Tissu TPE/PME diversifié, commerces, artisanat, économie sociale et solidaire. Proximité Creil, Nogent-sur-Oise et Senlis.",
   ecosystemEn:

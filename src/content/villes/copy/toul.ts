@@ -9,9 +9,9 @@ export const TOUL_COPY: VilleCopy = {
   pitchEn:
     "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local du Toulois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
   seoHook: "viticulture côtes & agroalimentaires",
   ecosystemFr:
     "Toul est une cité épiscopale historique en Meurthe-et-Moselle, connue pour sa cathédrale gothique Saint-Étienne et le vignoble Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces de proximité et tourisme.",

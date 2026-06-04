@@ -9,9 +9,9 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
   pitchEn:
     "Saint-André-lez-Lille (59), commune résidentielle de la Métropole Européenne de Lille en bordure nord-ouest de Lille, entre Lambersart et Marquette-lez-Lille. Tissu économique : TPE et PME de services aux entreprises, professions libérales (santé, juridique, conseil), commerce de proximité, artisanat, restauration. Axion-IA répond aux besoins de toutes les entreprises du nord-ouest de l'agglo lilloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Saint-André-lez-Lille est une commune résidentielle aisée de la première couronne lilloise, limitrophe de Lambersart et Marquette-lez-Lille, traversée par la Deûle. L'économie locale repose sur les TPE et PME de services aux entreprises (cabinets conseil, agences de communication, ESN), les professions libérales (santé, juridique, expertise comptable), le commerce de proximité haut de gamme, l'artisanat et la restauration. Cadre de vie attractif qui attire dirigeants et indépendants de la métropole lilloise.",

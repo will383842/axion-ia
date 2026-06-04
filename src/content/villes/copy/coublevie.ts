@@ -9,9 +9,9 @@ export const COUBLEVIE_COPY: VilleCopy = {
   pitchEn:
     "Coublevie (38), commune du Pays voironnais en Isère, occupe une position résidentielle péri-urbaine à proximité immédiate de Voiron, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales et agriculture résiduelle. Axion-IA y intervient pour tous types d'activités voironnaises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coublevie (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants, PME tertiaires coublevitaines et services aux entreprises du Pays voironnais et bassin Voiron-Chartreuse.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coublevie (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants, PME tertiaires coublevitaines et services aux entreprises du Pays voironnais et bassin Voiron-Chartreuse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coublevie (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants, PME tertiaires coublevitaines et services aux entreprises du Pays voironnais et bassin Voiron-Chartreuse.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coublevie (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants, PME tertiaires coublevitaines et services aux entreprises du Pays voironnais et bassin Voiron-Chartreuse.",
   seoHook: "tertiaires pays & professions libérales",
   ecosystemFr:
     "Coublevie est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab), positionnée en banlieue résidentielle de Voiron. Position pied du massif de la Chartreuse. Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées, agriculture résiduelle.",

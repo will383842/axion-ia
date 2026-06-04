@@ -9,9 +9,9 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
   pitchEn:
     "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mesnils-sur-Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, indépendants et professions libérales d'Évreux Portes de Normandie.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mesnils-sur-Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, indépendants et professions libérales d'Évreux Portes de Normandie.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mesnils-sur-Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, indépendants et professions libérales d'Évreux Portes de Normandie.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mesnils-sur-Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, indépendants et professions libérales d'Évreux Portes de Normandie.",
   seoHook: "services aux & agriculture vallée",
   ecosystemFr:
     "Mesnils-sur-Iton est une commune nouvelle de l'Eure issue de la fusion de plusieurs villages le long de la vallée de l'Iton, dans l'agglomération d'Évreux. Tissu résidentiel et économique en croissance, adossé à la préfecture de l'Eure. Agriculture, artisanat, services aux entreprises, commerces, professions libérales.",

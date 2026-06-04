@@ -9,9 +9,9 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
   pitchEn:
     "Moulins-lès-Metz (57), commune mosellane de l''agglomération messine ouest le long des bords de la Moselle. Tissu TPE/PME services, tertiaire, professions libérales, commerces de proximité, artisanat, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : TPE/PME services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : TPE/PME services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : TPE/PME services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : TPE/PME services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
   ecosystemFr:
     "Moulins-lès-Metz est une commune mosellane résidentielle et tertiaire de l''agglomération Metz Ouest, sur les bords de Moselle. Tissu TPE/PME services, professions libérales, artisanat, BTP, commerces de proximité et restauration. Proximité immédiate avec le bassin économique messin et les axes routiers majeurs Grand Est.",
   ecosystemEn:

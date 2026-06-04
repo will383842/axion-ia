@@ -9,9 +9,9 @@ export const BUC_COPY: VilleCopy = {
   pitchEn:
     "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Bièvre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit sur place sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Buc est une commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Proximité de pôles d'innovation et de recherche. Tissu économique : TPE artisans, commerces de village, PME de services, professions libérales, conseil et ingénierie. Communes voisines : Versailles, Jouy-en-Josas, Les Loges-en-Josas, Toussus-le-Noble, Guyancourt.",

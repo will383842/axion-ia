@@ -9,9 +9,9 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
   pitchEn:
     "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   seoHook: "artisanat & industrie reconvertie",
   ecosystemFr:
     "Bully-les-Mines est intégrée à l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique post-mine : TPE artisanat BTP, PME industrie reconvertie (sous-traitance, métallurgie légère), commerces de proximité, professions libérales. Proximité Lens (5 min) et Liévin (5 min). Accès A21 vers Lille (30 min).",

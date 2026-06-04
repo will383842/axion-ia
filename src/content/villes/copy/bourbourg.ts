@@ -10,9 +10,9 @@ export const BOURBOURG_COPY: VilleCopy = {
     "Bourbourg (59), petite ville de la Flandre maritime dans le Nord, reunit pres de 6 930 habitants. Situee entre Dunkerque et Saint-Omer le long du canal de Bourbourg, son economie associe TPE artisans, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Flandre maritime, industrie & canal",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bourbourg est situee en Flandre maritime, entre Dunkerque (15 km) et Saint-Omer (25 km), le long du canal de Bourbourg. Tissu economique mixte : PME industrielles (sous-traitance sidero-chimie dunkerquoise), TPE artisanat BTP, agriculture flamande (polyculture, elevage), commerces de centre-bourg et services.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const REDON_COPY: VilleCopy = {
   pitchEn:
     "Redon (35), sous-préfecture d'Ille-et-Vilaine à la confluence de la Vilaine et de l'Oust, est un carrefour fluvial et ferroviaire entre Bretagne et Pays de la Loire. Port fluvial historique, TPE artisans, PME industrielles agroalimentaires, commerces de centre-ville, professions libérales et exploitants agricoles. Axion-IA couvre les activités professionnelles du bassin du Pays de Redon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Redon (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-ville, PME agroalimentaires et industrielles du Pays de Redon, exploitants agricoles, professions libérales, indépendants et services aux entreprises de ce carrefour Bretagne-Pays de la Loire.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Redon (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-ville, PME agroalimentaires et industrielles du Pays de Redon, exploitants agricoles, professions libérales, indépendants et services aux entreprises de ce carrefour Bretagne-Pays de la Loire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Redon (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-ville, PME agroalimentaires et industrielles du Pays de Redon, exploitants agricoles, professions libérales, indépendants et services aux entreprises de ce carrefour Bretagne-Pays de la Loire.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Redon (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-ville, PME agroalimentaires et industrielles du Pays de Redon, exploitants agricoles, professions libérales, indépendants et services aux entreprises de ce carrefour Bretagne-Pays de la Loire.",
   seoHook: "pays de la",
   ecosystemFr:
     "Redon est un bourg-centre stratégique à la confluence Vilaine-Oust, carrefour ferroviaire (gare TGV Rennes-Nantes-Quimper) et fluvial historique. Sous-préfecture, la ville joue un rôle de pôle de services et de commerces pour tout le Pays de Redon. Tissu TPE artisans, PME agroalimentaires, agriculture, tourisme fluvial et nautisme.",

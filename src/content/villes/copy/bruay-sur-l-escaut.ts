@@ -9,9 +9,9 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
   pitchEn:
     "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie son expertise pour toutes les organisations du Valenciennois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier du",
   ecosystemFr:
     "Bruay-sur-l'Escaut s'inscrit dans le bassin économique de Valenciennes Métropole, terre de reconversion post-minière tournée vers l'automobile (proximité PSA Trith-Saint-Léger, Toyota Onnaing), la logistique de l'Escaut canalisé, l'industrie ferroviaire (Alstom Petite-Forêt) et la sous-traitance B2B. Tissu TPE artisans BTP, PME mécanique de précision, commerces de centre-bourg et services de proximité.",

@@ -9,9 +9,9 @@ export const GIERES_COPY: VilleCopy = {
   pitchEn:
     "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   seoHook: "université recherche & tertiaires services",
   ecosystemFr:
     "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",

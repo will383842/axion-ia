@@ -9,9 +9,9 @@ export const RIEDISHEIM_COPY: VilleCopy = {
   pitchEn:
     "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
   ecosystemFr:
     "Riedisheim est une commune résidentielle de l'agglomération mulhousienne est, orientée services de proximité, professions libérales, artisanat et commerce. Tissu TPE/PME services, santé, professions libérales, artisans. Bassin de vie connecté à Mulhouse et au sud-Alsace.",
   ecosystemEn:

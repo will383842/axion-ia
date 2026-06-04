@@ -9,9 +9,9 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   seoHook: "artisanat commerce & tertiaires hurepoix",
   ecosystemFr:
     "Longpont-sur-Orge est une commune résidentielle du Hurepoix (Essonne), à 25 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Sainte-Geneviève-des-Bois et Massy.",

@@ -9,9 +9,9 @@ export const BAILLEUL_COPY: VilleCopy = {
   pitchEn:
     "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales de la Flandre intérieure.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "agroalimentaire brasserie & artisanat",
   ecosystemFr:
     "Bailleul est une sous-préfecture historique de Flandre française, célèbre pour son beffroi UNESCO, son marché flamand hebdomadaire et sa brasserie traditionnelle. Tissu TPE artisans BTP, PME agroalimentaire (brasserie, transformation), commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position frontalière avec la Belgique, axe Lille-Dunkerque.",

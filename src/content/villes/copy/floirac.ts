@@ -9,9 +9,9 @@ export const FLOIRAC_COPY: VilleCopy = {
   pitchEn:
     "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie son expertise pour toutes les organisations : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
   seoHook: "bassin rive droite",
   ecosystemFr:
     "Floirac bénéficie de la dynamique de reconversion de la rive droite de Bordeaux Métropole (770 000 hab). Nouveaux quartiers mixtes (résidentiel, tertiaire, commercial), proximité immédiate du centre de Bordeaux via le pont François-Mitterrand et le tramway A. Tissu TPE/PME en croissance, professions libérales et commerces de proximité.",

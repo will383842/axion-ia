@@ -10,9 +10,9 @@ export const CAUDEBEC_LES_ELBEUF_COPY: VilleCopy = {
     "Caudebec-les-Elbeuf (76), commune de l'agglomeration d'Elbeuf en Seine-Maritime, reunit pres de 10 480 habitants. Ville residentielle et commercante en bord de Seine, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Elbeuf",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Caudebec-les-Elbeuf fait partie de la Metropole Rouen Normandie, dans le secteur d'Elbeuf en bord de Seine. Tissu economique de proximite : commerces, TPE de services, artisanat BTP, professions liberales et PME de l'agglo elbeuvienne. Proximite A13 et acces rapide Rouen.",
   ecosystemEn:

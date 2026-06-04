@@ -9,9 +9,9 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Levallois-Perret — cabinets de conseil, agences de communication, sièges sociaux du quartier Eiffel — pour transformer une intuition « il faut faire de l'IA » en automatisations concrètes, sobres et mesurées. Sur cette commune ultra-dense des Hauts-de-Seine, héritière de la parfumerie Coty et devenue place forte du tertiaire premium, nous restons proches du terrain : un dirigeant, un interlocuteur, des décisions tenables.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Levallois-Perret, dans les Hauts-de-Seine. Sur ce territoire ultra-dense de sièges sociaux, d'agences de communication et de cabinets de conseil, nous diagnostiquons d'abord les tâches répétitives avant de déployer des automatisations utiles : devis, relances, reporting, support client. Un seul interlocuteur senior, des livrables sobres, un retour sur investissement vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Levallois-Perret, dans les Hauts-de-Seine. Sur ce territoire ultra-dense de sièges sociaux, d'agences de communication et de cabinets de conseil, nous diagnostiquons d'abord les tâches répétitives avant de déployer des automatisations utiles : devis, relances, reporting, support client. Un seul interlocuteur senior, des livrables sobres, un retour sur investissement vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Levallois-Perret, dans les Hauts-de-Seine. Sur ce territoire ultra-dense de sièges sociaux, d'agences de communication et de cabinets de conseil, nous diagnostiquons d'abord les tâches répétitives avant de déployer des automatisations utiles : devis, relances, reporting, support client. Un seul interlocuteur senior, des livrables sobres, un retour sur investissement vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Levallois-Perret, dans les Hauts-de-Seine. Sur ce territoire ultra-dense de sièges sociaux, d'agences de communication et de cabinets de conseil, nous diagnostiquons d'abord les tâches répétitives avant de déployer des automatisations utiles : devis, relances, reporting, support client. Un seul interlocuteur senior, des livrables sobres, un retour sur investissement vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "conseil & tertiaire premium",
   ecosystemFr:
     "Levallois-Perret est l'une des communes les plus denses d'Europe : sur un mouchoir de poche, elle concentre sièges sociaux, cabinets de conseil, agences de communication et services financiers, héritage d'un passé industriel marqué par la parfumerie Coty et l'automobile Clément-Bayard. Ce tissu très tertiaire abrite une forte densité de TPE et de PME — studios créatifs, conseils spécialisés, sociétés de services — qui gagnent vite avec des automatisations ciblées : qualification de leads, production de propositions, suivi client. Axion-IA s'y adresse en priorité, l'ETI restant marginale dans notre portefeuille.",
@@ -42,8 +42,8 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
       en: "Implémentation à Levallois-Perret : nous connectons l'IA aux CRM et outils de production déjà en place dans les agences et conseils locaux, pour un déploiement intégré, documenté et sans dépendance technique imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Levallois-Perret : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les bons usages de l'IA dans un quotidien tertiaire dense et décider sereinement des priorités.",
-      en: "Accompagnement un-à-un à Levallois-Perret : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les bons usages de l'IA dans un quotidien tertiaire dense et décider sereinement des priorités.",
+      fr: "Accompagnement un-à-un à Levallois-Perret : un dirigeant de TPE ou PME, un expert IA senior, pour clarifier les bons usages de l'IA dans un quotidien tertiaire dense et décider sereinement des priorités.",
+      en: "Accompagnement un-à-un à Levallois-Perret : un dirigeant de TPE ou PME, un expert IA senior, pour clarifier les bons usages de l'IA dans un quotidien tertiaire dense et décider sereinement des priorités.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Levallois-Perret : pour les agences, cabinets et studios créatifs locaux, nous bâtissons des sites et interfaces dopés à l'IA — qualification de contacts, contenus assistés — pensés pour convertir une clientèle exigeante.",
@@ -61,7 +61,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Levallois-Perret ?",
-      a: "Oui. Grâce à la centralité de Levallois-Perret, desservie par le métro 3 et le Transilien à quelques minutes de Saint-Lazare et de La Défense, un architecte senior se déplace facilement dans vos locaux pour les ateliers de cadrage et les points clés du projet.",
+      a: "Oui. Grâce à la centralité de Levallois-Perret, desservie par le métro 3 et le Transilien à quelques minutes de Saint-Lazare et de La Défense, un expert senior se déplace facilement dans vos locaux pour les ateliers de cadrage et les points clés du projet.",
     },
     {
       q: "Par où commencer un projet IA à Levallois-Perret ?",

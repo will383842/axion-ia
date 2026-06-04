@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAMBERY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Chambéry, préfecture de la Savoie et capitale historique du duché, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes IA seniors intervient sur site auprès des PME agroalimentaires (Beaufort, Tomme, Tipiak), des sous-traitants automobiles et mécaniques de précision, des hôteliers-restaurateurs des stations alpines et des commerçants du centre historique pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
+    "Axion-IA accompagne les TPE et PME de Chambéry, préfecture de la Savoie et capitale historique du duché, dans leurs projets d'intelligence artificielle. Notre cabinet d'experts IA seniors intervient sur site auprès des PME agroalimentaires (Beaufort, Tomme, Tipiak), des sous-traitants automobiles et mécaniques de précision, des hôteliers-restaurateurs des stations alpines et des commerçants du centre historique pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Chambéry, préfecture de la Savoie et capitale historique du duché, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes IA seniors intervient sur site auprès des PME agroalimentaires (Beaufort, Tomme, Tipiak), des sous-traitants automobiles et mécaniques de précision, des hôteliers-restaurateurs des stations alpines et des commerçants du centre historique pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
+    "Axion-IA accompagne les TPE et PME de Chambéry, préfecture de la Savoie et capitale historique du duché, dans leurs projets d'intelligence artificielle. Notre cabinet d'experts IA seniors intervient sur site auprès des PME agroalimentaires (Beaufort, Tomme, Tipiak), des sous-traitants automobiles et mécaniques de précision, des hôteliers-restaurateurs des stations alpines et des commerçants du centre historique pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   seoHook: "agroalimentaire & industrie de précision",
   ecosystemFr:
     "Chambéry concentre un tissu de TPE et PME unique en France : agroalimentaire savoyard sous IGP/AOP (Beaufort, Tomme des Bauges, Tipiak), sous-traitance automobile et mécanique de précision dans l'orbite Renault Trucks/Toyota/Volvo, Université Savoie Mont Blanc (12 000 étudiants), Institut National de l'Énergie Solaire (INES) sur le campus de Technolac, et porte d'entrée des stations alpines (Trois Vallées, Les Arcs, La Plagne, Tarentaise, Maurienne). Le cluster Grenoble-Chambéry-Annecy structure les pôles Tenerrdis (énergie) et Minalogic (microélectronique).",
@@ -53,7 +53,7 @@ export const CHAMBERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Chambéry et dans les stations savoyardes ?",
-      a: "Oui, nos architectes IA seniors se déplacent à Chambéry, dans toute la Savoie et les stations de Tarentaise et Maurienne (30 à 90 minutes du centre-ville) pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors se déplacent à Chambéry, dans toute la Savoie et les stations de Tarentaise et Maurienne (30 à 90 minutes du centre-ville) pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Chambéry ?",
@@ -69,11 +69,11 @@ export const CHAMBERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai moyen pour démarrer une mission IA à Chambéry ?",
-      a: "Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos architectes seniors et la complexité du projet. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent les venues hebdomadaires depuis Paris ou Lyon.",
+      a: "Nous démarrons une mission à Chambéry sous 5 à 10 jours ouvrés en moyenne, selon la disponibilité de nos experts seniors et la complexité du projet. La gare TGV Chambéry-Challes-les-Eaux et l'A43 facilitent les venues hebdomadaires depuis Paris ou Lyon.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Chambéry ?",
-      a: "Oui, toutes nos interventions à Chambéry intègrent par défaut la conformité RGPD et le règlement européen AI Act. Nos architectes IA seniors documentent les traitements, les fournisseurs de modèles et les risques, avec une traçabilité auditable pour les TPE et PME savoyardes.",
+      a: "Oui, toutes nos interventions à Chambéry intègrent par défaut la conformité RGPD et le règlement européen AI Act. Nos experts IA seniors documentent les traitements, les fournisseurs de modèles et les risques, avec une traçabilité auditable pour les TPE et PME savoyardes.",
     },
   ],
 };

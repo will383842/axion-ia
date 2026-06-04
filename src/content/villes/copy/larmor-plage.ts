@@ -9,9 +9,9 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
   pitchEn:
     "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
   seoHook: "hébergement touristique & commerce proximité",
   ecosystemFr:
     "Larmor-Plage est membre de Lorient Agglomération (25 communes). Station balnéaire prisée (Fort Bloqué, plages), la commune accueille un tissu de TPE tourisme et restauration, commerces de proximité, artisans BTP rénovation littorale, PME nautiques et services. Lorient centre à 5 km, accès direct RN165 vers Vannes et Quimper.",

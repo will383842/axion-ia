@@ -10,9 +10,9 @@ export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
     "Octeville-sur-Mer (76), commune littorale de l'agglomeration havraise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle en bord de falaises, elle accueille des professions liberales, des TPE de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "littoral, professions liberales & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Octeville-sur-Mer est une commune residentielle littorale a l'ouest du Havre, sur les falaises de la cote d'Albatre. Partie de la communaute urbaine Le Havre Seine Metropole, son tissu economique comprend des professions liberales, TPE de services, commerces et artisanat.",
   ecosystemEn:

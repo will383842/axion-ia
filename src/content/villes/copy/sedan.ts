@@ -10,9 +10,9 @@ export const SEDAN_COPY: VilleCopy = {
     "Sedan (08), sous-préfecture des Ardennes en bord de Meuse, abrite le plus grand château fort d'Europe (35 000 m²) et un patrimoine industriel textile (drap de Sedan) reconverti vers la métallurgie et les services. TPE artisans, PME industrielles, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations du Sedanais.",
   seoHook: "industrie, tourisme & métallurgie ardennaise",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Sedan (environ 16 700 habitants) est la deuxième ville des Ardennes et sous-préfecture. Bordée par la Meuse, la commune est dominée par son château fort médiéval, plus vaste forteresse d'Europe. Héritière du drap de Sedan (textile prestigieux XVIIe-XXe siècle), l'économie locale s'est reconvertie vers la métallurgie, la fonderie, l'agroalimentaire et les services. Le tourisme patrimonial, le commerce de proximité et l'artisanat structurent également l'activité.",
   ecosystemEn:

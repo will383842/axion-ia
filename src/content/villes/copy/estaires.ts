@@ -9,9 +9,9 @@ export const ESTAIRES_COPY: VilleCopy = {
   pitchEn:
     "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Estaires (59). Nous accompagnons tous types d'activités : TPE artisans et négoce agricole, PME agroalimentaire et textile, commerçants, services de proximité et entreprises du bassin économique Flandre-Lys.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Estaires (59). Nous accompagnons tous types d'activités : TPE artisans et négoce agricole, PME agroalimentaire et textile, commerçants, services de proximité et entreprises du bassin économique Flandre-Lys.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Estaires (59). Nous accompagnons tous types d'activités : TPE artisans et négoce agricole, PME agroalimentaire et textile, commerçants, services de proximité et entreprises du bassin économique Flandre-Lys.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Estaires (59). Nous accompagnons tous types d'activités : TPE artisans et négoce agricole, PME agroalimentaire et textile, commerçants, services de proximité et entreprises du bassin économique Flandre-Lys.",
   ecosystemFr:
     "Estaires est une commune de Flandre intérieure sur les bords de la Lys, entre Armentières et Hazebrouck. Tissu TPE/PME artisanat, négoce agricole (grandes cultures, lin), industrie agroalimentaire et textile (héritage flamand), commerces de centre-bourg, services. Accès Lille (35 min), Béthune (20 min), Hazebrouck (15 min). Bassin économique Flandre-Lys dynamique.",
   ecosystemEn:

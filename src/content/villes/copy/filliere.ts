@@ -9,9 +9,9 @@ export const FILLIERE_COPY: VilleCopy = {
   pitchEn:
     "Fillière (74), commune nouvelle de Haute-Savoie née de la fusion de 2019, est située au nord d'Annecy sur le plateau des Bornes avec accès au plateau des Glières. Tissu agriculture plateau des Bornes, TPE artisanat BTP, commerce rural, PME tertiaires, tourisme nature Glières. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fillière (74). Nous accompagnons TPE et PME : exploitants agricoles du plateau des Bornes, artisans BTP, commerçants ruraux, PME tertiaires, acteurs tourisme nature plateau des Glières.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fillière (74). Nous accompagnons TPE et PME : exploitants agricoles du plateau des Bornes, artisans BTP, commerçants ruraux, PME tertiaires, acteurs tourisme nature plateau des Glières.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fillière (74). Nous accompagnons TPE et PME : exploitants agricoles du plateau des Bornes, artisans BTP, commerçants ruraux, PME tertiaires, acteurs tourisme nature plateau des Glières.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fillière (74). Nous accompagnons TPE et PME : exploitants agricoles du plateau des Bornes, artisans BTP, commerçants ruraux, PME tertiaires, acteurs tourisme nature plateau des Glières.",
   seoHook: "agriculture plateau & commerce rural",
   ecosystemFr:
     "Fillière est une commune nouvelle issue de la fusion de 2019, au nord d'Annecy sur le plateau des Bornes. Tissu agricole (élevage, reblochon, filières courtes), TPE artisanat BTP, commerces ruraux, PME tertiaires bassin annécien, tourisme nature plateau des Glières (mémorial Résistance, randonnée, ski de fond).",

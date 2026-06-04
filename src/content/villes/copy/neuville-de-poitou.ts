@@ -9,9 +9,9 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   pitchEn:
     "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   seoHook: "commerce proximité & artisanat services",
   ecosystemFr:
     "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",

@@ -9,9 +9,9 @@ export const LENTILLY_COPY: VilleCopy = {
   pitchEn:
     "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du NO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
   seoHook: "tertiaires lyonnais",
   ecosystemFr:
     "Lentilly est positionnée en banlieue NO de Lyon, aux portes des monts du Lyonnais est. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",

@@ -9,9 +9,9 @@ export const ROQUES_COPY: VilleCopy = {
   pitchEn:
     "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Roques est une commune résidentielle du sud de Toulouse, sur les bords de la Garonne entre Portet-sur-Garonne et Muret. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone commerciale Portet.",

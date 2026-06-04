@@ -9,9 +9,9 @@ export const REMIREMONT_COPY: VilleCopy = {
   pitchEn:
     "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
   seoHook: "massif vosgien",
   ecosystemFr:
     "Remiremont est une sous-préfecture des Vosges située au confluent de la Moselle et de la Moselotte, au pied du massif vosgien sud. La ville historique abbatiale conserve son abbaye, sa basilique Saint-Pierre et ses célèbres arcades commerçantes du centre-ville. L'économie locale repose sur l'administration sous-préfectorale, le commerce de centre-ville (arcades), l'hôtellerie-restauration, le tourisme patrimonial et thermal (Plombières-les-Bains à proximité), l'artisanat textile, les professions libérales et les services aux entreprises.",

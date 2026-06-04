@@ -9,9 +9,9 @@ export const FOSSES_COPY: VilleCopy = {
   pitchEn:
     "Fosses (95), commune résidentielle du nord du Val-d'Oise, fait partie de la communauté d'agglomération Roissy Pays de France. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires liés au bassin d'emploi Roissy. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Fosses est une commune résidentielle du nord Val-d'Oise intégrée à la communauté d'agglomération Roissy Pays de France. Économie locale de TPE artisanales BTP, commerces de proximité, PME tertiaires et professions libérales. Bassin d'emploi lié à la plateforme aéroportuaire Roissy-CDG et aux zones d'activités du nord francilien.",

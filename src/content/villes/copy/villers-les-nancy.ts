@@ -9,9 +9,9 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   pitchEn:
     "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
   ecosystemFr:
     "Villers-lès-Nancy est une commune résidentielle de l'agglomération Nancy dotée du campus faculté des sciences (Université de Lorraine), du Technopôle Brabois et de zones d'activités tertiaires. Tissu TPE/PME recherche, santé, services aux entreprises, commerces, artisanat.",
   ecosystemEn:

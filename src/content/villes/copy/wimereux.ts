@@ -10,9 +10,9 @@ export const WIMEREUX_COPY: VilleCopy = {
     "Wimereux (62), station balneaire de la Cote d'Opale dans le Pas-de-Calais, reunit pres de 6 260 habitants. Situee entre Boulogne-sur-Mer et Ambleteuse, son economie associe TPE tourisme et hotellerie, PME de services, commerces saisonniers, professions de sante et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Cote Opale, tourisme & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Wimereux est une station balneaire de la Cote d'Opale entre Boulogne-sur-Mer (5 km) et le cap Gris-Nez. Tissu economique saisonnier : TPE hotellerie-restauration, commerces touristiques, PME de services, professions liberales de sante et artisanat. Economie dopee par le tourisme littoral.",
   ecosystemEn:

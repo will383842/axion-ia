@@ -9,9 +9,9 @@ export const DOURDAN_COPY: VilleCopy = {
   pitchEn:
     "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat métiers",
   ecosystemFr:
     "Dourdan est une sous-préfecture de l'Essonne, cité historique du Hurepoix dominée par un château royal du XIIIe siècle classé monument historique. Terminus RER C, porte sud de l'Île-de-France vers la Beauce. Tissu TPE commerces centre historique, artisanat, PME services, professions libérales, tourisme patrimonial et agriculture céréalière.",

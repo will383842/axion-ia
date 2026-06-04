@@ -9,9 +9,9 @@ export const LIFFRE_COPY: VilleCopy = {
   pitchEn:
     "Liffré (35), commune du nord-est de Rennes en lisière de la forêt de Rennes, fait partie de Liffré-Cormier Communauté. Tissu résidentiel en croissance avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles. Axion-IA opère pour toutes les structures économiques de la commune du nord-est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liffré (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services nord-est Rennes, professions libérales, indépendants et exploitants agricoles de Liffré-Cormier Communauté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Liffré (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services nord-est Rennes, professions libérales, indépendants et exploitants agricoles de Liffré-Cormier Communauté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liffré (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services nord-est Rennes, professions libérales, indépendants et exploitants agricoles de Liffré-Cormier Communauté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Liffré (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services nord-est Rennes, professions libérales, indépendants et exploitants agricoles de Liffré-Cormier Communauté.",
   seoHook: "artisanat services & commerce proximité",
   ecosystemFr:
     "Liffré est une commune résidentielle dynamique du nord-est rennais, en lisière de la forêt de Rennes, au sein de Liffré-Cormier Communauté. L'économie locale repose sur les TPE artisans BTP, le commerce de proximité, les PME de services aux entreprises, les professions libérales de santé et l'agriculture bocagère. Croissance démographique soutenue par la proximité de Rennes.",

@@ -9,9 +9,9 @@ export const CROLLES_COPY: VilleCopy = {
   pitchEn:
     "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
   seoHook: "vallée du",
   ecosystemFr:
     "Crolles est positionnée dans la vallée du Grésivaudan, l'un des bassins industriels microélectroniques majeurs en France. Territoire essentiellement urbain mais conservant des zones rurales. Tissu industriel high-tech, sous-traitants tech, TPE artisanat BTP, commerces et services à la personne. La commune appartient au territoire historique du Dauphiné.",

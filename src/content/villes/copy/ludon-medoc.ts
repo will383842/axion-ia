@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LUDON_MEDOC_COPY: VilleCopy = {
   pitchFr:
-    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc et terre du château La Lagune (Haut-Médoc classé 1855), conjugue vignobles AOC, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé entre Bordeaux et l'estuaire. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de l'entrée du Médoc, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc et terre du château La Lagune (Haut-Médoc classé 1855), conjugue vignobles AOC, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé entre Bordeaux et l'estuaire. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE puis les PME de l'entrée du Médoc, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc et terre du château La Lagune (Haut-Médoc classé 1855), conjugue vignobles AOC, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé entre Bordeaux et l'estuaire. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de l'entrée du Médoc, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc et terre du château La Lagune (Haut-Médoc classé 1855), conjugue vignobles AOC, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé entre Bordeaux et l'estuaire. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE puis les PME de l'entrée du Médoc, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludon-Médoc (33) auprès des TPE et PME de l'entrée du Médoc : vignerons et châteaux Haut-Médoc, artisans BTP, commerçants et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ludon-Médoc (33) auprès des TPE et PME de l'entrée du Médoc : vignerons et châteaux Haut-Médoc, artisans BTP, commerçants et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludon-Médoc (33) auprès des TPE et PME de l'entrée du Médoc : vignerons et châteaux Haut-Médoc, artisans BTP, commerçants et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ludon-Médoc (33) auprès des TPE et PME de l'entrée du Médoc : vignerons et châteaux Haut-Médoc, artisans BTP, commerçants et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "viticulture Haut-Médoc & artisanat",
   ecosystemFr:
     "Ludon-Médoc, à l'entrée du Médoc entre Blanquefort et Macau, est une commune viticole structurée autour des AOC Haut-Médoc, dont le château La Lagune classé en 1855. Le tissu économique mêle propriétés viticoles, oenotourisme, TPE d'artisanat BTP, commerces de proximité et professions libérales, dans un cadre résidentiel attractif proche de Bordeaux. La rocade A630 et la route du Médoc D2 le relient à la métropole, offrant un terrain propice à une IA appliquée à la traçabilité viticole et à la gestion locale.",
@@ -53,7 +53,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ludon-Médoc ?",
-      a: "Oui, Axion-IA intervient à Ludon-Médoc et dans l'entrée du Médoc (Blanquefort, Parempuyre, Le Pian-Médoc, Macau). Nos architectes IA seniors se déplacent depuis Bordeaux (25 min) ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Ludon-Médoc et dans l'entrée du Médoc (Blanquefort, Parempuyre, Le Pian-Médoc, Macau). Nos experts IA seniors se déplacent depuis Bordeaux (25 min) ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Ludon-Médoc ?",

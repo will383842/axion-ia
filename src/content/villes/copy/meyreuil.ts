@@ -9,9 +9,9 @@ export const MEYREUIL_COPY: VilleCopy = {
   pitchEn:
     "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
   seoHook: "bassin aixois",
   ecosystemFr:
     "Meyreuil s'étend au pied de la montagne Sainte-Victoire, immortalisée par Cézanne. Commune résidentielle de l'est aixois avec une zone d'activités (services, artisanat). Viticulture AOC Côtes de Provence Sainte-Victoire, ancienne centrale thermique reconvertie. Cadres et professions libérales travaillant à Aix ou Marseille.",

@@ -9,9 +9,9 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
   pitchEn:
     "La Talaudière (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Position notable de zones d'activités. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du nord stéphanois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "tertiaires zones & industrielles diversifiées",
   ecosystemFr:
     "La Talaudière est intégrée à Saint-Étienne Métropole, en banlieue nord immédiate de Saint-Étienne. Position stratégique : zones d'activités notables (concentration PME tertiaires et industrielles diversifiées). Tissu péri-urbain mixte, TPE artisanat BTP, commerces de proximité, professions libérales.",

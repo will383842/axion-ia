@@ -46,14 +46,14 @@ export const TOURS_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI tourangelles — site vitrine premium pour acteurs viticulture et œnotourisme Val de Loire (Vouvray AOC), portail client B2B pour fournisseurs ETI industrielles (STMicro, SKF, Michelin, Hutchinson) et pôle S2E2, dashboard métier connecté à votre CRM/ERP/GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Tours SMEs and mid-caps — premium showcase site for Val de Loire wine and oenotourism players (Vouvray AOC), B2B client portal for industrial mid-caps (STMicro, SKF, Michelin, Hutchinson) and S2E2 pole suppliers, business dashboard connected to your CRM/ERP/CMMS. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Tours SMEs and mid-caps — premium showcase site for Val de Loire wine and oenotourism players (Vouvray AOC), B2B client portal for industrial mid-caps (STMicro, SKF, Michelin, Hutchinson) and S2E2 pole suppliers, business dashboard connected to your CRM/ERP/CMMS. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tours (37) sur site auprès des entreprises de Tours Métropole. Nous accompagnons TPE, PME, ETI et grandes entreprises tourangelles — secteurs industrie (STMicro, SKF, Michelin, Hutchinson), tertiaire (conseil, santé, commerce), énergie (pôle S2E2), agroalimentaire et viticulture Val de Loire — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tours (37) sur site auprès des entreprises de Tours Métropole. Nous accompagnons TPE, PME, ETI et grandes entreprises tourangelles — secteurs industrie (STMicro, SKF, Michelin, Hutchinson), tertiaire (conseil, santé, commerce), énergie (pôle S2E2), agroalimentaire et viticulture Val de Loire — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Tours (37) on site across Tours Métropole businesses. We support micro-businesses, SMEs, mid-caps and large enterprises in Tours — industry (STMicro, SKF, Michelin, Hutchinson), services, energy (S2E2 pole), agrifood and Val de Loire wine — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Tours (37) on site across Tours Métropole businesses. We support micro-businesses, SMEs, mid-caps and large enterprises in Tours — industry (STMicro, SKF, Michelin, Hutchinson), services, energy (S2E2 pole), agrifood and Val de Loire wine — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "viticole, pharma & patrimoine",
 

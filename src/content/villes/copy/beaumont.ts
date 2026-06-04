@@ -9,9 +9,9 @@ export const BEAUMONT_COPY: VilleCopy = {
   pitchEn:
     "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
   seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
     "Beaumont est une commune résidentielle prisée au sud de Clermont-Ferrand, intégrée à Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales (santé, juridique, conseil), commerces de proximité, TPE artisanat, immobilier résidentiel dynamique.",

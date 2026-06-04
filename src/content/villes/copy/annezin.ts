@@ -10,9 +10,9 @@ export const ANNEZIN_COPY: VilleCopy = {
     "Annezin (62), commune de l'agglomeration de Bethune dans le Pas-de-Calais, reunit pres de 5 830 habitants. Situee aux portes de Bethune, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Bethune, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Annezin jouxte Bethune (2 km), dans le bassin minier reconverti. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et activites tertiaires. Commune residentielle beneficiant du dynamisme bethunois.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const ROGNAC_COPY: VilleCopy = {
   pitchEn:
     "Rognac (13), commune dynamique au nord de l'étang de Berre dans les Bouches-du-Rhône, dispose de zones d'activités attractives entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans, PME logistique et services, commerces de bourg. Axion-IA y intervient pour tous types d'activités du nord de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
   seoHook: "logistique, zones d'activités & étang de Berre",
   ecosystemFr:
     "Rognac est une commune au nord de l'étang de Berre, dotée de zones d'activités dynamiques entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans du bâtiment, PME logistique et transport, commerces de bourg et prestataires de services. Connexion rapide A7/A55.",

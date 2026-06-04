@@ -9,9 +9,9 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
   pitchEn:
     "Sainte-Sigolène (43), commune du nord de la Haute-Loire, est réputée comme l'une des capitales françaises de la plasturgie (industrie du plastique, savoir-faire local concentré). Tissu PME industrielles plasturgie, agriculture montagne, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "plasturgie & industrielles",
   ecosystemFr:
     "Sainte-Sigolène est l'une des capitales françaises de la plasturgie (concentration PME industrie plastique, savoir-faire local). Agriculture montagne, TPE artisanat BTP, commerces.",

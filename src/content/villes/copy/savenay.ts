@@ -9,9 +9,9 @@ export const SAVENAY_COPY: VilleCopy = {
   pitchEn:
     "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Savenay (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, exploitants agricoles du bocage, commerçants, professions libérales, établissements scolaires (lycées) et services aux entreprises du nord estuaire Loire.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Savenay (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, exploitants agricoles du bocage, commerçants, professions libérales, établissements scolaires (lycées) et services aux entreprises du nord estuaire Loire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Savenay (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, exploitants agricoles du bocage, commerçants, professions libérales, établissements scolaires (lycées) et services aux entreprises du nord estuaire Loire.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Savenay (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, exploitants agricoles du bocage, commerçants, professions libérales, établissements scolaires (lycées) et services aux entreprises du nord estuaire Loire.",
   seoHook: "tertiaires services & agriculture bocagère",
   ecosystemFr:
     "Savenay est un bourg-centre du nord estuaire de la Loire entre Nantes et Saint-Nazaire, bénéficiant d'une gare TGV (ligne Nantes-Le Croisic, arrêts TGV Paris en 2h40). Pôle scolaire important (lycée Jacques-Prévert, IUT). Économie : TPE artisanat BTP, PME tertiaires, agriculture bocagère (élevage, polyculture), commerces de proximité, services publics et santé.",

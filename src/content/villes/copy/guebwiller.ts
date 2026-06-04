@@ -9,9 +9,9 @@ export const GUEBWILLER_COPY: VilleCopy = {
   pitchEn:
     "Guebwiller (68), sous-préfecture du Haut-Rhin de 11 243 habitants au pied du Grand Ballon, est célèbre pour ses quatre Grands Crus d'Alsace et structure la vallée du Florival. Tissu TPE/PME viticulture, tourisme patrimonial, industrie, commerces, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guebwiller (68). Nous accompagnons tous types d'activités : TPE/PME viticulture Grand Cru et tourisme patrimonial, industrie, artisans, commerces et professions de services de la vallée du Florival.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guebwiller (68). Nous accompagnons tous types d'activités : TPE/PME viticulture Grand Cru et tourisme patrimonial, industrie, artisans, commerces et professions de services de la vallée du Florival.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guebwiller (68). Nous accompagnons tous types d'activités : TPE/PME viticulture Grand Cru et tourisme patrimonial, industrie, artisans, commerces et professions de services de la vallée du Florival.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guebwiller (68). Nous accompagnons tous types d'activités : TPE/PME viticulture Grand Cru et tourisme patrimonial, industrie, artisans, commerces et professions de services de la vallée du Florival.",
   ecosystemFr:
     "Guebwiller est une sous-préfecture viticole et patrimoniale au pied du Grand Ballon, structurant la vallée du Florival. Quatre Grands Crus d'Alsace (Kitterlé, Kessler, Saering, Spiegel), tourisme, industrie historique, commerces, services. Tissu TPE/PME viticulture, hôtellerie, artisanat. Bassin entre Mulhouse et Colmar.",
   ecosystemEn:

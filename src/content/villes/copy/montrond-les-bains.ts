@@ -9,9 +9,9 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   seoHook: "thermalisme casino & hôtellerie cure",
   ecosystemFr:
     "Montrond-les-Bains est une station thermale historique de la plaine du Forez, dotée de sources thermales et d'un casino. Tissu thermal et hôtelier (établissement thermal, hôtels de cure, casino), PME tertiaires et services, TPE artisanat BTP, agriculture périphérique. Intégrée à Loire Forez Agglo.",

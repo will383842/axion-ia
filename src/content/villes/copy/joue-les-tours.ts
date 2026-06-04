@@ -9,9 +9,9 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Joué-lès-Tours, deuxième ville de la métropole tourangelle en Indre-et-Loire. Sur ce territoire à l'ancrage industriel marqué — pneumatique Michelin, roulements SKF, sous-traitance — nous aidons ateliers, commerces, sociétés de services et PME industrielles à transformer une envie d'IA en automatisations concrètes : devis, planification d'atelier, suivi qualité. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Joué-lès-Tours, en Indre-et-Loire, au sein de la métropole de Tours. Sur ce bassin à forte tradition industrielle — pneumatique, roulements, mécanique de précision — et autour de la ZAC des Deux Lions, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, planification, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Joué-lès-Tours, en Indre-et-Loire, au sein de la métropole de Tours. Sur ce bassin à forte tradition industrielle — pneumatique, roulements, mécanique de précision — et autour de la ZAC des Deux Lions, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, planification, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Joué-lès-Tours, en Indre-et-Loire, au sein de la métropole de Tours. Sur ce bassin à forte tradition industrielle — pneumatique, roulements, mécanique de précision — et autour de la ZAC des Deux Lions, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, planification, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Joué-lès-Tours, en Indre-et-Loire, au sein de la métropole de Tours. Sur ce bassin à forte tradition industrielle — pneumatique, roulements, mécanique de précision — et autour de la ZAC des Deux Lions, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, planification, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "industrie & PME tourangelles",
   ecosystemFr:
     "Joué-lès-Tours est la deuxième ville de la métropole de Tours et un de ses moteurs industriels, héritière d'une présence du pneumatique Michelin et de la fabrication de roulements SKF qui a structuré son tissu de sous-traitants mécaniques. Autour de la ZAC des Deux Lions et des zones d'activités jocondiennes gravitent ateliers, PME industrielles, commerces et sociétés de services. Ce maillage de TPE et de PME, souvent confronté à des process de production et de devis répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise, l'ETI restant marginale.",
@@ -42,8 +42,8 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
       en: "Implémentation à Joué-lès-Tours : nous connectons l'IA aux ERP et outils de production déjà utilisés par les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Joué-lès-Tours : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Joué-lès-Tours : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Joué-lès-Tours : un dirigeant de TPE ou PME industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Joué-lès-Tours : un dirigeant de TPE ou PME industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Joué-lès-Tours : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
@@ -61,7 +61,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Joué-lès-Tours ?",
-      a: "Oui. Joué-lès-Tours est à une dizaine de minutes du centre de Tours et à 7 km des gares de Tours et Saint-Pierre-des-Corps. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Joué-lès-Tours est à une dizaine de minutes du centre de Tours et à 7 km des gares de Tours et Saint-Pierre-des-Corps. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Joué-lès-Tours ?",

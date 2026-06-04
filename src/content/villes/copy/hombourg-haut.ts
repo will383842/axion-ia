@@ -9,9 +9,9 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
   pitchEn:
     "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   ecosystemFr:
     "Hombourg-Haut est une commune mosellane du Bassin houiller, connue pour sa basilique gothique et son patrimoine médiéval. Tissu TPE/PME commerce, services, BTP, artisanat, tourisme patrimonial. Dynamique transfrontalière vers la Sarre via Freyming-Merlebach.",
   ecosystemEn:

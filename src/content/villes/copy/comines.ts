@@ -9,9 +9,9 @@ export const COMINES_COPY: VilleCopy = {
   pitchEn:
     "Comines (59), commune frontalière de la Belgique sur les bords de la Lys, dans le Nord en Métropole Européenne de Lille. Tissu TPE artisans, PME industrielles et logistiques, commerces transfrontaliers, professions libérales et indépendants. Axion-IA y déploie son expertise pour toutes les organisations du nord lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Comines (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants transfrontaliers, professions libérales et indépendants du nord lillois, frontière belge sur la Lys. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Comines (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants transfrontaliers, professions libérales et indépendants du nord lillois, frontière belge sur la Lys. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Comines (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants transfrontaliers, professions libérales et indépendants du nord lillois, frontière belge sur la Lys. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Comines (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants transfrontaliers, professions libérales et indépendants du nord lillois, frontière belge sur la Lys. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "vallée lys",
   ecosystemFr:
     "Comines est une commune frontalière de la Belgique située sur les bords de la Lys, intégrée à la Métropole Européenne de Lille. Tissu TPE artisans BTP, PME industrielles (textile historique, plasturgie, agroalimentaire), logistique transfrontalière, commerces de proximité et professions libérales. Position stratégique au cœur de l'Eurométropole Lille-Kortrijk-Tournai.",

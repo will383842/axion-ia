@@ -9,9 +9,9 @@ export const ONNAING_COPY: VilleCopy = {
   pitchEn:
     "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre les activités professionnelles du bassin du pôle industriel valenciennois et automobile.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
   seoHook: "frontalier belge",
   ecosystemFr:
     "Onnaing est une commune de l'agglomération de Valenciennes, connue pour abriter l'usine Toyota (Yaris) et un écosystème de sous-traitance automobile du Hainaut. L'économie locale gravite autour de la sous-traitance auto et des équipementiers, de la logistique industrielle (plateformes d'approvisionnement just-in-time), des services aux entreprises du pôle industriel, du commerce local et de l'artisanat. Territoire industriel dynamique avec fort tissu de TPE et PME fournisseurs de la filière automobile.",

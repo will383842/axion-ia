@@ -9,9 +9,9 @@ export const VENELLES_COPY: VilleCopy = {
   pitchEn:
     "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat services",
   ecosystemFr:
     "Venelles est une commune résidentielle dynamique à 8 km au nord d'Aix-en-Provence. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois. Zone d'activités locale (artisanat, services), commerces de proximité centre-village et tissu associatif dense.",

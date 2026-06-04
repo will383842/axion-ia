@@ -9,9 +9,9 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
   pitchEn:
     "Boulay-Moselle (57), bourg-centre du pays de Nied au centre du département de la Moselle, ancienne sous-préfecture historique et bureau centralisateur cantonal. Tissu TPE/PME services, artisanat, commerces de proximité, BTP, agriculture, professions libérales et tourisme vert. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Boulay-Moselle (57). Nous accompagnons tous types d''activités : TPE/PME services, artisans BTP, commerces de proximité, professions libérales, exploitations agricoles et acteurs du tourisme vert du pays de Nied.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Boulay-Moselle (57). Nous accompagnons tous types d''activités : TPE/PME services, artisans BTP, commerces de proximité, professions libérales, exploitations agricoles et acteurs du tourisme vert du pays de Nied.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Boulay-Moselle (57). Nous accompagnons tous types d''activités : TPE/PME services, artisans BTP, commerces de proximité, professions libérales, exploitations agricoles et acteurs du tourisme vert du pays de Nied.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Boulay-Moselle (57). Nous accompagnons tous types d''activités : TPE/PME services, artisans BTP, commerces de proximité, professions libérales, exploitations agricoles et acteurs du tourisme vert du pays de Nied.",
   ecosystemFr:
     "Boulay-Moselle est un bourg-centre mosellan du pays de Nied, ancienne sous-préfecture (1919-2014) et bureau centralisateur cantonal. Tissu TPE/PME services, artisanat, BTP, commerces de proximité, professions libérales, agriculture et tourisme vert. Position rurale centrale entre Metz, Thionville et la frontière allemande.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Jean-de-Monts est l'une des premières stations balnéaires de Vendée avec 8 km de plages et une forêt domaniale de 830 ha. Économie dominée par le tourisme : plus de 100 000 estivants en été, forte densité campings et résidences. Noirmoutier à 20 min, Challans à 15 min, Nantes à 1h.",

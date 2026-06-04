@@ -9,9 +9,9 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Xandre (17), commune résidentielle de l'agglomération de La Rochelle en Charente-Maritime, cadre périurbain dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA couvre les activités professionnelles du bassin de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Xandre (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Xandre (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Xandre (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Xandre (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle de l'agglomération de La Rochelle.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Saint-Xandre est une commune résidentielle dynamique de l'agglomération de La Rochelle, en croissance démographique. PME tertiaires, TPE artisans BTP, commerces de proximité, professions libérales, services à la personne. Cadre périurbain entre La Rochelle centre et le nord de l'agglomération.",

@@ -9,9 +9,9 @@ export const RIVESALTES_COPY: VilleCopy = {
   pitchEn:
     "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
   seoHook: "viticulture négoce & zones d'activités",
   ecosystemFr:
     "Rivesaltes est une cité viticole historique au nord de Perpignan, à la confluence de l'Agly et de la Têt. AOC Muscat de Rivesaltes et Rivesaltes (vins doux naturels). Zones d'activités économiques, proximité aéroport Perpignan-Rivesaltes, négoce viticole, TPE artisanat, commerces.",

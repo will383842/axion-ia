@@ -9,9 +9,9 @@ export const LOUDEAC_COPY: VilleCopy = {
   pitchEn:
     "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y mène ses missions auprès des organisations locales du pays de Loudéac.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & agriculture filières",
   ecosystemFr:
     "Loudéac est la ville-centre du Centre Bretagne, pôle agroalimentaire majeur des Côtes-d'Armor spécialisé dans les filières porcine et avicole. Hippodrome de Loudéac réputé, marché agricole historique. Tissu économique : PME agroalimentaires, TPE artisans, exploitants agricoles, commerces de centre-bourg, professions libérales. Communes voisines : La Motte, Hémonstoir, Saint-Barnabé, Trévé, Grâce-Uzel.",

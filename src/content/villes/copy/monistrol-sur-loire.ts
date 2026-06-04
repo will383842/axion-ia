@@ -9,9 +9,9 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Monistrol-sur-Loire (43), deuxième ville du Velay, domine la vallée de la Loire sur l'axe Lyon–Toulouse par le Massif central. Forte expansion fin XXe siècle. Tissu PME industrielles (plasturgie, mécanique), TPE artisans BTP, commerces, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monistrol-sur-Loire (43). Nous accompagnons TPE et PME : entreprises plasturgie et mécanique, artisans BTP, commerçants, services aux entreprises du bassin Velay-Rochebaron.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Monistrol-sur-Loire (43). Nous accompagnons TPE et PME : entreprises plasturgie et mécanique, artisans BTP, commerçants, services aux entreprises du bassin Velay-Rochebaron.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monistrol-sur-Loire (43). Nous accompagnons TPE et PME : entreprises plasturgie et mécanique, artisans BTP, commerçants, services aux entreprises du bassin Velay-Rochebaron.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Monistrol-sur-Loire (43). Nous accompagnons TPE et PME : entreprises plasturgie et mécanique, artisans BTP, commerçants, services aux entreprises du bassin Velay-Rochebaron.",
   seoHook: "vallée loire",
   ecosystemFr:
     "Monistrol-sur-Loire est la deuxième ville du Velay (communauté de communes Marches du Velay-Rochebaron). Axe Lyon–Toulouse, vallée de la Loire. Tissu industriel PME (plasturgie, mécanique, sous-traitance), TPE artisanat BTP, commerces de proximité.",

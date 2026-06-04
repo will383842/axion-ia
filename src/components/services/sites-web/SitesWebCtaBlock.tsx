@@ -1,10 +1,11 @@
 /**
- * SitesWebCtaBlock — CTA final dark mocha audit-centric (Server Component).
+ * SitesWebCtaBlock — CTA final dark mocha orienté contact (Server Component).
  *
  * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis
- * `src/app/[locale]/sites-web-augmentes/page.tsx` (l.475-520). Bloc final
- * sur fond mocha riche, orienté audit (« Démarrez par un audit de 2 h »).
- * 2 CTAs : Décrire mon projet (/contact) + Voir les niveaux d'audit (/audit).
+ * `src/app/[locale]/sites-web-augmentes/page.tsx`. Bloc final sur fond mocha
+ * riche. 2026-06-04 (Will) : dé-audit-isé — un prospect web ne doit pas être
+ * renvoyé vers /audit (prix 1190 € = TPE only). CTA = règle contact globale :
+ * « Réserver un appel » (/appel) + « Nous écrire » (/contact).
  * Quand `villeContext` est fourni, le wording mentionne la ville.
  */
 
@@ -50,32 +51,32 @@ export function SitesWebCtaBlock({ isFr, villeContext }: SitesWebCtaBlockProps):
         >
           {isFr ? (
             <>
-              Démarrez par <span className="italic">un audit de 2 h.</span>
+              Parlons de <span className="italic">votre projet.</span>
             </>
           ) : (
             <>
-              Start with <span className="italic">a 2-hour audit.</span>
+              Let's talk <span className="italic">about your project.</span>
             </>
           )}
         </h2>
         <p className="text-mocha-fg/70 mt-4 text-base leading-relaxed">{description}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href={"/contact" as never}
-            data-cta="sites-web-augmentes-cta-contact"
+            href={"/appel" as never}
+            data-cta="sites-web-augmentes-cta-appel"
             {...villeAttr}
             className="bg-paper text-fg hover:bg-paper/90 focus-visible:ring-paper focus-visible:ring-offset-mocha-rich inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            {isFr ? "Décrire mon projet" : "Describe my project"}
+            {isFr ? "Réserver un appel" : "Book a call"}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </Link>
           <Link
-            href={"/audit" as never}
-            data-cta="sites-web-augmentes-cta-audit"
+            href={"/contact" as never}
+            data-cta="sites-web-augmentes-cta-contact"
             {...villeAttr}
             className="text-mocha-fg border-mocha-fg/30 hover:bg-mocha-fg/10 focus-visible:ring-mocha-fg focus-visible:ring-offset-mocha-rich inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            {isFr ? "Voir les niveaux d'audit" : "See audit levels"}
+            {isFr ? "Nous écrire" : "Email us"}
           </Link>
         </div>
       </Container>

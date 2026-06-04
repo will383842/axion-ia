@@ -9,9 +9,9 @@ export const BISCARROSSE_COPY: VilleCopy = {
   pitchEn:
     "Biscarrosse (40), capitale de l'hydraviation et station balnéaire de la côte d'Argent dans les Landes, est la plus grande commune du département (160 km²). Trois lacs, surf océan, forêt landaise, tourisme balnéaire et nautique. Tissu TPE tourisme/nautisme, PME papetière et forestière, commerces saisonniers. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biscarrosse (40). Nous accompagnons TPE et PME du tourisme balnéaire et nautique (surf, lac, hydraviation), hébergeurs saisonniers, campings, PME papetières et forestières, commerçants, artisans BTP et professions libérales de la côte d'Argent.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Biscarrosse (40). Nous accompagnons TPE et PME du tourisme balnéaire et nautique (surf, lac, hydraviation), hébergeurs saisonniers, campings, PME papetières et forestières, commerçants, artisans BTP et professions libérales de la côte d'Argent.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biscarrosse (40). Nous accompagnons TPE et PME du tourisme balnéaire et nautique (surf, lac, hydraviation), hébergeurs saisonniers, campings, PME papetières et forestières, commerçants, artisans BTP et professions libérales de la côte d'Argent.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Biscarrosse (40). Nous accompagnons TPE et PME du tourisme balnéaire et nautique (surf, lac, hydraviation), hébergeurs saisonniers, campings, PME papetières et forestières, commerçants, artisans BTP et professions libérales de la côte d'Argent.",
   seoHook: "tourisme, surf & hydraviation",
   ecosystemFr:
     "Biscarrosse est la plus grande commune des Landes (160 km²) et la troisième par la population. Capitale mondiale de l'hydraviation (Musée de l'Hydraviation, Biscarrosse Rassemblement International), la ville dispose de trois lacs (Cazaux-Sanguinet, Biscarrosse, Petit Étang) et d'une plage océane réputée pour le surf. Économie portée par le tourisme balnéaire saisonnier, campings, hébergements, TPE nautiques, PME papetière (Smurfit Kappa) et filière bois landaise.",

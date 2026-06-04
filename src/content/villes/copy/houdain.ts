@@ -10,9 +10,9 @@ export const HOUDAIN_COPY: VilleCopy = {
     "Houdain (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 950 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Houdain est situee dans le bassin minier entre Bethune (8 km) et Bruay-la-Buissiere (5 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-ville, professions de sante et petites industries. Proximite du pole hospitalier bethunois.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const LA_FLECHE_COPY: VilleCopy = {
   pitchEn:
     "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
   seoHook: "tourisme loisirs & agroalimentaire",
   ecosystemFr:
     "La Flèche est une sous-préfecture de la Sarthe dans la vallée du Loir, connue pour le Prytanée national militaire (fondé par Henri IV) et le zoo de La Flèche (parc animalier majeur). Économie : services, agroalimentaire, tourisme, artisanat, commerces de centre-ville, professions libérales.",

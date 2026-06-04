@@ -9,9 +9,9 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Champigny-sur-Marne, grande ville des bords de Marne dans le Val-de-Marne. Sur ce territoire à l'héritage métallurgique et mécanique, riche en artisans, commerces et petites industries, et bientôt mieux relié par le Grand Paris Express, nous aidons les petites entreprises à transformer une envie d'IA en automatisations concrètes : devis, plannings, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Champigny-sur-Marne, dans le Val-de-Marne, en bord de Marne. Sur ce territoire hérité de la métallurgie et de la mécanique, dense en artisans, commerces et petites industries, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Champigny-sur-Marne, dans le Val-de-Marne, en bord de Marne. Sur ce territoire hérité de la métallurgie et de la mécanique, dense en artisans, commerces et petites industries, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Champigny-sur-Marne, dans le Val-de-Marne, en bord de Marne. Sur ce territoire hérité de la métallurgie et de la mécanique, dense en artisans, commerces et petites industries, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Champigny-sur-Marne, dans le Val-de-Marne, en bord de Marne. Sur ce territoire hérité de la métallurgie et de la mécanique, dense en artisans, commerces et petites industries, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "métallurgie & artisanat",
   ecosystemFr:
     "Champigny-sur-Marne, l'une des plus grandes villes du Val-de-Marne, s'est construite le long de la Marne et de ses guinguettes, avec un passé industriel fort dans la métallurgie, la mécanique et la transformation des métaux. Son tissu actuel mêle ateliers et petites industries, artisans du bâtiment, commerces de proximité et sociétés de services, à l'aube d'un désenclavement par le Grand Paris Express. Ces TPE et PME affrontent des tâches répétitives — devis, plannings, suivi qualité, relances — qui se prêtent bien à des automatisations ciblées et rentables qu'Axion-IA priorise, l'ETI restant marginale.",
@@ -42,8 +42,8 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
       en: "Implémentation à Champigny-sur-Marne : nous connectons l'IA aux outils déjà en place chez les artisans, industriels et commerces locaux — devis, ERP, gestion de planning — pour un déploiement documenté, sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Champigny-sur-Marne : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les usages utiles de l'IA dans l'atelier, le BTP ou le commerce et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Champigny-sur-Marne : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les usages utiles de l'IA dans l'atelier, le BTP ou le commerce et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Champigny-sur-Marne : un dirigeant de TPE ou PME, un expert IA senior, pour clarifier les usages utiles de l'IA dans l'atelier, le BTP ou le commerce et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Champigny-sur-Marne : un dirigeant de TPE ou PME, un expert IA senior, pour clarifier les usages utiles de l'IA dans l'atelier, le BTP ou le commerce et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Champigny-sur-Marne : pour les artisans, ateliers et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, prise de contact, contenus assistés — pensés pour générer des affaires de proximité.",
@@ -61,7 +61,7 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Champigny-sur-Marne ?",
-      a: "Oui. Champigny est desservie par le RER A et le RER E, à une vingtaine de minutes de Paris, et bordée par l'A4 et l'A86. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Champigny est desservie par le RER A et le RER E, à une vingtaine de minutes de Paris, et bordée par l'A4 et l'A86. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Champigny-sur-Marne ?",

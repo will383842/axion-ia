@@ -10,9 +10,9 @@ export const BIHOREL_COPY: VilleCopy = {
     "Bihorel (76), commune residentielle de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 8 320 habitants. Ville residentielle prisee au nord-est de Rouen, elle accueille des professions liberales, des TPE de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "professions liberales, services & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bihorel (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bihorel (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bihorel (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bihorel (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bihorel est une commune residentielle prisee au nord-est de Rouen, dans la Metropole Rouen Normandie. Tissu economique domine par les professions liberales (medecins, avocats, experts-comptables), les TPE de services, les commerces de proximite et les artisans.",
   ecosystemEn:

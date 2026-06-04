@@ -9,9 +9,9 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   pitchEn:
     "Septèmes-les-Vallons (13), commune résidentielle au nord de Marseille dans les Bouches-du-Rhône, bénéficie de la proximité de la métropole et des zones d'activités de Plan de Campagne et des Pennes-Mirabeau. TPE artisans, PME services, commerces de quartier et professions libérales. Axion-IA y intervient pour tous types d'activités du nord marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services nord Marseille",
   ecosystemFr:
     "Septèmes-les-Vallons est une commune résidentielle du nord de Marseille, proche des zones commerciales de Plan de Campagne et des zones d'activités des Pennes-Mirabeau. TPE artisans, commerçants, PME services et professions libérales. Accès rapide A7 et L2 nord vers le centre de Marseille.",

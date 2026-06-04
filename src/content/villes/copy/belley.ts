@@ -9,9 +9,9 @@ export const BELLEY_COPY: VilleCopy = {
   pitchEn:
     "Belley (01), sous-préfecture de l'Ain dans le Bugey sud, est la ville natale du gastronome Jean Anthelme Brillat-Savarin. Tissu administration et services publics, agriculture et viticulture Bugey (AOC vin du Bugey), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bugey.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belley (01). Nous accompagnons tous types d'activités : administration sous-préfecture, viticulteurs AOC Bugey, agriculteurs, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bugey sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Belley (01). Nous accompagnons tous types d'activités : administration sous-préfecture, viticulteurs AOC Bugey, agriculteurs, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bugey sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belley (01). Nous accompagnons tous types d'activités : administration sous-préfecture, viticulteurs AOC Bugey, agriculteurs, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bugey sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Belley (01). Nous accompagnons tous types d'activités : administration sous-préfecture, viticulteurs AOC Bugey, agriculteurs, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bugey sud.",
   seoHook: "administration & viticulture vin",
   ecosystemFr:
     "Belley est la sous-préfecture de l'Ain dans le Bugey sud. Ville natale du gastronome Brillat-Savarin. Tissu administration/services publics, agriculture et viticulture Bugey (AOC vin du Bugey — vins pétillants et tranquilles), TPE artisanat BTP, commerces.",

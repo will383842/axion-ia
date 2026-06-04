@@ -9,9 +9,9 @@ export const SEMEAC_COPY: VilleCopy = {
   pitchEn:
     "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séméac (65). Nous accompagnons tous types d'activités : PME commerciales et de services, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales de l'agglomération tarbaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Séméac (65). Nous accompagnons tous types d'activités : PME commerciales et de services, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales de l'agglomération tarbaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séméac (65). Nous accompagnons tous types d'activités : PME commerciales et de services, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales de l'agglomération tarbaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Séméac (65). Nous accompagnons tous types d'activités : PME commerciales et de services, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales de l'agglomération tarbaise.",
   seoHook: "commerce grande & artisanat second",
   ecosystemFr:
     "Séméac est une commune résidentielle et commerciale de l'agglomération de Tarbes. Zones d'activités dynamiques, commerces de proximité, enseignes. Tissu TPE artisans BTP, PME commerciales et de services, restauration, professions libérales. Accès rapide Pyrénées et stations via A64 et routes départementales.",

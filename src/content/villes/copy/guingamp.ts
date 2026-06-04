@@ -9,9 +9,9 @@ export const GUINGAMP_COPY: VilleCopy = {
   pitchEn:
     "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
     "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu TPE artisans, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",

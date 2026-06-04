@@ -9,9 +9,9 @@ export const PRIVAS_COPY: VilleCopy = {
   pitchEn:
     "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
   seoHook: "administration & confiserie",
   ecosystemFr:
     "Privas est la préfecture de l'Ardèche. Réputation : marrons glacés (confiserie artisanale locale historique, spécialité ardéchoise). Tissu administration/services publics, agriculture (châtaigneraie), TPE artisanat BTP, commerces.",

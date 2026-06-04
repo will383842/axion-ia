@@ -9,9 +9,9 @@ export const VIDAUBAN_COPY: VilleCopy = {
   pitchEn:
     "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
   seoHook: "viticulture côtes & agriculture coopératives",
   ecosystemFr:
     "Vidauban est un pôle viticole majeur du centre-Var, terroir reconnu de grands crus Côtes de Provence. Tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces de proximité. Le Luc à 10 min, Brignoles à 25 min, Draguignan à 25 min, A8 directe.",

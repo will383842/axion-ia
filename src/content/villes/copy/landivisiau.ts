@@ -9,9 +9,9 @@ export const LANDIVISIAU_COPY: VilleCopy = {
   pitchEn:
     "Landivisiau (29), commune du Pays de Léon dans le nord Finistère, accueille la base aéronavale de Landivisiau et un tissu agroalimentaire breton dense. TPE artisans, PME agroalimentaires et de sous-traitance aéronautique, commerces, services et activités liées à la Défense. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon et du nord Finistère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
   seoHook: "pays de léon",
   ecosystemFr:
     "Landivisiau (9 426 hab) est un pôle économique du Pays de Léon, dans le nord Finistère. La base aéronavale (BAN Landivisiau, chasse embarquée Marine nationale) structure l'économie locale avec ses sous-traitants et prestataires. Tissu PME agroalimentaires bretonnes (élevage, transformation viande, légumes), TPE artisans BTP, commerces de centre-bourg et services. Morlaix à 20 min, Brest à 35 min.",

@@ -10,9 +10,9 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
     "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
   seoHook: "agriculture, agroalimentaire & Trégor",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Plouigneau est une vaste commune rurale du Trégor finistérien, à mi-chemin entre Morlaix et Guingamp. L'économie locale est dominée par l'agriculture (élevage laitier, porcin, cultures légumières), l'agroalimentaire de transformation, l'artisanat BTP, le transport routier et le commerce de proximité. La commune bénéficie de la voie express Brest-Rennes (RN12) et irrigue un bassin rural actif.",
   ecosystemEn:

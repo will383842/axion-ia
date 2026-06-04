@@ -9,9 +9,9 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
   pitchEn:
     "La Chapelle-Saint-Luc (10), commune résidentielle de 13 000 habitants au cœur de l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de proximité, artisans, restauration, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   seoHook: "santé professions & artisanat bâtiment",
   ecosystemFr:
     "La Chapelle-Saint-Luc est une commune résidentielle de l'agglo Troyes, dotée d'un tissu économique de proximité. TPE/PME diversifiées : services, commerces, artisanat, restauration, professions libérales, santé, sous-traitance industrielle au sein du bassin troyen.",

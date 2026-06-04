@@ -9,9 +9,9 @@ export const ACHICOURT_COPY: VilleCopy = {
   pitchEn:
     "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'Arrageois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Achicourt est une commune résidentielle et commerciale de l'agglomération d'Arras, préfecture du Pas-de-Calais. Zones commerciales péri-urbaines, TPE artisanales, PME de services, professions libérales et activités tertiaires. Bénéficie du dynamisme administratif et universitaire d'Arras.",

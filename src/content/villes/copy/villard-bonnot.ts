@@ -9,9 +9,9 @@ export const VILLARD_BONNOT_COPY: VilleCopy = {
   pitchEn:
     "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA répond aux besoins des activités professionnelles présentes du Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villard-Bonnot (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs périphériques et services aux entreprises de la vallée Grésivaudan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villard-Bonnot (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs périphériques et services aux entreprises de la vallée Grésivaudan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villard-Bonnot (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs périphériques et services aux entreprises de la vallée Grésivaudan.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villard-Bonnot (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs périphériques et services aux entreprises de la vallée Grésivaudan.",
   seoHook: "industrielles & industrie diversifiée",
   ecosystemFr:
     "Villard-Bonnot est positionnée dans la vallée du Grésivaudan, au nord-est de Grenoble. Tradition industrielle papetière historique sur la commune (sites industriels successifs), tissu PME industrielles diversifiées, TPE artisanat BTP, commerces, professions libérales installées dans le bassin résidentiel grenoblois péri-urbain.",

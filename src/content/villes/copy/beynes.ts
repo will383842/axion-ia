@@ -9,9 +9,9 @@ export const BEYNES_COPY: VilleCopy = {
   pitchEn:
     "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   seoHook: "artisanat bâtiment & professions libérales",
   ecosystemFr:
     "Beynes est une commune résidentielle semi-rurale de la plaine de Versailles ouest, entre Plaisir et Thiverval-Grignon (campus AgroParisTech historique). Tissu économique local : TPE artisanales (bâtiment, espaces verts, services à la personne), professions libérales, PME de services aux entreprises, commerces de centre-bourg. Cadre attractif pour télétravail et indépendants.",

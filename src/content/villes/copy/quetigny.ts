@@ -10,9 +10,9 @@ export const QUETIGNY_COPY: VilleCopy = {
     "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, TPE/PME commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
   seoHook: "commerce, services & zones d'activités",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de TPE/PME : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Clément-de-Rivière (34), commune résidentielle au nord de Montpellier au pied du Pic Saint-Loup dans l'Hérault. Cadre de vie privilégié, pôle santé et tertiaire, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME tertiaires, artisans, commerces, santé. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, TPE artisans, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, TPE artisans, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, TPE artisans, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, TPE artisans, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
   seoHook: "professions libérales & santé cliniques",
   ecosystemFr:
     "Saint-Clément-de-Rivière est une commune résidentielle prisée au nord de Montpellier, au pied du Pic Saint-Loup. Cadre de vie privilégié attirant professions libérales et cadres. Pôle santé (cliniques, cabinets médicaux), PME tertiaires, vignoble AOC Pic Saint-Loup, artisans BTP, commerces de proximité.",

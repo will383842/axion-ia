@@ -5,22 +5,22 @@ import type { VilleCopy } from "./types";
 
 export const VITROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Vitrolles, au bord de l'étang de Berre — logistique et transport autour de l'aéroport Marseille-Provence, commerce des grandes zones d'activité et industrie. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Vitrolles, au bord de l'étang de Berre — logistique et transport autour de l'aéroport Marseille-Provence, commerce des grandes zones d'activité et industrie. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Vitrolles, au bord de l'étang de Berre — logistique et transport autour de l'aéroport Marseille-Provence, commerce des grandes zones d'activité et industrie. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Vitrolles, au bord de l'étang de Berre — logistique et transport autour de l'aéroport Marseille-Provence, commerce des grandes zones d'activité et industrie. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vitrolles, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logistique et de vastes zones commerciales comme la ZAC de l'Anjoly, nous nous déplaçons sur site auprès des entreprises de transport, de négoce, du commerce et de l'industrie pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Vitrolles, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logistique et de vastes zones commerciales comme la ZAC de l'Anjoly, nous nous déplaçons sur site auprès des entreprises de transport, de négoce, du commerce et de l'industrie pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vitrolles, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logistique et de vastes zones commerciales comme la ZAC de l'Anjoly, nous nous déplaçons sur site auprès des entreprises de transport, de négoce, du commerce et de l'industrie pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Vitrolles, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logistique et de vastes zones commerciales comme la ZAC de l'Anjoly, nous nous déplaçons sur site auprès des entreprises de transport, de négoce, du commerce et de l'industrie pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   seoHook: "logistique & zones commerciales",
   ecosystemFr:
     "Vitrolles tire son dynamisme de sa position stratégique au bord de l'étang de Berre, à proximité immédiate de l'aéroport Marseille-Provence. La commune concentre un important pôle logistique et de transport, de vastes zones commerciales comme la ZAC de l'Anjoly et un tissu industriel hérité de l'aire métropolitaine d'Aix-Marseille. Pour ces TPE et PME du transport, du négoce et du commerce, l'IA opérationnelle fiabilise la gestion des flux, le suivi des commandes et la relation client sans surdimensionner les outils.",
   ecosystemEn:
     "Vitrolles tire son dynamisme de sa position stratégique au bord de l'étang de Berre, à proximité immédiate de l'aéroport Marseille-Provence. La commune concentre un important pôle logistique et de transport, de vastes zones commerciales comme la ZAC de l'Anjoly et un tissu industriel hérité de l'aire métropolitaine d'Aix-Marseille. Pour ces TPE et PME du transport, du négoce et du commerce, l'IA opérationnelle fiabilise la gestion des flux, le suivi des commandes et la relation client sans surdimensionner les outils.",
   distancesFr:
-    "Vitrolles est voisine de l'aéroport Marseille-Provence, à seulement quelques kilomètres, et dispose de sa propre gare reliée à Marseille en une vingtaine de minutes. Les autoroutes A7 et A55 desservent l'agglomération et Marseille se trouve à une trentaine de kilomètres. Nos architectes se déplacent sur site dans tout le pourtour de l'étang de Berre et l'aire d'Aix-Marseille.",
+    "Vitrolles est voisine de l'aéroport Marseille-Provence, à seulement quelques kilomètres, et dispose de sa propre gare reliée à Marseille en une vingtaine de minutes. Les autoroutes A7 et A55 desservent l'agglomération et Marseille se trouve à une trentaine de kilomètres. Nos experts se déplacent sur site dans tout le pourtour de l'étang de Berre et l'aire d'Aix-Marseille.",
   distancesEn:
-    "Vitrolles est voisine de l'aéroport Marseille-Provence, à seulement quelques kilomètres, et dispose de sa propre gare reliée à Marseille en une vingtaine de minutes. Les autoroutes A7 et A55 desservent l'agglomération et Marseille se trouve à une trentaine de kilomètres. Nos architectes se déplacent sur site dans tout le pourtour de l'étang de Berre et l'aire d'Aix-Marseille.",
+    "Vitrolles est voisine de l'aéroport Marseille-Provence, à seulement quelques kilomètres, et dispose de sa propre gare reliée à Marseille en une vingtaine de minutes. Les autoroutes A7 et A55 desservent l'agglomération et Marseille se trouve à une trentaine de kilomètres. Nos experts se déplacent sur site dans tout le pourtour de l'étang de Berre et l'aire d'Aix-Marseille.",
   topSectorsNaf: [
     "Transport & logistique",
     "Entreposage & messagerie",
@@ -53,7 +53,7 @@ export const VITROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Vitrolles ?",
-      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Vitrolles, notamment dans la ZAC de l'Anjoly, et tout autour de l'étang de Berre, pour observer vos processus réels avant toute recommandation.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Vitrolles, notamment dans la ZAC de l'Anjoly, et tout autour de l'étang de Berre, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Une entreprise de transport ou de logistique peut-elle profiter de l'IA à Vitrolles ?",

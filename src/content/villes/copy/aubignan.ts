@@ -9,9 +9,9 @@ export const AUBIGNAN_COPY: VilleCopy = {
   pitchEn:
     "Aubignan (84), commune du Comtat Venaissin au pied du Mont Ventoux, compte près de 5 981 habitants. Vignoble AOC Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
     "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",

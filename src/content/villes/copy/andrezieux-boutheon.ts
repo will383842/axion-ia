@@ -9,9 +9,9 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
   pitchEn:
     "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrézieux-Bouthéon (42). Nous accompagnons tous types d'activités : acteurs aéroportuaires Saint-Étienne-Bouthéon, PME tertiaires et logistiques zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Andrézieux-Bouthéon (42). Nous accompagnons tous types d'activités : acteurs aéroportuaires Saint-Étienne-Bouthéon, PME tertiaires et logistiques zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrézieux-Bouthéon (42). Nous accompagnons tous types d'activités : acteurs aéroportuaires Saint-Étienne-Bouthéon, PME tertiaires et logistiques zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Andrézieux-Bouthéon (42). Nous accompagnons tous types d'activités : acteurs aéroportuaires Saint-Étienne-Bouthéon, PME tertiaires et logistiques zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "aéroportuaire & logistiques zones",
   ecosystemFr:
     "Andrézieux-Bouthéon est intégrée à Saint-Étienne Métropole, à l'ouest immédiat de Saint-Étienne dans la plaine du Forez. Position stratégique : aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires), zones d'activités majeures. Tissu PME tertiaires et logistiques, TPE artisanat BTP, commerces.",

@@ -9,9 +9,9 @@ export const LINAS_COPY: VilleCopy = {
   pitchEn:
     "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
   seoHook: "zone d'activités & services",
   ecosystemFr:
     "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, TPE artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",

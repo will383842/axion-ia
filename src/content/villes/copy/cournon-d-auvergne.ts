@@ -9,9 +9,9 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   pitchEn:
     "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "tertiaires clermont & zones d'activités",
   ecosystemFr:
     "Cournon-d'Auvergne est en banlieue sud de Clermont-Ferrand, Clermont Auvergne Métropole. Zones d'activités majeures, zénith d'Auvergne. PME tertiaires/industrielles, TPE artisanat BTP, commerces.",

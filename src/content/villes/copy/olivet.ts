@@ -5,22 +5,22 @@ import type { VilleCopy } from "./types";
 
 export const OLIVET_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   seoHook: "Cosmetic Valley & horticulture",
   ecosystemFr:
     "Olivet, au sud d'Orléans, conjugue un cadre verdoyant le long du Loiret, une tradition horticole et de pépinières réputée, et l'appartenance au territoire de la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique. La commune accueille des entreprises de services, des laboratoires, du commerce et des PME industrielles dans le sillage de la métropole orléanaise. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi qualité et la relation client sans alourdir des structures à taille humaine.",
   ecosystemEn:
     "Olivet, au sud d'Orléans, conjugue un cadre verdoyant le long du Loiret, une tradition horticole et de pépinières réputée, et l'appartenance au territoire de la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique. La commune accueille des entreprises de services, des laboratoires, du commerce et des PME industrielles dans le sillage de la métropole orléanaise. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi qualité et la relation client sans alourdir des structures à taille humaine.",
   distancesFr:
-    "Olivet jouxte Orléans : la gare d'Orléans est à environ 7 km et la gare des Aubrais voisine offre des liaisons rapides vers Paris en une heure. L'autoroute A71 dessert l'agglomération et l'aéroport Paris-Orly est accessible en moins d'une heure et demie de route. Nos architectes se déplacent sur site dans toute la métropole orléanaise et le Loiret.",
+    "Olivet jouxte Orléans : la gare d'Orléans est à environ 7 km et la gare des Aubrais voisine offre des liaisons rapides vers Paris en une heure. L'autoroute A71 dessert l'agglomération et l'aéroport Paris-Orly est accessible en moins d'une heure et demie de route. Nos experts se déplacent sur site dans toute la métropole orléanaise et le Loiret.",
   distancesEn:
-    "Olivet jouxte Orléans : la gare d'Orléans est à environ 7 km et la gare des Aubrais voisine offre des liaisons rapides vers Paris en une heure. L'autoroute A71 dessert l'agglomération et l'aéroport Paris-Orly est accessible en moins d'une heure et demie de route. Nos architectes se déplacent sur site dans toute la métropole orléanaise et le Loiret.",
+    "Olivet jouxte Orléans : la gare d'Orléans est à environ 7 km et la gare des Aubrais voisine offre des liaisons rapides vers Paris en une heure. L'autoroute A71 dessert l'agglomération et l'aéroport Paris-Orly est accessible en moins d'une heure et demie de route. Nos experts se déplacent sur site dans toute la métropole orléanaise et le Loiret.",
   topSectorsNaf: [
     "Parfumerie & cosmétique (Cosmetic Valley)",
     "Horticulture & pépinières",
@@ -53,7 +53,7 @@ export const OLIVET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Olivet ?",
-      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Olivet et dans toute la métropole orléanaise, jusqu'à Orléans et Saran, pour observer vos processus réels avant toute recommandation.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Olivet et dans toute la métropole orléanaise, jusqu'à Orléans et Saran, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Une PME de la Cosmetic Valley peut-elle profiter de l'IA à Olivet ?",

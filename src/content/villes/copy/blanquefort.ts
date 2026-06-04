@@ -9,9 +9,9 @@ export const BLANQUEFORT_COPY: VilleCopy = {
   pitchEn:
     "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA opère sur l'ensemble des activités professionnelles locales : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture agroalimentaire & industrie",
   ecosystemFr:
     "Blanquefort s'inscrit entre Bordeaux Métropole et l'entrée du Médoc viticole. Industries historiques (agroalimentaire, métallurgie), vignoble AOC Haut-Médoc, tissu PME tertiaires en croissance. Tramway C vers Bordeaux centre, accès rocade et A10.",

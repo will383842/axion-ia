@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLAISIR_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Plaisir : commerces du pôle Grand Plaisir, artisans des Gâtines, sous-traitants industriels de Saint-Quentin-en-Yvelines. On structure des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Plaisir : commerces du pôle Grand Plaisir, artisans des Gâtines, sous-traitants industriels de Saint-Quentin-en-Yvelines. On structure des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Plaisir : commerces du pôle Grand Plaisir, artisans des Gâtines, sous-traitants industriels de Saint-Quentin-en-Yvelines. On structure des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Plaisir : commerces du pôle Grand Plaisir, artisans des Gâtines, sous-traitants industriels de Saint-Quentin-en-Yvelines. On structure des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Plaisir, dans les Yvelines, auprès des TPE et PME du tissu local : enseignes du centre commercial Grand Plaisir, artisans et négoces des zones des Gâtines et de la Clef-Saint-Pierre, sous-traitants gravitant autour du bassin de Saint-Quentin-en-Yvelines. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Plaisir, dans les Yvelines, auprès des TPE et PME du tissu local : enseignes du centre commercial Grand Plaisir, artisans et négoces des zones des Gâtines et de la Clef-Saint-Pierre, sous-traitants gravitant autour du bassin de Saint-Quentin-en-Yvelines. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Plaisir, dans les Yvelines, auprès des TPE et PME du tissu local : enseignes du centre commercial Grand Plaisir, artisans et négoces des zones des Gâtines et de la Clef-Saint-Pierre, sous-traitants gravitant autour du bassin de Saint-Quentin-en-Yvelines. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Plaisir, dans les Yvelines, auprès des TPE et PME du tissu local : enseignes du centre commercial Grand Plaisir, artisans et négoces des zones des Gâtines et de la Clef-Saint-Pierre, sous-traitants gravitant autour du bassin de Saint-Quentin-en-Yvelines. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
   seoHook: "commerce & sous-traitance industrielle",
   ecosystemFr:
     "Plaisir structure son économie autour du pôle commercial Grand Plaisir, l'un des plus vastes des Yvelines, et de ses zones d'activités des Gâtines et de la Clef-Saint-Pierre. La commune profite de la proximité immédiate de la technopole de Saint-Quentin-en-Yvelines : un tissu dense de TPE de commerce, d'artisans du bâtiment, de garages et de PME de sous-traitance mécanique et électronique. Ce maillage de petites structures, souvent sans service informatique dédié, constitue la cible naturelle d'Axion-IA pour des gains de productivité rapides et mesurables.",
@@ -53,7 +53,7 @@ export const PLAISIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il vraiment sur site à Plaisir ?",
-      a: "Oui. Nos architectes IA viennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
+      a: "Oui. Nos experts IA viennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Plaisir ?",
@@ -69,7 +69,7 @@ export const PLAISIR_COPY: VilleCopy = {
     },
     {
       q: "Faut-il déjà maîtriser l'IA pour travailler avec vous à Plaisir ?",
-      a: "Non. La plupart des TPE et PME de Plaisir partent de zéro. Notre rôle d'architectes IA seniors est précisément de cadrer, vulgariser et déployer, puis de former vos équipes pour qu'elles deviennent autonomes.",
+      a: "Non. La plupart des TPE et PME de Plaisir partent de zéro. Notre rôle d'experts IA seniors est précisément de cadrer, vulgariser et déployer, puis de former vos équipes pour qu'elles deviennent autonomes.",
     },
   ],
 };

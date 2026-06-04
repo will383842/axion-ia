@@ -9,9 +9,9 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   pitchEn:
     "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
   seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Saint-Hilaire-du-Harcouët est un bourg-centre du bocage sud-manchois, historiquement connu pour son marché aux bestiaux parmi les plus importants de Normandie. L'économie repose sur l'élevage bovin (laitier et allaitant), l'agroalimentaire (laiteries coopératives, transformation viande), l'artisanat BTP, les commerces de proximité et les services ruraux. Carrefour vers Avranches (25 min), Fougères (25 min) et Mortain (15 min).",

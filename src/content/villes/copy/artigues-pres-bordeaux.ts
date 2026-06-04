@@ -9,9 +9,9 @@ export const ARTIGUES_PRES_BORDEAUX_COPY: VilleCopy = {
   pitchEn:
     "Artigues-près-Bordeaux (33), commune de l'est de Bordeaux Métropole, combine zones d'activités commerciales et tertiaires, artisanat BTP et tissu résidentiel en croissance. Axion-IA y travaille avec les organisations du territoire : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Artigues-près-Bordeaux (33). Nous accompagnons TPE et PME de l'est bordelais : PME tertiaires et commerciales, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Artigues-près-Bordeaux (33). Nous accompagnons TPE et PME de l'est bordelais : PME tertiaires et commerciales, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Artigues-près-Bordeaux (33). Nous accompagnons TPE et PME de l'est bordelais : PME tertiaires et commerciales, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Artigues-près-Bordeaux (33). Nous accompagnons TPE et PME de l'est bordelais : PME tertiaires et commerciales, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "tertiaires services & commerce",
   ecosystemFr:
     "Artigues-près-Bordeaux est une commune dynamique de l'est de Bordeaux Métropole. Zones d'activités commerciales (enseignes, services), tissu PME tertiaires, artisanat BTP en croissance résidentielle et professions libérales. Accès rocade A630 et A89 vers Périgueux.",

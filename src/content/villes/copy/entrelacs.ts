@@ -9,9 +9,9 @@ export const ENTRELACS_COPY: VilleCopy = {
   pitchEn:
     "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
   seoHook: "tourisme lacustre & agriculture viticulture",
   ecosystemFr:
     "Entrelacs, commune nouvelle issue de la fusion de plusieurs villages entre Aix-les-Bains et Annecy, bénéficie de la proximité du lac du Bourget. Économie marquée par le tourisme lacustre, l'agriculture et la viticulture savoyarde (crus de Savoie). TPE artisanat local actif, commerces de proximité, hôtellerie saisonnière et résidentielle. Position géographique privilégiée entre deux pôles touristiques majeurs de Savoie.",

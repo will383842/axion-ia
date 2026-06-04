@@ -9,9 +9,9 @@ export const HERBIGNAC_COPY: VilleCopy = {
   pitchEn:
     "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
   seoHook: "TPE & PME Loire-Atlantique",
   ecosystemFr:
     "Herbignac est un bourg dynamique au nord du Parc naturel régional de Brière. Agriculture, artisanat, commerces de proximité et tourisme vert. Proximité Guérande (15 km) et La Baule. Tissu TPE artisans, exploitations agricoles, PME services et professions libérales.",

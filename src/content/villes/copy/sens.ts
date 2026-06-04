@@ -9,9 +9,9 @@ export const SENS_COPY: VilleCopy = {
   pitchEn:
     "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu TPE commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "commerce détail agroalimentaire & logistique",
   ecosystemFr:
     "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu TPE commerces et artisans, PME agroalimentaires et industrielles, professions libérales.",

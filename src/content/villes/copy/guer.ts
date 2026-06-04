@@ -9,9 +9,9 @@ export const GUER_COPY: VilleCopy = {
   pitchEn:
     "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guer (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et de sous-traitance, commerces de bourg, professions libérales, prestataires du secteur défense et acteurs économiques du Morbihan intérieur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guer (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et de sous-traitance, commerces de bourg, professions libérales, prestataires du secteur défense et acteurs économiques du Morbihan intérieur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guer (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et de sous-traitance, commerces de bourg, professions libérales, prestataires du secteur défense et acteurs économiques du Morbihan intérieur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guer (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et de sous-traitance, commerces de bourg, professions libérales, prestataires du secteur défense et acteurs économiques du Morbihan intérieur.",
   ecosystemFr:
     "Guer est une commune du Morbihan intérieur dont l'économie est structurée par la présence du camp militaire de Coëtquidan et des écoles de Saint-Cyr. Ce pôle défense génère un écosystème de sous-traitants, prestataires de services et commerces de proximité. L'artisanat, l'agriculture et les professions libérales complètent le tissu économique local.",
   ecosystemEn:

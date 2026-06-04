@@ -9,9 +9,9 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   pitchEn:
     "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
   seoHook: "tertiaires bureaux & artisanat construction",
   ecosystemFr:
     "La Balme-de-Sillingy est située au nord d'Annecy, dans la communauté de communes Fier et Usses. Commune périurbaine en forte croissance démographique, elle combine un tissu tertiaire (PME services, bureaux d'études), un artisanat BTP dynamique porté par la pression immobilière, des commerces de proximité et une agriculture résiduelle (élevage, polyculture). Accès rapide à Annecy (15 min) et à l'autoroute A41.",

@@ -9,9 +9,9 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   pitchEn:
     "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
   seoHook: "commerce détail & tertiaire logistique",
   ecosystemFr:
     "Brie-Comte-Robert est la capitale historique de la Brie française, au carrefour de la Francilienne et de l'A5. Tissu économique diversifié : TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, agriculture céréalière.",

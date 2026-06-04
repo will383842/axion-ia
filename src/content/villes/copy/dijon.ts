@@ -43,14 +43,14 @@ export const DIJON_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI dijonnaises et bourguignonnes — site vitrine premium pour domaines viticoles AOP et acteurs agroalimentaires (URGO, Amora, Vitagora), espace client pour cabinets et formations, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Dijon and Burgundy SMEs/mid-caps — premium showcase site for AOP wine estates and agri-food players (URGO, Amora, Vitagora), customer space for practices and training providers, business dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Dijon and Burgundy SMEs/mid-caps — premium showcase site for AOP wine estates and agri-food players (URGO, Amora, Vitagora), customer space for practices and training providers, business dashboard connected to your CRM/ERP. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dijon (21) sur site dans la métropole dijonnaise et le bassin bourguignon (Chenôve, Talant, Quetigny, Saint-Apollinaire). Nous accompagnons les TPE, PME, ETI et grandes entreprises de Côte-d'Or sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : agroalimentaire, pharmacie-santé, viticulture, conseil, formation. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dijon (21) sur site dans la métropole dijonnaise et le bassin bourguignon (Chenôve, Talant, Quetigny, Saint-Apollinaire). Nous accompagnons les TPE, PME, ETI et grandes entreprises de Côte-d'Or sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : agroalimentaire, pharmacie-santé, viticulture, conseil, formation. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Dijon (21) on site across the Dijon metropolitan area and the Burgundy basin (Chenôve, Talant, Quetigny, Saint-Apollinaire). We support Côte-d'Or micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: agri-food, pharma-healthcare, viticulture, consulting, training. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Dijon (21) on site across the Dijon metropolitan area and the Burgundy basin (Chenôve, Talant, Quetigny, Saint-Apollinaire). We support Côte-d'Or micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: agri-food, pharma-healthcare, viticulture, consulting, training. No tech lock-in, your teams stay in control.",
 
   seoHook: "vignoble, agroalimentaire & santé",
 

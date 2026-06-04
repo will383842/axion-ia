@@ -9,9 +9,9 @@ export const BALARUC_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Balaruc-les-Bains (34), première station thermale de France par la fréquentation, sur l'étang de Thau. Thermalisme, bien-être, tourisme santé. Tissu TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balaruc-les-Bains (34). Nous accompagnons TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Balaruc-les-Bains (34). Nous accompagnons TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balaruc-les-Bains (34). Nous accompagnons TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Balaruc-les-Bains (34). Nous accompagnons TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
   ecosystemFr:
     "Balaruc-les-Bains est la première station thermale de France par la fréquentation (plus de 50 000 curistes/an), sur les rives de l'étang de Thau. Thermalisme (eaux chaudes naturelles, rhumatologie, phlébologie), bien-être, tourisme santé. Tissu TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales (santé).",
   ecosystemEn:

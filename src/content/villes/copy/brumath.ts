@@ -9,9 +9,9 @@ export const BRUMATH_COPY: VilleCopy = {
   pitchEn:
     "Brumath (67), ville du Bas-Rhin située au nord de Strasbourg, héritière d'un passé gallo-romain (vestiges de l'ancienne Brocomagus) et siège d'une brasserie alsacienne emblématique. Tissu TPE/PME industrie, agroalimentaire, brasserie, BTP, commerces, services et artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brumath (67). Nous accompagnons tous types d'activités : TPE/PME industrie et agroalimentaire, artisans BTP, commerces de proximité, professions de services et entrepreneurs au nord de l'agglomération strasbourgeoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brumath (67). Nous accompagnons tous types d'activités : TPE/PME industrie et agroalimentaire, artisans BTP, commerces de proximité, professions de services et entrepreneurs au nord de l'agglomération strasbourgeoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brumath (67). Nous accompagnons tous types d'activités : TPE/PME industrie et agroalimentaire, artisans BTP, commerces de proximité, professions de services et entrepreneurs au nord de l'agglomération strasbourgeoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brumath (67). Nous accompagnons tous types d'activités : TPE/PME industrie et agroalimentaire, artisans BTP, commerces de proximité, professions de services et entrepreneurs au nord de l'agglomération strasbourgeoise.",
   ecosystemFr:
     "Brumath est une ville bas-rhinoise au nord de Strasbourg, marquée par son héritage gallo-romain et son industrie brassicole. Tissu TPE/PME industrie, agroalimentaire, BTP, commerces de proximité, services, artisanat. Dynamique économique portée par la proximité immédiate de l'eurométropole strasbourgeoise.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const CABRIES_COPY: VilleCopy = {
   pitchEn:
     "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration franchises",
   ecosystemFr:
     "Cabriès est à mi-chemin entre Marseille et Aix-en-Provence, à proximité de l'aéroport Marseille-Provence. La zone commerciale Plan de Campagne (à cheval Cabriès / Les Pennes-Mirabeau) rassemble plus de 350 enseignes : prêt-à-porter, équipement maison, restauration, automobile, loisirs. Tissu dense de TPE commerçants franchisés, restaurateurs, PME de services et artisans BTP.",

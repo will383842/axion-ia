@@ -9,9 +9,9 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
   pitchEn:
     "Chazelles-sur-Lyon (42), commune des monts du Lyonnais dans la Loire, est historiquement réputée comme l'une des capitales françaises du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile/chapellerie), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
   seoHook: "TPE & PME Loire",
   ecosystemFr:
     "Chazelles-sur-Lyon est positionnée dans les monts du Lyonnais (Loire). Réputation historique : capitale française du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire artisanal local conservé — Musée du Chapeau notable). Tissu PME industrielles diversifiées contemporaines, agriculture monts Lyonnais, TPE artisanat BTP, commerces.",

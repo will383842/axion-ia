@@ -9,9 +9,9 @@ export const REVEL_COPY: VilleCopy = {
   pitchEn:
     "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA répond aux besoins des activités professionnelles présentes du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
   seoHook: "ébénisterie meuble & artisanat d'art",
   ecosystemFr:
     "Revel est la capitale du meuble d'art et de l'ébénisterie, au cœur du Lauragais. TPE artisans d'art (ébénistes, laqueurs, doreurs), PME du meuble et du bois, commerces de la halle médiévale, professions libérales, tourisme autour du lac de Saint-Ferréol et du canal du Midi (UNESCO).",

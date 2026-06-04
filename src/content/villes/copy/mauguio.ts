@@ -9,9 +9,9 @@ export const MAUGUIO_COPY: VilleCopy = {
   pitchEn:
     "Mauguio (34), commune de 16 522 habitants dans l'agglomération de Montpellier est, entre plaine viticole et étang du Méjean. Son économie repose sur un tissu de TPE et PME de l'aéronautique (proximité aéroport), du commerce, de la viticulture, de la restauration, du tertiaire et du tourisme littoral (Carnon). Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauguio (34). Nous accompagnons TPE et PME de l'agglo Montpellier est : entreprises de la zone aéroport, viticulteurs, commerçants, prestataires de services et professionnels du tourisme littoral Carnon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mauguio (34). Nous accompagnons TPE et PME de l'agglo Montpellier est : entreprises de la zone aéroport, viticulteurs, commerçants, prestataires de services et professionnels du tourisme littoral Carnon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauguio (34). Nous accompagnons TPE et PME de l'agglo Montpellier est : entreprises de la zone aéroport, viticulteurs, commerçants, prestataires de services et professionnels du tourisme littoral Carnon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mauguio (34). Nous accompagnons TPE et PME de l'agglo Montpellier est : entreprises de la zone aéroport, viticulteurs, commerçants, prestataires de services et professionnels du tourisme littoral Carnon. Audit sur place sur mesure.",
   ecosystemFr:
     "Mauguio est une commune de l'agglo Montpellier est, entre plaine viticole et littoral méditerranéen (station balnéaire de Carnon). Son économie s'appuie sur la zone d'activité aéroportuaire (proximité aéroport Montpellier-Méditerranée), la viticulture, le commerce, la restauration, les services aux entreprises, les professions libérales et le tourisme littoral. Étang du Méjean (réserve naturelle).",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const JONAGE_COPY: VilleCopy = {
   pitchEn:
     "Jonage (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour le canal de Jonage (aménagement hydroélectrique historique alimentant le Grand Parc Miribel Jonage). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires est & industrielles",
   ecosystemFr:
     "Jonage est intégrée à la Métropole de Lyon, en banlieue est. Position notable : canal de Jonage (aménagement hydroélectrique historique, Grand Parc Miribel Jonage — espace naturel majeur est lyonnais). Tissu PME tertiaires et industrielles, TPE artisanat BTP, commerces.",

@@ -9,9 +9,9 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
   pitchEn:
     "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Vandœuvre-lès-Nancy, grande banlieue sud de Nancy en Meurthe-et-Moselle. Sur ce pôle santé et recherche structuré par le CHU de Brabois, le Technopôle Nancy-Brabois et l'Université de Lorraine, nous aidons cabinets médicaux, laboratoires, start-up, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : prise de rendez-vous, comptes rendus, devis, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vandœuvre-lès-Nancy, en Meurthe-et-Moselle, dans la métropole du Grand Nancy. Autour du CHU de Brabois, du Technopôle Nancy-Brabois et de l'Université de Lorraine, où santé et recherche dominent, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : prise de rendez-vous, comptes rendus, suivi administratif, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Vandœuvre-lès-Nancy, en Meurthe-et-Moselle, dans la métropole du Grand Nancy. Autour du CHU de Brabois, du Technopôle Nancy-Brabois et de l'Université de Lorraine, où santé et recherche dominent, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : prise de rendez-vous, comptes rendus, suivi administratif, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vandœuvre-lès-Nancy, en Meurthe-et-Moselle, dans la métropole du Grand Nancy. Autour du CHU de Brabois, du Technopôle Nancy-Brabois et de l'Université de Lorraine, où santé et recherche dominent, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : prise de rendez-vous, comptes rendus, suivi administratif, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Vandœuvre-lès-Nancy, en Meurthe-et-Moselle, dans la métropole du Grand Nancy. Autour du CHU de Brabois, du Technopôle Nancy-Brabois et de l'Université de Lorraine, où santé et recherche dominent, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : prise de rendez-vous, comptes rendus, suivi administratif, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "santé & recherche",
   ecosystemFr:
     "Vandœuvre-lès-Nancy est l'une des principales banlieues du Grand Nancy, profondément marquée par la santé et la recherche : elle accueille le CHU de Brabois, le Technopôle Nancy-Brabois et plusieurs composantes de l'Université de Lorraine. Autour de ce pôle gravitent cabinets médicaux et paramédicaux, laboratoires, jeunes pousses deeptech, commerces et sociétés de services. Ce tissu de TPE et de PME — confronté à des tâches administratives, de prise de rendez-vous et de reporting très répétitives — gagne vite avec des automatisations ciblées qu'Axion-IA priorise, l'ETI restant marginale.",
@@ -42,8 +42,8 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
       en: "Implémentation à Vandœuvre-lès-Nancy : nous connectons l'IA aux logiciels métiers déjà utilisés par les acteurs de la santé et de la recherche — agendas, dossiers, outils de laboratoire — pour un déploiement documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Vandœuvre-lès-Nancy : un dirigeant ou praticien de TPE ou PME, un architecte IA senior, pour clarifier les usages utiles de l'IA dans la santé et la recherche et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Vandœuvre-lès-Nancy : un dirigeant ou praticien de TPE ou PME, un architecte IA senior, pour clarifier les usages utiles de l'IA dans la santé et la recherche et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Vandœuvre-lès-Nancy : un dirigeant ou praticien de TPE ou PME, un expert IA senior, pour clarifier les usages utiles de l'IA dans la santé et la recherche et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Vandœuvre-lès-Nancy : un dirigeant ou praticien de TPE ou PME, un expert IA senior, pour clarifier les usages utiles de l'IA dans la santé et la recherche et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Vandœuvre-lès-Nancy : pour les cabinets, laboratoires et start-up du Technopôle, nous bâtissons des sites dopés à l'IA — prise de rendez-vous, qualification de contacts, contenus assistés — pensés pour servir une patientèle ou une clientèle exigeante.",
@@ -61,7 +61,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Vandœuvre-lès-Nancy ?",
-      a: "Oui. La commune est reliée au centre de Nancy par le tramway en une quinzaine de minutes et la gare de Nancy-Ville est à 5 km. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. La commune est reliée au centre de Nancy par le tramway en une quinzaine de minutes et la gare de Nancy-Ville est à 5 km. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
       q: "Par où commencer un projet IA à Vandœuvre-lès-Nancy ?",

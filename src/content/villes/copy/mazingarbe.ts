@@ -9,9 +9,9 @@ export const MAZINGARBE_COPY: VilleCopy = {
   pitchEn:
     "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mazingarbe est une commune du bassin minier entre Lens et Béthune, avec un passé industriel chimique (ancienne usine de produits chimiques). Économie reconvertie vers le commerce, l'artisanat BTP, les services aux particuliers et les professions libérales.",

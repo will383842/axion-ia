@@ -9,9 +9,9 @@ export const VOREPPE_COPY: VilleCopy = {
   pitchEn:
     "Voreppe (38), positionnée à l'entrée géologique des Alpes (cluse de Voreppe, début du Y grenoblois), est bordée par l'Isère et les falaises du massif de la Chartreuse face au Vercors. Site historique de la bataille de Voreppe (juin 1940, général Olry). Tissu PME tertiaires, TPE artisans BTP, commerces et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
   seoHook: "massif la",
   ecosystemFr:
     "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), à 20 km de Grenoble sur l'axe A48 Lyon-Grenoble. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",

@@ -9,9 +9,9 @@ export const CRAPONNE_COPY: VilleCopy = {
   pitchEn:
     "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'ouest lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires ouest & professions libérales",
   ecosystemFr:
     "Craponne est intégrée à la Métropole de Lyon, en banlieue ouest (entre Francheville et Tassin-la-Demi-Lune). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces, professions libérales installées, agriculture résiduelle.",

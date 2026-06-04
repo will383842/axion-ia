@@ -9,9 +9,9 @@ export const CHANTONNAY_COPY: VilleCopy = {
   pitchEn:
     "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
   seoHook: "TPE & PME Vendée",
   ecosystemFr:
     "Chantonnay est un bourg-centre du bocage vendéen entre La Roche-sur-Yon (25 min) et Fontenay-le-Comte (30 min). PME industrielles (mécanique, agroalimentaire), agriculture (élevage bovin, cultures), artisanat BTP, commerces. Gare SNCF sur ligne La Roche-sur-Yon / La Rochelle.",

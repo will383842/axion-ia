@@ -10,9 +10,9 @@ export const BEAURAINS_COPY: VilleCopy = {
     "Beaurains (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 560 habitants. Situee au sud d'Arras avec ses zones d'activites, son economie associe PME tertiaires, TPE de services, commerces, artisanat et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras sud, tertiaire & zones d'activites",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Beaurains est situee au sud d'Arras (3 km) avec des zones d'activites economiques dynamiques. Tissu economique compose de PME tertiaires, TPE de services, commerces, artisans BTP et activites logistiques. Commune bien desservie par l'autoroute A1.",
   ecosystemEn:

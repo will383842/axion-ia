@@ -9,9 +9,9 @@ export const MAZAN_COPY: VilleCopy = {
   pitchEn:
     "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
     "Mazan est un pôle agricole et viticole du Comtat Venaissin, au pied sud du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, tourisme patrimonial et oenologique. Tissu de TPE artisans, domaines viticoles familiaux, PME agroalimentaires et hébergements. Carpentras à 10 min, Avignon à 35 min.",

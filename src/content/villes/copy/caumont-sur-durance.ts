@@ -9,9 +9,9 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
   pitchEn:
     "Caumont-sur-Durance (84), commune des bords de Durance au sud d'Avignon, compte près de 5 667 habitants. Agglomération du Grand Avignon, agriculture maraîchère et fruitière, tissu de TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & artisanat",
   ecosystemFr:
     "Caumont-sur-Durance est positionnée sur les bords de Durance au sud d'Avignon, dans l'agglomération du Grand Avignon. Agriculture maraîchère et fruitière de la plaine, zones d'activités tournées vers Avignon. Tissu de TPE artisans, PME services, commerces, professions libérales. Avignon centre à 15 min, Cavaillon à 15 min.",

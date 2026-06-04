@@ -10,9 +10,9 @@ export const CALVI_COPY: VilleCopy = {
     "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA répond aux besoins de toutes les entreprises de la Balagne.",
   seoHook: "tourisme balnéaire & nautisme corse",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Calvi est la station phare de la Balagne (environ 5 800 habitants à l'année, multiplié par 5 en haute saison). La citadelle génoise XIIIe, le port de plaisance et la plage de 6 km structurent l'activité touristique. La base aérienne du 2e REP de la Légion étrangère est un employeur public majeur. L'économie repose sur le tourisme saisonnier (hôtellerie, restauration, plaisance), le commerce de proximité, l'artisanat et l'agriculture (oliveraies, vignobles AOC Calvi).",
   ecosystemEn:

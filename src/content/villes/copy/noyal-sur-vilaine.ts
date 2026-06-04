@@ -9,9 +9,9 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
   pitchEn:
     "Noyal-sur-Vilaine (35), commune de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, accueille un tissu économique dynamique de TPE artisanales, PME de services, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
   ecosystemFr:
     "Noyal-sur-Vilaine est une commune résidentielle dynamique de l'est de Rennes Métropole (Ille-et-Vilaine), traversée par la Vilaine. Son économie repose sur l'artisanat, les commerces de proximité, les services aux entreprises, l'agriculture périurbaine et les professions libérales qui profitent de la proximité immédiate de Rennes.",
   ecosystemEn:

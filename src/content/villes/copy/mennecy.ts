@@ -9,9 +9,9 @@ export const MENNECY_COPY: VilleCopy = {
   pitchEn:
     "Mennecy (91), commune résidentielle du sud de l'Essonne bordée par le Parc de Villeroy, mêle cadre verdoyant et dynamisme économique local. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",

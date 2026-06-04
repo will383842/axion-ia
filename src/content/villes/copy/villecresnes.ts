@@ -9,9 +9,9 @@ export const VILLECRESNES_COPY: VilleCopy = {
   pitchEn:
     "Villecresnes (94), commune résidentielle du sud-est du Val-de-Marne, bénéficie d'un tissu économique de proximité entre Boissy-Saint-Léger et Mandres-les-Roses. TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit sur place sur mesure.",
   seoHook: "artisanat & logistique locale",
   ecosystemFr:
     "Villecresnes est une commune résidentielle du sud-est du Val-de-Marne, entre Boissy-Saint-Léger et Mandres-les-Roses. Tissu TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique.",

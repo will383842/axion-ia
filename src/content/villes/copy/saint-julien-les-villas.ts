@@ -9,9 +9,9 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   seoHook: "tertiaires & commerce zone",
   ecosystemFr:
     "Saint-Julien-les-Villas est une commune résidentielle de l'agglomération Troyes Champagne Métropole (Aube). Tissu TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique troyen.",

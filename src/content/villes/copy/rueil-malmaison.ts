@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RUEIL_MALMAISON_COPY: VilleCopy = {
   pitchFr:
-    "Rueil-Malmaison (92), ville d'histoire chère à Napoléon et Joséphine avec son château de Malmaison, est aussi un grand pôle tertiaire des Hauts-de-Seine qui accueille des sièges comme Schneider Electric, Vinci ou Unibail-Rodamco-Westfield. Autour de ces grands groupes gravite un dense écosystème de TPE et PME de services, conseil, tech et commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME rueilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Rueil-Malmaison (92), ville d'histoire chère à Napoléon et Joséphine avec son château de Malmaison, est aussi un grand pôle tertiaire des Hauts-de-Seine qui accueille des sièges comme Schneider Electric, Vinci ou Unibail-Rodamco-Westfield. Autour de ces grands groupes gravite un dense écosystème de TPE et PME de services, conseil, tech et commerce. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME rueilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Rueil-Malmaison (92), ville d'histoire chère à Napoléon et Joséphine avec son château de Malmaison, est aussi un grand pôle tertiaire des Hauts-de-Seine qui accueille des sièges comme Schneider Electric, Vinci ou Unibail-Rodamco-Westfield. Autour de ces grands groupes gravite un dense écosystème de TPE et PME de services, conseil, tech et commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME rueilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Rueil-Malmaison (92), ville d'histoire chère à Napoléon et Joséphine avec son château de Malmaison, est aussi un grand pôle tertiaire des Hauts-de-Seine qui accueille des sièges comme Schneider Electric, Vinci ou Unibail-Rodamco-Westfield. Autour de ces grands groupes gravite un dense écosystème de TPE et PME de services, conseil, tech et commerce. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME rueilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rueil-Malmaison (92) auprès des TPE et PME : services aux entreprises, conseil, ingénierie, tech et commerce gravitant autour des grands sièges (Schneider Electric, Vinci, Unibail). Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rueil-Malmaison (92) auprès des TPE et PME : services aux entreprises, conseil, ingénierie, tech et commerce gravitant autour des grands sièges (Schneider Electric, Vinci, Unibail). Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rueil-Malmaison (92) auprès des TPE et PME : services aux entreprises, conseil, ingénierie, tech et commerce gravitant autour des grands sièges (Schneider Electric, Vinci, Unibail). Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rueil-Malmaison (92) auprès des TPE et PME : services aux entreprises, conseil, ingénierie, tech et commerce gravitant autour des grands sièges (Schneider Electric, Vinci, Unibail). Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "tertiaire, conseil & ingénierie",
   ecosystemFr:
     "Rueil-Malmaison, en bord de Seine à l'ouest de Paris, est l'un des grands pôles tertiaires des Hauts-de-Seine, accueillant les sièges de Schneider Electric, Vinci et Unibail-Rodamco-Westfield à proximité de La Défense. Autour de ces grands groupes prospère un riche écosystème de TPE et PME de services, conseil, ingénierie, tech, immobilier et commerce, dans un cadre patrimonial marqué par le château de Malmaison. Cette densité de prestataires fait de Rueil un terrain idéal pour une IA appliquée à la productivité et à la relation client.",
@@ -53,7 +53,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rueil-Malmaison ?",
-      a: "Oui, Axion-IA intervient à Rueil-Malmaison et dans l'ouest parisien (Nanterre, Suresnes, Puteaux, La Défense, Chatou). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Rueil-Malmaison et dans l'ouest parisien (Nanterre, Suresnes, Puteaux, La Défense, Chatou). Nos experts IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Rueil-Malmaison ?",

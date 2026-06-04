@@ -10,9 +10,9 @@ export const GONFREVILLE_L_ORCHER_COPY: VilleCopy = {
     "Gonfreville-l'Orcher (76), commune de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 920 habitants. Coeur de la zone industrielle du Havre (raffinage, petrochimie), elle accueille des TPE sous-traitantes, des PME de maintenance industrielle, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "raffinage, petrochimie & sous-traitance",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Gonfreville-l'Orcher est au coeur de la zone industrielle du Havre, l'une des plus grandes de France (raffinage, petrochimie, chimie fine). Tissu economique domine par les sous-traitants industriels, TPE de maintenance, PME de services et commerces lies a l'activite portuaire et industrielle.",
   ecosystemEn:

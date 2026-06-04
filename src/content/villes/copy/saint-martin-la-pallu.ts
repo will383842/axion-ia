@@ -9,9 +9,9 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
   pitchEn:
     "Saint-Martin-la-Pallu (86), commune nouvelle du nord de la Vienne intégrée à Grand Poitiers, regroupe plusieurs bourgs dynamiques autour de Neuville-de-Poitou. Tissu TPE artisans BTP, PME négoce, agriculture céréalière, commerces de proximité et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord Poitou.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-la-Pallu (86). Nous accompagnons tous types d'activités : TPE artisans BTP, PME négoce et agriculture, commerçants, indépendants, professions libérales et services aux entreprises de la communauté urbaine de Grand Poitiers nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Martin-la-Pallu (86). Nous accompagnons tous types d'activités : TPE artisans BTP, PME négoce et agriculture, commerçants, indépendants, professions libérales et services aux entreprises de la communauté urbaine de Grand Poitiers nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-la-Pallu (86). Nous accompagnons tous types d'activités : TPE artisans BTP, PME négoce et agriculture, commerçants, indépendants, professions libérales et services aux entreprises de la communauté urbaine de Grand Poitiers nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Martin-la-Pallu (86). Nous accompagnons tous types d'activités : TPE artisans BTP, PME négoce et agriculture, commerçants, indépendants, professions libérales et services aux entreprises de la communauté urbaine de Grand Poitiers nord.",
   seoHook: "agriculture céréalière & négoce commerce",
   ecosystemFr:
     "Saint-Martin-la-Pallu est une commune nouvelle (5 713 hab) née de la fusion de plusieurs bourgs autour de Neuville-de-Poitou, au nord de Poitiers. Intégrée à Grand Poitiers, elle bénéficie de la proximité du Futuroscope (15 min) et d'un tissu économique mixte : agriculture céréalière, TPE artisans BTP, négoce, commerces et services.",

@@ -9,9 +9,9 @@ export const VEDENE_COPY: VilleCopy = {
   pitchEn:
     "Vedène (84), commune périurbaine de l'est avignonnais, conjugue zones d'activités économiques (Cristole, Le Plan), tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans BTP et services, PME logistiques et négoces, commerces de proximité et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit sur place sur mesure.",
   seoHook: "artisanat & logistique négoce",
   ecosystemFr:
     "Vedène est positionnée à l'est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités (Cristole, Le Plan) accueillant PME logistiques, négoces et industries, les TPE artisans (BTP, services), les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV et au sillon rhodanien.",

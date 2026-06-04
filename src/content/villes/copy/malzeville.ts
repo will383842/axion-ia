@@ -9,9 +9,9 @@ export const MALZEVILLE_COPY: VilleCopy = {
   pitchEn:
     "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
   ecosystemFr:
     "Malzéville est une commune résidentielle du nord de la Métropole du Grand Nancy, adossée au plateau de Haye et bordée par la Meurthe. Son tissu économique repose sur les services aux entreprises, le commerce de proximité, l'artisanat BTP, les professions libérales et la restauration. Cadre périurbain prisé, accès direct au centre de Nancy.",
   ecosystemEn:

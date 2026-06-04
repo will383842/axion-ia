@@ -5,22 +5,22 @@ import type { VilleCopy } from "./types";
 
 export const MEYZIEU_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Meyzieu, dans l'est lyonnais — PME industrielles de la zone de la Mi-Plaine, logistique, négoce et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Meyzieu, dans l'est lyonnais — PME industrielles de la zone de la Mi-Plaine, logistique, négoce et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Meyzieu, dans l'est lyonnais — PME industrielles de la zone de la Mi-Plaine, logistique, négoce et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Meyzieu, dans l'est lyonnais — PME industrielles de la zone de la Mi-Plaine, logistique, négoce et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Meyzieu, commune de l'est lyonnais structurée par la zone industrielle de la Mi-Plaine et intégrée à la métropole de Lyon. Nous nous déplaçons sur site auprès des PME industrielles, des entreprises de logistique, du négoce et des services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Meyzieu, commune de l'est lyonnais structurée par la zone industrielle de la Mi-Plaine et intégrée à la métropole de Lyon. Nous nous déplaçons sur site auprès des PME industrielles, des entreprises de logistique, du négoce et des services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Meyzieu, commune de l'est lyonnais structurée par la zone industrielle de la Mi-Plaine et intégrée à la métropole de Lyon. Nous nous déplaçons sur site auprès des PME industrielles, des entreprises de logistique, du négoce et des services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'experts IA seniors qui accompagne en priorité les TPE puis les PME de Meyzieu, commune de l'est lyonnais structurée par la zone industrielle de la Mi-Plaine et intégrée à la métropole de Lyon. Nous nous déplaçons sur site auprès des PME industrielles, des entreprises de logistique, du négoce et des services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   seoHook: "industrie & logistique Mi-Plaine",
   ecosystemFr:
     "Meyzieu s'appuie sur la vaste zone industrielle de la Mi-Plaine, l'une des plus importantes de l'est lyonnais, qui concentre PME industrielles, ateliers de production, négoce et plateformes logistiques. Bien reliée à la métropole de Lyon et à l'aéroport Saint Exupéry, la commune attire des activités tournées vers la distribution et la sous-traitance. Pour ces TPE et PME, l'IA opérationnelle fiabilise la gestion des commandes, le suivi de stock et la planification, sans surdimensionner les outils ni alourdir des équipes resserrées.",
   ecosystemEn:
     "Meyzieu s'appuie sur la vaste zone industrielle de la Mi-Plaine, l'une des plus importantes de l'est lyonnais, qui concentre PME industrielles, ateliers de production, négoce et plateformes logistiques. Bien reliée à la métropole de Lyon et à l'aéroport Saint Exupéry, la commune attire des activités tournées vers la distribution et la sous-traitance. Pour ces TPE et PME, l'IA opérationnelle fiabilise la gestion des commandes, le suivi de stock et la planification, sans surdimensionner les outils ni alourdir des équipes resserrées.",
   distancesFr:
-    "Meyzieu est intégrée à la métropole de Lyon : l'aéroport Lyon-Saint Exupéry se trouve à une dizaine de kilomètres et la gare TGV de Lyon Part-Dieu à une quinzaine, accessibles par le tramway, la rocade Est et l'autoroute A43. La zone de la Mi-Plaine borde la commune et facilite les flux logistiques. Nos architectes se déplacent sur tout l'est lyonnais.",
+    "Meyzieu est intégrée à la métropole de Lyon : l'aéroport Lyon-Saint Exupéry se trouve à une dizaine de kilomètres et la gare TGV de Lyon Part-Dieu à une quinzaine, accessibles par le tramway, la rocade Est et l'autoroute A43. La zone de la Mi-Plaine borde la commune et facilite les flux logistiques. Nos experts se déplacent sur tout l'est lyonnais.",
   distancesEn:
-    "Meyzieu est intégrée à la métropole de Lyon : l'aéroport Lyon-Saint Exupéry se trouve à une dizaine de kilomètres et la gare TGV de Lyon Part-Dieu à une quinzaine, accessibles par le tramway, la rocade Est et l'autoroute A43. La zone de la Mi-Plaine borde la commune et facilite les flux logistiques. Nos architectes se déplacent sur tout l'est lyonnais.",
+    "Meyzieu est intégrée à la métropole de Lyon : l'aéroport Lyon-Saint Exupéry se trouve à une dizaine de kilomètres et la gare TGV de Lyon Part-Dieu à une quinzaine, accessibles par le tramway, la rocade Est et l'autoroute A43. La zone de la Mi-Plaine borde la commune et facilite les flux logistiques. Nos experts se déplacent sur tout l'est lyonnais.",
   topSectorsNaf: [
     "Industrie & production",
     "Transport & logistique",
@@ -53,7 +53,7 @@ export const MEYZIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Meyzieu ?",
-      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Meyzieu, notamment dans la zone de la Mi-Plaine, et dans tout l'est lyonnais, pour observer vos processus réels avant toute recommandation.",
+      a: "Oui. Nos experts IA seniors interviennent directement dans vos locaux à Meyzieu, notamment dans la zone de la Mi-Plaine, et dans tout l'est lyonnais, pour observer vos processus réels avant toute recommandation.",
     },
     {
       q: "Une PME industrielle ou logistique peut-elle bénéficier de l'IA à Meyzieu ?",

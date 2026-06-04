@@ -9,9 +9,9 @@ export const MOLSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
   ecosystemFr:
     "Molsheim est une sous-préfecture bas-rhinoise située sur la route des Vins d'Alsace, à l'ouest de Strasbourg. Tissu TPE/PME industrie haut de gamme, viticulture, oenotourisme, BTP, commerces, services et artisanat. Dynamique économique portée par le patrimoine, l'industrie de précision et l'attractivité touristique.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const GRUISSAN_COPY: VilleCopy = {
   pitchEn:
     "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & viticulture clape",
   ecosystemFr:
     "Gruissan est une station balnéaire audoise emblématique, entre plage méditerranéenne et étangs. Village circulaire médiéval (tour Barberousse), chalets sur pilotis iconiques, salins de Gruissan. Économie touristique saisonnière forte (campings, résidences, sports nautiques), viticulture AOC La Clape, salines, TPE artisans, commerces saisonniers, hôtellerie-restauration.",

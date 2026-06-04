@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PONTAULT_COMBAULT_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
   seoHook: "commerce & logistique de l'est francilien",
   ecosystemFr:
     "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de TPE artisanales, de garages et de PME de services. Ce profil de petites structures à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
@@ -53,7 +53,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Pontault-Combault ?",
-      a: "Oui. Nos architectes IA interviennent dans vos locaux à Pontault-Combault, des zones commerciales aux entrepôts logistiques en passant par les ateliers d'artisans. L'audit terrain reste le meilleur moyen de cibler des automatisations utiles.",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Pontault-Combault, des zones commerciales aux entrepôts logistiques en passant par les ateliers d'artisans. L'audit terrain reste le meilleur moyen de cibler des automatisations utiles.",
     },
     {
       q: "Quelles entreprises accompagnez-vous à Pontault-Combault ?",

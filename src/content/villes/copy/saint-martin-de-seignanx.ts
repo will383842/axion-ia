@@ -9,9 +9,9 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
   pitchEn:
     "Saint-Martin-de-Seignanx (40), chef-lieu de canton et siège de la communauté de communes du Seignanx, fait partie de l'aire d'attraction de Bayonne dans le sud des Landes. Zone d'activités, commerces, TPE services, artisans BTP, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons TPE et PME des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons TPE et PME des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons TPE et PME des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons TPE et PME des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
   seoHook: "Seignanx, services & agglo Bayonne",
   ecosystemFr:
     "Saint-Martin-de-Seignanx est le chef-lieu du canton du Seignanx et le siège de la communauté de communes éponyme (ancienne baronnie du sud-ouest des Landes). Intégrée à l'aire d'attraction de Bayonne, la commune accueille des zones d'activités économiques. Tissu TPE services, commerces, artisans BTP, professions libérales, agriculture (maïs, kiwi, élevage). Accès A63 et proximité Bayonne.",

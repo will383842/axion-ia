@@ -48,14 +48,14 @@ export const BORDEAUX_COPY: VilleCopy = {
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI girondines — site vitrine premium pour viticulture et négoce export, espace client B2B pour sous-traitants Aerospace Valley, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Custom web platforms and SaaS AI for Gironde SMEs and mid-caps — premium showcase site for wine estates and export trading, B2B client portal for Aerospace Valley sub-contractors, business dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+      en: "Custom web platforms and SaaS AI for Gironde SMEs and mid-caps — premium showcase site for wine estates and export trading, B2B client portal for Aerospace Valley sub-contractors, business dashboard connected to your CRM/ERP. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bordeaux (33063) et dans l'ensemble de la Métropole bordelaise (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). Nous accompagnons les TPE, PME, ETI et grandes entreprises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : aéronautique-défense (Aerospace Valley), viticulture premium, numérique (French Tech Bordeaux), santé-recherche (campus Carreire), conseil et services B2B. Aucun lock-in technologique, tarifs publics affichés.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bordeaux (33063) et dans l'ensemble de la Métropole bordelaise (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). Nous accompagnons les TPE, PME, ETI et grandes entreprises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : aéronautique-défense (Aerospace Valley), viticulture premium, numérique (French Tech Bordeaux), santé-recherche (campus Carreire), conseil et services B2B. Aucun lock-in technologique, tarifs publics affichés.",
   directAnswerEn:
-    "Axion-IA is a senior AI architects consultancy that intervenes in Bordeaux (33063) and across the Bordeaux Métropole (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). We support micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: aerospace-defence (Aerospace Valley), premium viticulture, digital (French Tech Bordeaux), health-research (Carreire campus), consulting and B2B services. No tech lock-in, public pricing displayed.",
+    "Axion-IA is a senior AI experts consultancy that intervenes in Bordeaux (33063) and across the Bordeaux Métropole (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). We support micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: aerospace-defence (Aerospace Valley), premium viticulture, digital (French Tech Bordeaux), health-research (Carreire campus), consulting and B2B services. No tech lock-in, public pricing displayed.",
 
   seoHook: "aéronautique, viticole & deeptech",
 

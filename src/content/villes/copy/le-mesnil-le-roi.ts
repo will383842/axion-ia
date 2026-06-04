@@ -9,9 +9,9 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Le Mesnil-le-Roi (78), commune résidentielle de prestige en bord de Seine, face à Maisons-Laffitte, dans le nord-est des Yvelines. Tissu de TPE et PME de conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services haut de gamme. Axion-IA y intervient pour tous types d'activités de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit sur place sur mesure.",
   seoHook: "conseil coaching & professions libérales",
   ecosystemFr:
     "Le Mesnil-le-Roi est une commune résidentielle de prestige en bord de Seine, face à Maisons-Laffitte, dans le nord-est des Yvelines. Village au cadre verdoyant et à l'habitat pavillonnaire recherché. Tissu économique : professions libérales, TPE conseil et coaching, commerces de village, prestataires immobiliers et services haut de gamme. Communes voisines : Maisons-Laffitte, Sartrouville, Le Pecq, Saint-Germain-en-Laye, Carrières-sur-Seine.",

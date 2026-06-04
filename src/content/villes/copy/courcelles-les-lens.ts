@@ -9,9 +9,9 @@ export const COURCELLES_LES_LENS_COPY: VilleCopy = {
   pitchEn:
     "Courcelles-lès-Lens (62), commune du bassin minier du Pas-de-Calais entre Lens et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Courcelles-lès-Lens est une commune résidentielle du bassin minier entre Lens et Douai. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et de proximité.",

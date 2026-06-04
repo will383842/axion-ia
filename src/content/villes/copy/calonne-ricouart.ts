@@ -10,9 +10,9 @@ export const CALONNE_RICOUART_COPY: VilleCopy = {
     "Calonne-Ricouart (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 370 habitants. Situee entre Marles-les-Mines et Divion, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Calonne-Ricouart est situee dans le bassin minier entre Marles-les-Mines (3 km) et Divion (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et services a la personne. Commune residentielle du bassin bethunois.",
   ecosystemEn:

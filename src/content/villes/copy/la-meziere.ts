@@ -10,9 +10,9 @@ export const LA_MEZIERE_COPY: VilleCopy = {
     "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y conduit ses missions auprès des entreprises locales du nord-rennais.",
   seoHook: "résidentiel & proximité nord Rennes",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "La Mézière fait partie des 43 communes de Rennes Métropole, en première couronne nord sur l'axe Rennes-Saint-Malo. Son tissu économique s'appuie sur la zone d'activités de Cap Malo (commerces, services, hôtellerie, loisirs), l'artisanat du BTP, le commerce de proximité, les TPE/PME résidentielles et les professions libérales. Cadre de vie verdoyant et accessibilité métropolitaine.",
   ecosystemEn:

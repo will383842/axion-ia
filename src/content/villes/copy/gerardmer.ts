@@ -9,9 +9,9 @@ export const GERARDMER_COPY: VilleCopy = {
   pitchEn:
     "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit sur place sur mesure.",
   seoHook: "massif des",
   ecosystemFr:
     "Gérardmer est une ville-station nichée au cœur du massif des Vosges, autour d'un lac glaciaire de 115 hectares. Elle accueille la station de ski La Mauselaine et le célèbre Festival international du film fantastique de Gérardmer chaque janvier. L'économie locale repose massivement sur l'hôtellerie-restauration, le tourisme outdoor (ski, randonnée, lac, baignade, VTT), le commerce touristique, l'artisanat textile historique (linge des Vosges, draperies) et les services aux touristes et résidents.",

@@ -9,9 +9,9 @@ export const INGRE_COPY: VilleCopy = {
   pitchEn:
     "Ingre (45), commune de l'agglomeration d'Orleans au nord-ouest, s'inscrit dans le paysage beauceron aux portes de la metropole ligérienne. Tissu TPE/PME services, commerce, artisanat, logistique, agriculture cerealiere. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Ingre fait partie d'Orleans Metropole, en lisiere de la Beauce cerealiere. L'economie locale s'appuie sur les services aux entreprises, le commerce de proximite, l'artisanat du batiment, la logistique liee au pole routier de l'A10/A71 et l'agriculture cerealiere de la plaine beauceronne.",
   ecosystemEn:

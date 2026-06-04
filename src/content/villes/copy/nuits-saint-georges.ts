@@ -9,9 +9,9 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
   pitchEn:
     "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nuits-Saint-Georges (21). Nous accompagnons TPE et PME de la Côte de Nuits : viticulteurs et domaines viticoles, négociants en vins, acteurs de l'oenotourisme, artisans tonneliers, prestataires services aux domaines et commerçants du centre-bourg.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nuits-Saint-Georges (21). Nous accompagnons TPE et PME de la Côte de Nuits : viticulteurs et domaines viticoles, négociants en vins, acteurs de l'oenotourisme, artisans tonneliers, prestataires services aux domaines et commerçants du centre-bourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nuits-Saint-Georges (21). Nous accompagnons TPE et PME de la Côte de Nuits : viticulteurs et domaines viticoles, négociants en vins, acteurs de l'oenotourisme, artisans tonneliers, prestataires services aux domaines et commerçants du centre-bourg.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nuits-Saint-Georges (21). Nous accompagnons TPE et PME de la Côte de Nuits : viticulteurs et domaines viticoles, négociants en vins, acteurs de l'oenotourisme, artisans tonneliers, prestataires services aux domaines et commerçants du centre-bourg.",
   seoHook: "viticulture domaines & négoce vins",
   ecosystemFr:
     "Nuits-Saint-Georges est la capitale de la Côte de Nuits (5 235 habitants), cœur des grands crus de Bourgogne inscrits au patrimoine mondial UNESCO (Climats du vignoble). Économie dominée par la viticulture, le négoce de vins, l'oenotourisme et les services aux domaines viticoles. Présence de TPE artisanales (tonnellerie, embouteillage) et de commerces de proximité.",

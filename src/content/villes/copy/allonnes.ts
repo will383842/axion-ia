@@ -9,9 +9,9 @@ export const ALLONNES_COPY: VilleCopy = {
   pitchEn:
     "Allonnes (72), commune de l'agglomération mancelle au sud du Mans en Sarthe, accueille des zones d'activités industrielles et commerciales qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires du bassin manceau sud. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
   seoHook: "industrie automobile & assurance services",
   ecosystemFr:
     "Allonnes est la deuxième ville de Le Mans Métropole, au sud du Mans. Zones d'activités industrielles et commerciales, proximité du circuit des 24 Heures et du pôle automobile sarthois. Tissu PME diversifié : industrie automobile, assurance, services, BTP, commerces, logistique.",

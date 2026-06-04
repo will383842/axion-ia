@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HYERES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
+    "Axion-IA accompagne les TPE et PME de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
+    "Axion-IA accompagne les TPE et PME de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce bassin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui aide les TPE et PME de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce bassin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce bassin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui aide les TPE et PME de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce bassin.",
   seoHook: "tourisme îles d'Or & horticulture",
   ecosystemFr:
     "Hyères concentre une économie de saison : tourisme balnéaire et insulaire vers Porquerolles, Port-Cros et le Levant, hébergement hôtelier et de plein air, horticulture historique du palmier, viticulture des Côtes de Provence et activités nautiques. Ce tissu de TPE et de PME, soumis à de fortes variations saisonnières, gagne à automatiser réservations, relations client multilingues, devis et gestion des stocks. La présence de l'aéroport de Toulon-Hyères renforce l'accessibilité. Axion-IA cible en priorité ces TPE touristiques et agricoles, puis les PME viticoles et hôtelières.",
@@ -53,7 +53,7 @@ export const HYERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Hyères et vers les îles d'Or ?",
-      a: "Oui. Notre cabinet d'architectes IA se déplace dans vos locaux à Hyères et sur l'ensemble de la presqu'île pour observer vos processus réels, généralement sous cinq jours ouvrés.",
+      a: "Oui. Notre cabinet d'experts IA se déplace dans vos locaux à Hyères et sur l'ensemble de la presqu'île pour observer vos processus réels, généralement sous cinq jours ouvrés.",
     },
     {
       q: "Quels gains l'IA apporte-t-elle à un hôtelier ou un viticulteur de Hyères ?",

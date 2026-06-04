@@ -9,9 +9,9 @@ export const SAUMUR_COPY: VilleCopy = {
   pitchEn:
     "Saumur, sous-préfecture du Maine-et-Loire (49) en Val de Loire, est célèbre pour ses vignobles (AOC Saumur-Champigny, Saumur fines bulles), le Cadre Noir (équitation militaire) et son patrimoine UNESCO. Tissu viticole, agroalimentaire, tourisme patrimoine et TPE/PME locales. Axion-IA y intervient pour les viticulteurs, artisans, indépendants et PME du Val de Loire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saumur (49) en Val de Loire. Nous accompagnons les viticulteurs (Saumur-Champigny, fines bulles), artisans agroalimentaires, acteurs du tourisme (caves troglodytes, châteaux, équitation), TPE/PME tertiaires saumuroises et structures du bassin Loire-Authion.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saumur (49) en Val de Loire. Nous accompagnons les viticulteurs (Saumur-Champigny, fines bulles), artisans agroalimentaires, acteurs du tourisme (caves troglodytes, châteaux, équitation), TPE/PME tertiaires saumuroises et structures du bassin Loire-Authion.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saumur (49) en Val de Loire. Nous accompagnons les viticulteurs (Saumur-Champigny, fines bulles), artisans agroalimentaires, acteurs du tourisme (caves troglodytes, châteaux, équitation), TPE/PME tertiaires saumuroises et structures du bassin Loire-Authion.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saumur (49) en Val de Loire. Nous accompagnons les viticulteurs (Saumur-Champigny, fines bulles), artisans agroalimentaires, acteurs du tourisme (caves troglodytes, châteaux, équitation), TPE/PME tertiaires saumuroises et structures du bassin Loire-Authion.",
   seoHook: "viticulture & tourisme patrimoine",
   ecosystemFr:
     "Saumur concentre l'activité économique du Val de Loire angevin : 4 000 ha de vignobles AOC (Saumur, Saumur-Champigny, fines bulles), École nationale d'équitation (Cadre Noir, formation militaire), tourisme patrimoine (château UNESCO, caves troglodytes), tissu PME agroalimentaire (champignons de Paris — 2e bassin national). Patrimoine 4 étoiles.",

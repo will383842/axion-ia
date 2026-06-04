@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MASSY_COPY: VilleCopy = {
   pitchFr:
-    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
+    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE puis les PME tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
   pitchEn:
-    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
+    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE puis les PME tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les TPE puis les PME du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les TPE puis les PME du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les TPE puis les PME du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les TPE puis les PME du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   seoHook: "tertiaire & hub gare Massy TGV",
   ecosystemFr:
     "Massy doit son dynamisme à sa position de hub : la gare Massy TGV relie province et province sans passer par Paris, croisant les RER B et C. Le quartier Atlantis et le pôle Vilgénis concentrent sièges, ESN, cabinets de conseil et activités de services aux entreprises, à proximité du plateau de Saclay. Ce tissu dense de TPE et PME tertiaires, riche en tâches administratives répétitives, se prête particulièrement bien à l'automatisation et aux agents IA métier.",
@@ -53,7 +53,7 @@ export const MASSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Massy ?",
-      a: "Oui. Nos architectes IA interviennent dans vos locaux à Massy, notamment au quartier Atlantis et autour de la gare Massy TGV, pour audits, interventions et implémentations, généralement sous cinq jours ouvrés après validation.",
+      a: "Oui. Nos experts IA interviennent dans vos locaux à Massy, notamment au quartier Atlantis et autour de la gare Massy TGV, pour audits, interventions et implémentations, généralement sous cinq jours ouvrés après validation.",
     },
     {
       q: "Accompagnez-vous les ESN et cabinets de conseil de Massy ?",

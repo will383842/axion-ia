@@ -9,9 +9,9 @@ export const MAULE_COPY: VilleCopy = {
   pitchEn:
     "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA répond aux besoins des activités professionnelles présentes de la vallée de la Mauldre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
   seoHook: "agriculture viticulture & commerce proximité",
   ecosystemFr:
     "Maule est un bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Commune au patrimoine architectural remarquable (église romane, lavoir) et au tissu agricole vivant. Économie locale : TPE artisans, commerces de centre-bourg, PME agricoles et viticoles, professions libérales, hébergements ruraux et services de proximité. Communes voisines : Épône, Nézel, Bazemont, Herbeville, Mareil-sur-Mauldre, Montainville.",

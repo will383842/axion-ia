@@ -9,9 +9,9 @@ export const WINTZENHEIM_COPY: VilleCopy = {
   pitchEn:
     "Wintzenheim (68), commune de la première couronne ouest de Colmar dans le Haut-Rhin, est porte d'entrée du vignoble alsacien (grand cru Hengst) sur la Route des Vins. Tissu de TPE/PME en viticulture, œnotourisme, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit sur place sur mesure.",
   seoHook: "vignoble alsacien",
   ecosystemFr:
     "Wintzenheim s'inscrit en première couronne ouest de Colmar, au sein de Colmar Agglomération. Porte d'entrée du vignoble alsacien sur la Route des Vins, la commune accueille le grand cru Hengst, plusieurs domaines viticoles et coopératives. Économie locale tirée par la viticulture, l'œnotourisme, l'hôtellerie-restauration, l'artisanat BTP et les services de proximité. Proximité immédiate du tissu industriel et tertiaire colmarien.",

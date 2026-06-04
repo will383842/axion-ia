@@ -9,9 +9,9 @@ export const L_ARBRESLE_COPY: VilleCopy = {
   pitchEn:
     "L'Arbresle (69), commune du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Brévenne à mi-chemin entre Lyon et Tarare. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du NO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Arbresle (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la vallée de la Brévenne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Arbresle (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la vallée de la Brévenne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Arbresle (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la vallée de la Brévenne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Arbresle (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la vallée de la Brévenne.",
   seoHook: "tertiaires vallée & industrielles lyonnais",
   ecosystemFr:
     "L'Arbresle est positionnée dans la vallée de la Brévenne (NO lyonnais), à mi-chemin entre Lyon et Tarare. Tissu PME tertiaires et industrielles, TPE artisanat BTP, commerces de proximité, professions libérales installées.",

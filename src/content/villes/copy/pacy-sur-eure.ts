@@ -9,9 +9,9 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
   pitchEn:
     "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
   seoHook: "commerce proximité & agriculture vallée",
   ecosystemFr:
     "Pacy-sur-Eure est un bourg de la vallée de l'Eure, entre Évreux (20 min) et Vernon (15 min), carrefour entre Normandie et Île-de-France. Tissu TPE/PME de proximité : artisans, commerces, professions libérales, services. Agriculture vallée de l'Eure (maraîchage, céréales). Cadre de vie prisé, population en croissance.",

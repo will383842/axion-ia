@@ -9,9 +9,9 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Digne-les-Bains (04), préfecture des Alpes-de-Haute-Provence, est au carrefour de la lavande, du thermalisme et du Géoparc UNESCO de Haute-Provence. Tissu TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles, commerces et services de santé. Axion-IA opère pour toutes les structures économiques de la commune de la préfecture dignoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digne-les-Bains (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et thermalisme, agriculteurs lavandicoles, commerçants, professionnels de santé thermale, indépendants et services aux entreprises de la préfecture des Alpes-de-Haute-Provence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Digne-les-Bains (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et thermalisme, agriculteurs lavandicoles, commerçants, professionnels de santé thermale, indépendants et services aux entreprises de la préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digne-les-Bains (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et thermalisme, agriculteurs lavandicoles, commerçants, professionnels de santé thermale, indépendants et services aux entreprises de la préfecture des Alpes-de-Haute-Provence.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Digne-les-Bains (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et thermalisme, agriculteurs lavandicoles, commerçants, professionnels de santé thermale, indépendants et services aux entreprises de la préfecture des Alpes-de-Haute-Provence.",
   seoHook: "thermalisme santé & tourisme nature",
   ecosystemFr:
     "Digne-les-Bains est la préfecture des Alpes-de-Haute-Provence (~18 000 hab), siège du Géoparc UNESCO de Haute-Provence (premier au monde, 1 réserve géologique nationale). Centre thermal reconnu (thermes Digne), filière lavande (plateau de Valensole à 30 min), TPE artisans BTP, PME tourisme nature, commerces et services administratifs préfectoraux.",

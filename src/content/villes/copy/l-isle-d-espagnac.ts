@@ -9,9 +9,9 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
   pitchEn:
     "L'Isle-d'Espagnac (16), commune de l'agglomération d'Angoulême en Charente, pôle commercial majeur du GrandAngoulême avec ses grandes zones d'activités. Tissu de TPE artisans, PME commerciales, enseignes et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
   seoHook: "commerce grande & services aux",
   ecosystemFr:
     "L'Isle-d'Espagnac est un pôle commercial majeur de l'agglomération GrandAngoulême. Grandes zones d'activités commerciales, enseignes de distribution, PME services et tertiaire, TPE artisans, professions libérales. Position stratégique sur l'axe Angoulême-Limoges, fort dynamisme commercial.",

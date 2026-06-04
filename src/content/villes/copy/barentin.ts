@@ -10,9 +10,9 @@ export const BARENTIN_COPY: VilleCopy = {
     "Barentin (76), commune de la vallee du Commerce en Seine-Maritime, reunit plus de 12 000 habitants. Ancienne cite textile reconvertie, son economie repose sur les TPE de services, les PME industrielles et logistiques, le commerce de centre-ville et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie reconvertie, commerce & tertiaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Barentin est situee dans la vallee du Commerce, a 20 km au nord-ouest de Rouen. Ancienne capitale du textile normand, la ville a reussi sa reconversion vers les services, le commerce de centre-ville, la logistique et les PME industrielles diversifiees. Acces rapide A150 vers Rouen et Le Havre.",
   ecosystemEn:

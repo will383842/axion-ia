@@ -9,9 +9,9 @@ export const AUDENGE_COPY: VilleCopy = {
   pitchEn:
     "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "artisanat & ostréiculture",
   ecosystemFr:
     "Audenge est une commune en forte croissance du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité, professions libérales et services à la personne. Gare TER Audenge sur la ligne Bordeaux-Arcachon.",

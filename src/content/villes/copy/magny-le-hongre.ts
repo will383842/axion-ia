@@ -9,9 +9,9 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   pitchEn:
     "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Magny-le-Hongre est une commune du Val d'Europe en Seine-et-Marne, à proximité immédiate de Disneyland Paris. Son tissu économique est porté par le tourisme, l'hôtellerie, la restauration, le commerce et les prestataires événementiels. Proximité avec Serris, Chessy, Bailly-Romainvilliers et Bussy-Saint-Georges.",

@@ -9,9 +9,9 @@ export const LEERS_COPY: VilleCopy = {
   pitchEn:
     "Leers (59), commune de la Métropole Européenne de Lille dans l'agglomération de Roubaix, accolée à la frontière belge (Estaimpuis à 3 min). Tissu économique : TPE et PME du textile-distribution, commerce transfrontalier franco-belge, artisanat, services de proximité, sous-traitance industrielle roubaisienne. Axion-IA opère pour toutes les structures économiques de la commune du bassin roubaisien et transfrontalier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
   seoHook: "bassin roubaisien et",
   ecosystemFr:
     "Leers est une commune périurbaine de la Métropole Européenne de Lille, située dans l'agglomération de Roubaix et directement accolée à la frontière belge (Estaimpuis à 3 min). L'économie locale combine TPE et PME du textile-distribution (héritage du bassin roubaisien-tourquennois), commerce transfrontalier franco-belge, artisanat local, services de proximité et sous-traitance industrielle. Zone résidentielle dynamique avec tissu commercial et artisanal diversifié.",

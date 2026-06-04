@@ -9,9 +9,9 @@ export const COULAINES_COPY: VilleCopy = {
   pitchEn:
     "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulaines (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique), prestataires et entreprises du nord de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coulaines (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique), prestataires et entreprises du nord de l'agglomération mancelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulaines (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique), prestataires et entreprises du nord de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coulaines (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique), prestataires et entreprises du nord de l'agglomération mancelle.",
   seoHook: "artisanat proximité & commerce distribution",
   ecosystemFr:
     "Coulaines est l'une des principales communes de Le Mans Métropole, au nord du Mans. Tissu économique de proximité : artisanat, commerces, professions libérales, services à la personne, petites PME tertiaires. Proximité directe avec les zones d'activités mancelles et accès rapide au centre.",

@@ -9,9 +9,9 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
   pitchEn:
     "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erquinghem-Lys (59). Nous accompagnons tous types d'activités : TPE artisans, PME textiles et agroalimentaires héritées du val de Lys, commerçants, professions libérales, exploitants agricoles périurbains et services aux entreprises du bassin armentiérois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Erquinghem-Lys (59). Nous accompagnons tous types d'activités : TPE artisans, PME textiles et agroalimentaires héritées du val de Lys, commerçants, professions libérales, exploitants agricoles périurbains et services aux entreprises du bassin armentiérois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erquinghem-Lys (59). Nous accompagnons tous types d'activités : TPE artisans, PME textiles et agroalimentaires héritées du val de Lys, commerçants, professions libérales, exploitants agricoles périurbains et services aux entreprises du bassin armentiérois.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Erquinghem-Lys (59). Nous accompagnons tous types d'activités : TPE artisans, PME textiles et agroalimentaires héritées du val de Lys, commerçants, professions libérales, exploitants agricoles périurbains et services aux entreprises du bassin armentiérois.",
   seoHook: "artisanat services & textile agroalimentaire",
   ecosystemFr:
     "Erquinghem-Lys est sur les bords de la Lys, dans la communauté de communes Flandre Lys, à la lisière de la métropole lilloise. Héritage textile et agroalimentaire reconverti en PME tertiaires et logistiques. TPE artisanat, commerces, professions libérales et agriculture périurbaine complètent le tissu local.",

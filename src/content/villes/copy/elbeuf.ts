@@ -9,9 +9,9 @@ export const ELBEUF_COPY: VilleCopy = {
   pitchEn:
     "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
   seoHook: "industrie reconvertie & boucle de Seine",
   ecosystemFr:
     "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",

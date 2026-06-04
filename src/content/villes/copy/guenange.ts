@@ -9,9 +9,9 @@ export const GUENANGE_COPY: VilleCopy = {
   pitchEn:
     "Guénange (57), commune de 8 083 habitants dans la vallée de la Fensch en Moselle, ancien bassin sidérurgique reconverti au sud de Thionville. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d''activités du nord mosellan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Guénange (57). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Fensch et du nord mosellan. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Guénange (57). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Fensch et du nord mosellan. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Guénange (57). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Fensch et du nord mosellan. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Guénange (57). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Fensch et du nord mosellan. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Guénange est une commune de la vallée de la Fensch, ancien bassin sidérurgique reconverti, au sud de Thionville. Tissu TPE artisans BTP, PME industrielles de sous-traitance, services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Reconversion économique post-sidérurgie avec diversification vers les services et la logistique transfrontalière.",

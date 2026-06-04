@@ -9,9 +9,9 @@ export const DARDILLY_COPY: VilleCopy = {
   pitchEn:
     "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
   seoHook: "technologiques techlid & tertiaires sièges",
   ecosystemFr:
     "Dardilly est intégrée à la Métropole de Lyon, en banlieue NO (accès A6 péage nord Lyon). Position stratégique : proximité du technopôle Techlid (pôle tertiaire et technologique majeur ouest lyonnais, sièges sociaux et centres R&D). Tissu PME tertiaires et technologiques, TPE artisanat BTP, commerces.",

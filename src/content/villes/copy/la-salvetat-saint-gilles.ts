@@ -9,9 +9,9 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
   pitchEn:
     "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",

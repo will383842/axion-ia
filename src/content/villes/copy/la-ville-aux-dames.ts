@@ -9,9 +9,9 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   pitchEn:
     "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "La Ville-aux-Dames est une commune résidentielle attractive de l'est de Tours Métropole (5 606 habitants), en bords de Loire. La zone d'activités des Granges accueille TPE et PME tertiaires. Tissu économique diversifié : services aux entreprises, commerces de proximité, artisanat BTP, professions libérales. Proximité immédiate Tours centre et gare TGV Saint-Pierre-des-Corps.",

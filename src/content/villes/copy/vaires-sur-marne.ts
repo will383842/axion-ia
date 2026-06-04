@@ -9,9 +9,9 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Vaires-sur-Marne (77), commune de Seine-et-Marne en bord de Marne, a accueilli les épreuves olympiques d'aviron et de canoë-kayak lors des Jeux de Paris 2024 grâce à sa base nautique olympique. Tissu TPE artisans et prestataires, PME services et sport-loisirs, commerçants et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit sur place sur mesure.",
   seoHook: "sport loisirs & artisanat maintenance",
   ecosystemFr:
     "Vaires-sur-Marne est désormais reconnue internationalement grâce à sa base nautique olympique, site des épreuves d'aviron et de canoë-kayak des Jeux de Paris 2024. La commune bénéficie d'un cadre de vie attractif en bord de Marne avec un tissu de TPE artisans, PME services, acteurs sport-loisirs, commerces et professions libérales. Communes voisines : Chelles, Torcy, Noisiel, Brou-sur-Chantereine.",

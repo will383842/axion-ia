@@ -9,9 +9,9 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
   pitchEn:
     "Saint-Martin-le-Vinoux (38), commune limitrophe au nord-ouest de Grenoble, est membre de Grenoble-Alpes Métropole. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-le-Vinoux (38). Nous accompagnons tous types d'activités : PME tertiaires, TPE artisans BTP, commerçants, professions libérales (médecins, avocats), indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Martin-le-Vinoux (38). Nous accompagnons tous types d'activités : PME tertiaires, TPE artisans BTP, commerçants, professions libérales (médecins, avocats), indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-le-Vinoux (38). Nous accompagnons tous types d'activités : PME tertiaires, TPE artisans BTP, commerçants, professions libérales (médecins, avocats), indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Martin-le-Vinoux (38). Nous accompagnons tous types d'activités : PME tertiaires, TPE artisans BTP, commerçants, professions libérales (médecins, avocats), indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-ouest.",
   seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
     "Saint-Martin-le-Vinoux est membre de Grenoble-Alpes Métropole en position limitrophe nord-ouest de Grenoble, au pied du massif de la Chartreuse (sommet du Néron). Tissu mixte : résidentiel péri-urbain, PME tertiaires et services, TPE artisans BTP, commerces de proximité, professions libérales. Accès rapide centre Grenoble via tramway E.",

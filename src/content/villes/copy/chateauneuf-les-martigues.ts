@@ -9,9 +9,9 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
   pitchEn:
     "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
   seoHook: "TPE & PME Bouches-du-Rhône",
   ecosystemFr:
     "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de TPE artisans et commerces de proximité.",

@@ -9,9 +9,9 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
   pitchEn:
     "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération Valence.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   seoHook: "tertiaires agglomération & industrielles",
   ecosystemFr:
     "Guilherand-Granges est face à Valence (rive droite Rhône, Ardèche). Tissu PME tertiaires/industrielles agglomération valentinoise, TPE artisanat BTP, commerces, professions libérales.",

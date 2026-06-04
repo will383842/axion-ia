@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "tourisme patrimonial & vallée du Rhône",
   ecosystemFr:
     "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de TPE et PME, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
@@ -53,7 +53,7 @@ export const VIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vienne ?",
-      a: "Oui, Axion-IA intervient à Vienne et dans le sud lyonnais (Pont-Évêque, Chasse-sur-Rhône, Givors, Estrablin). Nos architectes IA seniors se déplacent depuis Lyon (30 min) ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Vienne et dans le sud lyonnais (Pont-Évêque, Chasse-sur-Rhône, Givors, Estrablin). Nos experts IA seniors se déplacent depuis Lyon (30 min) ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vienne ?",

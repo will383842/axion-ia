@@ -9,9 +9,9 @@ export const CRANVES_SALES_COPY: VilleCopy = {
   pitchEn:
     "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   seoHook: "services transfrontaliers & tertiaires",
   ecosystemFr:
     "Cranves-Sales se situe à la jonction entre Annemasse et le Grand Genève, bénéficiant pleinement de la dynamique transfrontalière franco-suisse. Tissu économique résidentiel et tertiaire : PME de services (conseil, IT, comptabilité), TPE artisanat BTP portées par la construction résidentielle, commerces de proximité et professions libérales. Proximité immédiate de Genève (15 min) et de son bassin d'emploi.",

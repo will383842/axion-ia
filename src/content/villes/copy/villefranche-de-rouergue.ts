@@ -9,9 +9,9 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
   seoHook: "TPE & PME Aveyron",
   ecosystemFr:
     "Villefranche-de-Rouergue est une sous-préfecture de l'Aveyron, bastide royale du XIIIe siècle au patrimoine médiéval remarquable (place Notre-Dame, chartreuse Saint-Sauveur). Économie diversifiée : agroalimentaire aveyronnais (charcuterie, fromages, produits du terroir), artisanat d'art, commerce de centre-ville dynamique, professions libérales, tourisme patrimonial et marchés traditionnels réputés.",

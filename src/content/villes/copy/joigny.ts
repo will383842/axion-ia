@@ -9,9 +9,9 @@ export const JOIGNY_COPY: VilleCopy = {
   pitchEn:
     "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
   seoHook: "commerce proximité & artisanat maintenance",
   ecosystemFr:
     "Joigny est une sous-préfecture de l'Yonne en bord de rivière, connue pour son centre historique Renaissance et ses côtes du vignoble jovinien. L'économie locale repose sur le commerce de centre-ville, l'artisanat BTP, les services aux entreprises, l'agroalimentaire et les professions libérales. Pôle administratif et de services du nord-ouest de l'Yonne. Proximité d'Auxerre (25 min) et de Sens (30 min).",

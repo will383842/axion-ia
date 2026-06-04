@@ -10,9 +10,9 @@ export const ALBERT_COPY: VilleCopy = {
     "Albert (80), sous-prefecture de la Somme, reunit environ 9 520 habitants. Ville de memoire liee a la Bataille de la Somme 1916, elle est aussi un pole industriel aeronautique majeur (site Meaulte-Albert). Son economie associe TPE artisanales, PME aeronautiques, tourisme memoriel, agriculture picarde et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "aeronautique, memoire 14-18 & industrie",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Albert est un pole industriel de la Somme, centre du bassin aeronautique Meaulte-Albert (sous-traitance Airbus). Tissu economique diversifie : PME aeronautiques et mecaniques, TPE artisanat BTP, agriculture picarde (grandes cultures, betteraves), tourisme de memoire (Bataille de la Somme 1916, Musee Somme 1916) et commerces de centre-ville.",
   ecosystemEn:

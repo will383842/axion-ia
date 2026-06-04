@@ -9,9 +9,9 @@ export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
   pitchEn:
     "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
   seoHook: "industrie métallurgique & artisanat second",
   ecosystemFr:
     "Bordères-sur-l'Échez est une commune résidentielle et industrielle de l'agglomération de Tarbes, traversée par l'Échez. Zones d'activités dynamiques attirant PME industrielles (métallurgie, mécanique) et artisanales. Tissu TPE artisans BTP, commerces de proximité, professions libérales, services aux entreprises. Accès rapide Pyrénées et stations.",

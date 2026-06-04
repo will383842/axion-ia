@@ -9,9 +9,9 @@ export const YZEURE_COPY: VilleCopy = {
   pitchEn:
     "Yzeure (03), commune en banlieue immédiate de Moulins dans l'Allier, est positionnée en Bourbonnais. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture bourbonnaise. Axion-IA collabore avec toutes les structures locales de l'agglomération moulinoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
   seoHook: "TPE & PME Allier",
   ecosystemFr:
     "Yzeure est en banlieue de Moulins, Bourbonnais. Tissu PME tertiaires/industrielles, agriculture bourbonnaise (élevage charolais, grandes cultures), TPE artisanat BTP, commerces.",

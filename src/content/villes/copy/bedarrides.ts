@@ -9,9 +9,9 @@ export const BEDARRIDES_COPY: VilleCopy = {
   pitchEn:
     "Bédarrides (84), commune de la vallée de l'Ouvèze proche de Châteauneuf-du-Pape, compte près de 5 671 habitants. Vignoble AOC Châteauneuf-du-Pape et Côtes-du-Rhône, agriculture, tissu de TPE artisanales, domaines viticoles prestigieux, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit sur place sur mesure.",
   seoHook: "vallée ouvèze",
   ecosystemFr:
     "Bédarrides est un pôle viticole et agricole de la vallée de l'Ouvèze, à proximité immédiate de Châteauneuf-du-Pape. Vignoble AOC Châteauneuf-du-Pape (cru prestigieux), Côtes-du-Rhône, oenotourisme international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Orange à 15 min, Avignon à 20 min, A7 directe.",

@@ -9,9 +9,9 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
   pitchEn:
     "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie son expertise pour toutes les organisations sud-grenobloises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varces-Allières-et-Risset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs résiduels de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et services du sud Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Varces-Allières-et-Risset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs résiduels de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et services du sud Grenoble-Alpes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varces-Allières-et-Risset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs résiduels de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et services du sud Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Varces-Allières-et-Risset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs résiduels de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et services du sud Grenoble-Alpes Métropole.",
   seoHook: "vallée gresse",
   ecosystemFr:
     "Varces-Allières-et-Risset est issue de la fusion historique de plusieurs hameaux rattachés à la commune-mère Varces, longtemps modeste agglomération de la vallée de la Gresse. Aujourd'hui à l'écart immédiat de la Métropole grenobloise mais bien connectée. Tissu TPE artisanat BTP, commerces, professions libérales, activité agricole résiduelle (pâtures, élevage local).",

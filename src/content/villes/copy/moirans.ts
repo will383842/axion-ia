@@ -9,9 +9,9 @@ export const MOIRANS_COPY: VilleCopy = {
   pitchEn:
     "Moirans (38), commune du Pays voironnais en Isère, est positionnée stratégiquement au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du nord-Isère / Voironnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   seoHook: "pays voironnais en",
   ecosystemFr:
     "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe Lyon-Grenoble (A48) : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",

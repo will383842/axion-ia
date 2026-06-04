@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MANTES_LA_JOLIE_COPY: VilleCopy = {
   pitchFr:
-    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME mantaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses TPE et PME. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME mantaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME mantaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses TPE et PME. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité ces TPE puis les PME mantaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mantes-la-Jolie (78) auprès des TPE et PME : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mantes-la-Jolie (78) auprès des TPE et PME : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mantes-la-Jolie (78) auprès des TPE et PME : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mantes-la-Jolie (78) auprès des TPE et PME : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   seoHook: "sous-traitance auto & logistique Seine",
   ecosystemFr:
     "Mantes-la-Jolie, au bord de la Seine dans l'ouest des Yvelines, conjugue patrimoine (collégiale Notre-Dame) et fort tissu industriel structuré par la proximité de l'usine Renault de Flins. L'économie locale repose sur la sous-traitance automobile et mécanique, la logistique fluviale et routière, le BTP, le commerce et les services. Cette concentration de TPE et PME industrielles et de services, à la charnière entre l'Île-de-France et la Normandie, constitue un terrain propice à une IA appliquée à la production, à la qualité et à la gestion des flux.",
@@ -53,7 +53,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mantes-la-Jolie ?",
-      a: "Oui, Axion-IA intervient à Mantes-la-Jolie et dans le Mantois (Limay, Magnanville, Buchelay, Rosny-sur-Seine, Flins). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Mantes-la-Jolie et dans le Mantois (Limay, Magnanville, Buchelay, Rosny-sur-Seine, Flins). Nos experts IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Mantes-la-Jolie ?",

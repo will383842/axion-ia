@@ -9,9 +9,9 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
   pitchEn:
     "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   seoHook: "agriculture élevage & filière bois",
   ecosystemFr:
     "Guémené-Penfao est un bourg de plus de 5 200 habitants au carrefour de trois départements (Loire-Atlantique, Morbihan, Ille-et-Vilaine). L'économie locale s'appuie sur l'agriculture (élevage bovin, polyculture), la filière bois (forêt de la Bretesche), l'artisanat BTP, le commerce de bourg et les services de proximité. Pôle de santé rural avec médecins, pharmaciens et paramédicaux.",

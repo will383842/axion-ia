@@ -9,9 +9,9 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y mène ses missions auprès des organisations locales du bassin brévinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & commerce détail",
   ecosystemFr:
     "Saint-Brevin-les-Pins (14 541 hab) est une commune littorale de la Côte de Jade, à l'embouchure de la Loire, reliée à Saint-Nazaire par le pont. Tourisme balnéaire familial, campings, commerces saisonniers, artisanat du bâtiment et professions libérales. Proximité Saint-Nazaire (15 min via pont), Pornic (20 min), Nantes (50 min). Attractivité résidentielle croissante.",

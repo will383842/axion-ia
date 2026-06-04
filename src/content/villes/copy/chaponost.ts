@@ -9,9 +9,9 @@ export const CHAPONOST_COPY: VilleCopy = {
   pitchEn:
     "Chaponost (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour les vestiges de l'aqueduc romain du Gier (monument historique, alimentait Lugdunum). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaponost (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon SO, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chaponost (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon SO, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaponost (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon SO, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chaponost (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon SO, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   seoHook: "tertiaires métropole & professions libérales",
   ecosystemFr:
     "Chaponost est intégrée à la Métropole de Lyon, en banlieue SO. Patrimoine notable : vestiges de l'aqueduc romain du Gier (monument historique classé, alimentait Lyon antique Lugdunum). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces, agriculture résiduelle.",

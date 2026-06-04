@@ -9,9 +9,9 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   pitchEn:
     "La Roque-d'Anthéron (13), commune de la vallée de la Durance célèbre pour son Festival international de piano et l'abbaye cistercienne de Silvacane, conjugue patrimoine, tourisme culturel et tissu de TPE artisans, PME services, restauration et commerces de proximité. Bassin d'emploi tourné vers Aix, Salon et Pertuis. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "tourisme culturel & restauration événementiel",
   ecosystemFr:
     "La Roque-d'Anthéron est positionnée dans la vallée de la Durance, au nord d'Aix-en-Provence, et tire son rayonnement du Festival international de piano (juillet-août, plus de 80 000 spectateurs) et de l'abbaye cistercienne de Silvacane. Tissu économique de TPE tourisme culturel (hébergements, restauration, locations saisonnières), artisans, PME services tertiaires, viticulture des Coteaux d'Aix, commerces de proximité et professions libérales. Saisonnalité forte autour du festival.",

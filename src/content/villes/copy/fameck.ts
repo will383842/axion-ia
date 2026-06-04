@@ -9,9 +9,9 @@ export const FAMECK_COPY: VilleCopy = {
   pitchEn:
     "Fameck (57), commune mosellane de la Vallée de la Fensch dans l'agglomération de Thionville, héritière d'un passé sidérurgique majeur reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services, et nombreux frontaliers du Luxembourg. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fameck (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fameck (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fameck (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fameck (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
   ecosystemFr:
     "Fameck est une commune mosellane de la Vallée de la Fensch, intégrée à l'agglomération de Thionville, héritière d'une tradition sidérurgique reconvertie. Tissu TPE/PME industrie, sous-traitance, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière vers le Luxembourg.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const BEAUCOUZE_COPY: VilleCopy = {
   pitchEn:
     "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
   seoHook: "numérique services & commerce grande",
   ecosystemFr:
     "Beaucouzé est un pôle économique de l'ouest d'Angers Loire Métropole. La commune abrite le centre commercial Atoll et plusieurs parcs d'activités tertiaires et technologiques. Tissu économique diversifié : numérique, services aux entreprises, commerce, professions libérales, logistique.",

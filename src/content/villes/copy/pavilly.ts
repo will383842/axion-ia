@@ -10,9 +10,9 @@ export const PAVILLY_COPY: VilleCopy = {
     "Pavilly (76), commune du pays de Caux en Seine-Maritime, reunit pres de 6 030 habitants. Bourg-centre entre Rouen et Yvetot, elle accueille des TPE de services, des commerces de proximite, des artisans, des professions liberales et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, artisanat & pays de Caux",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Pavilly est un bourg-centre du pays de Caux, a mi-chemin entre Rouen et Yvetot. Pole de services et de commerce pour un bassin rural : commerces de proximite, artisanat, professions liberales, TPE de services et activites agricoles. Acces D6015 et proximite A150.",
   ecosystemEn:

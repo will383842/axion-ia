@@ -10,9 +10,9 @@ export const BOLBEC_COPY: VilleCopy = {
     "Bolbec (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 11 600 habitants. Ancienne ville textile reconvertie, elle accueille des TPE artisanales, des PME de services et commerciales, des professions liberales et des acteurs de la sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "textile reconverti, commerce & sante",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bolbec est situee dans la vallee du Commerce, entre Rouen et Le Havre. Ancienne cite textile normande, la ville dispose d'un tissu de TPE artisanales, PME de services, commerces de proximite, professions liberales et etablissements de sante. Acces A29 vers Le Havre et Amiens.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const NOYON_COPY: VilleCopy = {
   pitchEn:
     "Noyon (60), cité historique de l'Oise où fut couronné Charlemagne et naquit Calvin, dotée d'une cathédrale gothique majeure. Tissu TPE/PME commerce, artisanat, BTP, agroalimentaire, logistique et services sur l'axe Compiègne–Saint-Quentin. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit sur place sur mesure.",
   ecosystemFr:
     "Noyon est une cité historique de l'Oise, connue pour sa cathédrale gothique (XIIe siècle), le couronnement de Charlemagne et la naissance de Jean Calvin. Économie diversifiée : commerce, artisanat, agroalimentaire (plaine céréalière picarde), BTP, logistique sur l'axe RN32 Compiègne–Saint-Quentin, tourisme patrimonial et services.",
   ecosystemEn:

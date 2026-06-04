@@ -9,9 +9,9 @@ export const YSSINGEAUX_COPY: VilleCopy = {
   pitchEn:
     "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yssingeaux (43). Nous accompagnons TPE et PME : entreprises agroalimentaire, filière bois/menuiserie, administration sous-préfecture, artisans BTP, commerçants et services aux entreprises yssingelais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Yssingeaux (43). Nous accompagnons TPE et PME : entreprises agroalimentaire, filière bois/menuiserie, administration sous-préfecture, artisans BTP, commerçants et services aux entreprises yssingelais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yssingeaux (43). Nous accompagnons TPE et PME : entreprises agroalimentaire, filière bois/menuiserie, administration sous-préfecture, artisans BTP, commerçants et services aux entreprises yssingelais.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Yssingeaux (43). Nous accompagnons TPE et PME : entreprises agroalimentaire, filière bois/menuiserie, administration sous-préfecture, artisans BTP, commerçants et services aux entreprises yssingelais.",
   seoHook: "agroalimentaire local & filière bois",
   ecosystemFr:
     "Yssingeaux est une sous-préfecture de la Haute-Loire dans le Velay méridional. Environnement naturel remarquable (Natura 2000 gorges de la Loire, Lignon du Velay). Tissu agroalimentaire local, filière bois et menuiserie, TPE artisanat, commerces, administration.",

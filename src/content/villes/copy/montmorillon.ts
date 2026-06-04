@@ -9,9 +9,9 @@ export const MONTMORILLON_COPY: VilleCopy = {
   pitchEn:
     "Montmorillon (86), cité de l'Écrit et des métiers du livre sur les bords de la Gartempe, est un pôle culturel et économique du sud-est de la Vienne. Tissu TPE artisans (métiers du livre, BTP), PME agroalimentaires, tourisme culturel, commerces, administration et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du Montmorillonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
   seoHook: "vallée gartempe",
   ecosystemFr:
     "Montmorillon est connue comme la Cité de l'Écrit et des métiers du livre (librairies, relieurs, calligraphes, enlumineurs), labellisée Ville d'Art et d'Histoire. Positionnée sur les bords de la Gartempe, la ville concentre un tissu culturel et artisanal unique, complété par des PME agroalimentaires, TPE artisans BTP, commerces, professions libérales et services de proximité.",

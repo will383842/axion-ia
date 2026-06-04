@@ -9,9 +9,9 @@ export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
   pitchEn:
     "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit sur place sur mesure.",
   ecosystemFr:
     "Sarlat-la-Canéda, capitale du Périgord Noir, est l'une des cités médiévales les mieux préservées d'Europe. Économie dominée par le tourisme patrimonial (1,5 M visiteurs/an), l'hôtellerie-restauration, la gastronomie (foie gras, truffes, noix AOP), l'artisanat d'art, le commerce de centre-ville et les marchés traditionnels (classés parmi les plus beaux de France).",
   ecosystemEn:

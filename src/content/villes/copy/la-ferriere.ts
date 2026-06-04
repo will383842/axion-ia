@@ -9,9 +9,9 @@ export const LA_FERRIERE_COPY: VilleCopy = {
   pitchEn:
     "La Ferrière (85), commune périurbaine de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 400 habitants. Pôle résidentiel et économique dynamique au nord-est de la préfecture vendéenne. Tissu TPE artisans, PME industrielles et BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglomération yonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place sur mesure.",
   seoHook: "industrie & artisanat construction",
   ecosystemFr:
     "La Ferrière (5 454 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération). Économie diversifiée : industrie, BTP, artisanat, agriculture, commerces et services. Proximité immédiate La Roche-sur-Yon (10 min), Nantes (1h), Cholet (45 min). Zones d'activités sur l'axe D763, bassin résidentiel attractif.",

@@ -9,9 +9,9 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Estève (66), commune résidentielle en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces de proximité, zones d'activités périurbaines. Axion-IA couvre les activités professionnelles du bassin de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
   seoHook: "proche perpignan",
   ecosystemFr:
     "Saint-Estève est une commune résidentielle dynamique au nord de Perpignan, intégrée à Perpignan Méditerranée Métropole. Zones d'activités périurbaines, PME tertiaires, TPE artisanat BTP, commerces et services. Position stratégique sur l'axe Perpignan-Rivesaltes.",

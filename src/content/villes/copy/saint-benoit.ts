@@ -9,9 +9,9 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Benoît (86), commune de l'agglomération de Poitiers sud en Vienne, est traversée par le Clain et le Miosson. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique), associations et activités liées au patrimoine abbatial bénédictin. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglomération poitevine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
   seoHook: "artisanat services & professions libérales",
   ecosystemFr:
     "Saint-Benoît est une commune résidentielle du sud de l'agglomération Grand Poitiers, connue pour son abbaye bénédictine romane (XIe siècle). Traversée par le Clain, elle offre un cadre verdoyant. Tissu économique périurbain : TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique, gestion), associations culturelles et sociales.",

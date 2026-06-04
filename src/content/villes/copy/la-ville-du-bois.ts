@@ -9,9 +9,9 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   pitchEn:
     "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
   seoHook: "commerce zone",
   ecosystemFr:
     "La Ville-du-Bois est une commune résidentielle du Hurepoix en Essonne, à 23 km au sud-ouest de Paris, proche de Montlhéry et Longjumeau. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services.",

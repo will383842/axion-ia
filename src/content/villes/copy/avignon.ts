@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AVIGNON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "festival & agro provençal",
   ecosystemFr:
     "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de TPE et PME couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",

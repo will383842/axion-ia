@@ -9,9 +9,9 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
   pitchEn:
     "Nogent-le-Rotrou (28), sous-préfecture d'Eure-et-Loir et capitale du Perche, est une ville industrielle historique dominée par le château Saint-Jean. Tissu TPE/PME industrie mécanique, agroalimentaire, artisanat, commerces centre-ville et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
   seoHook: "industrie mécanique & agroalimentaire perche",
   ecosystemFr:
     "Nogent-le-Rotrou est la sous-préfecture d'Eure-et-Loir et la capitale historique du Perche, dominée par le château Saint-Jean (XIe siècle). L'économie locale repose sur l'industrie mécanique (sous-traitance automobile, métallurgie), l'agroalimentaire, l'artisanat BTP, les commerces de centre-ville et les exploitations agricoles percheronnes.",

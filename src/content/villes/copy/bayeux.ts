@@ -9,9 +9,9 @@ export const BAYEUX_COPY: VilleCopy = {
   pitchEn:
     "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bayeux (14). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Tapisserie de Bayeux, plages du Débarquement), hôteliers-restaurateurs, TPE artisans, commerçants centre historique, professions libérales et services aux entreprises du Bessin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bayeux (14). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Tapisserie de Bayeux, plages du Débarquement), hôteliers-restaurateurs, TPE artisans, commerçants centre historique, professions libérales et services aux entreprises du Bessin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bayeux (14). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Tapisserie de Bayeux, plages du Débarquement), hôteliers-restaurateurs, TPE artisans, commerçants centre historique, professions libérales et services aux entreprises du Bessin.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bayeux (14). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Tapisserie de Bayeux, plages du Débarquement), hôteliers-restaurateurs, TPE artisans, commerçants centre historique, professions libérales et services aux entreprises du Bessin.",
   seoHook: "tourisme patrimoine & hôtellerie restauration",
   ecosystemFr:
     "Bayeux est la sous-préfecture nord-ouest du Calvados, au cœur du Bessin. Ville d'art et d'histoire, elle abrite la célèbre Tapisserie de Bayeux (XIe siècle, Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach à 15 km, Gold Beach à 10 km). Économie touristique forte, TPE artisans, commerces centre historique médiéval préservé, professions libérales.",

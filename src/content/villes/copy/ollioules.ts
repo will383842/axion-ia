@@ -9,9 +9,9 @@ export const OLLIOULES_COPY: VilleCopy = {
   pitchEn:
     "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   seoHook: "vallée du",
   ecosystemFr:
     "Ollioules est un pôle économique de l'ouest toulonnais, célèbre pour son horticulture (fleurs coupées, marché aux fleurs historique), dans la vallée du Reppe. Zones d'activités, PME agroalimentaires, TPE artisanales et commerces. Toulon à 15 min, Sanary à 10 min, A50 directe.",

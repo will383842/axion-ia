@@ -9,9 +9,9 @@ export const ALGRANGE_COPY: VilleCopy = {
   pitchEn:
     "Algrange (57), commune mosellane de la Vallée de la Fensch héritière d''un passé minier (mines de fer), au cœur du bassin frontalier luxembourgeois. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, BTP, commerces, services et forte population de travailleurs frontaliers. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Algrange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch travaillant avec le Luxembourg.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Algrange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch travaillant avec le Luxembourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Algrange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch travaillant avec le Luxembourg.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Algrange (57). Nous accompagnons tous types d''activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch travaillant avec le Luxembourg.",
   ecosystemFr:
     "Algrange est une commune mosellane de la Vallée de la Fensch, à l''héritage minier (mines de fer) reconverti vers la sous-traitance industrielle, le BTP et les services. Tissu TPE/PME, commerces de proximité, artisanat. Forte dynamique frontalière liée au bassin économique luxembourgeois tout proche.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const LUCE_COPY: VilleCopy = {
   pitchEn:
     "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
   seoHook: "tertiaires & commerce zones",
   ecosystemFr:
     "Lucé est un pôle péri-urbain de l'agglomération Chartres (Eure-et-Loir), porté par ses zones d'activités et commerciales. Tissu TPE/PME tertiaires, enseignes commerciales, PME logistique et distribution, services aux entreprises, industrie légère.",

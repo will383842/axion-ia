@@ -10,9 +10,9 @@ export const CUCQ_COPY: VilleCopy = {
     "Cucq (62), commune de la Cote d'Opale dans le Pas-de-Calais, reunit pres de 5 130 habitants. Voisine du Touquet-Paris-Plage, son economie associe TPE tourisme et hotellerie, PME de services, commerces, artisanat et immobilier. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Cote Opale, Le Touquet & tourisme",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Cucq jouxte Le Touquet-Paris-Plage (3 km) sur la Cote d'Opale. Tissu economique tourne vers le tourisme haut de gamme : TPE hotellerie-restauration, agences immobilieres, commerces, artisanat et services. Aeroport du Touquet a proximite. Economie saisonniere forte.",
   ecosystemEn:

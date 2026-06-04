@@ -9,9 +9,9 @@ export const LE_PECQ_COPY: VilleCopy = {
   pitchEn:
     "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Le Pecq est une commune résidentielle en bords de Seine, directement face à Saint-Germain-en-Laye (pont du Pecq). Tissu économique dominé par les commerces de centre-ville, restaurants en bords de Seine, professions libérales (santé, conseil), TPE/PME tertiaires, artisans et services. Proximité immédiate du RER A (gare Le Vésinet-Le Pecq) et du centre commercial régional de Saint-Germain-en-Laye.",

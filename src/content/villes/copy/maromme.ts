@@ -10,9 +10,9 @@ export const MAROMME_COPY: VilleCopy = {
     "Maromme (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 11 000 habitants. Ville residentielle et commercante au nord de Rouen, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Rouen",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Maromme fait partie de la Metropole Rouen Normandie (~500 000 hab), en rive droite de la Seine. Tissu economique de proximite : commerces de centre-ville, TPE de services, artisanat, professions liberales et PME tertiaires. Acces direct tramway T1 vers Rouen centre.",
   ecosystemEn:

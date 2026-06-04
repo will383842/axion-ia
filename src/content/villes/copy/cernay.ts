@@ -9,9 +9,9 @@ export const CERNAY_COPY: VilleCopy = {
   pitchEn:
     "Cernay (68), ville de 12 057 habitants au piémont des Vosges en Haut-Rhin, est ancrée sur la route des Vins d'Alsace et conserve une vocation industrielle (textile, mécanique, sous-traitance). Tissu TPE/PME industrie, viticulture, tourisme, commerces, artisanat. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cernay (68). Nous accompagnons tous types d'activités : TPE/PME industrie textile-mécanique, viticulteurs et acteurs du tourisme, artisans, commerces et professions de services du piémont vosgien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cernay (68). Nous accompagnons tous types d'activités : TPE/PME industrie textile-mécanique, viticulteurs et acteurs du tourisme, artisans, commerces et professions de services du piémont vosgien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cernay (68). Nous accompagnons tous types d'activités : TPE/PME industrie textile-mécanique, viticulteurs et acteurs du tourisme, artisans, commerces et professions de services du piémont vosgien.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cernay (68). Nous accompagnons tous types d'activités : TPE/PME industrie textile-mécanique, viticulteurs et acteurs du tourisme, artisans, commerces et professions de services du piémont vosgien.",
   ecosystemFr:
     "Cernay est une ville du piémont vosgien à l'entrée de la route des Vins d'Alsace, mêlant industrie historique (textile, mécanique), viticulture, tourisme rural, commerces et artisanat. Tissu TPE/PME industrie, vignoble, tourisme, services. Bassin de vie entre Mulhouse, Thann et la vallée de la Thur.",
   ecosystemEn:

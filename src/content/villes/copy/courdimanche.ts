@@ -9,9 +9,9 @@ export const COURDIMANCHE_COPY: VilleCopy = {
   pitchEn:
     "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y travaille avec les organisations du territoire du pôle cergypontain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
   seoHook: "services aux & logistique transport",
   ecosystemFr:
     "Courdimanche fait partie de l'agglomération de Cergy-Pontoise, deuxième pôle économique d'Île-de-France après La Défense. Son tissu associe TPE artisans, PME tertiaire, logistique, commerces et professions libérales. Communes voisines : Cergy, Pontoise, Vauréal, Menucourt, Boisemont.",

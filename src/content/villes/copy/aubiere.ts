@@ -9,9 +9,9 @@ export const AUBIERE_COPY: VilleCopy = {
   pitchEn:
     "Aubière (63), commune de Clermont Auvergne Métropole, accueille le campus universitaire des Cézeaux (UCA) et une zone commerciale dynamique au sud de Clermont-Ferrand. Recherche universitaire, startups deeptech, commerce, PME tertiaires, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubière (63). Nous accompagnons TPE et PME : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubière (63). Nous accompagnons TPE et PME : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubière (63). Nous accompagnons TPE et PME : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubière (63). Nous accompagnons TPE et PME : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
   seoHook: "recherche universitaire & startups deeptech",
   ecosystemFr:
     "Aubière accueille le campus des Cézeaux de l'Université Clermont Auvergne (UCA), pôle recherche et innovation. Startups deeptech, incubateurs, zone commerciale sud dynamique, PME tertiaires, services aux entreprises et étudiants.",

@@ -10,9 +10,9 @@ export const GOURNAY_EN_BRAY_COPY: VilleCopy = {
     "Gournay-en-Bray (76), capitale du pays de Bray en Seine-Maritime, reunit pres de 5 720 habitants. Berceau du Petit-Suisse et du beurre normand, la ville concentre des TPE agroalimentaires, des PME commerciales, des artisans, des professions liberales et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agroalimentaire, fromages & pays de Bray",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Gournay-en-Bray est la capitale du pays de Bray, region laitiere et fromagere historique (berceau du Petit-Suisse et du beurre de Bray). Pole de services pour un bassin agricole dense : TPE agroalimentaires, commerces, artisanat, professions liberales et exploitations laitieres.",
   ecosystemEn:

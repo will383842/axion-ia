@@ -9,9 +9,9 @@ export const MAZE_MILON_COPY: VilleCopy = {
   pitchEn:
     "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
   seoHook: "horticulture pépinières & maraîchage semences",
   ecosystemFr:
     "Mazé-Milon est une commune nouvelle issue de la fusion de Mazé et Fontaine-Milon, dans le val d'Authion (plaine fertile entre Angers et Saumur). Économie horticole et maraîchère de premier plan (pôle semencier Anjou), pépinières, artisanat, commerces de bourg et services aux entreprises.",

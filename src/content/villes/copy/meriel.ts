@@ -9,9 +9,9 @@ export const MERIEL_COPY: VilleCopy = {
   pitchEn:
     "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mériel est une commune résidentielle en bord d'Oise, entre la forêt de L'Isle-Adam et Auvers-sur-Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne.",

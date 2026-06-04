@@ -9,9 +9,9 @@ export const LAGORD_COPY: VilleCopy = {
   pitchEn:
     "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Lagord est une commune résidentielle prisée du nord de l'agglomération de La Rochelle. PME tertiaires, TPE artisans BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre de vie attractif, croissance démographique soutenue, proximité du centre de La Rochelle.",

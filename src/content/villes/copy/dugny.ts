@@ -9,9 +9,9 @@ export const DUGNY_COPY: VilleCopy = {
   pitchEn:
     "Dugny (93), commune résidentielle de Seine-Saint-Denis bordée par le parc Georges-Valbon et voisine de l'aéroport du Bourget (Salon de l'Aéronautique). Tissu de TPE artisanales, commerçants de proximité, PME de services et prestataires aéronautiques. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dugny (93). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, prestataires liés à l'aéroport du Bourget, professions libérales, restaurateurs et acteurs associatifs du nord Seine-Saint-Denis.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dugny (93). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, prestataires liés à l'aéroport du Bourget, professions libérales, restaurateurs et acteurs associatifs du nord Seine-Saint-Denis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dugny (93). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, prestataires liés à l'aéroport du Bourget, professions libérales, restaurateurs et acteurs associatifs du nord Seine-Saint-Denis.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dugny (93). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, prestataires liés à l'aéroport du Bourget, professions libérales, restaurateurs et acteurs associatifs du nord Seine-Saint-Denis.",
   seoHook: "aéronautique services & commerce détail",
   ecosystemFr:
     "Dugny profite de la proximité de l'aéroport du Bourget (aviation d'affaires, Salon du Bourget, Musée de l'Air et de l'Espace) et du parc Georges-Valbon (415 ha). Tissu économique de TPE artisanales, commerces de proximité et PME de services. Commune du territoire Paris Terres d'Envol, en pleine mutation urbaine liée au Grand Paris Express.",

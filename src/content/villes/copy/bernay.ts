@@ -9,9 +9,9 @@ export const BERNAY_COPY: VilleCopy = {
   pitchEn:
     "Bernay (27), sous-préfecture de l'Eure en Normandie, ville d'art et d'histoire connue pour son abbatiale romane et ses brocantes réputées. Tissu TPE artisans, PME agriculture et agroalimentaire, commerces centre-ville, antiquaires, services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
   seoHook: "agriculture bocage & agroalimentaire cidre",
   ecosystemFr:
     "Bernay est une sous-préfecture de l'Eure, ville d'art et d'histoire avec son abbatiale romane du XIe siècle et ses célèbres brocantes. Économie mixte : agriculture (bocage normand, élevage, cidre), agroalimentaire, commerces de centre-ville, antiquaires et brocanteurs, professions libérales. Intercom Bernay Terres de Normandie, tissu TPE/PME rural dynamique.",

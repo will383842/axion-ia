@@ -9,9 +9,9 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
   pitchEn:
     "Jouy-en-Josas (78), commune emblématique de la vallée de la Bièvre dans les Yvelines, accueille HEC Paris, le musée de la Toile de Jouy et un tissu de TPE tertiaires, cabinets conseil, professions libérales et PME technologiques. Axion-IA y intervient pour tous types d'activités du sud-ouest francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-en-Josas (78). Nous accompagnons TPE et PME : cabinets conseil vallée de la Bièvre, startups et PME technologiques proches HEC, professions libérales, commerçants et artisans de cette commune résidentielle entre Versailles et Vélizy.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jouy-en-Josas (78). Nous accompagnons TPE et PME : cabinets conseil vallée de la Bièvre, startups et PME technologiques proches HEC, professions libérales, commerçants et artisans de cette commune résidentielle entre Versailles et Vélizy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-en-Josas (78). Nous accompagnons TPE et PME : cabinets conseil vallée de la Bièvre, startups et PME technologiques proches HEC, professions libérales, commerçants et artisans de cette commune résidentielle entre Versailles et Vélizy.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jouy-en-Josas (78). Nous accompagnons TPE et PME : cabinets conseil vallée de la Bièvre, startups et PME technologiques proches HEC, professions libérales, commerçants et artisans de cette commune résidentielle entre Versailles et Vélizy.",
   seoHook: "enseignement supérieur & conseil services",
   ecosystemFr:
     "Jouy-en-Josas est une commune résidentielle verdoyante de la vallée de la Bièvre, entre Versailles et Vélizy-Villacoublay. Présence marquante d'HEC Paris (école de commerce, incubateur, startups). Tissu économique : TPE conseil et services aux entreprises, professions libérales, PME technologiques, artisans et commerces de proximité. Patrimoine industriel historique (toile de Jouy).",

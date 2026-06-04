@@ -9,9 +9,9 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cyr-sur-Loire (37), commune de l'agglomÃ©ration de Tours au nord sur les bords de Loire, accueille d'importantes zones commerciales et tertiaires (La Petite Arche, Les Atlantes). Tissu PME tertiaires, commerces, TPE artisans, professions libÃ©rales, services aux entreprises. Axion-IA y intervient pour tous types d'activitÃ©s.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Cyr-sur-Loire (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires zones commerciales (La Petite Arche, Les Atlantes), TPE artisans, professions libÃ©rales, commerces, prestataires services aux entreprises de Tours MÃ©tropole nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient Ã  Saint-Cyr-sur-Loire (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires zones commerciales (La Petite Arche, Les Atlantes), TPE artisans, professions libÃ©rales, commerces, prestataires services aux entreprises de Tours MÃ©tropole nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Cyr-sur-Loire (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires zones commerciales (La Petite Arche, Les Atlantes), TPE artisans, professions libÃ©rales, commerces, prestataires services aux entreprises de Tours MÃ©tropole nord.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient Ã  Saint-Cyr-sur-Loire (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires zones commerciales (La Petite Arche, Les Atlantes), TPE artisans, professions libÃ©rales, commerces, prestataires services aux entreprises de Tours MÃ©tropole nord.",
   seoHook: "commerce zones & professions libã©rales",
   ecosystemFr:
     "Saint-Cyr-sur-Loire est une commune rÃ©sidentielle et commerciale au nord de Tours, en bords de Loire. Zones commerciales majeures (La Petite Arche, Les Atlantes), pÃ´les tertiaires. Tissu PME services, TPE artisans, professions libÃ©rales, commerces, restauration.",

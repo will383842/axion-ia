@@ -10,9 +10,9 @@ export const GUIPAVAS_COPY: VilleCopy = {
     "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   seoHook: "aéroport, logistique & technopôle",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
   ecosystemFr:
     "Guipavas est la porte d'entrée aérienne de la pointe bretonne grâce à l'aéroport Brest-Bretagne (1 million de passagers/an). Les zones d'activités de Kergaradec et de la Fontaine-Margot concentrent logistique, transport, commerce de gros et sous-traitance. Le Technopôle Brest-Iroise est à proximité immédiate. Communes voisines : Brest, Plougastel-Daoulas, Gouesnou, Le Relecq-Kerhuon, Bohars.",
   ecosystemEn:

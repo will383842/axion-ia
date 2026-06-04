@@ -9,9 +9,9 @@ export const DOMENE_COPY: VilleCopy = {
   pitchEn:
     "Domène (38), commune de la vallée du Grésivaudan à l'est immédiat de Grenoble, est intégrée à Grenoble-Alpes Métropole. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes domenoises du Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domène (38). Nous accompagnons tous types d'activités : PME tertiaires et industrielles du Grésivaudan, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Domène (38). Nous accompagnons tous types d'activités : PME tertiaires et industrielles du Grésivaudan, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domène (38). Nous accompagnons tous types d'activités : PME tertiaires et industrielles du Grésivaudan, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Domène (38). Nous accompagnons tous types d'activités : PME tertiaires et industrielles du Grésivaudan, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   seoHook: "tertiaires services & industrie périphérique",
   ecosystemFr:
     "Domène est membre de Grenoble-Alpes Métropole (« La Métro ») dans la vallée du Grésivaudan. Position péri-urbaine immédiate de Grenoble, à l'est. Tissu mixte : PME tertiaires et industrielles, TPE artisanat BTP, commerces de proximité, professions libérales. Accès rapide vers parc technologique Inovallée Meylan (5 min) et campus universitaire est.",

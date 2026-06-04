@@ -10,9 +10,9 @@ export const LILLEBONNE_COPY: VilleCopy = {
     "Lillebonne (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 8 540 habitants. Ville historique dotee d'un theatre romain remarquable, elle concentre des TPE de services, des PME commerciales, des artisans, des professions liberales et des acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "patrimoine, commerce & vallee Commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Lillebonne est situee dans la vallee du Commerce, entre Rouen et Le Havre. Cite gallo-romaine (theatre antique classe), c'est un pole commercial et de services pour la vallee : commerces, professions liberales, TPE de services, artisanat, tourisme patrimonial. Proximite Port-Jerome-sur-Seine (industrie).",
   ecosystemEn:

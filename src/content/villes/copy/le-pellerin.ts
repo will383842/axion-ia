@@ -9,9 +9,9 @@ export const LE_PELLERIN_COPY: VilleCopy = {
   pitchEn:
     "Le Pellerin (44), commune de l'estuaire de la Loire au sud-ouest de Nantes, fait partie de Nantes Métropole. Tissu de TPE artisanales, commerces de proximité, PME logistiques portuaires, exploitations agricoles maraîchères et viticoles. Axion-IA y intervient pour tous types d'activités de l'estuaire nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
   seoHook: "proche nantes",
   ecosystemFr:
     "Le Pellerin est une commune de plus de 5 300 habitants sur la rive sud de l'estuaire de la Loire, membre de Nantes Métropole. L'économie locale mêle agriculture (maraîchage, viticulture muscadet), activités portuaires et logistiques liées à l'estuaire, artisanat BTP et commerces de proximité. Le bac de Loire relie la commune à Couëron et au nord de l'agglomération.",

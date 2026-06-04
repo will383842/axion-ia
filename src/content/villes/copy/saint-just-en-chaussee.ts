@@ -9,9 +9,9 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de TPE/PME : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Just-en-Chaussée est un bourg-centre du plateau picard, carrefour routier entre Clermont-de-l'Oise, Breteuil et Montdidier. L'économie locale repose sur l'agriculture céréalière (Beauce picarde, grandes cultures), l'agroalimentaire (stockage, négoce céréales), la mécanique agricole, l'artisanat BTP et le commerce de proximité. Le bassin d'emploi s'articule avec Clermont, Maignelay-Montigny et Estrées-Saint-Denis.",
   ecosystemEn:

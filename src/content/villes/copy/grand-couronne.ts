@@ -10,9 +10,9 @@ export const GRAND_COURONNE_COPY: VilleCopy = {
     "Grand-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 9 770 habitants. Ville industrielle et portuaire, elle accueille des TPE sous-traitantes, des PME industrielles et logistiques, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, logistique & boucle Seine",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Grand-Couronne est situee dans la boucle de la Seine, en rive gauche au sud de Rouen. Zone industrialo-portuaire (raffinerie, logistique, chimie) et tissu de TPE sous-traitantes, PME de maintenance, commerces et services. Partie de la Metropole Rouen Normandie. Acces A13.",
   ecosystemEn:
