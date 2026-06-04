@@ -35,7 +35,7 @@ import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDet
 
 import { getRegion } from "@/content/regions";
 import { VILLES, getIndexableVilles, getVille } from "@/content/villes";
-import { getNearbyVilles } from "@/lib/geo";
+import { getNearbyVilles, haversineKm } from "@/lib/geo";
 import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
 import {
   AUDIT_TIERS,
@@ -159,6 +159,31 @@ function getVilleServiceCopy(
   return ville.copy?.services?.[service as "audit" | "interventions" | "implementation"];
 }
 
+/**
+ * Hub-and-spoke satellite (2026-06-04, décision Will) — pour une ville SANS copy
+ * substantielle sur ce service (satellite T3/T4), renvoie le slug de la ville-hub
+ * la plus proche AYANT la copy gold-standard. Sert à poser un canonical
+ * satellite → hub (concentre le SEO sur les ~40 métropoles, anti-doorway HCU).
+ * `undefined` si aucun hub n'a encore de copy → on garde le self-canonical noindex.
+ */
+function nearestHubSlugWithCopy(
+  origin: { geo: { lat: number; lon: number }; slug: string },
+  service: ServiceKey,
+): string | undefined {
+  let bestSlug: string | undefined;
+  let bestKm = Infinity;
+  for (const v of VILLES) {
+    if (v.slug === origin.slug) continue;
+    if (!getVilleServiceCopy(v, service)) continue;
+    const km = haversineKm(origin.geo, v.geo);
+    if (km < bestKm) {
+      bestKm = km;
+      bestSlug = v.slug;
+    }
+  }
+  return bestSlug;
+}
+
 interface PageProps {
   params: Promise<{ locale: string; ville: string }>;
 }
@@ -228,9 +253,19 @@ export async function buildPageMetadata(
     },
   });
 
-  // Anti-doorway HCU 2024 : noindex tant qu'aucun copy substantiel.
+  // Anti-doorway HCU 2024 : noindex tant qu'aucun copy substantiel + canonical
+  // satellite → ville-hub la plus proche ayant la copy (concentre le SEO, modèle
+  // hub-and-spoke décision Will 2026-06-04). Fallback : self-canonical si aucun hub.
   if (!hasCopy) {
-    return { ...result, robots: { index: false, follow: true } };
+    const hubSlug = nearestHubSlugWithCopy(ville, service);
+    const canonical = hubSlug
+      ? `/${locale}${isFr ? meta.pathFr : meta.pathEn}/${hubSlug}`
+      : undefined;
+    return {
+      ...result,
+      ...(canonical ? { alternates: { ...result.alternates, canonical } } : {}),
+      robots: { index: false, follow: true },
+    };
   }
   return {
     ...result,
@@ -278,8 +313,16 @@ export async function renderVilleServicePage({
     },
   ];
 
-  // ---- STUB MINIMAL noindex pour villes sans copy ----
+  // ---- STUB MINIMAL noindex pour villes-satellites (sans copy) ----
+  // Modèle hub-and-spoke (Will 2026-06-04) : la satellite pointe vers la
+  // ville-hub la plus proche ayant la copy gold-standard (canonical posé en
+  // metadata + lien prominent ici pour le maillage / link equity).
   if (!hasCopy) {
+    const hubSlug = nearestHubSlugWithCopy(ville, service);
+    const hub = hubSlug ? getVille(hubSlug) : undefined;
+    const hubHref = hub
+      ? (`${isFr ? meta.pathFr : meta.pathEn}/${hub.slug}` as never)
+      : meta.canonical;
     return (
       <>
         <Container className="border-border border-b py-3">
@@ -291,14 +334,24 @@ export async function renderVilleServicePage({
           title={isFr ? `${meta.nameFr} à` : `${meta.nameEn} in`}
           titleEm={ville.nameFr}
           description={
-            isFr
-              ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} dans toute la France métropolitaine, y compris à ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Page locale détaillée en préparation — réservation directe via la page régionale ou contact.`
-              : `Axion-IA delivers ${meta.nameEn.toLowerCase()} across metropolitan France, including ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Detailed local page in preparation — direct booking via the regional page or contact.`
+            hub
+              ? isFr
+                ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}) et dans tout le secteur. La page de référence la plus proche est ${hub.nameFr} : vous y trouverez le détail complet de la prestation, applicable à l'identique pour ${ville.nameFr}.`
+                : `Axion-IA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}) and across the area. The nearest reference page is ${hub.nameFr}: it details the full offer, applicable identically to ${ville.nameFr}.`
+              : isFr
+                ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} dans toute la France métropolitaine, y compris à ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Réservation directe via la page régionale ou contact.`
+                : `Axion-IA delivers ${meta.nameEn.toLowerCase()} across metropolitan France, including ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Direct booking via the regional page or contact.`
           }
         >
           <div className="flex flex-wrap items-center gap-3">
-            <Cta href={meta.canonical} variant="primary" size="lg" shape="pill">
-              {isFr ? `Voir ${meta.nameFr}` : `See ${meta.nameEn}`}
+            <Cta href={hubHref} variant="primary" size="lg" shape="pill">
+              {hub
+                ? isFr
+                  ? `Voir ${meta.nameFr} à ${hub.nameFr}`
+                  : `See ${meta.nameEn} in ${hub.nameFr}`
+                : isFr
+                  ? `Voir ${meta.nameFr}`
+                  : `See ${meta.nameEn}`}
               <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Cta
