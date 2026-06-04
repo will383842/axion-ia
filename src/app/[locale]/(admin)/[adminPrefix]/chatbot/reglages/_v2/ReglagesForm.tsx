@@ -79,8 +79,31 @@ export function ReglagesForm({ data }: { data: ChatbotSettingsView }): React.Rea
   return (
     <form action={formAction} className="flex flex-col gap-[var(--space-admin-4)]">
       <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-        <h2 className="mb-2 text-[length:var(--text-admin-base)] font-semibold">Activation</h2>
-        <CheckField label="Tenant actif" name="actif" defaultChecked={data.actif} />
+        <h2 className="mb-2 text-[length:var(--text-admin-base)] font-semibold">
+          Affichage du widget (live, sans redéploiement)
+        </h2>
+        <CheckField
+          label="Tenant actif (interrupteur on/off)"
+          name="actif"
+          defaultChecked={data.actif}
+        />
+        <div className="flex flex-col gap-1 border-t border-[color:var(--color-admin-border)] py-2">
+          <label htmlFor="pages" className="text-[length:var(--text-admin-sm)]">
+            Pages où afficher le widget (canary)
+          </label>
+          <input
+            id="pages"
+            name="pages"
+            type="text"
+            defaultValue={s.pages.includes("*") ? "" : s.pages.join(", ")}
+            placeholder="vide = toutes les pages — ex. /fr/audit, /fr/implementation"
+            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-2 text-[length:var(--text-admin-sm)]"
+          />
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Préfixes séparés par des virgules. Laisser vide = partout. Prise en compte sous ~30 s
+            (le widget relit la config au chargement de page).
+          </span>
+        </div>
       </section>
 
       <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
