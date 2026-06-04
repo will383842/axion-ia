@@ -14,6 +14,8 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { requireAdminRead, requireAdminWrite } from "@/server/actions/knowledge/_guards";
+import { getDefaultTenant } from "@/server/chatbot/tenant";
+import type { TenantSettings } from "@/server/chatbot/constants";
 import {
   activatePromptVersion,
   createPromptVersion,
@@ -136,6 +138,29 @@ export async function resolveEscalationAction(
   } catch {
     return { ok: false, error: "Erreur interne." };
   }
+}
+
+// ── Réglages (lecture) ────────────────────────────────────────────────────────
+
+export interface ChatbotSettingsView {
+  readonly tenantCle: string;
+  readonly tenantNom: string;
+  readonly domaine: string | null;
+  readonly actif: boolean;
+  readonly settings: TenantSettings;
+}
+
+export async function getChatbotSettings(): Promise<ChatbotSettingsView | null> {
+  await requireAdminRead();
+  const tenant = await getDefaultTenant();
+  if (!tenant) return null;
+  return {
+    tenantCle: tenant.cle,
+    tenantNom: tenant.nom,
+    domaine: tenant.domaine,
+    actif: tenant.actif,
+    settings: tenant.settings,
+  };
 }
 
 // ── Conversations ─────────────────────────────────────────────────────────────
