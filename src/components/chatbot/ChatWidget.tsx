@@ -18,6 +18,7 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
+import { trackFunnel } from "@/lib/tracking";
 import { useChatStream } from "./useChatStream";
 import type { ChatCard, ChatMessage } from "./types";
 
@@ -34,6 +35,9 @@ export function ChatWidget() {
   // focus à la fermeture il faut attendre son re-montage (effet, pas appel
   // direct dans le handler où bubbleRef est encore null).
   const restoreFocusRef = React.useRef(false);
+  // T-22 funnel Plausible : dédup des events (Started une fois, RDV/Escalated par message).
+  const startedRef = React.useRef(false);
+  const reportedRef = React.useRef<Set<string>>(new Set());
 
   // Focus sur la saisie à l'ouverture ; rend le focus à la bulle à la fermeture.
   React.useEffect(() => {
@@ -51,6 +55,21 @@ export function ChatWidget() {
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
   }, [messages, open]);
+
+  // T-22 — funnel Plausible : émet « Chat RDV » / « Chat Escalated » quand un
+  // message assistant porte ces signaux (une fois par message, no-op sans plausible).
+  React.useEffect(() => {
+    for (const m of messages) {
+      if (m.role === "user" || reportedRef.current.has(m.id)) continue;
+      if (m.rdvUrl) {
+        reportedRef.current.add(m.id);
+        trackFunnel("Chat RDV");
+      } else if (m.escalated) {
+        reportedRef.current.add(m.id);
+        trackFunnel("Chat Escalated");
+      }
+    }
+  }, [messages]);
 
   const close = React.useCallback(() => {
     restoreFocusRef.current = true;
@@ -72,6 +91,11 @@ export function ChatWidget() {
     e.preventDefault();
     const text = draft;
     setDraft("");
+    // T-22 — « Chat Started » au premier message de la session (une seule fois).
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackFunnel("Chat Started");
+    }
     void send(text);
   }
 
