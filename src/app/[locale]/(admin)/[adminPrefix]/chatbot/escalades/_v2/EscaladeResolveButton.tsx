@@ -1,6 +1,7 @@
 // Bouton client « Résoudre » une escalade (server action + useActionState).
 
 "use client";
+// use-client: formulaire de résolution interactif (useActionState + état pending).
 
 import { useActionState } from "react";
 import {
