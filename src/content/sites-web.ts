@@ -16,7 +16,8 @@ export type SitesWebSlug =
   | "wordpress"
   | "creer-saas-ia"
   | "shopify"
-  | "personnalisation";
+  | "personnalisation"
+  | "ux-ui-product-design";
 
 export type SitesWebProjectType = "augmentation" | "native" | "transverse";
 
@@ -2329,6 +2330,256 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
             title: "Personalisation without tracking is possible",
             description:
               "No third-party cookies needed: on-site behaviour is enough to adapt, GDPR-compliant.",
+          },
+        ],
+      },
+    },
+  },
+  // ── EXPERTISE : UX/UI & Product Design ─────────────────────────────────────
+  {
+    slug: "ux-ui-product-design",
+    projectType: "transverse",
+    pathFr: "/sites-web-augmentes/ux-ui-product-design",
+    pathEn: "/sites-web-augmentes/ux-ui-product-design",
+    accent: "purple",
+    hero: {
+      eyebrowFr: "Comment on conçoit",
+      eyebrowEn: "How we design",
+      titleFr: "Des interfaces pensées pour vos utilisateurs",
+      titleEn: "Interfaces designed for your users",
+      blocks: [
+        {
+          icon: "Search",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "On comprend",
+          labelEn: "We understand",
+          detailFr:
+            "UX research, personas, parcours : on part de l'utilisateur réel, pas d'hypothèses.",
+          detailEn:
+            "UX research, personas, journeys: we start from the real user, not assumptions.",
+        },
+        {
+          icon: "Layers",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "On structure",
+          labelEn: "We structure",
+          detailFr: "Wireframes, design system et maquettes Figma cohérentes avec votre marque.",
+          detailEn: "Wireframes, design system and Figma mockups consistent with your brand.",
+        },
+        {
+          icon: "Rocket",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "On valide",
+          labelEn: "We validate",
+          detailFr: "Prototype testable et A/B testing avant le développement — on dérisque tôt.",
+          detailEn: "Testable prototype and A/B testing before development — we de-risk early.",
+        },
+      ],
+      ariaFr:
+        "Schéma : on comprend l'utilisateur (research, personas), on structure l'interface (wireframes, design system, Figma) puis on valide par prototype et A/B testing avant développement.",
+      ariaEn:
+        "Diagram: we understand the user (research, personas), structure the interface (wireframes, design system, Figma) then validate via prototype and A/B testing before development.",
+    },
+    fr: {
+      eyebrow: "Expertise · UX/UI & Product Design",
+      title: "Le design qui",
+      titleEm: "convertit",
+      answer:
+        "On conçoit l'expérience de votre site, application ou plateforme SaaS de bout en bout : recherche utilisateur, parcours, wireframes, design system, maquettes Figma et prototype testable. Une interface claire et fidèle à votre marque, validée avant le développement — du sur-mesure, pas un thème plaqué.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Partir de l'utilisateur",
+          description:
+            "Research, personas et parcours : on conçoit pour les besoins réels de vos utilisateurs, pas pour des suppositions.",
+        },
+        {
+          title: "Un design system cohérent",
+          description:
+            "Composants réutilisables, charte appliquée partout : une interface homogène qui accélère aussi le développement.",
+        },
+        {
+          title: "Validé avant de coder",
+          description:
+            "Prototype Figma testable et A/B testing : on lève les doutes tôt, avant d'investir dans le développement.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "Recherche & cadrage",
+          description: "Entretiens, personas, user flows, sitemap : on cartographie le besoin.",
+        },
+        {
+          title: "Wireframes",
+          description: "Structure et ergonomie des écrans clés, avant tout habillage visuel.",
+        },
+        {
+          title: "Design system & maquettes",
+          description: "Charte appliquée, composants, maquettes haute fidélité sur Figma.",
+        },
+        {
+          title: "Prototype & test",
+          description:
+            "Prototype interactif testable par vos utilisateurs, itérations, A/B testing.",
+        },
+      ],
+      metricsTitle: "Comment on travaille",
+      metrics: [
+        { number: "Figma", suffix: "", label: "Maquettes & prototype interactif" },
+        { number: "48", suffix: "h", label: "Devis ferme après cadrage" },
+        { number: "100", suffix: "%", label: "Design & fichiers livrés, à vous" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "scope",
+          question: "Vous faites vraiment l'UX/UI, pas seulement l'IA ?",
+          answer:
+            "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype — pour un site, une app ou une plateforme SaaS, avec ou sans brique IA. C'est un métier à part entière chez nous.",
+        },
+        {
+          id: "refonte",
+          question: "Vous designez une nouvelle interface ou vous refondez l'existante ?",
+          answer:
+            "Les deux. On part d'une page blanche pour une création, ou on audite et refond une interface existante (audit UX/UI, recommandations priorisées, nouvelles maquettes).",
+        },
+        {
+          id: "dev",
+          question: "Le design est-il livré prêt à développer ?",
+          answer:
+            "Oui : design system, maquettes et specs sont livrés exploitables directement, que le développement soit fait par nous ou par vos équipes. Vous gardez tous les fichiers.",
+        },
+        {
+          id: "marque",
+          question: "Vous respectez notre charte graphique ?",
+          answer:
+            "Oui. On part de votre identité de marque (ou on vous aide à la poser si besoin) et on l'applique de façon cohérente sur l'ensemble des écrans.",
+        },
+      ],
+      ctaBlockTitle: "Une interface pensée pour vos utilisateurs",
+      ctaBlockDescription:
+        "Décrivez votre projet et vos objectifs : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Un beau site ne suffit pas,",
+        titleEm: "il doit convertir",
+        intro:
+          "Une interface séduisante mais confuse fait fuir. Le design, c'est d'abord rendre l'usage évident — l'esthétique sert la conversion, pas l'inverse.",
+        points: [
+          {
+            title: "L'ergonomie avant l'habillage",
+            description:
+              "On structure les parcours et l'ergonomie d'abord, puis on habille : un design qui guide l'utilisateur vers l'action.",
+          },
+          {
+            title: "Tester coûte moins que se tromper",
+            description:
+              "Valider une maquette par un prototype testable évite de coder une mauvaise idée — on dérisque avant le développement.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "Expertise · UX/UI & Product Design",
+      title: "Design that",
+      titleEm: "converts",
+      answer:
+        "We design the experience of your website, app or SaaS platform end to end: user research, journeys, wireframes, design system, Figma mockups and testable prototype. A clear interface true to your brand, validated before development — bespoke, not a slapped-on theme.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "Start from the user",
+          description:
+            "Research, personas and journeys: we design for your users' real needs, not for assumptions.",
+        },
+        {
+          title: "A consistent design system",
+          description:
+            "Reusable components, brand applied everywhere: a homogeneous interface that also speeds up development.",
+        },
+        {
+          title: "Validated before coding",
+          description:
+            "Testable Figma prototype and A/B testing: we clear doubts early, before investing in development.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "Research & framing",
+          description: "Interviews, personas, user flows, sitemap: we map the need.",
+        },
+        {
+          title: "Wireframes",
+          description: "Structure and ergonomics of key screens, before any visual styling.",
+        },
+        {
+          title: "Design system & mockups",
+          description: "Brand applied, components, high-fidelity Figma mockups.",
+        },
+        {
+          title: "Prototype & test",
+          description: "Interactive prototype testable by your users, iterations, A/B testing.",
+        },
+      ],
+      metricsTitle: "How we work",
+      metrics: [
+        { number: "Figma", suffix: "", label: "Mockups & interactive prototype" },
+        { number: "48", suffix: "h", label: "Firm quote after framing" },
+        { number: "100", suffix: "%", label: "Design & files delivered, yours" },
+      ],
+      faqTitle: "Frequently asked questions",
+      faqs: [
+        {
+          id: "scope",
+          question: "Do you really do UX/UI, not just AI?",
+          answer:
+            "Yes. We design the full experience — research, wireframes, design system, Figma mockups, prototype — for a website, app or SaaS platform, with or without an AI brick. It's a discipline in its own right for us.",
+        },
+        {
+          id: "refonte",
+          question: "Do you design a new interface or redesign the existing one?",
+          answer:
+            "Both. We start from a blank page for a new build, or audit and redesign an existing interface (UX/UI audit, prioritised recommendations, new mockups).",
+        },
+        {
+          id: "dev",
+          question: "Is the design delivered ready to develop?",
+          answer:
+            "Yes: design system, mockups and specs are delivered directly usable, whether development is done by us or your teams. You keep all the files.",
+        },
+        {
+          id: "marque",
+          question: "Do you respect our brand guidelines?",
+          answer:
+            "Yes. We start from your brand identity (or help you set one if needed) and apply it consistently across every screen.",
+        },
+      ],
+      ctaBlockTitle: "An interface designed for your users",
+      ctaBlockDescription:
+        "Describe your project and goals: we come back within 48 h with a scope, a fixed package and a timeline.",
+      why: {
+        title: "A pretty site is not enough,",
+        titleEm: "it must convert",
+        intro:
+          "An attractive but confusing interface drives people away. Design is first about making usage obvious — aesthetics serve conversion, not the other way around.",
+        points: [
+          {
+            title: "Ergonomics before styling",
+            description:
+              "We structure journeys and ergonomics first, then style: a design that guides the user toward action.",
+          },
+          {
+            title: "Testing costs less than getting it wrong",
+            description:
+              "Validating a mockup with a testable prototype avoids coding a bad idea — we de-risk before development.",
           },
         ],
       },

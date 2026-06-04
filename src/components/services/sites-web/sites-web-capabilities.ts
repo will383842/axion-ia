@@ -1,9 +1,19 @@
-"use client";
-// use-client: Radix Dialog (popup capacités IA web) — refs/portal/focus-trap navigateur.
+/**
+ * sites-web-capabilities — données partagées du « champ des possibles » de la
+ * vertical Sites web & SaaS augmentés. Consommé à la fois par la grille serveur
+ * `SitesWebCapabilitiesGrid` (rendu on-page, indexable/citable LLM) et — si besoin —
+ * par d'éventuelles vues client.
+ *
+ * 2026-06-04 (Will) — sortie du popup `SitesWebCapabilitiesDialog` vers une grille
+ * affichée sur la page (densité + visibilité SEO/AEO, alignée sur les grilles
+ * d'expertises des agences concurrentes). Élargi au périmètre complet revendiqué
+ * « on fait tout » : UX/UI & product design + apps mobiles + e-commerce multi-CMS,
+ * en plus des 12 domaines IA d'origine. Cf. mémoire [[positionnement-on-fait-tout]].
+ *
+ * Données pures (zéro JSX) → importable serveur comme client.
+ */
 
-import type { ReactNode } from "react";
 import {
-  ArrowRight,
   Bot,
   SearchCheck,
   Sparkles,
@@ -16,18 +26,12 @@ import {
   ShieldCheck,
   Plug,
   BarChart3,
+  PenTool,
+  Smartphone,
   type LucideIcon,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
-interface Capability {
+export interface Capability {
   readonly icon: LucideIcon;
   readonly titleFr: string;
   readonly titleEn: string;
@@ -37,7 +41,64 @@ interface Capability {
   readonly itemsEn: ReadonlyArray<string>;
 }
 
-const CAPABILITIES: ReadonlyArray<Capability> = [
+export const SITES_WEB_CAPABILITIES: ReadonlyArray<Capability> = [
+  {
+    icon: PenTool,
+    titleFr: "UX/UI & product design",
+    titleEn: "UX/UI & product design",
+    introFr: "De la recherche utilisateur à l'interface.",
+    introEn: "From user research to the interface.",
+    itemsFr: [
+      "UX research & personas",
+      "Wireframes & user flows",
+      "Design system & maquettes Figma",
+      "Prototype testable & A/B testing",
+    ],
+    itemsEn: [
+      "UX research & personas",
+      "Wireframes & user flows",
+      "Design system & Figma mockups",
+      "Testable prototype & A/B testing",
+    ],
+  },
+  {
+    icon: Smartphone,
+    titleFr: "Apps web & mobiles",
+    titleEn: "Web & mobile apps",
+    introFr: "Sur tous les supports, une base de code maîtrisée.",
+    introEn: "Across every device, a codebase we own.",
+    itemsFr: [
+      "Natif iOS / Android (Swift, Kotlin)",
+      "Multiplateforme (Flutter, React Native)",
+      "PWA & web app",
+      "Store deployment & suivi",
+    ],
+    itemsEn: [
+      "Native iOS / Android (Swift, Kotlin)",
+      "Cross-platform (Flutter, React Native)",
+      "PWA & web app",
+      "Store deployment & monitoring",
+    ],
+  },
+  {
+    icon: ShoppingCart,
+    titleFr: "E-commerce",
+    titleEn: "E-commerce",
+    introFr: "Plus de conversion, sur tous les CMS.",
+    introEn: "More conversion, on every CMS.",
+    itemsFr: [
+      "Shopify, WooCommerce, PrestaShop, Magento",
+      "Recommandations, cross-sell & up-sell",
+      "Descriptions produit auto",
+      "Assistant d'achat & search produit",
+    ],
+    itemsEn: [
+      "Shopify, WooCommerce, PrestaShop, Magento",
+      "Recommendations, cross-sell & up-sell",
+      "Auto product descriptions",
+      "Shopping assistant & product search",
+    ],
+  },
   {
     icon: Bot,
     titleFr: "Chatbots & assistants",
@@ -121,25 +182,6 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
       "Business automations",
       "Make, n8n, Zapier",
       "CRM/ERP integrations",
-    ],
-  },
-  {
-    icon: ShoppingCart,
-    titleFr: "E-commerce",
-    titleEn: "E-commerce",
-    introFr: "Plus de conversion, moins de friction.",
-    introEn: "More conversion, less friction.",
-    itemsFr: [
-      "Recommandations produit",
-      "Cross-sell & up-sell",
-      "Descriptions auto",
-      "Assistant d'achat",
-    ],
-    itemsEn: [
-      "Product recommendations",
-      "Cross-sell & up-sell",
-      "Auto descriptions",
-      "Shopping assistant",
     ],
   },
   {
@@ -237,86 +279,3 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
     ],
   },
 ];
-
-export interface SitesWebCapabilitiesDialogProps {
-  readonly isFr: boolean;
-}
-
-export function SitesWebCapabilitiesDialog({ isFr }: SitesWebCapabilitiesDialogProps): ReactNode {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="terracotta" size="lg" shape="pill" data-cta="sites-web-capabilities-open">
-          {isFr
-            ? "Voir tout ce que l'IA peut faire sur votre site"
-            : "See everything AI can do on your site"}
-          <ArrowRight aria-hidden="true" className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
-
-      <DialogContent className="max-w-6xl overflow-hidden rounded-2xl p-0">
-        <div className="max-h-[88vh] overflow-y-auto p-6 sm:p-8">
-          <div className="pr-10">
-            <p className="text-terracotta-deep mb-2 text-[12px] font-bold tracking-[0.18em] uppercase">
-              {isFr ? "Le champ des possibles" : "The field of possibilities"}
-            </p>
-            <DialogTitle
-              className="text-fg text-[clamp(1.5rem,3.5vw,2.25rem)] leading-tight font-semibold tracking-tight"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {isFr ? "Tout ce que l'IA peut " : "Everything AI can "}
-              <span className="text-terracotta italic">
-                {isFr ? "faire sur votre site" : "do on your site"}
-              </span>
-            </DialogTitle>
-            <DialogDescription className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
-              {isFr
-                ? "Du site vitrine à la plateforme SaaS B2B : l'IA s'intègre partout, sur une nouvelle base ou votre existant. Vous n'avez pas besoin de tout — on cadre ensemble les briques à plus fort ROI selon votre priorité."
-                : "From showcase site to B2B SaaS platform: AI fits everywhere, on a new base or your existing one. You don't need all of it — together we scope the highest-ROI bricks for your priority."}
-            </DialogDescription>
-          </div>
-
-          <ul className="mt-6 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
-            {CAPABILITIES.map((domain) => {
-              const Icon = domain.icon;
-              return (
-                <li
-                  key={domain.titleFr}
-                  className="bg-paper border-border flex h-full flex-col rounded-2xl border p-5"
-                >
-                  <div className="mb-3 flex items-center gap-3">
-                    <span className="bg-terracotta-soft text-terracotta-deep flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-                      <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
-                    </span>
-                    <h3 className="text-fg text-[15px] leading-tight font-semibold tracking-tight">
-                      {isFr ? domain.titleFr : domain.titleEn}
-                    </h3>
-                  </div>
-                  <p className="text-terracotta-deep mb-3 text-[13px] leading-snug font-medium">
-                    {isFr ? domain.introFr : domain.introEn}
-                  </p>
-                  <ul className="text-fg-soft space-y-1.5 p-0 text-[13px] leading-snug">
-                    {(isFr ? domain.itemsFr : domain.itemsEn).map((item) => (
-                      <li key={item} className="flex gap-2">
-                        <span aria-hidden="true" className="text-terracotta mt-[3px] leading-none">
-                          ·
-                        </span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              );
-            })}
-          </ul>
-
-          <p className="text-fg-muted mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed">
-            {isFr
-              ? "… et tout le reste. On cartographie précisément ce qui s'applique à votre site, et on le chiffre en 48 h."
-              : "… and everything else. We map exactly what fits your site, and cost it within 48 h."}
-          </p>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}

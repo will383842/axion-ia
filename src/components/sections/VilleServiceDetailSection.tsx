@@ -31,7 +31,7 @@ export interface VilleServiceDetailSectionProps {
   /** Locale courante. */
   isFr: boolean;
   /** Type de service — pilote l'accent visuel + libellés. */
-  service: "audit" | "interventions" | "implementation" | "un-a-un";
+  service: "audit" | "interventions" | "implementation" | "un-a-un" | "sites-web-augmentes";
   /** Nom de la ville (h2 + JSON-LD). */
   villeNameFr: string;
   /** Slug ville pour data-attributes tracking. */
@@ -92,6 +92,19 @@ const SERVICE_META = {
     eyebrowEn: "Individual AI coaching",
     ctaFr: `Démarrer mon accompagnement · ${formatAmount(unAUnAmount, "fr", { compact: true })}`,
     ctaEn: `Start my coaching · ${formatAmount(unAUnAmount, "en", { compact: true })}`,
+  },
+  // 2026-06-04 — 5e verticale sites web & SaaS augmentés IA. CTA sans montant
+  // (devis sur mesure 48 h, comme implementation) pour rester agnostique du
+  // format de prix CODAGE_TIERS.
+  "sites-web-augmentes": {
+    accent: "terracotta" as const,
+    href: "/sites-web-augmentes" as const,
+    labelFr: "Site web & SaaS IA",
+    labelEn: "AI website & SaaS",
+    eyebrowFr: "Agence web & IA",
+    eyebrowEn: "Web & AI agency",
+    ctaFr: "Décrire mon projet · devis 48 h",
+    ctaEn: "Describe my project · 48 h quote",
   },
 } as const;
 

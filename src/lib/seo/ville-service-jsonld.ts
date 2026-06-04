@@ -35,7 +35,12 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type VilleServiceKey = "audit" | "interventions" | "implementation" | "un-a-un";
+export type VilleServiceKey =
+  | "audit"
+  | "interventions"
+  | "implementation"
+  | "un-a-un"
+  | "sites-web-augmentes";
 
 /** ISO 8601 duration par service (utilisé dans HowTo totalTime). */
 const SERVICE_DURATION: Record<VilleServiceKey, string> = {
@@ -43,6 +48,7 @@ const SERVICE_DURATION: Record<VilleServiceKey, string> = {
   interventions: "PT4H",
   implementation: "P4W",
   "un-a-un": "PT2H",
+  "sites-web-augmentes": "P3W",
 };
 
 export interface VilleServiceJsonLdInput {

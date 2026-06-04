@@ -33,6 +33,7 @@ import { SitesWebHero } from "@/components/services/sites-web/SitesWebHero";
 import { SitesWebTrustPills } from "@/components/services/sites-web/SitesWebTrustPills";
 import { SitesWebWhy } from "@/components/services/sites-web/SitesWebWhy";
 import { SitesWebModules } from "@/components/services/sites-web/SitesWebModules";
+import { SitesWebCapabilitiesGrid } from "@/components/services/sites-web/SitesWebCapabilitiesGrid";
 import { SitesWebLandingLinks } from "@/components/services/sites-web/SitesWebLandingLinks";
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebContactBand } from "@/components/services/sites-web/SitesWebContactBand";
@@ -217,8 +218,11 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       {/* POURQUOI — contraste « tout refaire ❌ vs augmenter l'existant ✅ » */}
       <SitesWebWhy isFr={isFr} />
 
-      {/* MODULES — 4 briques IA chiffrées + popup « tout ce que l'IA peut faire » */}
+      {/* MODULES — 4 briques IA chiffrées (les plus demandées) */}
       <SitesWebModules isFr={isFr} />
+
+      {/* CHAMP DES POSSIBLES — grille on-page 14 domaines (design, mobile, e-commerce, IA) */}
+      <SitesWebCapabilitiesGrid isFr={isFr} />
 
       {/* LIENS LANDINGS — maillage descendant vers les pages détail (anti-orphelin) */}
       <SitesWebLandingLinks isFr={isFr} />

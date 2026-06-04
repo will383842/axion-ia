@@ -104,6 +104,8 @@ type StaticSitemapId =
   | "services-villes-implementation"
   // Sprint S+2 City Domination — 4e verticale `un-a-un` × villes (~2150 routes).
   | "services-villes-un-a-un"
+  // 2026-06-04 — 5e verticale `sites-web-augmentes` × villes (~2150 routes).
+  | "services-villes-sites-web-augmentes"
   // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
   // sub-sitemap dédié pour les 11 pages détail outils `/stack-ia/[tool]`.
   // ~22 URLs V1 (11 outils × 2 locales). Sub-sitemap propre pour isoler le
@@ -115,7 +117,12 @@ type StaticSitemapId =
 // (risque doorway HCU 2024 + cannibalisation des pages services). Les 301 redirects
 // sont gérés via `next.config.ts`.
 
-type ServiceVillesKey = "audit" | "interventions" | "implementation" | "un-a-un";
+type ServiceVillesKey =
+  | "audit"
+  | "interventions"
+  | "implementation"
+  | "un-a-un"
+  | "sites-web-augmentes";
 
 type PathnameKey = keyof typeof routing.pathnames;
 
@@ -305,6 +312,8 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "services-villes-implementation",
     // Sprint S+2 City Domination — 4e verticale industrialisation Phase 1.
     "services-villes-un-a-un",
+    // 2026-06-04 — 5e verticale `sites-web-augmentes` × villes.
+    "services-villes-sites-web-augmentes",
     // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
     // ~22 URLs V1 (11 outils × 2 locales). Statique.
     "stack-ia-tools",
@@ -404,6 +413,9 @@ export default async function sitemap(props: {
     // Sprint S+2 City Domination — 4e verticale un-a-un sitemap dédié.
     case "services-villes-un-a-un":
       return filterEnIfDisabled(buildServicesVillesSitemap(now, "un-a-un"));
+    // 2026-06-04 — 5e verticale sites-web-augmentes sitemap dédié.
+    case "services-villes-sites-web-augmentes":
+      return filterEnIfDisabled(buildServicesVillesSitemap(now, "sites-web-augmentes"));
     // Sprint S+4-B City Domination 2026-05-18 — pages détail outils stack-ia.
     case "stack-ia-tools":
       return filterEnIfDisabled(buildStackIaToolsSitemap(now));
@@ -1025,6 +1037,11 @@ const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: s
   implementation: { pathFr: "/implementation/par-ville", pathEn: "/implementation/by-city" },
   // Sprint S+2 City Domination — 4e verticale `un-a-un`.
   "un-a-un": { pathFr: "/un-a-un/par-ville", pathEn: "/one-to-one/by-city" },
+  // 2026-06-04 — 5e verticale `sites-web-augmentes` (copy sous `services.sitesWeb`).
+  "sites-web-augmentes": {
+    pathFr: "/sites-web-augmentes/par-ville",
+    pathEn: "/ai-augmented-websites/by-city",
+  },
 };
 
 function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): MetadataRoute.Sitemap {
@@ -1035,7 +1052,11 @@ function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): Metad
     // Mapping ServiceKey → copy property (cf VilleServicePageTemplate).
     // `un-a-un` est stocké sous `services.unAUn` (camelCase TS).
     const hasCopy =
-      service === "un-a-un" ? !!ville.copy?.services?.unAUn : !!ville.copy?.services?.[service];
+      service === "un-a-un"
+        ? !!ville.copy?.services?.unAUn
+        : service === "sites-web-augmentes"
+          ? !!ville.copy?.services?.sitesWeb
+          : !!ville.copy?.services?.[service];
     if (!hasCopy) continue;
     // Drip indexation — n'émettre que si la ville est dans la cohorte du jour.
     if (!isVilleIndexable(ville.slug, now)) continue;
