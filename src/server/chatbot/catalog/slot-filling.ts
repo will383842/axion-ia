@@ -174,7 +174,7 @@ function extractAudience(msg: string): SearchSlots["audience"] {
 
 function extractTri(msg: string): SearchSlots["tri"] {
   if (
-    /le moins cher|moins cher|pas cher|le plus [ée]conomique|le plus abordable|le plus accessible|prix le plus bas/i.test(
+    /moins ch[eè]re?s?|pas ch[eè]re?|le plus [ée]conomique|le plus abordable|le plus accessible|prix le plus bas/i.test(
       msg,
     )
   )
@@ -199,7 +199,7 @@ function classifyIntent(msg: string, slots: SearchSlots): ChatIntent {
   )
     return "lead";
   if (
-    /comparer|comparaison|compare[rz]?\b|diff[ée]rence entre|\bvs\b|versus|lequel choisir|quelle diff/i.test(
+    /comparer|comparaison|compare[rz]?\b|diff[ée]rence entre|\bvs\b|versus|lequel choisir|que(l|lle)? choisir|quoi choisir|quelle diff/i.test(
       m,
     )
   )
