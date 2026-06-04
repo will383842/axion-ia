@@ -67,12 +67,12 @@ export function GET() {
 
 - [Hub implantations France](${SITE_URL}/fr/implantations) — 12 régions métropole + maillage villes pilotes.
 - [Île-de-France](${SITE_URL}/fr/implantations/ile-de-france) — Paris pilote ${SITE_URL}/fr/implantations/ile-de-france/paris.
-- [Audit par ville](${SITE_URL}/fr/audit/par-ville/paris) — services localisés (audit / interventions / implementation × ville).
+- [Audit par ville](${SITE_URL}/fr/audit/par-ville/paris) — services localisés (audit / interventions / implementation / un-a-un / sites-web-augmentes × ville).
 
 ## Couverture géographique Sprint A (2026-05-25)
 
 - 2 150 communes françaises × 5 verticales IA : ${SITE_URL}/fr/implantations/{region}/{ville}/{verticale}
-- Verticales : audits / interventions / implementations / un-a-un / sites-web-ia
+- Verticales : audit / interventions / implementation / un-a-un / sites-web-augmentes
 - Tier 1 (≥ 500 000 hab) : Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille, Rennes, Reims, Le Havre
 - Tier 2 (15 000 – 500 000 hab) : ~350 communes pilotes (préfectures + sous-préfectures + bassins industriels)
 - Tier 3 (< 15 000 hab) : ~1 800 communes (couverture longue traîne, indexation progressive anti-doorway HCU 2024)

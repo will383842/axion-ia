@@ -144,7 +144,7 @@ export function VilleServiceDetailSection({
       {/* WHY HERE — 4-6 raisons spécifiques ville × service */}
       {copy.whyHere.length > 0 ? (
         <div className="mb-14">
-          <h3
+          <h2
             className="text-fg mb-6 text-2xl leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
@@ -154,7 +154,7 @@ export function VilleServiceDetailSection({
                 ? `${labelService.toLowerCase()} à ${villeNameFr}`
                 : `${labelService.toLowerCase()} in ${villeNameFr}`}
             </span>
-          </h3>
+          </h2>
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {copy.whyHere.map((reason, idx) => (
               <li
@@ -176,7 +176,7 @@ export function VilleServiceDetailSection({
       {/* METHODOLOGY — étapes pas à pas */}
       {copy.methodology.length > 0 ? (
         <div className="mb-14">
-          <h3
+          <h2
             className="text-fg mb-6 text-2xl leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
@@ -184,7 +184,7 @@ export function VilleServiceDetailSection({
             <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
               {isFr ? "pas à pas" : "step by step"}
             </span>
-          </h3>
+          </h2>
           <ol className="space-y-4">
             {copy.methodology.map((step, idx) => (
               <li
@@ -212,7 +212,7 @@ export function VilleServiceDetailSection({
       {/* PRICING — grille tarifaire par taille INSEE */}
       {copy.pricing.length > 0 ? (
         <div className="mb-14">
-          <h3
+          <h2
             className="text-fg mb-6 text-2xl leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
@@ -220,7 +220,7 @@ export function VilleServiceDetailSection({
             <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
               {isFr ? "taille d'entreprise" : "company size"}
             </span>
-          </h3>
+          </h2>
           <p className="text-fg-soft mb-6 text-sm leading-relaxed">
             {isFr
               ? "Classification INSEE officielle. Tarifs publics affichés, aucun devis opaque ni surfacturation."
@@ -265,7 +265,7 @@ export function VilleServiceDetailSection({
       {/* TESTIMONIALS — preuve sociale ville × service */}
       {copy.testimonials && copy.testimonials.length > 0 ? (
         <div className="mb-14">
-          <h3
+          <h2
             className="text-fg mb-6 text-2xl leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
@@ -273,7 +273,7 @@ export function VilleServiceDetailSection({
             <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
               {isFr ? `leur ${labelService.toLowerCase()}` : `their ${labelService.toLowerCase()}`}
             </span>
-          </h3>
+          </h2>
           <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {copy.testimonials.map((t, idx) => (
               <li key={idx} className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
