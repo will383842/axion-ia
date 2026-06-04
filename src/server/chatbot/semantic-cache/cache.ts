@@ -34,8 +34,13 @@ interface CacheRow {
 /** Embedding → littéral pgvector, ou null si indisponible (repli gracieux). */
 async function embedToLiteral(text: string): Promise<string | null> {
   try {
-    const { embedding } = await generateEmbedding(text);
-    return `[${embedding.join(",")}]`;
+    const embed = await generateEmbedding(text);
+    // Sans VOYAGE_API_KEY, generateEmbedding renvoie un STUB déterministe (hash).
+    // Un vecteur-stub ne porte aucune sémantique : on désactive le cache plutôt
+    // que de risquer un faux-hit (servir une réponse cachée pour une question
+    // différente). Cohérent avec le repli FTS de hybrid-search (D-1).
+    if (embed.modelVersion?.endsWith("-stub")) return null;
+    return `[${embed.embedding.join(",")}]`;
   } catch (err) {
     console.warn("[chatbot:cache] embedding indisponible:", err);
     return null;
