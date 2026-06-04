@@ -48,6 +48,183 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
       en: "Nos formations un-à-un à Salon-de-Provence accompagnent les dirigeants de TPE et PME provençales dans la maîtrise pratique de l'IA générative.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Salon-de-Provence, à l'intersection de l'A7 et de l'A54. Trois réalités locales structurent notre offre ici : les marques savonnières et oléicoles qui vendent en ligne le savon de Marseille — Salon est le 2e producteur français après Marseille, avec les savonneries Marius Fabre (depuis 1900) et Rampal Latour (lignée depuis 1828) ; les acteurs logistiques et e-commerce de la plateforme Clésud (Grans-Miramas, 720 000 m² d'entrepôts raccordés au triage de Miramas, 2e de France) où opèrent ID Logistics, Maisons du Monde, Gifi, Alinéa ou Rexel ; et les ~519 TPE/PME du parc d'activités de la Gandonne. Chatbot RAG, moteur de recherche sémantique catalogue, agents conversationnels, copilotes métier — code custom, hébergement UE/RGPD, zéro lock-in éditeur.",
+        whyHere: [
+          "Boutiques de savon de Marseille et d'huile d'olive : Salon est la 2e cité savonnière de France, et les marques patrimoniales (Marius Fabre, Rampal Latour et leurs consœurs oléicoles) vendent en direct via e-commerce. Nous construisons des sites marchands IA-native — recherche sémantique catalogue, fiches produit auto-générées multilingues, recommandation, support client RAG — sans dépendance à un éditeur SaaS propriétaire.",
+          "Logistique et e-commerce Clésud : la plateforme rail-route Grans-Miramas (entrepôts, transport combiné, locataires ID Logistics, Maisons du Monde, Gifi, Alinéa, Nortene, Rexel) génère un besoin de portails et SaaS internes — suivi de commandes, tableaux de bord WMS, agents de classification documentaire, prévision de flux. Nous développons ces interfaces en code maintenable.",
+          "TPE/PME des parcs d'activités salonais : ~519 entreprises sont installées sur le seul P.A. de la Gandonne (44 ha), auxquelles s'ajoutent les Roquassiers, la ZI de la Crau et la zone des Gabins — artisanat du bâtiment, services aux entreprises, commerce. Nous y déployons sites vitrines performants, espaces clients et automatisations devis/facturation.",
+          "Écosystème tertiaire et tourisme patrimonial : le tissu salonais est tertiaire à ~88 %, et la cité de Nostradamus (Château de l'Empéri, musées, oléotourisme de la Crau) attire des flux à canaliser — sites de réservation, billetterie, parcours visiteurs et chatbots multilingues sont des cas d'usage récurrents pour les acteurs locaux du tourisme et des services.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à distance",
+            detail:
+              "Brief confidentiel pour comprendre votre activité salonaise — boutique e-commerce de savonnerie/oléiculture, portail logistique Clésud, vitrine de PME de la Gandonne ou site touristique — vos données, vos outils existants (CMS, ERP, WMS, catalogue) et vos objectifs de conversion ou d'automatisation.",
+          },
+          {
+            step: "Kick-off à Salon-de-Provence",
+            detail:
+              "Première venue sur site dans vos locaux salonais ou des communes voisines (Pélissanne, Grans, Lançon-Provence, Miramas, Eyguières) : revue de l'arborescence cible, des intégrations (paiement, stock, transporteurs) et des contraintes RGPD avant cadrage technique.",
+          },
+          {
+            step: "Conception UX/UI et architecture IA",
+            detail:
+              "Maquettes mobile-first, architecture du moteur sémantique ou du chatbot RAG, choix des modèles IA (Mistral, Claude, GPT selon souveraineté et coût), schéma d'intégration au catalogue savonnier, au WMS logistique ou au CRM. Validation visuelle avec vous avant développement.",
+          },
+          {
+            step: "Développement et intégration",
+            detail:
+              "Code custom maintenable (pas de no-code propriétaire), intégration multi-CMS si nécessaire (e-commerce headless, vitrine, portail), tests sur vos volumes réels — fiches produit savon, flux de commandes Clésud, demandes clients — et recette UX sur poste réel.",
+          },
+          {
+            step: "Mise en production et autonomie",
+            detail:
+              "Déploiement sur hébergement UE/RGPD, formation de vos équipes à l'administration du site et des agents IA, documentation runbook remise. Vous gardez la main : modèles, prompts, code et données transférables à tout intégrateur ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou boutique IA essentielle",
+            detail:
+              "Pour artisans, indépendants et petites structures des parcs salonais (Gandonne, Roquassiers, centre historique) : vitrine performante mobile-first ou petite boutique avec recherche assistée et chatbot de premier niveau.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Plateforme e-commerce ou SaaS métier",
+            detail:
+              "Pour les savonneries et maisons d'huile d'olive vendant en ligne, les PME logistiques de Clésud et les sociétés de services : e-commerce IA-native, espace client, recherche sémantique catalogue, agents support RAG, automatisations devis/commandes.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Portail et SaaS multi-modules",
+            detail:
+              "Pour les ETI industrielles et logistiques du bassin Grans-Miramas (type opérateurs Clésud, ID Logistics, distributeurs) : portails clients, tableaux de bord WMS, copilotes documentaires, intégrations ERP/transporteurs avancées.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme plateforme sur-mesure",
+            detail:
+              "Pour les grands comptes et groupes implantés sur l'axe salonais (logistique européenne Clésud, distribution, acteurs publics dont l'écosystème de la BA 701) : plateformes IA multi-sites, gouvernance données, équipe Axion-IA dédiée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Construisez-vous des boutiques e-commerce pour les savonneries et marques d'huile d'olive de Salon-de-Provence ?",
+            a: "Oui. Salon est la 2e cité savonnière de France et ses marques (savon de Marseille, huiles d'olive) vendent en direct. Nous concevons des boutiques IA-native — recherche sémantique du catalogue, fiches produit générées et traduites automatiquement, recommandation, support client par chatbot RAG — en code custom, sur hébergement UE/RGPD, sans verrou éditeur propriétaire.",
+          },
+          {
+            q: "Pouvez-vous développer des portails ou SaaS pour les acteurs logistiques de la plateforme Clésud ?",
+            a: "Oui. La plateforme Clésud (Grans-Miramas, 720 000 m² d'entrepôts raccordés au triage de Miramas, avec des opérateurs comme ID Logistics, Maisons du Monde, Gifi ou Rexel) a des besoins typiques : suivi de commandes, tableaux de bord WMS, agents de classification documentaire, prévision de flux. Nous développons ces interfaces en code maintenable, intégrées à vos systèmes existants.",
+          },
+          {
+            q: "Sous quel délai recevez-vous un devis pour un projet à Salon-de-Provence ?",
+            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet — une vitrine de PME de la Gandonne est cadrée plus vite qu'une plateforme SaaS multi-modules pour un opérateur logistique de Clésud. Le devis détaille le périmètre et les livrables avant toute signature.",
+          },
+          {
+            q: "Travaillez-vous avec n'importe quel CMS ou imposez-vous une plateforme ?",
+            a: "Nous travaillons en multi-CMS et en headless selon votre existant : vitrine, e-commerce, portail métier. Notre approche par défaut reste le code custom maintenable plutôt que les plateformes no-code propriétaires, pour que votre site savonnier, votre boutique ou votre SaaS logistique reste portable et sans dépendance technique cachée.",
+          },
+          {
+            q: "Vos sites et plateformes sont-ils conformes au RGPD ?",
+            a: "Oui. Hébergement en Union européenne par défaut, registre de traitement fourni et clauses de sous-traitance signées avant tout démarrage. Pour les acteurs e-commerce salonais et les opérateurs logistiques manipulant des données clients ou de transport, la conformité est intégrée dès la conception du site.",
+          },
+        ],
+        guarantees:
+          "Engagement contractuel : livrables remis dans les délais convenus à la signature, périmètre et prix fixés dans le devis (transmis à partir de 24-48 h selon la complexité), sans dérive cachée. Conformité RGPD, hébergement données en UE par défaut. Aucun lock-in : code, modèles, prompts et données restent intégralement chez vous, transférables à tout intégrateur de la région salonaise ou repris en interne. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA — vos équipes conservent la maîtrise pleine de la plateforme après la mission.",
+      },
+      en: {
+        hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Salon-de-Provence, at the crossroads of the A7 and A54 motorways. Three local realities shape our offer here: the soap and olive-oil brands selling Marseille soap online — Salon is France's 2nd-largest producer after Marseille, home to the Marius Fabre (since 1900) and Rampal Latour (a soapmaker lineage since 1828) factories; the logistics and e-commerce operators of the Clésud platform (Grans-Miramas, 720,000 sqm of warehouses connected to the Miramas marshalling yard, France's 2nd-largest), where ID Logistics, Maisons du Monde, Gifi, Alinéa and Rexel operate; and the ~519 micro-businesses and SMEs of the Gandonne business park. RAG chatbots, semantic catalog search, conversational agents, business copilots — custom code, EU/GDPR hosting, zero vendor lock-in.",
+        whyHere: [
+          "Marseille-soap and olive-oil shops: Salon is France's 2nd soapmaking city, and its heritage brands (Marius Fabre, Rampal Latour and their olive-oil peers) sell directly via e-commerce. We build AI-native storefronts — semantic catalog search, auto-generated multilingual product pages, recommendation, RAG customer support — with no dependency on a proprietary SaaS vendor.",
+          "Clésud logistics and e-commerce: the Grans-Miramas rail-road platform (warehouses, combined transport, tenants ID Logistics, Maisons du Monde, Gifi, Alinéa, Nortene, Rexel) drives demand for portals and internal SaaS — order tracking, WMS dashboards, document classification agents, flow forecasting. We develop these interfaces in maintainable code.",
+          "Micro-businesses and SMEs of the Salon business parks: ~519 companies sit on the Gandonne park alone (44 ha), alongside Roquassiers, the Crau industrial zone and the Gabins retail zone — building trades, business services, retail. We deploy fast showcase sites, customer portals and quote/invoicing automations there.",
+          "Tertiary ecosystem and heritage tourism: the Salon fabric is ~88% tertiary, and the city of Nostradamus (Château de l'Empéri, museums, Crau olive tourism) draws visitor flows to channel — booking sites, ticketing, visitor journeys and multilingual chatbots are recurring use cases for local tourism and service players.",
+        ],
+        methodology: [
+          {
+            step: "Remote framing",
+            detail:
+              "Confidential brief to understand your Salon business — soap/olive-oil e-commerce shop, Clésud logistics portal, Gandonne SME showcase or tourism site — your data, your existing tools (CMS, ERP, WMS, catalog) and your conversion or automation goals.",
+          },
+          {
+            step: "Kick-off in Salon-de-Provence",
+            detail:
+              "First on-site visit at your Salon premises or neighboring towns (Pélissanne, Grans, Lançon-Provence, Miramas, Eyguières): review of the target structure, integrations (payment, stock, carriers) and GDPR constraints before technical framing.",
+          },
+          {
+            step: "UX/UI design and AI architecture",
+            detail:
+              "Mobile-first mockups, semantic engine or RAG chatbot architecture, AI model selection (Mistral, Claude, GPT per sovereignty and cost), integration schema with the soap catalog, the logistics WMS or the CRM. Visual validation with you before development.",
+          },
+          {
+            step: "Development and integration",
+            detail:
+              "Maintainable custom code (no proprietary no-code), multi-CMS integration where needed (headless e-commerce, showcase, portal), testing on your real volumes — soap product pages, Clésud order flows, customer requests — and UX acceptance on real workstations.",
+          },
+          {
+            step: "Go-live and autonomy",
+            detail:
+              "Deployment on EU/GDPR hosting, training of your teams on site and AI agent administration, runbook documentation handed over. You stay in control: models, prompts, code and data transferable to any integrator or taken in-house.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Essential showcase or AI shop",
+            detail:
+              "For craftspeople, freelancers and small structures in the Salon parks (Gandonne, Roquassiers, historic center): fast mobile-first showcase or small shop with assisted search and a first-level chatbot.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "E-commerce platform or business SaaS",
+            detail:
+              "For soap factories and olive-oil houses selling online, the Clésud logistics SMEs and service companies: AI-native e-commerce, customer portal, semantic catalog search, RAG support agents, quote/order automations.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Multi-module portal and SaaS",
+            detail:
+              "For industrial and logistics mid-caps in the Grans-Miramas basin (Clésud operators, ID Logistics, distributors): customer portals, WMS dashboards, document copilots, advanced ERP/carrier integrations.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Custom platform program",
+            detail:
+              "For large accounts and groups on the Salon corridor (European Clésud logistics, distribution, public players including the BA 701 ecosystem): multi-site AI platforms, data governance, a dedicated Axion-IA team.",
+          },
+        ],
+        faq: [
+          {
+            q: "Do you build e-commerce shops for the soap factories and olive-oil brands of Salon-de-Provence?",
+            a: "Yes. Salon is France's 2nd soapmaking city and its brands (Marseille soap, olive oils) sell directly. We design AI-native shops — semantic catalog search, auto-generated and translated product pages, recommendation, RAG chatbot customer support — in custom code, on EU/GDPR hosting, with no proprietary vendor lock-in.",
+          },
+          {
+            q: "Can you develop portals or SaaS for the logistics operators of the Clésud platform?",
+            a: "Yes. The Clésud platform (Grans-Miramas, 720,000 sqm of warehouses connected to the Miramas marshalling yard, with operators such as ID Logistics, Maisons du Monde, Gifi or Rexel) has typical needs: order tracking, WMS dashboards, document classification agents, flow forecasting. We develop these interfaces in maintainable code, integrated with your existing systems.",
+          },
+          {
+            q: "How quickly do you provide a quote for a project in Salon-de-Provence?",
+            a: "We provide a quote from 24-48 h depending on project complexity — a Gandonne SME showcase is framed faster than a multi-module SaaS platform for a Clésud logistics operator. The quote details scope and deliverables before any signature.",
+          },
+          {
+            q: "Do you work with any CMS or do you impose a platform?",
+            a: "We work multi-CMS and headless based on your existing stack: showcase, e-commerce, business portal. Our default approach stays maintainable custom code rather than proprietary no-code platforms, so your soap site, shop or logistics SaaS stays portable with no hidden technical dependency.",
+          },
+          {
+            q: "Are your sites and platforms GDPR-compliant?",
+            a: "Yes. EU hosting by default, processing register provided and subprocessing clauses signed before any start. For Salon e-commerce players and logistics operators handling customer or transport data, compliance is built in from the design stage.",
+          },
+        ],
+        guarantees:
+          "Contractual commitment: deliverables handed over within the timeline agreed at signature, scope and price fixed in the quote (provided from 24-48 h depending on complexity), with no hidden drift. GDPR compliance, EU data hosting by default. No lock-in: code, models, prompts and data stay entirely with you, transferable to any integrator in the Salon region or taken in-house. We claim UX/UI, mobile, multi-CMS e-commerce and AI — your teams keep full control of the platform after the mission.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Salon-de-Provence ?",
