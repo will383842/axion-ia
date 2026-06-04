@@ -22,6 +22,10 @@ import {
   ChercherRessourceInputSchema,
   chercherRessource,
 } from "@/server/chatbot/tools/chercher-ressource";
+import {
+  QualifierProspectInputSchema,
+  qualifierProspect,
+} from "@/server/chatbot/tools/qualifier-prospect";
 
 export type { ToolContext };
 
@@ -136,4 +140,15 @@ chatbotTools.register<typeof ChercherRessourceInputSchema._type>({
     "pertinente — ne jamais inventer de lien.",
   schema: ChercherRessourceInputSchema,
   handler: (input, ctx) => chercherRessource(input, ctx),
+});
+
+chatbotTools.register<typeof QualifierProspectInputSchema._type>({
+  name: "qualifier_prospect",
+  description:
+    "Enregistre, sans interrogatoire, ce que le visiteur révèle sur son profil " +
+    "(type de structure, secteur, besoin, maturité IA, urgence). Tous les champs " +
+    "sont optionnels et cumulés au fil de la conversation. À appeler dès qu'un " +
+    "élément de profil est exprimé.",
+  schema: QualifierProspectInputSchema,
+  handler: (input, ctx) => qualifierProspect(input, ctx),
 });

@@ -4527,6 +4527,8 @@ model ChatConversation {
   submissionId  String?    @map("submission_id") @db.Uuid // lien lead capturé (Submission interne)
   resume        String?    @db.Text // contexte long résumé
   ipHash        String?    @map("ip_hash") @db.VarChar(64) // SHA-256 salée
+  // MVP2 qualification non-intrusive (T-13, qualifier_prospect) — profil prospect :
+  prospectProfile Json?    @map("prospect_profile") // type_structure/secteur/besoin/maturite_ia/urgence
   // MVP5 « cœur vendeur-conseiller » (T-38) — état de la boucle catalogue :
   searchSlots   Json?      @map("search_slots") // critères extraits (prix/durée/effectif/sujet/format/vertical)
   proposedOffers Json?     @map("proposed_offers") // offres proposées au tour courant
