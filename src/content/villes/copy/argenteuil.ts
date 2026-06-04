@@ -963,5 +963,179 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           "Tailor-made sessions: each session is built around YOUR real business cases. Operational tools at session end: you leave autonomous with configured tools, not with slides. Follow-up guaranteed: one follow-up session included in any multi-session programme. If the first session delivers no measurable concrete value, full refund.",
       },
     },
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Argenteuil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Argenteuil, itérations à distance.",
+        whyHere: [
+          "Projets web & SaaS argenteuillais : PME diversifiées (commerce, BTP, services), héritage industriel & aéronautique, proximité directe Paris (Saint-Lazare ~12 min), tissu TPE/PME dynamique du Val-d'Oise.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
+          "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
+          "Croissance locale & proximité Paris : sites, e-commerce et automatisations pour PME — on greffe l'IA là où elle paie, sans refonte inutile. Hébergement UE, RGPD strict.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Argenteuil",
+            detail:
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : chatbot RAG, search, agents, e-commerce. Démos hebdomadaires.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : c'est à vous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / application sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée, pour commerces, artisans BTP et PME argenteuillaises.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure, IA intégrée, branchée sur votre SI (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète à Argenteuil — research, wireframes, design system, maquettes Figma, prototype — pour un site, une app ou une plateforme SaaS, avec ou sans brique IA. C'est un métier à part entière chez nous.",
+          },
+          {
+            q: "Vous travaillez pour les PME locales (commerce, BTP, services) ?",
+            a: "Oui : sites vitrines et e-commerce, automatisations métier, chatbot et prise de rendez-vous, recherche sémantique — pensés pour des PME diversifiées du Val-d'Oise, avec la proximité Paris. Hébergement UE, RGPD strict.",
+          },
+          {
+            q: "Peut-on augmenter un site existant sans le refondre ?",
+            a: "Oui, dans la grande majorité des cas. On greffe les briques IA via une API, un widget ou un plugin, sans toucher au design ni à la structure, dès lors que votre CMS expose une API ou un flux de données. Aucune refonte ni downtime.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme étendue. Pas de régie, pas de dérive horaire cachée.",
+          },
+          {
+            q: "Avec quelles technologies travaillez-vous ?",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. On choisit la meilleure stack selon vos objectifs et on s'adapte à votre existant, jamais l'inverse.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région parisienne ou repris en interne.",
+      },
+      en: {
+        hero: "In Argenteuil, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Argenteuil kick-off, remote iterations.",
+        whyHere: [
+          "Argenteuil web & SaaS projects: diversified SMEs (retail, construction, services), industrial & aeronautics heritage, direct Paris proximity (Saint-Lazare ~12 min), dynamic Val-d'Oise SME fabric.",
+          "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
+          "Augment the existing site (widget, API, plugin) or a bespoke AI-native platform, whichever pays off best at 18 months.",
+          "Local growth & Paris proximity: sites, e-commerce and automations for SMEs — we graft AI where it pays, with no needless rebuild. EU hosting, strict GDPR.",
+        ],
+        methodology: [
+          {
+            step: "Scoping in Argenteuil",
+            detail:
+              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+          },
+          {
+            step: "UX/UI design",
+            detail:
+              "Wireframes, design system and Figma mockups in your brand; prototype tested before any development.",
+          },
+          {
+            step: "Development in sprints",
+            detail:
+              "AI grafted onto the existing site or AI-native build: RAG chatbot, search, agents, e-commerce. Weekly demos.",
+          },
+          {
+            step: "Acceptance + go-live",
+            detail:
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime.",
+          },
+          {
+            step: "Delivery + autonomy",
+            detail:
+              "Code, databases and models delivered into your infra (EU hosting possible). No imposed subscription: it's yours.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Bespoke site / app",
+            detail:
+              "Design or rebuild of a site or shop with UX/UI and built-in AI, for retailers, construction trades and Argenteuil SMEs.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "AI-native SaaS platform",
+            detail:
+              "Bespoke business or customer portal platform, AI built in, wired into your IS (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Product programme",
+            detail:
+              "Multi-year programmes: platform rebuilds, enterprise design system, dedicated Axion-IA product team.",
+          },
+        ],
+        faq: [
+          {
+            q: "Do you really do UX/UI and design, not just AI?",
+            a: "Yes. We design the full experience in Argenteuil — research, wireframes, design system, Figma mockups, prototype — for a website, app or SaaS platform, with or without an AI brick. It's a discipline in its own right for us.",
+          },
+          {
+            q: "Do you work for local SMEs (retail, construction, services)?",
+            a: "Yes: showcase sites and e-commerce, business automations, chatbot and appointment booking, semantic search — designed for diversified Val-d'Oise SMEs, with Paris proximity. EU hosting, strict GDPR.",
+          },
+          {
+            q: "Can you augment an existing site without rebuilding it?",
+            a: "Yes, in the vast majority of cases. We graft the AI bricks via an API, a widget or a plugin, without touching the design or structure, as long as your CMS exposes an API or data feed. No rebuild, no downtime.",
+          },
+          {
+            q: "Is the quote firm and the price fixed?",
+            a: "Yes. After scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended platform. No time-and-materials, no hidden hourly drift.",
+          },
+          {
+            q: "Which technologies do you work with?",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. We pick the best stack for your goals and adapt to your existing setup, never the other way around.",
+          },
+        ],
+        guarantees:
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Paris-area provider or taken in-house.",
+      },
+    },
   },
 };
