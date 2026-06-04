@@ -30,26 +30,22 @@ const ChatWidgetLazy = dynamic(
   { ssr: false },
 );
 
-/**
- * Canary par page (T-25) : si NEXT_PUBLIC_CHATBOT_PAGES est défini (préfixes de
- * chemin séparés par des virgules), le widget ne monte QUE sur ces pages. Vide /
- * non défini = toutes les pages (rollout global).
- */
-function isPageAllowed(): boolean {
-  const raw = env.NEXT_PUBLIC_CHATBOT_PAGES?.trim();
-  if (!raw) return true;
+interface WidgetConfig {
+  enabled: boolean;
+  pages: string[];
+}
+
+/** Canary par page : ["*"] ou vide = toutes les pages ; sinon préfixes autorisés. */
+function isPageAllowed(pages: ReadonlyArray<string>): boolean {
+  if (!pages || pages.length === 0 || pages.includes("*")) return true;
   if (typeof window === "undefined") return false;
   const path = window.location.pathname;
-  return raw
-    .split(",")
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .some(
-      (prefix) =>
-        path === prefix ||
-        path.startsWith(prefix.endsWith("/") ? prefix : `${prefix}/`) ||
-        path.startsWith(prefix),
-    );
+  return pages.some(
+    (prefix) =>
+      path === prefix ||
+      path.startsWith(prefix.endsWith("/") ? prefix : `${prefix}/`) ||
+      path.startsWith(prefix),
+  );
 }
 
 function scheduleIdle(cb: () => void): () => void {
@@ -68,14 +64,33 @@ function scheduleIdle(cb: () => void): () => void {
 }
 
 export function ChatWidgetMount() {
-  const [ready, setReady] = React.useState(false);
+  const [config, setConfig] = React.useState<WidgetConfig | null>(null);
 
+  // Garde BUILD-TIME « feature déployée » (NEXT_PUBLIC_CHATBOT_ENABLED) : tant
+  // qu'elle est ≠ "true", on ne fait AUCUN fetch (zéro coût site-wide). Une fois
+  // posée à la mise en service, le pilotage FIN — on/off + canary par page — est
+  // RUNTIME via /api/chatbot/widget-config (ChatTenant.actif + reglages.pages),
+  // modifiable depuis la console SANS redéploiement. Le kill-switch maître reste
+  // l'env serveur CHATBOT_ENABLED (l'endpoint renvoie enabled:false sinon).
   React.useEffect(() => {
     if (env.NEXT_PUBLIC_CHATBOT_ENABLED !== "true") return;
-    if (!isPageAllowed()) return; // canary par page (T-25)
-    return scheduleIdle(() => setReady(true));
+    let cancelled = false;
+    const cancelIdle = scheduleIdle(() => {
+      fetch("/api/chatbot/widget-config")
+        .then((r) => (r.ok ? (r.json() as Promise<WidgetConfig>) : null))
+        .then((c) => {
+          if (!cancelled && c) setConfig(c);
+        })
+        .catch(() => {});
+    });
+    return () => {
+      cancelled = true;
+      cancelIdle();
+    };
   }, []);
 
-  if (env.NEXT_PUBLIC_CHATBOT_ENABLED !== "true" || !ready) return null;
+  if (env.NEXT_PUBLIC_CHATBOT_ENABLED !== "true") return null;
+  if (!config?.enabled) return null;
+  if (!isPageAllowed(config.pages)) return null;
   return <ChatWidgetLazy />;
 }

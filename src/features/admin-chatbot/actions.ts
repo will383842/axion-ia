@@ -24,6 +24,40 @@ import {
 
 const PAGE_SIZE = 25;
 
+// ── Ingestion knowledge ───────────────────────────────────────────────────────
+
+export type TriggerIngestionState = { ok: true } | { ok: false; error: string };
+
+export async function triggerIngestionAction(
+  _prev: TriggerIngestionState,
+  _formData: FormData,
+): Promise<TriggerIngestionState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  try {
+    // Enqueue un job d'ingestion (chunk → embed → chat_kb_chunks). Le worker
+    // chatbot-ingest le traite (actif si CHATBOT_ENABLED=true). No-op propre si
+    // BullMQ indisponible (build / Redis down).
+    const { enqueueChatbotIngest } = await import("@/server/queue/queues");
+    await enqueueChatbotIngest();
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "chatbot.ingestion.triggered",
+        targetType: "chat_kb_chunks",
+        ipAddress: await getClientIp(),
+      },
+    });
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Échec du lancement de l'ingestion." };
+  }
+}
+
 // ── Dashboard ───────────────────────────────────────────────────────────────
 
 export interface ChatbotDashboardStats {
@@ -178,7 +212,18 @@ const settingsSchema = z.object({
   cacheTtlHours: z.coerce.number().int().min(1).max(720),
   costCapUsdPerMonth: z.coerce.number().min(0).max(100000),
   retentionMonths: z.coerce.number().int().min(1).max(120),
+  // Canary : préfixes de pages (virgules) où le widget s'affiche. Vide = toutes.
+  pages: z.string().max(500).optional(),
 });
+
+/** Parse la liste de pages canary ; vide → ["*"] (toutes). */
+function parsePages(raw?: string): string[] {
+  const parts = (raw ?? "")
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  return parts.length === 0 ? ["*"] : parts;
+}
 
 export async function updateChatbotSettingsAction(
   _prev: UpdateSettingsState,
@@ -202,6 +247,7 @@ export async function updateChatbotSettingsAction(
     cacheTtlHours: formData.get("cacheTtlHours"),
     costCapUsdPerMonth: formData.get("costCapUsdPerMonth"),
     retentionMonths: formData.get("retentionMonths"),
+    pages: formData.get("pages") ?? "",
   });
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Valeurs invalides." };
@@ -222,6 +268,7 @@ export async function updateChatbotSettingsAction(
       confirmBeforeLinks: d.confirmBeforeLinks,
       costCapUsdPerMonth: d.costCapUsdPerMonth,
       retentionMonths: d.retentionMonths,
+      pages: parsePages(d.pages),
       cache: {
         ...((current.cache as Record<string, unknown>) ?? {}),
         enabled: d.cacheEnabled,

@@ -12,6 +12,7 @@ import {
   type AdminTableColumn,
 } from "@/components/admin/ui";
 import type { ChatbotDashboardStats, EscalationRow } from "@/features/admin-chatbot/actions";
+import { IngestionButton } from "./IngestionButton";
 
 function frDate(d: Date): string {
   return new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
@@ -44,6 +45,7 @@ export function ChatbotDashboardV2({
       <AdminPageHeader
         title="Chatbot — tableau de bord"
         description="Vue d'ensemble de l'assistant conversationnel Axion-IA."
+        actions={<IngestionButton />}
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] lg:grid-cols-3">
