@@ -301,6 +301,10 @@ export async function renderVilleServicePage({
   const entryPriceEur = getEntryPriceEur(meta.tiers);
   const entryTier: PricingTier = getEntryTier(meta.tiers);
   const formattedEntryPrice = formatPrice(entryTier, isFr ? "fr" : "en");
+  // sites-web = prestation sur devis/projet (pas de réservation agenda ni
+  // d'acompte) → CTA alignés sur le header : « Réserver un appel » (/appel) +
+  // « Nous écrire » (/contact). Les autres verticales gardent le flux calendrier.
+  const isSitesWeb = service === "sites-web-augmentes";
 
   const breadcrumbItems = [
     {
@@ -464,7 +468,9 @@ export async function renderVilleServicePage({
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Cta
-            href={`/reserver?ville=${ville.slug}&service=${service}` as never}
+            href={
+              isSitesWeb ? "/appel" : (`/reserver?ville=${ville.slug}&service=${service}` as never)
+            }
             variant={meta.accent === "terracotta" ? "terracotta" : "primary"}
             size="lg"
             shape="pill"
@@ -472,7 +478,13 @@ export async function renderVilleServicePage({
             data-source-ville={ville.slug}
             data-source-region={ville.region}
           >
-            {isFr ? `Réserver · ${formattedEntryPrice}` : `Book · ${formattedEntryPrice}`}
+            {isSitesWeb
+              ? isFr
+                ? "Réserver un appel"
+                : "Book a call"
+              : isFr
+                ? `Réserver · ${formattedEntryPrice}`
+                : `Book · ${formattedEntryPrice}`}
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </Cta>
           <Cta
@@ -742,26 +754,44 @@ export async function renderVilleServicePage({
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
         title={isFr ? `Vous êtes à ${ville.nameFr} ?` : `You're in ${ville.nameFr}?`}
         titleEm={
-          isFr ? `Réservez ${meta.nameFr.toLowerCase()}` : `Book ${meta.nameEn.toLowerCase()}`
+          isSitesWeb
+            ? isFr
+              ? "parlons de votre projet"
+              : "let's talk about your project"
+            : isFr
+              ? `Réservez ${meta.nameFr.toLowerCase()}`
+              : `Book ${meta.nameEn.toLowerCase()}`
         }
         description={
-          isFr
-            ? `Calendrier réel temps réel. Acompte 50 % à la confirmation. Champ « ville » pré-rempli avec ${ville.nameFr}, champ « service » pré-rempli avec ${meta.nameFr}.`
-            : `Real-time calendar. 50% deposit on confirmation. "City" field pre-filled with ${ville.nameFr}, "service" field pre-filled with ${meta.nameEn}.`
+          isSitesWeb
+            ? isFr
+              ? `Un appel pour cadrer votre site ou plateforme à ${ville.nameFr} : on identifie les briques IA à plus fort ROI, puis devis ferme à partir de 24-48 h selon la complexité du projet. Code et données à vous.`
+              : `A call to scope your site or platform in ${ville.nameFr}: we identify the highest-ROI AI bricks, then a firm quote from 24-48 h depending on project complexity. Code and data yours.`
+            : isFr
+              ? `Calendrier réel temps réel. Acompte 50 % à la confirmation. Champ « ville » pré-rempli avec ${ville.nameFr}, champ « service » pré-rempli avec ${meta.nameFr}.`
+              : `Real-time calendar. 50% deposit on confirmation. "City" field pre-filled with ${ville.nameFr}, "service" field pre-filled with ${meta.nameEn}.`
         }
         cta={
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Cta
-              href={`/reserver?ville=${ville.slug}&service=${service}` as never}
+              href={
+                isSitesWeb
+                  ? "/appel"
+                  : (`/reserver?ville=${ville.slug}&service=${service}` as never)
+              }
               variant="terracotta"
               size="lg"
               shape="pill"
               track={`ville_service_${service}_book_final`}
               data-source-ville={ville.slug}
             >
-              {isFr
-                ? `Voir le calendrier · ${formattedEntryPrice}`
-                : `View the calendar · ${formattedEntryPrice}`}
+              {isSitesWeb
+                ? isFr
+                  ? "Réserver un appel"
+                  : "Book a call"
+                : isFr
+                  ? `Voir le calendrier · ${formattedEntryPrice}`
+                  : `View the calendar · ${formattedEntryPrice}`}
             </Cta>
             <Cta
               href="/contact"
@@ -770,7 +800,13 @@ export async function renderVilleServicePage({
               shape="pill"
               track={`ville_service_${service}_contact_final`}
             >
-              {isFr ? "Parler à un consultant" : "Speak with a consultant"}
+              {isSitesWeb
+                ? isFr
+                  ? "Nous écrire"
+                  : "Email us"
+                : isFr
+                  ? "Parler à un consultant"
+                  : "Speak with a consultant"}
             </Cta>
           </div>
         }
