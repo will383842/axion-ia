@@ -8,6 +8,7 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 
 export const CapturerLeadInputSchema = z
@@ -58,34 +59,56 @@ export async function capturerLead(
   }
   const key = idempotencyKey(ctx.conversationId, input);
 
-  // Pré-check idempotence.
-  const existing = await prisma.chatActionIdempotency.findUnique({ where: { cle: key } });
-  if (existing && existing.resultat) {
-    const memo = existing.resultat as { submissionId?: string };
-    if (memo.submissionId) return { submissionId: memo.submissionId, idempotent: true };
+  // Idempotence rapide : si la clé est déjà mémorisée (appel antérieur terminé),
+  // on renvoie le résultat sans rien créer.
+  const memoized = await readMemoizedSubmission(key);
+  if (memoized) return { submissionId: memoized, idempotent: true };
+
+  // Création RÉELLEMENT atomique : Submission + clé d'idempotence dans UNE
+  // transaction. La clé `chat_action_idempotency.cle` (PK) sert de verrou de
+  // concurrence — un `create` (pas `upsert`) sur cle conflicte (P2002) si une
+  // requête concurrente same-key a déjà committé. Conséquences :
+  //  - crash partiel → la transaction rollback → jamais de Submission orpheline ;
+  //  - course concurrente → le perdant rollback (Submission incluse) → 0 doublon,
+  //    puis relit le résultat du gagnant ci-dessous.
+  try {
+    return await prisma.$transaction(async (tx) => {
+      const submission = await tx.submission.create({
+        data: {
+          type: "contact",
+          locale: "fr",
+          companyName: input.structure ?? "Via chatbot",
+          contactName: input.nom,
+          contactEmail: input.email,
+          ...(input.telephone ? { contactPhone: input.telephone } : {}),
+          details: { besoin: input.besoin_resume, canal: "chatbot", consentementRgpd: true },
+          source: "chatbot",
+          ...(ctx.ipHash ? { ipHash: ctx.ipHash } : {}),
+        },
+        select: { id: true },
+      });
+
+      await tx.chatActionIdempotency.create({
+        data: { cle: key, resultat: { submissionId: submission.id } },
+      });
+
+      return { submissionId: submission.id, idempotent: false };
+    });
+  } catch (err) {
+    // Conflit unique sur la clé d'idempotence = un appel concurrent a gagné la
+    // course et committé. Notre transaction (Submission comprise) a rollback :
+    // aucun doublon. On renvoie le résultat mémorisé par le gagnant.
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const winner = await readMemoizedSubmission(key);
+      if (winner) return { submissionId: winner, idempotent: true };
+    }
+    throw err;
   }
+}
 
-  // Création atomique : Submission + clé d'idempotence.
-  const submission = await prisma.submission.create({
-    data: {
-      type: "contact",
-      locale: "fr",
-      companyName: input.structure ?? "Via chatbot",
-      contactName: input.nom,
-      contactEmail: input.email,
-      ...(input.telephone ? { contactPhone: input.telephone } : {}),
-      details: { besoin: input.besoin_resume, canal: "chatbot", consentementRgpd: true },
-      source: "chatbot",
-      ...(ctx.ipHash ? { ipHash: ctx.ipHash } : {}),
-    },
-    select: { id: true },
-  });
-
-  await prisma.chatActionIdempotency.upsert({
-    where: { cle: key },
-    update: { resultat: { submissionId: submission.id } },
-    create: { cle: key, resultat: { submissionId: submission.id } },
-  });
-
-  return { submissionId: submission.id, idempotent: false };
+/** Relit l'id de Submission mémorisé pour une clé d'idempotence, ou null. */
+async function readMemoizedSubmission(key: string): Promise<string | null> {
+  const existing = await prisma.chatActionIdempotency.findUnique({ where: { cle: key } });
+  const memo = existing?.resultat as { submissionId?: string } | null;
+  return memo?.submissionId ?? null;
 }
