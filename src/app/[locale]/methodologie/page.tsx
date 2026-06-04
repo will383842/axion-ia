@@ -376,13 +376,13 @@ export default async function MethodologyPage({ params }: Props) {
               filenameTarget="public/illustrations/methodologie-mid-1.avif"
               caption={
                 isFr
-                  ? "Compas d'architecte sur feuille gridée — précision opérationnelle"
-                  : "Architect's compass on gridded paper — operational precision"
+                  ? "Compas de précision sur feuille gridée — précision opérationnelle"
+                  : "Precision compass on gridded paper — operational precision"
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un compas d'architecte au-dessus d'une feuille gridée, symbole de la précision méthodologique d'Axion-IA."
-                  : "Editorial illustration of an architect's compass over gridded paper, symbol of Axion-IA's methodological precision."
+                  ? "Illustration éditoriale d'un compas de précision au-dessus d'une feuille gridée, symbole de la précision méthodologique d'Axion-IA."
+                  : "Editorial illustration of a precision compass over gridded paper, symbol of Axion-IA's methodological precision."
               }
               className="border-terracotta/30 bg-halo-warm shadow-subtle relative w-full overflow-hidden rounded-2xl border-2 border-dashed lg:sticky lg:top-24"
             />

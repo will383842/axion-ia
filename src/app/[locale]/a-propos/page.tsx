@@ -370,13 +370,13 @@ export default async function About({ params }: Props) {
               filenameTarget="public/illustrations/a-propos-mid-1.avif"
               caption={
                 isFr
-                  ? "Atelier d'architecte — précision, traces de craie, plan ouvert"
-                  : "Architect's workshop — precision, chalk traces, open blueprint"
+                  ? "Atelier de conception — précision, traces de craie, plan ouvert"
+                  : "Design studio — precision, chalk traces, open blueprint"
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un atelier d'architecte symbolisant la précision opérationnelle d'Axion-IA."
-                  : "Editorial illustration of an architect's workshop symbolizing Axion-IA's operational precision."
+                  ? "Illustration éditoriale d'un atelier de conception symbolisant la précision opérationnelle d'Axion-IA."
+                  : "Editorial illustration of a design studio symbolizing Axion-IA's operational precision."
               }
             />
           </div>
