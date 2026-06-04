@@ -57,7 +57,8 @@ export async function capturerLead(
   if (!ctx.conversationId) {
     throw new Error("[capturer_lead] conversationId requis (idempotence).");
   }
-  const key = idempotencyKey(ctx.conversationId, input);
+  const conversationId = ctx.conversationId;
+  const key = idempotencyKey(conversationId, input);
 
   // Idempotence rapide : si la clé est déjà mémorisée (appel antérieur terminé),
   // on renvoie le résultat sans rien créer.
@@ -90,6 +91,14 @@ export async function capturerLead(
 
       await tx.chatActionIdempotency.create({
         data: { cle: key, resultat: { submissionId: submission.id } },
+      });
+
+      // Backlink conversation → lead : indispensable pour rattacher la conversation
+      // à la personne (RGPD export/erase art. 15/17 retrouvent les conversations
+      // via ce submissionId).
+      await tx.chatConversation.update({
+        where: { id: conversationId },
+        data: { submissionId: submission.id },
       });
 
       return { submissionId: submission.id, idempotent: false };

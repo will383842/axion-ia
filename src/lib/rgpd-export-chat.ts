@@ -42,16 +42,30 @@ export interface ChatExport {
 }
 
 export async function exportChatDataForEmail(email: string): Promise<ChatExport> {
+  // Ancres : leads (Submission → conversation via submissionId) + escalades
+  // (conversation référencée). Symétrique de eraseChatDataForEmail.
   const subs = await prisma.submission.findMany({
     where: { contactEmail: email },
     select: { id: true },
   });
   const subIds = subs.map((s) => s.id);
 
+  const escConvs = await prisma.chatEscalation.findMany({
+    where: { contactEmail: email, conversationId: { not: null } },
+    select: { conversationId: true },
+  });
+  const escConvIds = escConvs
+    .map((e) => e.conversationId)
+    .filter((id): id is string => id !== null);
+
+  const orClauses: Array<Record<string, unknown>> = [];
+  if (subIds.length > 0) orClauses.push({ submissionId: { in: subIds } });
+  if (escConvIds.length > 0) orClauses.push({ id: { in: escConvIds } });
+
   const conversations =
-    subIds.length > 0
+    orClauses.length > 0
       ? await prisma.chatConversation.findMany({
-          where: { submissionId: { in: subIds } },
+          where: { OR: orClauses },
           orderBy: { createdAt: "desc" },
           select: {
             id: true,

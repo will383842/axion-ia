@@ -27,17 +27,22 @@ describe("exportChatDataForEmail", () => {
     conversationFindMany.mockResolvedValue([
       { id: "c1", sessionUuid: "s1", messages: [{ role: "user", contenu: "bonjour" }] },
     ]);
-    escalationFindMany.mockResolvedValue([{ id: "e1", question: "?" }]);
+    // 1er findMany = conversations rattachées par escalade (aucune) ; 2e = escalades.
+    escalationFindMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([{ id: "e1", question: "?" }]);
 
     const r = await exportChatDataForEmail("jean@acme.fr");
 
     expect(r.conversations).toHaveLength(1);
     expect(r.escalations).toHaveLength(1);
-    expect(conversationFindMany.mock.calls[0]![0].where.submissionId.in).toEqual(["sub-1"]);
-    expect(escalationFindMany.mock.calls[0]![0].where.contactEmail).toBe("jean@acme.fr");
+    // Conversations via OR (leads + escalades) ; ici leads seuls.
+    expect(conversationFindMany.mock.calls[0]![0].where.OR).toContainEqual({
+      submissionId: { in: ["sub-1"] },
+    });
   });
 
-  it("sans lead → aucune conversation, mais escalades quand même cherchées", async () => {
+  it("sans aucune ancre → aucune conversation, escalades quand même cherchées", async () => {
     submissionFindMany.mockResolvedValue([]);
     escalationFindMany.mockResolvedValue([]);
 
@@ -45,6 +50,7 @@ describe("exportChatDataForEmail", () => {
 
     expect(r.conversations).toEqual([]);
     expect(conversationFindMany).not.toHaveBeenCalled();
-    expect(escalationFindMany).toHaveBeenCalledOnce();
+    // findMany escalades appelé 2× (ancres + export escalades).
+    expect(escalationFindMany).toHaveBeenCalledTimes(2);
   });
 });

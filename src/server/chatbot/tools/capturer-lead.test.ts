@@ -12,14 +12,16 @@ import { Prisma } from "../../../../prisma/generated/client";
 const findUnique = vi.fn();
 const submissionCreate = vi.fn();
 const idemCreate = vi.fn();
+const convUpdate = vi.fn();
 
 // Transaction interactive : exécute le callback avec un client `tx` exposant les
-// mêmes mocks (submission.create + chatActionIdempotency.create).
+// mêmes mocks (submission.create + chatActionIdempotency.create + conv.update).
 const transaction = vi.fn(
   (fn: (tx: unknown) => unknown) =>
     fn({
       submission: { create: (...a: unknown[]) => submissionCreate(...a) },
       chatActionIdempotency: { create: (...a: unknown[]) => idemCreate(...a) },
+      chatConversation: { update: (...a: unknown[]) => convUpdate(...a) },
     }) as unknown,
 );
 
@@ -48,6 +50,7 @@ beforeEach(() => {
   findUnique.mockReset();
   submissionCreate.mockReset();
   idemCreate.mockReset();
+  convUpdate.mockReset();
   transaction.mockClear();
 });
 
@@ -72,6 +75,12 @@ describe("T-17 capturer_lead", () => {
     // La clé d'idempotence est créée (pas upsert) dans la même transaction.
     expect(idemCreate).toHaveBeenCalledOnce();
     expect(idemCreate.mock.calls[0]![0].data.resultat).toEqual({ submissionId: "sub-1" });
+    // Backlink conversation → lead (RGPD : rattachement export/erase).
+    expect(convUpdate).toHaveBeenCalledOnce();
+    expect(convUpdate.mock.calls[0]![0]).toEqual({
+      where: { id: "conv-1" },
+      data: { submissionId: "sub-1" },
+    });
   });
 
   it("retry idempotent → renvoie le lead mémorisé, AUCUNE transaction", async () => {

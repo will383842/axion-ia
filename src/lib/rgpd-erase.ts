@@ -101,17 +101,28 @@ export interface EraseChatResult {
 export async function eraseChatDataForEmail(email: string): Promise<EraseChatResult> {
   const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
 
+  // Ancres pour rattacher une conversation à la personne :
+  //  - leads (Submission) de cet email → conversations via submissionId (backlink) ;
+  //  - escalades de cet email → conversation référencée (conversation_id).
   const subs = await prisma.submission.findMany({
     where: { contactEmail: email },
     select: { id: true },
   });
   const subIds = subs.map((s) => s.id);
 
+  const escs = await prisma.chatEscalation.findMany({
+    where: { contactEmail: email, conversationId: { not: null } },
+    select: { conversationId: true },
+  });
+  const escConvIds = escs.map((e) => e.conversationId).filter((id): id is string => id !== null);
+
+  const orClauses: Array<Record<string, unknown>> = [];
+  if (subIds.length > 0) orClauses.push({ submissionId: { in: subIds } });
+  if (escConvIds.length > 0) orClauses.push({ id: { in: escConvIds } });
+
   let conversationsDeleted = 0;
-  if (subIds.length > 0) {
-    const del = await prisma.chatConversation.deleteMany({
-      where: { submissionId: { in: subIds } },
-    });
+  if (orClauses.length > 0) {
+    const del = await prisma.chatConversation.deleteMany({ where: { OR: orClauses } });
     conversationsDeleted = del.count;
   }
 
