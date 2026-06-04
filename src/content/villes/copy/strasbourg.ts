@@ -942,6 +942,180 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Coaching available in FR, DE or EN per your profile. Strict confidentiality from the outset, no reference published without written consent. Lodging, meals and travel allowance billed separately and validated before each on-site session. No lock-in: skills acquired are usable in full autonomy.",
       },
     },
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Strasbourg des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Strasbourg, itérations à distance.",
+        whyHere: [
+          "Projets web & SaaS strasbourgeois : institutions & services B2B (Wacken-Europe), biotech-recherche (Alsace BioValley, IGBMC, PII Illkirch), industrie & agroalimentaire transfrontalière, scale-ups deeptech French Tech Alsace.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
+          "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
+          "Marché transfrontalier France-Allemagne-Suisse : sites et plateformes multilingues (FR/DE/EN), hreflang propre, traduction IA — un atout unique à Strasbourg.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Strasbourg",
+            detail:
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : chatbot RAG, search, agents, e-commerce. Démos hebdomadaires.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : c'est à vous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / application sur mesure",
+            detail:
+              "Conception ou refonte d'un site multilingue ou d'une application avec UX/UI et IA intégrée, pour PME et scale-ups transfrontalières.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier, portail B2B ou data biotech sur mesure, multilingue, IA intégrée, branchée sur votre SI (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète à Strasbourg — research, wireframes, design system, maquettes Figma, prototype — pour un site, une app ou une plateforme SaaS, avec ou sans brique IA. C'est un métier à part entière chez nous.",
+          },
+          {
+            q: "Vous gérez le multilingue FR/DE/EN pour le marché transfrontalier ?",
+            a: "Oui, c'est un atout clé à Strasbourg : sites et plateformes multilingues (français, allemand, anglais), traduction IA, hreflang propre, contenu localisé. Un vrai levier pour vendre des deux côtés du Rhin et vers la Suisse. Hébergement UE, RGPD strict.",
+          },
+          {
+            q: "Peut-on augmenter un site existant sans le refondre ?",
+            a: "Oui, dans la grande majorité des cas. On greffe les briques IA via une API, un widget ou un plugin, sans toucher au design ni à la structure, dès lors que votre CMS expose une API ou un flux de données. Aucune refonte ni downtime.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme multilingue étendue. Pas de régie, pas de dérive horaire cachée.",
+          },
+          {
+            q: "Avec quelles technologies travaillez-vous ?",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. On choisit la meilleure stack selon vos objectifs et on s'adapte à votre existant, jamais l'inverse.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région strasbourgeoise ou repris en interne.",
+      },
+      en: {
+        hero: "In Strasbourg, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Strasbourg kick-off, remote iterations.",
+        whyHere: [
+          "Strasbourg web & SaaS projects: institutions & B2B services (Wacken-Europe), biotech-research (Alsace BioValley, IGBMC, PII Illkirch), cross-border industry & agri-food, French Tech Alsace deeptech scale-ups.",
+          "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
+          "Augment the existing site (widget, API, plugin) or a bespoke AI-native platform, whichever pays off best at 18 months.",
+          "France-Germany-Switzerland cross-border market: multilingual sites and platforms (FR/DE/EN), clean hreflang, AI translation — a unique asset in Strasbourg.",
+        ],
+        methodology: [
+          {
+            step: "Scoping in Strasbourg",
+            detail:
+              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+          },
+          {
+            step: "UX/UI design",
+            detail:
+              "Wireframes, design system and Figma mockups in your brand; prototype tested before any development.",
+          },
+          {
+            step: "Development in sprints",
+            detail:
+              "AI grafted onto the existing site or AI-native build: RAG chatbot, search, agents, e-commerce. Weekly demos.",
+          },
+          {
+            step: "Acceptance + go-live",
+            detail:
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime.",
+          },
+          {
+            step: "Delivery + autonomy",
+            detail:
+              "Code, databases and models delivered into your infra (EU hosting possible). No imposed subscription: it's yours.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Bespoke site / app",
+            detail:
+              "Design or rebuild of a multilingual site or app with UX/UI and built-in AI, for cross-border SMEs and scale-ups.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "AI-native SaaS platform",
+            detail:
+              "Bespoke business, B2B portal or biotech data platform, multilingual, AI built in, wired into your IS (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Product programme",
+            detail:
+              "Multi-year programmes: platform rebuilds, enterprise design system, dedicated Axion-IA product team.",
+          },
+        ],
+        faq: [
+          {
+            q: "Do you really do UX/UI and design, not just AI?",
+            a: "Yes. We design the full experience in Strasbourg — research, wireframes, design system, Figma mockups, prototype — for a website, app or SaaS platform, with or without an AI brick. It's a discipline in its own right for us.",
+          },
+          {
+            q: "Do you handle FR/DE/EN multilingual for the cross-border market?",
+            a: "Yes, a key asset in Strasbourg: multilingual sites and platforms (French, German, English), AI translation, clean hreflang, localised content. A real lever to sell on both sides of the Rhine and into Switzerland. EU hosting, strict GDPR.",
+          },
+          {
+            q: "Can you augment an existing site without rebuilding it?",
+            a: "Yes, in the vast majority of cases. We graft the AI bricks via an API, a widget or a plugin, without touching the design or structure, as long as your CMS exposes an API or data feed. No rebuild, no downtime.",
+          },
+          {
+            q: "Is the quote firm and the price fixed?",
+            a: "Yes. After scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended multilingual platform. No time-and-materials, no hidden hourly drift.",
+          },
+          {
+            q: "Which technologies do you work with?",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. We pick the best stack for your goals and adapt to your existing setup, never the other way around.",
+          },
+        ],
+        guarantees:
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Strasbourg-area provider or taken in-house.",
+      },
+    },
   },
 
   faqGeolocalisee: [
