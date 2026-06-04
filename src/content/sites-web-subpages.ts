@@ -15,6 +15,8 @@ export const SITESWEB_RELATED: Record<SitesWebSlug, SitesWebSlug[]> = {
   shopify: ["wordpress", "recommandation"],
   personnalisation: ["recommandation", "recherche-semantique"],
   "ux-ui-product-design": ["creer-saas-ia", "plateforme-native"],
+  woocommerce: ["shopify", "recommandation"],
+  prestashop: ["woocommerce", "recommandation"],
 };
 
 /** Label de la brique pour la couverture nationale (« {label} disponible partout en France »). */
@@ -29,4 +31,6 @@ export const SITESWEB_GEO_LABEL: Record<SitesWebSlug, { fr: string; en: string }
   shopify: { fr: "L'IA pour Shopify", en: "AI for Shopify" },
   personnalisation: { fr: "La personnalisation de site IA", en: "AI site personalisation" },
   "ux-ui-product-design": { fr: "Le design UX/UI sur mesure", en: "Bespoke UX/UI design" },
+  woocommerce: { fr: "L'IA pour WooCommerce", en: "AI for WooCommerce" },
+  prestashop: { fr: "L'IA pour PrestaShop", en: "AI for PrestaShop" },
 };
