@@ -17,7 +17,9 @@ export type SitesWebSlug =
   | "creer-saas-ia"
   | "shopify"
   | "personnalisation"
-  | "ux-ui-product-design";
+  | "ux-ui-product-design"
+  | "woocommerce"
+  | "prestashop";
 
 export type SitesWebProjectType = "augmentation" | "native" | "transverse";
 
@@ -2580,6 +2582,504 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
             title: "Testing costs less than getting it wrong",
             description:
               "Validating a mockup with a testable prototype avoids coding a bad idea — we de-risk before development.",
+          },
+        ],
+      },
+    },
+  },
+  // ── E-COMMERCE : WooCommerce (auto-hébergé, WordPress) ─────────────────────
+  {
+    slug: "woocommerce",
+    projectType: "augmentation",
+    pathFr: "/sites-web-augmentes/woocommerce",
+    pathEn: "/sites-web-augmentes/woocommerce",
+    accent: "green",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "L'IA sur votre WooCommerce, sans louer de plateforme",
+      titleEn: "AI on your WooCommerce, without renting a platform",
+      blocks: [
+        {
+          icon: "Plug",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "On reste sur votre boutique",
+          labelEn: "We stay on your store",
+          detailFr: "Thème, extensions, catalogue WooCommerce : on greffe via hooks et REST API.",
+          detailEn: "Theme, plugins, WooCommerce catalogue: we graft via hooks and REST API.",
+        },
+        {
+          icon: "Sparkles",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Assistant + reco produit",
+          labelEn: "Assistant + product reco",
+          detailFr: "Conseiller d'achat ancré sur vos fiches + cross-sell pertinent au panier.",
+          detailEn: "Buying advisor grounded in your sheets + relevant cart cross-sell.",
+        },
+        {
+          icon: "Database",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Vos données chez vous",
+          labelEn: "Your data with you",
+          detailFr: "Auto-hébergé, hébergement UE possible : aucune dépendance plateforme.",
+          detailEn: "Self-hosted, EU hosting possible: no platform lock-in.",
+        },
+      ],
+      ariaFr:
+        "Schéma : on greffe l'IA sur votre WooCommerce via hooks et REST API (assistant d'achat, reco produit), en gardant vos données auto-hébergées sans dépendance plateforme.",
+      ariaEn:
+        "Diagram: we graft AI onto your WooCommerce via hooks and REST API (buying assistant, product reco), keeping your data self-hosted without platform lock-in.",
+    },
+    fr: {
+      eyebrow: "E-commerce · WooCommerce",
+      title: "Votre boutique WooCommerce,",
+      titleEm: "augmentée par l'IA",
+      answer:
+        "On greffe l'IA sur votre boutique WooCommerce sans la refondre ni la migrer vers une plateforme louée : assistant d'achat ancré sur votre catalogue, recommandations cross-sell, génération de fiches produit, recherche sémantique, relance de panier. Tout reste auto-hébergé — vous gardez la propriété de votre boutique, de vos données et du code.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Pas de dépendance plateforme",
+          description:
+            "WooCommerce est auto-hébergé : on greffe l'IA via les hooks et la REST API, sans vous enfermer dans un écosystème loué.",
+        },
+        {
+          title: "Plus de panier moyen",
+          description:
+            "Recommandations cross-sell et up-sell branchées sur votre catalogue réel et le comportement d'achat.",
+        },
+        {
+          title: "Fiches produit en masse",
+          description:
+            "Génération et enrichissement des descriptions produit à grande échelle, dans votre ton, sans agence de rédaction.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "Audit de la boutique",
+          description: "Thème, extensions, volume catalogue, REST API : on cadre le périmètre.",
+        },
+        {
+          title: "Branchement IA",
+          description:
+            "Hooks WooCommerce, widget ou extension sur mesure — sans casser l'existant.",
+        },
+        {
+          title: "Catalogue & conversion",
+          description: "Assistant d'achat, reco, fiches générées, recherche sémantique produit.",
+        },
+        {
+          title: "Mesure & itération",
+          description: "Impact sur panier moyen, taux d'ajout, tickets support — on affine.",
+        },
+      ],
+      metricsTitle: "Comment on travaille",
+      metrics: [
+        { number: "REST", suffix: "API", label: "Greffe via hooks WooCommerce" },
+        { number: "UE", suffix: "", label: "Auto-hébergé, hébergement UE possible" },
+        { number: "100", suffix: "%", label: "Boutique & données à vous" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "migration",
+          question: "Faut-il migrer ma boutique ?",
+          answer:
+            "Non. On greffe l'IA sur votre WooCommerce existant via les hooks et la REST API, ou une extension sur mesure. Aucune migration vers une plateforme louée, aucun downtime.",
+        },
+        {
+          id: "shopify",
+          question: "Pourquoi WooCommerce plutôt que Shopify ?",
+          answer:
+            "WooCommerce est auto-hébergé et open-source : vous possédez la boutique, les données et le code, sans abonnement plateforme. C'est le bon choix quand la souveraineté et l'extensibilité priment. On accompagne les deux.",
+        },
+        {
+          id: "fiches",
+          question: "Vous générez les fiches produit ?",
+          answer:
+            "Oui, à l'échelle de votre catalogue : descriptions, attributs, méta SEO, dans votre ton. Conforme HCU 2024 et AI Act, relu avant publication.",
+        },
+        {
+          id: "donnees",
+          question: "Où sont hébergées les données IA ?",
+          answer:
+            "Dans votre infrastructure ou en hébergement UE (Hetzner Frankfurt), conforme RGPD. Vos données client et catalogue ne partent pas hors UE sans DPA.",
+        },
+      ],
+      ctaBlockTitle: "Votre WooCommerce, plus intelligent",
+      ctaBlockDescription:
+        "Décrivez votre boutique et vos objectifs : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Louer une plateforme,",
+        titleEm: "c'est louer vos données",
+        intro:
+          "Les plateformes SaaS fermées facturent au volume et verrouillent vos données. WooCommerce vous laisse la main — et l'IA s'y greffe parfaitement.",
+        points: [
+          {
+            title: "La propriété change tout",
+            description:
+              "Code, données, catalogue : tout reste chez vous. Vous décidez de la stack et de l'hébergement, pas la plateforme.",
+          },
+          {
+            title: "Extensible par conception",
+            description:
+              "Hooks, filtres et REST API WooCommerce permettent de greffer l'IA proprement, là où un SaaS fermé impose ses limites.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "E-commerce · WooCommerce",
+      title: "Your WooCommerce store,",
+      titleEm: "augmented by AI",
+      answer:
+        "We graft AI onto your WooCommerce store without rebuilding it or migrating to a rented platform: buying assistant grounded in your catalogue, cross-sell recommendations, product sheet generation, semantic search, cart recovery. Everything stays self-hosted — you keep ownership of your store, data and code.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "No platform lock-in",
+          description:
+            "WooCommerce is self-hosted: we graft AI via hooks and the REST API, without locking you into a rented ecosystem.",
+        },
+        {
+          title: "Higher average cart",
+          description:
+            "Cross-sell and up-sell recommendations wired to your real catalogue and buying behaviour.",
+        },
+        {
+          title: "Product sheets at scale",
+          description:
+            "Generating and enriching product descriptions at scale, in your tone, without a copywriting agency.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "Store audit",
+          description: "Theme, plugins, catalogue size, REST API: we scope the work.",
+        },
+        {
+          title: "AI wiring",
+          description:
+            "WooCommerce hooks, widget or bespoke plugin — without breaking what exists.",
+        },
+        {
+          title: "Catalogue & conversion",
+          description: "Buying assistant, reco, generated sheets, semantic product search.",
+        },
+        {
+          title: "Measure & iterate",
+          description: "Impact on average cart, add-to-cart rate, support tickets — we refine.",
+        },
+      ],
+      metricsTitle: "How we work",
+      metrics: [
+        { number: "REST", suffix: "API", label: "Grafted via WooCommerce hooks" },
+        { number: "EU", suffix: "", label: "Self-hosted, EU hosting possible" },
+        { number: "100", suffix: "%", label: "Store & data yours" },
+      ],
+      faqTitle: "Frequently asked questions",
+      faqs: [
+        {
+          id: "migration",
+          question: "Do I need to migrate my store?",
+          answer:
+            "No. We graft AI onto your existing WooCommerce via hooks and the REST API, or a bespoke plugin. No migration to a rented platform, no downtime.",
+        },
+        {
+          id: "shopify",
+          question: "Why WooCommerce rather than Shopify?",
+          answer:
+            "WooCommerce is self-hosted and open-source: you own the store, data and code, with no platform subscription. It's the right call when sovereignty and extensibility matter. We support both.",
+        },
+        {
+          id: "fiches",
+          question: "Do you generate product sheets?",
+          answer:
+            "Yes, at the scale of your catalogue: descriptions, attributes, SEO meta, in your tone. HCU 2024 and AI Act compliant, reviewed before publishing.",
+        },
+        {
+          id: "donnees",
+          question: "Where is the AI data hosted?",
+          answer:
+            "In your infrastructure or EU hosting (Hetzner Frankfurt), GDPR-compliant. Your customer and catalogue data does not leave the EU without a DPA.",
+        },
+      ],
+      ctaBlockTitle: "Your WooCommerce, smarter",
+      ctaBlockDescription:
+        "Describe your store and goals: we come back within 48 h with a scope, a fixed package and a timeline.",
+      why: {
+        title: "Renting a platform",
+        titleEm: "means renting your data",
+        intro:
+          "Closed SaaS platforms charge by volume and lock your data in. WooCommerce keeps you in control — and AI grafts onto it perfectly.",
+        points: [
+          {
+            title: "Ownership changes everything",
+            description:
+              "Code, data, catalogue: it all stays with you. You decide the stack and hosting, not the platform.",
+          },
+          {
+            title: "Extensible by design",
+            description:
+              "WooCommerce hooks, filters and REST API let us graft AI cleanly, where a closed SaaS imposes its limits.",
+          },
+        ],
+      },
+    },
+  },
+  // ── E-COMMERCE : PrestaShop (open-source français) ─────────────────────────
+  {
+    slug: "prestashop",
+    projectType: "augmentation",
+    pathFr: "/sites-web-augmentes/prestashop",
+    pathEn: "/sites-web-augmentes/prestashop",
+    accent: "green",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "L'IA sur votre PrestaShop, via un module sur mesure",
+      titleEn: "AI on your PrestaShop, via a bespoke module",
+      blocks: [
+        {
+          icon: "Plug",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "Un module dédié",
+          labelEn: "A dedicated module",
+          detailFr: "On développe un module PrestaShop sur mesure, propre à votre boutique.",
+          detailEn: "We develop a bespoke PrestaShop module, specific to your store.",
+        },
+        {
+          icon: "Search",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Search & reco",
+          labelEn: "Search & reco",
+          detailFr: "Recherche produit sémantique + recommandations branchées sur votre catalogue.",
+          detailEn: "Semantic product search + recommendations wired to your catalogue.",
+        },
+        {
+          icon: "Sparkles",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Multilingue natif",
+          labelEn: "Native multilingual",
+          detailFr:
+            "Fiches et contenus générés et traduits — atout des boutiques à l'international.",
+          detailEn:
+            "Sheets and content generated and translated — an asset for international stores.",
+        },
+      ],
+      ariaFr:
+        "Schéma : on développe un module PrestaShop sur mesure (recherche sémantique, recommandations, génération et traduction de fiches) branché sur votre catalogue pour les boutiques à l'international.",
+      ariaEn:
+        "Diagram: we build a bespoke PrestaShop module (semantic search, recommendations, sheet generation and translation) wired to your catalogue for international stores.",
+    },
+    fr: {
+      eyebrow: "E-commerce · PrestaShop",
+      title: "Votre PrestaShop,",
+      titleEm: "augmenté par l'IA",
+      answer:
+        "On développe un module PrestaShop sur mesure pour greffer l'IA sur votre boutique open-source : recherche produit sémantique, recommandations, génération et traduction de fiches, assistant d'achat. Idéal pour les boutiques multi-langues et internationales, sans quitter l'écosystème PrestaShop ni perdre la maîtrise de votre code.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Un module sur mesure",
+          description:
+            "Pas un plugin générique : un module PrestaShop développé pour votre boutique, maintenable et propriété de votre entreprise.",
+        },
+        {
+          title: "Fort à l'international",
+          description:
+            "Génération et traduction de fiches multi-langues : un vrai levier pour les boutiques PrestaShop qui vendent au-delà de la France.",
+        },
+        {
+          title: "Open-source maîtrisé",
+          description:
+            "Souveraineté et extensibilité : vous gardez la main sur le code et les données, hébergement UE possible.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "Audit & version",
+          description: "Version PrestaShop, thème, modules, catalogue : on cadre la compatibilité.",
+        },
+        {
+          title: "Module IA sur mesure",
+          description: "Développement d'un module dédié, branché sur votre catalogue et vos hooks.",
+        },
+        {
+          title: "Search, reco & contenu",
+          description: "Recherche sémantique, recommandations, fiches générées et traduites.",
+        },
+        {
+          title: "Mesure & itération",
+          description: "Conversion, panier moyen, marchés à l'international — on affine.",
+        },
+      ],
+      metricsTitle: "Comment on travaille",
+      metrics: [
+        { number: "Module", suffix: "dédié", label: "Sur mesure, maintenable" },
+        { number: "UE", suffix: "", label: "Open-source, hébergement UE possible" },
+        { number: "100", suffix: "%", label: "Code & données à vous" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "module",
+          question: "C'est un plugin du marketplace ?",
+          answer:
+            "Non. On développe un module PrestaShop sur mesure, propre à votre boutique et maintenable — pas un module générique du marketplace que vous ne maîtrisez pas.",
+        },
+        {
+          id: "version",
+          question: "Compatible avec ma version de PrestaShop ?",
+          answer:
+            "On vérifie la compatibilité dès l'audit (1.6, 1.7, 8.x). Le module est développé pour votre version et votre thème, sans casser vos modules existants.",
+        },
+        {
+          id: "international",
+          question: "Et pour une boutique multi-langues ?",
+          answer:
+            "C'est un point fort : génération et traduction de fiches dans toutes vos langues, cohérentes avec votre catalogue et conformes HCU + AI Act.",
+        },
+        {
+          id: "donnees",
+          question: "Mes données restent-elles en Europe ?",
+          answer:
+            "Oui. La chaîne IA est hébergeable en UE (Hetzner Frankfurt), conforme RGPD. Vos données catalogue et client restent sous votre contrôle.",
+        },
+      ],
+      ctaBlockTitle: "Votre PrestaShop, plus intelligent",
+      ctaBlockDescription:
+        "Décrivez votre boutique et vos objectifs : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "L'open-source,",
+        titleEm: "c'est garder la main",
+        intro:
+          "PrestaShop vous laisse la propriété du code et des données. L'IA s'y greffe via un module sur mesure, sans renier cette maîtrise.",
+        points: [
+          {
+            title: "Un module, pas une rustine",
+            description:
+              "Développé pour votre boutique, versionné et maintenable — pas un plugin opaque qui casse à la prochaine mise à jour.",
+          },
+          {
+            title: "Pensé pour l'international",
+            description:
+              "Multi-langues et multi-boutique : l'IA génère et traduit le contenu là où PrestaShop est déjà fort.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "E-commerce · PrestaShop",
+      title: "Your PrestaShop,",
+      titleEm: "augmented by AI",
+      answer:
+        "We develop a bespoke PrestaShop module to graft AI onto your open-source store: semantic product search, recommendations, sheet generation and translation, buying assistant. Ideal for multilingual and international stores, without leaving the PrestaShop ecosystem or losing control of your code.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "A bespoke module",
+          description:
+            "Not a generic plugin: a PrestaShop module built for your store, maintainable and owned by your company.",
+        },
+        {
+          title: "Strong internationally",
+          description:
+            "Multilingual sheet generation and translation: a real lever for PrestaShop stores selling beyond France.",
+        },
+        {
+          title: "Open-source, mastered",
+          description:
+            "Sovereignty and extensibility: you keep control of code and data, EU hosting possible.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "Audit & version",
+          description: "PrestaShop version, theme, modules, catalogue: we scope compatibility.",
+        },
+        {
+          title: "Bespoke AI module",
+          description: "Developing a dedicated module, wired to your catalogue and hooks.",
+        },
+        {
+          title: "Search, reco & content",
+          description: "Semantic search, recommendations, generated and translated sheets.",
+        },
+        {
+          title: "Measure & iterate",
+          description: "Conversion, average cart, international markets — we refine.",
+        },
+      ],
+      metricsTitle: "How we work",
+      metrics: [
+        { number: "Module", suffix: "", label: "Bespoke, maintainable" },
+        { number: "EU", suffix: "", label: "Open-source, EU hosting possible" },
+        { number: "100", suffix: "%", label: "Code & data yours" },
+      ],
+      faqTitle: "Frequently asked questions",
+      faqs: [
+        {
+          id: "module",
+          question: "Is it a marketplace plugin?",
+          answer:
+            "No. We develop a bespoke PrestaShop module, specific to your store and maintainable — not a generic marketplace module you don't control.",
+        },
+        {
+          id: "version",
+          question: "Compatible with my PrestaShop version?",
+          answer:
+            "We check compatibility during the audit (1.6, 1.7, 8.x). The module is built for your version and theme, without breaking your existing modules.",
+        },
+        {
+          id: "international",
+          question: "What about a multilingual store?",
+          answer:
+            "That's a strength: generating and translating sheets in all your languages, consistent with your catalogue and HCU + AI Act compliant.",
+        },
+        {
+          id: "donnees",
+          question: "Does my data stay in Europe?",
+          answer:
+            "Yes. The AI chain can be hosted in the EU (Hetzner Frankfurt), GDPR-compliant. Your catalogue and customer data stays under your control.",
+        },
+      ],
+      ctaBlockTitle: "Your PrestaShop, smarter",
+      ctaBlockDescription:
+        "Describe your store and goals: we come back within 48 h with a scope, a fixed package and a timeline.",
+      why: {
+        title: "Open-source means",
+        titleEm: "staying in control",
+        intro:
+          "PrestaShop leaves you ownership of code and data. AI grafts onto it via a bespoke module, without giving up that control.",
+        points: [
+          {
+            title: "A module, not a patch",
+            description:
+              "Built for your store, versioned and maintainable — not an opaque plugin that breaks at the next update.",
+          },
+          {
+            title: "Built for international",
+            description:
+              "Multilingual and multi-store: AI generates and translates content where PrestaShop is already strong.",
           },
         ],
       },
