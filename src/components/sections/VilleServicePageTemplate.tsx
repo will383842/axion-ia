@@ -326,7 +326,11 @@ export async function renderVilleServicePage({
   // minimal noindex si aucun hub n'a encore de copy sur ce service.
   if (!hasCopy) {
     const hubSlug = nearestHubSlugWithCopy(ville, service);
-    if (hubSlug) {
+    // Redirection satellite→hub LIMITÉE à sites-web (5e verticale, neuve). Les 4
+    // verticales historiques (audit/interventions/implementation/un-a-un) gardent
+    // leur stub noindex actuel — elles sont sous la décision drip gelée [[faq-villes-doorway]],
+    // on ne change pas leur comportement sans décision dédiée. Zéro régression.
+    if (hubSlug && service === "sites-web-augmentes") {
       permanentRedirect(`/${loc}${isFr ? meta.pathFr : meta.pathEn}/${hubSlug}`);
     }
     const hub = hubSlug ? getVille(hubSlug) : undefined;
