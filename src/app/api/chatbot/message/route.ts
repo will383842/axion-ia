@@ -13,6 +13,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { isBanned, recordViolation } from "@/server/chatbot/security/ban";
 import { evaluateCostCap, maybeAlertCostThreshold } from "@/server/chatbot/cost/cost-guard";
+import { isOnTopicViaLlm } from "@/server/chatbot/catalog/intent-llm";
 import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
@@ -277,6 +278,14 @@ export async function POST(req: NextRequest): Promise<Response> {
             // streaming token-par-token vers le widget (typing).
             generateAnswer: (opts) =>
               generateAnswer({ ...opts, onChunk: (c) => send({ type: "delta", text: c }) }),
+            // T-18 — classifieur LLM léger (gated CHATBOT_LLM_CLASSIFIER, sinon
+            // off → 0 coût, comportement déterministe inchangé).
+            ...(process.env.CHATBOT_LLM_CLASSIFIER === "true"
+              ? {
+                  refineHorsSujet: (msg: string) =>
+                    isOnTopicViaLlm(msg, generateAnswer, tenant.settings.llmTier.reformulation),
+                }
+              : {}),
           },
         );
 

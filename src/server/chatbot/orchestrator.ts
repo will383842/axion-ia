@@ -88,6 +88,8 @@ export interface OrchestratorDeps {
   readonly cacheWrite?: typeof writeSemanticCache;
   /** T-28 — acquisition d'un créneau LLM (false = forte affluence). Injectable (tests). */
   readonly acquireLlmSlot?: () => boolean;
+  /** T-18 — raffine un hors_sujet déterministe : true = en réalité dans le périmètre. */
+  readonly refineHorsSujet?: (message: string) => Promise<boolean>;
 }
 
 const OK_GUARD: OutputGuardResult = { ok: true, violations: [] };
@@ -107,7 +109,18 @@ export async function handleTurn(
   const max = ctx.tenant.settings.maxOfferCards;
   const tenantId = ctx.tenant.id;
 
-  const { slots, intent } = extractSlots(message, ctx.previousSlots);
+  const extraction = extractSlots(message, ctx.previousSlots);
+  const slots = extraction.slots;
+  let intent = extraction.intent;
+  // T-18 — raffinement LLM léger : un hors_sujet déterministe qui est en réalité
+  // une question business générale est promu en explication (chemin RAG).
+  if (intent === "hors_sujet" && deps.refineHorsSujet) {
+    try {
+      if (await deps.refineHorsSujet(message)) intent = "explication";
+    } catch {
+      /* fail-soft : on garde hors_sujet */
+    }
+  }
   const signal = detectLinkSignal(message);
   const incoming = ctx.linkFlow ?? INITIAL_FLOW;
 

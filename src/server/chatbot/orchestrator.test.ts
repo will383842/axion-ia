@@ -226,4 +226,25 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.escalate).toBe(true);
     expect(r.rdvUrl).toBe("/fr/appel");
   });
+
+  it("T-18 : un hors_sujet déterministe jugé on-topic par le LLM → promu explication", async () => {
+    const llm = vi.fn(async () => ({
+      text: "Axion-IA accompagne les PME sur l'IA.",
+      model: "x",
+      costUsd: 0,
+      tokensInput: 1,
+      tokensOutput: 1,
+    }));
+    const r = await handleTurn(
+      "parlez-moi de votre société", // déterministe → hors_sujet
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: llm,
+        refineHorsSujet: async () => true, // le LLM léger juge « dans le périmètre »
+      },
+    );
+    expect(r.intent).toBe("explication"); // promu, pas recadré
+    expect(llm).toHaveBeenCalled();
+  });
 });
