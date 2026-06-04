@@ -27,12 +27,12 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
           number: "0 intermédiaire",
           label: "Vous échangez directement avec l'expert qui construit",
         },
-        { number: "Top 1 %", label: "Architectes & experts IA sélectionnés" },
+        { number: "Top 1 %", label: "Ingénieurs & experts IA sélectionnés" },
         { number: "TPE → grands comptes", label: "Tous types de projets, toutes tailles" },
       ]
     : [
         { number: "0 middlemen", label: "You talk directly to the expert who builds" },
-        { number: "Top 1%", label: "Selected AI architects & experts" },
+        { number: "Top 1%", label: "Selected AI experts" },
         { number: "SMB → key accounts", label: "All project types, all sizes" },
       ];
 

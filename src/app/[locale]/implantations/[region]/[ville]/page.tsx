@@ -528,7 +528,7 @@ export default async function VilleHubPage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? `Architectes IA · ${ville.nameFr}` : `AI architects · ${ville.nameFr}`}
+                {isFr ? `Architectes IA · ${ville.nameFr}` : `AI experts · ${ville.nameFr}`}
               </p>
               <h1
                 id="ville-hub-hero"
@@ -546,7 +546,7 @@ export default async function VilleHubPage({ params }: Props) {
               </h1>
               {/* Sous-ligne hero reformulée Will 2026-05-27 (audit perfection) —
                   wording orienté valeur explicite ("structurez et déployez l'IA")
-                  vs ancien "cabinet d'architectes IA" qui pouvait être confondu
+                  vs ancien "cabinet d'experts IA" qui pouvait être confondu
                   avec architecte bâtiment. Mention des 5 services intégrée pour
                   intent SEO + AEO immédiat. */}
               <p
@@ -809,7 +809,7 @@ export default async function VilleHubPage({ params }: Props) {
             url,
             name: isFr
               ? `Axion-IA · Architectes IA seniors à ${ville.nameFr}`
-              : `Axion-IA · AI architects in ${ville.nameFr}`,
+              : `Axion-IA · AI experts in ${ville.nameFr}`,
             description: isFr ? copy.pitchFr : copy.pitchEn,
             inLanguage: loc === "fr" ? "fr-FR" : "en-GB",
             isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },

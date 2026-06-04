@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   // metaTitle + metaDesc hand-crafted per région (Will 2026-05-26) — voir
   // `regions.ts` champs metaTitleFr / metaDescFr. Anti-duplicate-content,
-  // mention positionnement architecte + 5 services + ville/région.
+  // mention positionnement expert + 5 services + ville/région.
   const meta = buildProductMetadata({
     locale,
     path: `/implantations/${region.slug}`,
@@ -130,8 +130,8 @@ export default async function RegionPage({ params }: Props) {
     locale: loc,
     path: `/implantations/${region.slug}`,
     name: isFr
-      ? `Axion-IA · architectes IA seniors en ${region.nameFr}`
-      : `Axion-IA · senior AI architects in ${region.nameFr}`,
+      ? `Axion-IA · experts IA seniors en ${region.nameFr}`
+      : `Axion-IA · senior AI experts in ${region.nameFr}`,
     description: isFr ? region.pitchFr : region.pitchEn,
     areaServed: { type: "AdministrativeArea", name: region.nameFr },
     address: { city: region.prefecture, region: region.nameFr, country: "FR" },
@@ -240,7 +240,7 @@ export default async function RegionPage({ params }: Props) {
                 />
                 {isFr
                   ? `Architectes IA · ${region.prefecture}`
-                  : `AI architects · ${region.prefecture}`}
+                  : `AI experts · ${region.prefecture}`}
               </p>
               <h1
                 id="region-hero-heading"
@@ -313,7 +313,7 @@ export default async function RegionPage({ params }: Props) {
                 caption={
                   isFr
                     ? `Architectes IA seniors · ${region.nameFr}`
-                    : `Senior AI architects · ${region.nameEn ?? region.nameFr}`
+                    : `Senior AI experts · ${region.nameEn ?? region.nameFr}`
                 }
                 priority
               />
