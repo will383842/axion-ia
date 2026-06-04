@@ -7,7 +7,7 @@
 //
 //   1. Coaching DIRIGEANT       → focus 100 % sur le dirigeant lui-même
 //                                 (son temps, son argent, son quotidien)
-//   2. Coaching MEMBRE D'ÉQUIPE → n'importe quel poste (secrétaire,
+//   2. Coaching COLLABORATEUR   → n'importe quel poste (secrétaire,
 //                                 comptabilité, achats…) : on dresse un plan
 //                                 concret pour alléger ses tâches répétitives
 //
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "1-to-1 individual AI coaching · executive or team member",
     description:
       loc === "fr"
-        ? `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou membre d'équipe. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`
+        ? `Une journée en tête-à-tête avec un expert IA : coaching dirigeant ou collaborateur. Rapport chiffré sous 7 jours. Partout en France. Dès ${entry}.`
         : `A one-on-one day with an AI expert: executive or team-member coaching. Quantified report within 7 days. Anywhere in France. From ${entry}.`,
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });
@@ -147,7 +147,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       hrefFr: "/interventions/individuel",
       hrefEn: "/interventions/individual",
       iso8601Duration: "PT7H",
-      labelFr: "Coaching membre d'équipe",
+      labelFr: "Coaching collaborateur",
       labelEn: "Team-member coaching",
       durationFr: "1 journée de travail à deux (7 à 8 h)",
       durationEn: "1 working day for two (7 to 8 h)",
@@ -173,7 +173,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       ],
       priceFr: `Dès ${membrePrice}`,
       priceEn: `From ${membrePrice}`,
-      ctaFr: "Découvrir le coaching membre d'équipe",
+      ctaFr: "Découvrir le coaching collaborateur",
       ctaEn: "Discover team-member coaching",
     },
   ];
@@ -186,7 +186,7 @@ export default async function UnAUnHubPage({ params }: Props) {
     path,
     name: isFr ? "Coaching IA individuel 1-to-1" : "1-to-1 individual AI coaching",
     description: isFr
-      ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée. Deux formules — dirigeant ou membre d'équipe. On met votre organisation à plat et on pense stratégie ; sous 7 jours, un rapport complet détaille toutes les automatisations concrètes et réelles à mettre en place, avec chiffrage des gains (temps, argent). Partout en France métropolitaine. Dès ${entryPrice}.`
+      ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée. Deux formules — dirigeant ou collaborateur. On met votre organisation à plat et on pense stratégie ; sous 7 jours, un rapport complet détaille toutes les automatisations concrètes et réelles à mettre en place, avec chiffrage des gains (temps, argent). Partout en France métropolitaine. Dès ${entryPrice}.`
       : `One-on-one AI coaching: 1 person, 1 Axion-IA expert, 1 day. Two formats — executive or team member. We install concrete time savings on the day, followed by a complete report within 7 days. Across metropolitan France. From ${entryPrice}.`,
     serviceType: isFr ? "Coaching IA individuel" : "Individual AI coaching",
     priceEur: Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE),
@@ -809,7 +809,7 @@ export default async function UnAUnHubPage({ params }: Props) {
               </h2>
               <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
                 {isFr
-                  ? "Un appel pour comprendre votre contexte, vous dire si le coaching dirigeant ou membre d'équipe vous correspond, et vous expliquer comment se déroule la journée. Sans engagement."
+                  ? "Un appel pour comprendre votre contexte, vous dire si le coaching dirigeant ou collaborateur vous correspond, et vous expliquer comment se déroule la journée. Sans engagement."
                   : "A call to understand your context, tell you whether executive or team-member coaching fits, and explain how the day unfolds. No commitment."}
               </p>
             </div>
@@ -904,13 +904,13 @@ export default async function UnAUnHubPage({ params }: Props) {
                       id: "a-qui",
                       question: "À qui s'adresse le coaching IA 1-to-1 ?",
                       answer:
-                        "À deux profils. Le coaching dirigeant est centré sur le dirigeant lui-même : comment l'IA peut lui faire gagner du temps et de l'argent dans son propre quotidien. Le coaching membre d'équipe s'adresse à n'importe quel poste (secrétariat, comptabilité, responsable achat, RH…) : on analyse ses tâches répétitives et on les allège.",
+                        "À deux profils. Le coaching dirigeant est centré sur le dirigeant lui-même : comment l'IA peut lui faire gagner du temps et de l'argent dans son propre quotidien. Le coaching collaborateur s'adresse à n'importe quel poste (secrétariat, comptabilité, responsable achat, RH…) : on analyse ses tâches répétitives et on les allège.",
                     },
                     {
                       id: "difference",
-                      question: "Quelle différence entre coaching dirigeant et membre d'équipe ?",
+                      question: "Quelle différence entre coaching dirigeant et collaborateur ?",
                       answer:
-                        "Le coaching dirigeant est focalisé sur VOUS, dirigeant : votre temps, vos décisions, votre charge personnelle — pas sur l'entreprise. Le coaching membre d'équipe est une journée de travail avec un collaborateur clé pour cartographier et alléger ses tâches répétitives, et lui apporter un gain d'efficacité immédiat.",
+                        "Le coaching dirigeant est focalisé sur VOUS, dirigeant : votre temps, vos décisions, votre charge personnelle — pas sur l'entreprise. Le coaching collaborateur est une journée de travail avec la personne concernée pour cartographier et alléger ses tâches répétitives, et lui apporter un gain d'efficacité immédiat.",
                     },
                     {
                       id: "benefice-jour",

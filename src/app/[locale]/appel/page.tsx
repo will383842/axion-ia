@@ -166,7 +166,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
                   <div className="ring-paper relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-2">
                     <Image
                       src="/images/axion-ia-fondateur-williams-jullin-portrait-professionnel.jpg"
-                      alt="William"
+                      alt="Consultant IA Axion-IA"
                       fill
                       sizes="56px"
                       className="object-cover"
@@ -178,9 +178,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
                       className="text-fg leading-tight font-semibold"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      William
+                      L&apos;équipe Axion-IA
                     </p>
-                    <p className="text-fg-soft mt-0.5 text-xs">Consultant IA · CEO</p>
+                    <p className="text-fg-soft mt-0.5 text-xs">Consultants IA</p>
                   </div>
                 </div>
 
@@ -196,7 +196,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
                     {[
                       "Choisissez un créneau qui vous convient dans le calendrier.",
                       "Vous recevez une confirmation par email immédiatement.",
-                      "On discute de votre projet le jour J, simplement.",
+                      "On discute de votre projet ou tout autre besoin de renseignements.",
                     ].map((step, i) => (
                       <li key={step} className="flex gap-3">
                         <span className="bg-terracotta text-paper flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold">
