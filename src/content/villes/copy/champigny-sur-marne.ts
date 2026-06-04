@@ -50,6 +50,183 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
       en: "Sites web augmentés à Champigny-sur-Marne : pour les artisans, ateliers et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, prise de contact, contenus assistés — pensés pour générer des affaires de proximité.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Champigny-sur-Marne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, demande de devis qualifiée, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pour les PME du BTP du Parc du Marché Rollay, les distributeurs et industriels de la ZAC des Nations (Zone Franche Urbaine) et les commerces des bords de Marne, à l'aube de la gare Champigny Centre du Grand Paris Express (lignes 15 Sud et Est, début 2027). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Champigny-sur-Marne, itérations à distance.",
+        whyHere: [
+          "Projets web & SaaS campinois ancrés sur le tissu réel : PME du BTP et de la construction du Parc du Marché Rollay, négoce et distribution B2B (SONEPAR France Distribution), instrumentation et services (AQUALABO Services), prestataires de santé à domicile (ELIVIE, OXYVIE).",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : un vrai site vitrine ou e-commerce pour les ~700 commerces et les artisans héritiers de la métallurgie campinoise.",
+          "Augmentation de l'existant (widget, API, plugin sur le CMS en place) ou plateforme métier IA-native sur mesure pour les ~400 entreprises de la Zone Industrielle du Plateau, selon le meilleur ROI à 18 mois.",
+          "Conformité dès le départ : hébergement UE strict et chaîne IA souveraine RGPD, condition non négociable pour les acteurs du BTP et de la santé à domicile de la ZAC des Nations qui manipulent données clients, chantiers et fournisseurs.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Champigny-sur-Marne",
+            detail:
+              "Atelier sur site, dans votre atelier ou vos bureaux du Plateau, du Marché Rollay ou de la ZAC des Nations : objectifs, parcours utilisateurs (demande de devis BTP, prise de contact, catalogue), audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement — pensé pour la clientèle de proximité campinoise et les donneurs d'ordre du Grand Paris.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : devis qualifié, chatbot RAG sur vos contenus, recherche sémantique de catalogue, e-commerce, automatisations de relances. Démos hebdomadaires.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO local validés (recherches « BTP Champigny », « bords de Marne »), mise en production sans downtime.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : transférable à tout prestataire du Val-de-Marne ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, demande de devis qualifiée, recherche) sur le site existant d'un artisan, d'un commerce des bords de Marne ou d'une TPE du BTP, en quelques semaines, sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / application sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une application avec UX/UI et IA intégrée, pour les PME de la construction du Marché Rollay et les négociants B2B de la ZAC des Nations.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un distributeur ou un industriel du Plateau, IA intégrée, branchée sur votre SI (CRM, ERP, gestion de chantier et de planning).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit, par exemple pour un grand donneur d'ordre lié au chantier Grand Paris Express et au SMR de la ligne 15.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète à Champigny-sur-Marne — research, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, un e-commerce, une application ou une plateforme SaaS, avec ou sans brique IA. C'est un métier à part entière chez nous, qu'il s'agisse d'un artisan des bords de Marne ou d'un distributeur de la ZAC des Nations.",
+          },
+          {
+            q: "Quel type d'entreprises campinoises accompagnez-vous pour le web et le SaaS ?",
+            a: "Le tissu local : les PME du BTP et de la construction du Parc du Marché Rollay, les négociants et distributeurs B2B et industriels de la ZAC des Nations (Zone Franche Urbaine) comme SONEPAR France Distribution ou AQUALABO Services, les prestataires de santé à domicile (ELIVIE, OXYVIE), ainsi que les ~700 commerces et artisans hérités du passé métallurgique. Pour chacun, le bon outil web augmenté par l'IA, pas un gabarit générique.",
+          },
+          {
+            q: "Peut-on augmenter un site existant sans le refondre ?",
+            a: "Oui, dans la grande majorité des cas. On greffe les briques IA via une API, un widget ou un plugin, sans toucher au design ni à la structure, dès lors que votre CMS expose une API. Utile pour une entreprise du Plateau qui veut un chatbot devis ou une recherche catalogue sans refondre tout son site. Aucune refonte ni downtime.",
+          },
+          {
+            q: "Mon site sera-t-il prêt pour l'arrivée de la gare Champigny Centre en 2027 ?",
+            a: "C'est justement le bon moment. La gare Champigny Centre (lignes 15 Sud et Est, début 2027) et le contrat de développement territorial visent des milliers d'emplois et une nouvelle attractivité : un site rapide, bien référencé en local et doté d'un parcours de contact ou de devis efficace vous positionne avant la montée de fréquentation et de concurrence sur le secteur.",
+          },
+          {
+            q: "Le devis est-il ferme et où sont hébergées mes données ?",
+            a: "Après le cadrage sur site, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité — pas de régie ni de dérive horaire cachée. Toute la chaîne IA est hébergeable en UE (Hetzner Frankfurt), conforme RGPD : vous gardez la propriété complète du code, des bases et des modèles, sans abonnement imposé.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et SEO/AEO local contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Val-de-Marne — du Marché Rollay à la ZAC des Nations — ou repris en interne.",
+      },
+      en: {
+        hero: "In Champigny-sur-Marne, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, qualified quote requests, RAG chatbot grounded in your content, semantic search, agents and automations. For the construction SMEs of the Marché Rollay business park, the B2B distributors and industrials of the ZAC des Nations (Urban Free Zone) and the shops along the banks of the Marne, on the eve of the Champigny Centre Grand Paris Express station (lines 15 South and East, early 2027). Quote from 24-48 h depending on complexity, EU hosting, code and data yours. On-site Champigny-sur-Marne kick-off, remote iterations.",
+        whyHere: [
+          "Champigny web & SaaS projects rooted in the real fabric: construction and building SMEs of the Marché Rollay park, B2B trade and distribution (SONEPAR France Distribution), instrumentation and services (AQUALABO Services), home-healthcare providers (ELIVIE, OXYVIE).",
+          "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: a genuine showcase or e-commerce site for the ~700 shops and the craftspeople heir to Champigny's metalworking past.",
+          "Augment the existing site (widget, API, plugin on your current CMS) or a bespoke AI-native business platform for the ~400 companies of the Zone Industrielle du Plateau, whichever pays off best at 18 months.",
+          "Compliance from the start: strict EU hosting and a GDPR-sovereign AI chain, a non-negotiable requirement for the construction and home-healthcare players of the ZAC des Nations handling client, jobsite and supplier data.",
+        ],
+        methodology: [
+          {
+            step: "Scoping in Champigny-sur-Marne",
+            detail:
+              "On-site workshop, in your workshop or offices on the Plateau, the Marché Rollay or the ZAC des Nations: goals, user journeys (BTP quote requests, contact, catalogue), audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+          },
+          {
+            step: "UX/UI design",
+            detail:
+              "Wireframes, design system and Figma mockups in your brand; prototype tested before any development — built for Champigny's local clientele and Grand Paris contractors.",
+          },
+          {
+            step: "Development in sprints",
+            detail:
+              "AI grafted onto the existing site or AI-native build: qualified quotes, RAG chatbot on your content, semantic catalogue search, e-commerce, follow-up automations. Weekly demos.",
+          },
+          {
+            step: "Acceptance + go-live",
+            detail:
+              'Acceptance tests, Web Vitals and local SEO/AEO validated (searches like "BTP Champigny", "bords de Marne"), production release without downtime.',
+          },
+          {
+            step: "Delivery + autonomy",
+            detail:
+              "Code, databases and models delivered into your infra (EU hosting possible). No imposed subscription: transferable to any Val-de-Marne provider or taken in-house.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, qualified quote request, search) onto the existing site of a craftsperson, a riverside shop or a small construction firm, in a few weeks, without a rebuild.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Bespoke site / application",
+            detail:
+              "Design or redesign of a site or application with UX/UI and built-in AI, for the construction SMEs of the Marché Rollay and the B2B traders of the ZAC des Nations.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "AI-native SaaS platform",
+            detail:
+              "Bespoke business platform or client portal for a distributor or an industrial of the Plateau, built-in AI, wired into your IS (CRM, ERP, jobsite and planning management).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Product programme",
+            detail:
+              "Multi-year programmes: platform redesigns, enterprise design system, dedicated Axion-IA product team, for instance for a major contractor tied to the Grand Paris Express works and the line 15 maintenance site (SMR).",
+          },
+        ],
+        faq: [
+          {
+            q: "Do you really do UX/UI and design, not just AI?",
+            a: "Yes. We design the full experience in Champigny-sur-Marne — research, wireframes, design system, Figma mockups, prototype — for a showcase site, an e-commerce, an application or a SaaS platform, with or without an AI brick. It's a craft in its own right with us, whether for a riverside craftsperson or a distributor of the ZAC des Nations.",
+          },
+          {
+            q: "Which Champigny companies do you support for web and SaaS?",
+            a: "The local fabric: construction and building SMEs of the Marché Rollay park, B2B traders, distributors and industrials of the ZAC des Nations (Urban Free Zone) such as SONEPAR France Distribution or AQUALABO Services, home-healthcare providers (ELIVIE, OXYVIE), plus the ~700 shops and craftspeople heir to the metalworking past. For each, the right AI-augmented web tool, not a generic template.",
+          },
+          {
+            q: "Can an existing site be augmented without rebuilding it?",
+            a: "Yes, in the vast majority of cases. We graft the AI bricks via an API, a widget or a plugin, without touching the design or structure, as long as your CMS exposes an API. Useful for a Plateau company wanting a quote chatbot or catalogue search without rebuilding its whole site. No rebuild, no downtime.",
+          },
+          {
+            q: "Will my site be ready for the Champigny Centre station opening in 2027?",
+            a: "It's precisely the right moment. The Champigny Centre station (lines 15 South and East, early 2027) and the territorial development contract target thousands of jobs and new attractiveness: a fast, well-locally-ranked site with an effective contact or quote journey positions you ahead of the rise in traffic and competition in the area.",
+          },
+          {
+            q: "Is the quote firm and where is my data hosted?",
+            a: "After on-site scoping, we issue a firm fixed-price quote, from 24-48 h depending on complexity — no time-and-materials, no hidden hourly drift. The whole AI chain is hostable in the EU (Hetzner Frankfurt), GDPR-compliant: you keep full ownership of the code, databases and models, with no imposed subscription.",
+          },
+        ],
+        guarantees:
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals, accessibility and local SEO/AEO checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Val-de-Marne provider — from the Marché Rollay to the ZAC des Nations — or taken in-house.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA accompagne-t-il les petites entreprises de Champigny-sur-Marne ?",

@@ -48,6 +48,183 @@ export const PAU_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Pau : sessions sur site (centre-ville, Hélioparc, zone Lons) ou en visio pour dirigeants TPE/PME, professions libérales et responsables d'équipe ETI. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Pau, ancrés dans le tissu réel de la Communauté d'agglomération Pau Béarn Pyrénées : éditeurs logiciels et startups issus de l'Atelier Numérique et de l'accélérateur La Banquiz à la technopole Hélioparc, sous-traitants de la filière aéronautique autour de Safran Helicopter Engines (Bordes), bureaux d'études énergie gravitant autour du CSTJF de TotalEnergies — où tourne le supercalculateur Pangea. Nous codons en propre (TypeScript, Python, FastAPI) des plateformes IA-native : chatbot RAG, recherche sémantique, agents conversationnels, portails e-commerce. Hébergement en Union européenne, conformité RGPD, zéro lock-in éditeur.",
+        whyHere: [
+          "Pau combine un pôle calcul scientifique unique en France — le supercalculateur Pangea de TotalEnergies au CSTJF, avec Pangea 5 annoncé en mai 2026 (Dell, NVIDIA) — et la première filière aéronautique du Béarn autour de Safran Helicopter Engines : un terrain à forte densité d'ingénierie où une plateforme SaaS sur mesure prend tout son sens.",
+          "La technopole Hélioparc (créée en 1987 sur l'héritage immobilier d'Elf Aquitaine, ~170 entreprises résidentes) concentre via son Atelier Numérique et l'accélérateur La Banquiz un vivier d'éditeurs logiciels et de startups data — Febus Optics, Prof en Poche, Météorage, Eove — pour qui une web-app ou un produit SaaS IA-native est le cœur de métier.",
+          "La French Tech Pau Béarn (relabellisée en février 2023, une centaine de membres dont 68 entreprises innovantes) et son implication dans la filière hydrogène alimentent un flux de scale-ups béarnaises qui ont besoin de plateformes clientes, de portails partenaires et de search sémantique sur documentation technique.",
+          "L'UPPA et son laboratoire LIUPPA (Master Informatique parcours Technologies de l'Internet, Master Big Data / Technologies de l'IA, I-SITE E2S Énergie-Environnement) fournissent un terreau d'ingénieurs full-stack et data : nos plateformes sont conçues pour être reprises par vos équipes ou par tout intégrateur palois, sans dépendance à Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage produit à Pau",
+            detail:
+              "Atelier de démarrage dans vos locaux palois — Hélioparc, centre-ville, zone d'activité de Lons — pour cartographier vos parcours utilisateurs, vos intégrations existantes (CRM, ERP, GED, outils métier aéronautique ou énergie) et définir le périmètre de la plateforme IA-native.",
+          },
+          {
+            step: "Architecture et choix techniques",
+            detail:
+              "Conception de l'architecture cible : stack code custom (TypeScript, Python, FastAPI), choix CMS/headless pour l'e-commerce, sélection des modèles IA (Mistral, Claude, GPT ou open-source selon souveraineté et coût), schéma RAG et stockage vectoriel. Choix justifiés, jamais imposés.",
+          },
+          {
+            step: "Conception UX/UI et maquettage",
+            detail:
+              "Design d'interface responsive mobile-first et maquettes interactives. Vocabulaire et cas calibrés sur votre secteur palois — documentation technique aéronautique, données géosciences/énergie, catalogue e-commerce, services aux entreprises — pas de gabarit générique recyclé.",
+          },
+          {
+            step: "Développement et intégration IA",
+            detail:
+              "Développement itératif de la plateforme : front, back, API, briques IA (chatbot RAG sur vos documents, search sémantique, agents). Points d'avancement réguliers en visio, démos sur vos vraies données. Tests sur volumes réels avant mise en production.",
+          },
+          {
+            step: "Mise en production et passation",
+            detail:
+              "Recette finale sur site à Pau, déploiement sur hébergement UE conforme RGPD, formation de vos équipes et remise de la documentation runbook. Le code, les modèles et les accès restent chez vous, repris en interne ou par tout intégrateur de la French Tech Pau Béarn.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou web-app IA-native",
+            detail:
+              "Pour indépendants, commerces du centre-ville palois (rues Joffre, Serviez, Maréchal-Foch), cabinets libéraux et artisans béarnais : site vitrine performant, chatbot client, prise de RDV automatisée, première brique e-commerce.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Plateforme SaaS ou e-commerce sur mesure",
+            detail:
+              "Pour PME numériques et éditeurs logiciels d'Hélioparc, scale-ups de la French Tech Pau Béarn, agences et acteurs de services : portail client, boutique e-commerce multi-CMS, search sémantique sur catalogue ou base documentaire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme IA-native métier intégrée",
+            detail:
+              "Pour les ETI sous-traitantes aéronautique (écosystème Safran Helicopter Engines, normes EN 9100) et les acteurs énergie : portail RAG sur documentation technique, classification de non-conformités, intégration ERP/GED, gouvernance des accès.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme plateforme multi-équipes",
+            detail:
+              "Pour les grands sites paloïs et leurs directions techniques (environnement type CSTJF/HPC, ingénierie énergie et géosciences) : programme pluriannuel, plateformes internes IA-native, déploiement multi-équipes, gouvernance centralisée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps faut-il pour obtenir un devis pour un site ou une plateforme SaaS à Pau ?",
+            a: "À partir de 24 à 48 h selon la complexité du projet. Après un premier échange de cadrage (visio ou sur site à Hélioparc / en centre-ville), nous vous transmettons un périmètre chiffré clair, sans devis opaque.",
+          },
+          {
+            q: "Accompagnez-vous les éditeurs logiciels et startups d'Hélioparc et de la French Tech Pau Béarn ?",
+            a: "Oui. C'est un cœur de cible : startups et PME numériques de l'Atelier Numérique et de l'accélérateur La Banquiz, membres de la French Tech Pau Béarn (relabellisée en 2023). Nous construisons leurs plateformes SaaS IA-native, portails clients et briques de search sémantique en code custom, repris ensuite par leurs équipes.",
+          },
+          {
+            q: "Pouvez-vous concevoir une plateforme pour un sous-traitant aéronautique ou un bureau d'études énergie palois ?",
+            a: "Oui. Pour l'écosystème aéronautique gravitant autour de Safran Helicopter Engines (Bordes) et les acteurs énergie liés au CSTJF de TotalEnergies, nous développons des portails RAG sur documentation technique, des moteurs de recherche sémantique sur normes EN 9100, et des outils de classification documentaire, avec validation humaine sur les cas sensibles.",
+          },
+          {
+            q: "Faites-vous aussi l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
+            a: "Tout l'ensemble. Conception UX/UI responsive mobile-first, développement front et back en code custom, e-commerce multi-CMS (headless ou plateformes établies), et intégration des briques IA. Vous n'avez pas à coordonner plusieurs prestataires.",
+          },
+          {
+            q: "Où sont hébergées les données et le code de ma plateforme ?",
+            a: "Hébergement en Union européenne par défaut, conformité RGPD documentée. Le code source, les modèles IA et les accès restent intégralement chez vous : pas de lock-in éditeur, reprise possible par vos équipes ou par tout intégrateur palois.",
+          },
+        ],
+        guarantees:
+          "Périmètre et livrables définis à la signature, devis transparent à partir de 24 à 48 h selon la complexité. Code custom (TypeScript, Python, FastAPI) et UX/UI sur mesure, e-commerce multi-CMS et briques IA intégrés sans recours à plusieurs prestataires. Hébergement en Union européenne, conformité RGPD documentée. Aucun lock-in : code source, modèles et accès restent chez vous, repris en interne ou par tout intégrateur de la French Tech Pau Béarn. Frais de logement, repas et trajet en sus pour les interventions sur site.",
+      },
+      en: {
+        hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Pau, rooted in the real fabric of the Pau Béarn Pyrénées agglomeration: software publishers and startups from the Atelier Numérique and the La Banquiz accelerator at the Hélioparc technopole, aerospace subcontractors around Safran Helicopter Engines (Bordes), and energy engineering teams orbiting TotalEnergies' CSTJF — home to the Pangea supercomputer. We build IA-native platforms in custom code (TypeScript, Python, FastAPI): RAG chatbots, semantic search, conversational agents, e-commerce portals. EU hosting, GDPR compliance, zero vendor lock-in.",
+        whyHere: [
+          "Pau combines a calcul scientifique hub that is unique in France — TotalEnergies' Pangea supercomputer at the CSTJF, with Pangea 5 announced in May 2026 (Dell, NVIDIA) — with the Béarn's leading aerospace sector around Safran Helicopter Engines: an engineering-dense ground where a bespoke SaaS platform makes full sense.",
+          "The Hélioparc technopole (created in 1987 on Elf Aquitaine's real estate legacy, ~170 resident companies) concentrates, through its Atelier Numérique and the La Banquiz accelerator, a pool of software publishers and data startups — Febus Optics, Prof en Poche, Météorage, Eove — for whom an IA-native web app or SaaS product is the core business.",
+          "The French Tech Pau Béarn community (relabelled in February 2023, around a hundred members including 68 innovative companies) and its involvement in the hydrogen sector feed a flow of Béarn scale-ups needing customer platforms, partner portals and semantic search over technical documentation.",
+          "UPPA and its LIUPPA lab (Computer Science Master's, Internet Technologies track, Big Data / AI Technologies Master's, E2S Energy-Environment I-SITE) provide a pool of full-stack and data engineers: our platforms are built to be taken over by your teams or any Pau integrator, with no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Product framing in Pau",
+            detail:
+              "Kick-off workshop at your Pau premises — Hélioparc, city centre, Lons business zone — to map your user journeys, your existing integrations (CRM, ERP, DMS, aerospace or energy business tools) and define the scope of the IA-native platform.",
+          },
+          {
+            step: "Architecture and tech choices",
+            detail:
+              "Target architecture design: custom code stack (TypeScript, Python, FastAPI), headless/CMS choice for e-commerce, AI model selection (Mistral, Claude, GPT or open-source per sovereignty and cost), RAG scheme and vector storage. Choices justified, never imposed.",
+          },
+          {
+            step: "UX/UI design and prototyping",
+            detail:
+              "Mobile-first responsive interface design and interactive mockups. Vocabulary and cases calibrated on your Pau sector — aerospace technical documentation, geoscience/energy data, e-commerce catalogue, business services — no recycled generic template.",
+          },
+          {
+            step: "Development and AI integration",
+            detail:
+              "Iterative platform development: front, back, API, AI building blocks (RAG chatbot on your documents, semantic search, agents). Regular progress reviews on video, demos on your real data. Real-volume testing before production.",
+          },
+          {
+            step: "Go-live and handover",
+            detail:
+              "Final acceptance on site in Pau, deployment on GDPR-compliant EU hosting, team training and runbook documentation handover. Code, models and accesses stay with you, taken over in-house or by any French Tech Pau Béarn integrator.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Showcase site or IA-native web app",
+            detail:
+              "For freelancers, Pau city-centre shops (Joffre, Serviez, Maréchal-Foch streets), professional practices and Béarn craftsmen: high-performance showcase site, client chatbot, automated booking, first e-commerce building block.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Bespoke SaaS or e-commerce platform",
+            detail:
+              "For Hélioparc digital SMEs and software publishers, French Tech Pau Béarn scale-ups, agencies and service players: customer portal, multi-CMS e-commerce store, semantic search over catalogue or document base.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Integrated IA-native business platform",
+            detail:
+              "For aerospace subcontractor mid-caps (Safran Helicopter Engines ecosystem, EN 9100 standards) and energy players: RAG portal over technical documentation, non-conformity classification, ERP/DMS integration, access governance.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Multi-team platform program",
+            detail:
+              "For major Pau sites and their technical departments (CSTJF/HPC-type environment, energy and geoscience engineering): multi-year program, internal IA-native platforms, multi-team rollout, centralized governance.",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does it take to get a quote for a website or SaaS platform in Pau?",
+            a: "From 24 to 48 hours depending on project complexity. After an initial framing exchange (video or on site at Hélioparc / in the city centre), we send you a clear costed scope, with no opaque quoting.",
+          },
+          {
+            q: "Do you support software publishers and startups at Hélioparc and French Tech Pau Béarn?",
+            a: "Yes. This is a core target: digital startups and SMEs from the Atelier Numérique and the La Banquiz accelerator, French Tech Pau Béarn members (relabelled in 2023). We build their IA-native SaaS platforms, customer portals and semantic-search building blocks in custom code, then handed back to their teams.",
+          },
+          {
+            q: "Can you design a platform for a Pau aerospace subcontractor or energy engineering office?",
+            a: "Yes. For the aerospace ecosystem around Safran Helicopter Engines (Bordes) and energy players linked to TotalEnergies' CSTJF, we develop RAG portals over technical documentation, semantic search engines over EN 9100 standards, and document classification tools, with human validation on sensitive cases.",
+          },
+          {
+            q: "Do you also handle UX/UI, mobile and e-commerce, or only the AI?",
+            a: "The whole package. Mobile-first responsive UX/UI design, custom front and back development, multi-CMS e-commerce (headless or established platforms), and AI building-block integration. You don't have to coordinate several providers.",
+          },
+          {
+            q: "Where are my platform's data and code hosted?",
+            a: "EU hosting by default, documented GDPR compliance. The source code, AI models and accesses stay entirely with you: no vendor lock-in, takeover possible by your teams or any Pau integrator.",
+          },
+        ],
+        guarantees:
+          "Scope and deliverables defined at signature, transparent quote from 24 to 48 hours depending on complexity. Custom code (TypeScript, Python, FastAPI) and bespoke UX/UI, multi-CMS e-commerce and AI building blocks integrated without juggling several providers. EU hosting, documented GDPR compliance. No lock-in: source code, models and accesses stay with you, taken over in-house or by any French Tech Pau Béarn integrator. Lodging, meals and travel billed separately for on-site work.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pau et dans l'agglomération Pau Béarn Pyrénées ?",

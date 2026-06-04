@@ -50,6 +50,183 @@ export const AVIGNON_COPY: VilleCopy = {
       en: "Sites web augmentés à Avignon : plateformes de réservation et de billetterie, vitrines multilingues pour le tourisme culturel, et outils IA pour l'agroalimentaire provençal et le commerce.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Avignon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Deux réalités locales dictent le cahier des charges — le pic d'été du Festival (In et Off) et la filière agroalimentaire/ingrédients naturels d'Agroparc. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Avignon, itérations à distance.",
+        whyHere: [
+          "Projets web & SaaS adaptés au tissu d'Avignon : hôtels et acteurs du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), compagnies et lieux du Festival Off (réservation type Ticket'Off, AF&C), e-commerce de terroir et viticulture.",
+          "Filière agroalimentaire et ingrédients naturels d'Agroparc (INRAE, Givaudan France Naturals ex-Naturex, McCormick France) : portails B2B, configurateurs produits, traçabilité et recherche documentaire augmentée — pas seulement une vitrine.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — et e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop), pas seulement la brique IA.",
+          "Saisonnalité extrême maîtrisée : sites et plateformes dimensionnés pour absorber les pics de juillet (Festival In ~130 000 spectateurs, Off ~1 780 spectacles sur 248 lieux) sans tomber, puis revenir en charge normale le reste de l'année.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Avignon",
+            detail:
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. On qualifie d'emblée la contrainte locale (pic d'été touristique/Festival ou exigences agroalimentaires d'Agroparc). Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; pour le tourisme et le Off, parcours de réservation multilingue testé avant tout développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : chatbot RAG multilingue, billetterie/réservation, recherche sémantique, agents, e-commerce de terroir. Démos hebdomadaires.",
+          },
+          {
+            step: "Recette + montée en charge",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, et test de charge pensé pour le pic de juillet ; mise en production sans downtime.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : vos équipes gèrent les outils en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG multilingue, recherche sémantique) sur le site existant d'un hôtel, d'un restaurant ou d'une compagnie du Off, en quelques semaines, sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / application sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une application avec UX/UI et IA intégrée : réservation/billetterie pour le tourisme et le Festival, e-commerce de terroir et viticulture des Côtes du Rhône.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Portail métier ou plateforme client sur mesure pour l'agroalimentaire et les ingrédients naturels d'Agroparc (catalogues B2B, traçabilité, recherche documentaire), branché sur votre SI (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour acteurs structurants (type INRAE, Givaudan France Naturals, McCormick France) : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Comment gérez-vous le pic d'été du Festival d'Avignon et du Off ?",
+            a: "On dimensionne et on teste les sites et plateformes pour le mois de juillet : le In réunit ~130 000 spectateurs et le Off ~1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Concrètement : parcours de réservation/billetterie multilingue, file d'attente et cache pour absorber les pics, puis retour en charge normale le reste de l'année. Aucune surfacturation cachée liée à la saison.",
+          },
+          {
+            q: "Travaillez-vous avec l'agroalimentaire et les ingrédients naturels d'Agroparc ?",
+            a: "Oui. Agroparc est la 1re zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals (ex-Naturex), McCormick France et d'autres. On y construit des portails B2B, des configurateurs produits, de la traçabilité et de la recherche documentaire augmentée par IA, hébergés en UE et conformes RGPD.",
+          },
+          {
+            q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète à Avignon — research, wireframes, design system, maquettes Figma, prototype — pour un site touristique, une billetterie de compagnie ou une plateforme agroalimentaire, avec ou sans brique IA. C'est un métier à part entière chez nous.",
+          },
+          {
+            q: "Peut-on augmenter un site existant sans le refondre ?",
+            a: "Oui, dans la grande majorité des cas. On greffe les briques IA via une API, un widget ou un plugin, sans toucher au design ni à la structure, dès lors que votre CMS expose une API. Aucune refonte ni downtime — utile pour un hôtel ou une compagnie qui ne veut pas tout casser avant juillet.",
+          },
+          {
+            q: "Avec quelles technologies et quels CMS travaillez-vous ?",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento pour l'e-commerce de terroir et la viticulture, et Next.js, Laravel, Django, React, Vue, Angular pour les plateformes sur mesure. On s'adapte à votre existant, jamais l'inverse.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne. Frais de déplacement facturés à part, tarifs publics.",
+      },
+      en: {
+        hero: "In Avignon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Two local realities drive the spec — the summer peak of the Festival (In and Off) and the food/natural-ingredients cluster of Agroparc. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Avignon kick-off, remote iterations.",
+        whyHere: [
+          "Web & SaaS projects tuned to Avignon's fabric: hotels and heritage-tourism players (Palais des Papes, Pont Saint-Bénézet), companies and venues of the Festival Off (Ticket'Off-style booking, AF&C), local-produce e-commerce and Côtes du Rhône wine.",
+          "Agroparc food and natural-ingredients cluster (INRAE, Givaudan France Naturals ex-Naturex, McCormick France): B2B portals, product configurators, traceability and AI-augmented document search — not just a showcase site.",
+          "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — and multi-CMS e-commerce (WordPress, Shopify, WooCommerce, PrestaShop), not only the AI brick.",
+          "Extreme seasonality handled: sites and platforms sized to absorb the July peak (Festival In ~130,000 spectators, Off ~1,780 shows across 248 venues) without going down, then back to normal load the rest of the year.",
+        ],
+        methodology: [
+          {
+            step: "Scoping in Avignon",
+            detail:
+              "On-site workshop: goals, user journeys, audit of the existing stack and content. We qualify the local constraint up front (summer tourism/Festival peak or Agroparc food-industry requirements). Firm quote from 24-48 h depending on complexity.",
+          },
+          {
+            step: "UX/UI design",
+            detail:
+              "Wireframes, design system and Figma mockups in your brand; for tourism and the Off, a multilingual booking journey tested before any development.",
+          },
+          {
+            step: "Sprint development",
+            detail:
+              "AI graft on the existing site or AI-native build: multilingual RAG chatbot, ticketing/booking, semantic search, agents, local-produce e-commerce. Weekly demos.",
+          },
+          {
+            step: "Acceptance + load ramp-up",
+            detail:
+              "Acceptance tests, Web Vitals and SEO/AEO validated, plus a load test designed for the July peak; production release with no downtime.",
+          },
+          {
+            step: "Delivery + autonomy",
+            detail:
+              "Code, databases and models delivered to you (EU hosting available). No imposed subscription: your teams run the tools independently.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (multilingual RAG chatbot, semantic search) to the existing site of a hotel, restaurant or Off company, within a few weeks, with no rebuild.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Bespoke site / application",
+            detail:
+              "Design or rebuild of a site or application with UX/UI and built-in AI: booking/ticketing for tourism and the Festival, local-produce and Côtes du Rhône wine e-commerce.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "AI-native SaaS platform",
+            detail:
+              "Bespoke business portal or client platform for Agroparc's food and natural-ingredients sector (B2B catalogues, traceability, document search), plugged into your IS (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Product programme",
+            detail:
+              "Multi-year programmes for structuring players (such as INRAE, Givaudan France Naturals, McCormick France): platform rebuilds, enterprise design system, dedicated Axion-IA team in product mode.",
+          },
+        ],
+        faq: [
+          {
+            q: "How do you handle the summer peak of the Avignon Festival and the Off?",
+            a: "We size and load-test sites and platforms for July: the In gathers ~130,000 spectators and the Off ~1,780 shows across 248 venues (60th-edition figures). Concretely: multilingual booking/ticketing journeys, queueing and caching to absorb peaks, then back to normal load the rest of the year. No hidden season-related surcharge.",
+          },
+          {
+            q: "Do you work with Agroparc's food and natural-ingredients industry?",
+            a: "Yes. Agroparc is Vaucluse's leading business zone (~600 establishments, ~6,500 jobs) with INRAE, Givaudan France Naturals (ex-Naturex), McCormick France and others. We build B2B portals, product configurators, traceability and AI-augmented document search there, hosted in the EU and GDPR-compliant.",
+          },
+          {
+            q: "Do you really do UX/UI and design, not just AI?",
+            a: "Yes. We design the full experience in Avignon — research, wireframes, design system, Figma mockups, prototype — for a tourism site, a company ticketing system or a food-industry platform, with or without an AI brick. It's a discipline in its own right for us.",
+          },
+          {
+            q: "Can an existing site be augmented without rebuilding it?",
+            a: "Yes, in the vast majority of cases. We graft AI bricks via an API, widget or plugin, without touching the design or structure, as long as your CMS exposes an API. No rebuild and no downtime — useful for a hotel or company that doesn't want to break everything before July.",
+          },
+          {
+            q: "Which technologies and CMS do you work with?",
+            a: "Any modern API-exposing stack: WordPress, Shopify, WooCommerce, PrestaShop, Magento for local-produce and wine e-commerce, and Next.js, Laravel, Django, React, Vue, Angular for bespoke platforms. We adapt to your existing setup, never the other way around.",
+          },
+        ],
+        guarantees:
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house. Travel costs billed separately, public rates.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avignon et dans le Vaucluse ?",

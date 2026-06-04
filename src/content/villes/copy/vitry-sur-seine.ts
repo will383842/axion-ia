@@ -48,6 +48,183 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       en: "Accompagnement 1-to-1 dirigeant à Vitry-sur-Seine : sessions individuelles pour DG, Dir.Opérations ou fondateurs souhaitant cadrer leur stratégie IA sans passer par un comité. À partir de {{price:intervention-dirigeants|flat}}. Détail sur /un-a-un.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit à Vitry-sur-Seine des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : la plateforme R&D et bioproduction Sanofi héritée des usines Poulenc du Port-à-l'Anglais, les industriels et logisticiens qui se réimplantent dans les ZAC Les Ardoines (Gare Ardoines et Seine Gare Vitry, terrain à 90 % inondable), et l'écosystème culturel-créatif fédéré autour du MAC VAL et de la scène street art vitriote. Nous livrons du code custom — portails métier, e-commerce multi-CMS, chatbot RAG, recherche sémantique — hébergé en UE, sans dépendance à un éditeur unique.",
+        whyHere: [
+          "Vitry est un territoire de bioproduction et de chimie régulée : la plateforme Sanofi (immunologie, atelier anticorps 40 000 L) et son voisinage Air Liquide imposent aux outils numériques une exigence documentaire et de traçabilité que nos plateformes RAG adressent sans transfert de données hors UE.",
+          "Les ZAC Les Ardoines réimplantent industrie productive, hôtel logistique et locaux d'activité à 3 km de Paris : ces PME productives et logisticiens ont besoin de portails clients, de configurateurs et d'e-commerce B2B taillés pour des catalogues techniques, pas de vitrines génériques.",
+          "L'écosystème culturel-créatif autour du MAC VAL (premier musée d'art contemporain en banlieue, ~2 500 œuvres) et du parcours street art nourrit un tissu d'acteurs culturels, d'artistes et de structures événementielles qui réclament des sites éditoriaux, billetterie et médiation augmentée par l'IA.",
+          "L'arrivée de la ligne 15 Sud (gare Les Ardoines) et du Tzen 5 redessine l'accessibilité de Seine-Amont : commerces, services et foncières qui se positionnent sur ce nouveau flux ont besoin de sites mobile-first et de parcours de réservation optimisés que nous concevons sur mesure.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Vitry-sur-Seine",
+            detail:
+              "Kick-off sur site à Vitry-sur-Seine — bureaux des Ardoines, du Port-à-l'Anglais ou du centre-ville près du MAC VAL — pour cartographier vos parcours réels (clients industriels, visiteurs, acheteurs B2B) et vos contraintes : données pharma sensibles, catalogues techniques, multilingue.",
+          },
+          {
+            step: "Architecture & design UX/UI",
+            detail:
+              "Maquettes mobile-first et design system adaptés à votre secteur vitriote — portail bioproduction sobre et traçable, e-commerce B2B pour locaux d'activité des Ardoines, site éditorial pour acteur culturel. Accessibilité RGAA et performance Web Vitals intégrées dès le design.",
+          },
+          {
+            step: "Développement IA-native",
+            detail:
+              "Code custom : front performant, back headless, e-commerce multi-CMS (WooCommerce, Shopify, Medusa, Sylius selon votre stack) et briques IA — chatbot RAG branché sur vos documents, recherche sémantique, génération de fiches produits, médiation culturelle conversationnelle.",
+          },
+          {
+            step: "Recette & intégration SI",
+            detail:
+              "Tests d'acceptation sur site à Vitry, intégration à votre ERP/CRM/PIM existant et à vos outils métier, hébergement UE conforme RGPD. Pour les structures liées à Sanofi ou à l'industrie des Ardoines, validation des contraintes de confidentialité et de souveraineté des données.",
+          },
+          {
+            step: "Mise en production & autonomie",
+            detail:
+              "Déploiement, monitoring Core Web Vitals, formation de vos équipes à l'administration et runbook remis. Vous gardez la main : code, contenus et modèles restent chez vous, repris en interne ou par tout prestataire de Seine-Amont, sans verrou Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou e-commerce IA essentiel",
+            detail:
+              "Pour artisans, commerçants et indépendants vitriots — galeries, ateliers d'artistes du quartier MAC VAL, boutiques du centre-ville : site mobile-first, e-commerce simple, chatbot de premier contact, devis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Plateforme métier ou e-commerce B2B sur mesure",
+            detail:
+              "Pour les PME productives et logisticiens des ZAC Les Ardoines et du Port-à-l'Anglais : portail client, configurateur de catalogue technique, e-commerce B2B multi-CMS, recherche sémantique sur documentation.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "SaaS IA-native & portail multi-sites",
+            detail:
+              "Pour les ETI industrielles et de services de Seine-Amont : application SaaS sur mesure, RAG sur base documentaire régulée, intégration ERP/PIM, gouvernance données conforme RGPD et AI Act.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme plateforme & agents IA dédié",
+            detail:
+              "Pour les grands acteurs implantés à Vitry — type plateforme R&D Sanofi ou opérateurs des Ardoines : conception d'agents conversationnels internes, search d'entreprise, plateformes scientifiques, exigences souveraineté et confidentialité pharma.",
+          },
+        ],
+        faq: [
+          {
+            q: "Pouvez-vous concevoir une plateforme conforme aux exigences de confidentialité d'un acteur pharma comme la plateforme Sanofi de Vitry ?",
+            a: "Oui. Pour les structures de bioproduction et de R&D régulées présentes à Vitry-sur-Seine — autour de la plateforme Sanofi et de son voisinage industriel — nous hébergeons en UE, n'opérons aucun transfert de données hors UE sans validation, et appliquons les contraintes de souveraineté dès le choix des modèles IA. Les briques RAG sont branchées sur vos documents internes sans les exposer à un éditeur tiers.",
+          },
+          {
+            q: "Je suis une PME productive qui s'installe aux Ardoines : quel type de site web me conseillez-vous ?",
+            a: "Les ZAC Les Ardoines (Gare Ardoines et Seine Gare Vitry) accueillent à nouveau de l'industrie productive, de la logistique et des locaux d'activité à 3 km de Paris. Pour ces profils, nous concevons des portails clients et de l'e-commerce B2B avec configurateur de catalogue technique, recherche sémantique sur vos fiches et documentation, et intégration à votre ERP — pas une vitrine générique.",
+          },
+          {
+            q: "Travaillez-vous avec les acteurs culturels du quartier MAC VAL ?",
+            a: "Oui. L'écosystème culturel-créatif fédéré par le MAC VAL et la scène street art vitriote regroupe musées, artistes, galeries et structures événementielles. Nous réalisons pour eux des sites éditoriaux performants, de la billetterie, et de la médiation augmentée par l'IA (chatbot de visite, génération de cartels multilingues, recommandation d'œuvres).",
+          },
+          {
+            q: "Faites-vous l'UX/UI et le mobile, ou seulement le développement ?",
+            a: "Nous couvrons toute la chaîne : recherche UX, design UI, intégration mobile-first, développement, e-commerce multi-CMS et briques IA. Avec l'arrivée de la ligne 15 Sud à la gare Les Ardoines et du Tzen 5, les parcours mobiles et la rapidité de réservation deviennent décisifs pour les commerces et services de Seine-Amont — nous optimisons les Core Web Vitals dès le design.",
+          },
+          {
+            q: "Quels délais et quelle autonomie après la livraison ?",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. À la livraison, le code, les contenus et les modèles restent chez vous : vos équipes administrent le site en autonomie après formation, et tout prestataire de Seine-Amont peut reprendre la maintenance. Aucun verrou éditeur, aucune dépendance contractuelle imposée par Axion-IA.",
+          },
+        ],
+        guarantees:
+          "Hébergement en Union européenne par défaut, conformité RGPD et prise en compte de l'AI Act intégrées dès la conception — un impératif pour les acteurs de bioproduction et de R&D régulée de Vitry-sur-Seine. Aucun verrou éditeur : code custom, e-commerce multi-CMS et modèles IA restent votre propriété, repris en interne ou par tout intégrateur de Seine-Amont. Performance Web Vitals contractualisée et accessibilité visées dès le design. Devis à partir de 24-48 h selon la complexité.",
+      },
+      en: {
+        hero: "In Vitry-sur-Seine, Axion-IA builds AI-augmented websites and SaaS platforms for a singular economy: Sanofi's R&D and bioproduction platform, heir to the Poulenc chemical works on the Port-à-l'Anglais quay; the industrial firms and logistics operators returning to the Les Ardoines districts (Gare Ardoines and Seine Gare Vitry, a 90%-floodplain site); and the cultural-creative ecosystem clustered around the MAC VAL museum and Vitry's street-art scene. We deliver custom code — business portals, multi-CMS e-commerce, RAG chatbots, semantic search — hosted in the EU, with no single-vendor lock-in.",
+        whyHere: [
+          "Vitry is a regulated bioproduction and chemistry territory: the Sanofi platform (immunology research, a 40,000-litre antibody workshop) and its Air Liquide neighbour demand documentary rigour and traceability from digital tools — needs our RAG platforms address with no data transfer outside the EU.",
+          "The Les Ardoines districts are bringing productive industry, a logistics hotel and activity premises back 3 km from Paris: these productive SMEs and logisticians need client portals, configurators and B2B e-commerce built for technical catalogues, not generic showcase sites.",
+          "The cultural-creative ecosystem around the MAC VAL (the first contemporary art museum in the Paris suburbs, ~2,500 works) and the street-art trail feeds a fabric of cultural players, artists and event organisers who need editorial sites, ticketing and AI-augmented mediation.",
+          "The arrival of Line 15 South (Les Ardoines station) and the Tzen 5 is reshaping Seine-Amont's accessibility: the retailers, services and property players positioning on this new flow need mobile-first sites and optimised booking journeys, which we design bespoke.",
+        ],
+        methodology: [
+          {
+            step: "Framing in Vitry-sur-Seine",
+            detail:
+              "On-site kick-off in Vitry-sur-Seine — offices in Les Ardoines, Port-à-l'Anglais or the town centre near the MAC VAL — to map your real journeys (industrial clients, visitors, B2B buyers) and constraints: sensitive pharma data, technical catalogues, multilingual needs.",
+          },
+          {
+            step: "Architecture & UX/UI design",
+            detail:
+              "Mobile-first mock-ups and a design system tailored to your Vitry sector — a sober, traceable bioproduction portal, B2B e-commerce for Ardoines activity premises, an editorial site for a cultural player. Accessibility and Web Vitals performance built in from design.",
+          },
+          {
+            step: "AI-native development",
+            detail:
+              "Custom code: high-performance front-end, headless back-end, multi-CMS e-commerce (WooCommerce, Shopify, Medusa, Sylius depending on your stack) and AI components — a RAG chatbot wired to your documents, semantic search, product-sheet generation, conversational cultural mediation.",
+          },
+          {
+            step: "Acceptance & IS integration",
+            detail:
+              "Acceptance testing on site in Vitry, integration with your existing ERP/CRM/PIM and business tools, GDPR-compliant EU hosting. For Sanofi-linked or Ardoines-industry structures, we validate data confidentiality and sovereignty constraints.",
+          },
+          {
+            step: "Go-live & autonomy",
+            detail:
+              "Deployment, Core Web Vitals monitoring, training of your teams on administration and a runbook handed over. You stay in control: code, content and models remain yours, taken back in-house or by any Seine-Amont provider, with no Axion-IA lock-in.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Essential AI showcase or e-commerce site",
+            detail:
+              "For Vitry artisans, retailers and freelancers — galleries and artist studios in the MAC VAL district, town-centre shops: mobile-first site, simple e-commerce, first-contact chatbot, quote from 24-48 h depending on complexity.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Bespoke business platform or B2B e-commerce",
+            detail:
+              "For the productive SMEs and logisticians of the Les Ardoines and Port-à-l'Anglais districts: client portal, technical-catalogue configurator, multi-CMS B2B e-commerce, semantic search across documentation.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "AI-native SaaS & multi-site portal",
+            detail:
+              "For Seine-Amont industrial and service mid-caps: bespoke SaaS application, RAG over a regulated document base, ERP/PIM integration, GDPR and AI Act-compliant data governance.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Dedicated platform & AI-agent programme",
+            detail:
+              "For the major players based in Vitry — such as the Sanofi R&D platform or Ardoines operators: internal conversational agents, enterprise search, scientific platforms, pharma sovereignty and confidentiality requirements.",
+          },
+        ],
+        faq: [
+          {
+            q: "Can you build a platform compliant with the confidentiality requirements of a pharma player like Sanofi's Vitry platform?",
+            a: "Yes. For the regulated bioproduction and R&D structures present in Vitry-sur-Seine — around the Sanofi platform and its industrial neighbourhood — we host in the EU, transfer no data outside the EU without validation, and apply sovereignty constraints from the choice of AI models. RAG components connect to your internal documents without exposing them to a third-party vendor.",
+          },
+          {
+            q: "I'm a productive SME moving into Les Ardoines: what kind of website do you recommend?",
+            a: "The Les Ardoines districts (Gare Ardoines and Seine Gare Vitry) are again hosting productive industry, logistics and activity premises 3 km from Paris. For these profiles we build client portals and B2B e-commerce with a technical-catalogue configurator, semantic search over your sheets and documentation, and ERP integration — not a generic showcase.",
+          },
+          {
+            q: "Do you work with cultural players in the MAC VAL district?",
+            a: "Yes. The cultural-creative ecosystem clustered around the MAC VAL and Vitry's street-art scene gathers museums, artists, galleries and event organisers. For them we build high-performance editorial sites, ticketing, and AI-augmented mediation (visit chatbot, multilingual label generation, artwork recommendation).",
+          },
+          {
+            q: "Do you handle UX/UI and mobile, or only development?",
+            a: "We cover the whole chain: UX research, UI design, mobile-first integration, development, multi-CMS e-commerce and AI components. With Line 15 South arriving at Les Ardoines station and the Tzen 5, mobile journeys and booking speed become decisive for Seine-Amont retailers and services — we optimise Core Web Vitals from design onward.",
+          },
+          {
+            q: "What turnaround and what autonomy after delivery?",
+            a: "The quote is provided from 24-48 h depending on project complexity. On delivery, the code, content and models stay with you: your teams administer the site autonomously after training, and any Seine-Amont provider can take over maintenance. No vendor lock-in, no contractual dependency imposed by Axion-IA.",
+          },
+        ],
+        guarantees:
+          "EU hosting by default, GDPR compliance and AI Act considerations built in from design — essential for Vitry-sur-Seine's regulated bioproduction and R&D players. No vendor lock-in: custom code, multi-CMS e-commerce and AI models remain your property, taken back in-house or by any Seine-Amont integrator. Contractualised Web Vitals performance and accessibility targeted from design. Quote from 24-48 h depending on complexity.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Vitry-sur-Seine ?",
