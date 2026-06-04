@@ -13,6 +13,13 @@ import { DEFAULT_TENANT_SETTINGS } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
 
+// Cache sémantique no-op (testé séparément) → les cas explication retombent en
+// cache-miss et exercent le chemin retrieval+LLM comme avant.
+vi.mock("@/server/chatbot/semantic-cache/cache", () => ({
+  lookupSemanticCache: vi.fn(async () => null),
+  writeSemanticCache: vi.fn(async () => {}),
+}));
+
 const tenant: ResolvedTenant = {
   id: "11111111-1111-1111-1111-111111111111",
   cle: "axion-ia",

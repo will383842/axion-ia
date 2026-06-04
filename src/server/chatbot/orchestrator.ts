@@ -28,6 +28,7 @@ import { assessConfidence } from "@/server/chatbot/retrieval/confidence";
 import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/output-guard";
 import { assembleSystemPrompt } from "@/server/chatbot/generation/system-prompt";
 import { generateAnswer, type GenerateAnswerFn } from "@/server/chatbot/generation/generate-stream";
+import { lookupSemanticCache, writeSemanticCache } from "@/server/chatbot/semantic-cache/cache";
 import { RERANK_TOP_N, RETRIEVAL_TOP_K } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 
@@ -59,12 +60,16 @@ export interface TurnResult {
   readonly linkFlow: LinkFlowState;
   readonly escalate: boolean;
   readonly guard: OutputGuardResult;
+  /** true si la réponse provient du cache sémantique (T-26, 0 appel LLM). */
+  readonly servedFromCache?: boolean;
 }
 
 export interface OrchestratorDeps {
   readonly generateAnswer?: GenerateAnswerFn;
   readonly retrieve?: typeof hybridSearch;
   readonly rerank?: typeof rerankChunks;
+  readonly cacheLookup?: typeof lookupSemanticCache;
+  readonly cacheWrite?: typeof writeSemanticCache;
 }
 
 const OK_GUARD: OutputGuardResult = { ok: true, violations: [] };
@@ -78,6 +83,8 @@ export async function handleTurn(
   const llm = deps.generateAnswer ?? generateAnswer;
   const retrieve = deps.retrieve ?? hybridSearch;
   const rerank = deps.rerank ?? rerankChunks;
+  const cacheLookup = deps.cacheLookup ?? lookupSemanticCache;
+  const cacheWrite = deps.cacheWrite ?? writeSemanticCache;
   const max = ctx.tenant.settings.maxOfferCards;
   const tenantId = ctx.tenant.id;
 
@@ -183,6 +190,23 @@ export async function handleTurn(
 
     case "explication":
     default: {
+      // T-26 cache sémantique : question proche déjà répondue → 0 retrieval, 0 LLM.
+      const cached = await cacheLookup(tenantId, message, ctx.tenant.settings);
+      if (cached) {
+        return {
+          intent: "explication",
+          text: cached.reponse,
+          cards: [],
+          sendLinks: false,
+          slots,
+          sources: cached.sources,
+          linkFlow: INITIAL_FLOW,
+          escalate: false,
+          guard: OK_GUARD,
+          servedFromCache: true,
+        };
+      }
+
       // T-06 récupère RETRIEVAL_TOP_K candidats (RRF) ; T-10 les re-classe via
       // Voyage rerank → top-N injecté au prompt (repli RRF si Voyage down).
       const candidates: RetrievedChunk[] = await retrieve(tenantId, message, {
@@ -248,6 +272,10 @@ export async function handleTurn(
           guard,
         };
       }
+      // T-26 : mémorise la réponse validée pour les questions proches futures
+      // (best-effort, no-op si cache off / embedding indisponible).
+      await cacheWrite(tenantId, message, { reponse: answer.text, sources }, ctx.tenant.settings);
+
       return {
         intent: "explication",
         text: answer.text,

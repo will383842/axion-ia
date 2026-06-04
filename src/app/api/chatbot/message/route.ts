@@ -302,6 +302,7 @@ async function persistTurn(args: {
         contenu: result.text,
         sources: result.sources as unknown as object,
         latenceMs,
+        servedFromCache: result.servedFromCache ?? false,
       },
     }),
     prisma.chatConversation.update({
