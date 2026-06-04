@@ -9,9 +9,9 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
   pitchEn:
     "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglo havraise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit sur place sur mesure.",
   seoHook: "agglo Le Havre, logistique & tertiaire",
   ecosystemFr:
     "Montivilliers appartient à la communauté urbaine Le Havre Seine Métropole. Tissu PME tertiaires et logistiques (proximité grand port maritime du Havre), TPE artisans BTP, commerces de centre-ville, professions libérales. Ville résidentielle dynamique de l'agglo havraise.",

@@ -9,9 +9,9 @@ export const PONTIVY_COPY: VilleCopy = {
   pitchEn:
     "Pontivy (56), sous-préfecture du Morbihan (14 640 hab), est une cité napoléonienne au croisement du canal de Nantes à Brest et du canal du Blavet. Capitale du Centre Bretagne. TPE et PME agroalimentaire, industrie, BTP, commerces de centre-ville, services administratifs, santé, tourisme fluvial. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & construction",
   ecosystemFr:
     "Pontivy est la sous-préfecture du Morbihan, capitale du Centre Bretagne, au croisement du canal de Nantes à Brest et du canal du Blavet. Cité napoléonienne (Napoléonville) au tissu TPE/PME diversifié : agroalimentaire, industrie, BTP, commerce, administration, santé, tourisme fluvial.",

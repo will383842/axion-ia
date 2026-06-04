@@ -9,9 +9,9 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
   pitchEn:
     "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA répond aux besoins de toutes les entreprises de l'Anjou bleu.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
   seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Segré-en-Anjou Bleu est la plus vaste commune du Maine-et-Loire, née de la fusion de 15 communes autour de Segré. L'économie locale hérite des ardoisières historiques (Anjou bleu) et s'appuie aujourd'hui sur un tissu industriel diversifié (agroalimentaire, métallurgie, plasturgie), l'agriculture (élevage bovin laitier, polyculture), l'artisanat et les commerces de centre-bourg. Pôle de santé rural structurant.",

@@ -9,9 +9,9 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
   pitchEn:
     "Les Abrets en Dauphiné (38), commune nouvelle issue de fusions communales en Nord-Isère / Bas-Dauphiné, fait partie de la Communauté de communes Les Vals du Dauphiné. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y mène ses missions auprès des organisations locales du Bas-Dauphiné.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Abrets en Dauphiné (38). Nous accompagnons tous types d'activités : PME industrielles Bas-Dauphiné, TPE artisans BTP, commerçants, agriculteurs/éleveurs, indépendants, professions libérales et services aux entreprises des Vals du Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Abrets en Dauphiné (38). Nous accompagnons tous types d'activités : PME industrielles Bas-Dauphiné, TPE artisans BTP, commerçants, agriculteurs/éleveurs, indépendants, professions libérales et services aux entreprises des Vals du Dauphiné.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Abrets en Dauphiné (38). Nous accompagnons tous types d'activités : PME industrielles Bas-Dauphiné, TPE artisans BTP, commerçants, agriculteurs/éleveurs, indépendants, professions libérales et services aux entreprises des Vals du Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Abrets en Dauphiné (38). Nous accompagnons tous types d'activités : PME industrielles Bas-Dauphiné, TPE artisans BTP, commerçants, agriculteurs/éleveurs, indépendants, professions libérales et services aux entreprises des Vals du Dauphiné.",
   seoHook: "TPE & PME Isère",
   ecosystemFr:
     "Les Abrets en Dauphiné est une commune nouvelle (fusion) intégrée à la Communauté de communes Les Vals du Dauphiné, dans le Bas-Dauphiné Nord-Isère. Position géographique sur l'axe Lyon-Chambéry (A43). Tissu PME industrielles, activité agricole (élevage, céréales), commerces, TPE artisanat BTP. Position transit Lyon-Chambéry-Genève.",

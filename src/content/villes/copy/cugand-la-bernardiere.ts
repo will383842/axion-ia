@@ -9,9 +9,9 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
   pitchEn:
     "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
   seoHook: "viticulture vignoble & artisanat",
   ecosystemFr:
     "Cugand-la-Bernardière est une commune nouvelle vendéenne (fusion 2019) aux portes de Clisson et du vignoble nantais (muscadet). Bords de la Sèvre nantaise, artisanat, viticulture, PME, commerces. Clisson à 5 min, Nantes à 30 min, Cholet à 30 min, La Roche-sur-Yon à 50 min.",

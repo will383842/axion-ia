@@ -9,9 +9,9 @@ export const HIRSON_COPY: VilleCopy = {
   pitchEn:
     "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hirson (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services, exploitations agricoles thiérachiennes et entrepreneurs frontaliers de la Belgique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hirson (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services, exploitations agricoles thiérachiennes et entrepreneurs frontaliers de la Belgique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hirson (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services, exploitations agricoles thiérachiennes et entrepreneurs frontaliers de la Belgique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hirson (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services, exploitations agricoles thiérachiennes et entrepreneurs frontaliers de la Belgique.",
   ecosystemFr:
     "Hirson est une commune de la Thiérache axonaise, héritière d'un passé métallurgique et ferroviaire, aujourd'hui pôle de services et sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces, services, agriculture thiérachienne (élevage laitier, maroilles). Proximité immédiate de la frontière belge.",
   ecosystemEn:

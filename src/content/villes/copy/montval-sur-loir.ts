@@ -9,9 +9,9 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
   pitchEn:
     "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
   seoHook: "viticulture & agriculture agroalimentaire",
   ecosystemFr:
     "Montval-sur-Loir est une commune nouvelle de la Sarthe (vallée du Loir), regroupant Château-du-Loir, Vouvray-sur-Loir et Montabon depuis 2016. Vignoble Jasnières AOC et Coteaux-du-Loir, agriculture, artisanat, tourisme vert. Accès Tours (45 min), Le Mans (50 min), La Flèche (25 min).",

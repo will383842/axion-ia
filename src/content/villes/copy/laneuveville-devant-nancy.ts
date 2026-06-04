@@ -9,9 +9,9 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   pitchEn:
     "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
   ecosystemFr:
     "Laneuveville-devant-Nancy est une commune du sud-est de la Métropole du Grand Nancy, traversée par le canal de la Marne au Rhin et la Meurthe. Son tissu économique mêle PME industrielles, zones d'activités mixtes, BTP, logistique, commerce de proximité et professions libérales. Accès direct au centre de Nancy, axe Nancy-Strasbourg.",
   ecosystemEn:

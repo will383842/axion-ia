@@ -9,9 +9,9 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, regroupe Bourgneuf-en-Retz et plusieurs communes entre Pornic et Machecoul. Tissu de TPE artisanales, commerçants, exploitations agricoles et ostréicoles, PME touristiques littorales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
   seoHook: "pays de retz",
   ecosystemFr:
     "Villeneuve-en-Retz est une commune nouvelle de plus de 5 100 habitants dans le Pays de Retz, née de la fusion de Bourgneuf-en-Retz, Fresnay-en-Retz et Chéméré. L'économie locale repose sur l'ostréiculture (baie de Bourgneuf), l'agriculture (maraîchage, élevage), le tourisme littoral saisonnier, l'artisanat BTP et les commerces de proximité.",

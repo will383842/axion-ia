@@ -9,9 +9,9 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Sébastien-sur-Loire, ville de Loire-Atlantique (44) en banlieue sud de Nantes, mêle tissu résidentiel familial et TPE/PME locales (artisanat, commerces, services). Axion-IA y intervient pour les TPE, indépendants et PME tertiaires du bassin nantais sud Loire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",

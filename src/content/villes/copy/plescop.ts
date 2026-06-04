@@ -9,9 +9,9 @@ export const PLESCOP_COPY: VilleCopy = {
   pitchEn:
     "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
   ecosystemFr:
     "Plescop est une commune résidentielle prisée au nord de Vannes, bénéficiant de la dynamique économique de l'agglomération vannetaise. Le tissu local repose sur les services aux entreprises, les professions libérales, le commerce de proximité et l'artisanat. La proximité du golfe du Morbihan nourrit également une activité touristique et nautique.",
   ecosystemEn:

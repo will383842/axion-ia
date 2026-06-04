@@ -9,9 +9,9 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   pitchEn:
     "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "vallée du",
   ecosystemFr:
     "Tournon-sur-Rhône est la sous-préfecture de l'Ardèche, face à Tain-l'Hermitage (rive droite du Rhône). Viticulture AOC Saint-Joseph (grands crus septentrionaux Rhône). Tissu oenotourisme, administration, PME tertiaires, TPE artisanat BTP, commerces.",

@@ -9,9 +9,9 @@ export const ORCHIES_COPY: VilleCopy = {
   pitchEn:
     "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de la Pévèle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Orchies (59). Nous accompagnons TPE et PME : producteurs et transformateurs agroalimentaires (filière chicorée), commerçants du bourg, artisans, PME agricoles de la Pévèle, et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orchies (59). Nous accompagnons TPE et PME : producteurs et transformateurs agroalimentaires (filière chicorée), commerçants du bourg, artisans, PME agricoles de la Pévèle, et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Orchies (59). Nous accompagnons TPE et PME : producteurs et transformateurs agroalimentaires (filière chicorée), commerçants du bourg, artisans, PME agricoles de la Pévèle, et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orchies (59). Nous accompagnons TPE et PME : producteurs et transformateurs agroalimentaires (filière chicorée), commerçants du bourg, artisans, PME agricoles de la Pévèle, et professions libérales.",
   seoHook: "bassin de la",
   ecosystemFr:
     "Orchies est le coeur économique du Pévèle Carembault, plaine agricole entre Lille (30 min) et Douai (20 min). L'agroalimentaire chicorée est l'identité industrielle historique du bourg, complétée par une PME-PMI agricole et de transformation diversifiée. Commerces de centre-bourg, artisanat local et services de proximité structurent un tissu rural-périurbain dynamique, irrigué par l'autoroute A23 et la proximité métropole lilloise.",

@@ -9,9 +9,9 @@ export const AVION_COPY: VilleCopy = {
   pitchEn:
     "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA répond aux besoins de toutes les entreprises de l'agglo Lens-Liévin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Avion (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, indépendants, professions libérales et acteurs de la reconversion économique de l'agglomération Lens-Liévin / bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avion (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, indépendants, professions libérales et acteurs de la reconversion économique de l'agglomération Lens-Liévin / bassin minier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Avion (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, indépendants, professions libérales et acteurs de la reconversion économique de l'agglomération Lens-Liévin / bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avion (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, indépendants, professions libérales et acteurs de la reconversion économique de l'agglomération Lens-Liévin / bassin minier.",
   seoHook: "artisanat rénovation & services tertiaire",
   ecosystemFr:
     "Avion fait partie de la communauté d'agglomération de Lens-Liévin (~250 000 hab) en plein bassin minier du Pas-de-Calais (patrimoine mondial UNESCO). Reconversion économique active : TPE artisanat BTP, PME de services et tertiaires, commerces, santé, économie sociale et solidaire. Proximité immédiate de Lens (3 min), du Louvre-Lens et des axes A21/A26.",

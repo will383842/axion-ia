@@ -9,9 +9,9 @@ export const CLUSES_COPY: VilleCopy = {
   pitchEn:
     "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée de l'Arve.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit sur place sur mesure.",
   seoHook: "vallée arve",
   ecosystemFr:
     "Cluses est le coeur historique du décolletage mondial (vallée de l'Arve, ~800 entreprises spécialisées). Sous-traitance de précision pour l'horlogerie suisse, l'aéronautique, l'automobile et le médical. Le CETIM (Centre Technique des Industries Mécaniques) y opère un pôle R&D. 4e ville de Haute-Savoie, entre Annecy et Chamonix, à 50 min de Genève.",

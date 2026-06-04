@@ -9,9 +9,9 @@ export const MONTELIMAR_COPY: VilleCopy = {
   pitchEn:
     "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu TPE commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "agroalimentaire nougat & commerce détail",
   ecosystemFr:
     "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu TPE commerces, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",

@@ -9,9 +9,9 @@ export const OUTREAU_COPY: VilleCopy = {
   pitchEn:
     "Outreau (62), commune de l'agglomération de Boulogne-sur-Mer dans le Pas-de-Calais, conjugue tissu TPE artisanales, PME de services, commerces, activités portuaires et filière halieutique de proximité. Axion-IA y intervient pour tous types d'activités de l'agglo boulonnaise et du littoral de la Côte d'Opale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Outreau (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Outreau (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Outreau (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Outreau (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
   seoHook: "artisanat rénovation & services tertiaire",
   ecosystemFr:
     "Outreau fait partie de la communauté d'agglomération du Boulonnais (~120 000 hab) sur la Côte d'Opale. La proximité de Boulogne-sur-Mer (premier port de pêche français, pôle agroalimentaire halieutique) structure l'économie locale. Tissu TPE artisanat BTP, PME de services, commerces, santé, tourisme littoral. Accès direct A16 (Calais-Paris) et port transmanche.",

@@ -10,9 +10,9 @@ export const GUINES_COPY: VilleCopy = {
     "Guines (62), commune du Pas-de-Calais situee entre Calais et le tunnel sous la Manche, reunit pres de 5 480 habitants. Entouree de la foret de Guines et du marais, son economie associe TPE de services, agriculture, commerces, artisanat et activites liees au tourisme vert. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "foret & marais, tourisme vert & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Guines (62). Nous accompagnons les TPE, PME et ETI du Calaisis : agriculteurs, commercants, artisans, acteurs du tourisme vert et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Guines (62). Nous accompagnons les TPE, PME et ETI du Calaisis : agriculteurs, commercants, artisans, acteurs du tourisme vert et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Guines (62). Nous accompagnons les TPE, PME et ETI du Calaisis : agriculteurs, commercants, artisans, acteurs du tourisme vert et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Guines (62). Nous accompagnons les TPE, PME et ETI du Calaisis : agriculteurs, commercants, artisans, acteurs du tourisme vert et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Guines est situee a 10 km de Calais, entouree de la foret et du marais de Guines. Tissu economique mixte : agriculture (polyculture, elevage), TPE tourisme vert et gites, commerces de centre-bourg, artisanat BTP et services. Proximite du terminal Eurotunnel.",
   ecosystemEn:

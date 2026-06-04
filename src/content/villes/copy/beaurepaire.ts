@@ -9,9 +9,9 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
   pitchEn:
     "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du Bas-Dauphiné méridional.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
   seoHook: "TPE & PME Isère",
   ecosystemFr:
     "Beaurepaire est positionnée dans la plaine agricole du sud-Isère / Bas-Dauphiné, entre Vienne (35 min) et Romans-sur-Isère (40 min). Tissu agricole céréalier dominant (blé, maïs, tournesol), PME agroalimentaires de transformation locale, TPE artisanat BTP, commerces et services. Position de transit entre Lyon et Valence.",

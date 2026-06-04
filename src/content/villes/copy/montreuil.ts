@@ -50,7 +50,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montreuil (93) sur site — Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil et communes limitrophes (Paris 20e, Bagnolet, Vincennes). Nous accompagnons TPE, PME, ETI et grandes entreprises montreuillaises (numérique, jeu vidéo, banque, conseil, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montreuil (93) sur site — Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil et communes limitrophes (Paris 20e, Bagnolet, Vincennes). Nous accompagnons TPE, PME, ETI et grandes entreprises montreuillaises (numérique, jeu vidéo, banque, conseil, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Montreuil (93) on site — Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil and neighbouring communes (Paris 20th, Bagnolet, Vincennes). We support Montreuil micro-businesses, SMEs, mid-caps and large enterprises (digital, gaming, banking, consulting, social economy) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

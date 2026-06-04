@@ -9,9 +9,9 @@ export const CARROS_COPY: VilleCopy = {
   pitchEn:
     "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
   seoHook: "pays niçois",
   ecosystemFr:
     "Carros se distingue par sa zone industrielle de Carros-Le Broc, première des Alpes-Maritimes (450+ entreprises, 6 000+ emplois). Secteurs : industrie manufacturière, logistique, BTP, agroalimentaire, services aux entreprises. Le village perché médiéval surplombe la plaine du Var. Accès rapide à Nice (20 min) et Sophia Antipolis (40 min) via M6202 et voie rapide.",

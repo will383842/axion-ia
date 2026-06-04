@@ -9,9 +9,9 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
   pitchEn:
     "Étoile-sur-Rhône (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position vallée du Rhône, axe A7. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture vallée, commerces. Axion-IA y intervient pour tous types d'activités du sud-Valence drômois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Étoile-sur-Rhône (26). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud-Valence, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étoile-sur-Rhône (26). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud-Valence, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Étoile-sur-Rhône (26). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud-Valence, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étoile-sur-Rhône (26). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud-Valence, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
   seoHook: "tertiaires sud-valence & industrielles vallée",
   ecosystemFr:
     "Étoile-sur-Rhône est intégrée à Valence Romans Agglo (~225 000 hab) en banlieue sud immédiate de Valence sur l'axe A7. Position vallée du Rhône. Tissu PME tertiaires et industrielles, TPE artisanat BTP, agriculture vallée du Rhône (vergers, viticulture périphérique), commerces et services aux entreprises.",

@@ -9,9 +9,9 @@ export const EYBENS_COPY: VilleCopy = {
   pitchEn:
     "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du bassin grenoblois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Eybens (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires eybinois, indépendants et entreprises de Grenoble-Alpes Métropole en zone sud-est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eybens (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires eybinois, indépendants et entreprises de Grenoble-Alpes Métropole en zone sud-est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Eybens (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires eybinois, indépendants et entreprises de Grenoble-Alpes Métropole en zone sud-est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eybens (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires eybinois, indépendants et entreprises de Grenoble-Alpes Métropole en zone sud-est.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Eybens est adhérente à l'intercommunalité Grenoble-Alpes Métropole (« La Métro », 450 000 hab). Tissu essentiellement urbain de PME tertiaires, professions libérales, commerces de proximité. Position stratégique sud-est de l'agglomération grenobloise, traversée par la route Napoléon (axe historique vers Gap et Provence). Tissu TPE artisanat BTP dense.",

@@ -9,9 +9,9 @@ export const LALLAING_COPY: VilleCopy = {
   pitchEn:
     "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Proximité immédiate de Douai et accès rapide vers Lille via A21. Reconversion économique active du bassin minier avec dynamique d'innovation.",

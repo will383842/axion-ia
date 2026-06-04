@@ -9,9 +9,9 @@ export const COUTANCES_COPY: VilleCopy = {
   pitchEn:
     "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
   seoHook: "agroalimentaire & commerce centre-ville",
   ecosystemFr:
     "Coutances est une sous-préfecture de la Manche, perchée sur une colline et dominée par sa cathédrale gothique. L'économie s'appuie sur l'agroalimentaire (produits laitiers, viande bovine, cidre AOP), le commerce de centre-ville, l'artisanat, les services publics (tribunal, hôpital), le tourisme patrimonial et le festival Jazz sous les Pommiers (rayonnement national). Accès vers Saint-Lô (30 min) et Granville (25 min).",

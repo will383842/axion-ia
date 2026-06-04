@@ -9,9 +9,9 @@ export const BORGO_COPY: VilleCopy = {
   pitchEn:
     "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
   seoHook: "logistique transport & commerce",
   ecosystemFr:
     "Borgo est une commune dynamique de la plaine orientale corse, dans l'agglomération sud de Bastia. Elle héberge l'aéroport Bastia-Poretta (principal aéroport de Haute-Corse, trafic touristique et fret) et une zone commerciale/logistique majeure (enseignes, entrepôts, transport). Forte croissance démographique et économique. Tissu TPE/PME logistique, transport aérien, commerce, BTP, services aux entreprises.",

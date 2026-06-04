@@ -9,9 +9,9 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
   pitchEn:
     "Saint-Doulchard (18), commune de l'agglomération de Bourges nord dans le Cher, concentre zones d'activités commerciales et tertiaires. TPE artisans, PME tertiaires, grandes surfaces, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit sur place sur mesure.",
   seoHook: "zones d'activités & tertiaires services",
   ecosystemFr:
     "Saint-Doulchard est la principale commune périurbaine nord de Bourges, avec des zones d'activités commerciales et tertiaires majeures. Tissu de TPE artisans, PME tertiaires et de services, grandes surfaces, logistique, professions libérales. Dynamique agglo Bourges Plus.",

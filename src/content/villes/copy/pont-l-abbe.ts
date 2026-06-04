@@ -9,9 +9,9 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
   pitchEn:
     "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA répond aux besoins des activités professionnelles présentes du Pays Bigouden.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-l'Abbé (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville bigouden, PME agroalimentaires, acteurs du tourisme culturel, professions libérales, indépendants et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-l'Abbé (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville bigouden, PME agroalimentaires, acteurs du tourisme culturel, professions libérales, indépendants et services publics de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-l'Abbé (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville bigouden, PME agroalimentaires, acteurs du tourisme culturel, professions libérales, indépendants et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-l'Abbé (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville bigouden, PME agroalimentaires, acteurs du tourisme culturel, professions libérales, indépendants et services publics de la sous-préfecture.",
   ecosystemFr:
     "Pont-l'Abbé est la sous-préfecture du Finistère et la capitale historique du Pays Bigouden. Pôle administratif et commercial, la commune abrite un tissu de TPE artisanales, commerçants de centre-ville, PME agroalimentaires et acteurs touristiques. La tradition de la dentelle bigoudène et le patrimoine culturel local alimentent un tourisme saisonnier significatif.",
   ecosystemEn:

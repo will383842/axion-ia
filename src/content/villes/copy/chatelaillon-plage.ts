@@ -9,9 +9,9 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
   pitchEn:
     "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la station châtelaillonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Châtelaillon-Plage est une station balnéaire familiale du littoral charentais, entre La Rochelle et Rochefort. Économie touristique saisonnière (hôtellerie, restauration, campings, plages), commerces de centre-ville, TPE artisans BTP, professions libérales. Casino et thalasso contribuent à l'activité annuelle.",

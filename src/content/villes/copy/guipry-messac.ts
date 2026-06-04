@@ -9,9 +9,9 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
   pitchEn:
     "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du sud rennais et du Pays de Redon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Guipry-Messac, commune nouvelle née de la fusion de Guipry et Messac en 2016, est implantée sur les bords de la Vilaine au sud de Rennes. Tissu TPE artisans BTP, PME agricoles (élevage, céréales), agroalimentaire, commerces de bourg, tourisme fluvial Vilaine et services aux particuliers. Territoire rural dynamique entre Rennes et Redon.",

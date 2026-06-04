@@ -9,9 +9,9 @@ export const AMBAZAC_COPY: VilleCopy = {
   pitchEn:
     "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA répond aux besoins des activités professionnelles présentes du piémont nord-est limougeaud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
   seoHook: "filière bois & extraction transformation",
   ecosystemFr:
     "Ambazac est le bourg principal des Monts d'Ambazac, massif granitique au nord-est de Limoges. Économie locale portée par la filière bois (scieries, menuiseries), l'extraction de granit, l'artisanat BTP, l'agriculture et le tourisme vert (tourbières de la Mazure, sentiers de randonnée). Commerces centre-bourg et professions libérales complètent le tissu.",

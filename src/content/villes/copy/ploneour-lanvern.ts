@@ -9,9 +9,9 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
   pitchEn:
     "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales du Pays Bigouden.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plonéour-Lanvern (29). Nous accompagnons tous types d'activités : TPE agricoles et maraîchers bigoudens, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Pays Bigouden / sud Cornouaille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plonéour-Lanvern (29). Nous accompagnons tous types d'activités : TPE agricoles et maraîchers bigoudens, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Pays Bigouden / sud Cornouaille.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plonéour-Lanvern (29). Nous accompagnons tous types d'activités : TPE agricoles et maraîchers bigoudens, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Pays Bigouden / sud Cornouaille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plonéour-Lanvern (29). Nous accompagnons tous types d'activités : TPE agricoles et maraîchers bigoudens, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Pays Bigouden / sud Cornouaille.",
   seoHook: "agriculture maraîchage & agroalimentaire",
   ecosystemFr:
     "Plonéour-Lanvern est au cœur du Pays Bigouden, premier bassin légumier de France (choux-fleurs, artichauts, échalotes). La commune appartient à la Communauté de communes du Pays Bigouden Sud (~40 000 hab). Tissu TPE agricoles et maraîchères dense, PME agroalimentaires (conditionnement, surgélation), artisanat BTP rural, commerces et services. Proximité Pont-l'Abbé (10 min) et Quimper (25 min).",

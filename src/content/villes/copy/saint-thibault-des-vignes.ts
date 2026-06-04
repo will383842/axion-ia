@@ -9,9 +9,9 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Thibault-des-Vignes (77). Nous accompagnons TPE et PME : enseignes commerciales, TPE artisanales, PME de négoce et services, professions libérales et restaurateurs du secteur Lagny–Marne-la-Vallée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Thibault-des-Vignes (77). Nous accompagnons TPE et PME : enseignes commerciales, TPE artisanales, PME de négoce et services, professions libérales et restaurateurs du secteur Lagny–Marne-la-Vallée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Thibault-des-Vignes (77). Nous accompagnons TPE et PME : enseignes commerciales, TPE artisanales, PME de négoce et services, professions libérales et restaurateurs du secteur Lagny–Marne-la-Vallée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Thibault-des-Vignes (77). Nous accompagnons TPE et PME : enseignes commerciales, TPE artisanales, PME de négoce et services, professions libérales et restaurateurs du secteur Lagny–Marne-la-Vallée.",
   seoHook: "commerce détail & artisanat services",
   ecosystemFr:
     "Saint-Thibault-des-Vignes est une commune de l'est Seine-et-Marne, limitrophe de Lagny-sur-Marne et Champs-sur-Marne. Elle se distingue par ses zones commerciales dynamiques (retail, restauration, services automobiles), un tissu de TPE artisanales, des PME de négoce et de services aux entreprises, et un cœur résidentiel avec commerces de proximité. Accès direct A104 (Francilienne) et proximité Marne-la-Vallée / Val d'Europe.",

@@ -9,9 +9,9 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
   pitchEn:
     "Le Cannet-des-Maures (83), commune du massif des Maures sur l'axe A8 Provence-Côte d'Azur, conjugue activités militaires (base aéronavale), tissu agricole viticole et zones d'activités sur les Aires de Vidauban. TPE artisans, PME viticoles, services logistiques, professions libérales et commerces de proximité dans un bassin tourné vers Le Luc et Vidauban. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Cannet-des-Maures (83). Nous accompagnons TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var et du massif des Maures. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cannet-des-Maures (83). Nous accompagnons TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var et du massif des Maures. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Cannet-des-Maures (83). Nous accompagnons TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var et du massif des Maures. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cannet-des-Maures (83). Nous accompagnons TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var et du massif des Maures. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & artisanat",
   ecosystemFr:
     "Le Cannet-des-Maures est positionnée dans le Centre-Var, à l'orée nord-ouest du massif des Maures, sur l'A8 entre Brignoles et Le Muy. Commune dont l'activité économique repose sur la base aéronavale, la viticulture (AOP Côtes de Provence), les TPE artisans (BTP, services), PME tertiaires et logistique, exploitations agricoles, professions libérales et commerces de proximité.",

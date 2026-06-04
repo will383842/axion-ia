@@ -9,9 +9,9 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",

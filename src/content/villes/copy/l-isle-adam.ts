@@ -9,9 +9,9 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
   pitchEn:
     "L'Isle-Adam (95), commune résidentielle verdoyante du Val-d'Oise en bords de l'Oise, est connue pour sa plage fluviale et son cadre de vie prisé. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
   seoHook: "artisanat services & commerce centre",
   ecosystemFr:
     "L'Isle-Adam est une commune résidentielle prisée en bords de l'Oise (nord Val-d'Oise), connue pour sa plage fluviale (la plus grande d'Île-de-France). Tissu TPE artisans, commerces de centre historique, PME tertiaires et de services, professions libérales. Cadre verdoyant attirant entrepreneurs et indépendants qualifiés.",

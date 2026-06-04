@@ -9,9 +9,9 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
   pitchEn:
     "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   seoHook: "tertiaires services & artisanat",
   ecosystemFr:
     "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, TPE artisans BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",

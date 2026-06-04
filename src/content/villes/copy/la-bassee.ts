@@ -9,9 +9,9 @@ export const LA_BASSEE_COPY: VilleCopy = {
   pitchEn:
     "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Bassée (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME logistique et transport routier, agriculteurs, commerçants et entreprises du sud-ouest de la métropole lilloise aux portes du bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Bassée (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME logistique et transport routier, agriculteurs, commerçants et entreprises du sud-ouest de la métropole lilloise aux portes du bassin minier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Bassée (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME logistique et transport routier, agriculteurs, commerçants et entreprises du sud-ouest de la métropole lilloise aux portes du bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Bassée (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME logistique et transport routier, agriculteurs, commerçants et entreprises du sud-ouest de la métropole lilloise aux portes du bassin minier.",
   ecosystemFr:
     "La Bassée est un bourg historique du pays de Weppes dans le sud-ouest de la métropole lilloise, aux portes du bassin minier du Pas-de-Calais. Tissu TPE/PME artisanat BTP, logistique et transport routier (carrefour A26/A1), agriculture périurbaine (grandes cultures), commerces de centre-bourg, services. Accès Lille (25 min), Lens (20 min), Béthune (15 min).",
   ecosystemEn:

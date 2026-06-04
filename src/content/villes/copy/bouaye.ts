@@ -9,9 +9,9 @@ export const BOUAYE_COPY: VilleCopy = {
   pitchEn:
     "Bouaye (44), commune du sud-ouest de Nantes Métropole en Loire-Atlantique, en bordure du lac de Grand-Lieu, mêle tissu résidentiel, TPE artisanales, commerces de proximité et PME tertiaires. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin nantais sud-ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
     "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Proximité aéroport Nantes-Atlantique (10 min) et pôle Bouguenais.",

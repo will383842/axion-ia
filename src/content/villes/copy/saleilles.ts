@@ -9,9 +9,9 @@ export const SALEILLES_COPY: VilleCopy = {
   pitchEn:
     "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   seoHook: "tertiaires périurbaines",
   ecosystemFr:
     "Saleilles est une commune résidentielle à l'est de Perpignan, entre Cabestany et le littoral. Intégrée à Perpignan Méditerranée Métropole. PME tertiaires, TPE artisanat, commerces, professions libérales, zones d'activités partagées avec Cabestany.",

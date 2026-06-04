@@ -7,9 +7,9 @@ export const LE_PRADET_COPY: VilleCopy = {
   pitchEn:
     "Le Pradet (83, Var), commune littorale de l'agglomération toulonnaise (Métropole Toulon-Provence-Méditerranée), accueille TPE artisanales, PME de services, commerces, professions libérales, hôtellerie-restauration et activités balnéaires. Axion-IA y intervient pour tous types d'activités de l'agglo toulonnaise est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pradet (83). Nous accompagnons TPE artisanales, PME de services, commerces, professions libérales et hôtellerie-restauration de l'agglo toulonnaise est. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pradet (83). Nous accompagnons TPE artisanales, PME de services, commerces, professions libérales et hôtellerie-restauration de l'agglo toulonnaise est. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pradet (83). Nous accompagnons TPE artisanales, PME de services, commerces, professions libérales et hôtellerie-restauration de l'agglo toulonnaise est. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pradet (83). Nous accompagnons TPE artisanales, PME de services, commerces, professions libérales et hôtellerie-restauration de l'agglo toulonnaise est. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "hôtellerie restauration & tourisme activités",
   ecosystemFr:
     "Le Pradet est une commune littorale à l'est de Toulon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu résidentiel et touristique : TPE artisanales, PME de services, commerces, professions libérales, hôtellerie-restauration, activités balnéaires (plages de la Garonne, Pin de Galle, Bonnettes) et musée de la Mine.",

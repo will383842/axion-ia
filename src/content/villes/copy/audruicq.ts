@@ -10,9 +10,9 @@ export const AUDRUICQ_COPY: VilleCopy = {
     "Audruicq (62), commune du Pas-de-Calais aux portes du marais audomarois, reunit pres de 5 310 habitants. Situee entre Calais et Saint-Omer, son economie associe TPE de services, agriculture, commerces, artisanat BTP et petites entreprises logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "marais audomarois, agriculture & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Audruicq est situee entre Calais (20 km) et Saint-Omer (20 km), aux portes du marais audomarois. Tissu economique mixte : agriculture (maraichage, polyculture), TPE de services, commerces de centre-bourg, artisanat BTP et petites entreprises de transport.",
   ecosystemEn:

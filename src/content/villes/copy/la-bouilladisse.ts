@@ -9,9 +9,9 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
   pitchEn:
     "La Bouilladisse (13), commune résidentielle de l'est marseillais nichée entre Aubagne et le massif de la Sainte-Baume, accueille familles et cadres. Tissu de TPE artisans BTP, commerçants, PME services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit sur place sur mesure.",
   seoHook: "rénovation résidentielle & artisanat services",
   ecosystemFr:
     "La Bouilladisse est une commune résidentielle vallonnée de l'arrière-pays marseillais, entre Aubagne et la Sainte-Baume. Centre-village avec commerces de proximité, zones artisanales, TPE BTP (construction, rénovation) et professions libérales. Cadres et employés travaillant à Aubagne, Marseille ou Aix.",

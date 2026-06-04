@@ -9,9 +9,9 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
   pitchEn:
     "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires sud & industrielles vallée",
   ecosystemFr:
     "Grigny est intégrée à la Métropole de Lyon, en banlieue sud (vallée du Rhône, entre Lyon et Vienne). Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisanat BTP, commerces de proximité, professions libérales, agriculture résiduelle vallée du Rhône.",

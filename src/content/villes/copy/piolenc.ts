@@ -9,9 +9,9 @@ export const PIOLENC_COPY: VilleCopy = {
   pitchEn:
     "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
   seoHook: "vallée du",
   ecosystemFr:
     "Piolenc est un pôle agricole de la vallée du Rhône, capitale de l'ail (Foire à l'ail annuelle). Agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, coopératives agricoles. Tissu de TPE artisans, exploitations agricoles familiales, PME agroalimentaires et commerces. Orange à 10 min, Avignon à 35 min, A7 directe.",

@@ -9,9 +9,9 @@ export const CHANTILLY_COPY: VilleCopy = {
   pitchEn:
     "Chantilly (60), commune de 10 591 habitants dans l'Oise, est mondialement connue pour son château, son hippodrome et le domaine de Condé. Haut lieu du tourisme de prestige, du monde équestre et de la gastronomie, la ville concentre un tissu de TPE/PME hôtellerie-restauration, tourisme, commerce de luxe, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chantilly (60). Nous accompagnons TPE et PME du sud de l'Oise : hôteliers, restaurateurs, acteurs du tourisme et du monde équestre, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantilly (60). Nous accompagnons TPE et PME du sud de l'Oise : hôteliers, restaurateurs, acteurs du tourisme et du monde équestre, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chantilly (60). Nous accompagnons TPE et PME du sud de l'Oise : hôteliers, restaurateurs, acteurs du tourisme et du monde équestre, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantilly (60). Nous accompagnons TPE et PME du sud de l'Oise : hôteliers, restaurateurs, acteurs du tourisme et du monde équestre, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Chantilly est un pôle touristique et équestre de renommée mondiale dans le sud de l'Oise. Son économie s'articule autour du château-musée de Condé, de l'hippodrome, des centres d'entraînement hippiques, de l'hôtellerie-restauration haut de gamme et du commerce de luxe. Le tissu économique local comprend aussi des TPE/PME artisanat, services aux entreprises et professions libérales, bénéficiant de la proximité de l'aéroport Paris-CDG et de la gare TER Chantilly-Gouvieux.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_JEAN_LE_BLANC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-le-Blanc (45), commune residentielle de l'agglomeration d'Orleans en rive sud de Loire, beneficie de la dynamique economique de la metropole orleanaise. Tissu TPE/PME services, sante, commerce, artisanat, professions liberales. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Jean-le-Blanc est une commune de la rive sud de Loire au sein d'Orleans Metropole. L'economie locale repose sur les services aux particuliers et entreprises, les cabinets medicaux et paramedicaux, le commerce de proximite, l'artisanat et les professions liberales installees en peripherie sud d'Orleans.",
   ecosystemEn:

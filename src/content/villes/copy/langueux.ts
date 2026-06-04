@@ -9,9 +9,9 @@ export const LANGUEUX_COPY: VilleCopy = {
   pitchEn:
     "Langueux (22), commune de l'agglomération de Saint-Brieuc en Côtes-d'Armor, concentre d'importantes zones d'activités commerciales et artisanales (ZA des Châtelets, ZA du Plateau). TPE artisans, PME commerciales, services aux entreprises, logistique, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit sur place sur mesure.",
   seoHook: "commerce zones & artisanat",
   ecosystemFr:
     "Langueux est un pôle commercial majeur de l'agglomération de Saint-Brieuc (Côtes-d'Armor), avec plusieurs zones d'activités (ZA des Châtelets, ZA du Plateau) regroupant grandes enseignes, commerces, artisans, services aux entreprises et logistique. Proximité immédiate du centre-ville de Saint-Brieuc.",

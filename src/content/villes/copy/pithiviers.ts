@@ -9,9 +9,9 @@ export const PITHIVIERS_COPY: VilleCopy = {
   pitchEn:
     "Pithiviers (45), sous-prefecture du Loiret au coeur de la Beauce, est le pole economique du Pithiverais avec un tissu TPE/PME ancre dans l'agroalimentaire, l'agriculture cerealiere, le commerce, l'artisanat et les services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Pithiviers (45). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Pithiviers (45). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Pithiviers (45). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Pithiviers (45). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Pithiviers est la sous-prefecture nord du Loiret, au coeur de la Beauce cerealiere. L'economie locale repose sur l'agroalimentaire (sucreries, silos, cooperatives cerealieres), l'agriculture intensive, le commerce de centre-ville, l'artisanat et les services. La ville est celebre pour son pithiviers patissier et son fromage de chevre.",
   ecosystemEn:

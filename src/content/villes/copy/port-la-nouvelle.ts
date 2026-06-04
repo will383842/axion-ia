@@ -9,9 +9,9 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   pitchEn:
     "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit sur place sur mesure.",
   seoHook: "logistique transport & pêche ostréiculture",
   ecosystemFr:
     "Port-la-Nouvelle est un port de commerce méditerranéen majeur de l'Aude, en pleine modernisation (extension portuaire, éolien offshore). Tissu économique tourné vers la logistique maritime, le transport de marchandises, la pêche et l'ostréiculture (étang de Bages-Sigean). Tourisme balnéaire saisonnier (plages, campings, résidences). TPE artisans, commerces de proximité, hôtellerie-restauration.",

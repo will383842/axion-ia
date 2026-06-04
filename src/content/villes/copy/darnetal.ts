@@ -10,9 +10,9 @@ export const DARNETAL_COPY: VilleCopy = {
     "Darnetal (76), commune de la vallee du Robec dans l'agglomeration rouennaise, reunit pres de 9 570 habitants. Ancienne ville industrielle reconvertie, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "services, tertiaire & vallee Robec",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Darnetal est situee dans la vallee du Robec, a l'est de Rouen. Ancienne cite industrielle (teinturerie, textile) reconvertie, la ville fait partie de la Metropole Rouen Normandie. Tissu de TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Acces metro Rouen.",
   ecosystemEn:

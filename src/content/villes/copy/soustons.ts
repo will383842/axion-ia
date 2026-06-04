@@ -9,9 +9,9 @@ export const SOUSTONS_COPY: VilleCopy = {
   pitchEn:
     "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
   seoHook: "tourisme nature, lacs & forêt landaise",
   ecosystemFr:
     "Soustons est surnommée « l'isle verte » grâce à ses 5 lacs et étangs (lac de Soustons, étang de Hardy, étang Blanc, étang Noir, étang de Pinsolle) et sa plage océane de 6 km. La commune est connue pour le domaine de Latche, résidence de François Mitterrand. Économie portée par le tourisme nature et lacustre, campings, hébergements, agriculture (maïs, élevage), TPE artisans, commerces de proximité.",

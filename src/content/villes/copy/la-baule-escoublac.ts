@@ -9,9 +9,9 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
   pitchEn:
     "La Baule-Escoublac (44), station balnéaire de prestige avec sa plage de 12 km, près de 17 000 habitants. Hôtellerie haut de gamme, thalassothérapie, commerces de luxe, immobilier, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et immobilières. Axion-IA couvre les activités professionnelles du bassin du bassin baulois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   seoHook: "hôtellerie haut & immobilier gestion",
   ecosystemFr:
     "La Baule-Escoublac (16 912 hab) est l'une des plus prestigieuses stations balnéaires de France, avec sa plage de 12 km en baie de La Baule. Hôtellerie haut de gamme, thalassothérapie, immobilier de standing, commerces, événementiel et professions libérales. Proximité Saint-Nazaire (15 min), Nantes (1h10). Pôle touristique majeur de la côte d'Amour.",

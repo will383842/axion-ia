@@ -9,9 +9,9 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
   pitchEn:
     "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
   seoHook: "tourisme activités & hôtellerie restauration",
   ecosystemFr:
     "Perros-Guirec est la station balnéaire phare de la Côte de Granit Rose, site naturel mondialement connu. Économie dominée par le tourisme (Sentier des Douaniers, Sept-Îles, thalasso), l'hôtellerie-restauration saisonnière, les commerces de centre-ville et du port, les professions libérales et l'artisanat local.",

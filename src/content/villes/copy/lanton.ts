@@ -9,9 +9,9 @@ export const LANTON_COPY: VilleCopy = {
   pitchEn:
     "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y travaille avec les organisations du territoire du nord du Bassin d'Arcachon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "ostréiculture & artisanat",
   ecosystemFr:
     "Lanton est une commune résidentielle du nord du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité et professions libérales. Plages et ports ostréicoles (Taussat, Cassy). Accès D3 vers Bordeaux et Bassin.",

@@ -9,9 +9,9 @@ export const IGNY_COPY: VilleCopy = {
   pitchEn:
     "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
   seoHook: "conseil ingénierie & services aux",
   ecosystemFr:
     "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de TPE services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",

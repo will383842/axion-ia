@@ -9,9 +9,9 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   pitchEn:
     "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
   seoHook: "bassin ancenien",
   ecosystemFr:
     "Ancenis-Saint-Géréon (11 600 hab) est une commune nouvelle en bords de Loire, sous-préfecture historique de Loire-Atlantique est. Vignoble (coteaux d'Ancenis), agroalimentaire, industrie, logistique (axe Nantes-Angers), commerces et professions libérales. Proximité Nantes (40 min), Angers (45 min). Carrefour fluvial et routier dynamique (A11/N23).",

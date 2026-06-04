@@ -9,9 +9,9 @@ export const BONDOUFLE_COPY: VilleCopy = {
   pitchEn:
     "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce gros",
   ecosystemFr:
     "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",

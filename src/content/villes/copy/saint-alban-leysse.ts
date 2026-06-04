@@ -9,9 +9,9 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
   seoHook: "tertiaires services",
   ecosystemFr:
     "Saint-Alban-Leysse s'inscrit dans l'agglomération de Chambéry au sein de Grand Chambéry. Commune à dominante résidentielle avec un tissu économique porté par les PME tertiaires, les professions libérales (cabinets médicaux, avocats, comptables) et les TPE artisanat. Commerces de proximité actifs, sociétés de services tournées vers le bassin chambérien. Accès direct à La Ravoire et à l'aéroport Chambéry-Savoie (10 min).",

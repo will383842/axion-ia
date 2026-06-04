@@ -9,9 +9,9 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
   pitchEn:
     "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
   seoHook: "logistique, agro-alimentaire & Gâtinais",
   ecosystemFr:
     "Le Malesherbois est une commune nouvelle du sud Loiret (8 016 hab.), aux portes du Gâtinais entre Pithiviers (15 km) et Fontainebleau (30 km). Tissu TPE artisans et commerçants du centre-bourg, PME logistiques positionnées sur l'axe A19, agro-alimentaires, exploitants agricoles céréaliers Beauce-Gâtinais. Proximité Île-de-France (Étampes 20 km) favorisant navetteurs et activités de services.",

@@ -9,9 +9,9 @@ export const CHATEAUBRIANT_COPY: VilleCopy = {
   pitchEn:
     "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y travaille avec les organisations du territoire du bassin castelbriantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit sur place sur mesure.",
   seoHook: "bassin castelbriantais",
   ecosystemFr:
     "Châteaubriant (12 260 hab) est la sous-préfecture du nord de la Loire-Atlantique, aux marches de Bretagne. Château Renaissance classé, industrie agroalimentaire (viande bovine, laiteries), métallurgie, commerces de centre-ville, artisanat et professions libérales. Proximité Nantes (1h), Rennes (50 min), Laval (55 min). Bassin d'emploi rural structurant du nord-44.",

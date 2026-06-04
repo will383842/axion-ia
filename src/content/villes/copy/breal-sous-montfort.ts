@@ -9,9 +9,9 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
   pitchEn:
     "Bréal-sous-Montfort (35), commune résidentielle de l'ouest de Rennes Métropole en Ille-et-Vilaine, connaît une forte croissance démographique. Tissu de TPE artisans BTP portés par la dynamique immobilière, commerces de proximité, PME de services, professions libérales, indépendants et exploitants agricoles périurbains. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bréal-sous-Montfort (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services de l'ouest Rennes, professions libérales, indépendants et exploitants agricoles périurbains du secteur Montfort-Bréal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bréal-sous-Montfort (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services de l'ouest Rennes, professions libérales, indépendants et exploitants agricoles périurbains du secteur Montfort-Bréal.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bréal-sous-Montfort (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services de l'ouest Rennes, professions libérales, indépendants et exploitants agricoles périurbains du secteur Montfort-Bréal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bréal-sous-Montfort (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services de l'ouest Rennes, professions libérales, indépendants et exploitants agricoles périurbains du secteur Montfort-Bréal.",
   seoHook: "artisanat construction & commerce proximité",
   ecosystemFr:
     "Bréal-sous-Montfort est une commune résidentielle en forte croissance à l'ouest de Rennes, entre Montfort-sur-Meu et Bruz. L'économie locale repose sur les TPE artisans BTP portés par la dynamique immobilière, les commerces de proximité, les PME de services et tertiaire, les professions libérales et l'agriculture périurbaine (polyculture-élevage). Accès rapide à Rennes via N24 et rocade sud-ouest.",

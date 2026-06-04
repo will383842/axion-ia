@@ -9,9 +9,9 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
   pitchEn:
     "La Ferté-sous-Jouarre, commune de Seine-et-Marne (77) à la confluence de la Marne et du Petit Morin, 65 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-bourg, PME agroalimentaires et industrielles, professions libérales et indépendants. Axion-IA couvre les activités professionnelles du bassin du bassin fertois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit sur place sur mesure.",
   seoHook: "commerce centre-bourg & artisanat rénovation",
   ecosystemFr:
     "La Ferté-sous-Jouarre est une commune historique à la confluence de la Marne et du Petit Morin, connue pour ses meulières. Son tissu économique repose sur les commerces de centre-bourg, TPE artisanales, PME agroalimentaires, petite industrie et professions libérales. Proximité avec Jouarre, Saâcy-sur-Marne et Château-Thierry. Pôle de centralité du nord-est seine-et-marnais.",

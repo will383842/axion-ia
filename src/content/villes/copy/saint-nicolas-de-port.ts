@@ -9,9 +9,9 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
   ecosystemFr:
     "Saint-Nicolas-de-Port est une commune historique du sud-est de la Métropole du Grand Nancy, sur les bords de la Meurthe, célèbre pour sa basilique gothique flamboyant Saint-Nicolas et son pèlerinage. Son tissu économique repose sur les services, le commerce de proximité, l'artisanat BTP, la restauration et les professions libérales. Patrimoine touristique, gare TER, axe Nancy-Lunéville.",
   ecosystemEn:

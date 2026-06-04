@@ -10,9 +10,9 @@ export const DEVILLE_LES_ROUEN_COPY: VilleCopy = {
     "Deville-les-Rouen (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 10 800 habitants. Ville residentielle et commercante au nord-ouest de Rouen, elle accueille des TPE de services, des PME tertiaires, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "services, tertiaire & agglo Rouen",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Deville-les-Rouen (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Deville-les-Rouen (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Deville-les-Rouen (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Deville-les-Rouen (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Deville-les-Rouen est situee en rive droite de la Seine, au nord-ouest de Rouen. Partie integrante de la Metropole Rouen Normandie, elle dispose d'un tissu de commerces de proximite, TPE de services, artisanat, professions liberales et PME tertiaires. Tramway et acces A150.",
   ecosystemEn:

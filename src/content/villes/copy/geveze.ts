@@ -9,9 +9,9 @@ export const GEVEZE_COPY: VilleCopy = {
   pitchEn:
     "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit sur place sur mesure.",
   ecosystemFr:
     "Gévezé est une commune résidentielle en croissance au nord-ouest de Rennes Métropole (Ille-et-Vilaine). Son économie locale combine artisanat du bâtiment, commerces de centre-bourg, services aux entreprises, professions libérales et agriculture périurbaine, dans un cadre attractif à proximité immédiate de la capitale bretonne.",
   ecosystemEn:

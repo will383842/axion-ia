@@ -9,9 +9,9 @@ export const SAINT_JAMES_COPY: VilleCopy = {
   pitchEn:
     "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-James (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg, prestataires tourisme mémoriel, professions libérales et services du sud Manche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-James (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg, prestataires tourisme mémoriel, professions libérales et services du sud Manche.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-James (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg, prestataires tourisme mémoriel, professions libérales et services du sud Manche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-James (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg, prestataires tourisme mémoriel, professions libérales et services du sud Manche.",
   seoHook: "élevage bovin & agriculture grandes",
   ecosystemFr:
     "Saint-James est un bourg rural du bocage sud-manchois, situé entre Avranches et Fougères, connu pour son cimetière militaire américain (plus de 4 400 tombes). L'économie repose sur l'élevage bovin (lait et viande), l'agriculture, les commerces de proximité et artisanat, le tourisme mémoriel lié au Débarquement et à la Bataille de Normandie, et les services ruraux. Accès vers Avranches (15 min) et Fougères (20 min).",

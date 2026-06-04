@@ -9,9 +9,9 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
   pitchEn:
     "Farébersviller (57), commune mosellane du Bassin houiller lorrain, à proximité de Freyming-Merlebach et Saint-Avold, dans un tissu économique de reconversion post-minière. TPE/PME commerce, services, BTP, artisanat et logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Farébersviller (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs du Bassin houiller mosellan en reconversion.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Farébersviller (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs du Bassin houiller mosellan en reconversion.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Farébersviller (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs du Bassin houiller mosellan en reconversion.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Farébersviller (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs du Bassin houiller mosellan en reconversion.",
   ecosystemFr:
     "Farébersviller est une commune mosellane du Bassin houiller, en reconversion post-minière active. Tissu TPE/PME commerce, services, BTP, artisanat, logistique. Proximité de Freyming-Merlebach, Saint-Avold et de la zone commerciale régionale.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const PROVINS_COPY: VilleCopy = {
   pitchEn:
     "Provins (77), cite medievale inscrite au patrimoine mondial UNESCO et sous-prefecture de Seine-et-Marne, est celebre pour ses foires de Champagne et son patrimoine exceptionnel (remparts, tour Cesar, souterrains). Tissu TPE/PME tourisme patrimonial, hotellerie-restauration, commerce, artisanat, administration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Provins est une cite medievale inscrite au patrimoine mondial UNESCO depuis 2001, sous-prefecture de Seine-et-Marne. Les foires de Champagne, les spectacles medievaux (vol de l'aigle, chevalerie) et le patrimoine exceptionnel (remparts, tour Cesar, souterrains) generent un tourisme culturel majeur. Hotellerie-restauration, commerce, artisanat et administration completent le tissu economique.",

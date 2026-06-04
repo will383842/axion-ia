@@ -9,9 +9,9 @@ export const JUVIGNAC_COPY: VilleCopy = {
   pitchEn:
     "Juvignac (34), commune de 14 055 habitants dans l'agglomération de Montpellier ouest. Son économie repose sur un tissu de TPE et PME du commerce (zone Ode à la Mer), des services aux entreprises, de la restauration, de la santé, du sport et de l'immobilier résidentiel en forte croissance. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit sur place sur mesure.",
   ecosystemFr:
     "Juvignac est une commune en forte croissance de la première couronne ouest de Montpellier. Son économie s'appuie sur la zone commerciale Ode à la Mer (grande distribution, enseignes nationales), les services aux entreprises, la restauration, les professions libérales (santé, conseil), l'immobilier et le secteur sportif (golf). Tramway T3 vers Montpellier centre.",
   ecosystemEn:

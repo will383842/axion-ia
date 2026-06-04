@@ -47,7 +47,7 @@ export const NIMES_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nîmes (30) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du Gard — commerce, services, BTP, agroalimentaire, ingénierie — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Le Parc Georges Besse, la zone Grézan et les entreprises implantées autour du CHU Carémeau font partie de notre terrain d'intervention régulier. Tarifs publics, aucun lock-in.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nîmes (30) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du Gard — commerce, services, BTP, agroalimentaire, ingénierie — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Le Parc Georges Besse, la zone Grézan et les entreprises implantées autour du CHU Carémeau font partie de notre terrain d'intervention régulier. Tarifs publics, aucun lock-in.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Nîmes (30) on site. We support micro-businesses, SMEs, mid-caps and large companies in the Gard — trade, services, construction, agri-food, engineering — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. Parc Georges Besse, the Grézan zone and companies around CHU Carémeau are part of our regular intervention area. Public pricing, no lock-in.",
 

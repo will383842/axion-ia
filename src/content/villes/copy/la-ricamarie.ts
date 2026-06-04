@@ -9,9 +9,9 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
   pitchEn:
     "La Ricamarie (42), commune en banlieue sud immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin houiller stéphanois). Tissu PME industrielles diversifiées (reconversion), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "industrielles diversifiées & héritage minier",
   ecosystemFr:
     "La Ricamarie est intégrée à Saint-Étienne Métropole, en banlieue sud immédiate de Saint-Étienne. Héritage minier important (ancien bassin houiller stéphanois historique, mémoire ouvrière). Reconversion contemporaine vers tissu PME industrielles diversifiées, tertiaires, TPE artisanat BTP, commerces.",

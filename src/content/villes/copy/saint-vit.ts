@@ -9,9 +9,9 @@ export const SAINT_VIT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y travaille avec les organisations du territoire entre Besançon et Dole.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
   seoHook: "artisanat services & industrie logistique",
   ecosystemFr:
     "Saint-Vit est un bourg-centre de la vallée du Doubs, positionné sur l'axe stratégique Besançon-Dole (A36/D673). L'économie locale associe petite industrie, logistique, artisanat BTP, commerce de proximité et agriculture de plaine. La commune bénéficie de la dynamique périurbaine de Besançon tout en conservant un caractère rural franc-comtois.",

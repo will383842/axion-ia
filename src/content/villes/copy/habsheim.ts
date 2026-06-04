@@ -9,9 +9,9 @@ export const HABSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
   ecosystemFr:
     "Habsheim est intégrée à Mulhouse Alsace Agglomération, à la jonction de la plaine d'Alsace et du Sundgau. Son économie s'appuie sur un terroir viticole (route des vins d'Alsace, AOC pinot blanc, gewurztraminer), un tissu artisanal et industriel diffus, un aérodrome ULM-aviation légère, des commerces de proximité et des services aux entreprises. La commune profite de la dynamique économique transfrontalière de Mulhouse-Bâle.",
   ecosystemEn:

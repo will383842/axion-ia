@@ -9,9 +9,9 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tourisme thermal & tertiaires ouest",
   ecosystemFr:
     "Charbonnières-les-Bains est intégrée à la Métropole de Lyon, en banlieue ouest. Station thermale historique notable. Abrite le casino Le Lyon Vert (l'un des casinos majeurs de l'agglomération lyonnaise). Tissu PME tertiaires, tourisme thermal/casino, professions libérales, TPE artisanat BTP, commerces.",

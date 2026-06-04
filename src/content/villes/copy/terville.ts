@@ -9,9 +9,9 @@ export const TERVILLE_COPY: VilleCopy = {
   pitchEn:
     "Terville (57), commune de l'agglomération de Thionville adossée au centre commercial Géric, pôle commercial et de services majeur du nord mosellan. Tissu TPE/PME commerce, services, restauration, professions libérales, BTP et artisanat. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Terville (57). Nous accompagnons tous types d'activités : TPE/PME commerce et restauration, services, professions libérales, artisans BTP et enseignes du pôle commercial Géric dans l'agglomération de Thionville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Terville (57). Nous accompagnons tous types d'activités : TPE/PME commerce et restauration, services, professions libérales, artisans BTP et enseignes du pôle commercial Géric dans l'agglomération de Thionville.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Terville (57). Nous accompagnons tous types d'activités : TPE/PME commerce et restauration, services, professions libérales, artisans BTP et enseignes du pôle commercial Géric dans l'agglomération de Thionville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Terville (57). Nous accompagnons tous types d'activités : TPE/PME commerce et restauration, services, professions libérales, artisans BTP et enseignes du pôle commercial Géric dans l'agglomération de Thionville.",
   ecosystemFr:
     "Terville est une commune de l'agglomération de Thionville, connue pour le centre commercial Géric (cinéma, enseignes nationales, restauration). Pôle commercial et tertiaire du nord mosellan. Tissu TPE/PME commerce, restauration, services, professions libérales, BTP et artisanat. Proximité Luxembourg.",
   ecosystemEn:

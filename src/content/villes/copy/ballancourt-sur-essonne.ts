@@ -9,9 +9,9 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   pitchEn:
     "Ballancourt-sur-Essonne (91), commune résidentielle semi-rurale de la vallée de l'Essonne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
   seoHook: "services & agriculture locale",
   ecosystemFr:
     "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",

@@ -9,9 +9,9 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
   pitchEn:
     "Marsannay-la-Côte (21), commune de Côte-d'Or au sud de Dijon, est connue pour son vignoble AOC Marsannay, première appellation de la Côte de Nuits. Tissu viticulture AOC, PME oenotourisme, TPE artisans, commerces, services périurbains dijonnais. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marsannay-la-Côte (21). Nous accompagnons TPE et PME : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsannay-la-Côte (21). Nous accompagnons TPE et PME : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marsannay-la-Côte (21). Nous accompagnons TPE et PME : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsannay-la-Côte (21). Nous accompagnons TPE et PME : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
   seoHook: "viticulture marsannay & oenotourisme route",
   ecosystemFr:
     "Marsannay-la-Côte est positionnée sur la Côte de Nuits, au sud immédiat de Dijon. Première appellation village de la Côte de Nuits (AOC Marsannay rouge, rosé, blanc). Économie : viticulture AOC, oenotourisme, PME services, TPE artisans, commerces de proximité, périurbain dijonnais.",

@@ -9,9 +9,9 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-du-Perray (91), commune résidentielle de l'Essonne à 30 km au sud-est de Paris dans l'arrondissement d'Évry, allie cadre pavillonnaire et proximité du pôle économique Évry-Sénart. Tissu TPE artisanat BTP, PME services, commerces de proximité, professions libérales, activités péri-urbaines. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Pierre-du-Perray est une commune résidentielle de l'Essonne, rattachée à la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart. Proximité immédiate Évry-Courcouronnes et ville nouvelle de Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, restauration et services à la personne.",

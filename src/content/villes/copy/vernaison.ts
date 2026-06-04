@@ -9,9 +9,9 @@ export const VERNAISON_COPY: VilleCopy = {
   pitchEn:
     "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires sud",
   ecosystemFr:
     "Vernaison est intégrée à la Métropole de Lyon, en banlieue sud (rive droite Rhône). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",

@@ -10,9 +10,9 @@ export const PLOERMEL_COPY: VilleCopy = {
     "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA collabore avec toutes les structures locales du centre Morbihan.",
   seoHook: "tourisme intérieur, artisanat & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Ploërmel est la ville-centre du Morbihan intérieur, structurée autour du lac au Duc et d'un bassin de vie de plus de 25 000 habitants. L'économie locale repose sur les services à la personne, l'artisanat BTP, le commerce de centre-ville, les professions de santé, l'agroalimentaire et un tourisme intérieur dynamique (lac, forêt de Brocéliande à proximité, randonnée).",
   ecosystemEn:

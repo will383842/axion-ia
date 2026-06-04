@@ -9,9 +9,9 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
   seoHook: "vallée des",
   ecosystemFr:
     "Saint-Rémy-de-Provence est la cité de référence des Alpilles, célèbre pour Van Gogh (asile Saint-Paul-de-Mausole), Nostradamus et le site antique de Glanum. Tourisme international haut de gamme, hôtellerie de charme, restaurants gastronomiques, galeries d'art, oléiculture AOP Vallée des Baux et viticulture. Tissu dense de TPE artisanat d'art et professions libérales.",

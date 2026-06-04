@@ -9,9 +9,9 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
   pitchEn:
     "La Chapelle-d'Armentières (59), commune des bords de Lys dans l'agglomération de Lille ouest, frontalière de la Belgique, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Chapelle-d'Armentières (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Chapelle-d'Armentières (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Chapelle-d'Armentières (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Chapelle-d'Armentières (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "La Chapelle-d'Armentières est une commune des bords de Lys dans l'agglomération de Lille ouest, voisine d'Armentières et frontalière de la Belgique. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",

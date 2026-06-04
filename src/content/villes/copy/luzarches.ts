@@ -9,9 +9,9 @@ export const LUZARCHES_COPY: VilleCopy = {
   pitchEn:
     "Luzarches (95), bourg historique du Pays de France au nord du Val-d'Oise, conjugue patrimoine médiéval et tissu économique local dynamique. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",

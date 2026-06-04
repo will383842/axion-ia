@@ -9,9 +9,9 @@ export const OBERNAI_COPY: VilleCopy = {
   pitchEn:
     "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit sur place sur mesure.",
   seoHook: "viticulture domaines & brasserie boissons",
   ecosystemFr:
     "Obernai est l'une des étapes phares de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile. Tissu économique dominé par la viticulture (AOC Alsace, Riesling, Gewurztraminer), la brasserie Kronenbourg-Obernai (production majeure), l'hôtellerie-restauration et le tourisme patrimonial. TPE/PME viticoles, commerce du centre historique, artisans et professions libérales du Piémont des Vosges.",

@@ -9,9 +9,9 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Juvisy-sur-Orge (91), carrefour ferroviaire majeur d'Île-de-France (RER C et RER D), se situe au confluent de la Seine et de l'Orge. PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "tertiaires & commerce gare",
   ecosystemFr:
     "Juvisy-sur-Orge est un carrefour ferroviaire majeur (gare RER C/D, 2e gare RER d'Île-de-France en trafic), au confluent Seine-Orge. Tissu PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration.",

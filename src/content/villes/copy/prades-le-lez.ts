@@ -9,9 +9,9 @@ export const PRADES_LE_LEZ_COPY: VilleCopy = {
   pitchEn:
     "Prades-le-Lez (34), commune résidentielle du nord de Montpellier, source du Lez (alimentation en eau de Montpellier). Cadre naturel garrigue, forte croissance. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Prades-le-Lez (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord montpelliérain. Code custom, jamais no-code, conformité RGPD garantie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Prades-le-Lez (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord montpelliérain. Code custom, jamais no-code, conformité RGPD garantie.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Prades-le-Lez (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord montpelliérain. Code custom, jamais no-code, conformité RGPD garantie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Prades-le-Lez (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord montpelliérain. Code custom, jamais no-code, conformité RGPD garantie.",
   ecosystemFr:
     "Prades-le-Lez est une commune résidentielle du nord de Montpellier, connue pour la source du Lez (alimentation en eau de la métropole). Cadre naturel garrigue et bois, forte croissance démographique. Tissu TPE professions libérales, PME services, artisans BTP, commerces de proximité.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
   pitchEn:
     "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Parentis-en-Born (40). Nous accompagnons TPE et PME du tourisme lacustre, exploitants forestiers, entreprises pétrolières et parapétrolières, agriculteurs, commerçants, artisans BTP et professions libérales du pays de Born.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parentis-en-Born (40). Nous accompagnons TPE et PME du tourisme lacustre, exploitants forestiers, entreprises pétrolières et parapétrolières, agriculteurs, commerçants, artisans BTP et professions libérales du pays de Born.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Parentis-en-Born (40). Nous accompagnons TPE et PME du tourisme lacustre, exploitants forestiers, entreprises pétrolières et parapétrolières, agriculteurs, commerçants, artisans BTP et professions libérales du pays de Born.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parentis-en-Born (40). Nous accompagnons TPE et PME du tourisme lacustre, exploitants forestiers, entreprises pétrolières et parapétrolières, agriculteurs, commerçants, artisans BTP et professions libérales du pays de Born.",
   seoHook: "lac, pétrole & forêt landaise",
   ecosystemFr:
     "Parentis-en-Born est la troisième ville du pays de Born, sur la rive est du lac de Parentis-Biscarrosse (3 540 ha, deuxième des Landes). La commune est historiquement liée à l'exploitation pétrolière (gisement découvert en 1954, toujours actif). Économie diversifiée : filière pétrolière et parapétrolière, exploitation forestière landaise, tourisme lacustre, agriculture (maïs, élevage), TPE artisans, commerces de bourg.",

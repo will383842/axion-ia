@@ -9,9 +9,9 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   pitchEn:
     "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
   seoHook: "services, professions libérales & horticulture",
   ecosystemFr:
     "Saint-Denis-en-Val est une commune résidentielle de l'agglo Orléans Métropole (7 766 hab.), en rive sud de Loire à 8 km du centre d'Orléans. Tissu TPE professions libérales (santé, juridique, conseil), commerçants de proximité, PME services aux entreprises, artisans BTP, maraîchers et horticulteurs tirant parti des sols fertiles du Val de Loire. Cadre semi-rural prisé des cadres orléanais.",

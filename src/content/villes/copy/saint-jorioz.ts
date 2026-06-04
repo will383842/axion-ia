@@ -9,9 +9,9 @@ export const SAINT_JORIOZ_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
   seoHook: "tourisme lacustre & professions libérales",
   ecosystemFr:
     "Saint-Jorioz est une commune résidentielle prisée de la rive ouest du lac d'Annecy. La plage municipale, la réserve naturelle du Bout du Lac et la voie verte (piste cyclable Annecy-Albertville) attirent un tourisme estival fort. Proximité immédiate d'Annecy (15 min). Économie locale dominée par les hébergements touristiques, la restauration, les commerces de proximité, l'artisanat BTP et les professions libérales.",

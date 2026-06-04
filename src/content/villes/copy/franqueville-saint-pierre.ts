@@ -10,9 +10,9 @@ export const FRANQUEVILLE_SAINT_PIERRE_COPY: VilleCopy = {
     "Franqueville-Saint-Pierre (76), commune residentielle de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle prisee a l'est de Rouen, elle accueille des professions liberales, des TPE de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "residentiel, professions liberales & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Franqueville-Saint-Pierre (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Franqueville-Saint-Pierre (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Franqueville-Saint-Pierre (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Franqueville-Saint-Pierre (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Franqueville-Saint-Pierre est une commune residentielle prisee a l'est de Rouen, dans la Metropole Rouen Normandie. Tissu economique domine par les professions liberales, TPE de services, commerces de proximite et artisanat. Proximite immediate du Mesnil-Esnard et de Bonsecours.",
   ecosystemEn:

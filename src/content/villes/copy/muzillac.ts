@@ -9,9 +9,9 @@ export const MUZILLAC_COPY: VilleCopy = {
   pitchEn:
     "Muzillac (56), commune du littoral morbihannais entre Vannes et La Roche-Bernard, est un carrefour entre marais d'Arzal, estuaire de la Vilaine et océan. TPE artisans, PME tertiaires, commerces de proximité, ostréiculture, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
   seoHook: "tourisme littoral & ostréiculture pêche",
   ecosystemFr:
     "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de TPE artisans (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",

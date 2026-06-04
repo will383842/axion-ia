@@ -9,9 +9,9 @@ export const LES_SORINIERES_COPY: VilleCopy = {
   pitchEn:
     "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Sorinières (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et logistique, professions libérales, artisans BTP, commerçants et entreprises de la couronne sud de Nantes Métropole (axe Nantes-Clisson).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Sorinières (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et logistique, professions libérales, artisans BTP, commerçants et entreprises de la couronne sud de Nantes Métropole (axe Nantes-Clisson).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Sorinières (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et logistique, professions libérales, artisans BTP, commerçants et entreprises de la couronne sud de Nantes Métropole (axe Nantes-Clisson).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Sorinières (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et logistique, professions libérales, artisans BTP, commerçants et entreprises de la couronne sud de Nantes Métropole (axe Nantes-Clisson).",
   seoHook: "tertiaires services & logistique distribution",
   ecosystemFr:
     "Les Sorinières est une commune résidentielle de la première couronne sud de Nantes Métropole, sur l'axe Nantes-Clisson (D59/D149). Proximité immédiate du périphérique sud nantais et de la zone commerciale Vertou/Sorinières. Tissu TPE tertiaires, PME services/logistique, professions libérales, artisanat BTP, commerces de proximité. Cadre péri-urbain attractif.",

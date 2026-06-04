@@ -9,9 +9,9 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
   pitchEn:
     "Val de Briey (54), commune nouvelle du Pays Haut en Meurthe-et-Moselle issue de la fusion de Briey, Mance et Mancieulles, conjugue héritage sidérurgique reconverti et tissu PME industriel actif. Tissu TPE/PME industrie, sous-traitance mécanique, BTP, commerce, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : TPE/PME industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : TPE/PME industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : TPE/PME industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : TPE/PME industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
   ecosystemFr:
     "Val de Briey est une commune nouvelle du Pays Haut nord-meurthe-et-mosellan, créée par fusion de Briey, Mance et Mancieulles. Son tissu économique mêle héritage sidérurgique reconverti, PME industrielles, sous-traitance mécanique, BTP, commerce de proximité et services. Sous-préfecture, lac de la Sangsue, zones d'activités du Pays Haut.",
   ecosystemEn:

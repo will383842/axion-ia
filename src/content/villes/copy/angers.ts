@@ -56,7 +56,7 @@ export const ANGERS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Angers (49) sur site dans toute la métropole Angers Loire Métropole et le bassin Maine-et-Loire. Nous accompagnons les TPE, PME, ETI et grandes entreprises angevines — filière végétale (Vegepolys Valley), industrie (Scania, Eviden/Atos, Thales), agroalimentaire (Cointreau), tertiaire et French Tech Angers — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Angers (49) sur site dans toute la métropole Angers Loire Métropole et le bassin Maine-et-Loire. Nous accompagnons les TPE, PME, ETI et grandes entreprises angevines — filière végétale (Vegepolys Valley), industrie (Scania, Eviden/Atos, Thales), agroalimentaire (Cointreau), tertiaire et French Tech Angers — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Angers (49) on site across the Angers Loire Métropole and the Maine-et-Loire area. We support Angers micro-businesses, SMEs, mid-caps and large enterprises — plant industry (Vegepolys Valley), manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau), services and French Tech Angers — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in.",
 

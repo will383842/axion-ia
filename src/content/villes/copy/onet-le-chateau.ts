@@ -9,9 +9,9 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   pitchEn:
     "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit sur place sur mesure.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Onet-le-Château est la première commune périurbaine de Rodez et l'un des pôles commerciaux majeurs de l'Aveyron. Zones d'activités tertiaires et commerciales (Cap de Crès, Bel-Air), PME services aux entreprises, TPE artisans BTP, professions libérales (santé, juridique), grande distribution. Bassin d'emploi dynamique en complément de Rodez centre.",

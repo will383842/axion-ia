@@ -9,9 +9,9 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
   pitchEn:
     "Cappelle-la-Grande (59), commune de 7 839 habitants dans le Nord, intégrée à l'agglomération de Dunkerque, est une ville résidentielle adossée au pôle industrialo-portuaire dunkerquois et à son tissu TPE/PME de services, commerces et artisanat. Tissu TPE/PME services, commerces de proximité, artisanat, restauration, sous-traitance industrielle, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cappelle-la-Grande (59). Nous accompagnons tous types d'activités : TPE/PME services et commerces cappellois, artisans, restaurateurs, professions libérales, sous-traitants industriels et acteurs économiques de l'agglomération de Dunkerque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cappelle-la-Grande (59). Nous accompagnons tous types d'activités : TPE/PME services et commerces cappellois, artisans, restaurateurs, professions libérales, sous-traitants industriels et acteurs économiques de l'agglomération de Dunkerque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cappelle-la-Grande (59). Nous accompagnons tous types d'activités : TPE/PME services et commerces cappellois, artisans, restaurateurs, professions libérales, sous-traitants industriels et acteurs économiques de l'agglomération de Dunkerque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cappelle-la-Grande (59). Nous accompagnons tous types d'activités : TPE/PME services et commerces cappellois, artisans, restaurateurs, professions libérales, sous-traitants industriels et acteurs économiques de l'agglomération de Dunkerque.",
   ecosystemFr:
     "Cappelle-la-Grande est une commune résidentielle de l'agglomération de Dunkerque, structurée autour des services de proximité, des commerces et de l'artisanat, en lien direct avec le pôle industrialo-portuaire dunkerquois. Tissu TPE/PME services, commerces, artisanat, restauration, sous-traitance, professions libérales et services aux entreprises.",
   ecosystemEn:

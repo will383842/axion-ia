@@ -9,9 +9,9 @@ export const FIRMINY_COPY: VilleCopy = {
   pitchEn:
     "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "vallée ondaine",
   ecosystemFr:
     "Firminy est intégrée à Saint-Étienne Métropole, dans la vallée de l'Ondaine (héritage industriel métallurgique fort). Réputation internationale grâce au Site Le Corbusier (Firminy-Vert : église Saint-Pierre, Maison de la Culture, Unité d'habitation, stade — ensemble inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, tourisme architectural, TPE artisanat BTP, commerces.",

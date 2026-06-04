@@ -9,9 +9,9 @@ export const ENSISHEIM_COPY: VilleCopy = {
   pitchEn:
     "Ensisheim (68), commune du centre du Haut-Rhin en Alsace, marquée par le palais de la Régence et l'ancien bassin potassique. Tissu TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du Sud-Alsace. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit sur place sur mesure.",
   seoHook: "industrie légère & artisanat commerce",
   ecosystemFr:
     "Ensisheim est une commune historique du centre du Haut-Rhin, ancrée dans l'ancien bassin potassique alsacien et marquée par son palais de la Régence et la célèbre météorite de 1492. Son tissu économique mêle TPE artisanat, PME industrie légère, commerces de proximité et exploitations agricoles. Proximité directe avec Mulhouse, Colmar et Guebwiller.",

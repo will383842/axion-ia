@@ -9,9 +9,9 @@ export const CHEVREUSE_COPY: VilleCopy = {
   pitchEn:
     "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
   seoHook: "commerce proximité & tourisme vert",
   ecosystemFr:
     "Chevreuse est un bourg historique des Yvelines au cœur du PNR de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Cadre naturel préservé, tourisme vert actif. Tissu économique : TPE artisans et commerçants, PME de services, professions libérales, hébergement touristique, agriculture et maraîchage. Communes voisines : Saint-Rémy-lès-Chevreuse, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette.",

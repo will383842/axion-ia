@@ -9,9 +9,9 @@ export const VIRIAT_COPY: VilleCopy = {
   pitchEn:
     "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   seoHook: "tertiaires agglomération & agriculture bresse",
   ecosystemFr:
     "Viriat est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse (volaille de Bresse AOC à proximité), TPE artisanat BTP, commerces.",

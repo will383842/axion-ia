@@ -48,7 +48,7 @@ export const AMIENS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Amiens (80) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin amiénois — industrie manufacturière (P&G, Valeo), R&D (Nestlé Purina), bioéconomie (B4C), commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amiens (80) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin amiénois — industrie manufacturière (P&G, Valeo), R&D (Nestlé Purina), bioéconomie (B4C), commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Amiens (80) on site. We support micro-businesses, SMEs, mid-caps and large enterprises in the Amiens basin — manufacturing (P&G, Valeo), R&D (Nestlé Purina), bioeconomy (B4C), trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

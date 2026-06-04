@@ -9,9 +9,9 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
   pitchEn:
     "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   seoHook: "bassin de marennes",
   ecosystemFr:
     "Marennes-Hiers-Brouage est la capitale de l'huître Marennes-Oléron (IGP), premier bassin ostréicole d'Europe. Citadelle de Brouage (patrimoine Vauban/Champlain). PME ostréicoles et aquacoles, tourisme patrimonial et gastronomique, TPE artisans, commerces de centre-ville. Position stratégique entre Rochefort et l'île d'Oléron.",

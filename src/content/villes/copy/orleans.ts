@@ -47,7 +47,7 @@ export const ORLEANS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Orléans (45) sur site — centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet et communes de l'agglomération. Nous accompagnons les TPE, PME, ETI et grandes entreprises orléanaises (cosmétique, pharmaceutique, industrie agro-machinisme, géosciences, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orléans (45) sur site — centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet et communes de l'agglomération. Nous accompagnons les TPE, PME, ETI et grandes entreprises orléanaises (cosmétique, pharmaceutique, industrie agro-machinisme, géosciences, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Orléans (45) on site — city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet and agglomération communes. We support Orléans micro-businesses, SMEs, mid-caps and large enterprises (cosmetics, pharma, agri-machinery, geosciences, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

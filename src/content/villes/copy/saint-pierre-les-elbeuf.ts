@@ -10,9 +10,9 @@ export const SAINT_PIERRE_LES_ELBEUF_COPY: VilleCopy = {
     "Saint-Pierre-les-Elbeuf (76), commune de l'agglomeration d'Elbeuf en Seine-Maritime, reunit pres de 8 310 habitants. Ville residentielle et commercante en bord de Seine, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, artisanat & agglo Elbeuf",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Pierre-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Pierre-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Pierre-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Pierre-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Pierre-les-Elbeuf fait partie de la Metropole Rouen Normandie, dans le secteur d'Elbeuf en bord de Seine. Tissu de commerces, TPE de services, artisanat BTP, professions liberales et PME tertiaires. Acces A13 et gare Elbeuf-Saint-Aubin a proximite.",
   ecosystemEn:

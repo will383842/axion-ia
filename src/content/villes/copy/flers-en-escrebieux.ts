@@ -9,9 +9,9 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
   pitchEn:
     "Flers-en-Escrebieux (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 424 habitants. Tissu TPE artisans BTP, PME logistiques (A21/A1), commerces de proximité, services aux entreprises et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Flers-en-Escrebieux (59). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, PME logistiques et transport (carrefour A21/A1), professions libérales, services aux entreprises et acteurs de la reconversion du bassin minier du Douaisis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Flers-en-Escrebieux (59). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, PME logistiques et transport (carrefour A21/A1), professions libérales, services aux entreprises et acteurs de la reconversion du bassin minier du Douaisis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Flers-en-Escrebieux (59). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, PME logistiques et transport (carrefour A21/A1), professions libérales, services aux entreprises et acteurs de la reconversion du bassin minier du Douaisis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Flers-en-Escrebieux (59). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, PME logistiques et transport (carrefour A21/A1), professions libérales, services aux entreprises et acteurs de la reconversion du bassin minier du Douaisis.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Flers-en-Escrebieux fait partie de la communauté d'agglomération du Douaisis, héritière du bassin minier inscrit à l'UNESCO. Économie en reconversion tertiaire et logistique grâce au nœud autoroutier A21/A1. TPE artisanat BTP, PME transport, commerces de proximité et professions libérales composent le tissu local.",

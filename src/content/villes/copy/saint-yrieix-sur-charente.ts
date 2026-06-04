@@ -9,9 +9,9 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Yrieix-sur-Charente (16), commune de l'agglomération d'Angoulême en Charente, pôle résidentiel et tertiaire du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, zones commerciales, services de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   seoHook: "commerce zones & services aux",
   ecosystemFr:
     "Saint-Yrieix-sur-Charente est une commune résidentielle et tertiaire de l'agglomération GrandAngoulême. Zones commerciales dynamiques, PME tertiaires et de services, TPE artisans BTP, professions libérales et de santé, commerces de proximité. Cadre verdoyant en bords de Charente.",

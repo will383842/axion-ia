@@ -50,7 +50,7 @@ export const ROUEN_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rouen (76) sur site — Technopôle du Madrillet, Plateau de la Vatine, quais de Seine, communes de la Métropole Rouen Normandie. Nous accompagnons les TPE, PME, ETI et grandes entreprises rouennaises (industrie, chimie, logistique, pharma, assurance, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rouen (76) sur site — Technopôle du Madrillet, Plateau de la Vatine, quais de Seine, communes de la Métropole Rouen Normandie. Nous accompagnons les TPE, PME, ETI et grandes entreprises rouennaises (industrie, chimie, logistique, pharma, assurance, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Rouen (76) on site — Technopôle du Madrillet, Plateau de la Vatine, Seine quays, Métropole Rouen Normandie communes. We support Rouen micro-businesses, SMEs, mid-caps and large enterprises (industry, chemicals, logistics, pharma, insurance, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

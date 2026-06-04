@@ -9,9 +9,9 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Cambo-les-Bains (64), station thermale du Pays Basque intérieur, 6 760 habitants. Villa Arnaga (Edmond Rostand), thermalisme, tourisme culturel, TPE artisans du terroir et commerces locaux. Axion-IA y travaille avec les organisations du territoire du Pays Basque intérieur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit sur place sur mesure.",
   seoHook: "thermalisme bien-être & tourisme culturel",
   ecosystemFr:
     "Cambo-les-Bains est une station thermale du Pays Basque intérieur, 6 760 habitants. Thermes (rhumatologie, voies respiratoires), villa Arnaga (musée Rostand), tourisme culturel et bien-être. Tissu de TPE artisans du terroir basque, hébergements thermaux, commerces locaux et professions de santé.",

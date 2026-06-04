@@ -9,9 +9,9 @@ export const NIEUL_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Nieul-sur-Mer (17), commune résidentielle au nord de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie littoral prisé. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nieul-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune littorale prisée de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nieul-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune littorale prisée de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nieul-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune littorale prisée de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nieul-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune littorale prisée de l'agglomération de La Rochelle.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Nieul-sur-Mer est une commune résidentielle littorale prisée du nord de l'agglomération de La Rochelle. PME tertiaires, TPE artisans BTP, commerces de proximité, professions libérales et de santé, services à la personne. Cadre de vie bord de mer, marais littoraux, proximité du centre de La Rochelle.",

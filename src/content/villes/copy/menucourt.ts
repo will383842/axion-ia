@@ -9,9 +9,9 @@ export const MENUCOURT_COPY: VilleCopy = {
   pitchEn:
     "Menucourt (95), commune résidentielle de l'agglomération de Cergy-Pontoise à 40 km au nord-ouest de Paris, allie cadre boisé et proximité économique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Menucourt est une commune résidentielle boisée de l'agglomération de Cergy-Pontoise, bénéficiant de la dynamique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services aux entreprises, professions libérales, restauration, services à la personne.",

@@ -9,9 +9,9 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Memmie (51), commune limitrophe de Châlons-en-Champagne, bénéficie de zones commerciales et d'activités importantes. TPE commerces et services, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit sur place sur mesure.",
   seoHook: "commerce détail & distribution logistique",
   ecosystemFr:
     "Saint-Memmie est une commune résidentielle et commerciale limitrophe de Châlons-en-Champagne, chef-lieu de la Marne. Zones d'activités et commerciales dynamiques. Tissu TPE/PME : commerce, distribution, logistique, BTP, tertiaire, professions libérales.",

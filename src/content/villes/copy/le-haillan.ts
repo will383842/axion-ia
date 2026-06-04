@@ -9,9 +9,9 @@ export const LE_HAILLAN_COPY: VilleCopy = {
   pitchEn:
     "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "proche bordeaux",
   ecosystemFr:
     "Le Haillan fait partie de l'arc ouest de Bordeaux Métropole. Zones d'activités tertiaires (sièges entreprises, cabinets conseil, agences communication), proximité Mérignac (aéroport, centre commercial), tissu TPE résidentiel et commerces de proximité.",

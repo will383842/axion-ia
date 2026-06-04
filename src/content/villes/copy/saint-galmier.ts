@@ -9,9 +9,9 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
   pitchEn:
     "Saint-Galmier (42), commune de la plaine du Forez dans la Loire, est mondialement connue pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante d'origine locale). Tissu PME industrielles agroalimentaires (eau minérale, embouteillage), tourisme thermal/oenologie, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
   seoHook: "eau minérale & agroalimentaires",
   ecosystemFr:
     "Saint-Galmier est mondialement réputée pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante issue du sous-sol local, distribuée internationalement). Tissu PME industrielles agroalimentaires (filière eau minérale, embouteillage), tourisme thermal historique, casino, oenologie périphérique, TPE artisanat BTP, commerces.",

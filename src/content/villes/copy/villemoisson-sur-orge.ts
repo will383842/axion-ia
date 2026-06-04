@@ -9,9 +9,9 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Villemoisson-sur-Orge (91), commune résidentielle de la vallée de l'Orge en Essonne, est intégrée au bassin d'emploi nord-essonnien entre Sainte-Geneviève-des-Bois et Épinay-sur-Orge. Tissu TPE artisans, professions libérales, commerces de proximité et PME de services. Axion-IA y intervient pour tous types d'activités de la vallée de l'Orge.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villemoisson-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisans BTP, professions libérales, commerçants de proximité, PME de services, indépendants et structures de la vallée de l'Orge entre Sainte-Geneviève-des-Bois et Juvisy-sur-Orge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemoisson-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisans BTP, professions libérales, commerçants de proximité, PME de services, indépendants et structures de la vallée de l'Orge entre Sainte-Geneviève-des-Bois et Juvisy-sur-Orge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villemoisson-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisans BTP, professions libérales, commerçants de proximité, PME de services, indépendants et structures de la vallée de l'Orge entre Sainte-Geneviève-des-Bois et Juvisy-sur-Orge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemoisson-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisans BTP, professions libérales, commerçants de proximité, PME de services, indépendants et structures de la vallée de l'Orge entre Sainte-Geneviève-des-Bois et Juvisy-sur-Orge.",
   seoHook: "artisanat second & professions libérales",
   ecosystemFr:
     "Villemoisson-sur-Orge (7 332 hab) est une commune résidentielle de la vallée de l'Orge, intégrée à la communauté d'agglomération Cœur d'Essonne. Proximité de Sainte-Geneviève-des-Bois, Épinay-sur-Orge et accès rapide à Massy et Orly. Tissu TPE artisanat, professions libérales, commerces et PME de services aux entreprises.",

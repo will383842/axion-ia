@@ -9,9 +9,9 @@ export const VILLENOY_COPY: VilleCopy = {
   pitchEn:
     "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
   seoHook: "artisanat & logistique petite",
   ecosystemFr:
     "Villenoy est une commune résidentielle limitrophe de Meaux, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique local : TPE artisanat et BTP, commerces de centre-ville, professions libérales, PME de services, activités liées à la logistique briarde et à la proximité de Meaux. Cadre semi-rural attractif entre campagne et ville.",

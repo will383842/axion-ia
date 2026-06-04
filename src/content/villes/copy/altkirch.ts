@@ -9,9 +9,9 @@ export const ALTKIRCH_COPY: VilleCopy = {
   pitchEn:
     "Altkirch (68), sous-préfecture du Sundgau dans le Haut-Rhin, 5 687 habitants, est un bourg historique alsacien marqué par son centre médiéval, son patrimoine religieux et sa fonction administrative pour le sud du département. Tissu de TPE/PME industrie, artisanat, commerce, agriculture sundgauvienne et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit sur place sur mesure.",
   ecosystemFr:
     "Altkirch est la capitale historique du Sundgau, région rurale du sud Alsace entre Mulhouse et la frontière suisse. Bourg de sous-préfecture, son économie repose sur les TPE/PME industrielles, l'artisanat, le commerce de centre-bourg, l'agriculture sundgauvienne (élevage, céréales, carpes frites), les services administratifs et un tourisme patrimonial (centre médiéval, musée sundgauvien).",
   ecosystemEn:

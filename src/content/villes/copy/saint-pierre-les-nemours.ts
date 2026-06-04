@@ -9,9 +9,9 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
   seoHook: "industrie légère & tourisme vert",
   ecosystemFr:
     "Saint-Pierre-lès-Nemours est une commune de Seine-et-Marne en bordure du Loing, aux portes de Nemours et du Gâtinais. Tissu TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert et loisirs nature.",

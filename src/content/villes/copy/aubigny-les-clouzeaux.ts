@@ -9,9 +9,9 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
   pitchEn:
     "Aubigny-Les Clouzeaux (85), commune nouvelle de l'agglomération de La Roche-sur-Yon en Vendée, compte plus de 7 100 habitants. Zones d'activités dynamiques, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles du bocage. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
   seoHook: "industrielles zones & artisanat construction",
   ecosystemFr:
     "Aubigny-Les Clouzeaux est une commune nouvelle de l'agglomération yonnaise (Vendée), née de la fusion d'Aubigny et Les Clouzeaux. Zones d'activités industrielles et artisanales, agriculture bocagère, commerces de proximité. La Roche-sur-Yon centre à 10 min, Nantes à 50 min.",

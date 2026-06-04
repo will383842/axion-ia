@@ -9,9 +9,9 @@ export const GIEN_COPY: VilleCopy = {
   pitchEn:
     "Gien (45), ville des bords de Loire dans le Loiret, est reputee pour sa faience d'art, son chateau et sa tradition cynegitique. Tissu de TPE et PME de l'artisanat d'art, du commerce, du tourisme, des services aux entreprises et de l'industrie. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Gien (45). Nous accompagnons TPE et PME : artisans d'art, commercants, acteurs du tourisme ligerien, PME de services et industriels de cette ville des bords de Loire. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Gien (45). Nous accompagnons TPE et PME : artisans d'art, commercants, acteurs du tourisme ligerien, PME de services et industriels de cette ville des bords de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Gien (45). Nous accompagnons TPE et PME : artisans d'art, commercants, acteurs du tourisme ligerien, PME de services et industriels de cette ville des bords de Loire. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Gien (45). Nous accompagnons TPE et PME : artisans d'art, commercants, acteurs du tourisme ligerien, PME de services et industriels de cette ville des bords de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Gien est une ville historique des bords de Loire, celebre pour la faience de Gien (manufacture fondee en 1821), son chateau Renaissance abritant le Musee international de la Chasse, et son patrimoine ligerien inscrit a l'UNESCO. L'economie locale repose sur l'artisanat d'art, le commerce, le tourisme patrimonial et de nature, les services aux entreprises et l'industrie. Communes voisines : Poilly-lez-Gien, Saint-Martin-sur-Ocre, Nevoy, Coullons, Briare.",
   ecosystemEn:

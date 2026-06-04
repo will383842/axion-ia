@@ -9,9 +9,9 @@ export const VILLETANEUSE_COPY: VilleCopy = {
   pitchEn:
     "Villetaneuse (93), commune universitaire du nord de la Seine-Saint-Denis, accueille le campus principal de l'Université Sorbonne Paris Nord (ex-Paris 13). Tissu de TPE commerçantes et artisanales, PME de services, professions libérales et acteurs de la recherche. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
   seoHook: "enseignement supérieur & commerce détail",
   ecosystemFr:
     "Villetaneuse bénéficie de la présence du campus Sorbonne Paris Nord (12 000 étudiants, laboratoires de recherche, incubateur). Tissu économique de TPE artisanales et commerçantes, PME tertiaires et professions libérales. Commune intégrée à l'Établissement public territorial Plaine Commune, dynamique de rénovation urbaine et d'innovation.",

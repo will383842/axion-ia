@@ -9,9 +9,9 @@ export const CHAMBOURCY_COPY: VilleCopy = {
   pitchEn:
     "Chambourcy (78), commune résidentielle en lisière de la forêt de Marly, à l'ouest de Paris dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité de Saint-Germain-en-Laye et Poissy. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit sur place sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Chambourcy est une commune résidentielle prisée en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Cadre verdoyant attractif pour les professions libérales et indépendants. Tissu économique : TPE artisans, commerces de village, PME de services, conseil, immobilier haut de gamme. Communes voisines : Saint-Germain-en-Laye, Poissy, Aigremont, Fourqueux, L'Étang-la-Ville.",

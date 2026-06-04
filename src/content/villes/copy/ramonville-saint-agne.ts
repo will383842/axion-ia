@@ -9,9 +9,9 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   pitchEn:
     "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud toulousain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit sur place sur mesure.",
   seoHook: "proche toulouse",
   ecosystemFr:
     "Ramonville-Saint-Agne bénéficie de la proximité du campus Rangueil (Université Toulouse III), du CNES et du pôle spatial. TPE innovantes, PME tech, startups deeptech, professions libérales, commerces de proximité. Desserte métro ligne B (Ramonville).",

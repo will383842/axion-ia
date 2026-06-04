@@ -9,9 +9,9 @@ export const BETTON_COPY: VilleCopy = {
   pitchEn:
     "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   seoHook: "professions libérales & activités tertiaires",
   ecosystemFr:
     "Betton est une commune résidentielle dynamique du nord de Rennes Métropole, traversée par le canal d'Ille-et-Rance. Tissu économique principalement tertiaire et de services, complété par TPE artisanat BTP, commerces de proximité et professions libérales. Cadre de vie attractif, population en croissance continue, bien connectée au centre de Rennes par bus et voies express.",

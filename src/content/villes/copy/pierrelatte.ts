@@ -9,9 +9,9 @@ export const PIERRELATTE_COPY: VilleCopy = {
   pitchEn:
     "Pierrelatte (26), commune du sud-Drôme dans la plaine du Tricastin, est ancrée dans un bassin industriel notable (plateforme nucléaire civile Tricastin) et agricole (vergers, vignobles AOC Grignan-les-Adhémar). Tissu PME industrielles, agriculture, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local tricastines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   seoHook: "bassin industriel notable",
   ecosystemFr:
     "Pierrelatte est positionnée dans la plaine du Tricastin (sud-Drôme), abritant historiquement la plateforme nucléaire civile du Tricastin (sites industriels haute-sécurité). Tissu PME industrielles et sous-traitants techniques liés au nucléaire, agriculture importante (vergers, viticulture AOC Grignan-les-Adhémar), TPE artisanat BTP, commerces. Axe A7 Lyon-Marseille.",

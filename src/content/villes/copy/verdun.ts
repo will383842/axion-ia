@@ -9,9 +9,9 @@ export const VERDUN_COPY: VilleCopy = {
   pitchEn:
     "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   seoHook: "vallée meuse",
   ecosystemFr:
     "Verdun est sous-préfecture de la Meuse, située sur les bords de la Meuse. La ville est un pôle mondial du tourisme de mémoire (champ de bataille, Mémorial de Verdun, Ossuaire de Douaumont, Citadelle souterraine). L'économie locale repose sur le tourisme mémoriel, l'hôtellerie-restauration, le commerce de centre-ville, l'artisanat BTP et les services aux entreprises et particuliers.",

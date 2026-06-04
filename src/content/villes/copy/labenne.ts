@@ -9,9 +9,9 @@ export const LABENNE_COPY: VilleCopy = {
   pitchEn:
     "Labenne (40), commune littorale du sud des Landes dans l'agglomération bayonnaise, se situe entre océan Atlantique et forêt landaise. Tourisme balnéaire, zoo, centre commercial, TPE hébergement/restauration, artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Labenne (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Labenne (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Labenne (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Labenne (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
   seoHook: "littoral, tourisme & agglo Bayonne",
   ecosystemFr:
     "Labenne est une commune littorale du sud des Landes, entre océan et forêt, intégrée à l'agglomération bayonnaise. La ville dispose d'une plage océane, d'un zoo (Labenne Océan) et d'une zone commerciale active. Tissu TPE tourisme balnéaire, campings, hébergement saisonnier, restauration, artisans BTP, commerces, agriculture. Axe A63 (sortie Labenne) facilite l'accès Bayonne-Dax.",

@@ -9,9 +9,9 @@ export const OUISTREHAM_COPY: VilleCopy = {
   pitchEn:
     "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   seoHook: "tourisme balnéaire & hôtellerie restauration",
   ecosystemFr:
     "Ouistreham est la station balnéaire et le port ferry de l'agglomération caennaise. Port de Caen-Ouistreham (liaison Brittany Ferries vers Portsmouth). Plage historique Sword Beach (Débarquement du 6 juin 1944, Musée du Mur de l'Atlantique). Économie touristique et nautique forte, hôtellerie-restauration, TPE artisans, commerces, activités portuaires.",

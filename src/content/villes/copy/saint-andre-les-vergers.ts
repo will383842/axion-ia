@@ -9,9 +9,9 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
   pitchEn:
     "Saint-André-les-Vergers (10), commune de 13 000 habitants intégrée à l'agglomération de Troyes, célèbre pour ses zones commerciales et magasins d'usine attirant une clientèle régionale. TPE et PME commerce et retail, restauration, services, artisans, sous-traitants industriels et acteurs du tertiaire. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration hôtellerie",
   ecosystemFr:
     "Saint-André-les-Vergers est une commune dynamique de l'agglo Troyes, spécialisée dans les zones commerciales et magasins d'usine textile. Tissu TPE/PME diversifié : commerce et retail, restauration, services, artisanat, sous-traitance industrielle et activités tertiaires.",

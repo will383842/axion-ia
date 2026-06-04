@@ -9,9 +9,9 @@ export const PLABENNEC_COPY: VilleCopy = {
   pitchEn:
     "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
   ecosystemFr:
     "Plabennec est une commune périurbaine du Pays de Léon, au nord de Brest, inscrite dans le premier bassin légumier de France. L'économie locale repose sur l'agroalimentaire, le maraîchage, les TPE artisanales BTP et les commerces de proximité. La commune bénéficie de la proximité de la métropole brestoise.",
   ecosystemEn:

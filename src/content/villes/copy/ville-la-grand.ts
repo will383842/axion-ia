@@ -9,9 +9,9 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
   pitchEn:
     "Ville-la-Grand (74), commune frontalière de Haute-Savoie dans l'agglomération Annemasse au coeur du Grand Genève. Position stratégique à 10 min de Genève, tissu services transfrontaliers, PME tertiaires, commerces, TPE artisanat BTP, zones d'activités économiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ville-la-Grand (74). Nous accompagnons TPE et PME : prestataires services transfrontaliers Grand Genève, PME tertiaires, commerçants, artisans BTP, entreprises des zones d'activités de l'agglomération Annemasse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ville-la-Grand (74). Nous accompagnons TPE et PME : prestataires services transfrontaliers Grand Genève, PME tertiaires, commerçants, artisans BTP, entreprises des zones d'activités de l'agglomération Annemasse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ville-la-Grand (74). Nous accompagnons TPE et PME : prestataires services transfrontaliers Grand Genève, PME tertiaires, commerçants, artisans BTP, entreprises des zones d'activités de l'agglomération Annemasse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ville-la-Grand (74). Nous accompagnons TPE et PME : prestataires services transfrontaliers Grand Genève, PME tertiaires, commerçants, artisans BTP, entreprises des zones d'activités de l'agglomération Annemasse.",
   seoHook: "agglomération annemasse",
   ecosystemFr:
     "Ville-la-Grand est une commune frontalière de l'agglomération Annemasse, au coeur du Grand Genève franco-suisse. Tissu services transfrontaliers (conseil, comptabilité, logistique), PME tertiaires, commerces, TPE artisanat BTP, zones d'activités à forte dynamique économique.",

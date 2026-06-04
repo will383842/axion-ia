@@ -9,9 +9,9 @@ export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
   pitchEn:
     "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA répond aux besoins des activités professionnelles présentes du nord Annecy.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Epagny Metz-Tessy (74). Nous accompagnons TPE et PME : commerces et enseignes de la zone Grand Épagny, entreprises tertiaires, prestataires logistiques, artisans et professions de services du bassin annécien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Epagny Metz-Tessy (74). Nous accompagnons TPE et PME : commerces et enseignes de la zone Grand Épagny, entreprises tertiaires, prestataires logistiques, artisans et professions de services du bassin annécien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Epagny Metz-Tessy (74). Nous accompagnons TPE et PME : commerces et enseignes de la zone Grand Épagny, entreprises tertiaires, prestataires logistiques, artisans et professions de services du bassin annécien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Epagny Metz-Tessy (74). Nous accompagnons TPE et PME : commerces et enseignes de la zone Grand Épagny, entreprises tertiaires, prestataires logistiques, artisans et professions de services du bassin annécien.",
   seoHook: "commerce grande & tertiaires services",
   ecosystemFr:
     "Epagny Metz-Tessy, commune nouvelle créée en 2016, est située au nord immédiat d'Annecy. La zone commerciale Grand Épagny est l'un des plus grands pôles commerciaux de Haute-Savoie, attirant PME tertiaires, enseignes de grande distribution, logisticiens, TPE artisanales et prestataires de services sur un axe stratégique vers La Roche-sur-Foron et Genève.",

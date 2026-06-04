@@ -9,9 +9,9 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
   pitchEn:
     "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit sur place sur mesure.",
   ecosystemFr:
     "Terrasson-Lavilledieu est un bourg-centre du Périgord Noir, situé sur la Vézère entre Brive-la-Gaillarde et Montignac-Lascaux. Connu pour ses Jardins de l'Imaginaire. Économie : commerce de proximité, artisanat, agroalimentaire (nuciculture, fraises, élevage), tourisme vert et patrimonial, services et BTP.",
   ecosystemEn:

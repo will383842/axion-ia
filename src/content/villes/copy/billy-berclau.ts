@@ -10,9 +10,9 @@ export const BILLY_BERCLAU_COPY: VilleCopy = {
     "Billy-Berclau (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 090 habitants. Situee pres de Douvrin et de la zone industrielle historique, son economie associe PME industrielles, TPE de services, artisanat, commerce et sous-traitance. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, bassin minier & sous-traitance",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Billy-Berclau jouxte Douvrin et sa zone industrielle historique (sous-traitance automobile). Tissu economique mixte : PME industrielles, TPE artisanales BTP, commerces de proximite, services et sous-traitance. Proximite Bethune (10 km) et La Bassee.",
   ecosystemEn:

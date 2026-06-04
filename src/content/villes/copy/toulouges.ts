@@ -9,9 +9,9 @@ export const TOULOUGES_COPY: VilleCopy = {
   pitchEn:
     "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
   seoHook: "tertiaires périurbaines",
   ecosystemFr:
     "Toulouges est une commune résidentielle dynamique au sud-ouest de Perpignan, intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, TPE artisanat, commerces, professions libérales. Proximité directe Perpignan, Le Soler, Canohès.",

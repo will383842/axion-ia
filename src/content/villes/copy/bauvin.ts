@@ -9,9 +9,9 @@ export const BAUVIN_COPY: VilleCopy = {
   pitchEn:
     "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Bauvin est au sud de Lille, entre la métropole lilloise et le bassin minier. Position stratégique entre Lille, Lens et Douai, proximité axes A1/A21. Économie mixte : TPE artisanat, PME logistiques, agriculture (plaine de la Deûle), commerces et professions libérales.",

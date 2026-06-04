@@ -9,9 +9,9 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit sur place sur mesure.",
   seoHook: "agriculture oliveraies & pêche artisanale",
   ecosystemFr:
     "Saint-Chamas s'étend sur les rives nord-est de l'étang de Berre, dominée par le pont Flavien (arc romain Ier siècle av. J.-C.). Économie locale portée par l'agriculture (oliveraies AOC, maraîchage), la pêche artisanale en étang, le tourisme patrimonial et un tissu de TPE artisans BTP et commerces de proximité.",

@@ -9,9 +9,9 @@ export const MIMIZAN_COPY: VilleCopy = {
   pitchEn:
     "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
   seoHook: "surf, papeterie & tourisme balnéaire",
   ecosystemFr:
     "Mimizan est une station balnéaire majeure de la côte d'Argent, dans le pays de Born. La commune se partage entre Mimizan-Bourg (commerce, services, papeterie industrielle) et Mimizan-Plage (surf, tourisme balnéaire). Le lac d'Aureilhan permet des activités nautiques douces. Économie portée par l'industrie papetière, le tourisme saisonnier, les campings, l'exploitation forestière landaise, TPE artisans et commerces.",

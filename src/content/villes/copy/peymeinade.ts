@@ -9,9 +9,9 @@ export const PEYMEINADE_COPY: VilleCopy = {
   pitchEn:
     "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
   seoHook: "services personne & agriculture",
   ecosystemFr:
     "Peymeinade est une commune résidentielle de l'arrière-pays grassois, sur la route entre Grasse et Draguignan. Économie locale portée par l'artisanat BTP, les commerces de proximité, les services à la personne et l'agriculture (oliveraies, horticulture). Cadre provençal préservé attirant familles et retraités. Proximité de Grasse (parfumerie, 10 min) et Cannes (25 min).",

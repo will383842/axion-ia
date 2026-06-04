@@ -9,9 +9,9 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
   pitchEn:
     "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   seoHook: "industrie pharmaceutique & logistique vallée",
   ecosystemFr:
     "Val-de-Reuil est une ville nouvelle de l'Eure, conçue dans les années 1970, devenue un pôle industriel majeur de Normandie. Industrie pharmaceutique (grands sites de production), chimie, logistique vallée de Seine. Centre Gymnique national, agglomération Seine-Eure dynamique. Tissu TPE/PME en croissance, commerces et services.",

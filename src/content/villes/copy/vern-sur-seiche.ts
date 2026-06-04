@@ -9,9 +9,9 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
   pitchEn:
     "Vern-sur-Seiche (35), commune résidentielle du sud-est de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole rennaise. TPE et PME tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels, agences immobilières. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
   seoHook: "services tertiaires & artisanat bâtiment",
   ecosystemFr:
     "Vern-sur-Seiche est une commune résidentielle du sud-est de Rennes, en Ille-et-Vilaine, intégrée à la métropole rennaise. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, professions libérales et de santé, sous-traitance industrielle, agences immobilières.",

@@ -9,9 +9,9 @@ export const TREGUEUX_COPY: VilleCopy = {
   pitchEn:
     "Trégueux (22), commune de l'agglomération de Saint-Brieuc, pôle commercial majeur des Côtes-d'Armor avec ses zones d'activités et grandes enseignes. Tissu de TPE et PME du commerce, de la distribution, des services aux entreprises, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   seoHook: "commerce détail & distribution logistique",
   ecosystemFr:
     "Trégueux est une commune de l'agglomération de Saint-Brieuc, principal pôle commercial des Côtes-d'Armor. Zones commerciales structurantes (Langueux-Trégueux), grandes enseignes, PME de distribution. Tissu économique : TPE commerces, PME distribution et logistique, services aux entreprises, artisans, professions libérales. Communes voisines : Saint-Brieuc, Langueux, Ploufragan, Plérin, Yffiniac.",

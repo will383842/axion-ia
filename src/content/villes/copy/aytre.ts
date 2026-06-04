@@ -9,9 +9,9 @@ export const AYTRE_COPY: VilleCopy = {
   pitchEn:
     "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
   seoHook: "industrie ferroviaire & industrielles",
   ecosystemFr:
     "Aytré est une commune industrielle de l'agglomération de La Rochelle, connue pour son site Alstom (construction de TGV et trains régionaux). PME industrielles et sous-traitants ferroviaires, TPE artisans BTP, commerces de proximité, professions libérales. Accès plage (Plage d'Aytré-Plage du Platin) et littoral.",

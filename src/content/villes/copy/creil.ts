@@ -9,9 +9,9 @@ export const CREIL_COPY: VilleCopy = {
   pitchEn:
     "Creil, sous-préfecture de l'Oise (60), constitue le hub ferroviaire stratégique entre Paris et la Picardie. Tissu industriel aéronautique périphérique (Safran, Dassault à proximité), logistique massive (Roissy à 40 min) et PME services. Axion-IA y intervient sur tout le bassin creillois élargi.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Creil (60) et tout le bassin sud-Oise. Nous accompagnons les industriels aéronautiques et sous-traitants, opérateurs logistiques, PME tertiaires creilloises et entreprises de services sur leurs cas IA — diagnostic ROI, automatisations production, agents conversationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creil (60) et tout le bassin sud-Oise. Nous accompagnons les industriels aéronautiques et sous-traitants, opérateurs logistiques, PME tertiaires creilloises et entreprises de services sur leurs cas IA — diagnostic ROI, automatisations production, agents conversationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Creil (60) et tout le bassin sud-Oise. Nous accompagnons les industriels aéronautiques et sous-traitants, opérateurs logistiques, PME tertiaires creilloises et entreprises de services sur leurs cas IA — diagnostic ROI, automatisations production, agents conversationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creil (60) et tout le bassin sud-Oise. Nous accompagnons les industriels aéronautiques et sous-traitants, opérateurs logistiques, PME tertiaires creilloises et entreprises de services sur leurs cas IA — diagnostic ROI, automatisations production, agents conversationnels.",
   seoHook: "agglomération creil sud",
   ecosystemFr:
     "Creil rayonne sur le sud de l'Oise : tissu aéronautique périphérique (proximité Plateforme Roissy-Tremblay, sous-traitants Safran), logistique d'envergure (entrepôts e-commerce, transit ferroviaire), PME tertiaires (banques, assurances, conseil). Communauté d'agglomération Creil Sud Oise (CASCO).",

@@ -9,9 +9,9 @@ export const VIROFLAY_COPY: VilleCopy = {
   pitchEn:
     "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
   seoHook: "professions libérales & services aux",
   ecosystemFr:
     "Viroflay est une commune résidentielle prisée de l'ouest parisien, idéalement placée entre Paris-Montparnasse et Versailles grâce à deux gares (Rive Gauche et Rive Droite). Tissu économique tertiaire : professions libérales, cabinets de conseil, TPE de services numériques, commerces de centre-ville, artisanat de qualité. Proximité immédiate de Vélizy-Villacoublay (pôle économique majeur) et du plateau de Saclay.",

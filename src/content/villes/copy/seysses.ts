@@ -9,9 +9,9 @@ export const SEYSSES_COPY: VilleCopy = {
   pitchEn:
     "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Seysses est une commune résidentielle du sud-ouest de Toulouse, entre Muret et Cugnaux. Tissu TPE artisans BTP, PME de services, commerces de bourg, professions libérales, quelques exploitations agricoles. Croissance démographique soutenue.",

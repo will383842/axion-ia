@@ -10,9 +10,9 @@ export const BONSECOURS_COPY: VilleCopy = {
     "Bonsecours (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 6 440 habitants. Connue pour sa basilique et son panorama sur Rouen, elle accueille des professions liberales, des TPE de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "professions liberales, panorama & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bonsecours est une commune residentielle sur les hauteurs de Rouen, connue pour sa basilique et son panorama exceptionnel. Partie de la Metropole Rouen Normandie, son tissu economique comprend des professions liberales, TPE de services, commerces, artisanat et acteurs du tourisme religieux.",
   ecosystemEn:

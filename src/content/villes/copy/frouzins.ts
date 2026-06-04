@@ -9,9 +9,9 @@ export const FROUZINS_COPY: VilleCopy = {
   pitchEn:
     "Frouzins (31), commune résidentielle du sud de Toulouse avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y travaille avec les organisations du territoire de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Frouzins est une commune résidentielle en forte croissance du sud de Toulouse, entre Cugnaux et Villeneuve-Tolosane. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Cadre périurbain verdoyant avec économie de proximité.",

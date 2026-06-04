@@ -9,9 +9,9 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Villennes-sur-Seine est une commune résidentielle verdoyante en bord de Seine, appréciée pour son cadre de vie entre eau et forêt. Tissu local : TPE artisans, commerces de village, PME de services, professions libérales, activités liées à l'immobilier et aux loisirs nautiques. Communes voisines : Poissy, Médan, Orgeval, Verneuil-sur-Seine, Triel-sur-Seine.",

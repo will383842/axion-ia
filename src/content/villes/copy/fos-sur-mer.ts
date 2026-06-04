@@ -9,9 +9,9 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Fos-sur-Mer (13) est l'un des plus grands pôles industrialo-portuaires d'Europe avec le Grand Port Maritime de Marseille-Fos, la sidérurgie (ArcelorMittal voisine), la pétrochimie et la logistique conteneurs. TPE artisans, sous-traitants industriels, PME logistiques, transporteurs et commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit sur place sur mesure.",
   seoHook: "logistique portuaire & sidérurgie pétrochimie",
   ecosystemFr:
     "Fos-sur-Mer accueille le bassin ouest du Grand Port Maritime de Marseille (Fos2XL, terminaux conteneurs, terminaux pétroliers, GNL). Sidérurgie (haut-fourneau ArcelorMittal), pétrochimie, raffineries, logistique conteneurs, transport routier et ferroviaire. Tissu de TPE artisans, sous-traitants industriels et PME de services portuaires.",

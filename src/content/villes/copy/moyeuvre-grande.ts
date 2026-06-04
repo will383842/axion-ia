@@ -9,9 +9,9 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
   pitchEn:
     "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
   ecosystemFr:
     "Moyeuvre-Grande est une commune mosellane de la Vallée de l'Orne, marquée par un héritage sidérurgique reconverti vers le tertiaire et la sous-traitance. Tissu TPE/PME industrie, BTP, commerces de proximité, services, artisanat. Proximité immédiate de Rombas et de l'agglomération de Metz.",
   ecosystemEn:

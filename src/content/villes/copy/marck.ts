@@ -9,9 +9,9 @@ export const MARCK_COPY: VilleCopy = {
   pitchEn:
     "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA opère pour entreprises et indépendants du secteur du Calaisis.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Marck est limitrophe de Calais, à proximité de la zone industrialo-portuaire et du terminal Eurotunnel. Économie marquée par la logistique transmanche, les transports, le commerce et l'artisanat. TPE et PME de services bénéficient du flux économique transfrontalier.",

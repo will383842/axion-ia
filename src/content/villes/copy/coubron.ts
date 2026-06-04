@@ -9,9 +9,9 @@ export const COUBRON_COPY: VilleCopy = {
   pitchEn:
     "Coubron (93), commune résidentielle de l'est de la Seine-Saint-Denis, bordée par la forêt de Bondy et à la lisière du Val-de-Marne. Tissu TPE artisans du bâtiment, PME de services, commerçants de proximité, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du nord-est francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Coubron est une commune résidentielle verdoyante de l'est de la Seine-Saint-Denis, bordée par la forêt régionale de Bondy. Son tissu économique est composé de TPE artisans du bâtiment, PME de services aux entreprises, commerces de proximité et professions libérales. Proximité directe avec Livry-Gargan, Montfermeil et Vaujours.",

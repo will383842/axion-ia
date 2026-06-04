@@ -9,9 +9,9 @@ export const HENDAYE_COPY: VilleCopy = {
   pitchEn:
     "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit sur place sur mesure.",
   ecosystemFr:
     "Hendaye est la dernière ville française avant l'Espagne (Irun, Fontarrabie), située à l'embouchure de la Bidassoa sur la Côte Basque. Station balnéaire réputée (plage des Deux Jumeaux, domaine d'Abbadia), son économie s'appuie sur le tourisme, l'hôtellerie-restauration, le commerce transfrontalier (ventas, flux Espagne), le transport et la logistique (gare internationale), l'artisanat et les services. Le bassin d'emploi s'étend à Saint-Jean-de-Luz et au BAB (Bayonne-Anglet-Biarritz).",
   ecosystemEn:

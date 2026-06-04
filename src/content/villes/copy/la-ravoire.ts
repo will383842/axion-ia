@@ -9,9 +9,9 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
   pitchEn:
     "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
   seoHook: "tertiaires services & immobilier résidentiel",
   ecosystemFr:
     "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, TPE artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",

@@ -9,9 +9,9 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
   pitchEn:
     "Châteaugiron (35), bourg historique à l'est de Rennes en Ille-et-Vilaine, conjugue patrimoine médiéval (château classé) et dynamisme économique périurbain. Tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et exploitants agricoles. Axion-IA opère pour toutes les structures économiques de la commune du bassin rennais est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaugiron (35). Nous accompagnons TPE et PME : entreprises tertiaires du bassin rennais est, artisans BTP, commerçants, professions libérales, exploitants agricoles et acteurs du tourisme patrimonial de la communauté de communes autour du château médiéval.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaugiron (35). Nous accompagnons TPE et PME : entreprises tertiaires du bassin rennais est, artisans BTP, commerçants, professions libérales, exploitants agricoles et acteurs du tourisme patrimonial de la communauté de communes autour du château médiéval.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaugiron (35). Nous accompagnons TPE et PME : entreprises tertiaires du bassin rennais est, artisans BTP, commerçants, professions libérales, exploitants agricoles et acteurs du tourisme patrimonial de la communauté de communes autour du château médiéval.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaugiron (35). Nous accompagnons TPE et PME : entreprises tertiaires du bassin rennais est, artisans BTP, commerçants, professions libérales, exploitants agricoles et acteurs du tourisme patrimonial de la communauté de communes autour du château médiéval.",
   seoHook: "tertiaires services & artisanat construction",
   ecosystemFr:
     "Châteaugiron est un bourg historique à l'est de Rennes, structuré autour de son château médiéval classé. Commune périurbaine en croissance, elle accueille un tissu de PME tertiaires et services, TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales et agriculture résiduelle (polyculture, élevage laitier). Proximité Rennes (20 min) et accès A87/RN157.",

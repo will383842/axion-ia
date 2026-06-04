@@ -9,9 +9,9 @@ export const CANTELEU_COPY: VilleCopy = {
   pitchEn:
     "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglo rouennaise ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
   seoHook: "agglo Rouen ouest, tertiaire & logistique",
   ecosystemFr:
     "Canteleu surplombe la Seine sur la rive gauche face à Rouen, membre de la Métropole Rouen Normandie. Tissu PME tertiaires et logistiques (bords de Seine), TPE artisans BTP, commerces de quartier et professions libérales installées.",

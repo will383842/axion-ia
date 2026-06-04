@@ -9,9 +9,9 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   pitchEn:
     "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
   ecosystemFr:
     "Quesnoy-sur-Deûle est une commune résidentielle et commerçante du nord de la métropole lilloise, traversée par la Deûle. Tissu TPE/PME artisanat, services, transport fluvial et logistique, commerces de centre-bourg, professions libérales. Proximité immédiate de Lille, Wambrechies et Marquette-lez-Lille. Accès A25 et A22, bassin d'emploi métropolitain lillois.",
   ecosystemEn:

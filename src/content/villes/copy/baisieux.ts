@@ -9,9 +9,9 @@ export const BAISIEUX_COPY: VilleCopy = {
   pitchEn:
     "Baisieux (59), commune résidentielle de l'agglomération lilloise est dans le Nord, est située à la frontière belge (Tournai à 20 min). Tissu TPE artisans, PME services aux entreprises, commerces, professions libérales, activités transfrontalières. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit sur place sur mesure.",
   ecosystemFr:
     "Baisieux est une commune résidentielle de l'agglomération lilloise est, limitrophe de la Belgique (Tournai à 20 min). Position transfrontalière stratégique sur l'axe Lille-Tournai-Bruxelles. Tissu dense de TPE artisans BTP, PME services aux entreprises et logistique transfrontalière, commerces de proximité, professions libérales et indépendants.",
   ecosystemEn:

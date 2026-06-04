@@ -9,9 +9,9 @@ export const LAMBESC_COPY: VilleCopy = {
   pitchEn:
     "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit sur place sur mesure.",
   seoHook: "massif des",
   ecosystemFr:
     "Lambesc est une commune patrimoniale du pays d'Aix sur la D7n entre Aix-en-Provence et Salon-de-Provence. Vignobles AOC Coteaux d'Aix, oliveraies, agriculture, artisanat d'art et tourisme patrimonial. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois.",

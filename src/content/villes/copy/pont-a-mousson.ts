@@ -9,9 +9,9 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
   pitchEn:
     "Pont-à-Mousson (54), ville industrielle historique au bord de la Moselle en Meurthe-et-Moselle, est marquée par l'héritage de Saint-Gobain PAM (canalisations fonte) et l'abbaye des Prémontrés. Tissu TPE/PME industrie, métallurgie, sous-traitance, services, commerces de centre-ville. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-à-Mousson (54). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans métallurgie, commerces du centre-ville, professions de services et acteurs du tourisme patrimonial mussipontain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-à-Mousson (54). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans métallurgie, commerces du centre-ville, professions de services et acteurs du tourisme patrimonial mussipontain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-à-Mousson (54). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans métallurgie, commerces du centre-ville, professions de services et acteurs du tourisme patrimonial mussipontain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-à-Mousson (54). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans métallurgie, commerces du centre-ville, professions de services et acteurs du tourisme patrimonial mussipontain.",
   ecosystemFr:
     "Pont-à-Mousson est une ville industrielle historique sur la Moselle, entre Nancy et Metz, marquée par la fonderie Saint-Gobain PAM. Tissu TPE/PME industrie, métallurgie, sous-traitance, commerces centre-ville, artisanat, tourisme patrimonial (abbaye des Prémontrés).",
   ecosystemEn:

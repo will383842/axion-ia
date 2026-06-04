@@ -50,7 +50,7 @@ export const LIMOGES_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Limoges (87) sur site — centre-ville, ESTER Technopole, zones industrielles et communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). Nous accompagnons les TPE, PME, ETI et grandes entreprises limougeaudes (industrie électrique, porcelaine, céramique, agroalimentaire, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limoges (87) sur site — centre-ville, ESTER Technopole, zones industrielles et communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). Nous accompagnons les TPE, PME, ETI et grandes entreprises limougeaudes (industrie électrique, porcelaine, céramique, agroalimentaire, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Limoges (87) on site — city centre, ESTER Technopole, industrial zones and basin communes (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). We support Limoges micro-businesses, SMEs, mid-caps and large enterprises (electrical industry, porcelain, ceramics, agri-food, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

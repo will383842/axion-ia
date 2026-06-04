@@ -9,9 +9,9 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
   pitchEn:
     "Hauts de Bienne (39), commune nouvelle du Haut-Jura née de la fusion de Morez et Les Rousses, est le berceau historique de la lunetterie française. TPE/PME lunettiers, artisans du bois et du BTP, commerces de station, hébergeurs touristiques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit sur place sur mesure.",
   seoHook: "lunetterie optique & tourisme hébergement",
   ecosystemFr:
     "Hauts de Bienne est la commune nouvelle du Haut-Jura, réunissant Morez (berceau de la lunetterie française) et Les Rousses (station de ski nordique et alpin). Tissu économique : TPE/PME lunetterie et optique, artisanat bois et BTP, commerces de station, hébergement touristique (hôtels, gîtes, locations saisonnières), professions libérales et services de montagne.",

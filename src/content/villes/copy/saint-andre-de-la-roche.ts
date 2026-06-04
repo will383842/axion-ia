@@ -9,9 +9,9 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
   pitchEn:
     "Saint-André-de-la-Roche (06), petite commune résidentielle de l'agglomération niçoise est, est nichée au pied du mont Chauve entre Nice et La Trinité. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et entreprises du bassin niçois est. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-de-la-Roche (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises du bassin Nice est vers la vallée du Paillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-de-la-Roche (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises du bassin Nice est vers la vallée du Paillon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-André-de-la-Roche (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises du bassin Nice est vers la vallée du Paillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-de-la-Roche (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises du bassin Nice est vers la vallée du Paillon.",
   seoHook: "services personne",
   ecosystemFr:
     "Saint-André-de-la-Roche est une petite commune résidentielle de la Métropole Nice Côte d'Azur, entre Nice est et La Trinité. Nichée au pied du mont Chauve, elle offre un cadre résidentiel calme à 10 min du centre de Nice. Tissu d'artisans BTP, commerces de proximité, services à la personne et professions libérales. Économie liée au bassin d'emploi niçois.",

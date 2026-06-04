@@ -9,9 +9,9 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
   pitchEn:
     "Thaon-les-Vosges (88), commune de l'agglomération d'Épinal, est marquée par son passé industriel textile (grande blanchisserie historique fermée). Tissu de TPE/PME industrie reconvertie, sous-traitance, commerce de proximité, artisanat BTP, agroalimentaire et services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
   seoHook: "TPE & PME Vosges",
   ecosystemFr:
     "Thaon-les-Vosges est une commune de l'agglomération d'Épinal située au bord de la Moselle. La cité ouvrière s'est construite autour de la Blanchisserie-Teinturerie de Thaon (BTT), grande industrie textile historique aujourd'hui fermée, dont les friches sont en reconversion. L'économie locale s'organise désormais autour de l'industrie reconvertie, la sous-traitance, l'agroalimentaire, le commerce de proximité, l'artisanat BTP et les services aux entreprises.",

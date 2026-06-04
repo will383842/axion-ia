@@ -10,9 +10,9 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
     "Aulnoy-lez-Valenciennes (59), commune de l'agglomeration valenciennoise, reunit pres de 7 080 habitants. Elle accueille l'Universite Polytechnique Hauts-de-France (UPHF), moteur d'innovation locale. Tissu economique de TPE artisans, PME tertiaires, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "universite UPHF, tertiaire & innovation",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Aulnoy-lez-Valenciennes heberge le campus principal de l'UPHF (Universite Polytechnique Hauts-de-France), pole d'enseignement superieur et de recherche (ingenierie, numerique, transports). Ce voisinage universitaire nourrit un ecosysteme de startups, PME tertiaires, commerces etudiants et services aux entreprises du Valenciennois.",
   ecosystemEn:

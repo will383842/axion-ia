@@ -9,9 +9,9 @@ export const H_NHEIM_COPY: VilleCopy = {
   pitchEn:
     "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les TPE/PME locales.",

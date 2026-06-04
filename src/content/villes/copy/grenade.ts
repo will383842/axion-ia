@@ -9,9 +9,9 @@ export const GRENADE_COPY: VilleCopy = {
   pitchEn:
     "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
   seoHook: "vallée garonne",
   ecosystemFr:
     "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. TPE artisans, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",

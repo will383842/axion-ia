@@ -10,9 +10,9 @@ export const MARQUISE_COPY: VilleCopy = {
     "Marquise (62), commune du Boulonnais dans le Pas-de-Calais, reunit pres de 5 220 habitants. Connue pour ses carrieres de marbre et sa position entre Boulogne-sur-Mer et Calais, son economie associe PME industrielles (extraction, transformation), TPE artisanales, commerces et agriculture. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "carrieres marbre, industrie & Boulonnais",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Marquise est situee dans le Boulonnais entre Boulogne-sur-Mer (15 km) et Calais (20 km). Tissu economique marque par les carrieres de marbre (extraction, transformation, granulats). Egalement TPE artisanales, commerces, agriculture et services. Proximite du tunnel sous la Manche.",
   ecosystemEn:

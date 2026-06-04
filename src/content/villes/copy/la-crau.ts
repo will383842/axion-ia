@@ -9,9 +9,9 @@ export const LA_CRAU_COPY: VilleCopy = {
   pitchEn:
     "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Crau (83). Nous accompagnons tous types d'activités : TPE maraîchers et artisans, PME viticoles et agroalimentaires Côtes de Provence, commerces, professions libérales et services de l'agglo Toulon est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Crau (83). Nous accompagnons tous types d'activités : TPE maraîchers et artisans, PME viticoles et agroalimentaires Côtes de Provence, commerces, professions libérales et services de l'agglo Toulon est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Crau (83). Nous accompagnons tous types d'activités : TPE maraîchers et artisans, PME viticoles et agroalimentaires Côtes de Provence, commerces, professions libérales et services de l'agglo Toulon est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Crau (83). Nous accompagnons tous types d'activités : TPE maraîchers et artisans, PME viticoles et agroalimentaires Côtes de Provence, commerces, professions libérales et services de l'agglo Toulon est.",
   seoHook: "agriculture maraîchère & viticulture côtes",
   ecosystemFr:
     "La Crau est un pôle économique de l'est toulonnais, mêlant agriculture maraîchère, viticulture Côtes de Provence et zones d'activités. Tissu de TPE, PME agroalimentaires et commerces de proximité. Toulon à 15 min, Hyères à 10 min, A57 et A570 directes.",

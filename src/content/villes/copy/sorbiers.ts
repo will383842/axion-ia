@@ -9,9 +9,9 @@ export const SORBIERS_COPY: VilleCopy = {
   pitchEn:
     "Sorbiers (42), commune en banlieue nord-est de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel, PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du nord-est stéphanois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
   seoHook: "massif du",
   ecosystemFr:
     "Sorbiers est intégrée à Saint-Étienne Métropole, en banlieue nord-est immédiate de Saint-Étienne (positionnée sur les contreforts du massif du Pilat). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables).",

@@ -9,9 +9,9 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   seoHook: "professions libérales & artisanat second",
   ecosystemFr:
     "Soisy-sur-Seine (7 418 hab) est une commune résidentielle entre bords de Seine et forêt de Sénart, intégrée à la communauté d'agglomération Grand Paris Sud. Proximité d'Évry-Courcouronnes (préfecture, Génopole, université) et Corbeil-Essonnes. Tissu TPE artisanat, professions libérales, PME tertiaires et commerces de proximité.",

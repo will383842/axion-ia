@@ -9,9 +9,9 @@ export const VALREAS_COPY: VilleCopy = {
   pitchEn:
     "Valréas (84), capitale de l'Enclave des Papes en Drôme provençale, conjugue tradition industrielle (cartonnage), viticulture AOC Côtes du Rhône et tissu artisanal rural. TPE artisans et viticulteurs, PME cartonnage et agroalimentaires, professions libérales, commerces et tourisme oenologique. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & cartonnage industrie",
   ecosystemFr:
     "Valréas est positionnée dans l'Enclave des Papes, exclave du Vaucluse au cœur de la Drôme provençale. Son économie historique repose sur l'industrie du cartonnage (capitale du cartonnage), la viticulture AOC Côtes du Rhône et Grignan-les-Adhémar, les TPE artisans (BTP, métiers d'art), les PME agroalimentaires et tourisme oenologique, les professions libérales et commerces de centre-bourg.",

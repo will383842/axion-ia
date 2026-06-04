@@ -9,9 +9,9 @@ export const LANNILIS_COPY: VilleCopy = {
   pitchEn:
     "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & conchyliculture",
   ecosystemFr:
     "Lannilis est une commune du Pays des Abers, en Finistère nord, à proximité immédiate de l'Aber Wrac'h et de l'Aber Benoît. Tissu TPE/PME : agriculture (maraîchage, élevage laitier), conchyliculture (huîtres, moules), artisanat du bâtiment, commerces de bourg, hébergement touristique, services à la personne.",

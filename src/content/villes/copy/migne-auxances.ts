@@ -9,9 +9,9 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
   pitchEn:
     "Migné-Auxances (86), commune de l'agglomération de Poitiers nord-ouest en Vienne, est une commune résidentielle dynamique du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales, exploitations agricoles (grandes cultures, maraîchage) et associations. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest de l'agglomération poitevine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
   seoHook: "artisanat services & tertiaires services",
   ecosystemFr:
     "Migné-Auxances est une commune résidentielle dynamique du nord-ouest de l'agglomération Grand Poitiers. Tissu économique périurbain diversifié : TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, droit, gestion), exploitations agricoles (grandes cultures, maraîchage vallée de l'Auxance), associations culturelles et sportives.",

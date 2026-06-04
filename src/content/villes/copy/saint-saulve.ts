@@ -9,9 +9,9 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
   ecosystemFr:
     "Saint-Saulve est une commune de l'agglomération de Valenciennes (Hainaut), à la jonction du bassin minier UNESCO et du pôle industriel reconverti du Valenciennois. L'économie locale bénéficie de la dynamique automobile (pôle de compétitivité i-Trans) et ferroviaire, de la logistique, du BTP et des services. Tissu TPE/PME diversifié, commerces de proximité, professions libérales.",
   ecosystemEn:

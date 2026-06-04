@@ -9,9 +9,9 @@ export const BASSENS_73_COPY: VilleCopy = {
   pitchEn:
     "Bassens (73), commune résidentielle de l'agglomération de Chambéry en Savoie, abrite un tissu dynamique de PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité et services aux entreprises. Axion-IA accompagne tout le tissu professionnel local du Grand Chambéry.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit sur place sur mesure.",
   seoHook: "tertiaires & professions libérales",
   ecosystemFr:
     "Bassens est une commune résidentielle intégrée à Grand Chambéry Métropole (~130 000 hab). Forte densité de professions libérales (santé, juridique, comptabilité), PME tertiaires (conseil, IT, formation), TPE artisanat BTP et commerces de proximité. Accessibilité directe au centre-ville de Chambéry (5 min) et aux axes A43/A41.",

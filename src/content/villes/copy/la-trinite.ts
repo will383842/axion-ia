@@ -9,9 +9,9 @@ export const LA_TRINITE_COPY: VilleCopy = {
   pitchEn:
     "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   seoHook: "commerce proximité & immobilier gestion",
   ecosystemFr:
     "La Trinité est une commune résidentielle et commerciale de la vallée du Paillon, aux portes est de Nice. La zone d'activités des Music regroupe des PME commerciales et de services. Tissu dense d'artisans BTP, commerces de proximité et professions libérales. Membre de la Métropole Nice Côte d'Azur, la commune bénéficie du dynamisme économique niçois tout en conservant un caractère résidentiel accessible.",

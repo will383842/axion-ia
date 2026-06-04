@@ -9,9 +9,9 @@ export const MORTEAU_COPY: VilleCopy = {
   pitchEn:
     "Morteau (25), capitale du Val de Morteau dans le Haut-Doubs, est reputee pour sa saucisse IGP et son heritage horloger frontalier avec la Suisse. Tissu TPE/PME agroalimentaire, horlogerie, commerce transfrontalier, artisanat, tourisme. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "agroalimentaire & horlogerie micromecanique",
   ecosystemFr:
     "Morteau est la ville-centre du Val de Morteau dans le Haut-Doubs, a 10 km de la frontiere suisse. La filiere saucisse de Morteau IGP structure l'agroalimentaire local. L'heritage horloger (Musee de l'Horlogerie) et la proximite de La Chaux-de-Fonds alimentent un tissu de micromecaniciens et commercants transfrontaliers.",

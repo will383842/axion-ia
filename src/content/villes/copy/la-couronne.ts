@@ -9,9 +9,9 @@ export const LA_COURONNE_COPY: VilleCopy = {
   pitchEn:
     "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   seoHook: "industrie papetière & industrielles",
   ecosystemFr:
     "La Couronne est une commune industrielle et résidentielle du sud de l'agglomération GrandAngoulême. Héritage papetier charentais (industrie du papier), PME industrielles, TPE artisans BTP, zones d'activités économiques, commerces de proximité. Proximité de la N10 et des zones logistiques.",

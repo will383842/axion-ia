@@ -9,9 +9,9 @@ export const PECQUENCOURT_COPY: VilleCopy = {
   pitchEn:
     "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier nord-pas-de-calais",
   ecosystemFr:
     "Pecquencourt est située dans le bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans BTP et rénovation du patrimoine minier, PME industrie et sous-traitance, commerces de proximité, services aux entreprises. Reconversion économique post-minière avec développement de zones d'activités et éco-quartiers.",

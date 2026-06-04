@@ -9,9 +9,9 @@ export const GRAVELINES_COPY: VilleCopy = {
   pitchEn:
     "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
   ecosystemFr:
     "Gravelines est une commune littorale du Nord, entre Dunkerque et Calais, connue pour sa citadelle Vauban et la centrale nucléaire de Gravelines (6 réacteurs, la plus puissante d'Europe occidentale). L'économie locale associe sous-traitance nucléaire-énergie, pêche et mareyage, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (proximité port de Dunkerque) et commerces. Tissu TPE/PME diversifié.",
   ecosystemEn:

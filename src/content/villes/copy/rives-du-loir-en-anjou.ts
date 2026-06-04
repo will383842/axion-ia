@@ -9,9 +9,9 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   seoHook: "agriculture polyculture-élevage & viticulture",
   ecosystemFr:
     "Rives-du-Loir-en-Anjou est une commune nouvelle issue de la fusion de Lézigné, Seiches-sur-le-Loir et Matheflon, le long du Loir entre Angers et La Flèche. Économie rurale diversifiée : agriculture (polyculture, élevage), viticulture, maraîchage, artisanat, commerces de proximité.",

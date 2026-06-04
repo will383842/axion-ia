@@ -10,9 +10,9 @@ export const PERONNE_COPY: VilleCopy = {
     "Peronne (80), ville de la Haute Somme, reunit environ 7 090 habitants. Connue pour l'Historial de la Grande Guerre et ses etangs de la Haute Somme, elle est un pole de services et de tourisme memoriel. Son economie associe TPE artisanales, PME de services, agriculture picarde, tourisme et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "memoire 14-18, tourisme & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Peronne est le pole de services de la Haute Somme, au carrefour de l'A1 et de l'A29. Tissu economique tertiaire et agricole : PME de services, TPE artisanat BTP, exploitations agricoles (grandes cultures, maraichage), tourisme de memoire (Historial de la Grande Guerre), loisirs nautiques (etangs de la Haute Somme) et commerces de centre-ville.",
   ecosystemEn:

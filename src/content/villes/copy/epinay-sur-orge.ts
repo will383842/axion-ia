@@ -9,9 +9,9 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Épinay-sur-Orge (91), commune résidentielle de l'Essonne dans la vallée de l'Orge, est desservie par le RER C (gare d'Épinay-sur-Orge). Proximité Massy, Longjumeau, Sainte-Geneviève-des-Bois. Tissu TPE services, professions libérales, PME conseil, commerces de proximité, artisans. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Épinay-sur-Orge est une commune résidentielle de la vallée de l'Orge, desservie par le RER C. Située entre Massy (TGV) et Longjumeau, elle bénéficie du bassin d'emploi sud-francilien. Tissu TPE services, professions libérales, commerces de proximité, artisans BTP, santé.",

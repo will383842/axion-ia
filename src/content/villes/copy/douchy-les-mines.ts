@@ -9,9 +9,9 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
   pitchEn:
     "Douchy-les-Mines (59), commune du Nord en agglomération Valenciennes, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   seoHook: "agglomération valenciennes",
   ecosystemFr:
     "Douchy-les-Mines est intégrée à l'agglomération de Valenciennes, dans l'ancien bassin minier reconverti. Tissu péri-urbain : TPE artisanat BTP, PME industrielles reconverties (sous-traitance auto, métallurgie légère, plasturgie), commerces de proximité, professions libérales, logistique.",

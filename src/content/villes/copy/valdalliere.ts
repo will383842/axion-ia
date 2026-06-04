@@ -9,9 +9,9 @@ export const VALDALLIERE_COPY: VilleCopy = {
   pitchEn:
     "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Valdallière est une commune nouvelle du bocage normand sud-ouest (Calvados), regroupant plusieurs communes rurales depuis 2016. Territoire agricole (élevage bovin, production laitière) et artisanal. Tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité.",

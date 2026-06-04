@@ -10,9 +10,9 @@ export const LAVENTIE_COPY: VilleCopy = {
     "Laventie (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit pres de 5 040 habitants. Situee entre Bethune et La Bassee, son economie associe agriculture, TPE artisanales, PME de services, commerces de centre-bourg et petites industries. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Flandre artesienne, agriculture & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Laventie est situee en Flandre artesienne entre Bethune (15 km) et La Bassee (8 km). Tissu economique rural dynamique : agriculture (polyculture, elevage), TPE artisanales BTP, PME de services, commerces de centre-bourg et petites industries agroalimentaires.",
   ecosystemEn:

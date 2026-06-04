@@ -9,9 +9,9 @@ export const DECHY_COPY: VilleCopy = {
   pitchEn:
     "Dechy (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 338 habitants. Tissu TPE artisans BTP, PME logistiques (zone industrielle Dorignies), commerces de proximité, services aux entreprises et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
   seoHook: "bassin minier du",
   ecosystemFr:
     "Dechy est intégrée à la communauté d'agglomération du Douaisis, en pleine reconversion post-minière. Zone industrielle Dorignies accueille PME logistiques et sous-traitants industriels. TPE artisanat BTP rénovation, commerces de proximité et professions libérales forment le tissu économique local.",

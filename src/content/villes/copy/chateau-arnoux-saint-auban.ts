@@ -9,9 +9,9 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
   pitchEn:
     "Château-Arnoux-Saint-Auban (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, possède un héritage industriel chimique (plateforme Arkema ex-Atochem). Tissu TPE artisans, PME industrielles chimie/plasturgie, commerçants, services et agriculture périphérique. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
   seoHook: "industrie chimique & maintenance industrielle",
   ecosystemFr:
     "Château-Arnoux-Saint-Auban est commune de la Moyenne Durance (~5 100 hab), marquée par la plateforme chimique historique de Saint-Auban (reconversion industrielle en cours). PME industrielles chimie/plasturgie, sous-traitants maintenance, TPE artisans BTP, commerces et services. Restaurant gastronomique La Bonne Étape (étoilé Michelin).",

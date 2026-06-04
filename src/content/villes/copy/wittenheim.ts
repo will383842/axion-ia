@@ -9,9 +9,9 @@ export const WITTENHEIM_COPY: VilleCopy = {
   pitchEn:
     "Wittenheim (68), commune du bassin potassique reconverti au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne tout le tissu professionnel local de l'agglomération nord mulhousienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin potassique reconverti",
   ecosystemFr:
     "Wittenheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), au cœur du bassin potassique reconverti au nord de Mulhouse. Tissu TPE artisans BTP, PME industrielles (sous-traitance mécanique, logistique, chimie fine), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants. Reconversion réussie post-mines avec zones d'activités modernes.",

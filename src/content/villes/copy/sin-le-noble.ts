@@ -9,9 +9,9 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
   pitchEn:
     "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
   seoHook: "bassin minier reconverti",
   ecosystemFr:
     "Sin-le-Noble est une commune périurbaine de Douai, ancienne cité minière reconvertie après la fermeture des charbonnages. Économie portée par les ZAC, la sous-traitance automobile et ferroviaire (proximité Renault Douai et Alstom), la logistique, l'artisanat BTP et un tissu de TPE/PME de services. Patrimoine minier UNESCO et terrils reconvertis en espaces verts.",

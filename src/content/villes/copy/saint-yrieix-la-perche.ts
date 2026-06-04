@@ -9,9 +9,9 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Yrieix-la-Perche (87), sous-préfecture du sud de la Haute-Vienne, est historiquement liée au kaolin et à la porcelaine limousine. Tissu TPE artisans, PME manufacturières, commerces centre-ville, agriculture (élevage limousin), professions libérales et services. Axion-IA collabore avec toutes les structures locales du sud Haute-Vienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Yrieix-la-Perche (87). Nous accompagnons tous types d'activités : TPE artisans, PME manufacturières, éleveurs limousins, commerçants, professions libérales, indépendants et services aux entreprises du sud Haute-Vienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-la-Perche (87). Nous accompagnons tous types d'activités : TPE artisans, PME manufacturières, éleveurs limousins, commerçants, professions libérales, indépendants et services aux entreprises du sud Haute-Vienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Yrieix-la-Perche (87). Nous accompagnons tous types d'activités : TPE artisans, PME manufacturières, éleveurs limousins, commerçants, professions libérales, indépendants et services aux entreprises du sud Haute-Vienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-la-Perche (87). Nous accompagnons tous types d'activités : TPE artisans, PME manufacturières, éleveurs limousins, commerçants, professions libérales, indépendants et services aux entreprises du sud Haute-Vienne.",
   seoHook: "industrie céramique & agriculture élevage",
   ecosystemFr:
     "Saint-Yrieix-la-Perche (6 830 hab) est sous-préfecture du sud Haute-Vienne, berceau historique du kaolin (découvert en 1768, fondement de la porcelaine de Limoges). Tissu PME manufacturières, TPE artisans, agriculture d'élevage (race limousine), commerces centre-ville, professions libérales. Position carrefour entre Limoges (40 min), Périgueux (50 min) et Brive (50 min).",

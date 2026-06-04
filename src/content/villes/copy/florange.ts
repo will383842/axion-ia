@@ -9,9 +9,9 @@ export const FLORANGE_COPY: VilleCopy = {
   pitchEn:
     "Florange (57), commune de 12 035 habitants en Moselle dans la vallée de la Fensch, est marquée par son usine sidérurgique ArcelorMittal et l'héritage de la sidérurgie lorraine en reconversion. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, logistique, commerces, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Florange (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florange (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Florange (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florange (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
   ecosystemFr:
     "Florange est une commune sidérurgique de la vallée de la Fensch en Moselle, marquée par l'usine ArcelorMittal et la reconversion industrielle. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, logistique, commerces de proximité, artisanat, services aux entreprises.",
   ecosystemEn:

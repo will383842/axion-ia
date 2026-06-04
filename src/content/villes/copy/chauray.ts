@@ -9,9 +9,9 @@ export const CHAURAY_COPY: VilleCopy = {
   pitchEn:
     "Chauray (79), commune de l'agglomération de Niort dans les Deux-Sèvres, concentre plusieurs zones d'activités économiques majeures (Mendès-France, La Coupe). Tissu TPE artisans, PME tertiaires et logistiques, commerces, prestataires de services. Axion-IA accompagne tout le tissu professionnel local de l'agglomération niortaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
   seoHook: "artisanat services & tertiaires agglomération",
   ecosystemFr:
     "Chauray fait partie de l'agglomération de Niort, capitale française des mutuelles. La commune accueille des zones d'activités dynamiques (Mendès-France, La Coupe) avec un tissu TPE/PME tertiaires, logistique, commerces et artisanat. Proximité directe du bassin d'emploi niortais (assurances, mutuelles, services).",

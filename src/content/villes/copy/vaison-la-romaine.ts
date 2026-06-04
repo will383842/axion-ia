@@ -9,9 +9,9 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
   pitchEn:
     "Vaison-la-Romaine (84), commune du Haut-Vaucluse adossée au Mont Ventoux nord, compte près de 6 058 habitants. Site archéologique romain majeur, pont antique, vignoble Cairanne et Côtes-du-Rhône, tourisme patrimonial, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires, hébergements et commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit sur place sur mesure.",
   seoHook: "viticulture cairanne & tourisme patrimonial",
   ecosystemFr:
     "Vaison-la-Romaine est un pôle patrimonial et viticole du Haut-Vaucluse, au nord du Mont Ventoux. Site romain et pont antique, vignoble Cairanne, Rasteau et Côtes-du-Rhône Villages, tourisme culturel international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires, hébergements et restaurants. Orange à 30 min, Avignon à 50 min.",

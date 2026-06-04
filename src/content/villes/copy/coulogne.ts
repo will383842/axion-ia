@@ -10,9 +10,9 @@ export const COULOGNE_COPY: VilleCopy = {
     "Coulogne (62), commune de l'agglomeration de Calais dans le Pas-de-Calais, reunit pres de 5 440 habitants. Situee aux portes de Calais, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Calais, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Coulogne jouxte Calais (5 km) au sud-est. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et petits commerces. Commune residentielle beneficiant du dynamisme calaisien et de la proximite transmanche.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Herblay-sur-Seine, ville du Val-d'Oise (95) en bord de Seine, mêle résidentiel haut de gamme, tissu de TPE/PME locales (commerces, artisanat, services) et activité tertiaire. Axion-IA y intervient pour les artisans, indépendants, PME herblaysiennes et entreprises du bassin nord-ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Herblay-sur-Seine (95). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herblay-sur-Seine (95). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Herblay-sur-Seine (95). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herblay-sur-Seine (95). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
   seoHook: "artisanat services & tertiaires",
   ecosystemFr:
     "Herblay-sur-Seine s'intègre au tissu résidentiel et économique de la communauté d'agglomération Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Eaubonne) : commerces, artisanat haut de gamme, cabinets professionnels, PME tertiaires. Proximité Pontoise (10 min) et Roissy-CDG (35 min). Tissu B2B local dense.",

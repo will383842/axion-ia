@@ -9,9 +9,9 @@ export const PONTCHATEAU_COPY: VilleCopy = {
   pitchEn:
     "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
   seoHook: "TPE & PME Loire-Atlantique",
   ecosystemFr:
     "Pontchâteau est un bourg-centre de Loire-Atlantique positionné sur l'axe Nantes-Saint-Nazaire (N165/N171), aux portes du parc naturel régional de Brière. Calvaire de la Madeleine (site de pèlerinage). Économie rurale diversifiée : élevage bovin/laitier, maraîchage, agroalimentaire, artisanat BTP, commerces de proximité, tourisme vert Brière.",

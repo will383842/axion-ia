@@ -9,9 +9,9 @@ export const L_AIGLE_COPY: VilleCopy = {
   pitchEn:
     "L'Aigle (61), commune du Pays d'Ouche dans l'Orne, est connue pour la chute de météorite de 1803 (première attestation scientifique) et son industrie historique de l'aiguille et de l'épingle. Tissu TPE artisans, PME métallurgiques reconverties, commerces, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du Pays d'Ouche.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Aigle (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME métallurgiques reconverties, professions libérales, services aux entreprises du Pays d'Ouche. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Aigle (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME métallurgiques reconverties, professions libérales, services aux entreprises du Pays d'Ouche. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à L'Aigle (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME métallurgiques reconverties, professions libérales, services aux entreprises du Pays d'Ouche. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Aigle (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME métallurgiques reconverties, professions libérales, services aux entreprises du Pays d'Ouche. Audit sur place sur mesure.",
   seoHook: "métallurgie reconvertie & Pays d'Ouche",
   ecosystemFr:
     "L'Aigle est la ville-centre du Pays d'Ouche ornais, entre Verneuil-sur-Avre et Mortagne-au-Perche. Industrie historique de l'aiguille et de l'épingle reconvertie vers la mécanique de précision. Tissu TPE artisans, PME métallurgiques, commerces de centre-ville.",

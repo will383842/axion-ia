@@ -9,9 +9,9 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
   pitchEn:
     "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
   ecosystemFr:
     "Grand-Champ est une commune rurale dynamique de l'arrière-pays vannetais, en croissance démographique grâce à sa proximité avec Vannes. L'économie locale repose sur l'agriculture (élevage laitier et porcin, cultures céréalières), l'agroalimentaire, l'artisanat du bâtiment et les commerces de proximité. Le cadre rural attire également des professions libérales et indépendants en télétravail.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_SEVER_COPY: VilleCopy = {
   pitchEn:
     "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
   seoHook: "Chalosse, agroalimentaire & patrimoine UNESCO",
   ecosystemFr:
     "Saint-Sever, surnommée « Cap de Gascogne » (Caput Vasconiae) depuis le Moyen Âge, est la cité historique des Landes. Son abbatiale romane est inscrite au patrimoine mondial UNESCO au titre des chemins de Saint-Jacques-de-Compostelle. Chef-lieu du canton Chalosse-Tursan, siège de la communauté de communes et de l'office de tourisme communautaire. Économie portée par l'agriculture (bœuf de Chalosse IGP, foie gras, maïs), l'agroalimentaire, le tourisme patrimonial, TPE artisans et commerces.",

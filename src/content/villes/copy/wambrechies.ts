@@ -9,9 +9,9 @@ export const WAMBRECHIES_COPY: VilleCopy = {
   pitchEn:
     "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
   ecosystemFr:
     "Wambrechies est une commune résidentielle prisée au nord de Lille, intégrée à la Métropole Européenne de Lille (MEL), sur les bords de la Deûle. Connue pour sa distillerie de genièvre historique et son marché aux puces. L'économie locale associe services aux entreprises, conseil, professions libérales, artisanat agroalimentaire, commerces de proximité et prestataires B2B de la métropole lilloise.",
   ecosystemEn:

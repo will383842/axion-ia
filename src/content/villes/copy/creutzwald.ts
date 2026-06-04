@@ -9,9 +9,9 @@ export const CREUTZWALD_COPY: VilleCopy = {
   pitchEn:
     "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
   ecosystemFr:
     "Creutzwald est une ville frontalière du bassin houiller lorrain, dans le Warndt, à la lisière de l'Allemagne. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces de proximité, artisanat, services. Bassin de vie de la Moselle-est tourné vers la Sarre.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const GARGENVILLE_COPY: VilleCopy = {
   pitchEn:
     "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA opère pour entreprises et indépendants du secteur du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
   seoHook: "artisanat bâtiment & services aux",
   ecosystemFr:
     "Gargenville est une commune résidentielle des bords de Seine dans le Mantois, entre Mantes-la-Jolie et Poissy. Tissu économique diversifié : TPE artisanales (bâtiment, services), PME de services aux entreprises, professions libérales, commerces de proximité. Présence d'activités logistiques liées à la Seine. Cadre semi-rural attractif pour télétravailleurs et indépendants.",

@@ -9,9 +9,9 @@ export const VAUGNERAY_COPY: VilleCopy = {
   pitchEn:
     "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   seoHook: "tertiaires ouest & agriculture monts",
   ecosystemFr:
     "Vaugneray est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu mixte péri-urbain et rural : PME tertiaires, agriculture monts du Lyonnais (élevage, cultures), TPE artisanat BTP, commerces, professions libérales.",

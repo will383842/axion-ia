@@ -9,9 +9,9 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Divatte-sur-Loire (44), commune nouvelle du vignoble nantais en Loire-Atlantique, née de la fusion de Barbechat et La Chapelle-Basse-Mer. Tissu TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
   seoHook: "viticulture maraîchage & agroalimentaire",
   ecosystemFr:
     "Divatte-sur-Loire est une commune nouvelle du vignoble nantais est, en bords de Loire. Viticulture Muscadet, maraîchage, agroalimentaire. Proximité Nantes (20 km). Tissu TPE viticulteurs, maraîchers, artisans, commerces de proximité et professions libérales.",

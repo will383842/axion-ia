@@ -9,9 +9,9 @@ export const VILLENEUVE_LES_MAGUELONE_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-lès-Maguelone (34), commune littorale de l'Hérault entre Montpellier et Sète, est célèbre pour la cathédrale de Maguelone, joyau roman sur son île entre mer et étang. Vignoble AOC Languedoc, étangs palavasiens, tourisme balnéaire et patrimonial. Tissu TPE commerçants, PME viticoles, artisans, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villeneuve-lès-Maguelone (34). Nous accompagnons TPE commerçantes et artisanales, PME viticoles AOC Languedoc, acteurs du tourisme balnéaire et patrimonial (cathédrale de Maguelone), professions libérales et services aux entreprises du littoral montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-lès-Maguelone (34). Nous accompagnons TPE commerçantes et artisanales, PME viticoles AOC Languedoc, acteurs du tourisme balnéaire et patrimonial (cathédrale de Maguelone), professions libérales et services aux entreprises du littoral montpelliérain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villeneuve-lès-Maguelone (34). Nous accompagnons TPE commerçantes et artisanales, PME viticoles AOC Languedoc, acteurs du tourisme balnéaire et patrimonial (cathédrale de Maguelone), professions libérales et services aux entreprises du littoral montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-lès-Maguelone (34). Nous accompagnons TPE commerçantes et artisanales, PME viticoles AOC Languedoc, acteurs du tourisme balnéaire et patrimonial (cathédrale de Maguelone), professions libérales et services aux entreprises du littoral montpelliérain.",
   ecosystemFr:
     "Villeneuve-lès-Maguelone bénéficie d'un positionnement littoral entre Montpellier et Sète, avec la cathédrale de Maguelone (monument historique roman, île entre étang et mer). Vignoble AOC Languedoc réputé, étangs palavasiens classés (biodiversité), tourisme balnéaire estival. Tissu économique de TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
   ecosystemEn:

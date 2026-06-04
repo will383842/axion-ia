@@ -9,9 +9,9 @@ export const LE_BOULOU_COPY: VilleCopy = {
   pitchEn:
     "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   seoHook: "transport logistique & thermalisme santé",
   ecosystemFr:
     "Le Boulou est une ville-étape sur l'A9 à la frontière franco-espagnole, avec une station thermale réputée (Les Thermes du Boulou). Position stratégique logistique transfrontalière. PME transport/logistique, thermalisme, TPE artisanat, commerces, agriculture (viticulture, arboriculture).",

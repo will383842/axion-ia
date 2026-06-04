@@ -9,9 +9,9 @@ export const AUCAMVILLE_COPY: VilleCopy = {
   pitchEn:
     "Aucamville (31), commune du nord de Toulouse avec plus de 9 600 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Aucamville est une commune résidentielle et commerçante du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone d'emploi nord toulousaine et de l'axe A62.",

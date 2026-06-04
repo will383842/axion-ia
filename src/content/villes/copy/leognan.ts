@@ -9,9 +9,9 @@ export const LEOGNAN_COPY: VilleCopy = {
   pitchEn:
     "Léognan (33), commune viticole prestigieuse au sud de Bordeaux, abrite l'AOC Pessac-Léognan (grands crus classés) et un tissu économique diversifié : exploitations viticoles, PME agroalimentaires, artisanat, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du sud bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "aoc pessac-",
   ecosystemFr:
     "Léognan est au coeur de l'AOC Pessac-Léognan, l'une des appellations les plus prestigieuses de Bordeaux. Grands crus classés (Domaine de Chevalier, Château Carbonnieux, etc.), oenotourisme, PME agroalimentaires, tissu résidentiel et commercial en croissance. Accès A62 et sud Bordeaux.",

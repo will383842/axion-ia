@@ -9,9 +9,9 @@ export const SAINT_CYR_AU_MONT_D_OR_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cyr-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle en colline avec panorama lyonnais. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cyr-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or lyonnais, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Cyr-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or lyonnais, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cyr-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or lyonnais, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Cyr-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or lyonnais, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires monts",
   ecosystemFr:
     "Saint-Cyr-au-Mont-d'Or est intégrée à la Métropole de Lyon, dans les monts d'Or (collines boisées nord de Lyon). Tissu résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",

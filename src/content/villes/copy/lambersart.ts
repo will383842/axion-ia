@@ -9,9 +9,9 @@ export const LAMBERSART_COPY: VilleCopy = {
   pitchEn:
     "Lambersart, ville du Nord (59) en banlieue ouest immédiate de Lille (MEL), mêle résidentiel haut de gamme, professions libérales, TPE/PME tertiaires et tissu commercial dense. Axion-IA y intervient pour les TPE, indépendants, PME et cabinets professionnels du bassin lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les TPE indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les TPE indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les TPE indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les TPE indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
   seoHook: "professions libérales & commerces premium",
   ecosystemFr:
     "Lambersart s'intègre à la Métropole Européenne de Lille (MEL, 1,2 M habitants), un des écosystèmes économiques majeurs du nord de l'Europe. Tissu résidentiel haut de gamme, concentration professions libérales (médecins, avocats, cabinets conseil), commerces premium, PME tertiaires. Proximité immédiate Lille centre (10 min) et Euralille.",

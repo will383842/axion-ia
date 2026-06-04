@@ -9,9 +9,9 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
   pitchEn:
     "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
   seoHook: "pays du grésivaudan",
   ecosystemFr:
     "Montbonnot-Saint-Martin fait partie de la communauté de communes du Pays du Grésivaudan et abrite une partie du parc technologique Inovallée — l'un des principaux clusters deep-tech français (microélectronique héritière du CEA-Leti, édition logicielle, instrumentation scientifique). Aux côtés des entreprises tech : tissu PME tertiaires, TPE artisanat BTP, commerces, professions libérales.",

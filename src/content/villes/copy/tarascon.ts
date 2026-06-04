@@ -9,9 +9,9 @@ export const TARASCON_COPY: VilleCopy = {
   pitchEn:
     "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA opère pour entreprises et indépendants du secteur du bassin tarasconnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "textile, patrimoine & agroalimentaire",
   ecosystemFr:
     "Tarascon est une cité rhodanienne au riche patrimoine (château du roi René) avec un tissu économique tourné vers le textile, l'agroalimentaire et le négoce. TPE artisans du centre ancien, PME industrielles, commerces de proximité et acteurs du tourisme patrimonial. Connexion directe Arles-Avignon.",

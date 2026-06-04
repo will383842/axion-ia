@@ -51,7 +51,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Perpignan (66) sur site — Saint-Charles, Tecnosud, Polygone Nord, centre-ville et communes de la Perpignan Méditerranée Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises perpignanaises (agroalimentaire, logistique, négoce, énergies renouvelables, viticulture, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perpignan (66) sur site — Saint-Charles, Tecnosud, Polygone Nord, centre-ville et communes de la Perpignan Méditerranée Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises perpignanaises (agroalimentaire, logistique, négoce, énergies renouvelables, viticulture, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Perpignan (66) on site — Saint-Charles, Tecnosud, Polygone Nord, city centre and communes across Perpignan Méditerranée Métropole. We support Perpignan micro-businesses, SMEs, mid-caps and large enterprises (agri-food, logistics, trading, renewables, viticulture, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

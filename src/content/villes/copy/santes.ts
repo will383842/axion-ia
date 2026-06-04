@@ -9,9 +9,9 @@ export const SANTES_COPY: VilleCopy = {
   pitchEn:
     "Santes (59), commune résidentielle de l'agglomération Lille sud, entre Haubourdin et Wavrin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME de services aux entreprises du sud lillois, artisanat, commerce de proximité, professions libérales, activités logistiques liées au canal de la Deûle et à la proximité de la zone commerciale Lomme-Englos. Axion-IA opère pour toutes les structures économiques de la commune du sud de la métropole lilloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
   seoHook: "services aux & artisanat bâtiment",
   ecosystemFr:
     "Santes est une commune résidentielle du sud de la Métropole Européenne de Lille, entre Haubourdin et Wavrin, à proximité du canal de la Deûle. L'économie locale combine TPE et PME de services aux entreprises (conseil, informatique, gestion), artisanat du bâtiment, commerces de proximité, professions libérales et activités logistiques (canal de la Deûle, proximité zones d'activités Lomme-Englos et Seclin). Cadre périurbain recherché par les dirigeants lillois installés en sud métropole.",

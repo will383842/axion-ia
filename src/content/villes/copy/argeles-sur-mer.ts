@@ -9,9 +9,9 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA répond aux besoins des activités professionnelles présentes du littoral catalan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
   seoHook: "campings hôtellerie & tourisme restauration",
   ecosystemFr:
     "Argelès-sur-Mer est la première destination camping d'Europe avec plus de 50 campings. Station balnéaire entre plage de sable (nord) et côte rocheuse (Racou, Côte Vermeille). Économie touristique dominante : campings, hôtels, restaurants, activités nautiques. Viticulture (Collioure, Banyuls), TPE artisans, commerces.",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BLOIS_COPY: VilleCopy = {
   pitchFr:
-    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
+    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
   pitchEn:
-    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
+    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "tourisme Loire, cosmétique & PME",
   ecosystemFr:
     "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de TPE/PME. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",

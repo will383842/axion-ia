@@ -10,9 +10,9 @@ export const DIVION_COPY: VilleCopy = {
     "Divion (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 770 habitants. Situee entre Bruay-la-Buissiere et Houdain, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les activites liees au patrimoine minier. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Divion est situee dans le bassin minier entre Bruay-la-Buissiere (3 km) et Houdain (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, garages automobiles et petites industries. Heritage minier reconverti en activites tertiaires.",
   ecosystemEn:

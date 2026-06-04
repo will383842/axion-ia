@@ -9,9 +9,9 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
   seoHook: "métallurgie mécanique & commerce centre-ville",
   ecosystemFr:
     "Cosne-Cours-sur-Loire est la sous-préfecture nord de la Nièvre, positionnée en bords de Loire à la croisée de la Bourgogne et du Berry. Héritière des forges historiques, la ville conserve un tissu TPE/PME métallurgie et mécanique de précision, complété par le commerce de centre-ville, l'artisanat BTP, les professions libérales, les services agricoles et la viticulture (Pouilly-sur-Loire, Sancerre voisin).",

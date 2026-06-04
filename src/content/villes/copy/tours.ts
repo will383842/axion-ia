@@ -51,7 +51,7 @@ export const TOURS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tours (37) sur site auprès des entreprises de Tours Métropole. Nous accompagnons TPE, PME, ETI et grandes entreprises tourangelles — secteurs industrie (STMicro, SKF, Michelin, Hutchinson), tertiaire (conseil, santé, commerce), énergie (pôle S2E2), agroalimentaire et viticulture Val de Loire — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tours (37) sur site auprès des entreprises de Tours Métropole. Nous accompagnons TPE, PME, ETI et grandes entreprises tourangelles — secteurs industrie (STMicro, SKF, Michelin, Hutchinson), tertiaire (conseil, santé, commerce), énergie (pôle S2E2), agroalimentaire et viticulture Val de Loire — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Tours (37) on site across Tours Métropole businesses. We support micro-businesses, SMEs, mid-caps and large enterprises in Tours — industry (STMicro, SKF, Michelin, Hutchinson), services, energy (S2E2 pole), agrifood and Val de Loire wine — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. No tech lock-in, your teams stay in control.",
 

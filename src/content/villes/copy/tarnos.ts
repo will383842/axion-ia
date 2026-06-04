@@ -9,9 +9,9 @@ export const TARNOS_COPY: VilleCopy = {
   pitchEn:
     "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
   seoHook: "industrie, logistique & agglo Bayonne",
   ecosystemFr:
     "Tarnos est une commune industrielle historique du sud des Landes, intégrée à l'agglomération Pays Basque (ex-agglomération Bayonne). Zone industrielle importante : chimie, métallurgie, logistique portuaire (proximité port de Bayonne), sous-traitance aéronautique. Tissu TPE artisans BTP, PME services industriels, commerces. Accès A63, proche frontière espagnole.",

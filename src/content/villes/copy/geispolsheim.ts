@@ -9,9 +9,9 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Geispolsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et sucrière, arboriculteurs, artisans BTP, commerces de proximité et entrepreneurs du sud de l'eurométropole strasbourgeoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Geispolsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et sucrière, arboriculteurs, artisans BTP, commerces de proximité et entrepreneurs du sud de l'eurométropole strasbourgeoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Geispolsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et sucrière, arboriculteurs, artisans BTP, commerces de proximité et entrepreneurs du sud de l'eurométropole strasbourgeoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Geispolsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et sucrière, arboriculteurs, artisans BTP, commerces de proximité et entrepreneurs du sud de l'eurométropole strasbourgeoise.",
   ecosystemFr:
     "Geispolsheim est une commune de l'eurométropole strasbourgeoise au sud de Strasbourg, à l'identité rurale forte (vergers de cerises) combinée à un ancrage industriel agroalimentaire et sucrier. Tissu TPE/PME industrie, arboriculture, services, BTP, commerces, artisanat. Dynamique portée par la proximité directe avec Strasbourg.",
   ecosystemEn:

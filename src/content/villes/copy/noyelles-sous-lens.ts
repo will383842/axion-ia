@@ -10,9 +10,9 @@ export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
     "Noyelles-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 850 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, commerce & tertiaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Noyelles-sous-Lens est situee dans l'agglomeration de Lens (3 km), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et activites tertiaires liees a la proximite du Louvre-Lens.",
   ecosystemEn:

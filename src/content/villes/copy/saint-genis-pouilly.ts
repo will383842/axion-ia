@@ -9,9 +9,9 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "économie frontalière & technologiques",
   ecosystemFr:
     "Saint-Genis-Pouilly est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Proximité du CERN (centre de recherche nucléaire international). Économie frontalière très dynamique : PME tertiaires et technologiques, commerces transfrontaliers, TPE artisanat BTP.",

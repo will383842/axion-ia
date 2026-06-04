@@ -9,9 +9,9 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   pitchEn:
     "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   seoHook: "TPE & PME Isère",
   ecosystemFr:
     "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et Lyon-Grenoble. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",

@@ -10,9 +10,9 @@ export const OYE_PLAGE_COPY: VilleCopy = {
     "Oye-Plage (62), commune littorale de la Cote d'Opale dans le Pas-de-Calais, reunit pres de 5 780 habitants. Situee entre Calais et Gravelines avec sa reserve naturelle du Platier d'Oye, son economie associe TPE tourisme, agriculture, commerces saisonniers, artisanat et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Cote Opale, reserve naturelle & tourisme",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Oye-Plage est situee sur le littoral entre Calais (15 km) et Gravelines (10 km), avec la reserve naturelle du Platier d'Oye. Tissu economique mixte : TPE tourisme et campings, agriculture (maraichage, polyculture), commerces saisonniers, artisanat BTP et services.",
   ecosystemEn:

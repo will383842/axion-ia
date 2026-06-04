@@ -47,7 +47,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des TPE du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Vos équipes restent maîtres de la stack (modèles, prompts, intégrations) après notre passage — pas de verrou éditeur ni dépendance contractuelle continue.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des TPE du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Vos équipes restent maîtres de la stack (modèles, prompts, intégrations) après notre passage — pas de verrou éditeur ni dépendance contractuelle continue.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Marseille (13) on site, from Joliette to Euroméditerranée, from Panier micro-businesses to maritime mid-caps at the Grand Port. We support Marseille businesses on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: transport/logistics, health/biotech, B2B services. No tech lock-in, your teams stay in control.",
 

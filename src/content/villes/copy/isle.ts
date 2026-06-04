@@ -9,9 +9,9 @@ export const ISLE_COPY: VilleCopy = {
   pitchEn:
     "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglo limougeaude nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
   seoHook: "industrielles logistique & commerce proximité",
   ecosystemFr:
     "Isle (7 995 hab) est une commune attractive au nord de Limoges, traversée par la Vienne. Zones d'activités économiques dynamiques (artisanat, PME industrielles, logistique). Tissu mixte : PME tertiaires, TPE artisans BTP, agriculture, commerces, services de proximité. Proximité directe Limoges centre (10 min) et aéroport Bellegarde (10 min).",

@@ -9,9 +9,9 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
   seoHook: "agroalimentaire filière & élevage ovin",
   ecosystemFr:
     "Saint-Affrique est le pôle urbain du sud Aveyron, dans la vallée de la Sorgue, à proximité immédiate de Roquefort-sur-Soulzon (caves Roquefort). Économie structurée autour de l'agroalimentaire (filière laitière Roquefort AOP, charcuterie, produits du terroir), de l'élevage ovin, du commerce de centre-ville, des professions libérales et du tourisme vert (Parc naturel régional des Grands Causses).",

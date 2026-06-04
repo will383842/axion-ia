@@ -9,9 +9,9 @@ export const WATTIGNIES_COPY: VilleCopy = {
   pitchEn:
     "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   seoHook: "artisanat bâtiment & professions libérales",
   ecosystemFr:
     "Wattignies est une commune résidentielle de la banlieue sud de Lille (MEL), entre Faches-Thumesnil et Seclin. L'économie locale repose sur un tissu de TPE/PME de services aux entreprises (comptabilité, conseil, IT), des commerces de proximité bien implantés (centre-ville et zones commerciales), des artisans du bâtiment, des professions libérales (santé, juridique) et des prestataires B2B desservant la métropole lilloise. La proximité de l'autoroute A1 et de l'aéroport Lille-Lesquin facilite la mobilité professionnelle.",

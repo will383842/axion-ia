@@ -9,9 +9,9 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
   pitchEn:
     "Noyal-Châtillon-sur-Seiche (35), commune périurbaine au sud de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole et de la vallée de la Seiche. TPE et PME tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales, hébergeurs et restaurateurs, sous-traitants industriels rennais. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit sur place sur mesure.",
   seoHook: "services tertiaires & artisanat bâtiment",
   ecosystemFr:
     "Noyal-Châtillon-sur-Seiche est une commune périurbaine au sud de Rennes, en Ille-et-Vilaine, traversée par la vallée de la Seiche. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, sous-traitance industrielle rennaise, hébergement et restauration, professions libérales.",

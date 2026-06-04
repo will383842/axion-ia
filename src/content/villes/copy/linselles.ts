@@ -9,9 +9,9 @@ export const LINSELLES_COPY: VilleCopy = {
   pitchEn:
     "Linselles (59), commune de la Métropole Européenne de Lille au nord de Tourcoing, accolée à la frontière belge (Mouscron à 5 min). Tissu économique : PME textile-confection (héritage de la métropole), services aux entreprises transfrontaliers franco-belges, commerce, artisanat, agriculture périurbaine. Axion-IA y intervient pour tous types d'activités du nord de l'agglo lilloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Linselles (59). Nous accompagnons TPE et PME : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linselles (59). Nous accompagnons TPE et PME : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Linselles (59). Nous accompagnons TPE et PME : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linselles (59). Nous accompagnons TPE et PME : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
   seoHook: "bassin lillois-roubaisien-tourquennois",
   ecosystemFr:
     "Linselles est une commune périurbaine de la Métropole Européenne de Lille, située à 10 minutes de Tourcoing et accolée à la frontière belge (Mouscron à 5 min). L'économie locale combine PME textile-confection (héritage du bassin lillois-roubaisien-tourquennois), services aux entreprises transfrontaliers (cross-border franco-belge), commerces de bourg, artisanat, et exploitations agricoles flandriennes périurbaines. Carrefour franco-belge attractif pour PME B2B transfrontalières.",

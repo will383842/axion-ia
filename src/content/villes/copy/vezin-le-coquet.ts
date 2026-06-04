@@ -9,9 +9,9 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
   pitchEn:
     "Vezin-le-Coquet (35), commune résidentielle de l'ouest de Rennes Métropole, bénéficie d'une situation privilégiée aux portes de Rennes. Tissu de TPE/PME tertiaires et de services, artisans BTP portés par la dynamique immobilière, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vezin-le-Coquet (35). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'ouest de Rennes Métropole, artisans BTP, commerçants de proximité, professions libérales, indépendants et prestataires de services aux entreprises du bassin rennais ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vezin-le-Coquet (35). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'ouest de Rennes Métropole, artisans BTP, commerçants de proximité, professions libérales, indépendants et prestataires de services aux entreprises du bassin rennais ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vezin-le-Coquet (35). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'ouest de Rennes Métropole, artisans BTP, commerçants de proximité, professions libérales, indépendants et prestataires de services aux entreprises du bassin rennais ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vezin-le-Coquet (35). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'ouest de Rennes Métropole, artisans BTP, commerçants de proximité, professions libérales, indépendants et prestataires de services aux entreprises du bassin rennais ouest.",
   seoHook: "tertiaire services & artisanat construction",
   ecosystemFr:
     "Vezin-le-Coquet est une commune résidentielle de l'ouest de Rennes Métropole, en forte croissance démographique. L'économie locale repose sur les TPE/PME tertiaires et services aux entreprises, les artisans BTP portés par la pression immobilière, les commerces de proximité, les professions libérales (santé, conseil) et les indépendants. Accès direct rocade ouest Rennes et proximité pôle numérique Rennes Atalante.",

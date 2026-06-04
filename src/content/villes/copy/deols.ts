@@ -9,9 +9,9 @@ export const DEOLS_COPY: VilleCopy = {
   pitchEn:
     "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération castelroussine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
   seoHook: "bassin castelroussin",
   ecosystemFr:
     "Déols est une commune de l'agglomération de Châteauroux, connue pour son aéroport (Châteauroux-Centre, plateforme cargo et maintenance aéronautique) et l'ancienne base aérienne américaine reconvertie en zone d'activités. L'économie locale repose sur la logistique aéroportuaire, la maintenance aéronautique, l'industrie, l'artisanat BTP, le commerce de proximité et les services aux entreprises du bassin castelroussin.",

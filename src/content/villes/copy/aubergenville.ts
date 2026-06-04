@@ -9,9 +9,9 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
   pitchEn:
     "Aubergenville (78), commune des Yvelines en bord de Seine, dotée de zones industrielles et d'activités économiques variées, allie tissu productif et résidentiel. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
   seoHook: "commerce détail & industrie logistique",
   ecosystemFr:
     "Aubergenville est une commune des Yvelines en bord de Seine, dotée de plusieurs zones industrielles et d'activités (ZI des Closeaux, ZA des Graviers), à proximité de Mantes-la-Jolie et Poissy. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales.",

@@ -9,9 +9,9 @@ export const BIGANOS_COPY: VilleCopy = {
   pitchEn:
     "Biganos (33), commune du Bassin d'Arcachon au delta de la Leyre, allie activités ostréicoles, industrie papetière historique, artisanat BTP et tissu résidentiel en croissance. Axion-IA opère pour entreprises et indépendants du secteur du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "bassin sud-arcachonnais",
   ecosystemFr:
     "Biganos occupe une position stratégique au sud du Bassin d'Arcachon. Industrie papetière historique (Smurfit Kappa), port ostréicole du delta de la Leyre, gare TER Facture-Biganos (noeud ferroviaire), tissu TPE artisanat et commerces en croissance résidentielle.",

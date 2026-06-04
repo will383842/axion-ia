@@ -9,9 +9,9 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
   pitchEn:
     "Margny-lès-Compiègne (60), commune de 8 677 habitants dans l'Oise, est située en rive droite de l'Oise face à Compiègne, au cœur de l'agglomération de la Région de Compiègne. Tissu économique dynamique de TPE/PME : zones commerciales (Jaux-Venette), logistique, services aux entreprises, artisanat BTP et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Margny-lès-Compiègne (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Margny-lès-Compiègne (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Margny-lès-Compiègne (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Margny-lès-Compiègne (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
   ecosystemFr:
     "Margny-lès-Compiègne est une commune résidentielle et commerciale de l'agglomération de Compiègne, en rive droite de l'Oise. Elle bénéficie de la proximité des grandes zones commerciales Jaux-Venette, de la plateforme logistique de la vallée de l'Oise et du pôle universitaire UTC Compiègne. Le tissu économique associe commerce de détail, logistique, services aux entreprises, artisanat BTP et restauration.",
   ecosystemEn:

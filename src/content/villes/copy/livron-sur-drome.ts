@@ -9,9 +9,9 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
   pitchEn:
     "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
   seoHook: "vallée du",
   ecosystemFr:
     "Livron-sur-Drôme occupe une position stratégique à la confluence de la Drôme (rivière) et du Rhône, au sud immédiat de Valence sur l'axe A7. Tissu PME industrielles et logistique, activité agricole importante (vallée du Rhône — vergers, viticulture périphérique), TPE artisanat BTP, commerces et services aux entreprises.",

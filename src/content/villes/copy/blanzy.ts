@@ -9,9 +9,9 @@ export const BLANZY_COPY: VilleCopy = {
   pitchEn:
     "Blanzy (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire, conjugue héritage industriel minier et reconversion économique. Tissu de TPE artisanales, PME industrielles, commerces de proximité et services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit sur place sur mesure.",
   seoHook: "bassin minier le",
   ecosystemFr:
     "Blanzy fait partie du bassin minier Le Creusot-Montceau, berceau industriel de la Saône-et-Loire. Le musée de la mine témoigne de l'héritage houiller. L'économie locale repose aujourd'hui sur la sous-traitance industrielle, les TPE artisanales BTP, les commerces de centre-bourg, les services à la personne et les professions de santé. Proximité du Creusot (5 min) et de Montceau-les-Mines.",

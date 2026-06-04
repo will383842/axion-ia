@@ -9,9 +9,9 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
   pitchEn:
     "Saint-Symphorien-d'Ozon (69), commune en banlieue sud-est de Lyon dans le Rhône, est positionnée sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA opère pour entreprises et indépendants du secteur du SE lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Symphorien-d'Ozon (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques SE lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Symphorien-d'Ozon (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques SE lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Symphorien-d'Ozon (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques SE lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Symphorien-d'Ozon (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques SE lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
   seoHook: "proche lyon",
   ecosystemFr:
     "Saint-Symphorien-d'Ozon est positionnée en banlieue SE de Lyon, sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires et logistiques, TPE artisanat BTP, commerces, professions libérales, agriculture résiduelle.",

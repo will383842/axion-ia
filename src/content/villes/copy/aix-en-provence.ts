@@ -55,7 +55,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aix-en-Provence (13001) et dans le bassin Aix-Marseille sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises aixoises — activités scientifiques et techniques, industrie aérospatiale, énergie, enseignement, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aix-en-Provence (13001) et dans le bassin Aix-Marseille sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises aixoises — activités scientifiques et techniques, industrie aérospatiale, énergie, enseignement, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Aix-en-Provence (13001) and across the Aix-Marseille basin on site. We support micro-businesses, SMEs, mid-caps and large enterprises in Aix — scientific and technical activities, aerospace industry, energy, education, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

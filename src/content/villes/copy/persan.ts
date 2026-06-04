@@ -9,9 +9,9 @@ export const PERSAN_COPY: VilleCopy = {
   pitchEn:
     "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
   seoHook: "vallée oise",
   ecosystemFr:
     "Persan est située en bords de l'Oise, au nord du Val-d'Oise, formant une agglomération avec Beaumont-sur-Oise et Chambly. Zones industrielles actives, tissu TPE artisans BTP, PME tertiaires et de services, commerces de centre-ville et professions libérales. Bassin d'emploi industriel historique en reconversion tertiaire.",

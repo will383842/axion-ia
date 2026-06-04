@@ -9,9 +9,9 @@ export const CHANGE_COPY: VilleCopy = {
   pitchEn:
     "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
   seoHook: "artisanat proximité & commerce distribution",
   ecosystemFr:
     "Changé est l'une des communes résidentielles dynamiques de Le Mans Métropole, à l'est du Mans. Tissu économique de proximité : artisanat, commerces, professions libérales, services à la personne, petites PME tertiaires. Proximité directe avec les zones d'activités du nord-est manceau.",

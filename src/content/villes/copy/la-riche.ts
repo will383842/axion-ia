@@ -9,9 +9,9 @@ export const LA_RICHE_COPY: VilleCopy = {
   pitchEn:
     "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
   seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
     "La Riche est une commune de l'agglomération tourangelle, connue pour le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",

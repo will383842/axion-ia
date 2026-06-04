@@ -9,9 +9,9 @@ export const PLERIN_COPY: VilleCopy = {
   pitchEn:
     "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration activités",
   ecosystemFr:
     "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : TPE commerces, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",

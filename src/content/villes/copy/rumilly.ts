@@ -9,9 +9,9 @@ export const RUMILLY_COPY: VilleCopy = {
   pitchEn:
     "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y travaille avec les organisations du territoire de l'Albanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit sur place sur mesure.",
   seoHook: "TPE & PME Hte-Savoie",
   ecosystemFr:
     "Rumilly est la capitale économique de l'Albanais, territoire entre Annecy (20 min) et Aix-les-Bains (20 min). L'industrie agroalimentaire laitière et fromagère y est historiquement forte (coopératives, laiteries, transformation). PME industrielles diversifiées, tissu TPE artisanat et commerces de bourg, agriculture (élevage laitier, polyculture). Bassin d'emploi dynamique (~50 000 hab zone Albanais).",

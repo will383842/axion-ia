@@ -9,9 +9,9 @@ export const REICHSHOFFEN_COPY: VilleCopy = {
   pitchEn:
     "Reichshoffen (67), commune de 5 418 habitants au nord de l'Alsace, est un pôle industriel ferroviaire historique du Bas-Rhin. Constructeur ferroviaire de référence depuis le XIXe siècle. Tissu industrie ferroviaire et métallurgie, PME sous-traitants industriels, TPE artisans, commerces, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Reichshoffen (67). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans, commerçants et services aux entreprises du nord de l'Alsace (Outre-Forêt).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reichshoffen (67). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans, commerçants et services aux entreprises du nord de l'Alsace (Outre-Forêt).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Reichshoffen (67). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans, commerçants et services aux entreprises du nord de l'Alsace (Outre-Forêt).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reichshoffen (67). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans, commerçants et services aux entreprises du nord de l'Alsace (Outre-Forêt).",
   seoHook: "frontalier allemande",
   ecosystemFr:
     "Reichshoffen est un pôle industriel ferroviaire historique du nord de l'Alsace. Constructeur ferroviaire de référence (matériel roulant TER, tram-train, métro). Tissu industrie métallurgique, PME sous-traitants industriels, TPE artisans, commerces, services aux entreprises. Patrimoine industriel et bataille 1870.",

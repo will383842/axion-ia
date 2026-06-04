@@ -9,9 +9,9 @@ export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Gournay-sur-Marne (93), commune résidentielle des bords de la Marne à l'extrême est de la Seine-Saint-Denis, conjugue cadre verdoyant et proximité parisienne. Tissu de TPE commerçantes, artisans, PME de services, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Gournay-sur-Marne, nichée sur les bords de la Marne à la frontière de la Seine-et-Marne, est une commune résidentielle prisée du Grand Paris est. Tissu économique de TPE commerçantes et artisanales, professions libérales, PME tertiaires et restaurateurs. Proximité de Chelles, Noisy-le-Grand (cité Descartes) et de la zone commerciale de Champs-sur-Marne.",

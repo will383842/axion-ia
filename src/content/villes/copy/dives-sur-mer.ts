@@ -9,9 +9,9 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Dives-sur-Mer (14), commune historique de la Côte Fleurie en Calvados, port d'embarquement de Guillaume le Conquérant en 1066. Tissu TPE artisans, PME tourisme balnéaire et hôtellerie, commerces, ostréiculture, nautisme, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dives-sur-Mer (14). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie Côte Fleurie, commerces Village d'Art Guillaume le Conquérant, ostréiculteurs, professionnels du nautisme, indépendants et services aux entreprises du Pays d'Auge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dives-sur-Mer (14). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie Côte Fleurie, commerces Village d'Art Guillaume le Conquérant, ostréiculteurs, professionnels du nautisme, indépendants et services aux entreprises du Pays d'Auge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dives-sur-Mer (14). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie Côte Fleurie, commerces Village d'Art Guillaume le Conquérant, ostréiculteurs, professionnels du nautisme, indépendants et services aux entreprises du Pays d'Auge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dives-sur-Mer (14). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie Côte Fleurie, commerces Village d'Art Guillaume le Conquérant, ostréiculteurs, professionnels du nautisme, indépendants et services aux entreprises du Pays d'Auge.",
   seoHook: "tourisme balnéaire & commerce artisanat",
   ecosystemFr:
     "Dives-sur-Mer est une commune littorale du Calvados sur la Côte Fleurie, célèbre pour son port historique d'où Guillaume le Conquérant embarqua en 1066. Économie portée par le tourisme balnéaire (Cabourg limitrophe), le Village d'Art dans les halles médiévales, l'ostréiculture, le nautisme et un tissu TPE/PME artisanal et commercial.",

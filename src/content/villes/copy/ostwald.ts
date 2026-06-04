@@ -9,9 +9,9 @@ export const OSTWALD_COPY: VilleCopy = {
   pitchEn:
     "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
   ecosystemFr:
     "Ostwald est une commune résidentielle du Bas-Rhin dans l'agglomération sud de Strasbourg. Tissu TPE/PME services, conseil, numérique, commerce, BTP, artisanat, professions libérales. Accès direct au bassin d'emploi strasbourgeois et aux institutions européennes.",
   ecosystemEn:

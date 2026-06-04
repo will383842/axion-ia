@@ -9,9 +9,9 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   pitchEn:
     "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   seoHook: "industrielles diversifiées & héritage minier",
   ecosystemFr:
     "Roche-la-Molière est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Héritage minier (ancien bassin charbonnier stéphanois historique). Reconversion vers tissu PME industrielles diversifiées contemporaines, tertiaires, TPE artisanat BTP, commerces de proximité.",

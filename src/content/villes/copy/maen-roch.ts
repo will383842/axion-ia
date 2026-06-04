@@ -9,9 +9,9 @@ export const MAEN_ROCH_COPY: VilleCopy = {
   pitchEn:
     "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
   ecosystemFr:
     "Maen Roch est une commune nouvelle du Pays de Fougères (Ille-et-Vilaine), créée en 2019. Située au carrefour Bretagne-Normandie, elle s'appuie sur un tissu rural dynamique : agriculture laitière et bovine, agroalimentaire, artisanat BTP, commerces de bourg et PME de services en lien avec Fougères et Rennes.",
   ecosystemEn:

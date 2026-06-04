@@ -9,9 +9,9 @@ export const LANGUIDIC_COPY: VilleCopy = {
   pitchEn:
     "Languidic (56), vaste commune de l'arrière-pays lorientais réputée pour son agriculture et son terroir, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises tertiaires du bassin lorientais. Axion-IA y intervient pour tous types d'activités de l'agglomération de Lorient.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Languidic (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de l'arrière-pays lorientais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Languidic (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de l'arrière-pays lorientais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Languidic (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de l'arrière-pays lorientais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Languidic (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de l'arrière-pays lorientais.",
   seoHook: "agriculture élevage & agroalimentaire terroir",
   ecosystemFr:
     "Languidic se situe dans l'arrière-pays lorientais, à 20 km au nord-est de Lorient, dans l'agglomération Lorient Agglomération. Commune rurale étendue (8 042 habitants) au terroir agricole reconnu (élevage, céréales, légumes), elle bénéficie de la proximité du pôle économique lorientais. Tissu économique : exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces de proximité, professions libérales et entreprises tertiaires liées au bassin lorientais.",

@@ -9,9 +9,9 @@ export const LA_MONTAGNE_COPY: VilleCopy = {
   pitchEn:
     "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA accompagne tout le tissu professionnel local du sud-ouest nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Montagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Montagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Montagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Montagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "La Montagne est une commune résidentielle en bords de Loire, au sud-ouest de Nantes Métropole. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Proximité Bouguenais et zones d'activités sud-ouest.",

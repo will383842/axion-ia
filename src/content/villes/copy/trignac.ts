@@ -9,9 +9,9 @@ export const TRIGNAC_COPY: VilleCopy = {
   pitchEn:
     "Trignac (44), commune industrielle de l'agglomération de Saint-Nazaire en Loire-Atlantique, hérite d'un passé sidérurgique reconverti en zones d'activités. Tissu TPE artisans, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin du bassin nazairien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & industrie sous-traitance",
   ecosystemFr:
     "Trignac fait partie de l'agglomération de Saint-Nazaire (CARENE, 130 000 habitants). Ancien site sidérurgique reconverti, zones d'activités commerciales et industrielles actives. Tissu TPE artisans, PME sous-traitantes, commerces et services du bassin nazairien.",

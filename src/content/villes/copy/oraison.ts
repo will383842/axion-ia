@@ -9,9 +9,9 @@ export const ORAISON_COPY: VilleCopy = {
   pitchEn:
     "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   seoHook: "agriculture vergers & lavande plantes",
   ecosystemFr:
     "Oraison est commune de la Moyenne Durance (~6 150 hab), bassin agricole dynamique entre Manosque et Sisteron. Vergers (pommes, poires), lavande, maraîchage, PME agroalimentaires locales. TPE artisans BTP, commerces de proximité, services. Marché provençal mardi reconnu.",

@@ -9,9 +9,9 @@ export const SAINT_RENAN_COPY: VilleCopy = {
   pitchEn:
     "Saint-Renan (29), pôle commercial majeur du Pays d'Iroise dans le Finistère, concentre commerces, services et PME tertiaires à l'ouest de Brest. TPE commerçantes, artisans, professions libérales, PME de services. Axion-IA opère pour toutes les structures économiques de la commune du Pays d'Iroise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Renan (29). Nous accompagnons tous types d'activités : commerçants et enseignes du centre commercial du Pays d'Iroise, TPE artisanales, PME de services, professions libérales, indépendants et prestataires du territoire iroisien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Renan (29). Nous accompagnons tous types d'activités : commerçants et enseignes du centre commercial du Pays d'Iroise, TPE artisanales, PME de services, professions libérales, indépendants et prestataires du territoire iroisien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Renan (29). Nous accompagnons tous types d'activités : commerçants et enseignes du centre commercial du Pays d'Iroise, TPE artisanales, PME de services, professions libérales, indépendants et prestataires du territoire iroisien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Renan (29). Nous accompagnons tous types d'activités : commerçants et enseignes du centre commercial du Pays d'Iroise, TPE artisanales, PME de services, professions libérales, indépendants et prestataires du territoire iroisien.",
   ecosystemFr:
     "Saint-Renan est le principal pôle commercial du Pays d'Iroise, à l'ouest de Brest. La commune concentre enseignes de grande distribution, commerces de centre-ville, professions libérales et PME de services. Son marché hebdomadaire est l'un des plus importants du Finistère. Le tissu économique repose sur le commerce, l'artisanat et les services aux particuliers.",
   ecosystemEn:

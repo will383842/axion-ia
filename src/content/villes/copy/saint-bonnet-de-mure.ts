@@ -9,9 +9,9 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local de l'est lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
   seoHook: "logistiques aire & tertiaires zones",
   ecosystemFr:
     "Saint-Bonnet-de-Mure est positionnée en banlieue est de Lyon, entre la Métropole et l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",

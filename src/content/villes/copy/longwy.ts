@@ -9,9 +9,9 @@ export const LONGWY_COPY: VilleCopy = {
   pitchEn:
     "Longwy (54), commune frontalière de Meurthe-et-Moselle aux portes du Luxembourg et de la Belgique, allie patrimoine industriel reconverti (sidérurgie, Émaux de Longwy) et dynamique transfrontalière. TPE et PME industrielles reconverties, artisanat d'art (faïence), commerces frontaliers, services aux travailleurs frontaliers, logistique. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit sur place sur mesure.",
   seoHook: "industrielles reconverties & artisanat d'art",
   ecosystemFr:
     "Longwy est une ville frontalière du nord meurthe-et-mosellan, ancien pôle sidérurgique reconverti et berceau des Émaux de Longwy (faïence d'art classée). Économie marquée par la proximité Luxembourg : TPE/PME industrielles, artisanat d'art, commerces frontaliers, logistique, services aux travailleurs transfrontaliers.",

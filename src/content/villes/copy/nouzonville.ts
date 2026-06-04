@@ -9,9 +9,9 @@ export const NOUZONVILLE_COPY: VilleCopy = {
   pitchEn:
     "Nouzonville (08), commune de 5 500 habitants nichée dans la vallée de la Meuse, héritière d'une forte tradition de métallurgie et de forge ardennaise. TPE et PME industrielles, ateliers de mécanique, sous-traitants automobile, artisans, commerces de proximité et acteurs de la transition. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit sur place sur mesure.",
   seoHook: "métallurgie forge & mécanique sous-traitance",
   ecosystemFr:
     "Nouzonville est une commune ardennaise de la vallée de la Meuse, ancrée dans une longue tradition de métallurgie, forge et sous-traitance industrielle. Tissu TPE/PME : ateliers mécaniques, fonderie, sous-traitants automobile, artisans du bâtiment, commerces de proximité et services.",

@@ -9,9 +9,9 @@ export const MONDEVILLE_COPY: VilleCopy = {
   pitchEn:
     "Mondeville (14), commune de l'agglomération de Caen est dans le Calvados, est marquée par une reconversion industrielle réussie (ancienne Société Métallurgique de Normandie). Zones d'activités dynamiques, tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mondeville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et services de l'agglomération caennaise est, commerçants zones d'activités, professions libérales, indépendants et acteurs de la reconversion économique locale.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondeville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et services de l'agglomération caennaise est, commerçants zones d'activités, professions libérales, indépendants et acteurs de la reconversion économique locale.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mondeville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et services de l'agglomération caennaise est, commerçants zones d'activités, professions libérales, indépendants et acteurs de la reconversion économique locale.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondeville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et services de l'agglomération caennaise est, commerçants zones d'activités, professions libérales, indépendants et acteurs de la reconversion économique locale.",
   seoHook: "industrie reconversion & services aux",
   ecosystemFr:
     "Mondeville est une commune de l'agglomération caennaise est, marquée par la reconversion industrielle de l'ancienne Société Métallurgique de Normandie (SMN). Le site a été reconverti en zones d'activités modernes. Tissu TPE artisans BTP, PME industrielles et de services, commerces zones d'activités, professions libérales.",

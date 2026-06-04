@@ -9,9 +9,9 @@ export const AMILLY_COPY: VilleCopy = {
   pitchEn:
     "Amilly (45), commune de l'agglomeration montargoise dans le Loiret, accueille d'importantes zones d'activites commerciales et artisanales du Gatinais. Tissu de TPE et PME du commerce, de la logistique, des services aux entreprises, de l'artisanat et de l'industrie legere. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Amilly est une commune dynamique de l'agglomeration montargoise, dotee de zones d'activites commerciales et artisanales structurantes pour le Gatinais. Son economie repose sur le commerce, la logistique liee au carrefour A77/D943, les services aux entreprises, l'artisanat du batiment et l'industrie legere. Communes voisines : Montargis, Chalette-sur-Loing, Villemandeur, Paucourt, Treilles-en-Gatinais.",
   ecosystemEn:

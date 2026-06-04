@@ -9,9 +9,9 @@ export const MORMANT_COPY: VilleCopy = {
   pitchEn:
     "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
   seoHook: "commerce bourg & agroalimentaire",
   ecosystemFr:
     "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",

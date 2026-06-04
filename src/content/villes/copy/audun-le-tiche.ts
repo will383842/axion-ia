@@ -9,9 +9,9 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
   pitchEn:
     "Audun-le-Tiche (57), commune frontalière du Luxembourg au nord-ouest de Thionville, ancienne cité minière reconvertie en bassin résidentiel et tertiaire transfrontalier. Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et immobilier. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : TPE/PME services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : TPE/PME services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : TPE/PME services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : TPE/PME services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
   ecosystemFr:
     "Audun-le-Tiche est une commune frontalière du Luxembourg dans le Pays-Haut mosellan, ancienne cité minière (mine de fer) reconvertie en bassin résidentiel pour frontaliers luxembourgeois. Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et immobilier. Dynamisme transfrontalier fort.",
   ecosystemEn:

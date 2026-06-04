@@ -10,9 +10,9 @@ export const CANCALE_COPY: VilleCopy = {
     "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA opère pour toutes les structures économiques de la commune du nord-Ille-et-Vilaine littoral.",
   seoHook: "ostréiculture, pêche & tourisme Côte d'Émeraude",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Cancale est l'une des places fortes de l'ostréiculture française, célèbre pour ses huîtres plates sauvages issues de bancs naturels et ses huîtres creuses d'élevage. La commune combine activité maritime (pêche, ostréiculture, conchyliculture), tourisme balnéaire et gastronomique (restaurants étoilés, hôtellerie, créperies), commerce, artisanat et services aux résidents de la Côte d'Émeraude.",
   ecosystemEn:

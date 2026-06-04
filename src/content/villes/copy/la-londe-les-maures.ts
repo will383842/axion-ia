@@ -7,9 +7,9 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
   pitchEn:
     "La Londe-les-Maures (83, Var), station balnéaire entre Hyères et Bormes-les-Mimosas au cœur du vignoble Côtes de Provence La Londe, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA opère sur l'ensemble des activités professionnelles locales du littoral des Maures.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "viticulture côtes & hôtellerie restauration",
   ecosystemFr:
     "La Londe-les-Maures est une station balnéaire du littoral des Maures, au cœur du vignoble Côtes de Provence La Londe (28 domaines). Tissu de TPE viticoles, PME hôtellerie-restauration, commerces touristiques, professions libérales, activités nautiques (port Miramar), plages (Argentière, Tamaris) et liaisons îles d'Hyères.",
