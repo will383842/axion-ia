@@ -204,13 +204,35 @@ export async function handleTurn(
         };
       }
       const systemPrompt = assembleSystemPrompt({ tenant: ctx.tenant, chunks });
-      const answer = await llm({
-        systemPrompt,
-        userPrompt: message,
-        tier: ctx.tenant.settings.llmTier.faqSimple,
-      });
-      const guard = verifyOutput(answer.text);
       const sources = chunks.map((c) => ({ sourceType: c.sourceType, sourceRef: c.sourceRef }));
+
+      // T-16 — mode dégradé : panne LLM (Anthropic down / rate-limit / circuit
+      // ouvert) ⇒ JAMAIS d'erreur brute. On bascule sur une réponse de repli +
+      // RDV + escalade (la saisie n'est pas perdue côté widget).
+      let answer: Awaited<ReturnType<typeof llm>>;
+      try {
+        answer = await llm({
+          systemPrompt,
+          userPrompt: message,
+          tier: ctx.tenant.settings.llmTier.faqSimple,
+        });
+      } catch (err) {
+        console.warn("[chatbot:orchestrator] LLM indisponible, mode dégradé:", err);
+        return {
+          intent: "explication",
+          text: "Je rencontre un souci technique momentané pour répondre en détail. Pour ne pas vous faire attendre, prenons un court échange :",
+          cards: [],
+          sendLinks: false,
+          rdvUrl: RDV_URL,
+          slots,
+          sources,
+          linkFlow: INITIAL_FLOW,
+          escalate: true,
+          guard: OK_GUARD,
+        };
+      }
+
+      const guard = verifyOutput(answer.text);
       if (!guard.ok) {
         // Garde-fou : on n'émet pas une sortie qui invente prix/URL.
         return {

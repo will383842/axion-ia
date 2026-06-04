@@ -69,13 +69,21 @@ describe("T-07 recherche d'offre (déterministe, sans LLM)", () => {
 
 describe("T-07 intentions simples", () => {
   it("rdv → lien /fr/appel", async () => {
-    const r = await handleTurn("je veux prendre rendez-vous", { tenant }, { retrieve: noopRetrieve });
+    const r = await handleTurn(
+      "je veux prendre rendez-vous",
+      { tenant },
+      { retrieve: noopRetrieve },
+    );
     expect(r.intent).toBe("rdv");
     expect(r.rdvUrl).toBe("/fr/appel");
   });
 
   it("hors-sujet → recadrage, pas de carte", async () => {
-    const r = await handleTurn("vous faites de la comptabilité ?", { tenant }, { retrieve: noopRetrieve });
+    const r = await handleTurn(
+      "vous faites de la comptabilité ?",
+      { tenant },
+      { retrieve: noopRetrieve },
+    );
     expect(r.intent).toBe("hors_sujet");
     expect(r.cards).toEqual([]);
     expect(r.text).toMatch(/Axion-IA/);
@@ -138,7 +146,11 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
   });
 
   it("aucun chunk pertinent → escalade (jamais d'invention)", async () => {
-    const r = await handleTurn("explique-moi ta méthode secrète", { tenant }, { retrieve: noopRetrieve });
+    const r = await handleTurn(
+      "explique-moi ta méthode secrète",
+      { tenant },
+      { retrieve: noopRetrieve },
+    );
     expect(r.escalate).toBe(true);
     expect(r.rdvUrl).toBe("/fr/appel");
   });
@@ -146,8 +158,32 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
   it("T-11 : confiance trop faible → escalade SANS appel LLM", async () => {
     const weak = vi.fn(async () => [{ ...chunks[0]!, score: 0.0005 }]);
     const llm = vi.fn();
-    const r = await handleTurn("c'est quoi un audit ?", { tenant }, { retrieve: weak, generateAnswer: llm });
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      { retrieve: weak, generateAnswer: llm },
+    );
     expect(r.escalate).toBe(true);
     expect(llm).not.toHaveBeenCalled(); // pas de génération sous le seuil
+  });
+
+  it("T-16 : panne LLM (throw) → mode dégradé, JAMAIS d'erreur brute, RDV + escalade", async () => {
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: vi.fn(async () => {
+          throw new Error("Anthropic 503 Service Unavailable");
+        }),
+      },
+    );
+    expect(r.intent).toBe("explication");
+    expect(r.escalate).toBe(true);
+    expect(r.rdvUrl).toBe("/fr/appel");
+    // Message orienté humain, aucune fuite de l'erreur technique.
+    expect(r.text).not.toMatch(/503|Anthropic|Error/i);
+    expect(r.text).toMatch(/échange|technique|attendre/i);
+    expect(r.guard.ok).toBe(true);
   });
 });

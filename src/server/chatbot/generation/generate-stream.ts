@@ -8,6 +8,17 @@
 import { generate } from "@/server/content-gen/providers/provider-router";
 import { resolvePriceTokens } from "@/content/pricing-tokens";
 import type { LlmTier } from "@/server/chatbot/constants";
+import { CircuitBreaker } from "@/server/chatbot/resilience/circuit-breaker";
+
+// T-16 — disjoncteur sur l'appel LLM externe. Après 4 échecs consécutifs
+// (Anthropic down / rate-limit / timeout), on ouvre 15 s : les tours suivants
+// échouent immédiatement (fail-fast) → l'orchestrateur bascule en mode dégradé
+// (RDV) sans empiler des timeouts. Un essai half-open referme au retour du service.
+const llmBreaker = new CircuitBreaker({
+  name: "llm-anthropic",
+  failureThreshold: 4,
+  cooldownMs: 15_000,
+});
 
 const MODEL_BY_TIER: Record<LlmTier, string> = {
   sonnet: "claude-sonnet-4-6",
@@ -35,25 +46,26 @@ export interface GeneratedAnswer {
 export type GenerateAnswerFn = (opts: GenerateAnswerOptions) => Promise<GeneratedAnswer>;
 
 /** Implémentation réelle via provider-router (Anthropic, streamé, prompt caching). */
-export const generateAnswer: GenerateAnswerFn = async (opts) => {
-  const res = await generate({
-    jobId: `chatbot-${Date.now()}`,
-    contentType: "qa_derived",
-    role: "text",
-    preferredProvider: "anthropic",
-    model: MODEL_BY_TIER[opts.tier],
-    systemPrompt: opts.systemPrompt,
-    userPrompt: opts.userPrompt,
-    stream: true,
-    maxTokens: opts.maxTokens ?? 800,
-    temperature: 0.4,
-    ...(opts.onChunk ? { onStreamChunk: opts.onChunk } : {}),
+export const generateAnswer: GenerateAnswerFn = async (opts) =>
+  llmBreaker.run(async () => {
+    const res = await generate({
+      jobId: `chatbot-${Date.now()}`,
+      contentType: "qa_derived",
+      role: "text",
+      preferredProvider: "anthropic",
+      model: MODEL_BY_TIER[opts.tier],
+      systemPrompt: opts.systemPrompt,
+      userPrompt: opts.userPrompt,
+      stream: true,
+      maxTokens: opts.maxTokens ?? 800,
+      temperature: 0.4,
+      ...(opts.onChunk ? { onStreamChunk: opts.onChunk } : {}),
+    });
+    return {
+      text: resolvePriceTokens(res.output, "fr"),
+      model: res.model,
+      costUsd: res.costUsd,
+      tokensInput: res.tokensInput,
+      tokensOutput: res.tokensOutput,
+    };
   });
-  return {
-    text: resolvePriceTokens(res.output, "fr"),
-    model: res.model,
-    costUsd: res.costUsd,
-    tokensInput: res.tokensInput,
-    tokensOutput: res.tokensOutput,
-  };
-};
