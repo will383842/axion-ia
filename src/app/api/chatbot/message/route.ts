@@ -13,7 +13,7 @@ import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { generateAnswer } from "@/server/chatbot/generation/generate-stream";
 import type { SearchSlots } from "@/server/chatbot/catalog/slot-filling";
-import { INITIAL_FLOW, type LinkFlowState } from "@/server/chatbot/catalog/link-flow";
+import type { LinkFlowState } from "@/server/chatbot/catalog/link-flow";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -88,9 +88,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const previousSlots = (convo.searchSlots as SearchSlots | null) ?? undefined;
   const linkFlow: LinkFlowState = {
     linkState: (convo.linkState as LinkFlowState["linkState"]) ?? "idle",
-    proposedOfferIds: Array.isArray(convo.proposedOffers)
-      ? (convo.proposedOffers as string[])
-      : [],
+    proposedOfferIds: Array.isArray(convo.proposedOffers) ? (convo.proposedOffers as string[]) : [],
   };
 
   const startedAt = Date.now();
@@ -113,7 +111,8 @@ export async function POST(req: NextRequest): Promise<Response> {
           },
           {
             // streaming token-par-token vers le widget (typing).
-            generateAnswer: (opts) => generateAnswer({ ...opts, onChunk: (c) => send({ type: "delta", text: c }) }),
+            generateAnswer: (opts) =>
+              generateAnswer({ ...opts, onChunk: (c) => send({ type: "delta", text: c }) }),
           },
         );
 
