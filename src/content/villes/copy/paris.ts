@@ -943,38 +943,36 @@ export const PARIS_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit et augmente à Paris des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Paris, itérations à distance.",
         whyHere: [
-          "Paris concentre une part importante de nos projets web & SaaS : éditeurs de logiciel, scale-ups du Sentier, cabinets de conseil du 8e/9e, maisons de mode et e-commerce du Marais.",
-          "Un atelier de cadrage se tient en présentiel à Paris : objectifs, parcours utilisateurs, stack existante (WordPress, Shopify, Next.js, Laravel…), accès aux données et aux contenus.",
-          "Conception UX/UI complète quand le projet le demande : recherche utilisateur, wireframes, design system, maquettes Figma, prototype testable — pas seulement la brique IA.",
-          "Augmentation sans refonte de l'existant (widget, API, plugin) ou conception d'une plateforme IA-native sur mesure, selon ce qui est le plus rentable à 18 mois.",
-          "Cas typiques parisiens : SaaS B2B (chatbot support + search produit), e-commerce (reco et fiches générées), médias (génération éditoriale conforme HCU/AI Act), portails client (self-care augmenté).",
-          "Tissu dense de PME et ETI franciliennes : on intervient aussi bien pour une TPE qui greffe un chatbot que pour une ETI qui refond une plateforme métier complète.",
+          "Projets web & SaaS parisiens : éditeurs de logiciel, scale-ups du Sentier, conseil 8e/9e, e-commerce et mode du Marais.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
+          "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
+          "De la TPE qui greffe un chatbot à l'ETI qui refond sa plateforme métier : on s'adapte à votre échelle.",
         ],
         methodology: [
           {
             step: "Cadrage à Paris",
             detail:
-              "Atelier sur site : objectifs business, parcours utilisateurs, audit de la stack et des contenus existants, choix des briques IA à plus fort ROI, puis devis ferme — à partir de 24-48 h selon la complexité du projet.",
+              "Atelier sur site : objectifs, parcours, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
           },
           {
             step: "Conception UX/UI",
             detail:
-              "Wireframes, design system et maquettes Figma alignés sur votre marque ; prototype testable par vos utilisateurs avant tout développement, pour dérisquer.",
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement.",
           },
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (widget, API, plugin) ou construction IA-native : chatbot RAG, recherche sémantique, agents, automatisations, e-commerce. Démos hebdomadaires.",
+              "Greffe IA sur l'existant ou build IA-native : chatbot RAG, search, agents, e-commerce. Démos hebdomadaires.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, validation des Web Vitals et du SEO/AEO, mise en production sans downtime, formation de vos équipes à la prise en main.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime.",
           },
           {
             step: "Livraison + autonomie",
             detail:
-              "Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible). Documentation complète, aucun abonnement imposé : la plateforme vous appartient.",
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : c'est à vous.",
           },
         ],
         pricing: [
@@ -1031,38 +1029,36 @@ export const PARIS_COPY: VilleCopy = {
       en: {
         hero: "In Paris, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Paris kick-off, remote iterations.",
         whyHere: [
-          "Paris concentrates a large share of our web & SaaS projects: software vendors, Sentier scale-ups, 8th/9th consulting firms, Marais fashion houses and e-commerce.",
-          "A scoping workshop is held in person in Paris: goals, user journeys, existing stack (WordPress, Shopify, Next.js, Laravel…), access to data and content.",
-          "Full UX/UI design when the project calls for it: user research, wireframes, design system, Figma mockups, testable prototype — not just the AI brick.",
-          "Augmentation of the existing site without rebuild (widget, API, plugin) or a bespoke AI-native platform, depending on what pays off best at 18 months.",
-          "Typical Paris cases: B2B SaaS (support chatbot + product search), e-commerce (reco and generated sheets), media (HCU/AI Act compliant editorial generation), customer portals (augmented self-care).",
-          "A dense fabric of Paris-region SMEs and mid-caps: we work both for a micro-business grafting a chatbot and a mid-cap rebuilding a full business platform.",
+          "Paris web & SaaS projects: software vendors, Sentier scale-ups, 8th/9th consulting, Marais e-commerce and fashion.",
+          "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
+          "Augment the existing site (widget, API, plugin) or a bespoke AI-native platform, whichever pays off best at 18 months.",
+          "From a micro-business grafting a chatbot to a mid-cap rebuilding its business platform: we adapt to your scale.",
         ],
         methodology: [
           {
             step: "Scoping in Paris",
             detail:
-              "On-site workshop: business goals, user journeys, audit of the existing stack and content, choice of the highest-ROI AI bricks, then a firm quote — from 24-48 h depending on project complexity.",
+              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
           },
           {
             step: "UX/UI design",
             detail:
-              "Wireframes, design system and Figma mockups aligned with your brand; prototype testable by your users before any development, to de-risk.",
+              "Wireframes, design system and Figma mockups in your brand; prototype tested before any development.",
           },
           {
             step: "Development in sprints",
             detail:
-              "AI grafted onto the existing site (widget, API, plugin) or AI-native build: RAG chatbot, semantic search, agents, automations, e-commerce. Weekly demos.",
+              "AI grafted onto the existing site or AI-native build: RAG chatbot, search, agents, e-commerce. Weekly demos.",
           },
           {
             step: "Acceptance + go-live",
             detail:
-              "Acceptance tests, Web Vitals and SEO/AEO validation, production release without downtime, training of your teams.",
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime.",
           },
           {
             step: "Delivery + autonomy",
             detail:
-              "Source code, databases and models delivered into your infrastructure (EU hosting possible). Full documentation, no imposed subscription: the platform is yours.",
+              "Code, databases and models delivered into your infra (EU hosting possible). No imposed subscription: it's yours.",
           },
         ],
         pricing: [
