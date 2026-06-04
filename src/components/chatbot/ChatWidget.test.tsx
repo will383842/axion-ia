@@ -69,7 +69,8 @@ describe("ChatWidget — envoi", () => {
     const input = screen.getByPlaceholderText("Posez votre question…") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "formations à 2000 €" } });
     fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
-    expect(sendMock).toHaveBeenCalledWith("formations à 2000 €");
+    // 2e arg = turnstileToken (undefined tant qu'aucune clé Turnstile n'est configurée).
+    expect(sendMock).toHaveBeenCalledWith("formations à 2000 €", undefined);
     expect(input.value).toBe("");
   });
 

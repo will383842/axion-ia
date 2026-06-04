@@ -22,7 +22,8 @@ function nextId(prefix: string): string {
 export interface UseChatStream {
   readonly messages: ReadonlyArray<ChatMessage>;
   readonly status: ChatStatus;
-  readonly send: (text: string) => Promise<void>;
+  /** `turnstileToken` (optionnel) joint au 1er message si l'anti-bot est câblé. */
+  readonly send: (text: string, turnstileToken?: string) => Promise<void>;
   /** Session serveur courante (pour lier une capture de lead à la conversation). */
   readonly sessionUuid: string | undefined;
 }
@@ -35,7 +36,7 @@ export function useChatStream(): UseChatStream {
   // Évite les envois concurrents (double Entrée pendant un stream).
   const inFlightRef = React.useRef(false);
 
-  const send = React.useCallback(async (text: string) => {
+  const send = React.useCallback(async (text: string, turnstileToken?: string) => {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
     inFlightRef.current = true;
@@ -67,6 +68,7 @@ export function useChatStream(): UseChatStream {
         body: JSON.stringify({
           message: trimmed,
           ...(sessionRef.current ? { sessionUuid: sessionRef.current } : {}),
+          ...(turnstileToken ? { turnstileToken } : {}),
           ...(typeof window !== "undefined"
             ? { pageContext: window.location.pathname.slice(0, 300) }
             : {}),

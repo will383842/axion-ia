@@ -19,6 +19,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { trackFunnel } from "@/lib/tracking";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { useChatStream } from "./useChatStream";
 import { LeadForm } from "./LeadForm";
 import type { ChatCard, ChatMessage } from "./types";
@@ -30,6 +31,10 @@ export function ChatWidget() {
   const [draft, setDraft] = React.useState("");
   // Mini-formulaire de capture de lead (flux de consentement RGPD).
   const [showLead, setShowLead] = React.useState(false);
+  // Anti-bot Turnstile (T-29) : inerte sans NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  // (widget = null, token = ""). Le token est joint au 1er message ; le serveur
+  // ne le vérifie que si CHATBOT_TURNSTILE_ENABLED=true.
+  const { token: turnstileToken, widget: turnstileWidget } = useTurnstileToken("chatbot");
 
   const bubbleRef = React.useRef<HTMLButtonElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -99,7 +104,7 @@ export function ChatWidget() {
       startedRef.current = true;
       trackFunnel("Chat Started");
     }
-    void send(text);
+    void send(text, turnstileToken || undefined);
   }
 
   return (
@@ -192,6 +197,8 @@ export function ChatWidget() {
               </button>
             </form>
           ) : null}
+          {/* Anti-bot invisible (rend null sans clé Turnstile configurée). */}
+          {turnstileWidget}
         </section>
       ) : (
         <button
