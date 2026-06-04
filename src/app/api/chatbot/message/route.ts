@@ -9,7 +9,10 @@ import { randomUUID, createHash } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { verifyTurnstile } from "@/lib/turnstile";
 import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
+import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { generateAnswer } from "@/server/chatbot/generation/generate-stream";
 import type { SearchSlots } from "@/server/chatbot/catalog/slot-filling";
@@ -30,7 +33,13 @@ const bodySchema = z.object({
   sessionUuid: z.string().uuid().optional(),
   tenantKey: z.string().min(1).max(120).optional(),
   pageContext: z.string().max(300).optional(),
+  /** Token Cloudflare Turnstile (REQ-062) — requis à l'ouverture de session si activé. */
+  turnstileToken: z.string().max(2048).optional(),
 });
+
+// Anti-abus (REQ-062) : quotas glissants par IP et par session.
+const RATE_LIMIT_IP = { limit: 20, windowSec: 60 } as const;
+const RATE_LIMIT_SESSION = { limit: 30, windowSec: 60 } as const;
 
 function clientIp(req: NextRequest): string {
   return (
@@ -46,11 +55,94 @@ function hashIp(ip: string): string | null {
   return createHash("sha256").update(`${salt}::${ip}`).digest("hex").slice(0, 64);
 }
 
-function jsonError(error: string, status: number): Response {
+/**
+ * CORS (REQ-061) : la route n'accepte que les requêtes same-origin OU provenant
+ * du domaine déclaré du tenant. `Origin` absent (navigation server-to-server) =
+ * autorisé. Cross-origin inconnu = rejeté.
+ */
+function checkOrigin(
+  req: NextRequest,
+  tenant: { domaine: string | null },
+): { allowed: boolean; origin: string | null } {
+  const origin = req.headers.get("origin");
+  if (!origin) return { allowed: true, origin: null };
+  let originHost: string;
+  try {
+    originHost = new URL(origin).host.toLowerCase();
+  } catch {
+    return { allowed: false, origin };
+  }
+  const hostHeader = (req.headers.get("host") ?? "").toLowerCase();
+  if (originHost === hostHeader) return { allowed: true, origin }; // same-origin
+  const allow = new Set<string>();
+  const d = tenant.domaine
+    ?.replace(/^https?:\/\//, "")
+    .replace(/\/.*$/, "")
+    .toLowerCase();
+  if (d) {
+    allow.add(d);
+    allow.add(`www.${d}`);
+  }
+  return { allowed: allow.has(originHost), origin };
+}
+
+/** En-têtes CORS à refléter quand l'origine est autorisée. */
+function corsHeaders(origin: string | null): Record<string, string> {
+  if (!origin) return {};
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
+  };
+}
+
+function jsonError(error: string, status: number, extra?: Record<string, string>): Response {
   return new Response(JSON.stringify({ ok: false, error }), {
     status,
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...extra },
   });
+}
+
+/** Petit flux SSE de déflexion (prompt-guard) — réponse polie, sans appel LLM. */
+function deflectionResponse(
+  sessionUuid: string,
+  text: string,
+  cors: Record<string, string>,
+): Response {
+  const stream = new ReadableStream<Uint8Array>({
+    start(controller) {
+      const enc = new TextEncoder();
+      const send = (d: Record<string, unknown>) =>
+        controller.enqueue(enc.encode(`data: ${JSON.stringify(d)}\n\n`));
+      send({ type: "session", sessionUuid });
+      send({ type: "message", text });
+      send({ type: "done" });
+      controller.close();
+    },
+  });
+  return new Response(stream, { headers: { ...SSE_HEADERS, ...cors } });
+}
+
+/**
+ * Préflight CORS. Ne reflète les en-têtes CORS que pour le same-origin (le seul
+ * cas légitime au MVP single-tenant) ; une origine étrangère reçoit 204 SANS
+ * `Access-Control-Allow-Origin` → le navigateur bloque la requête. Le POST refait
+ * de toute façon la validation complète (same-origin + domaine tenant).
+ */
+export function OPTIONS(req: NextRequest): Response {
+  const origin = req.headers.get("origin");
+  let sameOrigin = false;
+  if (origin) {
+    try {
+      sameOrigin =
+        new URL(origin).host.toLowerCase() === (req.headers.get("host") ?? "").toLowerCase();
+    } catch {
+      sameOrigin = false;
+    }
+  }
+  return new Response(null, { status: 204, headers: sameOrigin ? corsHeaders(origin) : {} });
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
@@ -66,13 +158,50 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
   const parsed = bodySchema.safeParse(raw);
   if (!parsed.success) return jsonError("invalid_body", 400);
-  const { message, tenantKey, pageContext } = parsed.data;
+  const { message, tenantKey, pageContext, turnstileToken } = parsed.data;
 
   const tenant = tenantKey ? await resolveTenantByKey(tenantKey) : await getDefaultTenant();
   if (!tenant) return jsonError("tenant_not_found", 404);
 
+  // CORS (REQ-061) — refuse les origines étrangères au tenant.
+  const cors = checkOrigin(req, tenant);
+  if (!cors.allowed) return jsonError("origin_not_allowed", 403);
+  const corsOut = corsHeaders(cors.origin);
+
+  const ip = clientIp(req);
+  const ipHash = hashIp(ip);
+  const isNewSession = !parsed.data.sessionUuid;
   const sessionUuid = parsed.data.sessionUuid ?? randomUUID();
-  const ipHash = hashIp(clientIp(req));
+
+  // Anti-abus (REQ-062) — quotas glissants par IP puis par session (fail-open si
+  // Redis indisponible, cf. checkRateLimit). 429 propre → le widget affiche un
+  // message d'attente, jamais d'erreur brute.
+  const ipKey = ipHash ?? ip;
+  if (ipKey !== "unknown") {
+    const ipLimited = await checkRateLimit(`chatbot:ip:${ipKey}`, RATE_LIMIT_IP);
+    if (!ipLimited.allowed) return jsonError("rate_limited", 429, corsOut);
+  }
+  const sessLimited = await checkRateLimit(`chatbot:sess:${sessionUuid}`, RATE_LIMIT_SESSION);
+  if (!sessLimited.allowed) return jsonError("rate_limited", 429, corsOut);
+
+  // Turnstile (REQ-062) — vérifié à l'OUVERTURE de session (1er message) quand
+  // activé. Gated par CHATBOT_TURNSTILE_ENABLED pour activation conjointe avec
+  // l'émission du token côté widget (sinon no-op). verifyTurnstile fail-soft en dev.
+  if (process.env.CHATBOT_TURNSTILE_ENABLED === "true" && isNewSession) {
+    const ok = await verifyTurnstile(turnstileToken, ip === "unknown" ? undefined : ip);
+    if (!ok) return jsonError("turnstile_failed", 403, corsOut);
+  }
+
+  // Anti-injection / exfiltration / jailbreak (REQ-063) — AVANT tout appel LLM.
+  // Tentative détectée → déflexion polie, aucune génération, aucune fuite.
+  const guard = inspectUserMessage(message);
+  if (!guard.ok) {
+    return deflectionResponse(
+      sessionUuid,
+      "Je suis l'assistant d'Axion-IA et je réponds uniquement aux questions sur nos services (audit, formation, implémentation IA, sites web). Comment puis-je vous aider sur ces sujets ?",
+      corsOut,
+    );
+  }
 
   // Charge / crée la conversation (état multi-tours).
   const convo = await prisma.chatConversation.upsert({
@@ -142,7 +271,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     },
   });
 
-  return new Response(stream, { headers: SSE_HEADERS });
+  return new Response(stream, { headers: { ...SSE_HEADERS, ...corsOut } });
 }
 
 async function persistTurn(args: {
