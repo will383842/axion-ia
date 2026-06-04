@@ -17,6 +17,7 @@ import {
   type ToolContext,
 } from "@/server/chatbot/tools/rechercher-offres";
 import { CapturerLeadInputSchema, capturerLead } from "@/server/chatbot/tools/capturer-lead";
+import { ProposerRdvInputSchema, proposerRdv } from "@/server/chatbot/tools/proposer-rdv";
 
 export type { ToolContext };
 
@@ -111,4 +112,13 @@ chatbotTools.register<typeof CapturerLeadInputSchema._type>({
     "coordonnées et accepte d'être recontacté.",
   schema: CapturerLeadInputSchema,
   handler: (input, ctx) => capturerLead(input, ctx),
+});
+
+chatbotTools.register<typeof ProposerRdvInputSchema._type>({
+  name: "proposer_rdv",
+  description:
+    "Renvoie le lien de prise de rendez-vous (échange découverte ou réservation). " +
+    "N'effectue aucune réservation serveur — oriente vers la page FR.",
+  schema: ProposerRdvInputSchema,
+  handler: async (input) => proposerRdv(input),
 });
