@@ -23,11 +23,14 @@ export interface UseChatStream {
   readonly messages: ReadonlyArray<ChatMessage>;
   readonly status: ChatStatus;
   readonly send: (text: string) => Promise<void>;
+  /** Session serveur courante (pour lier une capture de lead à la conversation). */
+  readonly sessionUuid: string | undefined;
 }
 
 export function useChatStream(): UseChatStream {
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [status, setStatus] = React.useState<ChatStatus>("idle");
+  const [sessionUuid, setSessionUuid] = React.useState<string | undefined>(undefined);
   const sessionRef = React.useRef<string | undefined>(undefined);
   // Évite les envois concurrents (double Entrée pendant un stream).
   const inFlightRef = React.useRef(false);
@@ -49,6 +52,7 @@ export function useChatStream(): UseChatStream {
     const applyEvent = (event: StreamEvent) => {
       if (event.type === "session") {
         sessionRef.current = event.sessionUuid;
+        setSessionUuid(event.sessionUuid);
         return;
       }
       setMessages((prev) =>
@@ -105,5 +109,5 @@ export function useChatStream(): UseChatStream {
     }
   }, []);
 
-  return { messages, status, send };
+  return { messages, status, send, sessionUuid };
 }

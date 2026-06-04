@@ -454,6 +454,19 @@
     "offerCta": "View offer",
     "rdvCta": "Book a call",
     "escalated": "I'm forwarding your question to an advisor — we'll get back to you.",
-    "errorRetry": "Something went wrong. Please try again in a moment."
+    "errorRetry": "Something went wrong. Please try again in a moment.",
+    "leadCta": "Get a callback",
+    "leadTitle": "Leave your details and we'll get back to you.",
+    "leadName": "Name",
+    "leadEmail": "Email",
+    "leadPhone": "Phone (optional)",
+    "leadNeed": "Your need in brief",
+    "leadConsent": "I agree to be contacted by Axion-IA about my request (GDPR).",
+    "leadSubmit": "Send",
+    "leadSending": "Sending…",
+    "leadCancel": "Cancel",
+    "leadClose": "Close",
+    "leadSuccess": "Thank you! We'll get back to you shortly.",
+    "leadError": "Could not send. Please check your details and try again."
   }
 }

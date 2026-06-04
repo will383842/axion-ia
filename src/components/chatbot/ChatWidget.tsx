@@ -20,13 +20,16 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import { trackFunnel } from "@/lib/tracking";
 import { useChatStream } from "./useChatStream";
+import { LeadForm } from "./LeadForm";
 import type { ChatCard, ChatMessage } from "./types";
 
 export function ChatWidget() {
   const t = useTranslations("chatbot");
   const [open, setOpen] = React.useState(false);
-  const { messages, status, send } = useChatStream();
+  const { messages, status, send, sessionUuid } = useChatStream();
   const [draft, setDraft] = React.useState("");
+  // Mini-formulaire de capture de lead (flux de consentement RGPD).
+  const [showLead, setShowLead] = React.useState(false);
 
   const bubbleRef = React.useRef<HTMLButtonElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -135,43 +138,60 @@ export function ChatWidget() {
             aria-atomic="false"
             className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3"
           >
-            <p className="text-fg-soft text-sm leading-snug">{t("intro")}</p>
-            {messages.map((m) => (
-              <MessageBubble key={m.id} message={m} t={t} />
-            ))}
-            {status === "error" ? (
-              <p role="status" className="text-terracotta-deep text-sm">
-                {t("errorRetry")}
-              </p>
-            ) : null}
+            {showLead ? (
+              <LeadForm sessionUuid={sessionUuid} onClose={() => setShowLead(false)} />
+            ) : (
+              <>
+                <p className="text-fg-soft text-sm leading-snug">{t("intro")}</p>
+                {messages.map((m) => (
+                  <MessageBubble key={m.id} message={m} t={t} />
+                ))}
+                {status === "error" ? (
+                  <p role="status" className="text-terracotta-deep text-sm">
+                    {t("errorRetry")}
+                  </p>
+                ) : null}
+              </>
+            )}
           </div>
 
-          <form
-            onSubmit={onSubmit}
-            className="border-border bg-bg flex items-center gap-2 border-t px-3 py-3"
-          >
-            <label htmlFor="chatbot-input" className="sr-only">
-              {t("placeholder")}
-            </label>
-            <input
-              id="chatbot-input"
-              ref={inputRef}
-              type="text"
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              placeholder={t("placeholder")}
-              maxLength={2000}
-              autoComplete="off"
-              className="border-border bg-bg-soft text-fg focus-visible:ring-terracotta min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={status === "streaming" || draft.trim().length === 0}
-              className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50"
+          {!showLead ? (
+            <form
+              onSubmit={onSubmit}
+              className="border-border bg-bg flex flex-col gap-2 border-t px-3 py-3"
             >
-              {t("sendLabel")}
-            </button>
-          </form>
+              <div className="flex items-center gap-2">
+                <label htmlFor="chatbot-input" className="sr-only">
+                  {t("placeholder")}
+                </label>
+                <input
+                  id="chatbot-input"
+                  ref={inputRef}
+                  type="text"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder={t("placeholder")}
+                  maxLength={2000}
+                  autoComplete="off"
+                  className="border-border bg-bg-soft text-fg focus-visible:ring-terracotta min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={status === "streaming" || draft.trim().length === 0}
+                  className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50"
+                >
+                  {t("sendLabel")}
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowLead(true)}
+                className="text-terracotta self-start text-xs hover:underline"
+              >
+                {t("leadCta")}
+              </button>
+            </form>
+          ) : null}
         </section>
       ) : (
         <button

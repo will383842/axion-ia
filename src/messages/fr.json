@@ -454,6 +454,19 @@
     "offerCta": "Voir l'offre",
     "rdvCta": "Prendre rendez-vous",
     "escalated": "Je transmets votre question à un conseiller — vous serez recontacté.",
-    "errorRetry": "Un souci est survenu. Réessayez dans un instant."
+    "errorRetry": "Un souci est survenu. Réessayez dans un instant.",
+    "leadCta": "Être recontacté",
+    "leadTitle": "Laissez vos coordonnées, nous revenons vers vous.",
+    "leadName": "Nom",
+    "leadEmail": "E-mail",
+    "leadPhone": "Téléphone (optionnel)",
+    "leadNeed": "Votre besoin en bref",
+    "leadConsent": "J'accepte d'être recontacté par Axion-IA au sujet de ma demande (RGPD).",
+    "leadSubmit": "Envoyer",
+    "leadSending": "Envoi…",
+    "leadCancel": "Annuler",
+    "leadClose": "Fermer",
+    "leadSuccess": "Merci ! Nous vous recontactons rapidement.",
+    "leadError": "Envoi impossible. Vérifiez vos informations et réessayez."
   }
 }
