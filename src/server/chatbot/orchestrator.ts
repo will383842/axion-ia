@@ -52,6 +52,8 @@ export interface TurnContext {
   readonly resume?: string | null;
   /** Prompt versionné actif (T-20) — remplace les règles codées si présent. */
   readonly promptOverride?: string | null;
+  /** Mode éco (T-30) : cap coût atteint → pas d'appel LLM (catalogue + cache only). */
+  readonly ecoMode?: boolean;
 }
 
 export interface TurnResult {
@@ -221,6 +223,24 @@ export async function handleTurn(
           escalate: false,
           guard: OK_GUARD,
           servedFromCache: true,
+        };
+      }
+
+      // T-30 — mode éco (cap coût atteint) : on n'engage PAS d'appel LLM. Le
+      // cache (ci-dessus) et les chemins déterministes restent servis ; les
+      // questions ouvertes basculent vers un échange (RDV) + escalade.
+      if (ctx.ecoMode) {
+        return {
+          intent: "explication",
+          text: "Pour vous répondre au mieux sur ce point, je vous propose un court échange avec un conseiller :",
+          cards: [],
+          sendLinks: false,
+          rdvUrl: RDV_URL,
+          slots,
+          sources: [],
+          linkFlow: INITIAL_FLOW,
+          escalate: true,
+          guard: OK_GUARD,
         };
       }
 

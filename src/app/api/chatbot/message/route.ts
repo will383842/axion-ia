@@ -12,6 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { isBanned, recordViolation } from "@/server/chatbot/security/ban";
+import { evaluateCostCap, maybeAlertCostThreshold } from "@/server/chatbot/cost/cost-guard";
 import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
@@ -248,6 +249,8 @@ export async function POST(req: NextRequest): Promise<Response> {
   };
   // T-20 : prompt système versionné actif du tenant (null → fallback codé).
   const promptOverride = await getActivePromptContent(tenant.id);
+  // T-30 : état du cap coût mensuel (spend caché 60 s) → mode éco si atteint.
+  const costStatus = await evaluateCostCap(tenant.id, tenant.settings.costCapUsdPerMonth);
 
   const startedAt = Date.now();
   const stream = new ReadableStream<Uint8Array>({
@@ -268,6 +271,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             ...(previousSlots ? { previousSlots } : {}),
             ...(convo.resume ? { resume: convo.resume } : {}),
             ...(promptOverride ? { promptOverride } : {}),
+            ...(costStatus.ecoMode ? { ecoMode: true } : {}),
           },
           {
             // streaming token-par-token vers le widget (typing).
@@ -316,6 +320,13 @@ export async function POST(req: NextRequest): Promise<Response> {
           } catch (e) {
             console.warn("[chatbot:route] escalade durable échouée:", e);
           }
+        }
+
+        // T-30 — alertes coût 80 % / 100 % (best-effort, dédup mensuelle).
+        try {
+          await maybeAlertCostThreshold(costStatus, tenant.id);
+        } catch (e) {
+          console.warn("[chatbot:route] alerte coût échouée:", e);
         }
       } catch (err) {
         console.error("[chatbot:route] erreur:", err);

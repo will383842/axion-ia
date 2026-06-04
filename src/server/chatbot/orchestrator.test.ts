@@ -214,4 +214,16 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.text).toMatch(/afflux|attendre/i);
     expect(r.text).not.toMatch(/429|rate/i); // jamais de 429 brut
   });
+
+  it("T-30 : mode éco (cap coût atteint) → pas d'appel LLM, RDV + escalade", async () => {
+    const llm = vi.fn();
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant, ecoMode: true },
+      { retrieve: vi.fn(async () => chunks), generateAnswer: llm },
+    );
+    expect(llm).not.toHaveBeenCalled(); // mode éco = 0 appel LLM
+    expect(r.escalate).toBe(true);
+    expect(r.rdvUrl).toBe("/fr/appel");
+  });
 });
