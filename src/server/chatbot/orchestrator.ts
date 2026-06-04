@@ -124,6 +124,12 @@ export async function handleTurn(
   const signal = detectLinkSignal(message);
   const incoming = ctx.linkFlow ?? INITIAL_FLOW;
 
+  // Un message qui apporte un NOUVEAU critère de recherche (« plutôt en
+  // présentiel », « pour 6 personnes ») est un RAFFINEMENT, pas une réponse
+  // oui/non à la proposition de liens — même s'il commence par un mot ambigu
+  // capté par detectLinkSignal (« plutôt »). On re-cherche au lieu de décliner.
+  const refinesSearch = Object.keys(extractSlots(message).slots).length > 0;
+
   const base = {
     slots,
     sources: [] as Array<{ sourceType: string; sourceRef: string }>,
@@ -131,7 +137,11 @@ export async function handleTurn(
   };
 
   // — Confirmation d'un envoi de liens en attente —
-  if (incoming.linkState === "proposed" && (signal === "confirm" || signal === "shortcut_direct")) {
+  if (
+    incoming.linkState === "proposed" &&
+    !refinesSearch &&
+    (signal === "confirm" || signal === "shortcut_direct")
+  ) {
     const flow = onUserSignal(incoming, signal);
     const res = await rechercherOffres(ctx.previousSlots ?? slots, { tenantId });
     const cards = res.offres.slice(0, max);
@@ -145,7 +155,7 @@ export async function handleTurn(
       escalate: false,
     };
   }
-  if (incoming.linkState === "proposed" && signal === "decline") {
+  if (incoming.linkState === "proposed" && signal === "decline" && !refinesSearch) {
     return {
       ...base,
       intent: "recherche_offre",
