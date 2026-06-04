@@ -27,6 +27,7 @@ async function insertChunk(
   contenu: string,
   contexte: string | null,
   embedding: readonly number[],
+  version: number,
 ): Promise<void> {
   const vectorLiteral = `[${embedding.join(",")}]`;
   const id = randomUUID();
@@ -36,7 +37,7 @@ async function insertChunk(
        "contenu", "contexte", "embedding", "version", "actif", "created_at", "updated_at")
     VALUES
       (${id}::uuid, ${tenantId}::uuid, ${src.sourceType}, ${ref}, ${src.categorie}, 'moyenne',
-       ${contenu}, ${contexte}, ${vectorLiteral}::vector, 1, true, now(), now())
+       ${contenu}, ${contexte}, ${vectorLiteral}::vector, ${version}, true, now(), now())
   `;
 }
 
@@ -54,6 +55,17 @@ export async function ingestAllSources(
   }
   const sources = sourcesOverride ?? (await gatherSources());
 
+  // Bump de version (T-27) : chaque reconstruction insère à une version > précédente.
+  // Le cache sémantique ne matche que la version COURANTE (max des chunks actifs)
+  // → les entrées de cache d'une version antérieure sont invalidées de facto après
+  // une ré-ingestion (et purgées par la rétention). Sans ce bump, le cache pourrait
+  // servir des réponses périmées jusqu'à expiration du TTL.
+  const verRows = await prisma.$queryRaw<Array<{ v: number }>>`
+    SELECT COALESCE(MAX("version"), 0)::int AS v
+    FROM "chat_kb_chunks" WHERE "tenant_id" = ${tenant.id}::uuid
+  `;
+  const newVersion = (verRows[0]?.v ?? 0) + 1;
+
   // Reconstruction idempotente : on purge les chunks du tenant avant insert.
   await prisma.$executeRaw`DELETE FROM "chat_kb_chunks" WHERE "tenant_id" = ${tenant.id}::uuid`;
 
@@ -64,7 +76,15 @@ export async function ingestAllSources(
       // Refus confidentialité géré dans generateEmbedding (et déjà filtré en amont).
       const { embedding } = await generateEmbedding(ch.contenu, src.confidentiality);
       const ref = chunks.length > 1 ? `${src.sourceRef}#${ch.index}` : src.sourceRef;
-      await insertChunk(tenant.id, src, ref, ch.contenu, ch.contexte ?? null, embedding);
+      await insertChunk(
+        tenant.id,
+        src,
+        ref,
+        ch.contenu,
+        ch.contexte ?? null,
+        embedding,
+        newVersion,
+      );
       chunkCount++;
     }
   }
