@@ -1,0 +1,187 @@
+// Server actions — console admin chatbot (T-19/21/25, ADR-CB-07).
+//
+// Lecture : stats dashboard, escalades, conversations, versions de prompt.
+// Mutations : résoudre une escalade, activer une version de prompt (rollback).
+// RBAC : lecture = requireAdminRead ; mutations = requireAdminWrite. Chaque
+// mutation trace un ActivityLog (forensique art. 30) + revalidatePath.
+// FR-only (interface admin). Toutes les routes /chatbot/** sont dynamiques.
+
+"use server";
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
+import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
+import { requireAdminRead, requireAdminWrite } from "@/server/actions/knowledge/_guards";
+import {
+  activatePromptVersion,
+  listPromptVersions,
+} from "@/server/chatbot/generation/prompt-version";
+
+const PAGE_SIZE = 25;
+
+// ── Dashboard ───────────────────────────────────────────────────────────────
+
+export interface ChatbotDashboardStats {
+  readonly conversations: number;
+  readonly messages: number;
+  readonly escalationsOpen: number;
+  readonly escalationsTotal: number;
+  readonly cacheHits: number;
+  readonly costUsd: number;
+}
+
+export async function getChatbotDashboardStats(): Promise<ChatbotDashboardStats> {
+  await requireAdminRead();
+  const [conversations, messages, escalationsOpen, escalationsTotal, cacheHits, cost] =
+    await Promise.all([
+      prisma.chatConversation.count(),
+      prisma.chatMessage.count(),
+      prisma.chatEscalation.count({ where: { statut: "ouverte" } }),
+      prisma.chatEscalation.count(),
+      prisma.chatMessage.count({ where: { servedFromCache: true } }),
+      prisma.chatMessage.aggregate({ _sum: { coutEstime: true } }),
+    ]);
+  return {
+    conversations,
+    messages,
+    escalationsOpen,
+    escalationsTotal,
+    cacheHits,
+    costUsd: Number(cost._sum.coutEstime ?? 0),
+  };
+}
+
+// ── Escalades ─────────────────────────────────────────────────────────────────
+
+export interface EscalationRow {
+  readonly id: string;
+  readonly question: string;
+  readonly contactEmail: string | null;
+  readonly statut: string;
+  readonly emailEnvoye: boolean;
+  readonly createdAt: Date;
+}
+
+export interface EscalationListResult {
+  readonly items: ReadonlyArray<EscalationRow>;
+  readonly total: number;
+  readonly page: number;
+  readonly totalPages: number;
+}
+
+export async function listEscalations(opts: {
+  statut?: string;
+  page?: number;
+}): Promise<EscalationListResult> {
+  await requireAdminRead();
+  const page = Math.max(1, opts.page ?? 1);
+  const where = opts.statut ? { statut: opts.statut } : {};
+  const [items, total] = await Promise.all([
+    prisma.chatEscalation.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+      select: {
+        id: true,
+        question: true,
+        contactEmail: true,
+        statut: true,
+        emailEnvoye: true,
+        createdAt: true,
+      },
+    }),
+    prisma.chatEscalation.count({ where }),
+  ]);
+  return { items, total, page, totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)) };
+}
+
+export type ResolveEscalationState = { ok: true } | { ok: false; error: string };
+
+const resolveSchema = z.object({ id: z.string().uuid() });
+
+export async function resolveEscalationAction(
+  _prev: ResolveEscalationState,
+  formData: FormData,
+): Promise<ResolveEscalationState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  const parsed = resolveSchema.safeParse({ id: formData.get("id") });
+  if (!parsed.success) return { ok: false, error: "Identifiant invalide." };
+
+  try {
+    await prisma.chatEscalation.update({
+      where: { id: parsed.data.id },
+      data: { statut: "resolue" },
+    });
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "chatbot.escalation.resolved",
+        targetType: "chat_escalation",
+        targetId: parsed.data.id,
+        ipAddress: await getClientIp(),
+      },
+    });
+    revalidatePath(adminPath("fr", "chatbot/escalades"));
+    revalidatePath(adminPath("fr", "chatbot"));
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Erreur interne." };
+  }
+}
+
+// ── Prompt versionné (rollback) ───────────────────────────────────────────────
+
+export async function listChatbotPromptVersions(tenantId: string) {
+  await requireAdminRead();
+  return listPromptVersions(tenantId);
+}
+
+export type ActivatePromptState = { ok: true } | { ok: false; error: string };
+
+const activateSchema = z.object({
+  tenantId: z.string().uuid(),
+  version: z.coerce.number().int().positive(),
+});
+
+export async function activatePromptVersionAction(
+  _prev: ActivatePromptState,
+  formData: FormData,
+): Promise<ActivatePromptState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  const parsed = activateSchema.safeParse({
+    tenantId: formData.get("tenantId"),
+    version: formData.get("version"),
+  });
+  if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
+
+  try {
+    await activatePromptVersion(parsed.data.tenantId, parsed.data.version);
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "chatbot.prompt.activated",
+        targetType: "chat_prompt_version",
+        targetId: `${parsed.data.tenantId}:v${parsed.data.version}`,
+        changes: { version: parsed.data.version },
+        ipAddress: await getClientIp(),
+      },
+    });
+    revalidatePath(adminPath("fr", "chatbot/prompt"));
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Erreur interne." };
+  }
+}
