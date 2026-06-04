@@ -68,36 +68,36 @@ export function SitesWebWhyChooseUs({ isFr }: SitesWebWhyChooseUsProps): ReactNo
 
   const weDo = isFr
     ? [
-        "Greffer l'IA sur votre site ou app existants",
-        "Chatbot RAG formé sur vos données",
-        "Recherche sémantique IA",
-        "Recommandations produit IA",
-        "Personnalisation dynamique",
-        "Génération de fiches produit IA",
-        "Intégration d'API LLM dans vos outils",
+        "Conception UX/UI & product design (research, wireframes, design system, prototype Figma)",
+        "Sites web & plateformes SaaS sur mesure, IA-native ou augmentation de l'existant",
+        "E-commerce : Shopify, WordPress / WooCommerce, PrestaShop, Magento",
+        "Applications mobiles : natif iOS / Android, Flutter, React Native",
+        "Chatbot RAG formé sur vos données, recherche sémantique & recommandations IA",
+        "Agents, automatisations métier & génération de contenu IA",
+        "Vision / OCR, systèmes prédictifs & intégration d'API LLM dans vos outils",
+        "Audit, architecture, développement, déploiement & formation — une seule équipe",
       ]
     : [
-        "Graft AI onto your existing site or app",
-        "RAG chatbot trained on your data",
-        "AI semantic search",
-        "AI product recommendations",
-        "Dynamic personalisation",
-        "AI product description generation",
-        "LLM API integration in your tools",
+        "UX/UI design & product design (research, wireframes, design system, Figma prototype)",
+        "Bespoke websites & SaaS platforms, AI-native or augmentation of your existing setup",
+        "E-commerce: Shopify, WordPress / WooCommerce, PrestaShop, Magento",
+        "Mobile apps: native iOS / Android, Flutter, React Native",
+        "RAG chatbot trained on your data, semantic search & AI recommendations",
+        "Agents, business automations & AI content generation",
+        "Vision / OCR, predictive systems & LLM API integration in your tools",
+        "Audit, architecture, development, deployment & training — one single team",
       ];
 
   const weDont = isFr
     ? [
-        "Design UX/UI, charte graphique",
-        "Développement mobile natif (iOS/Android)",
-        "Maintenance mensuelle imposée sans accord",
-        "Hébergement web ou infra généraliste",
+        "Maintenance ou abonnement mensuel imposé sans votre accord",
+        "Revente d'hébergement ou d'infra généraliste",
+        "Commissions ou partenariats cachés sur les outils qu'on recommande",
       ]
     : [
-        "UX/UI design, visual identity",
-        "Native mobile development (iOS/Android)",
-        "Imposed monthly maintenance without agreement",
-        "Web hosting or general infrastructure",
+        "Imposed monthly maintenance or subscription without your agreement",
+        "Reselling of generic hosting or infrastructure",
+        "Hidden commissions or partnerships on the tools we recommend",
       ];
 
   return (

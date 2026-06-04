@@ -1,15 +1,23 @@
 /**
  * Keyword Strategy — Phase G3B : Web & Digital Augmentés par l'IA
  *
- * Généré le 2026-05-20.
- * Positionnement clair : Axion-IA n'est PAS une agence web.
- * Angle unique = "nous intégrons l'IA dans vos produits digitaux existants".
- * Verbes autorisés : augmenter, intégrer, booster, connecter, enrichir.
- * Verbes INTERDITS dans les injections : créer, développer from scratch, refaire, concevoir.
+ * Généré le 2026-05-20. Doctrine MISE À JOUR le 2026-06-04 (décision Will
+ * « on fait tout » — cf. mémoire positionnement-on-fait-tout).
+ *
+ * Positionnement : Axion-IA EST une agence web & IA full-stack. On couvre toute
+ * la chaîne — design UX/UI, développement, mobile, e-commerce, SaaS — aussi bien
+ * en création from scratch qu'en augmentation IA de l'existant.
+ * Angle : "création, refonte OU augmentation IA de sites web, applications,
+ * plateformes SaaS, e-commerce et mobile".
+ * Verbes AUTORISÉS : créer, développer, concevoir, refondre, designer, intégrer,
+ * augmenter, booster, connecter, enrichir. (L'ancienne interdiction des verbes
+ * de création est LEVÉE — elle bridait le volume « agence web », « création site
+ * web », « développement application », « refonte e-commerce ».)
  *
  * URL budget :
- *   - /fr/codage-developpement/web-digital   (hub)
- *   - /fr/blog/[slug]                        (articles longue traîne)
+ *   - /fr/sites-web-augmentes                       (hub canonique)
+ *   - /fr/sites-web-augmentes/par-ville/[ville]      (pSEO local 5e verticale)
+ *   - /fr/blog/[slug]                                (articles longue traîne)
  */
 
 import type { KeywordSeed } from "./types";

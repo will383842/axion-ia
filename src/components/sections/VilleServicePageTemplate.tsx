@@ -8,7 +8,15 @@
 //   - Sinon : stub minimal noindex follow (anti-doorway HCU 2024).
 
 import type { Metadata } from "next";
-import { ArrowUpRight, Briefcase, Building2, MapPin, Users, Wrench } from "lucide-react";
+import {
+  ArrowUpRight,
+  Briefcase,
+  Building2,
+  MapPin,
+  MonitorSmartphone,
+  Users,
+  Wrench,
+} from "lucide-react";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -34,6 +42,7 @@ import {
   INTERVENTION_TIERS,
   IMPLEMENTATION_TIERS,
   UN_A_UN_TIERS,
+  CODAGE_TIERS,
   formatPrice,
   getEntryPriceEur,
   getEntryTier,
@@ -46,7 +55,7 @@ import { buildVilleServiceJsonLdGraph } from "@/lib/seo/ville-service-jsonld";
 // 2026-05-18). Naming brand "un-a-un" en URL canonique ; sémantique = coaching
 // dirigeant 1-to-1, tarif d'entrée 990 € HT (tier intervention-dirigeants
 // réutilisé via UN_A_UN_TIERS).
-type ServiceKey = "audit" | "interventions" | "implementation" | "un-a-un";
+type ServiceKey = "audit" | "interventions" | "implementation" | "un-a-un" | "sites-web-augmentes";
 
 // Tarifs centralisés dans `src/content/pricing.ts` (source de vérité unique).
 // `priceEur` n'est pas hardcodé ici — il est dérivé du tier d'entrée via
@@ -107,6 +116,22 @@ const SERVICE_META = {
     accent: "mocha" as const,
     tiers: UN_A_UN_TIERS,
   },
+  // 2026-06-04 (Will) — 5e verticale City Domination : sites web & plateformes
+  // SaaS augmentés par l'IA. Tarif d'entrée dérivé de CODAGE_TIERS. Sémantique
+  // = création / refonte / augmentation IA de sites web, applications, SaaS,
+  // e-commerce, mobile — visibilité locale « agence web IA à <ville> ».
+  "sites-web-augmentes": {
+    canonical: "/sites-web-augmentes",
+    pathFr: "/sites-web-augmentes/par-ville",
+    pathEn: "/ai-augmented-websites/by-city",
+    nameFr: "Création de site web & SaaS augmentés par l'IA",
+    nameEn: "AI-augmented website & SaaS creation",
+    eyebrowFr: "Agence web & IA",
+    eyebrowEn: "Web & AI agency",
+    icon: MonitorSmartphone,
+    accent: "terracotta" as const,
+    tiers: CODAGE_TIERS,
+  },
 } as const;
 
 /**
@@ -123,13 +148,15 @@ function getVilleServiceCopy(
         interventions?: unknown;
         implementation?: unknown;
         unAUn?: unknown;
+        sitesWeb?: unknown;
       };
     };
   },
   service: ServiceKey,
 ) {
   if (service === "un-a-un") return ville.copy?.services?.unAUn;
-  return ville.copy?.services?.[service];
+  if (service === "sites-web-augmentes") return ville.copy?.services?.sitesWeb;
+  return ville.copy?.services?.[service as "audit" | "interventions" | "implementation"];
 }
 
 interface PageProps {
@@ -519,10 +546,11 @@ export async function renderVilleServicePage({
           contient un tiret invalide en propriété TS littérale). */}
       {(() => {
         const otherServices: ServiceKey[] = (
-          ["audit", "interventions", "implementation", "un-a-un"] as const
+          ["audit", "interventions", "implementation", "un-a-un", "sites-web-augmentes"] as const
         ).filter((s) => {
           if (s === service) return false;
           if (s === "un-a-un") return !!ville.copy?.services?.unAUn;
+          if (s === "sites-web-augmentes") return !!ville.copy?.services?.sitesWeb;
           return !!ville.copy?.services?.[s];
         });
         if (otherServices.length === 0) return null;
@@ -533,8 +561,8 @@ export async function renderVilleServicePage({
             titleEm={isFr ? "même ville" : "same city"}
             description={
               isFr
-                ? `Axion-IA délivre 3 prestations IA à ${ville.nameFr}. Découvrez les autres formats disponibles localement.`
-                : `Axion-IA delivers 3 AI services in ${ville.nameFr}. Discover the other formats available locally.`
+                ? `Axion-IA délivre plusieurs prestations IA à ${ville.nameFr}. Découvrez les autres formats disponibles localement.`
+                : `Axion-IA delivers several AI services in ${ville.nameFr}. Discover the other formats available locally.`
             }
             tone="paper"
           >

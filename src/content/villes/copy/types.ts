@@ -129,6 +129,14 @@ export interface VilleServicesLong {
    * `intervention-dirigeants`).
    */
   unAUn?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
+  /**
+   * 2026-06-04 (Will) — 5e verticale City Domination « sites-web-augmentes ».
+   * Copy longue par ville pour la création / refonte / augmentation IA de sites
+   * web, applications, plateformes SaaS, e-commerce et mobile. Mappée via
+   * `getVilleServiceCopy(ville, "sites-web-augmentes")` → `services.sitesWeb`.
+   * Tarif d'entrée dérivé de `CODAGE_TIERS` (pricing.ts).
+   */
+  sitesWeb?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
 }
 
 export interface VilleCopy {
