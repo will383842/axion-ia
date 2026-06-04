@@ -17,8 +17,7 @@ for (const f of readdirSync(DATA_DIR)) {
   if (!f.endsWith(".ts")) continue;
   const txt = readFileSync(join(DATA_DIR, f), "utf8");
   // Split on object boundaries; cheap regex extraction per ville object.
-  const re =
-    /slug:\s*"([^"]+)"[\s\S]{0,600}?population:\s*([0-9_]+)/g;
+  const re = /slug:\s*"([^"]+)"[\s\S]{0,600}?population:\s*([0-9_]+)/g;
   let m;
   while ((m = re.exec(txt)) !== null) {
     const slug = m[1];
@@ -40,7 +39,9 @@ function hasSitesWeb(slug) {
 }
 
 const t3All = villes.filter((v) => v.population >= 20_000 && v.population < 100_000);
-const t3NeedSitesWeb = t3All.filter((v) => !hasSitesWeb(v.slug));
+// « À faire » = T3 sans bloc RICHE `services:` (le pitch court servicesContext ne compte pas).
+const t3NeedSitesWeb = t3All.filter((v) => !hasRichServices(v.slug));
+void hasSitesWeb;
 const t3WithCopyFile = t3All.filter((v) => existsSync(join(COPY_DIR, `${v.slug}.ts`)));
 
 // Dedup by slug + sort by population desc (biggest T3 first = best grounding)
@@ -51,6 +52,13 @@ const list = t3NeedSitesWeb
   .map((v) => ({ slug: v.slug, population: v.population, region: v.region }));
 
 console.error(`[t3] total villes parsed: ${villes.length}`);
-console.error(`[t3] T3 (20k-100k): ${t3All.length} | avec fichier copy: ${t3WithCopyFile.length} | sans sitesWeb: ${list.length}`);
-console.error(`[t3] échantillon (10 plus grandes): ${list.slice(0, 10).map((v) => `${v.slug}(${v.population})`).join(", ")}`);
+console.error(
+  `[t3] T3 (20k-100k): ${t3All.length} | avec fichier copy: ${t3WithCopyFile.length} | sans sitesWeb: ${list.length}`,
+);
+console.error(
+  `[t3] échantillon (10 plus grandes): ${list
+    .slice(0, 10)
+    .map((v) => `${v.slug}(${v.population})`)
+    .join(", ")}`,
+);
 console.log(JSON.stringify(list));

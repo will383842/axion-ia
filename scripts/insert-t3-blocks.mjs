@@ -32,8 +32,10 @@ for (const c of cities) {
     continue;
   }
   let txt = readFileSync(path, "utf8");
-  if (/sitesWeb:\s*\{\s*\n?\s*(fr:|hero)/.test(txt) || /sitesWeb: SITESWEB/.test(txt)) {
-    console.log(`= ${c.slug}: already has sitesWeb, skipped`);
+  // Skip seulement si bloc RICHE déjà présent (fr suivi d'un objet `{`), PAS la
+  // servicesContext.sitesWeb courte (fr = string).
+  if (/sitesWeb"?\s*:\s*\{\s*"?fr"?\s*:\s*\{/.test(txt) || /sitesWeb: SITESWEB/.test(txt)) {
+    console.log(`= ${c.slug}: already has rich sitesWeb, skipped`);
     skipped++;
     continue;
   }
