@@ -16,6 +16,7 @@ import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { generateAnswer } from "@/server/chatbot/generation/generate-stream";
 import { shouldSummarize, summarizeConversation } from "@/server/chatbot/context/summarize";
+import { getActivePromptContent } from "@/server/chatbot/generation/prompt-version";
 import type { SearchSlots } from "@/server/chatbot/catalog/slot-filling";
 import type { LinkFlowState } from "@/server/chatbot/catalog/link-flow";
 import type { TenantSettings } from "@/server/chatbot/constants";
@@ -231,6 +232,8 @@ export async function POST(req: NextRequest): Promise<Response> {
     linkState: (convo.linkState as LinkFlowState["linkState"]) ?? "idle",
     proposedOfferIds: Array.isArray(convo.proposedOffers) ? (convo.proposedOffers as string[]) : [],
   };
+  // T-20 : prompt système versionné actif du tenant (null → fallback codé).
+  const promptOverride = await getActivePromptContent(tenant.id);
 
   const startedAt = Date.now();
   const stream = new ReadableStream<Uint8Array>({
@@ -250,6 +253,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             linkFlow,
             ...(previousSlots ? { previousSlots } : {}),
             ...(convo.resume ? { resume: convo.resume } : {}),
+            ...(promptOverride ? { promptOverride } : {}),
           },
           {
             // streaming token-par-token vers le widget (typing).

@@ -13,12 +13,13 @@ export interface SystemPromptOptions {
   readonly chunks?: ReadonlyArray<RetrievedChunk>;
   /** Résumé de contexte long (T-31) — fil des tours précédents, sans l'historique brut. */
   readonly resume?: string | null;
+  /** Prompt versionné actif (T-20) — remplace les règles codées si présent. */
+  readonly promptOverride?: string | null;
 }
 
-/** Construit le prompt système (règles + contexte + brand-voice). */
-export function assembleSystemPrompt(opts: SystemPromptOptions): string {
-  const { tenant, chunks, resume } = opts;
-  const rules = [
+/** Règles système par défaut (fallback si aucune version de prompt active). */
+export function defaultSystemRules(tenant: ResolvedTenant): string {
+  return [
     "Tu es l'assistant conversationnel d'Axion-IA, cabinet de conseil en IA pour les TPE/PME/ETI françaises.",
     "Tu réponds TOUJOURS en français, de façon concise, claire et non-insistante.",
     "Transparence (AI Act art. 50) : tu es une intelligence artificielle ; rappelle-le si on te le demande.",
@@ -26,8 +27,17 @@ export function assembleSystemPrompt(opts: SystemPromptOptions): string {
     "Pour citer un tarif, utilise EXCLUSIVEMENT un token {{price:<id>}} (résolu automatiquement) — jamais un montant en chiffres.",
     `N'affiche jamais plus de ${tenant.settings.maxOfferCards} offres dans une même réponse.`,
     "Quand tu réponds à partir du CONTEXTE, cite la source (type:référence).",
-  ];
-  let prompt = rules.join("\n");
+  ].join("\n");
+}
+
+/** Construit le prompt système (règles versionnées ou par défaut + contexte + brand-voice). */
+export function assembleSystemPrompt(opts: SystemPromptOptions): string {
+  const { tenant, chunks, resume, promptOverride } = opts;
+  // T-20 : si un prompt versionné est actif, il remplace les règles codées.
+  let prompt =
+    promptOverride && promptOverride.trim().length > 0
+      ? promptOverride.trim()
+      : defaultSystemRules(tenant);
 
   if (resume && resume.trim().length > 0) {
     prompt += "\n\n## RÉSUMÉ DE LA CONVERSATION (contexte des tours précédents)\n" + resume.trim();

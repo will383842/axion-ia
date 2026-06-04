@@ -44,6 +44,8 @@ export interface TurnContext {
   readonly linkFlow?: LinkFlowState;
   /** Résumé de contexte long (T-31) injecté au system-prompt. */
   readonly resume?: string | null;
+  /** Prompt versionné actif (T-20) — remplace les règles codées si présent. */
+  readonly promptOverride?: string | null;
 }
 
 export interface TurnResult {
@@ -233,6 +235,7 @@ export async function handleTurn(
         tenant: ctx.tenant,
         chunks,
         ...(ctx.resume ? { resume: ctx.resume } : {}),
+        ...(ctx.promptOverride ? { promptOverride: ctx.promptOverride } : {}),
       });
       const sources = chunks.map((c) => ({ sourceType: c.sourceType, sourceRef: c.sourceRef }));
 
