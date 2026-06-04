@@ -19,7 +19,8 @@ export type SitesWebSlug =
   | "personnalisation"
   | "ux-ui-product-design"
   | "woocommerce"
-  | "prestashop";
+  | "prestashop"
+  | "magento";
 
 export type SitesWebProjectType = "augmentation" | "native" | "transverse";
 
@@ -3080,6 +3081,255 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
             title: "Built for international",
             description:
               "Multilingual and multi-store: AI generates and translates content where PrestaShop is already strong.",
+          },
+        ],
+      },
+    },
+  },
+  // ── E-COMMERCE : Magento / Adobe Commerce (entreprise, grands catalogues) ───
+  {
+    slug: "magento",
+    projectType: "augmentation",
+    pathFr: "/sites-web-augmentes/magento",
+    pathEn: "/sites-web-augmentes/magento",
+    accent: "green",
+    hero: {
+      eyebrowFr: "Comment ça marche",
+      eyebrowEn: "How it works",
+      titleFr: "L'IA sur votre Magento, à l'échelle de gros catalogues",
+      titleEn: "AI on your Magento, at large-catalogue scale",
+      blocks: [
+        {
+          icon: "Database",
+          prefixFr: "1",
+          prefixEn: "1",
+          labelFr: "Catalogue massif",
+          labelEn: "Massive catalogue",
+          detailFr: "Des dizaines de milliers de références indexées pour la recherche et la reco.",
+          detailEn: "Tens of thousands of SKUs indexed for search and reco.",
+        },
+        {
+          icon: "Search",
+          prefixFr: "2",
+          prefixEn: "2",
+          labelFr: "Search & B2B",
+          labelEn: "Search & B2B",
+          detailFr:
+            "Recherche sémantique et recommandations par compte, segment et grille tarifaire.",
+          detailEn: "Semantic search and recommendations per account, segment and price grid.",
+        },
+        {
+          icon: "Plug",
+          prefixFr: "3",
+          prefixEn: "3",
+          labelFr: "Branché sur votre stack",
+          labelEn: "Wired to your stack",
+          detailFr: "API Magento / Adobe Commerce, ERP et PIM : on s'intègre à l'existant.",
+          detailEn: "Magento / Adobe Commerce API, ERP and PIM: we integrate with the existing.",
+        },
+      ],
+      ariaFr:
+        "Schéma : on indexe le grand catalogue Magento pour la recherche sémantique et la recommandation par compte B2B, en s'intégrant à l'API Magento, l'ERP et le PIM existants.",
+      ariaEn:
+        "Diagram: we index the large Magento catalogue for semantic search and per-account B2B recommendation, integrating with the existing Magento API, ERP and PIM.",
+    },
+    fr: {
+      eyebrow: "E-commerce · Magento",
+      title: "Votre Magento,",
+      titleEm: "augmenté par l'IA",
+      answer:
+        "On greffe l'IA sur votre boutique Magento / Adobe Commerce à l'échelle des gros catalogues et du B2B : recherche sémantique sur des dizaines de milliers de références, recommandations par compte et segment, enrichissement de catalogue en masse, assistant d'achat. Intégré à votre API Magento, votre ERP et votre PIM — sans remettre en cause votre architecture.",
+      ctaPrimary: "Décrire mon projet · devis 48 h",
+      ctaSecondary: "Voir le hub Sites web & SaaS",
+      benefitsTitle: "Ce que ça change",
+      benefits: [
+        {
+          title: "Pensé pour le volume",
+          description:
+            "Recherche et recommandation qui tiennent sur des catalogues de dizaines de milliers de références, là où les modules standard saturent.",
+        },
+        {
+          title: "Adapté au B2B",
+          description:
+            "Reco et tarifs par compte, segment et grille : l'IA respecte vos règles commerciales complexes.",
+        },
+        {
+          title: "Intégré à votre SI",
+          description:
+            "Branché sur l'API Magento, l'ERP et le PIM : le catalogue et les stocks restent votre source de vérité.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_FR,
+      processSteps: [
+        {
+          title: "Audit architecture",
+          description: "Version, taille catalogue, B2B, ERP/PIM, API : on cadre le périmètre.",
+        },
+        {
+          title: "Indexation à l'échelle",
+          description: "Base vectorielle du catalogue, synchronisée avec votre source de vérité.",
+        },
+        {
+          title: "Search, reco & assistant",
+          description:
+            "Recherche sémantique, recommandations par compte, enrichissement de fiches.",
+        },
+        {
+          title: "Mesure & itération",
+          description: "Conversion, panier B2B, charge support — on affine sur vos KPIs.",
+        },
+      ],
+      metricsTitle: "Comment on travaille",
+      metrics: [
+        { number: "API", suffix: "", label: "Intégré Magento + ERP/PIM" },
+        { number: "B2B", suffix: "", label: "Reco par compte & segment" },
+        { number: "UE", suffix: "", label: "Hébergement IA conforme RGPD" },
+      ],
+      faqTitle: "Questions fréquentes",
+      faqs: [
+        {
+          id: "volume",
+          question: "Mon catalogue est très gros, ça tient ?",
+          answer:
+            "Oui. L'indexation vectorielle est conçue pour les grands catalogues (dizaines de milliers de références), avec une synchronisation incrémentale depuis votre source de vérité.",
+        },
+        {
+          id: "b2b",
+          question: "On vend en B2B avec des tarifs par compte. Et l'IA ?",
+          answer:
+            "L'IA respecte vos règles : recommandations et prix par compte, segment et grille tarifaire. On branche la logique commerciale Magento, on ne la contourne pas.",
+        },
+        {
+          id: "adobe",
+          question: "Magento Open Source ou Adobe Commerce ?",
+          answer:
+            "Les deux. On vérifie la version et les modules dès l'audit, et on s'intègre via l'API officielle sans casser vos personnalisations.",
+        },
+        {
+          id: "si",
+          question: "Comment ça s'intègre à notre ERP/PIM ?",
+          answer:
+            "Via l'API Magento et vos connecteurs existants. Le catalogue et les stocks restent pilotés par votre SI ; l'IA s'appuie dessus sans le dupliquer.",
+        },
+      ],
+      ctaBlockTitle: "Votre Magento, plus intelligent à l'échelle",
+      ctaBlockDescription:
+        "Décrivez votre boutique et vos objectifs : on revient sous 48 h avec un périmètre, un forfait fixe et un délai.",
+      why: {
+        title: "Un gros catalogue,",
+        titleEm: "une recherche dépassée",
+        intro:
+          "Sur des dizaines de milliers de références, la recherche par mots-clés laisse passer des ventes. La compréhension du sens, elle, fait remonter le bon produit.",
+        points: [
+          {
+            title: "Le volume casse le mot-clé",
+            description:
+              "Plus le catalogue est grand, plus la recherche exacte échoue. La recherche sémantique comprend l'intention, même sur un catalogue énorme.",
+          },
+          {
+            title: "Le B2B a ses règles",
+            description:
+              "Comptes, segments, grilles tarifaires : l'IA doit s'y conformer. On branche votre logique commerciale, on ne la remplace pas.",
+          },
+        ],
+      },
+    },
+    en: {
+      eyebrow: "E-commerce · Magento",
+      title: "Your Magento,",
+      titleEm: "augmented by AI",
+      answer:
+        "We graft AI onto your Magento / Adobe Commerce store at large-catalogue and B2B scale: semantic search across tens of thousands of SKUs, per-account and per-segment recommendations, bulk catalogue enrichment, buying assistant. Integrated with your Magento API, ERP and PIM — without questioning your architecture.",
+      ctaPrimary: "Describe my project · 48 h quote",
+      ctaSecondary: "See the Websites & SaaS hub",
+      benefitsTitle: "What it changes",
+      benefits: [
+        {
+          title: "Built for volume",
+          description:
+            "Search and recommendation that hold on catalogues of tens of thousands of SKUs, where standard modules saturate.",
+        },
+        {
+          title: "Made for B2B",
+          description:
+            "Per-account, per-segment and per-grid reco and pricing: AI respects your complex commercial rules.",
+        },
+        {
+          title: "Integrated with your IS",
+          description:
+            "Wired to the Magento API, ERP and PIM: catalogue and stock stay your source of truth.",
+        },
+      ],
+      processTitle: PROCESS_TITLE_EN,
+      processSteps: [
+        {
+          title: "Architecture audit",
+          description: "Version, catalogue size, B2B, ERP/PIM, API: we scope the work.",
+        },
+        {
+          title: "Indexing at scale",
+          description: "Vector catalogue base, synced with your source of truth.",
+        },
+        {
+          title: "Search, reco & assistant",
+          description: "Semantic search, per-account recommendations, sheet enrichment.",
+        },
+        {
+          title: "Measure & iterate",
+          description: "Conversion, B2B cart, support load — we refine on your KPIs.",
+        },
+      ],
+      metricsTitle: "How we work",
+      metrics: [
+        { number: "API", suffix: "", label: "Integrated Magento + ERP/PIM" },
+        { number: "B2B", suffix: "", label: "Per-account & segment reco" },
+        { number: "EU", suffix: "", label: "GDPR-compliant AI hosting" },
+      ],
+      faqTitle: "Frequently asked questions",
+      faqs: [
+        {
+          id: "volume",
+          question: "My catalogue is very large, does it hold?",
+          answer:
+            "Yes. Vector indexing is built for large catalogues (tens of thousands of SKUs), with incremental sync from your source of truth.",
+        },
+        {
+          id: "b2b",
+          question: "We sell B2B with per-account pricing. What about AI?",
+          answer:
+            "AI respects your rules: recommendations and pricing per account, segment and price grid. We wire into Magento's commercial logic, we don't bypass it.",
+        },
+        {
+          id: "adobe",
+          question: "Magento Open Source or Adobe Commerce?",
+          answer:
+            "Both. We check the version and modules during the audit, and integrate via the official API without breaking your customisations.",
+        },
+        {
+          id: "si",
+          question: "How does it integrate with our ERP/PIM?",
+          answer:
+            "Via the Magento API and your existing connectors. Catalogue and stock stay driven by your IS; AI builds on it without duplicating it.",
+        },
+      ],
+      ctaBlockTitle: "Your Magento, smarter at scale",
+      ctaBlockDescription:
+        "Describe your store and goals: we come back within 48 h with a scope, a fixed package and a timeline.",
+      why: {
+        title: "A large catalogue,",
+        titleEm: "an outdated search",
+        intro:
+          "Across tens of thousands of SKUs, keyword search lets sales slip through. Understanding meaning surfaces the right product.",
+        points: [
+          {
+            title: "Volume breaks keywords",
+            description:
+              "The larger the catalogue, the more exact search fails. Semantic search understands intent, even on a huge catalogue.",
+          },
+          {
+            title: "B2B has its rules",
+            description:
+              "Accounts, segments, price grids: AI must comply. We wire into your commercial logic, we don't replace it.",
           },
         ],
       },
