@@ -72,6 +72,10 @@ export interface TurnResult {
   readonly guard: OutputGuardResult;
   /** true si la réponse provient du cache sémantique (T-26, 0 appel LLM). */
   readonly servedFromCache?: boolean;
+  /** Modèle LLM utilisé (observabilité — persisté sur chat_messages). */
+  readonly model?: string;
+  /** Coût estimé USD de l'appel LLM (observabilité / cost-cap). */
+  readonly costUsd?: number;
 }
 
 export interface OrchestratorDeps {
@@ -322,6 +326,8 @@ export async function handleTurn(
         linkFlow: INITIAL_FLOW,
         escalate: false,
         guard,
+        model: answer.model,
+        costUsd: answer.costUsd,
       };
     }
   }

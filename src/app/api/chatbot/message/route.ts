@@ -345,6 +345,8 @@ async function persistTurn(args: {
         sources: result.sources as unknown as object,
         latenceMs,
         servedFromCache: result.servedFromCache ?? false,
+        ...(result.model ? { modele: result.model } : {}),
+        ...(result.costUsd !== undefined ? { coutEstime: result.costUsd } : {}),
       },
     }),
     prisma.chatConversation.update({

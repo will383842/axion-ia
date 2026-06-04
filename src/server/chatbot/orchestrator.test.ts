@@ -129,6 +129,9 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.text).toMatch(/audit/i);
     expect(r.sources).toEqual([{ sourceType: "faq", sourceRef: "c-est-quoi-audit" }]);
     expect(r.guard.ok).toBe(true);
+    // Observabilité : modèle + coût LLM propagés (persistés sur chat_messages).
+    expect(r.model).toBe("claude-haiku-4-5");
+    expect(r.costUsd).toBe(0);
   });
 
   it("output-guard bloque une réponse qui invente un prix → escalade + repli RDV", async () => {
