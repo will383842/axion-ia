@@ -30,11 +30,11 @@ export function SitesWebCtaBlock({ isFr, villeContext }: SitesWebCtaBlockProps):
 
   const description = villeContext
     ? isFr
-      ? `On identifie les 3 points d'augmentation IA à plus fort ROI sur votre site web ou plateforme SaaS — pour les entreprises de ${villeContext.name} et sa région. Devis ferme 48 h, sans engagement.`
-      : `We identify the 3 highest-ROI AI augmentation points on your website or SaaS platform — for ${villeContext.name}-area companies. Firm quote 48 h, no commitment.`
+      ? `On identifie les 3 points d'augmentation IA à plus fort ROI sur votre site web ou plateforme SaaS — pour les entreprises de ${villeContext.name} et sa région. Devis ferme sous 24-48 h selon la complexité, sans engagement.`
+      : `We identify the 3 highest-ROI AI augmentation points on your website or SaaS platform — for ${villeContext.name}-area companies. Firm quote in 24-48 h depending on complexity, no commitment.`
     : isFr
-      ? "On identifie les 3 points d'augmentation IA à plus fort ROI sur votre site web ou plateforme SaaS. Devis ferme 48 h, sans engagement."
-      : "We identify the 3 highest-ROI AI augmentation points on your website or SaaS platform. Firm quote 48 h, no commitment.";
+      ? "On identifie les 3 points d'augmentation IA à plus fort ROI sur votre site web ou plateforme SaaS. Devis ferme sous 24-48 h selon la complexité, sans engagement."
+      : "We identify the 3 highest-ROI AI augmentation points on your website or SaaS platform. Firm quote in 24-48 h depending on complexity, no commitment.";
 
   const villeAttr = villeContext ? { "data-source-ville": villeContext.villeSlug } : {};
 

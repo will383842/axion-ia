@@ -44,11 +44,11 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
 
   const primaryCtaLabel = villeContext
     ? isFr
-      ? `Décrire mon projet à ${villeContext.name} · devis 48 h`
-      : `Describe my project in ${villeContext.name} · quote 48 h`
+      ? `Décrire mon projet à ${villeContext.name} · devis sous 24-48 h`
+      : `Describe my project in ${villeContext.name} · quote in 24-48 h`
     : isFr
-      ? "Décrire mon projet · devis 48 h"
-      : "Describe my project · quote 48 h";
+      ? "Décrire mon projet · devis sous 24-48 h"
+      : "Describe my project · quote in 24-48 h";
 
   // Speakable AEO 2026 — ciblage h1 + premier paragraphe.
   const speakableSelectors = ["h1", "h1 + p", "[data-hero-description]"] as const;
