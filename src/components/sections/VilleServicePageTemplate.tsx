@@ -17,7 +17,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { type Locale, routing } from "@/i18n/routing";
@@ -317,12 +317,18 @@ export async function renderVilleServicePage({
     },
   ];
 
-  // ---- STUB MINIMAL noindex pour villes-satellites (sans copy) ----
-  // Modèle hub-and-spoke (Will 2026-06-04) : la satellite pointe vers la
-  // ville-hub la plus proche ayant la copy gold-standard (canonical posé en
-  // metadata + lien prominent ici pour le maillage / link equity).
+  // ---- VILLE-SATELLITE (sans copy) → redirection vers le hub ----
+  // Modèle hub-and-spoke (Will 2026-06-04) : pas de page maigre « faible valeur ».
+  // La commune satellite (T3/T4) redirige en permanent (308) vers sa ville-hub
+  // T1/T2 la plus proche AYANT la copy → le visiteur atterrit sur du contenu
+  // riche, SEO consolidé sur le hub. La couverture des communes reste montrée
+  // sur le hub (section « On intervient aussi autour de … »). Fallback : stub
+  // minimal noindex si aucun hub n'a encore de copy sur ce service.
   if (!hasCopy) {
     const hubSlug = nearestHubSlugWithCopy(ville, service);
+    if (hubSlug) {
+      permanentRedirect(`/${loc}${isFr ? meta.pathFr : meta.pathEn}/${hubSlug}`);
+    }
     const hub = hubSlug ? getVille(hubSlug) : undefined;
     const hubHref = hub
       ? (`${isFr ? meta.pathFr : meta.pathEn}/${hub.slug}` as never)
