@@ -170,8 +170,17 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const ip = clientIp(req);
   const ipHash = hashIp(ip);
-  const isNewSession = !parsed.data.sessionUuid;
   const sessionUuid = parsed.data.sessionUuid ?? randomUUID();
+  // `isNewSession` déterminé CÔTÉ SERVEUR : une session "continue" doit
+  // correspondre à une conversation réellement persistée. Sinon un client
+  // pourrait forger un sessionUuid pour contourner Turnstile (REQ-062).
+  const existingConvo = parsed.data.sessionUuid
+    ? await prisma.chatConversation.findUnique({
+        where: { sessionUuid: parsed.data.sessionUuid },
+        select: { id: true },
+      })
+    : null;
+  const isNewSession = !existingConvo;
 
   // Anti-abus (REQ-062) — quotas glissants par IP puis par session (fail-open si
   // Redis indisponible, cf. checkRateLimit). 429 propre → le widget affiche un
@@ -196,6 +205,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   // Tentative détectée → déflexion polie, aucune génération, aucune fuite.
   const guard = inspectUserMessage(message);
   if (!guard.ok) {
+    console.warn(`[chatbot:guard] message dévié (${guard.reason}) session=${sessionUuid}`);
     return deflectionResponse(
       sessionUuid,
       "Je suis l'assistant d'Axion-IA et je réponds uniquement aux questions sur nos services (audit, formation, implémentation IA, sites web). Comment puis-je vous aider sur ces sujets ?",

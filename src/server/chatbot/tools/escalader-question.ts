@@ -48,14 +48,20 @@ export async function escaladerQuestion(
     select: { id: true, statut: true },
   });
 
-  // Ping équipe best-effort (fail-soft : false si Telegram non configuré).
+  // Ping équipe best-effort. Fail-soft AUTOPORTANT : on n'échoue jamais la
+  // création d'escalade (déjà persistée) à cause d'un souci de notification.
   const body = [
     "❓ Escalade chatbot — question sans réponse",
     `Question : ${input.question}`,
     input.contact_email ? `Contact : ${input.contact_email}` : "Contact : non fourni",
     `Escalade #${escalation.id}`,
   ].join("\n");
-  const notified = await sendTelegram({ tag: "CONTACT", body, silent: false });
+  let notified = false;
+  try {
+    notified = await sendTelegram({ tag: "CONTACT", body, silent: false });
+  } catch (err) {
+    console.warn("[escalader_question] notification Telegram échouée:", err);
+  }
 
   return { escalationId: escalation.id, statut: escalation.statut, notified };
 }
