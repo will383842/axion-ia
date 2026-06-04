@@ -50,6 +50,183 @@ export const FRESNES_COPY: VilleCopy = {
       en: "Plateformes web et SaaS augmentés par IA conçus à Fresnes pour les TPE et PME locales : portails clients, outils métiers internes, automatisation des flux logistiques et e-commerce.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "À Fresnes (94260, Val-de-Marne), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique très particulier du Sud parisien, sur l'A86. La commune abrite le siège social de Fresenius Medical Care France — premier opérateur privé mondial de dialyse, avenue des Pépinières — et le siège mondial de MGI Digital Technology, ETI cotée Euronext qui fabrique des presses d'impression et d'embellissement numériques. Autour d'eux gravitent les zones P.A. Médicis et Cerisaie (Castorama, BUT, Renault Retail Group, Elior Restauration) et un pôle administratif singulier (centre pénitentiaire de Fresnes, EPSNF). Nous construisons pour ces acteurs des portails métiers, des plateformes e-commerce multi-CMS et des interfaces IA-native — UX/UI, mobile et hébergement UE/RGPD compris.",
+        whyHere: [
+          "Fresnes accueille le siège de Fresenius Medical Care France, leader mondial de la dialyse : nous y concevons des portails patients, des outils de suivi de centres et des interfaces métier où la conformité RGPD-données de santé et l'hébergement UE sont structurants dès la première ligne de code.",
+          "MGI Digital Technology, ETI cotée Euronext fondée à Fresnes en 1982 (presses d'embellissement numérique, partenariat mondial Konica Minolta), illustre l'industrie graphique high-tech locale : configurateurs produit, espaces revendeurs et SaaS de pilotage de parc machines sont des cas que nous traitons sur place.",
+          "Les zones P.A. Médicis (≈513 entreprises) et le parc commercial La Cerisaie (Castorama, BUT, Renault Retail Group) concentrent distribution et restauration collective : nous y déployons des plateformes e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des outils de gestion de catalogue augmentés par l'IA.",
+          "La proximité immédiate du MIN de Rungis (5 km), d'Orly (8 km) et du RER B Antony alimente un tissu logistique et tertiaire : portails clients, suivi de flux et automatisation documentaire sont nos cas d'usage récurrents pour les PME du corridor A86.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Fresnes",
+            detail:
+              "Atelier de lancement dans vos locaux à Fresnes — P.A. Médicis, Cerisaie, avenue des Pépinières — ou à distance. Nous cartographions vos parcours utilisateurs réels et vos contraintes sectorielles (données de santé Fresenius, catalogue retail Cerisaie, flux logistiques Rungis-Orly).",
+          },
+          {
+            step: "Conception UX/UI et architecture",
+            detail:
+              "Maquettes mobile-first, design system et choix d'architecture (CMS headless, e-commerce multi-plateforme ou SaaS sur mesure). On valide l'ergonomie sur vos cas concrets avant d'écrire du code.",
+          },
+          {
+            step: "Développement IA-native",
+            detail:
+              "Intégration des briques IA utiles à votre métier : recherche sémantique, chatbot RAG sur vos documents, génération de fiches produit, automatisation de back-office. Code custom, zéro lock-in éditeur.",
+          },
+          {
+            step: "Intégration et hébergement UE",
+            detail:
+              "Connexion à vos systèmes existants (ERP, CRM, LIMS, outils de production MGI ou de gestion de centres Fresenius), déploiement sur hébergement UE conforme RGPD, tests de charge et recette utilisateurs.",
+          },
+          {
+            step: "Transfert et autonomie",
+            detail:
+              "Documentation, formation de vos équipes et passation. Vous gardez la main sur la stack ; maintenance possible chez nous, en interne ou chez tout intégrateur du Val-de-Marne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Site vitrine ou e-commerce essentiel",
+            detail:
+              "Pour artisans, commerçants et indépendants de Fresnes et du corridor A86 : site vitrine performant ou boutique multi-CMS, avec briques IA simples (chatbot, génération de contenu). Devis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Plateforme métier ou e-commerce avancé",
+            detail:
+              "Pour les PME des zones Médicis et Cerisaie (distribution type Castorama/BUT, restauration collective Elior, retail automobile Renault Retail Group) : portail client, e-commerce multi-CMS et automatisation catalogue augmentée par l'IA.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "SaaS sur mesure IA-native",
+            detail:
+              "Pour les ETI fresnoises comme MGI Digital Technology (industrie graphique numérique) : plateformes de pilotage, espaces revendeurs, configurateurs et SaaS métier avec search sémantique et agents conversationnels.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme web & plateforme multi-sites",
+            detail:
+              "Pour les sièges et grands acteurs présents à Fresnes (Fresenius Medical Care France et son réseau de centres de dialyse, structures publiques EPSNF) : portails à fort enjeu de conformité RGPD-santé, gouvernance des données et hébergement UE souverain.",
+          },
+        ],
+        faq: [
+          {
+            q: "Axion-IA conçoit-elle vraiment des sites web et SaaS sur site à Fresnes ?",
+            a: "Oui. Nous nous déplaçons à Fresnes — P.A. Médicis, parc de la Cerisaie, avenue des Pépinières — et dans la couronne Sud de l'A86 (Antony, Rungis, L'Haÿ-les-Roses, Cachan) pour les ateliers de conception et la recette. Le reste du développement se fait en mode hybride.",
+          },
+          {
+            q: "Travaillez-vous pour des acteurs de la santé comme l'écosystème Fresenius Medical Care à Fresnes ?",
+            a: "Oui. Fresnes abrite le siège de Fresenius Medical Care France, leader mondial de la dialyse. Pour ce type d'acteur, nous concevons des portails et outils métier avec contraintes fortes : conformité RGPD-données de santé, hébergement UE, traçabilité documentaire et clauses de réversibilité (pas de lock-in fournisseur).",
+          },
+          {
+            q: "Pouvez-vous accompagner une ETI industrielle comme MGI Digital Technology à Fresnes ?",
+            a: "Oui. MGI Digital Technology, ETI cotée Euronext et siège mondial à Fresnes, illustre le type de projet que nous traitons : SaaS de pilotage de parc machines, espaces revendeurs, configurateurs produit et search sémantique sur documentation technique. Code custom et intégration à vos systèmes de production.",
+          },
+          {
+            q: "Gérez-vous l'e-commerce multi-CMS pour les enseignes des zones Médicis et Cerisaie ?",
+            a: "Oui. Pour les acteurs retail et distribution de Fresnes (Castorama, BUT, restauration collective, retail automobile), nous déployons des plateformes e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento, avec automatisation du catalogue, recommandations et fiches produit générées par IA.",
+          },
+          {
+            q: "Où sont hébergées les données de mes utilisateurs ?",
+            a: "Sur des infrastructures situées en France ou en Union européenne, conformes RGPD et à l'AI Act. C'est non négociable pour les projets santé de l'écosystème Fresenius, mais nous l'appliquons par défaut à tous nos sites et SaaS, avec documentation des traitements et clauses de réversibilité.",
+          },
+        ],
+        guarantees:
+          "Toutes nos plateformes web et SaaS conçues à Fresnes sont développées en code custom, sans lock-in éditeur : vous restez propriétaire de la stack, du design system et du contenu. Hébergement en France ou en UE par défaut, conformité RGPD et AI Act, documentation et formation de vos équipes incluses. Devis à partir de 24-48 h selon la complexité, périmètre et livrables fixés au contrat. Maintenance assurée chez nous, en interne ou par tout intégrateur du Val-de-Marne — vous gardez la liberté de la délégation.",
+      },
+      en: {
+        hero: "In Fresnes (94260, Val-de-Marne), Axion-IA builds AI-augmented websites and SaaS platforms for a very distinctive economic fabric in southern Paris, on the A86 ring road. The town hosts the headquarters of Fresenius Medical Care France — the world's leading private dialysis operator, on avenue des Pépinières — and the global HQ of MGI Digital Technology, a Euronext-listed mid-cap manufacturing digital printing and embellishment presses. Around them sit the P.A. Médicis and Cerisaie zones (Castorama, BUT, Renault Retail Group, Elior Restauration) and a singular public-sector cluster (Fresnes prison, EPSNF). We deliver business portals, multi-CMS e-commerce and AI-native interfaces — UX/UI, mobile and EU/GDPR hosting included.",
+        whyHere: [
+          "Fresnes hosts the HQ of Fresenius Medical Care France, world dialysis leader: we design patient portals, centre-monitoring tools and business interfaces where GDPR health-data compliance and EU hosting are structural from the first line of code.",
+          "MGI Digital Technology, a Euronext-listed mid-cap founded in Fresnes in 1982 (digital embellishment presses, global Konica Minolta partnership), embodies the local high-tech graphic industry: product configurators, reseller spaces and machine-fleet management SaaS are cases we handle on site.",
+          "The P.A. Médicis zone (≈513 companies) and the La Cerisaie retail park (Castorama, BUT, Renault Retail Group) concentrate distribution and collective catering: we deploy multi-CMS e-commerce platforms (Shopify, WooCommerce, PrestaShop, Magento) and AI-augmented catalogue tools.",
+          "Immediate proximity to the Rungis market (5 km), Orly (8 km) and RER B Antony feeds a logistics and tertiary fabric: client portals, flow tracking and document automation are our recurring use cases for SMEs along the A86 corridor.",
+        ],
+        methodology: [
+          {
+            step: "Kick-off in Fresnes",
+            detail:
+              "Launch workshop at your offices in Fresnes — P.A. Médicis, Cerisaie, avenue des Pépinières — or remote. We map your real user journeys and sector constraints (Fresenius health data, Cerisaie retail catalogue, Rungis-Orly logistics flows).",
+          },
+          {
+            step: "UX/UI design and architecture",
+            detail:
+              "Mobile-first mockups, design system and architecture choices (headless CMS, multi-platform e-commerce or custom SaaS). We validate ergonomics on your concrete cases before writing code.",
+          },
+          {
+            step: "AI-native development",
+            detail:
+              "Integration of the AI building blocks that matter to your business: semantic search, RAG chatbot on your documents, product-sheet generation, back-office automation. Custom code, zero vendor lock-in.",
+          },
+          {
+            step: "Integration and EU hosting",
+            detail:
+              "Connection to your existing systems (ERP, CRM, LIMS, MGI production tools or Fresenius centre management), deployment on GDPR-compliant EU hosting, load testing and user acceptance.",
+          },
+          {
+            step: "Handover and autonomy",
+            detail:
+              "Documentation, team training and handover. You keep control of the stack; maintenance possible with us, in-house or with any Val-de-Marne integrator.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Showcase site or essential e-commerce",
+            detail:
+              "For artisans, retailers and freelancers in Fresnes and the A86 corridor: a high-performance showcase site or multi-CMS store, with simple AI blocks (chatbot, content generation). Quote within 24-48 h depending on complexity.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Business platform or advanced e-commerce",
+            detail:
+              "For SMEs in the Médicis and Cerisaie zones (distribution like Castorama/BUT, Elior collective catering, Renault Retail Group automotive retail): client portal, multi-CMS e-commerce and AI-augmented catalogue automation.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Custom AI-native SaaS",
+            detail:
+              "For Fresnes mid-caps such as MGI Digital Technology (digital graphic industry): management platforms, reseller spaces, configurators and business SaaS with semantic search and conversational agents.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Multi-site web & platform program",
+            detail:
+              "For headquarters and large players present in Fresnes (Fresenius Medical Care France and its dialysis centre network, public EPSNF structures): portals with high GDPR-health compliance stakes, data governance and sovereign EU hosting.",
+          },
+        ],
+        faq: [
+          {
+            q: "Does Axion-IA really design websites and SaaS on site in Fresnes?",
+            a: "Yes. We travel to Fresnes — P.A. Médicis, La Cerisaie park, avenue des Pépinières — and across the southern A86 belt (Antony, Rungis, L'Haÿ-les-Roses, Cachan) for design workshops and acceptance. The rest of development runs in hybrid mode.",
+          },
+          {
+            q: "Do you work for healthcare players like the Fresenius Medical Care ecosystem in Fresnes?",
+            a: "Yes. Fresnes hosts the HQ of Fresenius Medical Care France, world dialysis leader. For such players we build portals and business tools with strong constraints: GDPR health-data compliance, EU hosting, document traceability and reversibility clauses (no vendor lock-in).",
+          },
+          {
+            q: "Can you support an industrial mid-cap like MGI Digital Technology in Fresnes?",
+            a: "Yes. MGI Digital Technology, a Euronext-listed mid-cap with its global HQ in Fresnes, illustrates the kind of project we handle: machine-fleet management SaaS, reseller spaces, product configurators and semantic search over technical documentation. Custom code and integration with your production systems.",
+          },
+          {
+            q: "Do you handle multi-CMS e-commerce for the Médicis and Cerisaie zone retailers?",
+            a: "Yes. For Fresnes retail and distribution players (Castorama, BUT, collective catering, automotive retail), we deploy e-commerce platforms on Shopify, WooCommerce, PrestaShop or Magento, with catalogue automation, recommendations and AI-generated product sheets.",
+          },
+          {
+            q: "Where is my users' data hosted?",
+            a: "On infrastructure located in France or the European Union, GDPR- and AI-Act-compliant. It is non-negotiable for the healthcare projects in the Fresenius ecosystem, but we apply it by default to all our sites and SaaS, with processing documentation and reversibility clauses.",
+          },
+        ],
+        guarantees:
+          "Every web and SaaS platform we build in Fresnes is developed in custom code, with no vendor lock-in: you own the stack, the design system and the content. Hosting in France or the EU by default, GDPR and AI Act compliance, documentation and team training included. Quote within 24-48 h depending on complexity, with scope and deliverables set in the contract. Maintenance handled with us, in-house or by any Val-de-Marne integrator — you keep freedom of delegation.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-elle vraiment sur site à Fresnes ?",

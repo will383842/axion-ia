@@ -48,6 +48,183 @@ export const ARMENTIERES_COPY: VilleCopy = {
       en: "Nos formations un-à-un à Armentières accompagnent les dirigeants de TPE et PME du Nord dans la prise en main des outils d'IA générative dans leur activité quotidienne.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Armentières des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre cœur de cible reste les TPE et PME armentiéroises — commerçants de la Grand'Place, ateliers reconvertis de la Ruche des 2 Lys, agroalimentaire et logistique de la zone Eurolys — sans exclure les audits pour les ETI industrielles locales comme Beck-Crespel. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Armentières, itérations à distance.",
+        whyHere: [
+          "Tissu armentiérois cible : TPE commerçantes du centre-ville (plus d'une centaine de commerçants autour de la Grand'Place), jeunes pousses de la Ruche des 2 Lys — plus grand incubateur du Nord, ancienne usine textile reconvertie — et PME agroalimentaires comme Gelpass (surgelés bio AB).",
+          "Pour la mécanique de précision exportatrice type Beck-Crespel (décolletage, attaches de sécurité nucléaire et pétrochimie), nous construisons portails clients, configurateurs et catalogues techniques branchés sur l'ERP, pas de simples vitrines.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — et e-commerce sur tout CMS (WordPress/WooCommerce, Shopify, PrestaShop, Magento) pour les commerçants et artisans du bassin de la Lys, pas seulement la brique IA.",
+          "Données sensibles santé/social : pour l'écosystème médico-social local (EPSM Lille-Métropole et ses 1 836 professionnels, réemploi de matériel médical hébergé à la Ruche), hébergement UE strict et chaîne IA souveraine RGPD.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Armentières",
+            detail:
+              "Atelier sur site — centre-ville, Ruche des 2 Lys ou zone Eurolys : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; pour un commerçant de la Grand'Place comme pour un industriel de la rue des Fusillés, prototype testé avant tout développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : chatbot RAG, recherche sémantique, agents, e-commerce multi-CMS, configurateur produit. Démos hebdomadaires.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans interruption de service — utile pour une boutique en pleine saison ou un portail B2B en production.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé, aucun verrou éditeur : transférable à tout prestataire de la métropole lilloise ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de commande) sur le site existant d'un commerçant de la Grand'Place ou d'un artisan du bassin de la Lys, en quelques semaines, sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'une boutique en ligne multi-CMS ou d'une application avec UX/UI et IA intégrée, pour les PME agroalimentaires (type Gelpass), les jeunes pousses de la Ruche des 2 Lys et les services aux entreprises.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Portail client, configurateur ou catalogue technique sur mesure pour l'industrie de précision (type Beck-Crespel) et le médico-social, IA intégrée, branché sur votre SI (CRM, ERP, GPAO).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour groupes implantés sur le bassin : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI, le mobile et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète à Armentières — research, wireframes, design system, maquettes Figma, prototype responsive mobile — et on développe l'e-commerce sur tout CMS (WooCommerce, Shopify, PrestaShop, Magento) pour les commerçants de la Grand'Place comme pour les PME du bassin, avec ou sans brique IA.",
+          },
+          {
+            q: "Pouvez-vous construire un portail B2B pour un industriel de précision comme Beck-Crespel ?",
+            a: "Oui. Pour les industriels du décolletage et de la mécanique de précision d'Armentières, nous construisons portails clients, configurateurs et catalogues techniques branchés sur l'ERP/GPAO, avec recherche sémantique sur les références et chatbot RAG sur la documentation technique. Code custom, pas de no-code, pas de dépendance.",
+          },
+          {
+            q: "Accompagnez-vous les jeunes pousses de la Ruche des 2 Lys ?",
+            a: "Oui. La Ruche métropolitaine d'Armentières — plus grand incubateur du Nord, ancienne usine textile reconvertie — héberge des créateurs en réemploi de matériel médical, photovoltaïque, thermoformage et design. Nous concevons leurs premiers sites, MVP SaaS et boutiques en ligne, calibrés pour une structure en phase d'amorçage.",
+          },
+          {
+            q: "Mes données santé ou médico-sociales restent-elles en Europe ?",
+            a: "Oui. Pour l'écosystème médico-social du bassin (EPSM Lille-Métropole, réemploi de matériel médical), toute la chaîne IA est hébergeable en UE (Hetzner Frankfurt), conforme RGPD, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles.",
+          },
+          {
+            q: "Avec quelles technologies et quel délai de devis travaillez-vous ?",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. Après le cadrage sur site à Armentières, le devis ferme arrive à partir de 24-48 h selon la complexité — davantage pour un portail industriel étendu. Pas de régie, pas de dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente un site ou une boutique existante. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE/RGPD possible) : propriété totale, aucun abonnement imposé, aucun verrou éditeur, transférable à tout prestataire de la métropole lilloise ou repris en interne.",
+      },
+      en: {
+        hero: "In Armentières, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, multi-CMS e-commerce, RAG chatbot grounded in your content, semantic search, agents and automations. Our core focus stays the town's micro-businesses and SMEs — Grand'Place retailers, repurposed workshops of the Ruche des 2 Lys, food and logistics firms of the Eurolys zone — without excluding audits for local industrial mid-caps such as Beck-Crespel. Quote from 24-48 h depending on complexity, EU/GDPR hosting, code and data yours. On-site Armentières kick-off, remote iterations.",
+        whyHere: [
+          "Armentières target fabric: town-centre retail micro-businesses (over a hundred merchants around the Grand'Place), early-stage ventures of the Ruche des 2 Lys — the largest incubator in the North, a repurposed former textile mill — and food SMEs such as Gelpass (organic-certified frozen products).",
+          "For export-driven precision engineering like Beck-Crespel (bar-turning, safety fasteners for nuclear and petrochemicals), we build customer portals, configurators and technical catalogues wired into the ERP, not mere brochure sites.",
+          "Full UX/UI design when needed — research, wireframes, design system, Figma prototype — and e-commerce on any CMS (WordPress/WooCommerce, Shopify, PrestaShop, Magento) for the Lys basin's retailers and craftspeople, not just the AI brick.",
+          "Sensitive health/social data: for the local medico-social ecosystem (EPSM Lille-Métropole and its 1,836 staff, medical-equipment reuse hosted at the Ruche), strict EU hosting and a GDPR-sovereign AI chain.",
+        ],
+        methodology: [
+          {
+            step: "Scoping in Armentières",
+            detail:
+              "On-site workshop — town centre, Ruche des 2 Lys or Eurolys zone: goals, user journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+          },
+          {
+            step: "UX/UI design",
+            detail:
+              "Wireframes, design system and Figma mockups in your brand; for a Grand'Place retailer as for an industrial firm on rue des Fusillés, prototype tested before any development.",
+          },
+          {
+            step: "Development in sprints",
+            detail:
+              "AI grafted onto the existing site or AI-native build: RAG chatbot, semantic search, agents, multi-CMS e-commerce, product configurator. Weekly demos.",
+          },
+          {
+            step: "Acceptance + go-live",
+            detail:
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime — useful for a shop in peak season or a B2B portal in production.",
+          },
+          {
+            step: "Delivery + autonomy",
+            detail:
+              "Code, databases and models delivered into your infra (EU hosting possible). No imposed subscription, no vendor lock-in: transferable to any Lille-area provider or taken in-house.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search, order taking) onto the existing site of a Grand'Place retailer or a Lys-basin craftsperson, in a few weeks, no rebuild.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Bespoke site / e-commerce",
+            detail:
+              "Design or rebuild of a site, multi-CMS online store or app with UX/UI and built-in AI, for food SMEs (like Gelpass), Ruche des 2 Lys ventures and business services.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "AI-native SaaS platform",
+            detail:
+              "Bespoke customer portal, configurator or technical catalogue for precision industry (like Beck-Crespel) and the medico-social sector, AI built in, wired into your IS (CRM, ERP, MRP).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Product programme",
+            detail:
+              "Multi-year programmes for groups based in the basin: platform rebuilds, enterprise design system, dedicated Axion-IA product team.",
+          },
+        ],
+        faq: [
+          {
+            q: "Do you really do UX/UI, mobile and e-commerce, not just AI?",
+            a: "Yes. We design the full experience in Armentières — research, wireframes, design system, Figma mockups, mobile-responsive prototype — and build e-commerce on any CMS (WooCommerce, Shopify, PrestaShop, Magento) for Grand'Place retailers as for basin SMEs, with or without an AI brick.",
+          },
+          {
+            q: "Can you build a B2B portal for a precision-engineering firm like Beck-Crespel?",
+            a: "Yes. For Armentières bar-turning and precision-engineering firms, we build customer portals, configurators and technical catalogues wired into the ERP/MRP, with semantic search across part references and a RAG chatbot over technical documentation. Custom code, no no-code, no dependency.",
+          },
+          {
+            q: "Do you support the early-stage ventures of the Ruche des 2 Lys?",
+            a: "Yes. The Ruche métropolitaine d'Armentières — the largest incubator in the North, a repurposed former textile mill — hosts ventures in medical-equipment reuse, photovoltaics, thermoforming and design. We build their first sites, SaaS MVPs and online stores, calibrated for an early-stage structure.",
+          },
+          {
+            q: "Does my health or medico-social data stay in Europe?",
+            a: "Yes. For the basin's medico-social ecosystem (EPSM Lille-Métropole, medical-equipment reuse), the whole AI chain can be hosted in the EU (Hetzner Frankfurt), GDPR-compliant, with no transit outside the EU without a DPA. You keep full ownership of your data and models.",
+          },
+          {
+            q: "Which technologies and what quote turnaround do you work with?",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. After the on-site scoping in Armentières, the firm quote arrives from 24-48 h depending on complexity — more for an extended industrial portal. No time-and-materials, no hidden hourly drift.",
+          },
+        ],
+        guarantees:
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting an existing site or store. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU/GDPR hosting possible): full ownership, no imposed subscription, no vendor lock-in, transferable to any Lille-area provider or taken in-house.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Armentières ?",
