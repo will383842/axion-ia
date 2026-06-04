@@ -78,9 +78,9 @@ const REVIEWS: ReadonlyArray<Review> = [
   },
   {
     quoteFr:
-      "Du concret et du mesurable : forfait fixe, devis ferme en 48 h, livré dans les délais. La perso temps réel a dopé notre engagement.",
+      "Du concret et du mesurable : forfait fixe, devis ferme en 24-48 h, livré dans les délais. La perso temps réel a dopé notre engagement.",
     quoteEn:
-      "Concrete and measurable: fixed fee, firm quote in 48 h, delivered on time. Real-time personalisation boosted our engagement.",
+      "Concrete and measurable: fixed fee, firm quote in 24-48 h, delivered on time. Real-time personalisation boosted our engagement.",
     author: "Catherine M.",
     roleFr: "Dirigeante, site média & contenu",
     roleEn: "Director, media & content site",

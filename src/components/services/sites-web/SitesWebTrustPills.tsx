@@ -21,13 +21,13 @@ export function SitesWebTrustPills({ isFr }: SitesWebTrustPillsProps): ReactNode
         { icon: Globe, label: "Toute stack existante — on s'intègre" },
         { icon: ShieldCheck, label: "RGPD natif · hébergement EU" },
         { icon: Sparkles, label: "Chatbot RAG formé sur vos données" },
-        { icon: ArrowRight, label: "Forfait fixe · devis ferme 48 h" },
+        { icon: ArrowRight, label: "Forfait fixe · devis ferme sous 24-48 h" },
       ]
     : [
         { icon: Globe, label: "Any existing stack — we integrate" },
         { icon: ShieldCheck, label: "GDPR native · EU hosting" },
         { icon: Sparkles, label: "RAG chatbot trained on your data" },
-        { icon: ArrowRight, label: "Fixed fee · firm quote 48 h" },
+        { icon: ArrowRight, label: "Fixed fee · firm quote in 24-48 h" },
       ];
 
   return (
