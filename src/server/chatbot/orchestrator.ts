@@ -42,6 +42,8 @@ export interface TurnContext {
   readonly previousSlots?: SearchSlots;
   /** État de la machine à liens du tour précédent. */
   readonly linkFlow?: LinkFlowState;
+  /** Résumé de contexte long (T-31) injecté au system-prompt. */
+  readonly resume?: string | null;
 }
 
 export interface TurnResult {
@@ -227,7 +229,11 @@ export async function handleTurn(
           escalate: true,
         };
       }
-      const systemPrompt = assembleSystemPrompt({ tenant: ctx.tenant, chunks });
+      const systemPrompt = assembleSystemPrompt({
+        tenant: ctx.tenant,
+        chunks,
+        ...(ctx.resume ? { resume: ctx.resume } : {}),
+      });
       const sources = chunks.map((c) => ({ sourceType: c.sourceType, sourceRef: c.sourceRef }));
 
       // T-16 — mode dégradé : panne LLM (Anthropic down / rate-limit / circuit

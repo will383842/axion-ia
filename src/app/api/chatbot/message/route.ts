@@ -15,8 +15,10 @@ import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { generateAnswer } from "@/server/chatbot/generation/generate-stream";
+import { shouldSummarize, summarizeConversation } from "@/server/chatbot/context/summarize";
 import type { SearchSlots } from "@/server/chatbot/catalog/slot-filling";
 import type { LinkFlowState } from "@/server/chatbot/catalog/link-flow";
+import type { TenantSettings } from "@/server/chatbot/constants";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -247,6 +249,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             conversationId: convo.id,
             linkFlow,
             ...(previousSlots ? { previousSlots } : {}),
+            ...(convo.resume ? { resume: convo.resume } : {}),
           },
           {
             // streaming token-par-token vers le widget (typing).
@@ -272,6 +275,15 @@ export async function POST(req: NextRequest): Promise<Response> {
         });
 
         send({ type: "done" });
+
+        // T-31 — résumé de contexte long APRÈS "done" : le client a déjà tout
+        // reçu, donc ça n'allonge pas la latence perçue. Best-effort (jamais
+        // d'erreur émise au client).
+        try {
+          await maybeSummarizeConversation(convo.id, tenant.settings);
+        } catch (e) {
+          console.warn("[chatbot:route] résumé contexte échoué:", e);
+        }
       } catch (err) {
         console.error("[chatbot:route] erreur:", err);
         send({ type: "error", message: "server_error" });
@@ -282,6 +294,32 @@ export async function POST(req: NextRequest): Promise<Response> {
   });
 
   return new Response(stream, { headers: { ...SSE_HEADERS, ...corsOut } });
+}
+
+/**
+ * T-31 — recalcule le résumé de contexte au-delà d'un palier de messages, et le
+ * persiste sur la conversation (réinjecté au system-prompt au tour suivant).
+ * Best-effort : summarizeConversation renvoie null sur panne LLM.
+ */
+async function maybeSummarizeConversation(
+  conversationId: string,
+  settings: TenantSettings,
+): Promise<void> {
+  const count = await prisma.chatMessage.count({ where: { conversationId } });
+  if (!shouldSummarize(count)) return;
+  const messages = await prisma.chatMessage.findMany({
+    where: { conversationId },
+    orderBy: { createdAt: "asc" },
+    select: { role: true, contenu: true },
+  });
+  const resume = await summarizeConversation(
+    messages,
+    generateAnswer,
+    settings.llmTier.reformulation,
+  );
+  if (resume) {
+    await prisma.chatConversation.update({ where: { id: conversationId }, data: { resume } });
+  }
 }
 
 async function persistTurn(args: {

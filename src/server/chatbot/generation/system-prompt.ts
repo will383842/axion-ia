@@ -11,11 +11,13 @@ import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
 export interface SystemPromptOptions {
   readonly tenant: ResolvedTenant;
   readonly chunks?: ReadonlyArray<RetrievedChunk>;
+  /** Résumé de contexte long (T-31) — fil des tours précédents, sans l'historique brut. */
+  readonly resume?: string | null;
 }
 
 /** Construit le prompt système (règles + contexte + brand-voice). */
 export function assembleSystemPrompt(opts: SystemPromptOptions): string {
-  const { tenant, chunks } = opts;
+  const { tenant, chunks, resume } = opts;
   const rules = [
     "Tu es l'assistant conversationnel d'Axion-IA, cabinet de conseil en IA pour les TPE/PME/ETI françaises.",
     "Tu réponds TOUJOURS en français, de façon concise, claire et non-insistante.",
@@ -27,12 +29,14 @@ export function assembleSystemPrompt(opts: SystemPromptOptions): string {
   ];
   let prompt = rules.join("\n");
 
+  if (resume && resume.trim().length > 0) {
+    prompt += "\n\n## RÉSUMÉ DE LA CONVERSATION (contexte des tours précédents)\n" + resume.trim();
+  }
+
   if (chunks && chunks.length > 0) {
     prompt +=
       "\n\n## CONTEXTE (seule source autorisée pour répondre)\n" +
-      chunks
-        .map((c, i) => `[${i + 1}] (${c.sourceType}:${c.sourceRef}) ${c.contenu}`)
-        .join("\n\n");
+      chunks.map((c, i) => `[${i + 1}] (${c.sourceType}:${c.sourceRef}) ${c.contenu}`).join("\n\n");
   } else {
     prompt +=
       "\n\n## CONTEXTE\n(Aucun extrait pertinent trouvé — ne réponds pas de mémoire ; oriente vers un échange.)";
