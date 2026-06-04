@@ -104,10 +104,20 @@ export async function hybridSearch(
 
   let vector: RankedRow[] = [];
   try {
-    const { embedding } = await generateEmbedding(query);
-    vector = await vectorSearch(tenantId, embedding, topK);
+    const embed = await generateEmbedding(query);
+    // Sans VOYAGE_API_KEY, generateEmbedding renvoie un STUB déterministe (hash)
+    // au lieu de throw : un vecteur-requête factice comparé aux vrais embeddings
+    // des chunks donne des voisins sémantiquement aberrants (pollution RRF). On
+    // détecte le stub (modelVersion suffixée `-stub`) et on bascule en FTS-seul,
+    // conformément à l'intention documentée « repli FTS seul si embeddings
+    // indisponibles » — pas de faux vecteur dans le chemin runtime.
+    if (embed.modelVersion.endsWith("-stub")) {
+      console.warn("[chatbot:retrieval] embedding stub (VOYAGE_API_KEY absente) → repli FTS seul");
+    } else {
+      vector = await vectorSearch(tenantId, embed.embedding, topK);
+    }
   } catch (err) {
-    // Repli FTS seul si embeddings indisponibles (Voyage down / pas de clé).
+    // Repli FTS seul si embeddings indisponibles (Voyage down / erreur HTTP).
     console.warn("[chatbot:retrieval] vector search indisponible, repli FTS:", err);
   }
 
