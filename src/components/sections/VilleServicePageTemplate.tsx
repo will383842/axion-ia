@@ -426,23 +426,10 @@ export async function renderVilleServicePage({
         <Breadcrumbs items={breadcrumbItems} emitJsonLd={false} />
       </Container>
 
-      {/* Direct-answer AEO : citable verbatim par Perplexity / Claude / Google AI Overviews.
-          id="axion-direct-answer" = cible du Speakable JSON-LD. */}
-      {(ville.copy?.directAnswerFr ?? null) ? (
-        <div className="border-border bg-paper border-b">
-          <Container className="max-w-3xl py-5">
-            <p
-              id="axion-direct-answer"
-              className="text-fg-soft text-sm leading-relaxed"
-              aria-label={isFr ? "Réponse directe" : "Direct answer"}
-            >
-              {ville.copy!.directAnswerFr}
-            </p>
-          </Container>
-        </div>
-      ) : null}
-
-      {/* Hero compact spécifique ville × service */}
+      {/* Hero compact spécifique ville × service. Le direct-answer AEO et le
+          contexte local sont repositionnés plus bas (section « À propos »
+          avant les villes proches) — décision Will 2026-06-04 : trop haut =
+          mur de texte avant le H1, pas pro. */}
       <Section
         titleAs="h1"
         eyebrow={
@@ -498,19 +485,6 @@ export async function renderVilleServicePage({
           </Cta>
         </div>
       </Section>
-
-      {/* Contexte économique local — signal GEO (entités nommées secteurs/groupes locaux).
-          Renforce la pertinence topique pour les requêtes "IA à [Ville]" dans les LLMs. */}
-      {ville.copy?.ecosystemFr ? (
-        <div className="bg-paper border-border border-b">
-          <Container className="max-w-3xl py-4">
-            <p className="text-fg-muted text-xs leading-relaxed italic">
-              {isFr ? "Contexte local · " : "Local context · "}
-              <span data-ecosystem="true">{ville.copy.ecosystemFr}</span>
-            </p>
-          </Container>
-        </div>
-      ) : null}
 
       {/* Section détaillée du service à la ville — 4 verticales. */}
       <VilleServiceDetailSection
@@ -670,16 +644,47 @@ export async function renderVilleServicePage({
         );
       })()}
 
-      {/* Villes proches même service — maillage interne */}
+      {/* À propos + contexte local — repositionné plus bas (UX + AEO).
+          directAnswer garde id="axion-direct-answer" (cible Speakable JSON-LD). */}
+      {ville.copy?.directAnswerFr || ville.copy?.ecosystemFr ? (
+        <Section
+          tone="paper"
+          eyebrow={isFr ? `À propos · ${ville.nameFr}` : `About · ${ville.nameFr}`}
+          title={isFr ? "Axion-IA à" : "Axion-IA in"}
+          titleEm={ville.nameFr}
+        >
+          <div className="max-w-3xl space-y-5">
+            {ville.copy?.directAnswerFr ? (
+              <p
+                id="axion-direct-answer"
+                className="text-fg-soft text-base leading-relaxed"
+                aria-label={isFr ? "Réponse directe" : "Direct answer"}
+              >
+                {ville.copy.directAnswerFr}
+              </p>
+            ) : null}
+            {ville.copy?.ecosystemFr ? (
+              <p className="text-fg-muted text-sm leading-relaxed">
+                <span className="text-fg font-semibold">
+                  {isFr ? "Contexte local — " : "Local context — "}
+                </span>
+                <span data-ecosystem="true">{ville.copy.ecosystemFr}</span>
+              </p>
+            ) : null}
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Villes proches même service — maillage interne (hub → satellites) */}
       {nearbyVilles.length > 0 ? (
         <Section
-          eyebrow={isFr ? "Villes proches" : "Nearby cities"}
-          title={isFr ? `${meta.nameFr} dans` : `${meta.nameEn} in`}
-          titleEm={isFr ? "votre région" : "your region"}
+          eyebrow={isFr ? "On intervient aussi autour" : "We also serve around"}
+          title={isFr ? `${meta.nameFr} près de` : `${meta.nameEn} near`}
+          titleEm={ville.nameFr}
           description={
             isFr
-              ? `Communes éligibles à ${meta.nameFr.toLowerCase()} dans un rayon proche de ${ville.nameFr}, triées par distance.`
-              : `Communes eligible for ${meta.nameEn.toLowerCase()} within a close radius of ${ville.nameFr}, sorted by distance.`
+              ? `On se déplace aussi dans les communes proches de ${ville.nameFr}, triées par distance — cliquez pour la page locale.`
+              : `We also travel to the communes near ${ville.nameFr}, sorted by distance — click for the local page.`
           }
           tone="canvas"
         >
