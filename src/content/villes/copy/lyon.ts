@@ -934,6 +934,180 @@ export const LYON_COPY: VilleCopy = {
           "No lock-in: you can stop the programme at any time without penalty beyond sessions already completed. Contractual confidentiality: Strict confidentiality, no reference published without written consent. Practice-oriented results: if after three sessions you have not noticed a concrete gain in your daily practice, a diagnostic session is offered to reframe the programme. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
       },
     },
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Lyon, itérations à distance.",
+        whyHere: [
+          "Projets web & SaaS lyonnais : ETI industrielles de la vallée de la Chimie, biotech/santé Gerland (Lyonbiopôle), scale-ups de Part-Dieu et Confluence (H7), banque/assurance.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
+          "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
+          "Données sensibles santé/biotech : hébergement UE strict, chaîne IA souveraine RGPD — un vrai atout pour Gerland et la French Tech One.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Lyon",
+            detail:
+              "Atelier sur site : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : chatbot RAG, search, agents, e-commerce. Démos hebdomadaires.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Aucun abonnement imposé : c'est à vous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / application sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une application avec UX/UI et IA intégrée, pour scale-ups et PME lyonnaises.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour l'industrie et la santé, IA intégrée, branchée sur votre SI (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels : refonte de plateformes, design system d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète à Lyon — research, wireframes, design system, maquettes Figma, prototype — pour un site, une app ou une plateforme SaaS, avec ou sans brique IA. C'est un métier à part entière chez nous.",
+          },
+          {
+            q: "Mes données santé/biotech restent-elles en Europe ?",
+            a: "Oui, et c'est un point clé pour l'écosystème Gerland/Lyonbiopôle : toute la chaîne IA est hébergeable en UE (Hetzner Frankfurt), conforme RGPD, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles.",
+          },
+          {
+            q: "Peut-on augmenter un site existant sans le refondre ?",
+            a: "Oui, dans la grande majorité des cas. On greffe les briques IA via une API, un widget ou un plugin, sans toucher au design ni à la structure, dès lors que votre CMS expose une API ou un flux de données. Aucune refonte ni downtime.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage, on remet un devis ferme en forfait fixe. Le délai de remise dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme métier industrielle étendue. Pas de régie, pas de dérive horaire cachée.",
+          },
+          {
+            q: "Avec quelles technologies travaillez-vous ?",
+            a: "Toute stack moderne exposant une API : WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. On choisit la meilleure stack selon vos objectifs et on s'adapte à votre existant, jamais l'inverse.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD : propriété totale, aucun abonnement imposé, transférable à tout prestataire de la région lyonnaise ou repris en interne.",
+      },
+      en: {
+        hero: "In Lyon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Lyon kick-off, remote iterations.",
+        whyHere: [
+          "Lyon web & SaaS projects: industrial mid-caps of the Vallée de la Chimie, Gerland health/biotech (Lyonbiopôle), Part-Dieu and Confluence scale-ups (H7), banking/insurance.",
+          "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick.",
+          "Augment the existing site (widget, API, plugin) or a bespoke AI-native platform, whichever pays off best at 18 months.",
+          "Sensitive health/biotech data: strict EU hosting, GDPR-sovereign AI chain — a real asset for Gerland and French Tech One.",
+        ],
+        methodology: [
+          {
+            step: "Scoping in Lyon",
+            detail:
+              "On-site workshop: goals, journeys, audit of the existing stack and content. Firm quote from 24-48 h depending on complexity.",
+          },
+          {
+            step: "UX/UI design",
+            detail:
+              "Wireframes, design system and Figma mockups in your brand; prototype tested before any development.",
+          },
+          {
+            step: "Development in sprints",
+            detail:
+              "AI grafted onto the existing site or AI-native build: RAG chatbot, search, agents, e-commerce. Weekly demos.",
+          },
+          {
+            step: "Acceptance + go-live",
+            detail:
+              "Acceptance tests, Web Vitals and SEO/AEO validated, production release without downtime.",
+          },
+          {
+            step: "Delivery + autonomy",
+            detail:
+              "Code, databases and models delivered into your infra (EU hosting possible). No imposed subscription: it's yours.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Grafted AI brick",
+            detail:
+              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Bespoke site / app",
+            detail:
+              "Design or rebuild of a site or app with UX/UI and built-in AI, for Lyon scale-ups and SMEs.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "AI-native SaaS platform",
+            detail:
+              "Bespoke business platform or customer portal for industry and health, AI built in, wired into your IS (CRM, ERP, datalake).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Product programme",
+            detail:
+              "Multi-year programmes: platform rebuilds, enterprise design system, dedicated Axion-IA product team.",
+          },
+        ],
+        faq: [
+          {
+            q: "Do you really do UX/UI and design, not just AI?",
+            a: "Yes. We design the full experience in Lyon — research, wireframes, design system, Figma mockups, prototype — for a website, app or SaaS platform, with or without an AI brick. It's a discipline in its own right for us.",
+          },
+          {
+            q: "Does my health/biotech data stay in Europe?",
+            a: "Yes, and it's key for the Gerland/Lyonbiopôle ecosystem: the whole AI chain can be hosted in the EU (Hetzner Frankfurt), GDPR-compliant, with no transit outside the EU without a DPA. You keep full ownership of your data and models.",
+          },
+          {
+            q: "Can you augment an existing site without rebuilding it?",
+            a: "Yes, in the vast majority of cases. We graft the AI bricks via an API, a widget or a plugin, without touching the design or structure, as long as your CMS exposes an API or data feed. No rebuild, no downtime.",
+          },
+          {
+            q: "Is the quote firm and the price fixed?",
+            a: "Yes. After scoping, we deliver a firm quote on a fixed package. Turnaround depends on complexity — from 24-48 h for a simple project, more for an extended industrial business platform. No time-and-materials, no hidden hourly drift.",
+          },
+          {
+            q: "Which technologies do you work with?",
+            a: "Any modern stack exposing an API: WordPress, Shopify, WooCommerce, PrestaShop, Magento, Next.js, Laravel, Django, Vue, React, Angular. We pick the best stack for your goals and adapt to your existing setup, never the other way around.",
+          },
+        ],
+        guarantees:
+          "Firm quote on a fixed package (from 24-48 h depending on complexity): no hidden hourly drift. Go-live without downtime when augmenting the existing site. Web Vitals and accessibility checked at delivery. Source code, databases and models delivered into your infrastructure (EU hosting possible), GDPR-compliant: full ownership, no imposed subscription, transferable to any Lyon-area provider or taken in-house.",
+      },
+    },
   },
 
   faqGeolocalisee: [
