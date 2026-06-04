@@ -9,9 +9,9 @@ export const VENDOME_COPY: VilleCopy = {
   pitchEn:
     "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
   seoHook: "vallée du",
   ecosystemFr:
     "Vendôme est la sous-préfecture du Loir-et-Cher (15 758 habitants), traversée par le Loir. La gare TGV Vendôme-Villiers (LGV Atlantique) place Paris à 42 min, atout majeur pour l'attractivité économique. Abbaye de la Trinité (XIe siècle), patrimoine médiéval remarquable. Tissu PME industrielles (agroalimentaire, équipementiers), TPE artisans BTP, commerces centre-ville, tourisme patrimonial, professions libérales, services.",

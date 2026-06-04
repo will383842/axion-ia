@@ -9,9 +9,9 @@ export const PORNIC_COPY: VilleCopy = {
   pitchEn:
     "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
   seoHook: "bassin pornicais",
   ecosystemFr:
     "Pornic (18 745 hab) est une station balnéaire réputée de la Côte de Jade, en Loire-Atlantique. Port de plaisance et de pêche, thalassothérapie, commerces touristiques, artisanat, ostréiculture et agriculture périurbaine. Proximité Nantes (50 min), Saint-Nazaire (35 min). Destination touristique majeure du littoral atlantique sud-Loire.",

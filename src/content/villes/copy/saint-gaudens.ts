@@ -9,9 +9,9 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Gaudens (31), sous-préfecture du Comminges au pied des Pyrénées, plus de 12 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales, tourisme montagne. Axion-IA y travaille avec les organisations du territoire du sud de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit sur place sur mesure.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Saint-Gaudens est la sous-préfecture du Comminges, pôle économique du piémont pyrénéen. PME industrielles (papeterie, chimie), agroalimentaire de montagne, artisans BTP, commerces de centre-ville, professions libérales, tourisme thermal et pyrénéen. Centre hospitalier et services publics structurants.",

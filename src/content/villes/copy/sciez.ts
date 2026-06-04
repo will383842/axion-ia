@@ -9,9 +9,9 @@ export const SCIEZ_COPY: VilleCopy = {
   pitchEn:
     "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   seoHook: "tourisme lacustre & viticulture crépy",
   ecosystemFr:
     "Sciez-sur-Léman est une commune résidentielle et touristique du Chablais, en bordure du lac Léman (rive sud française). Le port de Sciez et les plages attirent un tourisme lacustre saisonnier. La commune fait partie de l'appellation AOC Crépy (vin blanc savoyard). Proximité Thonon-les-Bains (10 min) et bassin frontalier genevois. TPE artisans, commerces saisonniers, PME viticoles et touristiques, professions libérales.",

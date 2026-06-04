@@ -9,9 +9,9 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
   seoHook: "commerce grande & services tertiaires",
   ecosystemFr:
     "Mundolsheim est un pôle commercial et tertiaire de l'Eurométropole de Strasbourg nord. Centre commercial régional zone Cora, axe A4/A35. Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Forte attractivité commerciale métropolitaine.",

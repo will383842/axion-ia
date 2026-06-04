@@ -9,9 +9,9 @@ export const CORMELLES_LE_ROYAL_COPY: VilleCopy = {
   pitchEn:
     "Cormelles-le-Royal (14), commune de l'agglomération de Caen sud dans le Calvados, est un pôle d'activités économiques majeur avec ses zones commerciales et tertiaires. Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants, prestataires. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cormelles-le-Royal (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et tertiaires de l'agglomération caennaise sud, commerçants zones commerciales, professions libérales, indépendants et prestataires informatiques.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cormelles-le-Royal (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et tertiaires de l'agglomération caennaise sud, commerçants zones commerciales, professions libérales, indépendants et prestataires informatiques.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cormelles-le-Royal (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et tertiaires de l'agglomération caennaise sud, commerçants zones commerciales, professions libérales, indépendants et prestataires informatiques.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cormelles-le-Royal (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et tertiaires de l'agglomération caennaise sud, commerçants zones commerciales, professions libérales, indépendants et prestataires informatiques.",
   seoHook: "services aux & commerce zones",
   ecosystemFr:
     "Cormelles-le-Royal est une commune de l'agglomération caennaise sud, pôle d'activités économiques majeur. Zones commerciales et tertiaires attractives. Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, prestataires informatiques. Proximité immédiate périphérique Caen sud.",

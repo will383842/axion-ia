@@ -9,9 +9,9 @@ export const THONES_COPY: VilleCopy = {
   pitchEn:
     "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y travaille avec les organisations du territoire du massif des Aravis.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   seoHook: "agroalimentaire fromager & tourisme montagne",
   ecosystemFr:
     "Thônes est le coeur économique et culturel du massif des Aravis. L'agroalimentaire fromager domine : production, affinage et vente de Reblochon AOP, filière laitière alpine structurante. Le tourisme de montagne irrigue le bourg (porte d'entrée vers La Clusaz à 15 min et Le Grand-Bornand à 15 min). Commerces de centre-bourg, artisanat montagnard et hôtellerie-restauration complètent un écosystème ancré dans l'identité alpine savoyarde.",

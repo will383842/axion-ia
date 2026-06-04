@@ -9,9 +9,9 @@ export const VENDIN_LE_VIEIL_COPY: VilleCopy = {
   pitchEn:
     "Vendin-le-Vieil (62), commune du bassin minier entre Lens et Béthune dans le Pas-de-Calais, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Vendin-le-Vieil est une commune résidentielle du bassin minier entre Lens et Béthune. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Zone commerciale et activités péri-urbaines le long de l'axe Lens-Béthune.",

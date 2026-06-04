@@ -9,9 +9,9 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie son expertise pour toutes les organisations du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
   seoHook: "artisanat services & commerce village",
   ecosystemFr:
     "Bois-le-Roi est une commune résidentielle prisée en bords de Seine, aux portes de la forêt de Fontainebleau en Seine-et-Marne. Tissu économique : TPE artisanat et services à la personne, commerces de village, professions libérales (santé, conseil), PME prestataires de services, hébergements touristiques (gîtes, chambres d'hôtes). Proximité de Fontainebleau et de Melun via la gare Transilien R.",

@@ -9,9 +9,9 @@ export const PACE_COPY: VilleCopy = {
   pitchEn:
     "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
   seoHook: "proche rennes",
   ecosystemFr:
     "Pacé est une commune résidentielle dynamique de l'ouest de Rennes Métropole, en forte croissance démographique. Tissu économique de services et tertiaire, complété par TPE artisanat BTP, commerces de proximité, professions libérales et agriculture périurbaine résiduelle. Proximité immédiate de la rocade ouest de Rennes et bon maillage bus STAR.",

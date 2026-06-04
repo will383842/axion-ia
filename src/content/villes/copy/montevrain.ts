@@ -9,9 +9,9 @@ export const MONTEVRAIN_COPY: VilleCopy = {
   pitchEn:
     "Montévrain (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, bénéficie de la dynamique économique liée à la proximité de Disneyland Paris et du pôle Val d'Europe. Tissu de TPE/PME hôtellerie-restauration, commerce, services aux entreprises, tourisme et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit sur place sur mesure.",
   seoHook: "hôtellerie restauration & commerce détail",
   ecosystemFr:
     "Montévrain est intégrée au pôle Val d'Europe dans Marne-la-Vallée, à proximité immédiate de Disneyland Paris. Tissu économique porté par l'hôtellerie-restauration, le commerce, les services tourisme, les prestataires BtoB et les professions libérales. Zone d'activités en développement, attractivité renforcée par le parc et le centre commercial Val d'Europe.",

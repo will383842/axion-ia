@@ -9,9 +9,9 @@ export const BASSE_GOULAINE_COPY: VilleCopy = {
   pitchEn:
     "Basse-Goulaine (44), commune de la première couronne sud-est de Nantes Métropole en Loire-Atlantique, est au coeur du vignoble Muscadet Sèvre-et-Maine. Tissu de TPE tertiaires, PME services/conseil, viticulteurs, professions libérales et commerces résidentiels. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Basse-Goulaine (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et conseil, viticulteurs Muscadet Sèvre-et-Maine, professions libérales, commerçants, artisans et entreprises de la couronne sud-est de Nantes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Basse-Goulaine (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et conseil, viticulteurs Muscadet Sèvre-et-Maine, professions libérales, commerçants, artisans et entreprises de la couronne sud-est de Nantes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Basse-Goulaine (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et conseil, viticulteurs Muscadet Sèvre-et-Maine, professions libérales, commerçants, artisans et entreprises de la couronne sud-est de Nantes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Basse-Goulaine (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et conseil, viticulteurs Muscadet Sèvre-et-Maine, professions libérales, commerçants, artisans et entreprises de la couronne sud-est de Nantes Métropole.",
   seoHook: "tertiaires conseil & viticulture muscadet",
   ecosystemFr:
     "Basse-Goulaine est une commune résidentielle prisée de la première couronne sud-est de Nantes Métropole, en bordure de Loire. Coeur du vignoble Muscadet Sèvre-et-Maine (AOC). Château de Goulaine (XVe siècle, l'un des plus anciens châteaux de la Loire). Tissu TPE tertiaires/conseil, PME services, viticulteurs, professions libérales, commerces résidentiels de standing.",

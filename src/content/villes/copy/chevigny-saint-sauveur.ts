@@ -10,9 +10,9 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
     "Chevigny-Saint-Sauveur (21), pôle dynamique à l'est de Dijon, concentre plusieurs zones d'activités majeures de la Métropole : Cap Nord, Valmy, et de nombreuses PME industrielles et tertiaires. Axion-IA couvre les activités professionnelles du bassin du bassin est-dijonnais.",
   seoHook: "zones d'activités, logistique & industrie",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Chevigny-Saint-Sauveur est un pôle économique majeur de l'est dijonnais. Ses zones d'activités (Cap Nord, Valmy, zone commerciale Quetigny-Chevigny) accueillent un tissu dense de TPE/PME : logistique et transport, industrie légère, négoce, services B2B, grande distribution. Commune en forte croissance démographique, carrefour autoroutier A31/A39.",
   ecosystemEn:

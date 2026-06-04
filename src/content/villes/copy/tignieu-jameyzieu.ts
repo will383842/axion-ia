@@ -9,9 +9,9 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
   pitchEn:
     "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe du Rhône.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
   seoHook: "vallée du",
   ecosystemFr:
     "Tignieu-Jameyzieu est une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, en partie orientale de l'aire d'attraction de Lyon. Tissu industriel et logistique périphérique au couloir rhodanien (Lyon-Saint-Exupéry à 25 min), PME tertiaires et services aux entreprises, TPE artisanat BTP, commerces, activité agricole résiduelle. Communauté de communes Lyon Saint-Exupéry en Dauphiné.",

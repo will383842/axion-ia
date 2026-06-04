@@ -9,9 +9,9 @@ export const SEYSSINS_COPY: VilleCopy = {
   pitchEn:
     "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Seyssins est membre de la métropole Grenoble-Alpes Métropole (« La Métro »), à l'ouest immédiat de Grenoble dans l'aire urbaine de l'agglomération. Voisine de Seyssinet-Pariset (parfois confondues localement), elle développe un tissu mixte résidentiel haut de gamme et activités locales : TPE artisanat BTP, commerces, professions libérales installées, PME services. Position vers Vercors périphérique.",

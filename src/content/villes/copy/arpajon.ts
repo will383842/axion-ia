@@ -9,9 +9,9 @@ export const ARPAJON_COPY: VilleCopy = {
   pitchEn:
     "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat métiers",
   ecosystemFr:
     "Arpajon est une sous-préfecture historique de l'Essonne, centre du Hurepoix, connue pour sa foire aux haricots séculaire et son marché couvert animé. Tissu vivant TPE commerces de bouche et artisanat, PME tertiaires, professions libérales (avocats, notaires, médecins), restauration et services administratifs sous-préfecture.",

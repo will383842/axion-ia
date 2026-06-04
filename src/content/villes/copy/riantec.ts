@@ -9,9 +9,9 @@ export const RIANTEC_COPY: VilleCopy = {
   pitchEn:
     "Riantec (56), commune littorale du Morbihan bordant la ria d'Étel, est un territoire ostréicole et maritime historique. Tissu TPE artisans (ostréiculture, pêche, mytiliculture), PME nautiques, commerces, tourisme balnéaire et services aux entreprises du bassin de Lorient. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Riantec (56). Nous accompagnons tous types d'activités : ostréiculteurs et mytiliculteurs de la ria d'Étel, TPE artisans pêche et conchyliculture, PME nautiques, commerçants, hébergeurs touristiques littoraux, indépendants et services aux entreprises du bassin lorientais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riantec (56). Nous accompagnons tous types d'activités : ostréiculteurs et mytiliculteurs de la ria d'Étel, TPE artisans pêche et conchyliculture, PME nautiques, commerçants, hébergeurs touristiques littoraux, indépendants et services aux entreprises du bassin lorientais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Riantec (56). Nous accompagnons tous types d'activités : ostréiculteurs et mytiliculteurs de la ria d'Étel, TPE artisans pêche et conchyliculture, PME nautiques, commerçants, hébergeurs touristiques littoraux, indépendants et services aux entreprises du bassin lorientais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riantec (56). Nous accompagnons tous types d'activités : ostréiculteurs et mytiliculteurs de la ria d'Étel, TPE artisans pêche et conchyliculture, PME nautiques, commerçants, hébergeurs touristiques littoraux, indépendants et services aux entreprises du bassin lorientais.",
   ecosystemFr:
     "Riantec borde la ria d'Étel, bras de mer réputé pour son ostréiculture et sa mytiliculture. La commune vit de la conchyliculture, de la pêche artisanale, du nautisme et du tourisme balnéaire (plages, sentiers côtiers GR 34). Proximité immédiate de Lorient (bassin d'emploi industriel et portuaire). Tissu TPE artisans maritimes, PME nautiques, commerces et hébergements touristiques.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Marcel-lès-Valence (26). Nous accompagnons tous types d'activités : PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel-lès-Valence (26). Nous accompagnons tous types d'activités : PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Marcel-lès-Valence (26). Nous accompagnons tous types d'activités : PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel-lès-Valence (26). Nous accompagnons tous types d'activités : PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises.",
   seoHook: "tertiaires zones & services aux",
   ecosystemFr:
     "Saint-Marcel-lès-Valence est intégrée à Valence Romans Agglo (~225 000 hab), en banlieue nord immédiate de Valence. Position stratégique : proximité gare Valence TGV (LGV Méditerranée, Paris 2h15). Tissu PME tertiaires et zones d'activités, TPE artisanat BTP, commerces, agriculture périphérique (vallée Isère).",

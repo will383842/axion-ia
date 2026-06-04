@@ -9,9 +9,9 @@ export const CEBAZAT_COPY: VilleCopy = {
   pitchEn:
     "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
   seoHook: "tertiaires services & zone d'activités",
   ecosystemFr:
     "Cébazat bénéficie de sa position stratégique au nord de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. La commune accueille une zone d'activités dynamique avec PME tertiaires, sociétés de services aux entreprises et bureaux d'études. Tissu TPE artisans BTP actif, commerces de proximité bien implantés, professions libérales. Accès rapide à Riom et à l'aéroport Clermont-Ferrand Auvergne.",

@@ -10,9 +10,9 @@ export const DAINVILLE_COPY: VilleCopy = {
     "Dainville (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 680 habitants. Situee a l'ouest d'Arras, son economie beneficie de la proximite de la prefecture : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras, tertiaire & professions liberales",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Dainville jouxte Arras (3 km) a l'ouest. Tissu economique compose de PME tertiaires, TPE de services, professions liberales (avocats, comptables), commerces de proximite et artisanat. Commune residentielle prisee beneficiant des infrastructures de la CUA.",
   ecosystemEn:

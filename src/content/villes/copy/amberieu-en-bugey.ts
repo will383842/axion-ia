@@ -9,9 +9,9 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
   pitchEn:
     "Ambérieu-en-Bugey (01), commune du Bugey dans l'Ain, est un nœud ferroviaire majeur (gare de triage SNCF historique, carrefour Lyon-Genève-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du Bugey.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
   seoHook: "ferroviaire logistique & industrielles bugey",
   ecosystemFr:
     "Ambérieu-en-Bugey est un nœud ferroviaire majeur de l'Ain (gare de triage SNCF historique, carrefour des lignes Lyon-Genève et Lyon-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisanat BTP, commerces, professions libérales. Position centrale Bugey.",

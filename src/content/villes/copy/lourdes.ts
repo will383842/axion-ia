@@ -9,9 +9,9 @@ export const LOURDES_COPY: VilleCopy = {
   pitchEn:
     "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lourdes (65). Nous accompagnons tous types d'activités : PME hôtelières et d'accueil pèlerins, TPE commerces, restaurants, artisans, indépendants, professions libérales et acteurs du tourisme religieux et montagne pyrénéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lourdes (65). Nous accompagnons tous types d'activités : PME hôtelières et d'accueil pèlerins, TPE commerces, restaurants, artisans, indépendants, professions libérales et acteurs du tourisme religieux et montagne pyrénéen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lourdes (65). Nous accompagnons tous types d'activités : PME hôtelières et d'accueil pèlerins, TPE commerces, restaurants, artisans, indépendants, professions libérales et acteurs du tourisme religieux et montagne pyrénéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lourdes (65). Nous accompagnons tous types d'activités : PME hôtelières et d'accueil pèlerins, TPE commerces, restaurants, artisans, indépendants, professions libérales et acteurs du tourisme religieux et montagne pyrénéen.",
   seoHook: "hôtellerie accueil & commerce souvenirs",
   ecosystemFr:
     "Lourdes est la capitale mondiale du pèlerinage marial, deuxième destination touristique de France (~3,5 millions de pèlerins/an). Sanctuaires Notre-Dame de Lourdes. Première capacité hôtelière de France après Paris. Tissu PME hôtellerie et accueil, TPE commerces souvenirs, restauration, artisans BTP, tourisme montagne (Pic du Jer, Pic du Midi via col du Tourmalet).",

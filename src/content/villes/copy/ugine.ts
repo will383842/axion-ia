@@ -9,9 +9,9 @@ export const UGINE_COPY: VilleCopy = {
   pitchEn:
     "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   seoHook: "métallurgie aciers & industrie mécanique",
   ecosystemFr:
     "Ugine est une commune industrielle de la vallée d'Arly (7 150 habitants), positionnée entre Albertville et Annecy en Savoie. Historiquement marquée par la métallurgie des aciers spéciaux (tradition sidérurgique alpine), elle conserve un tissu industriel mécanique significatif. Commerces de vallée, TPE artisanat et services aux entreprises complètent l'économie locale, à la croisée des bassins d'emploi d'Albertville et d'Annecy.",

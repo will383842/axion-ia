@@ -9,9 +9,9 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
   pitchEn:
     "Le Pian-Médoc (33), commune résidentielle entre Bordeaux Métropole nord et le Médoc viticole, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces de proximité et professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'entrée du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
   seoHook: "viticulture haut-médoc & services",
   ecosystemFr:
     "Le Pian-Médoc se situe à l'entrée du Médoc viticole. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D1215.",

@@ -9,9 +9,9 @@ export const EAUNES_COPY: VilleCopy = {
   pitchEn:
     "Eaunes (31), commune du sud de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Eaunes est une commune résidentielle du sud de Toulouse, entre Muret et Labarthe-sur-Lèze. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Croissance démographique liée à l'attractivité du sud toulousain.",

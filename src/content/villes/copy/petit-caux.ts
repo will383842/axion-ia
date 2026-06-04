@@ -10,9 +10,9 @@ export const PETIT_CAUX_COPY: VilleCopy = {
     "Petit-Caux (76), commune nouvelle de la cote d'Albatre en Seine-Maritime, reunit pres de 9 510 habitants. Issue de la fusion de plusieurs villages littoraux, elle accueille des TPE de services, des PME touristiques, des commerces, des artisans et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "tourisme littoral, agriculture & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Petit-Caux est une commune nouvelle littorale issue de la fusion de Belleville-sur-Mer, Berneval-le-Grand et d'autres villages entre Dieppe et Le Treport. Economie mixte : tourisme balneaire, agriculture, artisanat, commerces et services. Plages de galets et falaises de craie.",
   ecosystemEn:

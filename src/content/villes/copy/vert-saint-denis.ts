@@ -9,9 +9,9 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
   pitchEn:
     "Vert-Saint-Denis (77), commune résidentielle au sud de Melun en Seine-et-Marne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",

@@ -9,9 +9,9 @@ export const ARCACHON_COPY: VilleCopy = {
   pitchEn:
     "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y travaille avec les organisations du territoire : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit sur place sur mesure.",
   seoHook: "hôtellerie tourisme & ostréiculture produits",
   ecosystemFr:
     "Arcachon est la station balnéaire emblématique de la Gironde. Tourisme prestige (Ville d'Hiver classée, dune du Pilat, plages), ostréiculture (huîtres du Bassin, ports ostréicoles), hôtellerie-restauration haut de gamme, commerces de centre-ville et économie résidentielle toute l'année.",

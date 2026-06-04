@@ -9,9 +9,9 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Thouaré-sur-Loire (44), commune de l'agglomération nantaise est en bord de Loire, est adossée au vignoble du Muscadet. Tissu de TPE tertiaires, PME logistiques (proximité périphérique est), viticulteurs, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thouaré-sur-Loire (44). Nous accompagnons tous types d'activités : TPE tertiaires et professions libérales, PME logistiques du périphérique est nantais, viticulteurs Muscadet Sèvre-et-Maine, commerçants, artisans et services aux entreprises de Nantes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thouaré-sur-Loire (44). Nous accompagnons tous types d'activités : TPE tertiaires et professions libérales, PME logistiques du périphérique est nantais, viticulteurs Muscadet Sèvre-et-Maine, commerçants, artisans et services aux entreprises de Nantes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Thouaré-sur-Loire (44). Nous accompagnons tous types d'activités : TPE tertiaires et professions libérales, PME logistiques du périphérique est nantais, viticulteurs Muscadet Sèvre-et-Maine, commerçants, artisans et services aux entreprises de Nantes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thouaré-sur-Loire (44). Nous accompagnons tous types d'activités : TPE tertiaires et professions libérales, PME logistiques du périphérique est nantais, viticulteurs Muscadet Sèvre-et-Maine, commerçants, artisans et services aux entreprises de Nantes Métropole.",
   seoHook: "tertiaires professions & logistique/transport",
   ecosystemFr:
     "Thouaré-sur-Loire est une commune résidentielle de la première couronne est de Nantes Métropole, en bord de Loire. Proximité du périphérique nantais est et de la zone d'activités de Sainte-Luce. Vignoble Muscadet Sèvre-et-Maine sur le coteau. Tissu TPE tertiaires, PME logistiques/transport, professions libérales, viticulture, commerces de proximité.",

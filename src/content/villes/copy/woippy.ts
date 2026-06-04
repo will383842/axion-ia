@@ -9,9 +9,9 @@ export const WOIPPY_COPY: VilleCopy = {
   pitchEn:
     "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Woippy (57). Nous accompagnons tous types d'activités : TPE/PME services et logistique, artisans BTP, commerces de proximité, acteurs agroalimentaires et professions libérales de Metz Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Woippy (57). Nous accompagnons tous types d'activités : TPE/PME services et logistique, artisans BTP, commerces de proximité, acteurs agroalimentaires et professions libérales de Metz Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Woippy (57). Nous accompagnons tous types d'activités : TPE/PME services et logistique, artisans BTP, commerces de proximité, acteurs agroalimentaires et professions libérales de Metz Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Woippy (57). Nous accompagnons tous types d'activités : TPE/PME services et logistique, artisans BTP, commerces de proximité, acteurs agroalimentaires et professions libérales de Metz Métropole.",
   ecosystemFr:
     "Woippy est une commune mosellane intégrée à Metz Métropole, héritière d'une tradition maraîchère (fraise de Woippy). Tissu TPE/PME services, logistique, commerces, BTP, agroalimentaire, artisanat. Position stratégique nord-Metz favorisant l'économie de l'agglomération.",
   ecosystemEn:

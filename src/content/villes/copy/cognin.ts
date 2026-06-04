@@ -9,9 +9,9 @@ export const COGNIN_COPY: VilleCopy = {
   pitchEn:
     "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cognin (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, artisans BTP, commerçants de proximité, professions libérales et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cognin (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, artisans BTP, commerçants de proximité, professions libérales et sociétés de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cognin (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, artisans BTP, commerçants de proximité, professions libérales et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cognin (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, artisans BTP, commerçants de proximité, professions libérales et sociétés de services.",
   seoHook: "tertiaires services",
   ecosystemFr:
     "Cognin bénéficie de sa proximité immédiate avec Chambéry, dont elle est la 4e commune d'agglomération. Tissu économique diversifié avec PME tertiaires, TPE artisanat BTP, commerces de proximité bien implantés et professions libérales. La commune accueille aussi des sociétés de services aux entreprises tournées vers le bassin chambérien. Accès rapide à La Motte-Servolex, Lyon et à l'aéroport Chambéry-Savoie.",

@@ -54,7 +54,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Étienne (42) sur site, dans le bassin stéphanois et les communes de Saint-Étienne Métropole. Nous accompagnons les TPE, PME industrielles et de services, ETI et grandes entreprises de la Loire — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : industrie manufacturière, textile médical, design, distribution et services B2B. Aucun lock-in, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne (42) sur site, dans le bassin stéphanois et les communes de Saint-Étienne Métropole. Nous accompagnons les TPE, PME industrielles et de services, ETI et grandes entreprises de la Loire — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : industrie manufacturière, textile médical, design, distribution et services B2B. Aucun lock-in, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Saint-Étienne (42) on site, across the Saint-Étienne basin and Saint-Étienne Métropole communes. We support Loire micro-businesses, industrial SMEs, mid-caps and large enterprises — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: manufacturing, medical textiles, design, distribution and B2B services. No lock-in, your teams stay in control.",
 

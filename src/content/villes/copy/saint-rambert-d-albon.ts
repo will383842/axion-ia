@@ -9,9 +9,9 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
   pitchEn:
     "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-Drôme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "logistique axe & industrielles nord-drôme",
   ecosystemFr:
     "Saint-Rambert-d'Albon est positionnée en nord-Drôme, à mi-chemin entre Lyon et Valence sur l'axe A7 (péage majeur) et la ligne ferroviaire Lyon-Marseille. Tissu PME industrielles et plateformes logistiques (transit nord-sud), agriculture vallée du Rhône (vergers, viticulture périphérique), TPE artisanat BTP, commerces de proximité.",

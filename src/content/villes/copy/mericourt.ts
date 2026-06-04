@@ -9,9 +9,9 @@ export const MERICOURT_COPY: VilleCopy = {
   pitchEn:
     "Méricourt (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, professions libérales, services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Méricourt (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, professions libérales, prestataires de services de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Méricourt (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, professions libérales, prestataires de services de l'agglomération Lens-Liévin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Méricourt (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, professions libérales, prestataires de services de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Méricourt (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, professions libérales, prestataires de services de l'agglomération Lens-Liévin.",
   seoHook: "artisanat & industrie reconvertie",
   ecosystemFr:
     "Méricourt fait partie de l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Commune résidentielle avec tissu TPE/PME : artisanat BTP, industrie reconvertie, commerces de proximité, services aux particuliers, professions libérales. Accès rapide à Lens (5 min) et Liévin (10 min). A21 vers Lille (30 min) et Douai (15 min).",

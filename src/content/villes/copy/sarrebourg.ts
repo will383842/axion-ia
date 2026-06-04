@@ -9,9 +9,9 @@ export const SARREBOURG_COPY: VilleCopy = {
   pitchEn:
     "Sarrebourg (57), sous-préfecture de 12 170 habitants en Moselle, carrefour historique sur la Sarre entre Metz, Nancy et Strasbourg, est connue pour ses vitraux Chagall et son héritage cristallier (cristallerie Saint-Louis à proximité). Tissu TPE/PME industrie, cristallerie, commerces, services, tourisme culturel. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : TPE/PME industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : TPE/PME industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : TPE/PME industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : TPE/PME industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
   ecosystemFr:
     "Sarrebourg est une sous-préfecture carrefour sur la Sarre, entre Metz, Nancy et Strasbourg. Tissu TPE/PME industrie, cristallerie (Saint-Louis à proximité), artisanat verrier, commerces de centre-ville, services, tourisme culturel (vitraux Chagall, patrimoine médiéval).",
   ecosystemEn:

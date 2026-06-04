@@ -9,9 +9,9 @@ export const AIFFRES_COPY: VilleCopy = {
   pitchEn:
     "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   seoHook: "artisanat services & tertiaires bassin",
   ecosystemFr:
     "Aiffres est une commune résidentielle au sud immédiat de Niort. Profite du dynamisme du bassin d'emploi niortais (capitale des mutuelles). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Accès rapide aux zones d'activités de l'agglomération niortaise.",

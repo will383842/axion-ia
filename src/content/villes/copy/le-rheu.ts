@@ -9,9 +9,9 @@ export const LE_RHEU_COPY: VilleCopy = {
   pitchEn:
     "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Rheu (35). Nous accompagnons TPE et PME : entreprises tertiaires de l'ouest rennais, artisans BTP, commerçants, professions libérales, services aux entreprises et indépendants de Rennes Métropole ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Rheu (35). Nous accompagnons TPE et PME : entreprises tertiaires de l'ouest rennais, artisans BTP, commerçants, professions libérales, services aux entreprises et indépendants de Rennes Métropole ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Rheu (35). Nous accompagnons TPE et PME : entreprises tertiaires de l'ouest rennais, artisans BTP, commerçants, professions libérales, services aux entreprises et indépendants de Rennes Métropole ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Rheu (35). Nous accompagnons TPE et PME : entreprises tertiaires de l'ouest rennais, artisans BTP, commerçants, professions libérales, services aux entreprises et indépendants de Rennes Métropole ouest.",
   seoHook: "tertiaires services & artisanat construction",
   ecosystemFr:
     "Le Rheu est une commune résidentielle à l'ouest immédiat de Rennes, intégrée à Rennes Métropole. En forte croissance démographique, elle accueille un tissu de PME tertiaires et services, TPE artisanat BTP dynamiques (construction pavillonnaire), commerces de proximité, professions libérales et agriculture résiduelle. Accès rocade ouest, proximité campus universitaire de Villejean et centre INRAE de Rennes.",

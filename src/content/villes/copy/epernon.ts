@@ -9,9 +9,9 @@ export const EPERNON_COPY: VilleCopy = {
   pitchEn:
     "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
   seoHook: "conseil indépendants",
   ecosystemFr:
     "Épernon est un bourg résidentiel attractif de la vallée de la Drouette, à la lisière de l'Eure-et-Loir et des Yvelines, prisé pour sa proximité Paris-Montparnasse (gare TER 1h). L'économie locale repose sur les TPE/PME de services, artisans BTP, commerces de proximité, professions libérales et indépendants.",

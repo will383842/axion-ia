@@ -9,9 +9,9 @@ export const FEURS_COPY: VilleCopy = {
   pitchEn:
     "Feurs (42), commune historique de la plaine du Forez (ville d'origine antique gallo-romaine Forum Segusiavorum), est intégrée à Loire Forez Agglo. Connue pour son hippodrome. Tissu PME tertiaires et agricoles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune foréziennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
   seoHook: "tertiaires loire & agriculture plaine",
   ecosystemFr:
     "Feurs est une ville historique de la plaine du Forez, fondée comme ville antique gallo-romaine (Forum Segusiavorum, capitale du peuple des Ségusiaves — vestiges archéologiques visibles). Intégrée à Loire Forez Agglo. Position : hippodrome notable, tissu PME tertiaires et agricoles, TPE artisanat BTP, commerces.",

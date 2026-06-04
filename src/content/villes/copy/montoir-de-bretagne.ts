@@ -9,9 +9,9 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
   pitchEn:
     "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
   seoHook: "logistique portuaire & industrie aéronautique",
   ecosystemFr:
     "Montoir-de-Bretagne est une commune industrielle et portuaire au nord de Saint-Nazaire. Terminal méthanier Elengy, zones logistiques port Nantes-Saint-Nazaire, proximité Airbus et Chantiers de l'Atlantique. Tissu TPE sous-traitants, PME industrielles, logistique, services aux entreprises.",

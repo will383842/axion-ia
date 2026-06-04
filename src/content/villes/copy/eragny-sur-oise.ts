@@ -9,9 +9,9 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
   pitchEn:
     "Éragny-sur-Oise (95), commune de l'agglomération Cergy-Pontoise en bord d'Oise, conjugue dynamisme commercial et cadre résidentiel. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & tertiaire services",
   ecosystemFr:
     "Éragny-sur-Oise fait partie de l'agglomération Cergy-Pontoise, pôle économique majeur du Val-d'Oise en bord d'Oise. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique.",

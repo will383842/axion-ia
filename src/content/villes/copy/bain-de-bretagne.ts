@@ -10,9 +10,9 @@ export const BAIN_DE_BRETAGNE_COPY: VilleCopy = {
     "Bain-de-Bretagne (35), bourg-centre du sud de l'Ille-et-Vilaine peuplé de 7 674 habitants, joue le rôle de pôle commercial et de services pour le pays de Bain. TPE, PME, artisans, commerçants, professions libérales et exploitations agricoles structurent son économie locale. Axion-IA y conduit ses missions auprès des entreprises locales du sud-ille-et-vilainois.",
   seoHook: "commerce & services sud Ille-et-Vilaine",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bain-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professions libérales et exploitations agricoles du sud de l'Ille-et-Vilaine. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bain-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professions libérales et exploitations agricoles du sud de l'Ille-et-Vilaine. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bain-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professions libérales et exploitations agricoles du sud de l'Ille-et-Vilaine. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bain-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professions libérales et exploitations agricoles du sud de l'Ille-et-Vilaine. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Bain-de-Bretagne est le bourg-centre historique du sud de l'Ille-et-Vilaine, ancien chef-lieu de canton positionné sur l'axe Rennes-Nantes (RN137). Son économie repose sur le commerce de centre-bourg, les services à la personne, l'artisanat du BTP, les TPE/PME industrielles, l'agriculture (élevage laitier, polyculture) et les professions libérales rayonnant sur le pays de Bain.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
   pitchEn:
     "Noyant-Villages (49), commune nouvelle du Maine-et-Loire au cœur du Baugeois, rassemble un tissu de TPE artisans, PME agricoles, commerces ruraux, exploitations d'élevage et de polyculture, prestataires de services et acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
   seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Noyant-Villages est une commune nouvelle issue de la fusion de Noyant, Breil, Chavaignes, Chigné, Genneteil, Lasse, Méon et Parçay-les-Pins dans le Baugeois. Économie rurale : polyculture-élevage, artisanat, commerces de proximité, tourisme patrimoine (châteaux, manoirs angevins).",

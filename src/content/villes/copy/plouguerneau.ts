@@ -9,9 +9,9 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
   pitchEn:
     "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
   seoHook: "tourisme littoral & goémon",
   ecosystemFr:
     "Plouguerneau est une commune littorale étendue du pays des Abers, entre Aber Wrac'h et Aber Benoît. Son économie repose sur le tourisme balnéaire (phare de l'Île Vierge, sentier côtier GR34), la récolte et la transformation du goémon, l'ostréiculture, l'agriculture et les commerces de proximité. La commune attire résidents et touristes grâce à son patrimoine maritime exceptionnel.",

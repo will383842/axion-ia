@@ -9,9 +9,9 @@ export const ARRADON_COPY: VilleCopy = {
   pitchEn:
     "Arradon (56), commune résidentielle de prestige sur le golfe du Morbihan, allie cadre naturel exceptionnel et dynamisme économique. Tissu TPE artisans (nautisme, services à la personne), PME conseil et services, professions libérales, commerces, hébergements haut de gamme et activités nautiques. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, TPE artisans nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, TPE artisans nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, TPE artisans nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, TPE artisans nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
   ecosystemFr:
     "Arradon est une commune résidentielle de prestige nichée sur la rive nord du golfe du Morbihan (Petite Mer intérieure). Connue pour ses sentiers côtiers GR 34, ses plages et son port, elle attire professions libérales, cadres et retraités aisés. Tissu PME conseil/services, TPE artisans nautiques, hébergements de charme, restauration et commerces de qualité. Proximité directe de Vannes (5 min).",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
   pitchEn:
     "Montceau-les-Mines (71), ville de Saône-et-Loire de plus de 17 000 habitants, est au cœur du bassin minier reconverti de Blanzy-Montceau. Tissu de TPE/PME industrie, logistique canal du Centre, artisanat, commerces, services de santé et formation. Axion-IA y intervient pour tous types d'activités du bassin montcellien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montceau-les-Mines (71). Nous accompagnons TPE et PME du bassin minier reconverti : industries, sous-traitants, artisans, commerçants, professionnels de santé, organismes de formation et services aux entreprises du bassin montcellien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montceau-les-Mines (71). Nous accompagnons TPE et PME du bassin minier reconverti : industries, sous-traitants, artisans, commerçants, professionnels de santé, organismes de formation et services aux entreprises du bassin montcellien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montceau-les-Mines (71). Nous accompagnons TPE et PME du bassin minier reconverti : industries, sous-traitants, artisans, commerçants, professionnels de santé, organismes de formation et services aux entreprises du bassin montcellien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montceau-les-Mines (71). Nous accompagnons TPE et PME du bassin minier reconverti : industries, sous-traitants, artisans, commerçants, professionnels de santé, organismes de formation et services aux entreprises du bassin montcellien.",
   seoHook: "bassin minier reconverti",
   ecosystemFr:
     "Montceau-les-Mines est le pôle économique du bassin minier reconverti Blanzy-Montceau (~45 000 hab agglomération) en Saône-et-Loire. Reconversion industrielle réussie : TPE/PME métallurgie, mécanique, plasturgie, logistique canal du Centre, artisanat BTP, commerces, centre hospitalier, IUT et organismes de formation. Proximité Le Creusot (15 min) et Chalon-sur-Saône (40 min).",

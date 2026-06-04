@@ -9,9 +9,9 @@ export const TREGUNC_COPY: VilleCopy = {
   pitchEn:
     "Trégunc (29), commune littorale du sud Finistère proche de Concarneau, combine tourisme balnéaire (pointe de la Jument, plages), agriculture et ostréiculture. Tissu TPE artisans, hébergeurs, commerçants saisonniers, exploitants agricoles et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trégunc (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit sur place à",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trégunc (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trégunc (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit sur place à",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trégunc (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit sur place à",
   seoHook: "tourisme balnéaire & ostréiculture produits",
   ecosystemFr:
     "Trégunc est une commune littorale du sud Finistère, limitrophe de Concarneau. Le littoral est remarquable (pointe de la Jument, plages de Trévignon, sentier GR34). L'économie locale repose sur le tourisme balnéaire et les hébergements, l'agriculture, l'ostréiculture (rivière de Pont-Aven), le commerce saisonnier, l'artisanat BTP et les services.",

@@ -48,7 +48,7 @@ export const DIJON_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dijon (21) sur site dans la métropole dijonnaise et le bassin bourguignon (Chenôve, Talant, Quetigny, Saint-Apollinaire). Nous accompagnons les TPE, PME, ETI et grandes entreprises de Côte-d'Or sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : agroalimentaire, pharmacie-santé, viticulture, conseil, formation. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dijon (21) sur site dans la métropole dijonnaise et le bassin bourguignon (Chenôve, Talant, Quetigny, Saint-Apollinaire). Nous accompagnons les TPE, PME, ETI et grandes entreprises de Côte-d'Or sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : agroalimentaire, pharmacie-santé, viticulture, conseil, formation. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Dijon (21) on site across the Dijon metropolitan area and the Burgundy basin (Chenôve, Talant, Quetigny, Saint-Apollinaire). We support Côte-d'Or micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: agri-food, pharma-healthcare, viticulture, consulting, training. No tech lock-in, your teams stay in control.",
 

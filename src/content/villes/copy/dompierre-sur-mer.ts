@@ -9,9 +9,9 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Dompierre-sur-Mer (17), commune résidentielle de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie prisé aux portes de La Rochelle. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Dompierre-sur-Mer est une commune résidentielle prisée de l'agglomération de La Rochelle, en forte croissance démographique. PME tertiaires, TPE artisans BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",

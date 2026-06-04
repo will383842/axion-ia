@@ -9,9 +9,9 @@ export const LESQUIN_COPY: VilleCopy = {
   pitchEn:
     "Lesquin (59), commune de la Métropole Européenne de Lille abritant l'aéroport Lille-Lesquin et un pôle logistique majeur des Hauts-de-France. Tissu économique : TPE et PME de la logistique aéroportuaire et terrestre, fret, services aux entreprises, hôtellerie-restauration, commerce de zone, transport routier. Axion-IA opère pour toutes les structures économiques de la commune du pôle aéroportuaire et logistique lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
   seoHook: "logistique aéroportuaire & transport routier",
   ecosystemFr:
     "Lesquin est une commune de la Métropole Européenne de Lille, connue pour abriter l'aéroport Lille-Lesquin (2e aéroport du nord de la France) et un pôle logistique majeur. L'économie locale gravite autour de la logistique aéroportuaire et terrestre, du fret, du transport routier, des services aux entreprises implantés en zones d'activité aéroportuaires, de l'hôtellerie-restauration liée au trafic voyageurs, et du commerce de zone. Tissu de TPE et PME spécialisées dans la supply chain régionale.",

@@ -9,9 +9,9 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Rémy-lès-Chevreuse (78), terminus du RER B sud dans les Yvelines, est la porte d'entrée de la vallée de Chevreuse. Commune résidentielle prisée, elle accueille TPE conseil et services, professions libérales, PME tertiaires et indépendants télétravaillant entre nature et Paris. Axion-IA accompagne entreprises et indépendants du sud Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rémy-lès-Chevreuse (78). Nous accompagnons TPE et PME : consultants indépendants, professions libérales, PME tertiaires de la vallée de Chevreuse et entreprises du sud Yvelines connectées à Paris via le RER B.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-lès-Chevreuse (78). Nous accompagnons TPE et PME : consultants indépendants, professions libérales, PME tertiaires de la vallée de Chevreuse et entreprises du sud Yvelines connectées à Paris via le RER B.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Rémy-lès-Chevreuse (78). Nous accompagnons TPE et PME : consultants indépendants, professions libérales, PME tertiaires de la vallée de Chevreuse et entreprises du sud Yvelines connectées à Paris via le RER B.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-lès-Chevreuse (78). Nous accompagnons TPE et PME : consultants indépendants, professions libérales, PME tertiaires de la vallée de Chevreuse et entreprises du sud Yvelines connectées à Paris via le RER B.",
   seoHook: "conseil consulting & professions libérales",
   ecosystemFr:
     "Saint-Rémy-lès-Chevreuse est le terminus sud du RER B, porte d'entrée du Parc naturel régional de la Haute Vallée de Chevreuse. Commune résidentielle haut de gamme prisée des cadres et indépendants télétravaillant vers Paris-Saclay. Tissu économique : TPE conseil et services, professions libérales (santé, juridique), PME tertiaires, artisans, commerces de centre-bourg.",

@@ -9,9 +9,9 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
   pitchEn:
     "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   seoHook: "TPE & PME Côtes-d'Armor",
   ecosystemFr:
     "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, TPE artisans, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",

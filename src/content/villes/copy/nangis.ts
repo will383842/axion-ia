@@ -9,9 +9,9 @@ export const NANGIS_COPY: VilleCopy = {
   pitchEn:
     "Nangis (77), bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal avec zones d'activités. Tissu TPE agriculteurs et artisans, PME agroalimentaire, commerces de centre-bourg, transporteurs et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Nangis est un bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal doté de zones d'activités économiques. Son tissu associe exploitations agricoles, artisans, PME agroalimentaires, commerces de centre-bourg et transporteurs. Proximité avec Provins, Melun, Fontainebleau et Montereau-Fault-Yonne.",

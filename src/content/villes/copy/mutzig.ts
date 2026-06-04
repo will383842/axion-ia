@@ -9,9 +9,9 @@ export const MUTZIG_COPY: VilleCopy = {
   pitchEn:
     "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
   ecosystemFr:
     "Mutzig est une commune de la vallée de la Bruche, en bordure du Piémont des Vosges, marquée par l'héritage de la brasserie historique et un tissu industriel agroalimentaire structurant. Tissu TPE/PME industrie, artisanat, commerces de proximité, restauration, services aux entreprises et particuliers.",
   ecosystemEn:

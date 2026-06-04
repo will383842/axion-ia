@@ -9,9 +9,9 @@ export const WITTELSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Wittelsheim (68), ville de 10 645 habitants à l'ouest de l'agglomération mulhousienne en Haut-Rhin, est issue du bassin potassique d'Alsace, aujourd'hui reconverti en activités industrielles, logistiques et de services. Tissu TPE/PME industrie reconvertie, logistique, commerces, artisanat, services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wittelsheim (68). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique, artisans, commerces et professions de services du bassin potassique mulhousien ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wittelsheim (68). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique, artisans, commerces et professions de services du bassin potassique mulhousien ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Wittelsheim (68). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique, artisans, commerces et professions de services du bassin potassique mulhousien ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wittelsheim (68). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique, artisans, commerces et professions de services du bassin potassique mulhousien ouest.",
   ecosystemFr:
     "Wittelsheim est une ville de l'agglomération mulhousienne ouest, héritière du bassin potassique d'Alsace, aujourd'hui reconvertie en zones industrielles, logistiques et de services. Tissu TPE/PME industrie reconvertie, logistique, artisanat, commerces. Bassin de vie tourné vers Mulhouse, Cernay et Thann.",
   ecosystemEn:

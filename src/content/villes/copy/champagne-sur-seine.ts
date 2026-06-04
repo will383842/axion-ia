@@ -9,9 +9,9 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Champagne-sur-Seine est une commune industrielle historique du sud Seine-et-Marne, en bord de Seine entre Thomery et Avon. L'héritage Schneider Electric a laissé un tissu de PME industrielles, sous-traitants mécaniques et maintenance. Complété par des TPE artisanales BTP, des commerces de centre-ville, des professions libérales et des PME de services. Proximité de Fontainebleau (5 min) et accès A6/N6 vers Paris.",

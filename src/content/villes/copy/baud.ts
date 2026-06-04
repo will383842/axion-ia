@@ -9,9 +9,9 @@ export const BAUD_COPY: VilleCopy = {
   pitchEn:
     "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
   ecosystemFr:
     "Baud est un bourg dynamique du centre Morbihan, à mi-chemin entre Lorient et Pontivy. La commune vit de l'agroalimentaire, de l'artisanat, du commerce de proximité et de l'agriculture. Le tourisme patrimonial (Vénus de Quinipily, chapelles) complète un tissu économique ancré dans les filières locales bretonnes.",
   ecosystemEn:

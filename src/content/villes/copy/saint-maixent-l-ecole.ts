@@ -9,9 +9,9 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Maixent-l'École (79), commune des Deux-Sèvres sur la Sèvre niortaise, 7 595 habitants. Ville de garnison (ENSOA, école des sous-officiers), patrimoine médiéval, tissu de TPE artisans, PME de services et commerces. Axion-IA opère pour toutes les structures économiques de la commune du Val de Sèvre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Maixent-l'École (79). Nous accompagnons TPE, PME et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maixent-l'École (79). Nous accompagnons TPE, PME et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Maixent-l'École (79). Nous accompagnons TPE, PME et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maixent-l'École (79). Nous accompagnons TPE, PME et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   seoHook: "services prestataires & commerce centre-ville",
   ecosystemFr:
     "Saint-Maixent-l'École est une commune de 7 595 habitants sur la Sèvre niortaise. Ville de garnison historique (ENSOA, école nationale des sous-officiers d'active), patrimoine médiéval (abbatiale). Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et prestataires liés à la défense.",

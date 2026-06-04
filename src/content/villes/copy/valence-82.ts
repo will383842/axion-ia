@@ -9,9 +9,9 @@ export const VALENCE_82_COPY: VilleCopy = {
   pitchEn:
     "Valence (82), commune de Lomagne dans le Tarn-et-Garonne, environ 5 300 habitants. Bourg agricole et de services entre Montauban et Agen sur l'axe A62. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin valencien tarn-et-garonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
   seoHook: "bassin valencien tarn-et-garonnais",
   ecosystemFr:
     "Valence (5 289 hab) est un bourg de Lomagne dans le Tarn-et-Garonne, sur l'axe Montauban-Agen (A62/canal de Garonne). Économie locale : agriculture (fruits, céréales, élevage), agroalimentaire, artisanat du bâtiment, commerces de centre-bourg et professions libérales. Proximité Castelsarrasin (15 min), Moissac (10 min), Agen (25 min), Montauban (35 min).",

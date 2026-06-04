@@ -9,9 +9,9 @@ export const LE_COTEAU_COPY: VilleCopy = {
   pitchEn:
     "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   seoHook: "tertiaires roannais & industrielles",
   ecosystemFr:
     "Le Coteau est intégrée à Roannais Agglomération (~99 000 hab), en banlieue est immédiate de Roanne (sur la rive opposée de la Loire — relié par pont). Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité.",

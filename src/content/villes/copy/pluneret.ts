@@ -9,9 +9,9 @@ export const PLUNERET_COPY: VilleCopy = {
   pitchEn:
     "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pluneret (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, professions libérales, commerces de proximité, acteurs du nautisme et du tourisme du Pays d'Auray et du golfe du Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pluneret (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, professions libérales, commerces de proximité, acteurs du nautisme et du tourisme du Pays d'Auray et du golfe du Morbihan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pluneret (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, professions libérales, commerces de proximité, acteurs du nautisme et du tourisme du Pays d'Auray et du golfe du Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pluneret (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, professions libérales, commerces de proximité, acteurs du nautisme et du tourisme du Pays d'Auray et du golfe du Morbihan.",
   ecosystemFr:
     "Pluneret est une commune dynamique du Pays d'Auray, entre le pôle urbain d'Auray et le golfe du Morbihan. Le tissu économique repose sur les services, l'artisanat, le commerce de proximité et les activités nautiques et touristiques. La proximité du site mégalithique de Sainte-Anne-d'Auray et du golfe attire une fréquentation touristique soutenue.",
   ecosystemEn:

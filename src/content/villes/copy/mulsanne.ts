@@ -9,9 +9,9 @@ export const MULSANNE_COPY: VilleCopy = {
   pitchEn:
     "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   seoHook: "industrie mécanique & logistique entreposage",
   ecosystemFr:
     "Mulsanne fait partie de Le Mans Métropole (Sarthe). La célèbre ligne droite des Hunaudières traverse la commune (circuit des 24 Heures). Zones d'activités sud Le Mans, industries mécaniques, logistique, artisanat et commerces. Le Mans centre à 12 min.",

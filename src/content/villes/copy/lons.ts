@@ -9,9 +9,9 @@ export const LONS_COPY: VilleCopy = {
   pitchEn:
     "Lons (64), commune de l'agglomération de Pau nord, 13 606 habitants. Pôle commercial majeur du Béarn (zones d'activités, grandes surfaces, retail), TPE artisans, PME logistique et services. Axion-IA y déploie son expertise pour toutes les organisations du nord de l'agglomération paloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
   seoHook: "commerce grande & logistique transport",
   ecosystemFr:
     "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Proximité immédiate de l'aéroport Pau-Pyrénées et de la technopole Hélioparc.",

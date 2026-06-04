@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEYNOST_COPY: VilleCopy = {
   pitchFr:
-    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME beynostaines, les ETI en complément.",
+    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME beynostaines, les ETI en complément.",
   pitchEn:
-    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME beynostaines, les ETI en complément.",
+    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME beynostaines, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les TPE et PME locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les TPE et PME locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les TPE et PME locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les TPE et PME locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "logistique, PMI & artisanat",
   ecosystemFr:
     "Beynost s'inscrit dans la dynamique logistique et industrielle de la Côtière et de la Plaine de l'Ain, dopée par la proximité de Lyon. Le tissu est fait de TPE et PME : entrepôts, PMI, artisans du BTP, commerces et professions libérales.",

@@ -9,9 +9,9 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
   pitchEn:
     "Dombasle-sur-Meurthe (54), commune industrielle de Meurthe-et-Moselle sur les bords de la Meurthe, est historiquement liée à l'industrie chimique et saline (site Solvay). Tissu TPE/PME chimie, maintenance industrielle, services aux entreprises, artisans BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : TPE/PME industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : TPE/PME industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : TPE/PME industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : TPE/PME industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
   ecosystemFr:
     "Dombasle-sur-Meurthe est une commune industrielle du bassin salifère lorrain, historiquement marquée par l'industrie chimique et la soude (site Solvay). Son tissu économique repose sur la chimie, la maintenance industrielle, les services aux entreprises, l'artisanat BTP et le commerce de proximité. Proximité immédiate de Nancy et du Lunévillois.",
   ecosystemEn:

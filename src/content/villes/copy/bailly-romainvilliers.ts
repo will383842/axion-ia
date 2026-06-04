@@ -9,9 +9,9 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   pitchEn:
     "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit sur place sur mesure.",
   seoHook: "commerce & hôtellerie-restauration",
   ecosystemFr:
     "Bailly-Romainvilliers est au coeur du Val d'Europe (Marne-la-Vallée secteur IV), pôle commercial et tertiaire majeur d'Île-de-France. Centre commercial international La Vallée Village, proximité Disneyland Paris, quartiers résidentiels en croissance. TPE et PME commerce, hôtellerie-restauration, immobilier, services aux entreprises et activités tertiaires.",

@@ -9,9 +9,9 @@ export const EMERAINVILLE_COPY: VilleCopy = {
   pitchEn:
     "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",

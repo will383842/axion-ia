@@ -9,9 +9,9 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
   pitchEn:
     "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin castelsarrasinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
   seoHook: "bassin castelsarrasinois",
   ecosystemFr:
     "Castelsarrasin (14 343 hab) est la sous-préfecture du Tarn-et-Garonne, sur le canal latéral à la Garonne. Économie diversifiée : agroalimentaire (fruits, légumes, conserveries), industrie, commerces de centre-ville, services et professions libérales. Proximité Montauban (20 min), Agen (40 min), Toulouse (1h). Zones d'activités dynamiques sur l'axe A62.",

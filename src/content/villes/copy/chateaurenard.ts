@@ -9,9 +9,9 @@ export const CHATEAURENARD_COPY: VilleCopy = {
   pitchEn:
     "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchère & négoce fruits",
   ecosystemFr:
     "Châteaurenard est au cœur de la plaine maraîchère entre Avignon et Cavaillon. Son MIN (Marché d'Intérêt National) est l'un des principaux pôles d'expédition de fruits et légumes provençaux. Agriculture intensive (tomates, melons, fraises, salades), négoce, transport frigorifique, conditionnement, PME agroalimentaires. Tissu dense de TPE artisans.",

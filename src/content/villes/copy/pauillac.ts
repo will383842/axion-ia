@@ -9,9 +9,9 @@ export const PAUILLAC_COPY: VilleCopy = {
   pitchEn:
     "Pauillac (33), capitale des premiers crus classés du Médoc (Latour, Lafite Rothschild, Mouton Rothschild), est le coeur viticole le plus prestigieux de Bordeaux. Axion-IA y déploie son expertise pour toutes les organisations : domaines viticoles grands crus, oenotourisme, commerces, artisans BTP et professions libérales du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture grands & oenotourisme luxe",
   ecosystemFr:
     "Pauillac est la capitale viticole du Haut-Médoc, abritant trois des cinq premiers crus classés 1855. Oenotourisme de luxe, port de plaisance sur la Gironde, commerces de bourg, artisanat et professions libérales. Accès D2 (route des châteaux) et estuaire de la Gironde.",

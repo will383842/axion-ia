@@ -11,9 +11,9 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
   pitchEn:
     "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les TPE et PME chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
   seoHook: "sous-traitance mécanique, commerce & services",
   ecosystemFr:
     "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les TPE-PME locales dominent largement le nombre d'établissements.",
@@ -71,7 +71,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Faites-vous du no-code ou du code sur mesure ?",
-      a: "Code sur mesure exclusivement (Python, TypeScript, intégrations API). Pas de no-code générique : nous livrons des briques propres à votre métier, maintenables et indépendantes des plateformes tierces. Approche cabinet d'experts IA seniors.",
+      a: "Code sur mesure exclusivement (Python, TypeScript, intégrations API). Pas de no-code générique : nous livrons des briques propres à votre métier, maintenables et indépendantes des plateformes tierces. Approche cabinet d'architectes seniors en intelligence artificielle.",
     },
   ],
 };

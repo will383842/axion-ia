@@ -9,9 +9,9 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   pitchEn:
     "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
   seoHook: "arboriculture figue & maraîchage agriculture",
   ecosystemFr:
     "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",

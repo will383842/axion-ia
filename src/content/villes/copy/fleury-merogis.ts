@@ -9,9 +9,9 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
   pitchEn:
     "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   seoHook: "industrielles zones & logistique entreposage",
   ecosystemFr:
     "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, TPE artisanat BTP, commerces de proximité, services aux entreprises.",

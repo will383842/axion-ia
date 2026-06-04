@@ -9,9 +9,9 @@ export const PORNICHET_COPY: VilleCopy = {
   pitchEn:
     "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   seoHook: "bassin pornichétin",
   ecosystemFr:
     "Pornichet (12 800 hab) est une station balnéaire de la baie de La Baule, entre Saint-Nazaire et La Baule. Port de plaisance, thalassothérapie, hôtellerie-restauration, commerces, artisanat et professions libérales. Proximité Saint-Nazaire (10 min), La Baule (5 min), Nantes (1h). Hippodrome et casino renforcent l'attractivité touristique annuelle.",

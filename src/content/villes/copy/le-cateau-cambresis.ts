@@ -9,9 +9,9 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
   pitchEn:
     "Le Cateau-Cambrésis (59), sous-préfecture du Cambrésis dans le Nord, compte environ 6 800 habitants et accueille le musée départemental Matisse. Tissu mixte : TPE artisans BTP, PME industrielles et agroalimentaires, commerces de proximité, professions libérales, tourisme culturel, services publics. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Cateau-Cambrésis (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et agroalimentaires, commerçants de proximité, professions libérales, indépendants, acteurs touristiques et services aux entreprises du Cambrésis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cateau-Cambrésis (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et agroalimentaires, commerçants de proximité, professions libérales, indépendants, acteurs touristiques et services aux entreprises du Cambrésis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient au Cateau-Cambrésis (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et agroalimentaires, commerçants de proximité, professions libérales, indépendants, acteurs touristiques et services aux entreprises du Cambrésis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cateau-Cambrésis (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et agroalimentaires, commerçants de proximité, professions libérales, indépendants, acteurs touristiques et services aux entreprises du Cambrésis.",
   seoHook: "industrielles & tourisme culturel",
   ecosystemFr:
     "Le Cateau-Cambrésis est sous-préfecture du Cambrésis, ville natale d'Henri Matisse (musée départemental Matisse). Tissu rural-urbain : TPE artisanat BTP, PME industrielles (textile historique, métallurgie, agroalimentaire), commerces de centre-ville, professions libérales, tourisme culturel, services publics sous-préfectoraux.",

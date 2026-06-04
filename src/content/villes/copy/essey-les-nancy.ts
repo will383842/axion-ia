@@ -9,9 +9,9 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   pitchEn:
     "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   seoHook: "commerce zone & tertiaires",
   ecosystemFr:
     "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu TPE/PME commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",

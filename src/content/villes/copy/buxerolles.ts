@@ -9,9 +9,9 @@ export const BUXEROLLES_COPY: VilleCopy = {
   pitchEn:
     "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA opère pour entreprises et indépendants du secteur du nord de l'agglomération poitevine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Buxerolles (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats, experts-comptables), services aux entreprises et associations du Grand Poitiers nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Buxerolles (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats, experts-comptables), services aux entreprises et associations du Grand Poitiers nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Buxerolles (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats, experts-comptables), services aux entreprises et associations du Grand Poitiers nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Buxerolles (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats, experts-comptables), services aux entreprises et associations du Grand Poitiers nord.",
   seoHook: "artisanat services & commerces périurbains",
   ecosystemFr:
     "Buxerolles est une commune résidentielle du nord de l'agglomération Grand Poitiers, la deuxième plus peuplée de la communauté urbaine après Poitiers. Tissu économique périurbain diversifié : TPE artisans, commerces de proximité (zones commerciales nord), PME tertiaires/services, professions libérales (santé, droit, gestion), associations socio-éducatives.",

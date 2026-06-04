@@ -9,9 +9,9 @@ export const GENAS_COPY: VilleCopy = {
   pitchEn:
     "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires logistiques & zones d'activités",
   ecosystemFr:
     "Genas est intégrée à la Métropole de Lyon, en banlieue est (axe Lyon-Saint-Exupéry). Position de transit : zones d'activités notables, proximité aéroport. Tissu PME tertiaires et logistiques, TPE artisanat BTP, commerces, professions libérales, agriculture résiduelle.",

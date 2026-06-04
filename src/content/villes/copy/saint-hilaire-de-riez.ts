@@ -9,9 +9,9 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   pitchEn:
     "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Hilaire-de-Riez est une station balnéaire majeure du littoral vendéen, entre la corniche vendéenne et le marais breton. Forte densité de campings, résidences de tourisme, hôtels-restaurants. Population multipliée par 5 en été. Saint-Jean-de-Monts à 10 min, Saint-Gilles-Croix-de-Vie à 5 min.",

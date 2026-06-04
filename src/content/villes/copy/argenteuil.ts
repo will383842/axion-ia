@@ -53,7 +53,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Argenteuil (95) sur site — quartiers résidentiels, zones d'activités, Parc du Val d'Argent et communes du bassin (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). Nous accompagnons les TPE, PME, ETI et grandes entreprises argenteuillaises (commerce, BTP, services, industrie en reconversion) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argenteuil (95) sur site — quartiers résidentiels, zones d'activités, Parc du Val d'Argent et communes du bassin (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). Nous accompagnons les TPE, PME, ETI et grandes entreprises argenteuillaises (commerce, BTP, services, industrie en reconversion) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Argenteuil (95) on site — residential districts, business parks, Parc du Val d'Argent and basin communes (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). We support Argenteuil micro-businesses, SMEs, mid-caps and large enterprises (commerce, construction, services, industrial reconversion) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

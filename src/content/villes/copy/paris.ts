@@ -56,7 +56,7 @@ export const PARIS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack après notre mission — aucun verrou technologique ni dépendance contractuelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack après notre mission — aucun verrou technologique ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

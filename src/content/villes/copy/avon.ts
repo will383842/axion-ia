@@ -9,9 +9,9 @@ export const AVON_COPY: VilleCopy = {
   pitchEn:
     "Avon (77), commune résidentielle de Seine-et-Marne jumelle de Fontainebleau, adossée à la forêt domaniale. Elle accueille la gare de Fontainebleau-Avon (Transilien R). Tissu TPE artisans et prestataires, PME services, commerçants, professions libérales et métiers liés au cadre de vie résidentiel et forestier. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
   seoHook: "services personne & artisanat maintenance",
   ecosystemFr:
     "Avon est la commune jumelle de Fontainebleau, formant avec elle une agglomération de près de 30 000 habitants en lisière de la forêt domaniale. La gare de Fontainebleau-Avon (Transilien R) en fait le point d'accès ferroviaire du bassin. Tissu résidentiel dense avec TPE artisans, commerçants centre-ville, professions libérales, services à la personne et PME services. Communes voisines : Fontainebleau, Vulaines-sur-Seine, Samois-sur-Seine, Héricy.",

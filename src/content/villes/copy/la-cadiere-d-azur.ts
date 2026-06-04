@@ -9,9 +9,9 @@ export const LA_CADIERE_D_AZUR_COPY: VilleCopy = {
   pitchEn:
     "La Cadière-d'Azur (83), village perché du sud-Var au cœur du vignoble AOC Bandol, est reconnue pour ses domaines viticoles prestigieux, son patrimoine provençal et sa proximité avec la mer. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, oléiculteurs, artisans et PME tourisme premium et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit sur place sur mesure.",
   seoHook: "viticulture bandol & oléiculture agriculture",
   ecosystemFr:
     "La Cadière-d'Azur est un village perché provençal du sud-Var, au cœur de l'AOC Bandol (l'une des plus prestigieuses AOC viticoles de Provence). Domaines viticoles renommés, oléiculture, hôtellerie haut de gamme, restauration gastronomique, œnotourisme. Tissu de TPE/PME viticulture, tourisme premium et artisanat d'art du sud-Var.",

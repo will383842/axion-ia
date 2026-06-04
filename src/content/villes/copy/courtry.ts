@@ -9,9 +9,9 @@ export const COURTRY_COPY: VilleCopy = {
   pitchEn:
     "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des TPE et PME : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",

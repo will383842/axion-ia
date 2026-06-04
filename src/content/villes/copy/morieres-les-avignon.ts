@@ -9,9 +9,9 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
   pitchEn:
     "Morières-lès-Avignon (84), commune périurbaine du sud-est d'Avignon, conjugue cadre de vie résidentiel, zones d'activités locales et fonction de banlieue du Grand Avignon. TPE artisans BTP et services, PME commerciales, professions libérales (santé, conseil), commerces de proximité et agriculture maraîchère résiduelle. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
   seoHook: "artisanat & commerces négoces",
   ecosystemFr:
     "Morières-lès-Avignon est positionnée au sud-est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les TPE artisans (BTP, services à la personne), les PME commerciales et négoces, les professions libérales (médecins, kinés, avocats), les commerces de proximité, ainsi que des exploitations maraîchères résiduelles. Bassin d'emploi connecté à Avignon TGV.",

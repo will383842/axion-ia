@@ -9,9 +9,9 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   seoHook: "commerce zones & agriculture maraîchère",
   ecosystemFr:
     "Saint-Laurent-de-la-Salanque est le bourg-centre de la plaine de la Salanque, entre Perpignan et le littoral (Le Barcarès). Intégré à Perpignan Méditerranée Métropole. Zones commerciales actives, agriculture maraîchère (primeurs, fruits), TPE artisanat, commerces de centre-bourg, logistique.",

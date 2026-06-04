@@ -9,9 +9,9 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   pitchEn:
     "Boissy-Saint-Léger (94), commune résidentielle de l'est du Val-de-Marne, est le terminus de la branche sud du RER A. Tissu TPE artisans, PME services, commerces de centre-ville, professions libérales, prestataires santé et éducation. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "commerce centre-ville & professions libérales",
   ecosystemFr:
     "Boissy-Saint-Léger est une commune résidentielle de l'est du Val-de-Marne, terminus du RER A branche Boissy. Tissu économique de proximité : commerces de centre-ville, TPE artisans BTP et maintenance, professions libérales, cabinets de santé, PME de services aux entreprises.",

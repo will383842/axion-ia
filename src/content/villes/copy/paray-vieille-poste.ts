@@ -9,9 +9,9 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   pitchEn:
     "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
   seoHook: "logistique aéroportuaire & fret handling",
   ecosystemFr:
     "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu TPE/PME logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",

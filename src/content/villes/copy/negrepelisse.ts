@@ -9,9 +9,9 @@ export const NEGREPELISSE_COPY: VilleCopy = {
   pitchEn:
     "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du bassin négrepelissien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit sur place sur mesure.",
   seoHook: "bassin négrepelissien",
   ecosystemFr:
     "Nègrepelisse (5 917 hab) est un bourg quercinois sur les bords de l'Aveyron, au cœur du Tarn-et-Garonne. Économie locale : agriculture (fruits, vignes, élevage), agroalimentaire, artisanat, commerces et professions libérales. Proximité Montauban (20 min), Caussade (10 min), Toulouse (1h10). Centre culturel La Cuisine y dynamise l'attractivité.",

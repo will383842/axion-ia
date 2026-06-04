@@ -9,9 +9,9 @@ export const MONTEUX_COPY: VilleCopy = {
   pitchEn:
     "Monteux (84), commune de la plaine du Comtat Venaissin, conjugue tradition agricole maraîchère, pôle de loisirs (Provence Spectacle, Wave Island) et tissu artisanal dynamique. TPE artisans et maraîchers, PME agroalimentaires, commerces de proximité et acteurs touristiques. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
     "Monteux est positionnée au cœur de la plaine du Comtat Venaissin, entre Avignon et Carpentras. Son activité économique repose sur le maraîchage (melon, tomate, fraise), les TPE artisans (BTP, agroalimentaire), les PME de transformation et négoce agricole, le tourisme évènementiel (Provence Spectacle, base Wave Island) et les commerces de proximité. Bassin d'emploi rattaché à l'agglomération du Grand Avignon.",

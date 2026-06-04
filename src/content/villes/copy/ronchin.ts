@@ -9,9 +9,9 @@ export const RONCHIN_COPY: VilleCopy = {
   pitchEn:
     "Ronchin (59), commune de l'agglomération lilloise en banlieue sud immédiate de Lille, est connue pour son hippodrome et son tissu économique diversifié. TPE, PME et professions libérales côtoient zones d'activités logistiques, commerces de proximité, artisans du bâtiment et prestataires B2B au carrefour des axes autoroutiers A1/A25. Axion-IA y intervient pour tous types d'activités de la métropole lilloise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ronchin (59). Nous accompagnons TPE et PME : prestataires logistiques et transport, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ronchin (59). Nous accompagnons TPE et PME : prestataires logistiques et transport, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ronchin (59). Nous accompagnons TPE et PME : prestataires logistiques et transport, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ronchin (59). Nous accompagnons TPE et PME : prestataires logistiques et transport, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   seoHook: "logistique transport & artisanat bâtiment",
   ecosystemFr:
     "Ronchin est une commune périurbaine de la banlieue sud de Lille (MEL), stratégiquement située au carrefour des autoroutes A1 et A25. L'économie locale repose sur un tissu de TPE/PME diversifié : zones d'activités logistiques et transport (proximité MIN de Lomme et plateformes A1), commerces de proximité, artisanat du bâtiment, professions libérales et prestataires B2B au service de la métropole lilloise. L'hippodrome de Ronchin contribue à l'attractivité événementielle de la commune.",

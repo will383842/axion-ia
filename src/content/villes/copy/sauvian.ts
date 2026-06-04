@@ -9,9 +9,9 @@ export const SAUVIAN_COPY: VilleCopy = {
   pitchEn:
     "Sauvian (34), commune résidentielle de l'agglomération de Béziers, entre vignoble et littoral. Forte croissance démographique, proximité Sérignan et Valras-Plage. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
   ecosystemFr:
     "Sauvian est une commune résidentielle en forte croissance de l'agglomération de Béziers, entre vignoble et littoral (Sérignan-Plage et Valras-Plage à 10 min). Vignoble AOC Languedoc, tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const LOON_PLAGE_COPY: VilleCopy = {
   pitchEn:
     "Loon-Plage (59), commune de 5 952 habitants dans le Nord (Hauts-de-France), sur la côte de la Mer du Nord, adossée au grand port maritime de Dunkerque (3e port de France). Tissu TPE artisans, PME logistique portuaire et transport maritime, sous-traitance industrielle (sidérurgie, pétrochimie), commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "frontalier belge",
   ecosystemFr:
     "Loon-Plage est adossée au grand port maritime de Dunkerque (3e port de France), sur la côte de la Mer du Nord. Zone industrialo-portuaire majeure : sidérurgie (ArcelorMittal), pétrochimie, terminal méthanier, énergie. Tissu TPE artisans maintenance industrielle, PME logistique portuaire et transport maritime, sous-traitance industrielle, commerces de proximité. Dynamique d'investissement avec projets éolien offshore et batteries.",

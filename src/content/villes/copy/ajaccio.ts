@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AJACCIO_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui accompagne les TPE et PME d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui accompagne les TPE et PME d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
   seoHook: "tourisme insulaire & port",
   ecosystemFr:
     "Ajaccio, préfecture de la Corse-du-Sud, vit d'une économie fortement saisonnière : hôtellerie, restauration, locations touristiques et croisières via le port de commerce et de voyageurs. Le tourisme balnéaire et patrimonial (cité impériale napoléonienne, golfe d'Ajaccio) côtoie un tissu de TPE et PME de services, de BTP et de commerce, soutenu par l'Université de Corse Pasquale Paoli.",

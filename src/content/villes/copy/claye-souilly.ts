@@ -9,9 +9,9 @@ export const CLAYE_SOUILLY_COPY: VilleCopy = {
   pitchEn:
     "Claye-Souilly (77), commune du nord-est de la Seine-et-Marne, est un pole commercial et logistique majeur aux portes de Roissy-CDG. Tissu TPE/PME commerce, logistique, BTP, services aux entreprises, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "commerce detail & logistique transport",
   ecosystemFr:
     "Claye-Souilly est un pole commercial majeur du nord-est de la Seine-et-Marne, a proximite de l'aeroport Roissy-CDG et des axes A104/A3. Les zones commerciales (Centre commercial Claye-Souilly) et les plateformes logistiques structurent l'economie locale, completees par un tissu de TPE BTP, services et restauration.",

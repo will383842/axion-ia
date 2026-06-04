@@ -9,9 +9,9 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   pitchEn:
     "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
   seoHook: "pays de montfort",
   ecosystemFr:
     "Montfort-sur-Meu est une petite ville de caractère à l'ouest de Rennes, au confluent du Meu et du Garun, porte d'entrée du pays de Brocéliande. L'économie locale s'appuie sur les TPE artisans BTP, les commerces de centre-bourg, les PME de services et tertiaire, les professions libérales, le tourisme patrimonial (écomusée du pays de Montfort, tour du Papegaut) et l'agriculture (polyculture-élevage).",

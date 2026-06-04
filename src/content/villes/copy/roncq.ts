@@ -9,9 +9,9 @@ export const RONCQ_COPY: VilleCopy = {
   pitchEn:
     "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
   seoHook: "commerce grande & logistique entreposage",
   ecosystemFr:
     "Roncq est une commune de la métropole lilloise nord, entre Tourcoing et la frontière belge (Mouscron), sur l'axe stratégique Lille-Bruges. L'économie locale est dominée par d'importantes zones commerciales (Grand Roncq, Roncq Retail Park) attirant des enseignes et commerçants de toute la métropole, complétées par des prestataires logistiques (entrepôts et plateformes), des artisans, professions libérales et des PME B2B transfrontalières franco-belges profitant de la proximité immédiate de la Belgique (Mouscron, Menin).",

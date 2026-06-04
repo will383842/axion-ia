@@ -9,9 +9,9 @@ export const LA_GRANDE_MOTTE_COPY: VilleCopy = {
   pitchEn:
     "La Grande-Motte (34), station balnéaire iconique du littoral héraultais, célèbre pour ses pyramides signées Jean Balladur (label Patrimoine du XXe siècle). Tourisme balnéaire, port de plaisance, palais des congrès, golf. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Grande-Motte (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire et congrès, professions libérales et entreprises du littoral héraultais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Grande-Motte (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire et congrès, professions libérales et entreprises du littoral héraultais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Grande-Motte (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire et congrès, professions libérales et entreprises du littoral héraultais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Grande-Motte (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire et congrès, professions libérales et entreprises du littoral héraultais.",
   ecosystemFr:
     "La Grande-Motte est une station balnéaire iconique, créée ex nihilo dans les années 1960 par l'architecte Jean Balladur (pyramides, label Patrimoine du XXe siècle). Port de plaisance (1 100 anneaux), palais des congrès, golf 42 trous, casino. Économie saisonnière forte : hôtellerie-restauration, commerces, tourisme, événementiel. Tissu TPE commerçants, PME hôtelières, artisans.",
   ecosystemEn:

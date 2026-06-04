@@ -55,7 +55,7 @@ export const BREST_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Brest (29019) sur site dans toute la Brest Métropole et le Finistère. Nous accompagnons les TPE locales, PME industrielles, ETI de la filière maritime et grands groupes (Naval Group, Thales Underwater, IFREMER) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brest (29019) sur site dans toute la Brest Métropole et le Finistère. Nous accompagnons les TPE locales, PME industrielles, ETI de la filière maritime et grands groupes (Naval Group, Thales Underwater, IFREMER) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Brest (29019) on site across Brest Métropole and Finistère. We support local micro-businesses, industrial SMEs, maritime-sector mid-caps and large groups (Naval Group, Thales Underwater, IFREMER) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

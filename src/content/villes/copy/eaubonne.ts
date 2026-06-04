@@ -9,9 +9,9 @@ export const EAUBONNE_COPY: VilleCopy = {
   pitchEn:
     "Eaubonne, ville du Val-d'Oise (95) en banlieue nord-ouest de Paris, concentre commerces, hôpital Simone-Veil (CH), tissu artisanal BTP, PME tertiaires et industriels locaux. Axion-IA y intervient pour tous types d'activités : TPE artisans/commerçants, PME industrielles et tertiaires, professions de santé, indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Eaubonne (95). Nous accompagnons tous types d'activités : TPE artisans BTP (plombiers, électriciens, menuisiers), commerçants centre-ville, PME industrielles locales, PME tertiaires (cabinets, conseil), hôpital Simone-Veil et professions de santé, indépendants et associations.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eaubonne (95). Nous accompagnons tous types d'activités : TPE artisans BTP (plombiers, électriciens, menuisiers), commerçants centre-ville, PME industrielles locales, PME tertiaires (cabinets, conseil), hôpital Simone-Veil et professions de santé, indépendants et associations.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Eaubonne (95). Nous accompagnons tous types d'activités : TPE artisans BTP (plombiers, électriciens, menuisiers), commerçants centre-ville, PME industrielles locales, PME tertiaires (cabinets, conseil), hôpital Simone-Veil et professions de santé, indépendants et associations.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eaubonne (95). Nous accompagnons tous types d'activités : TPE artisans BTP (plombiers, électriciens, menuisiers), commerçants centre-ville, PME industrielles locales, PME tertiaires (cabinets, conseil), hôpital Simone-Veil et professions de santé, indépendants et associations.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Eaubonne s'intègre au tissu économique de la communauté d'agglomération Val Parisis (Cormeilles, Saint-Leu-la-Forêt, Herblay) : hôpital Simone-Veil (CH référence Val-d'Oise est), commerces centre-ville denses, tissu artisanal BTP, PME industrielles (mécanique, métallerie, transformation), professions libérales, ESS. Proximité Paris (25 min Saint-Lazare).",

@@ -9,9 +9,9 @@ export const GAUCHY_COPY: VilleCopy = {
   pitchEn:
     "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
   ecosystemFr:
     "Gauchy est une commune de l'agglomération de Saint-Quentin, pôle industriel et logistique structurant avec des zones d'activités majeures (Le Royeux, Bois de la Chocque). Tissu TPE/PME industrie, logistique, sous-traitance, BTP, commerces, services aux entreprises et professions de services axonaises.",
   ecosystemEn:

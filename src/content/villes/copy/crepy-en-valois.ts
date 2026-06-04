@@ -9,9 +9,9 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
   pitchEn:
     "Crépy-en-Valois (60), sous-préfecture de l'Oise au cœur du Valois, territoire de patrimoine médiéval et de dynamisme économique entre Senlis et Villers-Cotterêts. Tissu TPE/PME artisanat, commerce de proximité, BTP, logistique, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit sur place sur mesure.",
   ecosystemFr:
     "Crépy-en-Valois est une sous-préfecture de l'Oise nichée dans le Valois historique, entre Senlis et Villers-Cotterêts. Tissu économique diversifié : artisanat, commerces de centre-ville, BTP, logistique liée à l'axe A1, professions libérales et services. Patrimoine médiéval (musée de l'Archerie, donjon) et tourisme vert soutiennent l'activité locale.",
   ecosystemEn:

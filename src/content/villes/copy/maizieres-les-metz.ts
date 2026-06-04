@@ -9,9 +9,9 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
   pitchEn:
     "Maizières-lès-Metz (57), commune de 11 580 habitants en Moselle, située dans le pays messin au nord de Metz, est marquée par ses zones d'activités et son centre commercial régional. Tissu TPE/PME commerce, logistique, distribution, services, artisanat, sous-traitance industrielle messine. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : TPE/PME commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : TPE/PME commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : TPE/PME commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : TPE/PME commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
   ecosystemFr:
     "Maizières-lès-Metz est un chef-lieu de canton du pays messin au nord de Metz, marqué par ses zones d'activités et son centre commercial régional. Tissu TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services aux entreprises, artisanat.",
   ecosystemEn:

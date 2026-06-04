@@ -9,9 +9,9 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
   pitchEn:
     "Charvieu-Chavagneux (38), à la frontière nord du département de l'Isère avec le Rhône, est intégrée à l'aire d'attraction de Lyon (partie orientale). Tissu PME industrielles et logistique (axe vallée du Rhône), TPE artisans BTP, commerces, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises du Nord-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Charvieu-Chavagneux (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques de l'axe vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Nord-Isère limitrophe du Rhône.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charvieu-Chavagneux (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques de l'axe vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Nord-Isère limitrophe du Rhône.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Charvieu-Chavagneux (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques de l'axe vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Nord-Isère limitrophe du Rhône.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charvieu-Chavagneux (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques de l'axe vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Nord-Isère limitrophe du Rhône.",
   seoHook: "vallée du",
   ecosystemFr:
     "Charvieu-Chavagneux est une des trois villes-centres de l'unité urbaine du même nom, dans la partie orientale de l'aire d'attraction de Lyon. Position stratégique entre Lyon (35 min A43) et Bourgoin-Jallieu (20 min). Tissu industriel/logistique dense lié à la proximité du couloir rhodanien et de Lyon-Saint-Exupéry (25 min). PME, TPE artisanat BTP, commerces de proximité.",

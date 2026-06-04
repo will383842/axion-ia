@@ -9,9 +9,9 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
   pitchEn:
     "Bohain-en-Vermandois (02), commune du Vermandois en Aisne, berceau historique du tissage et du textile, aujourd'hui tournée vers la sous-traitance industrielle, le commerce et les services. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculture céréalière et savoir-faire textile résiduel. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bohain-en-Vermandois (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, ateliers textile, artisans BTP, commerces de proximité, professions de services et exploitations agricoles du Vermandois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bohain-en-Vermandois (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, ateliers textile, artisans BTP, commerces de proximité, professions de services et exploitations agricoles du Vermandois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bohain-en-Vermandois (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, ateliers textile, artisans BTP, commerces de proximité, professions de services et exploitations agricoles du Vermandois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bohain-en-Vermandois (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, ateliers textile, artisans BTP, commerces de proximité, professions de services et exploitations agricoles du Vermandois.",
   ecosystemFr:
     "Bohain-en-Vermandois est une commune axonaise du Vermandois, berceau historique du tissage et du textile (mouchoirs, foulards), aujourd'hui diversifiée vers la sous-traitance industrielle et les services. Tissu TPE/PME industrie, ateliers textile, BTP, commerces, services, agriculture céréalière du Vermandois.",
   ecosystemEn:

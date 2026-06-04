@@ -10,9 +10,9 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
     "Saint-Laurent-Blangy (62), commune de l'agglomeration d'Arras au bord de la Scarpe, reunit pres de 6 460 habitants. Son economie beneficie de la proximite d'Arras : PME tertiaires, TPE de services, commerces, professions liberales et activites liees aux zones d'activites. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras, tertiaire & Scarpe",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Laurent-Blangy jouxte Arras (3 km) au bord de la Scarpe. Tissu economique dynamique : PME tertiaires en zones d'activites, TPE de services, professions liberales, commerces et artisanat. Proximite de la CUA (communaute urbaine d'Arras) et de ses equipements.",
   ecosystemEn:

@@ -10,9 +10,9 @@ export const FOUQUIERES_LES_LENS_COPY: VilleCopy = {
     "Fouquieres-les-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 090 habitants. Situee aux portes de Lens, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites de proximite. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Fouquieres-les-Lens jouxte Lens (3 km) dans le bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et petits commerces de proximite. Beneficie du dynamisme de l'agglomeration lensoise et du Louvre-Lens.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
   pitchEn:
     "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat second",
   ecosystemFr:
     "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de TPE/PME de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",

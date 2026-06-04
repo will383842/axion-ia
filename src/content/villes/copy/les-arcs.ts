@@ -9,9 +9,9 @@ export const LES_ARCS_COPY: VilleCopy = {
   pitchEn:
     "Les Arcs (83), commune du centre-Var dotée de la gare TGV Les Arcs-Draguignan (porte du Var), est ancrée dans le vignoble Côtes de Provence et la Maison des Vins. Tissu de TPE viticulteurs, artisans, restaurateurs et PME logistique, tourisme et services autour du hub TGV. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & hub tgv",
   ecosystemFr:
     "Les Arcs est un nœud TGV stratégique du Var (gare Les Arcs-Draguignan, porte d'entrée vers la côte). Économie tirée par la viticulture Côtes de Provence (Maison des Vins du Var), l'artisanat, le commerce, les services logistiques liés au hub TGV et le tourisme rural. Tissu de TPE/PME centre-Var.",

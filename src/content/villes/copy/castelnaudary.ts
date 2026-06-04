@@ -9,9 +9,9 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
   pitchEn:
     "Castelnaudary (11), capitale du cassoulet et du Lauragais dans l'Aude, est un bourg dynamique sur le canal du Midi (UNESCO). Tissu TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerces, agriculture céréalière Lauragais, tourisme fluvial. Axion-IA y travaille avec les organisations du territoire du Lauragais audois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit sur place sur mesure.",
   seoHook: "agglomération bassin",
   ecosystemFr:
     "Castelnaudary est la capitale historique du cassoulet et du Lauragais, sur le canal du Midi (patrimoine UNESCO). L'agroalimentaire est le moteur économique (conserveries de cassoulet, salaisons, produits du terroir). Agriculture céréalière prospère (blé dur, colza, tournesol), artisanat, commerce centre-ville et tourisme fluvial (Grand Bassin, port canal du Midi). Base militaire du 4e régiment étranger.",

@@ -9,9 +9,9 @@ export const MENDE_COPY: VilleCopy = {
   pitchEn:
     "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
   seoHook: "tourisme nature & agroalimentaire",
   ecosystemFr:
     "Mende est la préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre historique du Gévaudan. Tissu TPE artisans, PME agroalimentaires (viande, fromage), commerces centre historique, tourisme nature (gorges du Tarn, Margeride, Aubrac), professions libérales et services administratifs.",

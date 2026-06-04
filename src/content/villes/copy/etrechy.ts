@@ -9,9 +9,9 @@ export const ETRECHY_COPY: VilleCopy = {
   pitchEn:
     "Étréchy (91), commune semi-rurale de la Vallée de la Juine en Essonne, dessert le sud du département via le RER C. Résidentielle avec tissu TPE artisans, commerces de proximité, PME services, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Étréchy est une commune résidentielle semi-rurale de la Vallée de la Juine, au sud de l'Essonne. Gare RER C reliant Paris et Étampes. Tissu économique de proximité : TPE artisans BTP, commerces, professions libérales, PME services, agriculture céréalière et maraîchage résiduel.",

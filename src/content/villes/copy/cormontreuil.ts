@@ -9,9 +9,9 @@ export const CORMONTREUIL_COPY: VilleCopy = {
   pitchEn:
     "Cormontreuil (51), commune de l'agglomération sud de Reims, accueille plusieurs zones d'activités dynamiques le long de la RN51. TPE commerces et services, PME logistique et transport, artisans BTP, entreprises agroalimentaires liées au vignoble champenois, prestataires tertiaires. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cormontreuil (51). Nous accompagnons TPE et PME : commerces de zone d'activités, prestataires logistiques, artisans BTP, entreprises agroalimentaires, sociétés tertiaires de l'agglomération rémoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cormontreuil (51). Nous accompagnons TPE et PME : commerces de zone d'activités, prestataires logistiques, artisans BTP, entreprises agroalimentaires, sociétés tertiaires de l'agglomération rémoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cormontreuil (51). Nous accompagnons TPE et PME : commerces de zone d'activités, prestataires logistiques, artisans BTP, entreprises agroalimentaires, sociétés tertiaires de l'agglomération rémoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cormontreuil (51). Nous accompagnons TPE et PME : commerces de zone d'activités, prestataires logistiques, artisans BTP, entreprises agroalimentaires, sociétés tertiaires de l'agglomération rémoise. Audit sur place sur mesure.",
   seoHook: "commerce détail & logistique transport",
   ecosystemFr:
     "Cormontreuil est une commune résidentielle et commerciale au sud de Reims, adossée à des zones d'activités le long de la RN51. Tissu TPE/PME : commerce, logistique, BTP, agroalimentaire, services tertiaires. Proximité immédiate du vignoble champenois.",

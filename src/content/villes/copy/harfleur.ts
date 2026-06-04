@@ -10,9 +10,9 @@ export const HARFLEUR_COPY: VilleCopy = {
     "Harfleur (76), commune historique de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 290 habitants. Ancien port medieval, la ville accueille des TPE de services, des PME commerciales, des artisans, des professions liberales et des acteurs lies au port du Havre. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "port historique, commerce & agglo Le Havre",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Harfleur est situee a l'entree de l'agglomeration havraise, ancien port medieval devenu ville residentielle et commercante. Tissu de TPE de services, PME commerciales, artisanat, professions liberales et acteurs logistiques lies au port du Havre. Acces tramway et A29.",
   ecosystemEn:

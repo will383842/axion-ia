@@ -9,9 +9,9 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
   pitchEn:
     "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Neufchâteau est la sous-préfecture de l'ouest vosgien, au carrefour des axes Nancy-Dijon et Épinal-Chaumont. La ville est un pôle reconnu de l'industrie du mobilier et de l'ameublement vosgien (meubles, agencement, menuiserie). L'économie repose également sur l'agroalimentaire, l'artisanat, le commerce de proximité, les services publics et les professions libérales. Le tissu économique local est essentiellement composé de TPE/PME ancrées dans la tradition manufacturière vosgienne.",
   ecosystemEn:

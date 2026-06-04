@@ -9,9 +9,9 @@ export const SISTERON_COPY: VilleCopy = {
   pitchEn:
     "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   seoHook: "tourisme hôtellerie & agriculture fruitière",
   ecosystemFr:
     "Sisteron est sous-préfecture des Alpes-de-Haute-Provence (~7 850 hab), point stratégique entre Alpes et Provence sur la Durance. Citadelle classée, festival Les Nuits de la Citadelle, filière touristique estivale forte. Tissu TPE artisans BTP, PME hôtellerie/restauration, agriculteurs (fruitiers, olives), commerçants et services sous-préfectoraux.",

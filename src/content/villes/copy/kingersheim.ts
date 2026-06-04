@@ -9,9 +9,9 @@ export const KINGERSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Kingersheim (68), ville de 13 354 habitants au nord de l'agglomération mulhousienne en Haut-Rhin, est un pôle économique structurant avec ses vastes zones commerciales et son tissu industriel. Tissu TPE/PME commerce, distribution, industrie, services, artisanat. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Kingersheim (68). Nous accompagnons tous types d'activités : TPE/PME commerce, distribution et industrie, artisans, professions de services et acteurs de l'agglomération mulhousienne nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Kingersheim (68). Nous accompagnons tous types d'activités : TPE/PME commerce, distribution et industrie, artisans, professions de services et acteurs de l'agglomération mulhousienne nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Kingersheim (68). Nous accompagnons tous types d'activités : TPE/PME commerce, distribution et industrie, artisans, professions de services et acteurs de l'agglomération mulhousienne nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Kingersheim (68). Nous accompagnons tous types d'activités : TPE/PME commerce, distribution et industrie, artisans, professions de services et acteurs de l'agglomération mulhousienne nord.",
   ecosystemFr:
     "Kingersheim est une ville de l'agglomération mulhousienne nord, structurée autour de vastes zones commerciales et d'un tissu industriel actif. Tissu TPE/PME commerce, distribution, industrie, artisanat, services. Bassin de vie connecté à Mulhouse et au sud-Alsace.",
   ecosystemEn:

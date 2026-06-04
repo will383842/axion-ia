@@ -9,9 +9,9 @@ export const PLUVIGNER_COPY: VilleCopy = {
   pitchEn:
     "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA répond aux besoins des activités professionnelles présentes du Morbihan rural.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Pluvigner se situe au centre du Morbihan, à 15 km au nord d'Auray, dans l'arrière-pays du golfe du Morbihan. Bourg rural en croissance (7 682 habitants), la commune dispose d'un tissu agricole structuré (élevage, cultures, maraîchage) et bénéficie de l'attractivité touristique du pays d'Auray. Tissu économique : exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces de proximité, professions libérales et entreprises liées au tourisme balnéaire et rural.",

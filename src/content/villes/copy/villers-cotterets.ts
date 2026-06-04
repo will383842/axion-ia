@@ -9,9 +9,9 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
   pitchEn:
     "Villers-Cotterêts (02), sous-préfecture du sud de l'Aisne, célèbre pour son château François Ier réhabilité en Cité internationale de la Langue française et bordée par la vaste forêt de Retz. Tissu TPE/PME tourisme culturel, hôtellerie-restauration, commerces de proximité, artisans BTP, professions libérales et exploitations sylvicoles. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villers-Cotterêts (02). Nous accompagnons tous types d'activités : TPE/PME tourisme culturel et hôtellerie, commerces de proximité, artisans BTP, professions libérales, exploitations sylvicoles et acteurs du patrimoine du sud de l'Aisne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villers-Cotterêts (02). Nous accompagnons tous types d'activités : TPE/PME tourisme culturel et hôtellerie, commerces de proximité, artisans BTP, professions libérales, exploitations sylvicoles et acteurs du patrimoine du sud de l'Aisne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villers-Cotterêts (02). Nous accompagnons tous types d'activités : TPE/PME tourisme culturel et hôtellerie, commerces de proximité, artisans BTP, professions libérales, exploitations sylvicoles et acteurs du patrimoine du sud de l'Aisne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villers-Cotterêts (02). Nous accompagnons tous types d'activités : TPE/PME tourisme culturel et hôtellerie, commerces de proximité, artisans BTP, professions libérales, exploitations sylvicoles et acteurs du patrimoine du sud de l'Aisne.",
   ecosystemFr:
     "Villers-Cotterêts est une sous-préfecture du sud de l'Aisne, rayonnement renforcé depuis l'ouverture de la Cité internationale de la Langue française au château François Ier. Tissu TPE/PME tourisme culturel, hôtellerie-restauration, commerces, BTP, professions libérales et filière bois liée à la forêt de Retz.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
   pitchEn:
     "Saint-Marcellin (38), ville du Bas-Dauphiné en Isère, donne son nom au fromage AOP Saint-Marcellin (petit fromage à pâte molle). Tissu PME industrielles, fromageries artisanales, TPE artisans BTP, agriculture périphérique (élevage laitier) et commerces. Axion-IA y déploie son expertise pour toutes les organisations du Sud Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
   seoHook: "saint-marcellin fromageries & élevage laitier",
   ecosystemFr:
     "Saint-Marcellin est ville-centre du Bas-Dauphiné (Sud Grésivaudan, vallée de l'Isère), connue pour le fromage AOP Saint-Marcellin et son AOC fromagère reconnue. Tissu d'éleveurs laitiers locaux, fromageries artisanales, PME industrielles périphériques, TPE artisans BTP, commerces. Position vers Vercors et plaine de l'Isère.",

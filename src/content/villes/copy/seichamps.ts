@@ -9,9 +9,9 @@ export const SEICHAMPS_COPY: VilleCopy = {
   pitchEn:
     "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
   ecosystemFr:
     "Seichamps est une commune périurbaine résidentielle à l'est immédiat de Nancy, à dominante pavillonnaire. Tissu TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales, santé, BTP, dynamique familiale.",
   ecosystemEn:

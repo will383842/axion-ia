@@ -9,9 +9,9 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
   pitchEn:
     "Ergué-Gabéric (29), commune résidentielle et industrielle de l'agglomération quimpéroise dans le Finistère sud, conjugue zones d'activités économiques et cadre de vie attractif. TPE artisanales, PME industrielles et tertiaires, commerces, services aux particuliers. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération de Quimper.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ergué-Gabéric (29). Nous accompagnons tous types d'activités : TPE artisanales, PME industrielles et tertiaires des zones d'activités gabéricoises, commerçants, indépendants, professions libérales et prestataires de services de l'agglomération quimpéroise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ergué-Gabéric (29). Nous accompagnons tous types d'activités : TPE artisanales, PME industrielles et tertiaires des zones d'activités gabéricoises, commerçants, indépendants, professions libérales et prestataires de services de l'agglomération quimpéroise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ergué-Gabéric (29). Nous accompagnons tous types d'activités : TPE artisanales, PME industrielles et tertiaires des zones d'activités gabéricoises, commerçants, indépendants, professions libérales et prestataires de services de l'agglomération quimpéroise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ergué-Gabéric (29). Nous accompagnons tous types d'activités : TPE artisanales, PME industrielles et tertiaires des zones d'activités gabéricoises, commerçants, indépendants, professions libérales et prestataires de services de l'agglomération quimpéroise.",
   ecosystemFr:
     "Ergué-Gabéric est une commune périurbaine de l'agglomération de Quimper, à la fois résidentielle et industrielle. Plusieurs zones d'activités accueillent des PME industrielles, des TPE artisanales et des prestataires de services. La commune bénéficie du dynamisme économique de Quimper Bretagne Occidentale et de la proximité des axes routiers vers Brest et Lorient.",
   ecosystemEn:

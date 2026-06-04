@@ -9,9 +9,9 @@ export const AMBILLY_COPY: VilleCopy = {
   pitchEn:
     "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
   seoHook: "commerce proximité & tertiaires services",
   ecosystemFr:
     "Ambilly est une commune résidentielle et commerciale de l'agglomération Annemasse-Les Voirons, intégrée au Grand Genève (projet transfrontalier franco-suisse, 1M habitants). La proximité immédiate de la douane suisse (Genève-Thônex) génère un fort flux commercial et une économie de services frontaliers. Commerces de proximité, PME tertiaires, TPE artisans, professions libérales, prestataires logistique douanière.",

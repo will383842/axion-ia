@@ -9,9 +9,9 @@ export const SAUTRON_COPY: VilleCopy = {
   pitchEn:
     "Sautron (44), commune résidentielle à l'ouest de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA collabore avec toutes les structures locales du bassin nantais ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Sautron est une commune résidentielle prisée à l'ouest de Nantes Métropole. Cadre verdoyant attractif pour les professions libérales, TPE artisanales, PME tertiaires et commerces de proximité. Proximité immédiate du pôle tertiaire d'Orvault et du centre de Nantes (15 min).",

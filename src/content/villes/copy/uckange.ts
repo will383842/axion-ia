@@ -9,9 +9,9 @@ export const UCKANGE_COPY: VilleCopy = {
   pitchEn:
     "Uckange (57), commune de la vallée de la Fensch dans le Pays thionvillois en Moselle, célèbre pour son haut fourneau U4 reconverti en jardin des Traces. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du nord mosellan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Uckange est une commune de la vallée de la Fensch dans le Pays thionvillois, marquée par son passé sidérurgique. Le haut fourneau U4 reconverti en jardin des Traces témoigne de cette identité industrielle. Tissu TPE artisans BTP, PME industrielles et sous-traitance, commerces de proximité, professions libérales et indépendants. Proximité immédiate du Luxembourg, axe transfrontalier.",

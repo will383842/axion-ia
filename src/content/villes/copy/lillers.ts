@@ -9,9 +9,9 @@ export const LILLERS_COPY: VilleCopy = {
   pitchEn:
     "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y mène ses missions auprès des organisations locales du bassin artésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "agriculture agroalimentaire & commerce détail",
   ecosystemFr:
     "Lillers est un bourg de l'Artois entre Béthune et Saint-Pol-sur-Ternoise. Économie agricole (grandes cultures, maraîchage), TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME agroalimentaires. Centre hospitalier local structurant pour l'emploi.",

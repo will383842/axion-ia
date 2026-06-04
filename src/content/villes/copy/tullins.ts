@@ -9,9 +9,9 @@ export const TULLINS_COPY: VilleCopy = {
   pitchEn:
     "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   seoHook: "pays voironnais en",
   ecosystemFr:
     "Tullins est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, activité agricole vallée de l'Isère (élevage, céréales, maraîchage), commerces, services et tissu TPE artisanat BTP. Position de transit entre Lyon et Grenoble, proximité Voiron (15 min).",

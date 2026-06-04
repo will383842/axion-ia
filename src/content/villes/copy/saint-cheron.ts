@@ -9,9 +9,9 @@ export const SAINT_CHERON_COPY: VilleCopy = {
   pitchEn:
     "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP.",

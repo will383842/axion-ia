@@ -9,9 +9,9 @@ export const MARSILLARGUES_COPY: VilleCopy = {
   pitchEn:
     "Marsillargues (34), commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises (taureau, cheval), viticulture, riziculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marsillargues (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsillargues (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marsillargues (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsillargues (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
   ecosystemFr:
     "Marsillargues est une commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises vivantes (manades, taureau Camargue, cheval Camargue, fêtes votives). Viticulture, riziculture, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales.",
   ecosystemEn:

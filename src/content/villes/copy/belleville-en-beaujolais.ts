@@ -9,9 +9,9 @@ export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
   pitchEn:
     "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire beaujolaises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Belleville-en-Beaujolais (69). Nous accompagnons tous types d'activités : viticulteurs AOC Beaujolais / Beaujolais-Villages / crus, négociants en vins, acteurs oenotourisme, PME agroalimentaires, TPE artisans BTP, commerçants et services aux entreprises beaujolaises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Belleville-en-Beaujolais (69). Nous accompagnons tous types d'activités : viticulteurs AOC Beaujolais / Beaujolais-Villages / crus, négociants en vins, acteurs oenotourisme, PME agroalimentaires, TPE artisans BTP, commerçants et services aux entreprises beaujolaises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Belleville-en-Beaujolais (69). Nous accompagnons tous types d'activités : viticulteurs AOC Beaujolais / Beaujolais-Villages / crus, négociants en vins, acteurs oenotourisme, PME agroalimentaires, TPE artisans BTP, commerçants et services aux entreprises beaujolaises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Belleville-en-Beaujolais (69). Nous accompagnons tous types d'activités : viticulteurs AOC Beaujolais / Beaujolais-Villages / crus, négociants en vins, acteurs oenotourisme, PME agroalimentaires, TPE artisans BTP, commerçants et services aux entreprises beaujolaises.",
   seoHook: "viticulture beaujolais & négoce vins",
   ecosystemFr:
     "Belleville-en-Beaujolais est un centre viticole majeur du vignoble du Beaujolais (AOC Beaujolais, Beaujolais-Villages, accès aux 10 crus dont Morgon, Brouilly, Moulin-à-Vent). Tissu PME viticoles (domaines, caves coopératives), négoce en vins, oenotourisme (route des vins du Beaujolais), TPE artisanat BTP, commerces.",

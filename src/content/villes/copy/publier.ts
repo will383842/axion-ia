@@ -9,9 +9,9 @@ export const PUBLIER_COPY: VilleCopy = {
   pitchEn:
     "Publier (74), commune du Chablais sur les rives du lac Léman, accueille la station thermale d'Amphion-les-Bains et un tissu économique tourné vers le thermalisme, le tourisme lacustre et l'hôtellerie. Croissance démographique soutenue (+2,5 %/an). Axion-IA opère pour toutes les structures économiques de la commune du bassin lémanique haut-savoyard.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Publier (74). Nous accompagnons TPE et PME : établissements thermaux d'Amphion-les-Bains, hôteliers et restaurateurs du lac Léman, commerces touristiques, prestataires de loisirs nautiques et entreprises de services du Chablais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Publier (74). Nous accompagnons TPE et PME : établissements thermaux d'Amphion-les-Bains, hôteliers et restaurateurs du lac Léman, commerces touristiques, prestataires de loisirs nautiques et entreprises de services du Chablais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Publier (74). Nous accompagnons TPE et PME : établissements thermaux d'Amphion-les-Bains, hôteliers et restaurateurs du lac Léman, commerces touristiques, prestataires de loisirs nautiques et entreprises de services du Chablais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Publier (74). Nous accompagnons TPE et PME : établissements thermaux d'Amphion-les-Bains, hôteliers et restaurateurs du lac Léman, commerces touristiques, prestataires de loisirs nautiques et entreprises de services du Chablais.",
   seoHook: "thermalisme bien-être & tourisme lacustre",
   ecosystemFr:
     "Publier bénéficie d'une situation privilégiée sur la rive sud du lac Léman, entre Thonon-les-Bains et Évian-les-Bains. Le thermalisme d'Amphion-les-Bains, le tourisme lacustre (plaisance, plages, sports nautiques) et l'hôtellerie-restauration structurent l'économie locale. Croissance résidentielle forte alimentée par la proximité genevoise (40 min). TPE commerces et services complètent le tissu.",

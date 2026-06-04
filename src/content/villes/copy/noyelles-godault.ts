@@ -10,9 +10,9 @@ export const NOYELLES_GODAULT_COPY: VilleCopy = {
     "Noyelles-Godault (62), commune du Pas-de-Calais, reunit pres de 5 990 habitants. Connue pour sa zone commerciale majeure entre Henin-Beaumont et Dourges, son economie associe PME commerciales, TPE de services, restauration et activites tertiaires liees au retail. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "zone commerciale, retail & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Noyelles-Godault accueille l'une des plus grandes zones commerciales du bassin minier, entre Henin-Beaumont et Dourges. Tissu economique oriente commerce de detail : enseignes nationales, PME retail, TPE restauration, services tertiaires et logistique de derniere mile.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur de l'est lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
   seoHook: "logistiques aire & tertiaires zones",
   ecosystemFr:
     "Saint-Laurent-de-Mure est positionnée en banlieue est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",

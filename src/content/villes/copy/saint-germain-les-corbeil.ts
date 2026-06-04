@@ -9,9 +9,9 @@ export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
   pitchEn:
     "Saint-Germain-lès-Corbeil (91), commune résidentielle des bords de Seine à 29 km au sud-est de Paris, bénéficie de la proximité d'Évry-Courcouronnes (préfecture) et de Corbeil-Essonnes. Tissu TPE artisans, PME de services, commerces et professions libérales. Axion-IA y mène ses missions auprès des organisations locales de la vallée de Seine essonnienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Saint-Germain-lès-Corbeil (7 469 hab) s'inscrit dans le bassin d'emploi Évry-Corbeil au sud de l'Essonne. Commune résidentielle en bord de Seine, elle bénéficie de la dynamique économique d'Évry-Courcouronnes (préfecture, Génopole) et de Corbeil-Essonnes. Tissu TPE artisanat, commerces, professions libérales et PME de services.",

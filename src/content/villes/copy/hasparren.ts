@@ -9,9 +9,9 @@ export const HASPARREN_COPY: VilleCopy = {
   pitchEn:
     "Hasparren (64), commune du Labourd intérieur en Pays Basque, 7 626 habitants. Capitale historique du cuir et de la chaussure basque, tissu de TPE artisans, PME industrielles (cuir, textile), agriculture et commerces. Axion-IA répond aux besoins de toutes les entreprises du Labourd intérieur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit sur place sur mesure.",
   seoHook: "cuir chaussure & agriculture basque",
   ecosystemFr:
     "Hasparren est la capitale historique du cuir et de la chaussure au Pays Basque, 7 626 habitants. Filière cuir artisanale encore active, PME textile/maroquinerie, TPE agricoles (élevage, brebis laitières), agroalimentaire basque (fromage Ossau-Iraty), commerces de bourg et artisanat d'art. À 25 min de Bayonne.",

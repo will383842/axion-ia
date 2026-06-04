@@ -9,9 +9,9 @@ export const ELVEN_COPY: VilleCopy = {
   pitchEn:
     "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
   seoHook: "agriculture bretonne & commerces proximité",
   ecosystemFr:
     "Elven, commune du Morbihan à 17 km au nord-est de Vannes, est labellisée Village étape et fait partie du parc naturel régional du golfe du Morbihan. Tissu agricole, TPE artisanat, commerces de proximité, tourisme patrimonial autour des tours d'Elven.",

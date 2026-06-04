@@ -9,9 +9,9 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Ormesson-sur-Marne (94), commune résidentielle verdoyante des bords de Marne, allie cadre de vie privilégié et tissu économique de proximité. TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
   seoHook: "services artisanat & conseil",
   ecosystemFr:
     "Ormesson-sur-Marne est une commune résidentielle verdoyante des bords de Marne, entre Sucy-en-Brie et Noiseau. Tissu TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier.",

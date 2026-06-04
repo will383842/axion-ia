@@ -9,9 +9,9 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
   pitchEn:
     "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y travaille avec les organisations du territoire du pays d'Iroise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploudalmézeau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du pays d'Iroise, PME de la filière algues, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploudalmézeau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du pays d'Iroise, PME de la filière algues, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ploudalmézeau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du pays d'Iroise, PME de la filière algues, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploudalmézeau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du pays d'Iroise, PME de la filière algues, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   seoHook: "goémon & pays d'Iroise",
   ecosystemFr:
     "Ploudalmézeau est un bourg-centre du pays d'Iroise, à l'extrême nord-ouest du Finistère. L'économie locale repose sur la filière goémonière (récolte et transformation d'algues), l'agriculture, l'artisanat BTP, le commerce de proximité et le tourisme littoral (plages, sentier côtier GR34, patrimoine maritime). La commune joue un rôle de pôle de services pour les communes rurales et littorales environnantes.",

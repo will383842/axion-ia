@@ -9,9 +9,9 @@ export const GRAY_COPY: VilleCopy = {
   pitchEn:
     "Gray (70), sous-préfecture de Haute-Saône en bords de Saône, compte environ 5 400 habitants. Pôle de services du sud Haute-Saône, tissu de TPE/PME artisanat, commerces, services publics, tourisme fluvial et agriculture. Axion-IA y intervient pour tous types d'activités du Pays de Gray et val de Saône.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gray (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : commerçants, artisans, professions libérales, agriculteurs, prestataires tourisme fluvial et services aux entreprises du Pays de Gray et val de Saône.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gray (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : commerçants, artisans, professions libérales, agriculteurs, prestataires tourisme fluvial et services aux entreprises du Pays de Gray et val de Saône.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gray (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : commerçants, artisans, professions libérales, agriculteurs, prestataires tourisme fluvial et services aux entreprises du Pays de Gray et val de Saône.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gray (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : commerçants, artisans, professions libérales, agriculteurs, prestataires tourisme fluvial et services aux entreprises du Pays de Gray et val de Saône.",
   seoHook: "commerce proximité & artisanat second",
   ecosystemFr:
     "Gray est la sous-préfecture du sud Haute-Saône, pôle de services et de commerces pour le Pays de Gray (~20 000 hab bassin de vie) en bords de Saône. Tissu de TPE/PME artisanat, commerces, services publics (hôpital, tribunaux, sous-préfecture), agriculture céréalière, tourisme fluvial et patrimoine (musée Baron Martin). Axe Dijon-Besançon, carrefour rural.",

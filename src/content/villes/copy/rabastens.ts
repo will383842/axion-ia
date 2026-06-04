@@ -9,9 +9,9 @@ export const RABASTENS_COPY: VilleCopy = {
   pitchEn:
     "Rabastens (81), cité médiévale sur les bords du Tarn au coeur du vignoble de Gaillac, près de 6 000 habitants. Tissu TPE viticoles et artisans, PME services, commerces de bourg, professions libérales et agriculture. Axion-IA accompagne tout le tissu professionnel local du bassin rabastinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   seoHook: "viticulture gaillac & agriculture grandes",
   ecosystemFr:
     "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Proximité Toulouse (35 min A68), Albi (30 min), Gaillac (10 min). Commune résidentielle attractive entre Toulouse et Albi.",

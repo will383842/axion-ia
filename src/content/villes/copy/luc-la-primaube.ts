@@ -9,9 +9,9 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
   pitchEn:
     "Luc-la-Primaube (12), commune résidentielle au sud de l'agglomération ruthénoise avec plus de 6 000 habitants. Tissu TPE artisans BTP, PME services et négoce, commerces de proximité, professions libérales, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit sur place sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Luc-la-Primaube est une commune résidentielle dynamique au sud de Rodez, en forte croissance démographique. Économie de proximité : TPE artisans BTP, PME de services aux entreprises, négoce matériaux, commerces de quartier, professions libérales (santé, juridique), agriculture (polyculture-élevage aveyronnais). Bassin de vie complémentaire à Rodez centre et Onet-le-Château.",

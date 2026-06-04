@@ -9,9 +9,9 @@ export const JARNY_COPY: VilleCopy = {
   pitchEn:
     "Jarny (54), commune du Pays Haut en Meurthe-et-Moselle, est un pôle de l'ancien bassin sidérurgique reconverti vers la logistique, l'industrie diversifiée et le commerce. Tissu TPE/PME industrie & sous-traitance, logistique, BTP, commerce, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jarny (54). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerçants et services du Pays Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarny (54). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerçants et services du Pays Haut.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jarny (54). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerçants et services du Pays Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarny (54). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerçants et services du Pays Haut.",
   ecosystemFr:
     "Jarny est une commune du Pays Haut nord-meurthe-et-mosellan, ancien bassin sidérurgique reconverti vers la logistique, l'industrie diversifiée et le commerce. Son tissu économique mêle PME industrielles, plateformes logistiques, sous-traitance, BTP, commerce de proximité et services. Gare TER, axe Metz-Verdun, A4 et A30 à proximité.",
   ecosystemEn:

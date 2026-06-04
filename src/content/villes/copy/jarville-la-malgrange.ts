@@ -9,9 +9,9 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   pitchEn:
     "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
   ecosystemFr:
     "Jarville-la-Malgrange est une commune du sud de la Métropole du Grand Nancy, connue pour son musée de l'Histoire du fer. Son tissu économique repose sur le commerce, les services aux entreprises, l'artisanat BTP, les professions libérales et la restauration. Accès direct au centre de Nancy et aux zones d'activités du sud nancéien.",
   ecosystemEn:

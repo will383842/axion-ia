@@ -9,9 +9,9 @@ export const CABESTANY_COPY: VilleCopy = {
   pitchEn:
     "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   seoHook: "commerce zones & tertiaires périurbaines",
   ecosystemFr:
     "Cabestany est une commune dynamique à l'est de Perpignan, intégrée à Perpignan Méditerranée Métropole. Importantes zones commerciales (Porte d'Espagne), PME tertiaires, TPE artisanat, commerces, professions libérales santé. Proximité directe Perpignan et accès littoral.",

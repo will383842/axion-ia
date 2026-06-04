@@ -9,9 +9,9 @@ export const ISSOIRE_COPY: VilleCopy = {
   pitchEn:
     "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "industrie aéronautique & administration",
   ecosystemFr:
     "Issoire est la sous-préfecture du sud Puy-de-Dôme. Basilique romane Saint-Austremoine (majeure romane Auvergne). Tissu industriel aéronautique et métallurgique notable (sous-traitants techniques). Administration, agriculture Limagne, tourisme roman, TPE artisanat BTP, commerces.",

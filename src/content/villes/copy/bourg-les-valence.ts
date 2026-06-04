@@ -9,9 +9,9 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   pitchEn:
     "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   seoHook: "industrielles agglomération & commerce zones",
   ecosystemFr:
     "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), TPE artisanat BTP, professions libérales. Position axe A7 Lyon-Marseille.",

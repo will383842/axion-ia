@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BIARRITZ_COPY: VilleCopy = {
   pitchFr:
-    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME biarrotes, les ETI en complément.",
+    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME biarrotes, les ETI en complément.",
   pitchEn:
-    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'experts IA seniors, accompagne en priorité les TPE et PME biarrotes, les ETI en complément.",
+    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME biarrotes, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "tourisme premium, thalasso & surf",
   ecosystemFr:
     "Biarritz concentre une économie de services tournée vers le tourisme premium : hôtellerie de luxe, thalassothérapie, restauration, événementiel et commerces, complétée par l'écosystème surf. Le tissu est dominé par les TPE et PME saisonnières, avec quelques ETI hôtelières.",

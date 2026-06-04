@@ -9,9 +9,9 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
   pitchEn:
     "Saint-Flour (15), sous-préfecture du Cantal, est une ville perchée caractéristique (ville haute sur plateau basaltique, ville basse en vallée). Tissu administration, agriculture montagne (élevage Salers/Aubrac, Planèze), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune cantaliennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
   seoHook: "administration & élevage salers/aubrac",
   ecosystemFr:
     "Saint-Flour est la sous-préfecture du Cantal, ville perchée (haute sur plateau basaltique). Agriculture montagne : élevage races Salers et Aubrac (races bovines locales emblématiques), Planèze de Saint-Flour (plateau agricole). Tissu administration, TPE artisanat BTP, commerces.",

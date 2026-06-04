@@ -9,9 +9,9 @@ export const VEIGNE_COPY: VilleCopy = {
   pitchEn:
     "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Veigné (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services, professions libérales, indépendants, prestataires touristiques vallée de l'Indre et entreprises sud-tourangelles.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Veigné (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services, professions libérales, indépendants, prestataires touristiques vallée de l'Indre et entreprises sud-tourangelles.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Veigné (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services, professions libérales, indépendants, prestataires touristiques vallée de l'Indre et entreprises sud-tourangelles.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Veigné (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services, professions libérales, indépendants, prestataires touristiques vallée de l'Indre et entreprises sud-tourangelles.",
   seoHook: "artisanat second & services tertiaire",
   ecosystemFr:
     "Veigné est une commune résidentielle attractive de la vallée de l'Indre, entre Montbazon et Tours. Sa position périurbaine attire des actifs de l'agglomération tourangelle. Proximité des châteaux de la Loire (Azay-le-Rideau à 20 min, Chenonceau à 30 min). Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et acteurs du tourisme vert vallée Indre.",

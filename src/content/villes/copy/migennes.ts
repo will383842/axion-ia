@@ -9,9 +9,9 @@ export const MIGENNES_COPY: VilleCopy = {
   pitchEn:
     "Migennes (89), nœud ferroviaire majeur de l'Yonne au confluent de l'Yonne et de l'Armançon, est un pôle logistique et industriel du nord bourguignon. Tissu de TPE/PME logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Migennes (89). Nous accompagnons TPE et PME : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migennes (89). Nous accompagnons TPE et PME : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Migennes (89). Nous accompagnons TPE et PME : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migennes (89). Nous accompagnons TPE et PME : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Yonne",
   ecosystemFr:
     "Migennes est un nœud ferroviaire historique de l'Yonne, au confluent de l'Yonne et de l'Armançon. La gare de triage et les ateliers SNCF ont structuré l'économie locale. Aujourd'hui, le tissu repose sur la logistique ferroviaire et routière, la sous-traitance industrielle, le commerce de proximité, l'artisanat BTP et les services. Proximité de Joigny (10 min) et d'Auxerre (20 min).",

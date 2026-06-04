@@ -9,9 +9,9 @@ export const SAINT_PERAY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   seoHook: "viticulture saint-péray & oenotourisme crus",
   ecosystemFr:
     "Saint-Péray est face à Valence (rive droite Rhône). Vignoble AOC Saint-Péray (vins blancs effervescents/tranquilles, cru septentrional Rhône), proximité AOC Cornas (rouge). Tissu viticole, oenotourisme, PME tertiaires, TPE artisanat BTP, commerces.",

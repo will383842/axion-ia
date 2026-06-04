@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AGEN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   seoHook: "pruneau & agroalimentaire",
   ecosystemFr:
     "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de TPE et PME que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",

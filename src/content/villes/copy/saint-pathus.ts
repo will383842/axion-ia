@@ -9,9 +9,9 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pathus (77), commune résidentielle du nord Seine-et-Marne proche de Dammartin-en-Goële et de l'aéroport Roissy-CDG, accueille des TPE artisanales, PME de services et de transport, commerçants de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
   seoHook: "artisanat rénovation & transport logistique",
   ecosystemFr:
     "Saint-Pathus est une commune résidentielle du nord Seine-et-Marne, limitrophe de Dammartin-en-Goële, Oissery et Marchémoret. Commune à forte croissance démographique, semi-rurale. Tissu économique de TPE artisanales BTP, PME de transport et logistique (proximité Roissy-CDG), commerces de centre-bourg, professions libérales et services à la personne. Accès N2 et N330 vers Paris et Roissy.",

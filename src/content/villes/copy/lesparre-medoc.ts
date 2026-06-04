@@ -9,9 +9,9 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
   pitchEn:
     "Lesparre-Médoc (33), sous-préfecture au coeur du Médoc viticole, est le pôle administratif et commercial de la presqu'île médocaine. Vignoble AOC Médoc, commerces de centre-ville, artisanat BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit sur place sur mesure.",
   seoHook: "viticulture médoc & commerce centre-ville",
   ecosystemFr:
     "Lesparre-Médoc est la sous-préfecture et le pôle de services du Médoc. Vignoble AOC Médoc et Haut-Médoc, commerces de centre-ville (marché, services publics), artisanat BTP, professions libérales et services de santé. Accès D1215 vers Bordeaux et Pointe du Médoc.",

@@ -9,9 +9,9 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
   pitchEn:
     "Sausset-les-Pins (13), station balnéaire de la Côte Bleue entre Marseille et Martigues, possède un port de pêche pittoresque et un accès aux calanques du parc marin. Tissu de TPE commerçants, restaurateurs, artisans, PME tourisme et pêche artisanale. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & restauration gastronomie",
   ecosystemFr:
     "Sausset-les-Pins est une station balnéaire familiale de la Côte Bleue, entre Carry-le-Rouet et Martigues. Port de pêche traditionnel, parc marin de la Côte Bleue (réserve marine). Économie tournée vers le tourisme saisonnier, la restauration, la pêche artisanale et un tissu résidentiel de TPE/PME services.",

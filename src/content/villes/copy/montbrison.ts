@@ -9,9 +9,9 @@ export const MONTBRISON_COPY: VilleCopy = {
   pitchEn:
     "Montbrison (42), sous-préfecture de la Loire et capitale historique du Forez, est positionnée dans la plaine du Forez. Tissu administration et services publics, PME tertiaires et industrielles, agriculture forézienne (fourme de Montbrison AOP), TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Forez.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
   seoHook: "administration services & fromages fourme",
   ecosystemFr:
     "Montbrison est la sous-préfecture de la Loire (héritage historique de capitale du Forez médiéval). Position centrale dans la plaine du Forez. Tissu administratif et services publics, PME tertiaires/industrielles, agriculture spécialisée notamment fromagère (Fourme de Montbrison AOP — l'un des fromages bleus emblématiques d'Auvergne-Rhône-Alpes), TPE artisanat BTP.",

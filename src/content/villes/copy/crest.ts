@@ -9,9 +9,9 @@ export const CREST_COPY: VilleCopy = {
   pitchEn:
     "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local drômoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crest (26). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial Tour de Crest, agriculteurs biologiques vallée Drôme, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la vallée drômoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Crest (26). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial Tour de Crest, agriculteurs biologiques vallée Drôme, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la vallée drômoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Crest (26). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial Tour de Crest, agriculteurs biologiques vallée Drôme, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la vallée drômoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Crest (26). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial Tour de Crest, agriculteurs biologiques vallée Drôme, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la vallée drômoise.",
   seoHook: "tourisme patrimonial & agriculture biologique",
   ecosystemFr:
     "Crest occupe une position centrale dans la vallée de la Drôme (entre Vercors et Provence), connue pour son donjon médiéval emblématique (Tour de Crest, plus haut de France). Tissu tourisme patrimonial, agriculture biologique pionnière (la vallée de la Drôme est l'un des bassins bio leaders en France), TPE artisanat BTP, commerces et services.",

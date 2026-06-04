@@ -9,9 +9,9 @@ export const VAUCRESSON_COPY: VilleCopy = {
   pitchEn:
     "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, TPE de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",

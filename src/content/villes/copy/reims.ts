@@ -50,7 +50,7 @@ export const REIMS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
 

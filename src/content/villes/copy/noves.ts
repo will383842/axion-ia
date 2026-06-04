@@ -9,9 +9,9 @@ export const NOVES_COPY: VilleCopy = {
   pitchEn:
     "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de la Petite Crau.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
   seoHook: "agriculture, viticulture & PME Petite Crau",
   ecosystemFr:
     "Noves occupe une position stratégique sur l'A7 entre Avignon et Salon-de-Provence, au cœur de la Petite Crau. Économie locale dominée par l'agriculture (maraîchage, vergers, oléiculture), la viticulture AOC, les TPE artisans, les PME services et les commerces de proximité. Logistique et négoce agricole également présents grâce à l'A7.",

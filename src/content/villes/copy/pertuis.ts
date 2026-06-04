@@ -9,9 +9,9 @@ export const PERTUIS_COPY: VilleCopy = {
   pitchEn:
     "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
     "Pertuis est positionnée au sud du Vaucluse, dans la vallée de la Durance, en limite des Bouches-du-Rhône, sous-préfecture du Sud Luberon. Commune dont l'activité économique repose sur l'agriculture maraîchère et arboricole (cerises, raisins de table, légumes plein champ), les TPE artisans (BTP, services), PME tertiaires et industrielles, professions libérales et commerces de proximité. Bassin d'emploi double : pôle Pertuis–Aix, et orientation Luberon.",

@@ -9,9 +9,9 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
   pitchEn:
     "Aire-sur-l'Adour (40), sous-préfecture des Landes sur les bords de l'Adour, est une commune historique (résidence royale wisigothe, époque romaine) entre Bordeaux et Pau. Agriculture (foie gras, maïs, élevage), agroalimentaire, TPE artisans, commerces de bourg, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aire-sur-l'Adour (40). Nous accompagnons TPE et PME de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aire-sur-l'Adour (40). Nous accompagnons TPE et PME de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aire-sur-l'Adour (40). Nous accompagnons TPE et PME de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aire-sur-l'Adour (40). Nous accompagnons TPE et PME de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
   seoHook: "agroalimentaire, foie gras & sous-préfecture",
   ecosystemFr:
     "Aire-sur-l'Adour est une sous-préfecture des Landes, cité historique remontant à l'époque romaine puis résidence royale du royaume wisigoth. Reliée à l'autoroute A65 (Langon-Pau). L'économie repose sur l'agriculture (maïs, élevage canard et volaille, foie gras), l'agroalimentaire, les services publics (sous-préfecture), le commerce de bourg, les artisans BTP et les professions libérales.",

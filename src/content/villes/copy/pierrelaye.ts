@@ -9,9 +9,9 @@ export const PIERRELAYE_COPY: VilleCopy = {
   pitchEn:
     "Pierrelaye (95), commune de l'agglomération Val Parisis dans le Val-d'Oise, est caractérisée par sa plaine maraîchère historique et son tissu résidentiel. TPE artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Proximité Cergy-Pontoise, Franconville et axes A15/A115 vers Paris et la Défense.",

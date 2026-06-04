@@ -9,9 +9,9 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
   pitchEn:
     "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
   seoHook: "agglomération rhône",
   ecosystemFr:
     "Port-Saint-Louis-du-Rhône se situe à l'embouchure du Grand Rhône, entre Camargue et golfe de Fos. Port fluvio-maritime actif (fret, conteneurs, vracs), zone industrialo-portuaire de Fos à proximité immédiate. Économie portée par la logistique, l'industrie, la pêche, le tourisme nature (Camargue) et un tissu de TPE/PME services.",

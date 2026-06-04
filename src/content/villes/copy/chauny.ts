@@ -9,9 +9,9 @@ export const CHAUNY_COPY: VilleCopy = {
   pitchEn:
     "Chauny (02), commune de 11 596 habitants dans l'Aisne, est implantée sur les bords de l'Oise au cœur du sud de la Picardie. Pôle industriel historique (chimie, verrerie, métallurgie), la ville concentre un tissu de TPE/PME industrie chimique, agroalimentaire, logistique fluviale, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Chauny est un pôle industriel et commercial du sud de l'Aisne, situé sur les bords de l'Oise et du canal de Saint-Quentin. Son économie hérite d'un passé industriel fort (chimie, verrerie, métallurgie) et se diversifie autour de l'agroalimentaire, la logistique fluviale, le commerce de proximité et les services. Le bassin d'emploi s'articule avec Tergnier, La Fère et Noyon, et bénéficie de la connexion ferroviaire vers Paris et Saint-Quentin.",
   ecosystemEn:

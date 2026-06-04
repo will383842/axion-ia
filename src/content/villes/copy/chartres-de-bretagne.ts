@@ -9,9 +9,9 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
   pitchEn:
     "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud de Rennes Métropole.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
   seoHook: "proche rennes",
   ecosystemFr:
     "Chartres-de-Bretagne est un pôle économique du sud de Rennes Métropole avec plusieurs zones d'activités dont la ZA de la Janais (historiquement liée à l'automobile). PME industrielles, sous-traitance, tertiaire, TPE artisans BTP, commerces et services. La commune accueille de nombreuses entreprises grâce à sa desserte (rocade sud, gare TER) et ses surfaces disponibles.",

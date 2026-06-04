@@ -9,9 +9,9 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin nantais nord-ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
     "Saint-Étienne-de-Montluc est une commune périurbaine du nord-ouest nantais, entre estuaire de la Loire et bocage. Tissu TPE artisanales, commerces de centre-bourg, PME tertiaires, professions libérales. Gare TER desservie, accès rapide Nantes et Savenay.",

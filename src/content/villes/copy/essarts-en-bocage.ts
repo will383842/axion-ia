@@ -9,9 +9,9 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   pitchEn:
     "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   seoHook: "agriculture élevage & industrielles zones",
   ecosystemFr:
     "Essarts-en-Bocage est une commune nouvelle du bocage vendéen (fusion 2016), entre La Roche-sur-Yon (20 min) et Les Herbiers (25 min). Zones d'activités industrielles, agriculture (élevage, cultures), artisanat BTP, commerces. Axe D160 La Roche / Les Herbiers.",

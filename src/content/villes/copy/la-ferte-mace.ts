@@ -9,9 +9,9 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
   pitchEn:
     "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
   seoHook: "bocage normand, tourisme & agroalimentaire",
   ecosystemFr:
     "La Ferté-Macé est au coeur du bocage normand ornais, labellisée Station Verte. Tradition gastronomique (tripes ferthoises), tissu PME agroalimentaires, acteurs tourisme vert, TPE artisans BTP, commerces de proximité et professions libérales.",

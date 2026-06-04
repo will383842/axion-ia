@@ -9,9 +9,9 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
   seoHook: "vallée loire",
   ecosystemFr:
     "Montlouis-sur-Loire est célèbre pour son AOC viticole (vins blancs effervescents et tranquilles, coteaux Loire). Tissu TPE viticulteurs et caves, œnotourisme Val de Loire UNESCO, PME tourisme fluvial, artisanat BTP, commerces de proximité.",

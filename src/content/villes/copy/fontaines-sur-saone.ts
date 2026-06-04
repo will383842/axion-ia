@@ -9,9 +9,9 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
   pitchEn:
     "Fontaines-sur-Saône (69), commune du val de Saône nord dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine nord : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fontaines-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontaines-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fontaines-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontaines-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires nord",
   ecosystemFr:
     "Fontaines-sur-Saône est intégrée à la Métropole de Lyon, en banlieue nord (val de Saône). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées.",

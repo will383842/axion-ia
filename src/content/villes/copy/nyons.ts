@@ -9,9 +9,9 @@ export const NYONS_COPY: VilleCopy = {
   pitchEn:
     "Nyons (26), capitale de la Drôme provençale, est mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive + olives de table, plus ancienne AOP oléicole de France). Tissu PME oléicoles, viticulture, tourisme provençal, TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes drômoises provençales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
   seoHook: "oléiculture nyons & viticulture associée",
   ecosystemFr:
     "Nyons est la capitale de la Drôme provençale, mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive AOP — reconnue première AOP oléicole de France, olives de table AOP). Tissu PME oléicoles et agroalimentaires (moulins, conserveries, distilleries), viticulture associée, tourisme provençal (lavande, marchés), TPE artisanat BTP, commerces.",

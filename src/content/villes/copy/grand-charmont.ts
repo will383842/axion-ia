@@ -9,9 +9,9 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
   pitchEn:
     "Grand-Charmont (25), commune du Pays de Montbeliard, est une ville residentielle adossee au bassin industriel automobile Stellantis-Sochaux. Tissu TPE/PME sous-traitance automobile, commerce de proximite, services a la personne, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "pays de montbeliard",
   ecosystemFr:
     "Grand-Charmont fait partie de l'agglomeration de Montbeliard dans le nord du Doubs. La ville est historiquement liee au bassin industriel automobile (Stellantis-Sochaux a 5 km). Le tissu economique local repose sur la sous-traitance industrielle, le commerce de proximite et les services aux particuliers.",

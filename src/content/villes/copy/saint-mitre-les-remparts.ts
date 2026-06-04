@@ -9,9 +9,9 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
   seoHook: "TPE & PME Bouches-du-Rhône",
   ecosystemFr:
     "Saint-Mitre-les-Remparts est un village fortifié médiéval entre l'étang de Berre et l'étang d'Engrenier. Proximité de la ZIP de Fos-sur-Mer (industries lourdes, pétrochimie). Économie locale : agriculture (maraîchage, oliveraies), artisanat, tourisme patrimonial et résidentiel de cadres travaillant sur Fos-Istres-Martigues.",

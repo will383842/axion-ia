@@ -9,9 +9,9 @@ export const LODEVE_COPY: VilleCopy = {
   pitchEn:
     "Lodève (34), sous-préfecture de l'Hérault, aux portes du Larzac et du lac du Salagou. Musée de Lodève (Fleury), patrimoine médiéval, A75 (Méridienne). Tissu TPE commerçants, PME services publics, artisans, professions libérales, tourisme nature. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lodève (34). Nous accompagnons TPE commerçants, artisans, professions libérales, acteurs du tourisme nature (Larzac, Salagou) et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lodève (34). Nous accompagnons TPE commerçants, artisans, professions libérales, acteurs du tourisme nature (Larzac, Salagou) et services publics de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lodève (34). Nous accompagnons TPE commerçants, artisans, professions libérales, acteurs du tourisme nature (Larzac, Salagou) et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lodève (34). Nous accompagnons TPE commerçants, artisans, professions libérales, acteurs du tourisme nature (Larzac, Salagou) et services publics de la sous-préfecture.",
   ecosystemFr:
     "Lodève est une sous-préfecture de l'Hérault aux portes du causse du Larzac et du lac du Salagou. Musée de Lodève (collections paléontologie, art contemporain), patrimoine médiéval (cathédrale Saint-Fulcran). Accès A75 (Méridienne, axe Montpellier-Clermont). Tissu TPE commerçants, artisans, professions libérales, services publics, tourisme nature et patrimoine.",
   ecosystemEn:

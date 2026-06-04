@@ -9,9 +9,9 @@ export const MARLY_57_COPY: VilleCopy = {
   pitchEn:
     "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marly (57). Nous accompagnons tous types d'activités : TPE commerces et artisans, PME tertiaires zones d'activités, professions libérales, services aux entreprises de Metz Métropole sud, indépendants et résidents actifs travaillant à Metz ou Luxembourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly (57). Nous accompagnons tous types d'activités : TPE commerces et artisans, PME tertiaires zones d'activités, professions libérales, services aux entreprises de Metz Métropole sud, indépendants et résidents actifs travaillant à Metz ou Luxembourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marly (57). Nous accompagnons tous types d'activités : TPE commerces et artisans, PME tertiaires zones d'activités, professions libérales, services aux entreprises de Metz Métropole sud, indépendants et résidents actifs travaillant à Metz ou Luxembourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly (57). Nous accompagnons tous types d'activités : TPE commerces et artisans, PME tertiaires zones d'activités, professions libérales, services aux entreprises de Metz Métropole sud, indépendants et résidents actifs travaillant à Metz ou Luxembourg.",
   seoHook: "services aux & services résidentiels",
   ecosystemFr:
     "Marly est positionnée en banlieue sud immédiate de Metz, intégrée à Metz Métropole, à proximité directe de l'A31 et de la rocade messine. Commune résidentielle structurée autour de zones d'activités tertiaires (Frescaty/Actisud à proximité), commerces, services, professions libérales. À distinguer de Marly (78, Yvelines) et Marly-le-Roi (78). Tissu TPE artisans BTP, commerces de proximité, PME services aux entreprises.",

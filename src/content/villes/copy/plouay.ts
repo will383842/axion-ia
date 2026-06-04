@@ -9,9 +9,9 @@ export const PLOUAY_COPY: VilleCopy = {
   pitchEn:
     "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
   ecosystemFr:
     "Plouay est une commune du centre Morbihan mondialement connue pour le cyclisme : le vélodrome Raymond Poulidor a accueilli les championnats du monde sur route UCI. La commune s'appuie sur un tissu agricole (élevage, polyculture), des PME agroalimentaires, des TPE artisans BTP et un tourisme sportif et vert (forêt de Pontcallec, vallée du Scorff). Bassin de vie entre Lorient (25 min) et Pontivy (35 min).",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-en-Faucigny (74), commune du Faucigny en Haute-Savoie, est positionnée sur l'axe stratégique Annecy-Genève à proximité de Bonneville. Tissu diversifié de PME industrielles, entreprises de décolletage, TPE artisans BTP, agriculteurs et commerces. Axion-IA y intervient pour tous types d'activités du Faucigny.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons TPE et PME : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons TPE et PME : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons TPE et PME : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons TPE et PME : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
   seoHook: "vallée arve",
   ecosystemFr:
     "Saint-Pierre-en-Faucigny est située dans la province historique du Faucigny, à 5 min de Bonneville et sur l'axe autoroutier Annecy-Genève. Issue de la fusion de trois communes en 1965, elle accueille un tissu économique diversifié : PME industrielles héritières du décolletage, TPE artisanat BTP dynamiques, exploitations agricoles périurbaines et commerces de proximité bénéficiant de la croissance résidentielle du bassin.",

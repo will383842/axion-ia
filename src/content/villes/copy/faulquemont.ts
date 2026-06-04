@@ -9,9 +9,9 @@ export const FAULQUEMONT_COPY: VilleCopy = {
   pitchEn:
     "Faulquemont (57), commune de 5 109 habitants en Moselle, bureau centralisateur du canton et siège du district urbain, ancrée dans le bassin houiller lorrain reconverti vers l'industrie diversifiée, la logistique et les services. Tissu TPE/PME industrie reconvertie, sous-traitance, commerces de proximité, artisans, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Faulquemont (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique, artisans, commerces du centre, professions de services et acteurs du district urbain et du pays de Nied.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faulquemont (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique, artisans, commerces du centre, professions de services et acteurs du district urbain et du pays de Nied.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Faulquemont (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique, artisans, commerces du centre, professions de services et acteurs du district urbain et du pays de Nied.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faulquemont (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique, artisans, commerces du centre, professions de services et acteurs du district urbain et du pays de Nied.",
   ecosystemFr:
     "Faulquemont est une commune du bassin de vie de la Moselle-est, bureau centralisateur de canton et siège du district urbain dans le pays de Nied. Tissu TPE/PME industrie reconvertie après la fermeture de la mine, sous-traitance industrielle, logistique, commerces de proximité, artisanat, services. Bassin de vie tourné vers Saint-Avold, Metz et la Sarre.",
   ecosystemEn:

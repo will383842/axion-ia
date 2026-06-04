@@ -9,9 +9,9 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
   seoHook: "tourisme thermal & hôtellerie-restauration",
   ecosystemFr:
     "Luxeuil-les-Bains est une station thermale historique de Haute-Saône, labellisée Ville d'Art et d'Histoire (abbaye fondée au VIe siècle). Base aérienne 116 (défense, emploi indirect). Tissu de TPE/PME tourisme thermal, hôtellerie-restauration, bien-être, artisanat local, commerces et professions libérales. Proximité Lure (15 min) et Belfort (40 min).",

@@ -9,9 +9,9 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
   pitchEn:
     "Gond-Pontouvre (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle résidentiel et commercial du GrandAngoulême. Tissu de TPE artisans, PME commerciales et tertiaires, zones d'activités, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
   seoHook: "commerce zones & services aux",
   ecosystemFr:
     "Gond-Pontouvre est une commune résidentielle et commerciale du nord de l'agglomération GrandAngoulême. Zones d'activités économiques, PME commerciales et tertiaires, TPE artisans BTP, commerces de proximité, services à la personne. Accès direct à l'axe Angoulême-Limoges.",

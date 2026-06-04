@@ -9,9 +9,9 @@ export const ERNEE_COPY: VilleCopy = {
   pitchEn:
     "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Ernée est un bourg du nord-ouest de la Mayenne, aux marches de la Bretagne (entre Laval et Fougères). Économie fortement agricole : élevage bovin laitier, agroalimentaire (filière lait), industrie (plasturgie, agroéquipement), artisanat, commerces de proximité. Musée Robert-Tatin à proximité.",

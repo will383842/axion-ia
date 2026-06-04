@@ -9,9 +9,9 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
   pitchEn:
     "Pont-du-Château (63), port fluvial historique sur l'Allier, fait partie de Clermont Auvergne Métropole. Tissu logistique et entreposage, PME tertiaires, TPE artisanat BTP, commerces de proximité, services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-du-Château (63). Nous accompagnons TPE et PME : logistique fluviale et entreposage, tertiaire agglomération clermontoise, artisans BTP, commerçants de proximité, prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-du-Château (63). Nous accompagnons TPE et PME : logistique fluviale et entreposage, tertiaire agglomération clermontoise, artisans BTP, commerçants de proximité, prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pont-du-Château (63). Nous accompagnons TPE et PME : logistique fluviale et entreposage, tertiaire agglomération clermontoise, artisans BTP, commerçants de proximité, prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-du-Château (63). Nous accompagnons TPE et PME : logistique fluviale et entreposage, tertiaire agglomération clermontoise, artisans BTP, commerçants de proximité, prestataires de services.",
   seoHook: "TPE & PME Puy-de-Dôme",
   ecosystemFr:
     "Pont-du-Château est un ancien port fluvial sur l'Allier, intégré à Clermont Auvergne Métropole. Tissu logistique et entreposage (zone d'activités), PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises et aux particuliers.",

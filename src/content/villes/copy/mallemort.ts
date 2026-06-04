@@ -9,9 +9,9 @@ export const MALLEMORT_COPY: VilleCopy = {
   pitchEn:
     "Mallemort (13), commune de la vallée de la Durance au nord des Alpilles, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE artisans, exploitants agricoles (vergers, maraîchage Durance), commerçants et PME services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & arboriculture",
   ecosystemFr:
     "Mallemort est une commune durancienne entre Salon-de-Provence et Cavaillon, au nord du massif des Alpilles. Agriculture irriguée (vergers pommes/poires, maraîchage, cultures sous serres), canal EDF de la Durance. Artisanat BTP, commerces de proximité et résidentiel en croissance (navetteurs Salon/Aix).",

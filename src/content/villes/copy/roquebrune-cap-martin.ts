@@ -9,9 +9,9 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   pitchEn:
     "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roquebrune-Cap-Martin (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration haut de gamme, commerces de bord de mer, professions libérales, PME services résidentiels et entreprises touristiques de la Riviera entre Monaco et Menton.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquebrune-Cap-Martin (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration haut de gamme, commerces de bord de mer, professions libérales, PME services résidentiels et entreprises touristiques de la Riviera entre Monaco et Menton.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roquebrune-Cap-Martin (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration haut de gamme, commerces de bord de mer, professions libérales, PME services résidentiels et entreprises touristiques de la Riviera entre Monaco et Menton.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquebrune-Cap-Martin (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration haut de gamme, commerces de bord de mer, professions libérales, PME services résidentiels et entreprises touristiques de la Riviera entre Monaco et Menton.",
   seoHook: "tourisme haut & restauration gastronomie",
   ecosystemFr:
     "Roquebrune-Cap-Martin s'étend entre Monaco et Menton, du village perché médiéval de Roquebrune (château du Xe siècle) au Cap-Martin balnéaire. Patrimoine architectural mondial : Cabanon de Le Corbusier, villa E-1027 d'Eileen Gray. Économie portée par le tourisme haut de gamme, l'hôtellerie-restauration, les services aux résidents et les professions libérales. Gare SNCF Cap-Martin-Roquebrune sur la ligne Nice-Vintimille.",

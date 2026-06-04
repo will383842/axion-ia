@@ -9,9 +9,9 @@ export const VALOGNES_COPY: VilleCopy = {
   pitchEn:
     "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
   seoHook: "TPE & PME Manche",
   ecosystemFr:
     "Valognes, le « Versailles normand », conserve un patrimoine d'hôtels particuliers XVIIe-XVIIIe et un centre historique animé. L'économie locale repose sur le commerce de centre-ville, l'artisanat, l'agroalimentaire cidricole (cidreries, calvados, poiré), l'élevage normand, les services de proximité et le tourisme patrimonial. Carrefour routier du Cotentin, entre Cherbourg (20 min) et Carentan (25 min).",

@@ -9,9 +9,9 @@ export const GRANS_COPY: VilleCopy = {
   pitchEn:
     "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture",
   ecosystemFr:
     "Grans est positionnée dans la plaine de la Crau, au sud-ouest de Salon-de-Provence, en bordure de la zone agricole AOP foin de Crau. Tissu économique de TPE artisans (BTP, services à la personne), PME tertiaires, agriculture (foin de Crau AOP, oliveraies, élevage ovin transhumant), commerces de proximité, professions libérales. Bassin d'emploi rattaché à Salon-de-Provence, Istres et la base aérienne 701.",

@@ -9,9 +9,9 @@ export const IDRON_COPY: VilleCopy = {
   pitchEn:
     "Idron (64), commune résidentielle de l'agglomération de Pau sud, 5 340 habitants. Tissu de TPE artisans, professions libérales, PME de services et commerces adossé au bassin d'emploi palois. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération Pau Béarn Pyrénées.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Idron (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise sud : services, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Idron (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise sud : services, artisanat, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Idron (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise sud : services, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Idron (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise sud : services, artisanat, commerces. Audit sur place sur mesure.",
   seoHook: "agglomération pau béarn",
   ecosystemFr:
     "Idron est une commune résidentielle de 5 340 habitants, directement limitrophe sud de Pau. Tissu de professions libérales (santé, conseil), TPE artisans BTP, PME de services aux entreprises, commerces de proximité. Cadre de vie prisé (collines béarnaises), bassin d'emploi commun avec Pau.",

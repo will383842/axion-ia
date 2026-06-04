@@ -9,9 +9,9 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
   pitchEn:
     "Vigneux-de-Bretagne (44), commune résidentielle du nord-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne tout le tissu professionnel local du nord-ouest Nantes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "Vigneux-de-Bretagne est une commune résidentielle dynamique au nord-ouest de Nantes, sur l'axe Nantes-Saint-Nazaire. Zones d'activités, PME tertiaires, artisans. Croissance démographique forte. Tissu TPE commerçants, professions libérales et services de proximité.",

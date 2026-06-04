@@ -10,9 +10,9 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
     "Petit-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 8 680 habitants. Ville industrielle (raffinage) et patrie de Pierre Corneille, elle accueille des TPE sous-traitantes, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, raffinage & boucle Seine",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Petit-Couronne est situee en rive gauche de la Seine, au sud de Rouen. Zone industrielle historique (raffinage, chimie) et tissu de TPE sous-traitantes, PME de services, commerces et artisanat. Maison natale de Pierre Corneille. Partie de la Metropole Rouen Normandie.",
   ecosystemEn:

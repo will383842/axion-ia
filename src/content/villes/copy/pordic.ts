@@ -9,9 +9,9 @@ export const PORDIC_COPY: VilleCopy = {
   pitchEn:
     "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce bourg",
   ecosystemFr:
     "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",

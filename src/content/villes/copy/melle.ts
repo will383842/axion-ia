@@ -9,9 +9,9 @@ export const MELLE_COPY: VilleCopy = {
   pitchEn:
     "Melle (79), petite ville des Deux-Sèvres classée pour ses mines d'argent mérovingiennes et ses églises romanes inscrites au patrimoine mondial UNESCO, est un pôle de services du Mellois en Poitou. Tissu TPE artisans, commerçants, PME agricoles et agroalimentaires, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud Deux-Sèvres.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
   seoHook: "TPE & PME Deux-Sèvres",
   ecosystemFr:
     "Melle est un pôle de services du Mellois en Poitou, classée pour ses mines d'argent mérovingiennes et ses trois églises romanes inscrites au patrimoine mondial UNESCO (Chemins de Saint-Jacques-de-Compostelle). Tissu TPE artisans, commerces de proximité, PME agricoles/agroalimentaires, professions libérales et tourisme patrimonial.",

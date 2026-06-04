@@ -9,9 +9,9 @@ export const BLERE_COPY: VilleCopy = {
   pitchEn:
     "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
   seoHook: "tourisme patrimonial & viticulture touraine",
   ecosystemFr:
     "Bléré est un bourg de la vallée du Cher (5 352 habitants), porte d'entrée du château de Chenonceau (monument le plus visité après Versailles). Viticulture AOC Touraine, maraîchage vallée du Cher, artisanat local. Tissu TPE/PME : commerce de proximité, hébergement touristique, services aux entreprises, professions libérales. Zone d'influence sud de Tours Métropole.",

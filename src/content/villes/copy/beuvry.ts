@@ -9,9 +9,9 @@ export const BEUVRY_COPY: VilleCopy = {
   pitchEn:
     "Beuvry (62), commune du bassin minier entre Béthune et Lens dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Beuvry est une commune résidentielle du bassin minier située entre Béthune et Lens. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Canal d'Aire traversant la commune, zones pavillonnaires et activités péri-urbaines.",

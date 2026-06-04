@@ -9,9 +9,9 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
   pitchEn:
     "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
   seoHook: "industrie fabrication & services aux",
   ecosystemFr:
     "Saint-Berthevin est une commune résidentielle et économique de l'est de Laval Agglomération. Zones d'activités industrielles et commerciales, tissu PME diversifié (industrie, services aux entreprises, BTP, logistique). Proximité immédiate de Laval et du bassin d'emploi mayennais.",

@@ -9,9 +9,9 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   pitchEn:
     "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   seoHook: "littoral",
   ecosystemFr:
     "Talmont-Saint-Hilaire est une commune littorale vendéenne avec le château de Talmont (XIe siècle, Richard Cœur de Lion) et le port ostréicole du Payré. Tourisme patrimonial et balnéaire, ostréiculture, camping, artisanat. Les Sables-d'Olonne à 10 min, La Roche-sur-Yon à 30 min.",

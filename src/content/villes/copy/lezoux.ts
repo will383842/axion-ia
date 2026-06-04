@@ -9,9 +9,9 @@ export const LEZOUX_COPY: VilleCopy = {
   pitchEn:
     "Lezoux (63), bourg de la plaine de la Limagne en Puy-de-Dôme, est célèbre pour ses poteries gallo-romaines (plus grand centre de production de céramique sigillée de l'Empire romain en Gaule). Musée départemental de la Céramique. Artisanat d'art, agriculture Limagne, TPE artisans, commerces ruraux, tourisme patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
   seoHook: "céramique artisanat & agriculture limagne",
   ecosystemFr:
     "Lezoux est un bourg historique de la plaine de la Limagne, célèbre pour ses poteries gallo-romaines (plus grand centre de céramique sigillée de Gaule romaine). Le Musée départemental de la Céramique retrace cette histoire exceptionnelle. Économie locale artisanat d'art (céramistes, potiers), agriculture fertile de la Limagne (grandes cultures céréalières), TPE artisans, commerces ruraux, tourisme patrimoine. Bassin d'emploi partagé avec Thiers.",

@@ -9,9 +9,9 @@ export const BESSANCOURT_COPY: VilleCopy = {
   pitchEn:
     "Bessancourt (95), commune résidentielle du Val-d'Oise en lisière de la forêt de Montmorency, abrite un tissu de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
   seoHook: "artisanat paysagisme & commerce proximité",
   ecosystemFr:
     "Bessancourt est une commune résidentielle du Val-d'Oise, en lisière de la forêt de Montmorency, entre Taverny et Frépillon. Tissu économique de TPE artisanales BTP et paysagistes, PME de services aux entreprises, commerces de proximité, professions libérales de santé et prestataires tertiaires connectés au bassin Cergy-Pontoise.",

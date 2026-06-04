@@ -9,9 +9,9 @@ export const FONDETTES_COPY: VilleCopy = {
   pitchEn:
     "Fondettes (37), commune de l'ouest de Tours Métropole en Indre-et-Loire, se situe à la confluence de la Loire et de la Choisille. Tissu TPE artisans BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
   seoHook: "tertiaires services & agriculture maraîchère",
   ecosystemFr:
     "Fondettes se situe à la confluence Loire/Choisille, à l'ouest de Tours Métropole. Commune résidentielle avec tissu TPE artisanat BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité et professions libérales.",

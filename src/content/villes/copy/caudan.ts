@@ -9,9 +9,9 @@ export const CAUDAN_COPY: VilleCopy = {
   pitchEn:
     "Caudan (56), commune de Lorient Agglomération réputée pour ses zones d'activités économiques (Manebos, Kerpont), accueille un tissu de TPE/PME industrielles, logistiques, artisans BTP, commerces, professions libérales et entreprises tertiaires du bassin lorientais. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération de Lorient.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Caudan (56). Nous accompagnons TPE et PME : PME industrielles des zones Manebos et Kerpont, logistique, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Caudan (56). Nous accompagnons TPE et PME : PME industrielles des zones Manebos et Kerpont, logistique, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Caudan (56). Nous accompagnons TPE et PME : PME industrielles des zones Manebos et Kerpont, logistique, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Caudan (56). Nous accompagnons TPE et PME : PME industrielles des zones Manebos et Kerpont, logistique, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
   seoHook: "bassin lorientais",
   ecosystemFr:
     "Caudan se situe au nord de Lorient, dans Lorient Agglomération, à 10 km du centre lorientais. Commune (7 206 habitants) structurée autour de ses zones d'activités économiques majeures (Manebos, Kerpont, Bellevue), elle concentre un tissu industriel, logistique et tertiaire significatif du bassin lorientais. Tissu économique : PME industrielles, plateformes logistiques, TPE artisans BTP, commerces, professions libérales et entreprises tertiaires liées à Lorient Agglomération.",

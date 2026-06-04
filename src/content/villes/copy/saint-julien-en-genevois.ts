@@ -9,9 +9,9 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Julien-en-Genevois (74), porte d'entree francaise du Grand Geneve, est un pole transfrontalier majeur a 10 minutes de Geneve centre. Tissu TPE/PME tertiaires, professions liberales, commerce frontalier et artisanat. Axion-IA y intervient pour tous types d'activites du bassin genevois francais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "agglomération geneve",
   ecosystemFr:
     "Saint-Julien-en-Genevois est la principale ville francaise du Grand Geneve, a la frontiere suisse. Son economie est fortement liee au bassin genevois : nombreux frontaliers, services tertiaires, professions liberales (avocats, fiduciaires, conseil), commerces de proximite et artisanat. Dynamisme porte par le Leman Express et l'autoroute A40.",

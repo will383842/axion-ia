@@ -9,9 +9,9 @@ export const LANGON_COPY: VilleCopy = {
   pitchEn:
     "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA opère pour toutes les structures économiques de la commune du sud-Gironde.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture sauternes & commerce centre-ville",
   ecosystemFr:
     "Langon est la sous-préfecture et le pôle commercial du sud-Gironde. Vignoble AOC Sauternes (vins liquoreux prestigieux) et Graves, commerce de centre-ville actif, tissu PME de services, artisanat BTP et professions libérales. Gare SNCF sur la ligne Bordeaux-Toulouse, accès A62.",

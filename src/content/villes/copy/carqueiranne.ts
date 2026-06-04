@@ -9,9 +9,9 @@ export const CARQUEIRANNE_COPY: VilleCopy = {
   pitchEn:
     "Carqueiranne (83), station balnéaire du littoral toulonnais entre Hyères et Le Pradet, est connue pour son port de plaisance, sa pêche traditionnelle et son cadre méditerranéen. Tissu de TPE pêche, nautisme, restauration et PME du tourisme et de l'hôtellerie. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit sur place sur mesure.",
   seoHook: "pêche artisanale & nautisme port",
   ecosystemFr:
     "Carqueiranne est une station balnéaire familiale du littoral est-toulonnais. Économie tirée par le tourisme estival, la pêche artisanale (port des Salettes), le nautisme et la plaisance, la restauration de poisson et les commerces de proximité. Tissu de TPE/PME marines et tourisme dans la rade d'Hyères.",

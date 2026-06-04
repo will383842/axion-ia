@@ -9,9 +9,9 @@ export const TRAPPES_COPY: VilleCopy = {
   pitchEn:
     "Trappes, ville des Yvelines (78) au cœur de Saint-Quentin-en-Yvelines, concentre industries automobiles (proximité Renault Technocentre), logistique, PME tertiaires et tissu artisanal. Axion-IA y intervient pour les industriels du bassin SQY et entreprises de l'agglomération Versailles Grand Parc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trappes (78) et tout le bassin Saint-Quentin-en-Yvelines. Nous accompagnons les industriels automobiles et sous-traitants, opérateurs logistiques, PME tertiaires et entreprises de services sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trappes (78) et tout le bassin Saint-Quentin-en-Yvelines. Nous accompagnons les industriels automobiles et sous-traitants, opérateurs logistiques, PME tertiaires et entreprises de services sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Trappes (78) et tout le bassin Saint-Quentin-en-Yvelines. Nous accompagnons les industriels automobiles et sous-traitants, opérateurs logistiques, PME tertiaires et entreprises de services sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trappes (78) et tout le bassin Saint-Quentin-en-Yvelines. Nous accompagnons les industriels automobiles et sous-traitants, opérateurs logistiques, PME tertiaires et entreprises de services sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action.",
   seoHook: "industrie automobile & logistique transport",
   ecosystemFr:
     "Trappes s'insère dans le tissu industriel et tertiaire de Saint-Quentin-en-Yvelines, agglomération de 200 000 habitants. Proximité immédiate du Technocentre Renault (Guyancourt), des sièges Bouygues Construction, Nexter, et tissu sous-traitants automobile/défense. Hub logistique nord-Yvelines.",

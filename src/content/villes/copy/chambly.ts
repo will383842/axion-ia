@@ -9,9 +9,9 @@ export const CHAMBLY_COPY: VilleCopy = {
   pitchEn:
     "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit sur place sur mesure.",
   ecosystemFr:
     "Chambly est une commune résidentielle du sud de l'Oise, aux portes du Val-d'Oise et de l'Île-de-France. Son économie locale repose sur le commerce de proximité, l'artisanat du BTP, les services aux particuliers et aux entreprises. Le bassin d'emploi s'articule avec Méru, Persan et Beaumont-sur-Oise, et bénéficie de la proximité de la N1 et de la gare TER de Chambly (ligne Paris-Nord — Persan-Beaumont).",
   ecosystemEn:

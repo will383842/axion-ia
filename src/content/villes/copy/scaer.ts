@@ -10,9 +10,9 @@ export const SCAER_COPY: VilleCopy = {
     "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants du centre Finistère.",
   seoHook: "agroalimentaire, forêt & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Scaër est une commune étendue du centre Finistère, adossée à l'un des plus grands massifs forestiers de Bretagne. L'économie locale repose sur l'agroalimentaire (volaille, produits laitiers), l'agriculture, la filière bois, l'artisanat BTP et le commerce de proximité. Le bourg joue un rôle de pôle de services pour les communes rurales environnantes du Poher et de la Cornouaille intérieure.",
   ecosystemEn:

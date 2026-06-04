@@ -9,9 +9,9 @@ export const LIBERCOURT_COPY: VilleCopy = {
   pitchEn:
     "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie son expertise pour toutes les organisations du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Libercourt est une commune du bassin minier sur l'axe autoroutier A1, entre Lens et Douai. Position stratégique pour la logistique (proximité plateforme Delta 3 Dourges). Tissu de TPE artisanales, commerces, PME de services et professions libérales. Gare TER desservant Lille et Douai.",

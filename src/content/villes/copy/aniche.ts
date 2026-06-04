@@ -9,9 +9,9 @@ export const ANICHE_COPY: VilleCopy = {
   pitchEn:
     "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
   seoHook: "artisanat & industrie verrière",
   ecosystemFr:
     "Aniche est positionnée entre Douai (15 min ouest) et Valenciennes (20 min est), au cœur du bassin minier Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO. Héritage industriel structuré autour de la verrerie (ancienne cristallerie d'Aniche) et reconversion post-mine. Tissu TPE/PME artisanat BTP, industrie, services, commerces de proximité, sous-traitance industrielle. Accès A21 et A2 vers Lille (40 min), Belgique frontalière proche.",

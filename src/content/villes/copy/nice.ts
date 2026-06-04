@@ -51,7 +51,7 @@ export const NICE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes azuréennes conservent la maîtrise pleine de la stack (modèles, CRM hôtelier, intégrations Sophia) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes azuréennes conservent la maîtrise pleine de la stack (modèles, CRM hôtelier, intégrations Sophia) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Nice (06) on site, from the Promenade des Anglais to Sophia Antipolis. We support micro-businesses, SMEs, mid-caps and large enterprises on the Côte d'Azur — business tourism, IT, health, services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

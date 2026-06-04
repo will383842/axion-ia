@@ -9,9 +9,9 @@ export const ARGENTAN_COPY: VilleCopy = {
   pitchEn:
     "Argentan (61), sous-préfecture de l'Orne en Normandie, est réputée pour sa dentelle au Point d'Argentan et sa proximité avec le Haras national du Pin. Tissu TPE artisans, PME agroalimentaires et équines, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités de la plaine d'Argentan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Argentan (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argentan (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Argentan (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argentan (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
   seoHook: "agroalimentaire, filière équine & patrimoine",
   ecosystemFr:
     "Argentan est sous-préfecture de l'Orne, positionnée dans la plaine normande entre Caen et Alençon. Tissu PME agroalimentaires, filière équine (proximité Haras national du Pin), TPE artisans, commerces de centre-ville et professions libérales installées.",

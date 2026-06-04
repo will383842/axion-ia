@@ -9,9 +9,9 @@ export const PEZENAS_COPY: VilleCopy = {
   pitchEn:
     "Pézenas (34), ville d'art et d'histoire de l'Hérault, célèbre pour Molière et son patrimoine théâtral. Centre historique remarquable, brocante réputée, vignoble AOC Languedoc (Pézenas). Tissu TPE artisans d'art, PME viticoles, commerçants, hôtellerie-restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pézenas (34). Nous accompagnons TPE artisans d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pézenas (34). Nous accompagnons TPE artisans d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Pézenas (34). Nous accompagnons TPE artisans d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pézenas (34). Nous accompagnons TPE artisans d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
   ecosystemFr:
     "Pézenas est une ville d'art et d'histoire, ancien siège des États du Languedoc, où Molière a séjourné et joué (1650-1657). Centre historique remarquable (hôtels particuliers, théâtre, brocante), vignoble AOC Languedoc-Pézenas réputé. Tissu TPE artisans d'art et métiers de bouche, PME viticoles, commerçants, hôtellerie-restauration, tourisme culturel.",
   ecosystemEn:

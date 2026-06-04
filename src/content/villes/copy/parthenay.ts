@@ -9,9 +9,9 @@ export const PARTHENAY_COPY: VilleCopy = {
   pitchEn:
     "Parthenay (79), sous-préfecture des Deux-Sèvres, 10 140 habitants. Cité médiévale remarquable, capitale du jeu (FLIP, festival ludique international), tissu de TPE artisans, PME agroalimentaires et commerces. Axion-IA y déploie son expertise pour toutes les organisations de la Gâtine parthenaisienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit sur place sur mesure.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Parthenay est sous-préfecture des Deux-Sèvres, 10 140 habitants, cité médiévale (quartier Saint-Jacques, porte de l'Horloge). Capitale du jeu (FLIP, festival ludique). Tissu de TPE agricoles (élevage bovin parthenaise), PME agroalimentaires, artisans, commerces de centre-ville et tourisme patrimonial.",

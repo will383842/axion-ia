@@ -52,7 +52,7 @@ export const MULHOUSE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mulhouse (68) sur site — centre-ville, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon et communes du bassin (Riedisheim, Kingersheim, Illzach, Pfastatt). Nous accompagnons les TPE, PME, ETI et grandes entreprises mulhousiennes (automobile, industrie, chimie, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Position trinationale et contraintes RGPD transfrontalières maîtrisées.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulhouse (68) sur site — centre-ville, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon et communes du bassin (Riedisheim, Kingersheim, Illzach, Pfastatt). Nous accompagnons les TPE, PME, ETI et grandes entreprises mulhousiennes (automobile, industrie, chimie, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Position trinationale et contraintes RGPD transfrontalières maîtrisées.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Mulhouse (68) on site — city centre, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon and basin communes (Riedisheim, Kingersheim, Illzach, Pfastatt). We support Mulhouse micro-businesses, SMEs, mid-caps and large enterprises (automotive, industry, chemicals, digital, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Tri-national position and cross-border GDPR constraints handled.",
 

@@ -10,9 +10,9 @@ export const YVETOT_COPY: VilleCopy = {
     "Yvetot (76), chef-lieu du pays de Caux en Seine-Maritime, reunit pres de 11 440 habitants. Ville de services et de commerce, dotee de son eglise moderne aux vitraux remarquables, elle concentre TPE de services, PME commerciales, professions liberales et activites agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & pays de Caux",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Yvetot est le chef-lieu commercial du pays de Caux, entre Rouen et Le Havre. Centre de services pour un bassin rural dense : commerces, professions liberales, PME agroalimentaires, TPE de services et artisanat. Marche hebdomadaire important. Acces A29 et D6015.",
   ecosystemEn:

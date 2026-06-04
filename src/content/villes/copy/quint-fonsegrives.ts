@@ -9,9 +9,9 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
   pitchEn:
     "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y travaille avec les organisations du territoire de la couronne est de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil gestion",
   ecosystemFr:
     "Quint-Fonsegrives est une commune résidentielle verdoyante de l'est de Toulouse. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie prisé, proximité Balma et Saint-Orens.",

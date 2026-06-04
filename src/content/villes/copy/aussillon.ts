@@ -9,9 +9,9 @@ export const AUSSILLON_COPY: VilleCopy = {
   pitchEn:
     "Aussillon (81), commune de l'agglomération Castres-Mazamet au pied de la Montagne Noire, plus de 5 500 habitants. Tissu TPE artisans, PME industrie et services, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin mazamétain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit sur place sur mesure.",
   seoHook: "industrie textile & artisanat",
   ecosystemFr:
     "Aussillon (5 527 hab) est une commune de l'agglomération Castres-Mazamet, au pied de la Montagne Noire. Économie liée au bassin mazamétain : PME textile-industrie en reconversion, artisanat, commerces de proximité, services. Proximité immédiate Mazamet (5 min) et Castres (15 min). Cadre naturel Montagne Noire attractif pour le tourisme vert.",

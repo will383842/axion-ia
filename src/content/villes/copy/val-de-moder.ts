@@ -9,9 +9,9 @@ export const VAL_DE_MODER_COPY: VilleCopy = {
   pitchEn:
     "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Moder.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Val-de-Moder est une commune nouvelle d'Alsace du Nord créée par fusion autour de Pfaffenhoffen, située dans la vallée de la Moder. Tissu TPE artisans BTP, PME industrielles (mécanique, agroalimentaire, transformation bois), PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Pôle économique de la vallée intermédiaire entre Haguenau et Saverne.",

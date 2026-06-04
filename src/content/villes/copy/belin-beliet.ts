@@ -9,9 +9,9 @@ export const BELIN_BELIET_COPY: VilleCopy = {
   pitchEn:
     "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit sur place sur mesure.",
   seoHook: "exploitation forestière & commerce bourg",
   ecosystemFr:
     "Belin-Béliet se situe en coeur de forêt landaise, à la jonction A63/A65. Exploitation forestière (pin maritime), artisanat BTP, commerces de bourg, tourisme nature (Leyre, canoë) et services à la personne. Noeud autoroutier vers Bordeaux, Bayonne et Pau.",

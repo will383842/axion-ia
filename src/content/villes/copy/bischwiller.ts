@@ -9,9 +9,9 @@ export const BISCHWILLER_COPY: VilleCopy = {
   pitchEn:
     "Bischwiller (67), ville industrielle du Nord Alsace dans le Bas-Rhin, conjugue héritage textile et drap militaire, mécanique de précision et tissu économique manufacturier diversifié. TPE/PME industrielles, sous-traitance automobile, commerces, artisans et services rayonnent entre Strasbourg et Haguenau. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit sur place sur mesure.",
   seoHook: "industrie textile & sous-traitance automobile",
   ecosystemFr:
     "Bischwiller est un pôle industriel historique du Nord Alsace, marqué par son passé textile (drap militaire, lainages) reconverti vers la mécanique de précision, la sous-traitance automobile et la métallurgie. Tissu de TPE/PME manufacturières, ZA active, commerces de centre-ville, artisans BTP et professions libérales. Proximité immédiate de Haguenau (15 min) et Strasbourg (30 min).",

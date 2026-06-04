@@ -10,9 +10,9 @@ export const SAINT_ETIENNE_AU_MONT_COPY: VilleCopy = {
     "Saint-Etienne-au-Mont (62), commune de l'agglomeration boulonnaise dans le Pas-de-Calais, reunit environ 5 030 habitants aux portes de la foret de Boulogne. Son economie repose sur des TPE artisanales, des PME de services, le commerce de proximite et l'activite residentielle liee au bassin d'emploi de Boulogne-sur-Mer. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Boulogne, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Etienne-au-Mont est situee dans l'agglomeration de Boulogne-sur-Mer, premier port de peche francais. Tissu economique residentielo-tertiaire : TPE artisanat BTP, PME services aux entreprises, commerces de centre-bourg, professions de sante et activites liees au tourisme cotier (Cote d'Opale).",
   ecosystemEn:

@@ -10,9 +10,9 @@ export const MORLAIX_COPY: VilleCopy = {
     "Morlaix (29), sous-préfecture du Finistère dominée par son viaduc monumental, au fond d'un estuaire ouvert sur la Manche. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et acteurs du tourisme culturel (Manufacture des Tabacs, maisons à pondalez). Axion-IA y intervient pour tous types d'activités.",
   seoHook: "agroalimentaire, tourisme & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit sur place sur mesure.",
   ecosystemFr:
     "Morlaix est une sous-préfecture historique du nord-Finistère, connue pour son viaduc ferroviaire à deux niveaux et son patrimoine médiéval (maisons à pondalez). La Manufacture des Tabacs reconvertie accueille un pôle culturel. L'agroalimentaire breton (légumes, produits laitiers) et le tourisme structurent l'économie locale. Communes voisines : Saint-Martin-des-Champs, Plourin-lès-Morlaix, Garlan, Sainte-Sève, Taulé.",
   ecosystemEn:

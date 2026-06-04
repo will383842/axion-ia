@@ -9,9 +9,9 @@ export const MARIGNIER_COPY: VilleCopy = {
   pitchEn:
     "Marignier (74), commune de la vallée de l'Arve en Haute-Savoie, se situe entre Cluses et Bonneville au cœur du bassin mondial du décolletage. Tissu industriel dense (sous-traitance automobile, horlogerie, médical), TPE artisans, commerces de proximité, PME logistique. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
   seoHook: "décolletage usinage & industrielles vallée",
   ecosystemFr:
     "Marignier est au cœur de la vallée de l'Arve, premier bassin mondial du décolletage (2 000+ entreprises sur Cluses-Scionzier-Marnaz-Marignier-Thyez). L'industrie de sous-traitance automobile, horlogerie et médical structure le tissu économique. Le pôle de compétitivité Mont-Blanc Industries irrigue la zone. PME industrielles, TPE artisans, commerces de proximité, services aux entreprises.",

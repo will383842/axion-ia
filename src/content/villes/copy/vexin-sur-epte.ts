@@ -9,9 +9,9 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   pitchEn:
     "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
   seoHook: "agriculture grandes & élevage productions",
   ecosystemFr:
     "Vexin-sur-Epte est une commune nouvelle de l'Eure issue de la fusion de plusieurs communes le long de la vallée de l'Epte, au cœur du Vexin normand. Territoire rural dynamique, grandes cultures céréalières, élevage, artisanat, commerces de proximité. Proximité Gisors (sous-préfecture) et frontière Île-de-France.",

@@ -10,9 +10,9 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
     "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants.",
   seoHook: "nucléaire, industrie & patrimoine sculptural",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Nogent-sur-Seine est une sous-préfecture de l'Aube baignée par la Seine. La centrale nucléaire EDF structure l'emploi local avec un écosystème de sous-traitants industriels et de maintenance. Le musée Camille Claudel, inauguré en 2017, rayonne culturellement. Tissu de TPE artisanales, commerces de centre-ville, exploitations céréalières de la plaine de Champagne et services aux entreprises.",
   ecosystemEn:

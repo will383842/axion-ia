@@ -9,9 +9,9 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
   pitchEn:
     "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
   seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Bricquebec-en-Cotentin est une commune nouvelle regroupant plusieurs bourgs autour du château médiéval de Bricquebec, au cœur du bocage cotentinois. L'économie locale repose sur l'élevage bovin (lait et viande), l'agroalimentaire (fromageries, cidreries), l'artisanat, les commerces de marché, le tourisme rural (château, sentiers bocagers) et les services de proximité. Cherbourg à 30 min, Valognes à 15 min.",

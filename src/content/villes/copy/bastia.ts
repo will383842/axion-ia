@@ -9,9 +9,9 @@ export const BASTIA_COPY: VilleCopy = {
   pitchEn:
     "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu TPE commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "commerce détail restauration & logistique portuaire",
   ecosystemFr:
     "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu TPE commerces et restaurants, PME maritimes, artisans, professions libérales.",

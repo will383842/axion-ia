@@ -9,9 +9,9 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
   pitchEn:
     "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Morcenx-la-Nouvelle (40). Nous accompagnons TPE et PME de la filière bois et forestière, acteurs du tourisme nature (lac Arjuzanx, réserve grues cendrées), agriculteurs, commerçants, artisans BTP et professions libérales du cœur des Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morcenx-la-Nouvelle (40). Nous accompagnons TPE et PME de la filière bois et forestière, acteurs du tourisme nature (lac Arjuzanx, réserve grues cendrées), agriculteurs, commerçants, artisans BTP et professions libérales du cœur des Landes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Morcenx-la-Nouvelle (40). Nous accompagnons TPE et PME de la filière bois et forestière, acteurs du tourisme nature (lac Arjuzanx, réserve grues cendrées), agriculteurs, commerçants, artisans BTP et professions libérales du cœur des Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morcenx-la-Nouvelle (40). Nous accompagnons TPE et PME de la filière bois et forestière, acteurs du tourisme nature (lac Arjuzanx, réserve grues cendrées), agriculteurs, commerçants, artisans BTP et professions libérales du cœur des Landes.",
   seoHook: "forêt, réserve naturelle & commune nouvelle",
   ecosystemFr:
     "Morcenx-la-Nouvelle est une commune nouvelle créée en 2019 par fusion de quatre communes. Le lac d'Arjuzanx (ancienne mine à ciel ouvert reconvertie) et sa réserve naturelle accueillent chaque hiver des milliers de grues cendrées. Nœud ferroviaire historique (ligne Bordeaux-Irun). Patrimoine remarquable : église XIIe siècle, château de Moré. Économie : exploitation forestière landaise, agriculture, tourisme nature, TPE artisans, commerces de bourg.",

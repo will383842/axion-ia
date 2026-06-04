@@ -9,9 +9,9 @@ export const LIMAY_COPY: VilleCopy = {
   pitchEn:
     "Limay (78), commune des bords de Seine face à Mantes-la-Jolie, allie zone industrielle active et tissu de TPE/PME diversifié. Industrie, logistique, BTP, commerces, services aux entreprises et professions libérales. Axion-IA accompagne tout le tissu professionnel local du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Limay (78). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limay (78). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Limay (78). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limay (78). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
   seoHook: "industrie matériaux & logistique transport",
   ecosystemFr:
     "Limay est située sur la rive droite de la Seine, face à Mantes-la-Jolie, au cœur du Mantois. Tissu économique dynamique : zones d'activités industrielles et logistiques (carrières, matériaux, recyclage), TPE artisanat et BTP, commerces de proximité, PME de services, professions libérales. La commune bénéficie de l'axe Paris-Normandie et de la proximité de la gare de Mantes-la-Jolie.",

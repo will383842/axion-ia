@@ -9,9 +9,9 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-sur-Yonne (89), commune de l'Yonne sur les bords de l'Yonne, est une ancienne cité royale médiévale (fondée par Louis VII) au patrimoine remarquable (portes fortifiées, donjon, église). Tissu TPE artisans, commerces, tourisme patrimonial, PME services, agriculture périurbaine. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit sur place sur mesure.",
   seoHook: "tourisme patrimonial & services",
   ecosystemFr:
     "Villeneuve-sur-Yonne est positionnée sur les bords de l'Yonne au nord du département, ancienne cité royale fondée par Louis VII (1163). Patrimoine médiéval : portes de Joigny et de Sens, donjon, église Notre-Dame. Économie : TPE artisanat, commerce de proximité, tourisme patrimonial, PME services, agriculture céréalière.",

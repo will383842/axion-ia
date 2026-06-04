@@ -9,9 +9,9 @@ export const VENCE_COPY: VilleCopy = {
   pitchEn:
     "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local du Pays vençois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vence (06). Nous accompagnons tous types d'activités : TPE artisans d'art, PME tourisme et hôtellerie, galeries, commerçants, professions libérales, indépendants et services aux entreprises de l'arrière-pays niçois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vence (06). Nous accompagnons tous types d'activités : TPE artisans d'art, PME tourisme et hôtellerie, galeries, commerçants, professions libérales, indépendants et services aux entreprises de l'arrière-pays niçois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Vence (06). Nous accompagnons tous types d'activités : TPE artisans d'art, PME tourisme et hôtellerie, galeries, commerçants, professions libérales, indépendants et services aux entreprises de l'arrière-pays niçois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vence (06). Nous accompagnons tous types d'activités : TPE artisans d'art, PME tourisme et hôtellerie, galeries, commerçants, professions libérales, indépendants et services aux entreprises de l'arrière-pays niçois.",
   seoHook: "art, galeries & tourisme culturel",
   ecosystemFr:
     "Vence est cité d'art de l'arrière-pays niçois (~19 900 hab), connue pour la chapelle du Rosaire de Matisse et ses nombreuses galeries d'art. Tourisme culturel et résidentiel (cadre de vie arrière-pays). TPE artisans d'art, PME hôtellerie/restauration, galeries et ateliers d'artistes, professions libérales, commerces de charme et services.",

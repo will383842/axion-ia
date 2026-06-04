@@ -9,9 +9,9 @@ export const CARBON_BLANC_COPY: VilleCopy = {
   pitchEn:
     "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y travaille avec les organisations du territoire de la rive droite bordelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
   seoHook: "professions libérales & services",
   ecosystemFr:
     "Carbon-Blanc est une commune résidentielle de la rive droite de Bordeaux Métropole, entre Lormont et Bassens. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et pont Chaban-Delmas.",

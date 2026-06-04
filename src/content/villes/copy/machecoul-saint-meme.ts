@@ -9,9 +9,9 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   pitchEn:
     "Machecoul-Saint-Même (44), commune nouvelle de Loire-Atlantique aux portes du marais breton vendéen, conjugue agroalimentaire, artisanat, commerces de centre-bourg et PME de services. Axion-IA opère pour entreprises et indépendants du secteur du sud Loire-Atlantique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
     "Machecoul-Saint-Même est une commune nouvelle (fusion 2019) aux portes du marais breton vendéen. Pôle agroalimentaire (industrie laitière, conserves), artisanat, commerces de centre-bourg, PME services et professions libérales. Carrefour entre Nantes (50 min) et la côte atlantique.",

@@ -9,9 +9,9 @@ export const PLESSE_COPY: VilleCopy = {
   pitchEn:
     "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   seoHook: "agriculture élevage & artisanat filière",
   ecosystemFr:
     "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les TPE artisanales BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",

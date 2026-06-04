@@ -9,9 +9,9 @@ export const FIGEAC_COPY: VilleCopy = {
   pitchEn:
     "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
   seoHook: "aéronautique usinage & mécanique industrielle",
   ecosystemFr:
     "Figeac est une sous-préfecture du Lot, cité médiévale classée et ville natale de Champollion. Pôle aéronautique majeur (usinage de précision, mécanique de haute technologie). Chemin de Saint-Jacques-de-Compostelle (GR 65). Tissu PME aéronautique et mécanique, TPE artisans, commerces centre médiéval, tourisme culturel et pèlerin.",

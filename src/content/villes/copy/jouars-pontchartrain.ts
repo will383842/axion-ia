@@ -9,9 +9,9 @@ export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
   pitchEn:
     "Jouars-Pontchartrain (78), commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de bourg, professions libérales et entreprises du tertiaire liées au bassin de Plaisir-Trappes. Axion-IA répond aux besoins de toutes les entreprises de l'ouest Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Jouars-Pontchartrain est une commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline. Site archéologique gallo-romain (Diodurum) et patrimoine rural préservé. Tissu économique : TPE artisans, commerces de bourg, PME tertiaires, professions libérales, services à la personne et entreprises liées au bassin Plaisir-Trappes. Communes voisines : Neauphle-le-Château, Plaisir, Élancourt, Villepreux, Beynes.",

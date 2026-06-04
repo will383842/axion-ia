@@ -9,9 +9,9 @@ export const MAULEON_COPY: VilleCopy = {
   pitchEn:
     "Mauléon (79), commune des Deux-Sèvres en bocage bressuirais, 8 573 habitants. Capitale historique de l'espadrille, tissu de TPE artisans textile/chaussure, PME industrielles, agriculture bocagère et commerces. Axion-IA y intervient pour tous types d'activités du bocage deux-sévrien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
   seoHook: "textile espadrille & agriculture bocagère",
   ecosystemFr:
     "Mauléon est une commune de 8 573 habitants dans le bocage bressuirais, capitale historique de l'espadrille (production artisanale encore active). Tissu de TPE artisans textile/chaussure, PME industrielles, TPE agricoles (élevage bovin, polyculture), commerces de bourg et services de proximité.",

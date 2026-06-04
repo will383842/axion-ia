@@ -9,9 +9,9 @@ export const MEZE_COPY: VilleCopy = {
   pitchEn:
     "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit sur place sur mesure.",
   ecosystemFr:
     "Mèze est un port conchylicole majeur sur l'étang de Thau, entre Sète et Montpellier. Son économie s'appuie sur la conchyliculture (huîtres de Bouzigues, moules), la pêche, la restauration de produits de la mer, le tourisme nautique et balnéaire, la viticulture (muscat de Frontignan proche), le commerce de centre-ville et l'artisanat. Port de plaisance et criée.",
   ecosystemEn:

@@ -9,9 +9,9 @@ export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pryvé-Saint-Mesmin (45). Nous accompagnons tous types d'activités : professions libérales, TPE artisans et commerçants, PME tertiaires et de services, indépendants, cabinets conseil et entreprises de l'agglomération orléanaise sud-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pryvé-Saint-Mesmin (45). Nous accompagnons tous types d'activités : professions libérales, TPE artisans et commerçants, PME tertiaires et de services, indépendants, cabinets conseil et entreprises de l'agglomération orléanaise sud-ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Pryvé-Saint-Mesmin (45). Nous accompagnons tous types d'activités : professions libérales, TPE artisans et commerçants, PME tertiaires et de services, indépendants, cabinets conseil et entreprises de l'agglomération orléanaise sud-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pryvé-Saint-Mesmin (45). Nous accompagnons tous types d'activités : professions libérales, TPE artisans et commerçants, PME tertiaires et de services, indépendants, cabinets conseil et entreprises de l'agglomération orléanaise sud-ouest.",
   seoHook: "professions libérales & artisanat services",
   ecosystemFr:
     "Saint-Pryvé-Saint-Mesmin est une commune résidentielle de l'agglomération Orléans Métropole, en rive gauche de la Loire et en bordure du Loiret (rivière). Cadre verdoyant prisé au sud-ouest d'Orléans, entre Olivet et La Chapelle-Saint-Mesmin. Tissu professions libérales (santé, droit, conseil), TPE artisans, commerçants, PME tertiaires et services aux entreprises orléanaises.",

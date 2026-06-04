@@ -9,9 +9,9 @@ export const ROUSSILLON_COPY: VilleCopy = {
   pitchEn:
     "Roussillon (38), commune du sud-Isère dans la vallée du Rhône (entre Vienne et Valence), s'inscrit dans un bassin économique mixte industriel, agricole et résidentiel. Tissu PME industrielles, TPE artisans, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du sud-Isère et de l'axe rhodanien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
   seoHook: "industrie manufacturière & agriculture vallée",
   ecosystemFr:
     "Roussillon est positionnée stratégiquement sur l'axe rhodanien à mi-chemin entre Lyon et Valence. Tissu industriel important (zone d'activités élargie), activité agricole vallée du Rhône (vergers, maraîchage), commerce, services. Position de transit majeur (A7, ligne ferroviaire Paris-Marseille). Communauté de communes du Pays Roussillonnais.",

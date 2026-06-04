@@ -9,9 +9,9 @@ export const LOUVIERS_COPY: VilleCopy = {
   pitchEn:
     "Louviers (27), sous-préfecture de l'Eure en Normandie, ville historique du textile et du drap. Tissu TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Louviers (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louviers (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Louviers (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louviers (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   seoHook: "vallée eure",
   ecosystemFr:
     "Louviers est une sous-préfecture de l'Eure, ville historique du textile normand (draps de Louviers) reconvertie vers l'industrie, l'agroalimentaire et les services. Position stratégique vallée de l'Eure entre Rouen (30 min) et Évreux (25 min). Agglomération Seine-Eure dynamique, tissu TPE/PME diversifié, zones d'activité industrielles.",

@@ -9,9 +9,9 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cyprien (66), station balnéaire du littoral catalan avec marina, golf et port de plaisance, fait partie de la Communauté de communes Sud Roussillon. Tissu TPE tourisme haut de gamme, PME hôtellerie, commerces, résidences de vacances, activités nautiques. Axion-IA y intervient pour tous types d'activités du littoral roussillonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cyprien (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces, activités nautiques et golfiques, indépendants et professions libérales du Sud Roussillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Cyprien (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces, activités nautiques et golfiques, indépendants et professions libérales du Sud Roussillon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Saint-Cyprien (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces, activités nautiques et golfiques, indépendants et professions libérales du Sud Roussillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Cyprien (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces, activités nautiques et golfiques, indépendants et professions libérales du Sud Roussillon.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Cyprien est une station balnéaire du Sud Roussillon dotée d'un port de plaisance (2 200 anneaux), d'un golf 27 trous et de plages méditerranéennes. Économie touristique dominante : résidences de vacances, hôtellerie, restauration, nautisme. Village historique avec TPE artisans, commerces et services.",

@@ -9,9 +9,9 @@ export const FENOUILLET_COPY: VilleCopy = {
   pitchEn:
     "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat",
   ecosystemFr:
     "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales. Proximité d'Aucamville et de l'axe A62.",

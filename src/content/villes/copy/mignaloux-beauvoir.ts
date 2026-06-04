@@ -9,9 +9,9 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
   pitchEn:
     "Mignaloux-Beauvoir (86), commune résidentielle de l'est de l'agglomération de Poitiers, est intégrée à Grand Poitiers. Tissu TPE artisans, PME tertiaires, professions libérales, commerces de proximité et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales de l'agglo poitevine est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mignaloux-Beauvoir (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants, indépendants et services aux entreprises de l'agglomération de Poitiers est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mignaloux-Beauvoir (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants, indépendants et services aux entreprises de l'agglomération de Poitiers est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Mignaloux-Beauvoir (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants, indépendants et services aux entreprises de l'agglomération de Poitiers est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mignaloux-Beauvoir (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants, indépendants et services aux entreprises de l'agglomération de Poitiers est.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Mignaloux-Beauvoir (5 229 hab) est une commune résidentielle attractive de l'est de Grand Poitiers, à proximité immédiate du campus universitaire et du CHU de Poitiers. Tissu PME tertiaires, TPE artisans, professions libérales (santé, juridique), commerces de proximité. Cadre de vie recherché entre campagne et ville.",

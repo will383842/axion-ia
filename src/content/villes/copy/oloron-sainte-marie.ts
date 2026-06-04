@@ -9,9 +9,9 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
   pitchEn:
     "Oloron-Sainte-Marie (64), sous-préfecture des Pyrénées-Atlantiques au confluent des gaves d'Aspe et d'Ossau, 10 684 habitants. Capitale du béret, tissu de TPE artisans, PME textile/agroalimentaire, tourisme pyrénéen et commerces. Axion-IA couvre les activités professionnelles du bassin du Haut-Béarn.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit sur place sur mesure.",
   seoHook: "textile béret & agroalimentaire",
   ecosystemFr:
     "Oloron-Sainte-Marie est sous-préfecture du Haut-Béarn au confluent des gaves d'Aspe et d'Ossau, 10 684 habitants. Capitale historique du béret basque, filière textile artisanale, PME agroalimentaires (fromages, charcuterie), tourisme pyrénéen (vallées d'Aspe et d'Ossau, chemin de Saint-Jacques), commerces de centre-ville et artisanat d'art.",

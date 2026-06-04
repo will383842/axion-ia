@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ALES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'experts IA seniors, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'experts IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "industrie & Cévennes",
   ecosystemFr:
     "Alès, ancien coeur du bassin houiller cévenol, s'est reconvertie en pôle industriel et technologique appuyé par l'École des Mines d'Alès (IMT Mines Alès) et le parc scientifique de l'Arche. Le tissu mêle PME industrielles et de sous-traitance, BTP, mécanique, plasturgie, commerce et tourisme vert au pied des Cévennes, avec un fort besoin de modernisation des process.",
