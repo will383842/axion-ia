@@ -13,6 +13,7 @@ import { Plausible } from "@/components/analytics/Plausible";
 import { RefererTracker } from "@/components/analytics/RefererTracker";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { Clarity } from "@/components/analytics/Clarity";
+import { ChatWidgetMount } from "@/components/chatbot/ChatWidgetMount";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { buildSiteNavigationJsonLd } from "@/lib/seo/extended-schemas";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
@@ -294,6 +295,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               Reactive le bloc désactivé 2026-05-18 sans rallumer le crash RSC
               stream sur la console admin. Gain LCP soft-nav -800 à -1200 ms. */}
           <SpeculationRules locale={locale} />
+          {/* T-08 — widget chatbot, île idle (next/dynamic ssr:false +
+              requestIdleCallback). Gated NEXT_PUBLIC_CHATBOT_ENABLED : ne monte
+              rien tant que Will n'active pas (D-PROD). Enfant du provider
+              next-intl (le widget consomme useTranslations). position:fixed →
+              CLS 0, hors First Load JS. */}
+          <ChatWidgetMount />
         </NextIntlClientProvider>
         {/* V-04 P5 (Sprint Correctif suite 2026-05-22) — JSON-LD Organization +
             WebSite consolidés en un seul <script type="application/ld+json">

@@ -441,5 +441,19 @@
       "previewTitle": "Aperçu (brouillon)",
       "previewNoindex": "Cette page n'est pas indexée. Aperçu admin uniquement."
     }
+  },
+  "chatbot": {
+    "bubbleLabel": "Ouvrir l'assistant Axion-IA",
+    "closeLabel": "Fermer l'assistant",
+    "title": "Assistant Axion-IA",
+    "aiDisclaimer": "Vous dialoguez avec une IA. Vérifiez les informations importantes.",
+    "intro": "Bonjour 👋 Posez-moi une question sur nos interventions, audits ou implémentations IA — je vous oriente vers la bonne offre.",
+    "placeholder": "Posez votre question…",
+    "sendLabel": "Envoyer",
+    "sourcesLabel": "Sources",
+    "offerCta": "Voir l'offre",
+    "rdvCta": "Prendre rendez-vous",
+    "escalated": "Je transmets votre question à un conseiller — vous serez recontacté.",
+    "errorRetry": "Un souci est survenu. Réessayez dans un instant."
   }
 }
