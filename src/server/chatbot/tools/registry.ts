@@ -26,6 +26,10 @@ import {
   QualifierProspectInputSchema,
   qualifierProspect,
 } from "@/server/chatbot/tools/qualifier-prospect";
+import {
+  EscaladerQuestionInputSchema,
+  escaladerQuestion,
+} from "@/server/chatbot/tools/escalader-question";
 
 export type { ToolContext };
 
@@ -151,4 +155,14 @@ chatbotTools.register<typeof QualifierProspectInputSchema._type>({
     "élément de profil est exprimé.",
   schema: QualifierProspectInputSchema,
   handler: (input, ctx) => qualifierProspect(input, ctx),
+});
+
+chatbotTools.register<typeof EscaladerQuestionInputSchema._type>({
+  name: "escalader_question",
+  description:
+    "Escalade une question à laquelle tu ne peux PAS répondre de façon fiable " +
+    "(info absente du contexte, hors périmètre catalogue). Crée une demande pour " +
+    "l'équipe et la notifie. À utiliser plutôt que d'inventer une réponse.",
+  schema: EscaladerQuestionInputSchema,
+  handler: (input, ctx) => escaladerQuestion(input, ctx),
 });
