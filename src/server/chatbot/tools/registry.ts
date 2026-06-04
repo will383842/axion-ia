@@ -18,6 +18,10 @@ import {
 } from "@/server/chatbot/tools/rechercher-offres";
 import { CapturerLeadInputSchema, capturerLead } from "@/server/chatbot/tools/capturer-lead";
 import { ProposerRdvInputSchema, proposerRdv } from "@/server/chatbot/tools/proposer-rdv";
+import {
+  ChercherRessourceInputSchema,
+  chercherRessource,
+} from "@/server/chatbot/tools/chercher-ressource";
 
 export type { ToolContext };
 
@@ -121,4 +125,15 @@ chatbotTools.register<typeof ProposerRdvInputSchema._type>({
     "N'effectue aucune réservation serveur — oriente vers la page FR.",
   schema: ProposerRdvInputSchema,
   handler: async (input) => proposerRdv(input),
+});
+
+chatbotTools.register<typeof ChercherRessourceInputSchema._type>({
+  name: "chercher_ressource",
+  description:
+    "Cherche un article de blog ou un cas client PUBLIÉ pertinent sur un sujet, " +
+    "et renvoie son titre, son lien FR et un extrait. Utiliser pour appuyer une " +
+    "explication par une ressource concrète. Renvoie rien si aucune ressource " +
+    "pertinente — ne jamais inventer de lien.",
+  schema: ChercherRessourceInputSchema,
+  handler: (input, ctx) => chercherRessource(input, ctx),
 });
