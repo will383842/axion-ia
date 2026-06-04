@@ -29,6 +29,12 @@ import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/
 import { assembleSystemPrompt } from "@/server/chatbot/generation/system-prompt";
 import { generateAnswer, type GenerateAnswerFn } from "@/server/chatbot/generation/generate-stream";
 import { lookupSemanticCache, writeSemanticCache } from "@/server/chatbot/semantic-cache/cache";
+import { TokenBucket } from "@/server/chatbot/resilience/token-bucket";
+
+// T-28 — robinet de débit des appels LLM (par instance ; MVP mono-instance,
+// ADR-CB-06). Capacité = rafale tolérée, refill = débit soutenu. Bucket vide →
+// backpressure (réponse « forte affluence » + RDV), jamais de 429 brut.
+const llmBucket = new TokenBucket({ capacity: 20, refillPerSec: 5 });
 import { RERANK_TOP_N, RETRIEVAL_TOP_K } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 
@@ -74,6 +80,8 @@ export interface OrchestratorDeps {
   readonly rerank?: typeof rerankChunks;
   readonly cacheLookup?: typeof lookupSemanticCache;
   readonly cacheWrite?: typeof writeSemanticCache;
+  /** T-28 — acquisition d'un créneau LLM (false = forte affluence). Injectable (tests). */
+  readonly acquireLlmSlot?: () => boolean;
 }
 
 const OK_GUARD: OutputGuardResult = { ok: true, violations: [] };
@@ -89,6 +97,7 @@ export async function handleTurn(
   const rerank = deps.rerank ?? rerankChunks;
   const cacheLookup = deps.cacheLookup ?? lookupSemanticCache;
   const cacheWrite = deps.cacheWrite ?? writeSemanticCache;
+  const acquireLlmSlot = deps.acquireLlmSlot ?? (() => llmBucket.tryAcquire());
   const max = ctx.tenant.settings.maxOfferCards;
   const tenantId = ctx.tenant.id;
 
@@ -238,6 +247,24 @@ export async function handleTurn(
         ...(ctx.promptOverride ? { promptOverride: ctx.promptOverride } : {}),
       });
       const sources = chunks.map((c) => ({ sourceType: c.sourceType, sourceRef: c.sourceRef }));
+
+      // T-28 — backpressure : sous forte affluence (token-bucket LLM vide), on ne
+      // lance PAS l'appel LLM et on propose un échange, plutôt qu'un 429 brut. La
+      // saisie n'est pas perdue côté widget.
+      if (!acquireLlmSlot()) {
+        return {
+          intent: "explication",
+          text: "Nous avons un afflux de questions en ce moment. Pour ne pas vous faire attendre, prenons un court échange :",
+          cards: [],
+          sendLinks: false,
+          rdvUrl: RDV_URL,
+          slots,
+          sources,
+          linkFlow: INITIAL_FLOW,
+          escalate: true,
+          guard: OK_GUARD,
+        };
+      }
 
       // T-16 — mode dégradé : panne LLM (Anthropic down / rate-limit / circuit
       // ouvert) ⇒ JAMAIS d'erreur brute. On bascule sur une réponse de repli +

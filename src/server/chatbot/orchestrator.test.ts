@@ -193,4 +193,22 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.text).toMatch(/échange|technique|attendre/i);
     expect(r.guard.ok).toBe(true);
   });
+
+  it("T-28 : forte affluence (token-bucket vide) → backpressure SANS appel LLM", async () => {
+    const llm = vi.fn();
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: llm,
+        acquireLlmSlot: () => false, // bucket vide
+      },
+    );
+    expect(llm).not.toHaveBeenCalled(); // pas d'appel LLM sous backpressure
+    expect(r.escalate).toBe(true);
+    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.text).toMatch(/afflux|attendre/i);
+    expect(r.text).not.toMatch(/429|rate/i); // jamais de 429 brut
+  });
 });
