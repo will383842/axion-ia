@@ -346,6 +346,11 @@ export const env = createEnv({
     // monte rien et n'émet aucune requête. Pendant client de la garde serveur
     // `CHATBOT_ENABLED` (route SSE) — D-PROD : Will active les deux pour la prod.
     NEXT_PUBLIC_CHATBOT_ENABLED: z.enum(["true", "false"]).optional(),
+    // Canary par page (T-25) : liste de préfixes de chemin séparés par des
+    // virgules où le widget est autorisé (ex. "/fr/audit,/fr/implementation").
+    // Vide / non défini = toutes les pages (rollout global). Permet d'activer
+    // d'abord sur une page avant généralisation.
+    NEXT_PUBLIC_CHATBOT_PAGES: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -433,6 +438,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
     NEXT_PUBLIC_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_CHATBOT_ENABLED,
+    NEXT_PUBLIC_CHATBOT_PAGES: process.env.NEXT_PUBLIC_CHATBOT_PAGES,
   },
   emptyStringAsUndefined: true,
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true",

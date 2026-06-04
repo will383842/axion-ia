@@ -30,6 +30,28 @@ const ChatWidgetLazy = dynamic(
   { ssr: false },
 );
 
+/**
+ * Canary par page (T-25) : si NEXT_PUBLIC_CHATBOT_PAGES est défini (préfixes de
+ * chemin séparés par des virgules), le widget ne monte QUE sur ces pages. Vide /
+ * non défini = toutes les pages (rollout global).
+ */
+function isPageAllowed(): boolean {
+  const raw = env.NEXT_PUBLIC_CHATBOT_PAGES?.trim();
+  if (!raw) return true;
+  if (typeof window === "undefined") return false;
+  const path = window.location.pathname;
+  return raw
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .some(
+      (prefix) =>
+        path === prefix ||
+        path.startsWith(prefix.endsWith("/") ? prefix : `${prefix}/`) ||
+        path.startsWith(prefix),
+    );
+}
+
 function scheduleIdle(cb: () => void): () => void {
   if (typeof window === "undefined") return () => {};
   const w = window as typeof window & {
@@ -50,6 +72,7 @@ export function ChatWidgetMount() {
 
   React.useEffect(() => {
     if (env.NEXT_PUBLIC_CHATBOT_ENABLED !== "true") return;
+    if (!isPageAllowed()) return; // canary par page (T-25)
     return scheduleIdle(() => setReady(true));
   }, []);
 
