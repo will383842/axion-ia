@@ -103,9 +103,9 @@ export default async function ImplantationsHub({ params }: Props) {
     "@id": `${SITE_URL}/${loc}/implantations#hero-image`,
     contentUrl: `${SITE_URL}/images/axion-ia-implantations-france-hero-architectes.png`,
     url: `${SITE_URL}/images/axion-ia-implantations-france-hero-architectes.png`,
-    name: "Axion-IA · architectes IA seniors partout en France",
+    name: "Axion-IA · experts IA seniors partout en France",
     description:
-      "Carte de France stylisée du réseau Axion-IA — architectes IA seniors, 13 régions métropolitaines, 5 DROM et entreprises francophones à l'étranger, 5 services sur site.",
+      "Carte de France stylisée du réseau Axion-IA — experts IA seniors, 13 régions métropolitaines, 5 DROM et entreprises francophones à l'étranger, 5 services sur site.",
     encodingFormat: "image/png",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
     copyrightHolder: { "@type": "Organization", name: "Axion-IA" },
@@ -241,7 +241,7 @@ export default async function ImplantationsHub({ params }: Props) {
       />
 
       {/* Hero — refonte 2-col (Will 2026-05-26) : image globe + copy équilibrés.
-          H1 hook qualité « Cabinet d'architectes IA chez vous ? », sous-ligne
+          H1 hook qualité « Cabinet d'experts IA chez vous ? », sous-ligne
           énumérant la couverture nationale + 5 services. Image hero uploadée
           par Will (carte France style architectes). */}
       <section
@@ -270,7 +270,7 @@ export default async function ImplantationsHub({ params }: Props) {
                 {isFr ? "Cabinet d'" : "Senior "}
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic" style={{ fontFamily: "var(--font-serif)" }}>
-                    {isFr ? "architectes IA" : "AI architects"}
+                    {isFr ? "experts IA" : "AI experts"}
                   </span>
                 </em>
                 {isFr ? " chez vous ?" : " near you?"}
@@ -319,13 +319,13 @@ export default async function ImplantationsHub({ params }: Props) {
                 filenameTarget="public/images/axion-ia-implantations-france-hero-architectes.png"
                 alt={
                   isFr
-                    ? "Carte de France stylisée illustrant le réseau d'architectes IA seniors Axion-IA — couverture nationale 13 régions, toutes communes éligibles."
-                    : "Stylized map of France showing the Axion-IA senior AI architects network — national coverage of 13 regions, all communes eligible."
+                    ? "Carte de France stylisée illustrant le réseau d'experts IA seniors Axion-IA — couverture nationale 13 régions, toutes communes éligibles."
+                    : "Stylized map of France showing the Axion-IA senior AI experts network — national coverage of 13 regions, all communes eligible."
                 }
                 caption={
                   isFr
                     ? "Architectes IA seniors · France entière"
-                    : "Senior AI architects · All of France"
+                    : "Senior AI experts · All of France"
                 }
                 priority
               />
@@ -448,12 +448,10 @@ export default async function ImplantationsHub({ params }: Props) {
                 filenameTarget="public/images/axion-ia-implantations-bandeau-contact-architectes.png"
                 alt={
                   isFr
-                    ? "Illustration architectes IA Axion-IA à votre service — équipe senior, conseil opérationnel, France entière."
-                    : "Axion-IA AI architects at your service — senior team, operational consulting, all of France."
+                    ? "Illustration experts IA Axion-IA à votre service — équipe senior, conseil opérationnel, France entière."
+                    : "Axion-IA AI experts at your service — senior team, operational consulting, all of France."
                 }
-                caption={
-                  isFr ? "Axion-IA · architectes IA seniors" : "Axion-IA · senior AI architects"
-                }
+                caption={isFr ? "Axion-IA · experts IA seniors" : "Axion-IA · senior AI experts"}
               />
             </div>
           </div>

@@ -107,11 +107,11 @@ export const REGIONS: ReadonlyArray<Region> = [
     pitchEn:
       "Europe's leading economic region (€838 B GDP), home to the French AI ecosystem — Mistral, Hugging Face, Station F. Axion-IA intervenes on site across Greater Paris, from La Défense headquarters to inner-Paris SMEs.",
     metaTitleFr: "Île-de-France · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
-    metaTitleEn: "Île-de-France · Senior AI architects · Audit, Training, Coaching, SaaS",
+    metaTitleEn: "Île-de-France · Senior AI experts · Audit, Training, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Île-de-France. 5 services pour TPE et PME franciliennes : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS. ETI et grands comptes également. Paris, La Défense.",
     metaDescEn:
-      "Senior AI architects in Île-de-France. 5 services for SMBs in the Paris region: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms/SaaS. Mid-caps and large accounts also covered. Paris, La Défense.",
+      "Senior AI experts in Île-de-France. 5 services for SMBs in the Paris region: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms/SaaS. Mid-caps and large accounts also covered. Paris, La Défense.",
     audienceLocalFr:
       "L'Île-de-France concentre 1,2 million de TPE-PME — artisans dans tous les arrondissements parisiens, commerçants de la petite couronne, PME tech à Boulogne-Billancourt et Saint-Denis, professions libérales du 16ᵉ et du 8ᵉ. Axion-IA accompagne ces dirigeants — un boulanger qui veut automatiser ses commandes, un cabinet d'avocats qui veut accélérer la rédaction, une PME e-commerce qui veut un agent IA produit — comme les ETI franciliennes et les sièges grand-compte à La Défense, avec le même standard premium senior.",
     audienceCaseStudyFr: {
@@ -141,11 +141,11 @@ export const REGIONS: ReadonlyArray<Region> = [
     pitchEn:
       "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
     metaTitleFr: "Auvergne-Rhône-Alpes · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
-    metaTitleEn: "Auvergne-Rhône-Alpes · Senior AI architects · Audit, Training, Coaching, SaaS",
+    metaTitleEn: "Auvergne-Rhône-Alpes · Senior AI experts · Audit, Training, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Auvergne-Rhône-Alpes. 5 services pour TPE et PME : audit IA, formation entreprise, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI deep-tech également. Lyon, Grenoble, Annecy, Clermont.",
     metaDescEn:
-      "Senior AI architects in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Grenoble, Annecy, Clermont.",
+      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Grenoble, Annecy, Clermont.",
     audienceLocalFr:
       "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Grenoble, Saint-Étienne), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
     audienceCaseStudyFr: {
@@ -175,11 +175,11 @@ export const REGIONS: ReadonlyArray<Region> = [
     pitchEn:
       "GDP €173 B, diversified SME ecosystem — premium tourism, maritime, aerospace, tech (Sophia-Antipolis). Axion-IA supports leaders and CFOs in Marseille, Aix-en-Provence, Nice, Toulon, Cannes on their operational AI deployments.",
     metaTitleFr: "PACA · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
-    metaTitleEn: "PACA · Senior AI architects · Audit, Training, Coaching, SaaS · Axion-IA",
+    metaTitleEn: "PACA · Senior AI experts · Audit, Training, Coaching, SaaS · Axion-IA",
     metaDescFr:
       "Architectes IA seniors en Provence-Alpes-Côte d'Azur. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI et tech également. Marseille, Aix, Nice, Toulon, Cannes.",
     metaDescEn:
-      "Senior AI architects in Provence-Alpes-Côte d'Azur. 5 services for SMBs: AI audit, training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Mid-caps and tech also covered. Marseille, Aix, Nice, Toulon, Cannes.",
+      "Senior AI experts in Provence-Alpes-Côte d'Azur. 5 services for SMBs: AI audit, training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Mid-caps and tech also covered. Marseille, Aix, Nice, Toulon, Cannes.",
     audienceLocalFr:
       "Provence-Alpes-Côte d'Azur abrite plus de 500 000 TPE-PME ancrées dans le tissu local — hôteliers et restaurateurs azuréens, viticulteurs varois, négociants marseillais, cabinets d'avocats à Aix, agences immobilières cannoises, artisans du Var et des Alpes. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI tech de Sophia-Antipolis et les sièges aéronautiques (Eurocopter, Airbus Marignane), avec le même standard premium senior.",
     audienceCaseStudyFr: {

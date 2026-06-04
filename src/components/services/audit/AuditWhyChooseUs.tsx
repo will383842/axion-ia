@@ -6,7 +6,7 @@
  * la page :
  *   - On maîtrise TOUTE la chaîne IA & automatisation, de bout en bout : de la
  *     formation à l'implémentation complète, avec la même équipe (spécialistes,
- *     architectes, experts seniors).
+ *     ingénieurs, experts seniors).
  *   - La première plateforme à tout couvrir avec du VRAI code source sur-mesure
  *     — pas du rafistolage de connecteurs no-code grand public (non nommés).
  *   - De l'audit au cadrage de vos premiers agents IA : on enchaîne dans la
@@ -118,8 +118,8 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
     },
     {
       icon: Award,
-      titleFr: "Architectes & experts seniors",
-      titleEn: "Senior architects & experts",
+      titleFr: "Ingénieurs & experts seniors",
+      titleEn: "Senior engineers & experts",
       bodyFr:
         "Des profils qui comprennent à la fois l'enjeu métier, la contrainte technique et la réalité du terrain. Des recommandations directement exploitables, jamais hors-sol.",
       bodyEn:
@@ -163,8 +163,8 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
             </h2>
             <p className="text-fg-soft mt-6 max-w-xl text-lg leading-relaxed">
               {isFr
-                ? "Un audit IA n'a de valeur que mené par des profils capables de comprendre l'enjeu métier, la contrainte technique et la réalité de la mise en œuvre. Chez Axion-IA, on combine spécialistes, architectes et experts seniors — et on va jusqu'au bout : de la formation à l'implémentation complète."
-                : "An AI audit is only worth what the people running it can grasp — business stakes, technical constraints and delivery reality. At Axion-IA we combine senior specialists, architects and experts — and we go all the way: from training to full implementation."}
+                ? "Un audit IA n'a de valeur que mené par des profils capables de comprendre l'enjeu métier, la contrainte technique et la réalité de la mise en œuvre. Chez Axion-IA, on combine spécialistes, ingénieurs et experts seniors — et on va jusqu'au bout : de la formation à l'implémentation complète."
+                : "An AI audit is only worth what the people running it can grasp — business stakes, technical constraints and delivery reality. At Axion-IA we combine senior specialists, engineers and experts — and we go all the way: from training to full implementation."}
             </p>
 
             {/* Claim de positionnement — la première plateforme bout-en-bout */}
@@ -276,13 +276,13 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
           {(isFr
             ? [
                 { icon: MapPin, label: "Présentiel partout en France" },
-                { icon: Award, label: "Architectes & experts seniors" },
+                { icon: Award, label: "Ingénieurs & experts seniors" },
                 { icon: Code2, label: "Solutions sur-mesure, pas de boîte noire" },
                 { icon: ShieldCheck, label: "Conforme RGPD & AI Act 2026" },
               ]
             : [
                 { icon: MapPin, label: "On-site across France" },
-                { icon: Award, label: "Senior architects & experts" },
+                { icon: Award, label: "Senior engineers & experts" },
                 { icon: Code2, label: "Bespoke software, no black box" },
                 { icon: ShieldCheck, label: "GDPR & AI Act 2026 compliant" },
               ]

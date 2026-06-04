@@ -1117,7 +1117,7 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
 
   // (Will 2026-05-26 cleanup positionnement « code-first ») — keyword
   // « intégrateur Make IA France certifié » RETIRÉ : contradisait le
-  // positionnement Axion-IA = architectes IA seniors qui livrent du code
+  // positionnement Axion-IA = experts IA seniors qui livrent du code
   // custom (pas no-code par défaut). Make / Zapier / n8n disponibles
   // uniquement sur demande client explicite, pas comme service phare.
   //
