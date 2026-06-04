@@ -15,6 +15,7 @@ import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { generateAnswer } from "@/server/chatbot/generation/generate-stream";
+import { escaladerQuestion } from "@/server/chatbot/tools/escalader-question";
 import { shouldSummarize, summarizeConversation } from "@/server/chatbot/context/summarize";
 import { getActivePromptContent } from "@/server/chatbot/generation/prompt-version";
 import type { SearchSlots } from "@/server/chatbot/catalog/slot-filling";
@@ -287,6 +288,21 @@ export async function POST(req: NextRequest): Promise<Response> {
           await maybeSummarizeConversation(convo.id, tenant.settings);
         } catch (e) {
           console.warn("[chatbot:route] résumé contexte échoué:", e);
+        }
+
+        // Tool-use déterministe (T-14) : une escalade crée un enregistrement
+        // DURABLE (ChatEscalation) + notifie l'équipe (Telegram). L'orchestrateur
+        // reste pur (escalate:true) ; l'effet de bord vit dans la route. Le
+        // ToolContext porte le tenant + la conversation + l'ipHash (traçabilité).
+        if (result.escalate) {
+          try {
+            await escaladerQuestion(
+              { question: message, contexte_conversation: result.text.slice(0, 4000) },
+              { tenantId: tenant.id, conversationId: convo.id, ...(ipHash ? { ipHash } : {}) },
+            );
+          } catch (e) {
+            console.warn("[chatbot:route] escalade durable échouée:", e);
+          }
         }
       } catch (err) {
         console.error("[chatbot:route] erreur:", err);
