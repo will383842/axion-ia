@@ -7,7 +7,12 @@
 // Pour des OG images par-page paramétrées (avec titre custom), utiliser
 // `/api/og?title=...&accent=...` (cf. `src/app/api/og/route.tsx`).
 
-import { ImageResponse } from "next/og";
+// Audit GSC 2026-06-05 A-02 (P0-2 / D-4) — `/opengraph-image` renvoyait 502 en prod
+// (Coolify standalone). `api/og/route.tsx` (même edge runtime) répond 200 en important
+// `@vercel/og` directement, alors que `next/og` (metadata route convention) échoue à
+// charger le runtime Satori dans le bundle standalone. Fix : aligner sur `api/og` =
+// import direct `@vercel/og`. Fallback `runtime="nodejs"` si le 502 persiste post-deploy.
+import { ImageResponse } from "@vercel/og";
 
 // Audit GSC 5xx 2026-05-18 — fix `/opengraph-image` retournant 502 Bad Gateway.
 //

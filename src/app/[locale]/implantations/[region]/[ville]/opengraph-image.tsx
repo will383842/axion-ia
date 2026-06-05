@@ -8,7 +8,10 @@
 // qui valide des env vars au module load (cf. audit 5xx 2026-05-18).
 // On résout `resolveVilleWithCopy` qui est safe edge (lecture statique).
 
-import { ImageResponse } from "next/og";
+// Audit GSC 2026-06-05 A-02 (P0-2 / D-4) — même fix que `/opengraph-image` : `next/og`
+// (metadata route) échoue à charger Satori en standalone Coolify (502). Import direct
+// `@vercel/og` (aligné sur `api/og` qui répond 200 sur le même edge runtime).
+import { ImageResponse } from "@vercel/og";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 
 export const runtime = "edge";
