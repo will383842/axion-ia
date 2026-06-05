@@ -351,5 +351,7 @@ label : ${config.recommendedCtaLabel}
     totalCostUsd: accumulatedCostUsd + originalityCostUsd,
     citations: lastCitations,
     promptHash: lastPromptHash,
+    // H2 — traçabilité KB : quels faits ont nourri ce contenu Phase 8.
+    kbEntryIds: kbChunks.map((c) => c.entryId),
   };
 }

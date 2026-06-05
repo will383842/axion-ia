@@ -306,6 +306,8 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
       citations: lastCitations,
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      // H2 — traçabilité KB : quels faits ont nourri cet article.
+      kbEntryIds: kbChunks.map((c) => c.entryId),
       mentionedCities,
     };
   },
