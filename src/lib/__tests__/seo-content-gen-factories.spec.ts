@@ -104,6 +104,20 @@ describe("buildNewsArticleJsonLd", () => {
     expect(ld["dateline"]).toBe("Paris, 2026-05-14");
     expect(ld["isBasedOn"]).toBeDefined();
   });
+
+  it("VIS-14 — émet un NewsArticle même sans source (isBasedOn omis)", () => {
+    const ld = buildNewsArticleJsonLd({
+      title: "Actu éditoriale sans source externe",
+      description: "Édito interne.",
+      slug: "edito-interne",
+      locale: "fr",
+      publishedAt: "2026-06-05",
+      updatedAt: "2026-06-05",
+    });
+    expect(ld["@type"]).toBe("NewsArticle");
+    expect(ld["headline"]).toBeDefined();
+    expect(ld["isBasedOn"]).toBeUndefined();
+  });
 });
 
 describe("buildQAPageJsonLd", () => {

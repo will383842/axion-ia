@@ -12,8 +12,10 @@
  *   1. Service (areaServed City + Region + Country + alternativeHeadline)
  *   2. LocalBusiness/ProfessionalService (@id + geo + telephone + email + sameAs ville)
  *   3. BreadcrumbList (3 niveaux + @id)
- *   4. FAQPage + Speakable (cible #axion-direct-answer + #axion-faq)
- *   5. HowTo (méthodologie pas à pas — rich result éligible)
+ *   4. FAQPage + Speakable (cible #axion-direct-answer + #axion-faq ; NB : Google
+ *      a restreint le rich result FAQ en 2023, conservé pour l'AEO/GEO + LLMs)
+ *   5. HowTo (méthodologie pas à pas — markup valide ; NB : Google a retiré le
+ *      rich result HowTo en 2024, conservé pour l'AEO/GEO + LLMs)
  *   6. Person (Manon — autrice E-E-A-T)
  *   7. WebPage + abstract (signal #1 featured snippets / position 0 / AI Overviews)
  *   8. ItemList (villes proches même service)
@@ -251,7 +253,8 @@ export function buildVilleServiceJsonLdGraph(
   }
 
   // ── 5. HowTo (méthodologie pas à pas) ─────────────────────────────────────
-  // Éligible rich result "étapes" Google + citations Perplexity "comment fonctionne X".
+  // NB : Google a retiré le rich result HowTo (2024) ; markup conservé pour
+  // l'AEO/GEO + citations Perplexity "comment fonctionne X" (extraction LLM).
   // Émis uniquement si ≥ 3 étapes (min pour un HowTo significatif).
   if (methodologySteps.length >= 3) {
     schemas.push(

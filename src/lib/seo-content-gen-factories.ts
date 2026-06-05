@@ -243,10 +243,11 @@ export interface NewsArticleJsonLdInput extends ArticleJsonLdInput {
   readonly dateline?: string;
   /** ex: "Actualités IA", "Marché", "Réglementation". */
   readonly printSection?: string;
-  /** URL source originale. */
-  readonly sourceUrl: string;
-  /** Nom de la source originale (ex: "Le Monde Informatique"). */
-  readonly sourceName: string;
+  /** URL source originale. Optionnel (VIS-14) : une actu éditoriale sans source
+   *  émet quand même un NewsArticle (sans isBasedOn). */
+  readonly sourceUrl?: string;
+  /** Nom de la source originale (ex: "Le Monde Informatique"). Optionnel. */
+  readonly sourceName?: string;
 }
 
 export function buildNewsArticleJsonLd(input: NewsArticleJsonLdInput): Record<string, unknown> {
@@ -255,11 +256,16 @@ export function buildNewsArticleJsonLd(input: NewsArticleJsonLdInput): Record<st
     ...base,
     ...(input.dateline ? { dateline: input.dateline } : {}),
     ...(input.printSection ? { printSection: input.printSection } : {}),
-    isBasedOn: {
-      "@type": "CreativeWork",
-      url: input.sourceUrl,
-      publisher: input.sourceName,
-    },
+    // VIS-14 — isBasedOn seulement si une source originale est tracée.
+    ...(input.sourceUrl
+      ? {
+          isBasedOn: {
+            "@type": "CreativeWork",
+            url: input.sourceUrl,
+            ...(input.sourceName ? { publisher: input.sourceName } : {}),
+          },
+        }
+      : {}),
   };
 }
 

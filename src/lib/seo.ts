@@ -1527,12 +1527,18 @@ export function buildImageGraphJsonLd({
       acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
       creator: {
         "@type": "Organization",
-        "@id": `${SITE_URL}#org`,
+        // VIS-17 (audit visibilité 2026-06-05) — aligne sur l'@id canonique de
+        // l'Organization globale (`/#organization`) pour fusionner l'entité dans
+        // le graphe (avant : `#org` ≠ `/#organization` → entité non reliée).
+        "@id": `${SITE_URL}/#organization`,
         name: organizationName,
       },
       copyrightHolder: {
         "@type": "Organization",
-        "@id": `${SITE_URL}#org`,
+        // VIS-17 (audit visibilité 2026-06-05) — aligne sur l'@id canonique de
+        // l'Organization globale (`/#organization`) pour fusionner l'entité dans
+        // le graphe (avant : `#org` ≠ `/#organization` → entité non reliée).
+        "@id": `${SITE_URL}/#organization`,
         name: organizationName,
       },
       copyrightNotice: `© ${organizationName} 2026 — CC BY 4.0`,

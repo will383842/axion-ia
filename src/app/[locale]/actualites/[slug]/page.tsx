@@ -208,30 +208,30 @@ export default async function NewsArticlePage({ params }: Props) {
   // Query séparée car Article n'expose pas la relation inverse Prisma.
   const citations = await loadArticleCitations(article.id);
 
-  const newsJsonLd =
-    sourceUrl && sourceName
-      ? buildNewsArticleJsonLd({
-          title: t.title,
-          description: t.excerpt ?? t.metaDescription ?? t.title,
-          slug,
-          locale: "fr",
-          publishedAt: article.publishedAt ?? article.createdAt,
-          updatedAt: article.updatedAt,
-          wordCount,
-          urlSegment: "actualites",
-          sourceUrl,
-          sourceName,
-          ...(imageUrl ? { imageUrl } : {}),
-          ...(authorIdRef ? { authorIdRef } : {}),
-          ...(section ? { section } : {}),
-          ...(article.publishedAtDateline ? { dateline: article.publishedAtDateline } : {}),
-          ...(citations.length > 0 ? { citations } : {}),
-        })
-      : null;
+  // VIS-14 — NewsArticle émis SYSTÉMATIQUEMENT (avant : seulement si source
+  // tracée → une actu éditoriale sans source n'avait aucun JSON-LD article).
+  // La source (isBasedOn) reste conditionnelle côté factory.
+  const newsJsonLd = buildNewsArticleJsonLd({
+    title: t.title,
+    description: t.excerpt ?? t.metaDescription ?? t.title,
+    slug,
+    locale: "fr",
+    publishedAt: article.publishedAt ?? article.createdAt,
+    updatedAt: article.updatedAt,
+    wordCount,
+    urlSegment: "actualites",
+    ...(sourceUrl ? { sourceUrl } : {}),
+    ...(sourceName ? { sourceName } : {}),
+    ...(imageUrl ? { imageUrl } : {}),
+    ...(authorIdRef ? { authorIdRef } : {}),
+    ...(section ? { section } : {}),
+    ...(article.publishedAtDateline ? { dateline: article.publishedAtDateline } : {}),
+    ...(citations.length > 0 ? { citations } : {}),
+  });
 
   // VIS-05 — co-émet le nœud Person Manon pour résoudre l'author @id du
   // NewsArticle (sinon @id orphelin → warning Rich Results + perte E-E-A-T).
-  const personJsonLd = newsJsonLd ? await getManonPersonJsonLd() : null;
+  const personJsonLd = await getManonPersonJsonLd();
 
   // VIS-10 — articles connexes (anti dead-end de maillage : la page news n'en
   // avait aucun). Tier-1 only (anti-doorway).
