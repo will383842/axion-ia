@@ -50,6 +50,183 @@ export const FOUGERES_COPY: VilleCopy = {
       en: "Sites web augmentés à Fougères : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans, commerces et acteurs touristiques de la cité médiévale — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Fougères des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture d'Ille-et-Vilaine où le château fort médiéval — l'un des plus vastes d'Europe — attire les visiteurs, et où l'économie mêle sous-traitance électronique, agroalimentaire (premier employeur du bassin), plasturgie, artisanat et commerce de centre-ville. On travaille aussi bien les TPE de la cité médiévale et de la rue Nationale que les PME du parc d'activités de l'Aumaillerie, à La Selle-en-Luitré, et les acteurs touristiques. On fait tout : UX/UI, e-commerce multi-CMS, applications métier et plateformes IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fougères, itérations à distance, sans verrou ni abonnement imposé.",
+        whyHere: [
+          "Héritage industriel reconverti dans la sous-traitance électronique et la plasturgie, héritier de la capitale historique de la chaussure : pour ces PME d'atelier, souvent implantées au parc de l'Aumaillerie, on construit des portails de suivi de production, des outils de devis et de traçabilité, et on greffe du contrôle qualité par vision et de la classification de documents techniques sur l'existant, sans bouleverser leur SI.",
+          "Agroalimentaire, premier employeur du pays de Fougères : pour ces sites de production et leurs filières, on développe des plateformes de traçabilité, des portails fournisseurs et des e-commerce B2B, et on automatise les flux documentaires (fiches techniques, certificats) avec de la recherche sémantique branchée sur vos référentiels qualité.",
+          "Tourisme patrimonial autour du château fort, de la cité médiévale et du jardin public : nos sites vitrines et nos chatbots RAG sont multilingues par défaut, taillés pour l'hôtellerie-restauration, les gîtes et les acteurs culturels qui accueillent une clientèle de passage venue de Saint-Malo, du Mont-Saint-Michel ou de Rennes.",
+          "Tissu dense de TPE artisanales, de BTP-second œuvre et de commerce de détail de centre-ville, souvent dirigées par leur fondateur : on greffe l'IA sans refonte coûteuse (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pour vendre au-delà du pays de Fougères, jusqu'aux portes de la Normandie et du Maine.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Fougères",
+            detail:
+              "Atelier sur site — centre historique au pied du château, parc d'activités de l'Aumaillerie ou atelier de production : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité touristique. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour les visiteurs qui consultent depuis la rue Nationale ou les remparts, et accessible (WCAG) pour ne perdre aucun client.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, réservation en ligne, chatbot RAG multilingue, recherche sémantique, agents d'automatisation pour devis et traçabilité agroalimentaire. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison touristique estivale ou en plein cycle de commandes d'atelier sur la zone de l'Aumaillerie.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire de Fougères, Vitré ou Rennes, ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, réservation en ligne, demande de devis intelligente) sur le site existant d'un artisan, d'un commerce de la rue Nationale ou d'un hôtel-restaurant de la cité médiévale, sans refonte. Mise en ligne sans downtime.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de sous-traitance électronique, d'agroalimentaire ou de plasturgie de l'Aumaillerie : portail client, e-commerce B2B multi-CMS, espace fournisseurs, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail sur mesure pour les acteurs structurants du bassin fougerais — industriels de l'électronique, groupes agroalimentaires — IA intégrée, branchée sur votre SI (ERP, MES, CRM, GED) pour piloter production, traçabilité et qualité.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs de l'est de la Bretagne et leurs filières : refonte de plateformes, design system, recherche sémantique d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration mobile-first et accessible — pour un site vitrine, une boutique e-commerce ou une plateforme métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) comme en code sur mesure, selon ce qui sert le mieux votre activité fougeraise.",
+          },
+          {
+            q: "Pouvez-vous outiller un atelier de sous-traitance électronique ou de plasturgie ?",
+            a: "Oui. Pour les PME industrielles héritières du passé fougerais, souvent implantées au parc de l'Aumaillerie, on développe des portails de suivi de production, des outils de devis et de traçabilité, et on intègre du contrôle qualité par vision ou de la classification de documents techniques, branchés sur vos outils existants (ERP, MES) sans en changer.",
+          },
+          {
+            q: "Avez-vous des solutions pour les acteurs agroalimentaires du pays de Fougères ?",
+            a: "Oui. L'agroalimentaire est le premier employeur du bassin : on construit des plateformes de traçabilité, des portails fournisseurs et des e-commerce B2B, et on automatise les flux documentaires (fiches techniques, certificats, cahiers des charges) grâce à la recherche sémantique branchée sur vos référentiels qualité, pour fiabiliser audits et relations clients.",
+          },
+          {
+            q: "Un site multilingue est-il pertinent pour le tourisme à Fougères ?",
+            a: "Tout à fait. Le château fort, la cité médiévale et le jardin public attirent une clientèle de passage venue de Saint-Malo, du Mont-Saint-Michel et de Rennes. Nos sites vitrines pour hôtels, restaurants et gîtes intègrent réservation en ligne et chatbot RAG multilingue par défaut, qui répond sur vos horaires, tarifs et disponibilités dans la langue du visiteur.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Fougères, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, selon la complexité. Pas de régie, pas de dérive horaire cachée, pas de dépendance à un prestataire unique.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique ou en plein cycle de commandes d'atelier. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Tout reste transférable à un prestataire local — Fougères, Vitré, Rennes — ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Fougères des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture d'Ille-et-Vilaine où le château fort médiéval — l'un des plus vastes d'Europe — attire les visiteurs, et où l'économie mêle sous-traitance électronique, agroalimentaire (premier employeur du bassin), plasturgie, artisanat et commerce de centre-ville. On travaille aussi bien les TPE de la cité médiévale et de la rue Nationale que les PME du parc d'activités de l'Aumaillerie, à La Selle-en-Luitré, et les acteurs touristiques. On fait tout : UX/UI, e-commerce multi-CMS, applications métier et plateformes IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fougères, itérations à distance, sans verrou ni abonnement imposé.",
+        whyHere: [
+          "Héritage industriel reconverti dans la sous-traitance électronique et la plasturgie, héritier de la capitale historique de la chaussure : pour ces PME d'atelier, souvent implantées au parc de l'Aumaillerie, on construit des portails de suivi de production, des outils de devis et de traçabilité, et on greffe du contrôle qualité par vision et de la classification de documents techniques sur l'existant, sans bouleverser leur SI.",
+          "Agroalimentaire, premier employeur du pays de Fougères : pour ces sites de production et leurs filières, on développe des plateformes de traçabilité, des portails fournisseurs et des e-commerce B2B, et on automatise les flux documentaires (fiches techniques, certificats) avec de la recherche sémantique branchée sur vos référentiels qualité.",
+          "Tourisme patrimonial autour du château fort, de la cité médiévale et du jardin public : nos sites vitrines et nos chatbots RAG sont multilingues par défaut, taillés pour l'hôtellerie-restauration, les gîtes et les acteurs culturels qui accueillent une clientèle de passage venue de Saint-Malo, du Mont-Saint-Michel ou de Rennes.",
+          "Tissu dense de TPE artisanales, de BTP-second œuvre et de commerce de détail de centre-ville, souvent dirigées par leur fondateur : on greffe l'IA sans refonte coûteuse (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pour vendre au-delà du pays de Fougères, jusqu'aux portes de la Normandie et du Maine.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Fougères",
+            detail:
+              "Atelier sur site — centre historique au pied du château, parc d'activités de l'Aumaillerie ou atelier de production : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité touristique. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour les visiteurs qui consultent depuis la rue Nationale ou les remparts, et accessible (WCAG) pour ne perdre aucun client.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, réservation en ligne, chatbot RAG multilingue, recherche sémantique, agents d'automatisation pour devis et traçabilité agroalimentaire. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison touristique estivale ou en plein cycle de commandes d'atelier sur la zone de l'Aumaillerie.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire de Fougères, Vitré ou Rennes, ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, réservation en ligne, demande de devis intelligente) sur le site existant d'un artisan, d'un commerce de la rue Nationale ou d'un hôtel-restaurant de la cité médiévale, sans refonte. Mise en ligne sans downtime.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de sous-traitance électronique, d'agroalimentaire ou de plasturgie de l'Aumaillerie : portail client, e-commerce B2B multi-CMS, espace fournisseurs, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail sur mesure pour les acteurs structurants du bassin fougerais — industriels de l'électronique, groupes agroalimentaires — IA intégrée, branchée sur votre SI (ERP, MES, CRM, GED) pour piloter production, traçabilité et qualité.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs de l'est de la Bretagne et leurs filières : refonte de plateformes, design system, recherche sémantique d'entreprise, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration mobile-first et accessible — pour un site vitrine, une boutique e-commerce ou une plateforme métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) comme en code sur mesure, selon ce qui sert le mieux votre activité fougeraise.",
+          },
+          {
+            q: "Pouvez-vous outiller un atelier de sous-traitance électronique ou de plasturgie ?",
+            a: "Oui. Pour les PME industrielles héritières du passé fougerais, souvent implantées au parc de l'Aumaillerie, on développe des portails de suivi de production, des outils de devis et de traçabilité, et on intègre du contrôle qualité par vision ou de la classification de documents techniques, branchés sur vos outils existants (ERP, MES) sans en changer.",
+          },
+          {
+            q: "Avez-vous des solutions pour les acteurs agroalimentaires du pays de Fougères ?",
+            a: "Oui. L'agroalimentaire est le premier employeur du bassin : on construit des plateformes de traçabilité, des portails fournisseurs et des e-commerce B2B, et on automatise les flux documentaires (fiches techniques, certificats, cahiers des charges) grâce à la recherche sémantique branchée sur vos référentiels qualité, pour fiabiliser audits et relations clients.",
+          },
+          {
+            q: "Un site multilingue est-il pertinent pour le tourisme à Fougères ?",
+            a: "Tout à fait. Le château fort, la cité médiévale et le jardin public attirent une clientèle de passage venue de Saint-Malo, du Mont-Saint-Michel et de Rennes. Nos sites vitrines pour hôtels, restaurants et gîtes intègrent réservation en ligne et chatbot RAG multilingue par défaut, qui répond sur vos horaires, tarifs et disponibilités dans la langue du visiteur.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Fougères, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, selon la complexité. Pas de régie, pas de dérive horaire cachée, pas de dépendance à un prestataire unique.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique ou en plein cycle de commandes d'atelier. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Tout reste transférable à un prestataire local — Fougères, Vitré, Rennes — ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fougères et dans l'est de la Bretagne ?",

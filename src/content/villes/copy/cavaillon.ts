@@ -48,6 +48,183 @@ export const CAVAILLON_COPY: VilleCopy = {
       en: "Coaching un-à-un dirigeants TPE/PME de Cavaillon dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour exploitations agricoles, commerces et acteurs du MIN.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Cavaillon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale française du melon, où le Marché d'Intérêt National (MIN) — 27 hectares, environ 76 entreprises et une douzaine de grossistes, près d'un million de tonnes de fruits et légumes par an — structure une filière de maraîchers, négociants et transporteurs frigorifiques, au pied de la colline Saint-Jacques et au cœur du Parc Naturel Régional du Luberon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cavaillon, itérations à distance.",
+        whyHere: [
+          "Capitale du melon et MIN structurant : sur ses 27 hectares, la halle réunit une douzaine de grossistes et près de 76 entreprises qui gèrent achats, lots et traçabilité au rythme d'un million de tonnes par an. Terrain idéal pour des portails fournisseurs, des catalogues e-commerce de produits du Luberon et des agents qui automatisent bons de commande et reporting branchés sur votre SI.",
+          "Filière melon IGP et exploitations familiales de la vallée de la Durance : le syndicat des producteurs de melon de Cavaillon rassemble une cinquantaine de maraîchers et une dizaine d'expéditeurs autour de l'IGP « Melon de Cavaillon ». On greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — suivi qualité saisonnier, recherche sémantique sur fiches produits, boutique e-commerce de vente directe pour les producteurs.",
+          "Logistique frigorifique et accès A7 sortie 25 : transporteurs et entrepôts froid de la zone d'activité expédient vers Marseille (75 km) et le MIN d'Avignon (24 km), le MIN de Cavaillon étant l'un des trois grands marchés fruits et légumes du Sud avec Perpignan et Avignon. Parfait pour des plateformes de suivi, des tableaux de bord temps réel et des automatisations connectées à votre ERP.",
+          "Tissu dense de TPE du commerce de détail et de l'artisanat au pied de la colline Saint-Jacques, à proximité de la CCI de Vaucluse implantée localement : sites vitrines mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues, le tout hébergeable en UE et conforme RGPD — vos données clients restent maîtrisées et transférables.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Cavaillon",
+            detail:
+              "Atelier sur site (cœur de ville au pied de la colline Saint-Jacques, halle du MIN sur ses 27 hectares, zone d'activité proche de l'A7 sortie 25) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la forte saisonnalité du melon et des fruits et légumes. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement, pensé mobile-first pour des utilisateurs souvent sur le terrain, en chambre froide ou en allée de la halle du MIN. Accessibilité et Web Vitals intégrés dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : catalogue e-commerce, portail fournisseurs du MIN, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des achats et de la traçabilité IGP. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison du melon de Cavaillon, de juin à septembre, où la filière et le MIN tournent à plein régime et où l'indisponibilité n'est pas une option.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Cavaillon ou la vallée de la Durance, sans verrou ni abonnement imposé, transférable à un prestataire local du Vaucluse ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un maraîcher de la vallée de la Durance, d'un commerce de détail du centre-ville ou d'un artisan de Cavaillon, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : vente directe de melon IGP et de fruits et légumes du Luberon, catalogue saisonnier, multilingue, multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les négociants et grossistes du MIN, transporteurs frigorifiques et industries alimentaires de la vallée de la Durance, IA intégrée, branchée sur votre SI (CRM, ERP, gestion d'achats et traçabilité).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les acteurs structurants de la filière agroalimentaire régionale — coopératives, expéditeurs, industriels de l'agroalimentaire : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, une boutique e-commerce de produits du Luberon ou une plateforme métier, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure : c'est vous qui choisissez, et le résultat vous appartient.",
+          },
+          {
+            q: "Pouvez-vous gérer la traçabilité et les achats de la filière fruits et légumes du MIN ?",
+            a: "Oui. Sur les 27 hectares du MIN de Cavaillon, ses grossistes et ses 76 entreprises brassent près d'un million de tonnes par an. On développe des portails fournisseurs et des agents qui automatisent bons de commande, suivi qualité, gestion des lots et traçabilité IGP pour les négociants et les maraîchers de la vallée de la Durance, avec recherche sémantique sur vos catalogues et reporting branché sur votre SI.",
+          },
+          {
+            q: "Gérez-vous la forte saisonnalité du melon de Cavaillon ?",
+            a: "Oui, c'est même un point clé de notre cadrage. La filière melon IGP — une cinquantaine de producteurs et une dizaine d'expéditeurs — connaît un pic de juin à septembre. On conçoit des sites e-commerce et des plateformes qui encaissent les pics de trafic et de commandes sans downtime, avec mises à jour de catalogue saisonnier automatisées et Web Vitals tenus même en pleine campagne.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, lots et modèles, sans verrou ni dépendance à un prestataire unique. Idéal pour les acteurs du MIN et les producteurs soucieux de maîtriser leurs données de traçabilité.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Cavaillon — au pied de la colline Saint-Jacques, dans la halle du MIN ou sur la zone d'activité proche de l'A7 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison du melon de Cavaillon de juin à septembre. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, aucun lock-in technologique. L'ensemble est transférable à tout prestataire local du Vaucluse ou de la région PACA, ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Cavaillon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale française du melon, où le Marché d'Intérêt National (MIN) — 27 hectares, environ 76 entreprises et une douzaine de grossistes, près d'un million de tonnes de fruits et légumes par an — structure une filière de maraîchers, négociants et transporteurs frigorifiques, au pied de la colline Saint-Jacques et au cœur du Parc Naturel Régional du Luberon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cavaillon, itérations à distance.",
+        whyHere: [
+          "Capitale du melon et MIN structurant : sur ses 27 hectares, la halle réunit une douzaine de grossistes et près de 76 entreprises qui gèrent achats, lots et traçabilité au rythme d'un million de tonnes par an. Terrain idéal pour des portails fournisseurs, des catalogues e-commerce de produits du Luberon et des agents qui automatisent bons de commande et reporting branchés sur votre SI.",
+          "Filière melon IGP et exploitations familiales de la vallée de la Durance : le syndicat des producteurs de melon de Cavaillon rassemble une cinquantaine de maraîchers et une dizaine d'expéditeurs autour de l'IGP « Melon de Cavaillon ». On greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — suivi qualité saisonnier, recherche sémantique sur fiches produits, boutique e-commerce de vente directe pour les producteurs.",
+          "Logistique frigorifique et accès A7 sortie 25 : transporteurs et entrepôts froid de la zone d'activité expédient vers Marseille (75 km) et le MIN d'Avignon (24 km), le MIN de Cavaillon étant l'un des trois grands marchés fruits et légumes du Sud avec Perpignan et Avignon. Parfait pour des plateformes de suivi, des tableaux de bord temps réel et des automatisations connectées à votre ERP.",
+          "Tissu dense de TPE du commerce de détail et de l'artisanat au pied de la colline Saint-Jacques, à proximité de la CCI de Vaucluse implantée localement : sites vitrines mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues, le tout hébergeable en UE et conforme RGPD — vos données clients restent maîtrisées et transférables.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Cavaillon",
+            detail:
+              "Atelier sur site (cœur de ville au pied de la colline Saint-Jacques, halle du MIN sur ses 27 hectares, zone d'activité proche de l'A7 sortie 25) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la forte saisonnalité du melon et des fruits et légumes. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement, pensé mobile-first pour des utilisateurs souvent sur le terrain, en chambre froide ou en allée de la halle du MIN. Accessibilité et Web Vitals intégrés dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : catalogue e-commerce, portail fournisseurs du MIN, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des achats et de la traçabilité IGP. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison du melon de Cavaillon, de juin à septembre, où la filière et le MIN tournent à plein régime et où l'indisponibilité n'est pas une option.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Cavaillon ou la vallée de la Durance, sans verrou ni abonnement imposé, transférable à un prestataire local du Vaucluse ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un maraîcher de la vallée de la Durance, d'un commerce de détail du centre-ville ou d'un artisan de Cavaillon, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : vente directe de melon IGP et de fruits et légumes du Luberon, catalogue saisonnier, multilingue, multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les négociants et grossistes du MIN, transporteurs frigorifiques et industries alimentaires de la vallée de la Durance, IA intégrée, branchée sur votre SI (CRM, ERP, gestion d'achats et traçabilité).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les acteurs structurants de la filière agroalimentaire régionale — coopératives, expéditeurs, industriels de l'agroalimentaire : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, une boutique e-commerce de produits du Luberon ou une plateforme métier, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure : c'est vous qui choisissez, et le résultat vous appartient.",
+          },
+          {
+            q: "Pouvez-vous gérer la traçabilité et les achats de la filière fruits et légumes du MIN ?",
+            a: "Oui. Sur les 27 hectares du MIN de Cavaillon, ses grossistes et ses 76 entreprises brassent près d'un million de tonnes par an. On développe des portails fournisseurs et des agents qui automatisent bons de commande, suivi qualité, gestion des lots et traçabilité IGP pour les négociants et les maraîchers de la vallée de la Durance, avec recherche sémantique sur vos catalogues et reporting branché sur votre SI.",
+          },
+          {
+            q: "Gérez-vous la forte saisonnalité du melon de Cavaillon ?",
+            a: "Oui, c'est même un point clé de notre cadrage. La filière melon IGP — une cinquantaine de producteurs et une dizaine d'expéditeurs — connaît un pic de juin à septembre. On conçoit des sites e-commerce et des plateformes qui encaissent les pics de trafic et de commandes sans downtime, avec mises à jour de catalogue saisonnier automatisées et Web Vitals tenus même en pleine campagne.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, lots et modèles, sans verrou ni dépendance à un prestataire unique. Idéal pour les acteurs du MIN et les producteurs soucieux de maîtriser leurs données de traçabilité.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Cavaillon — au pied de la colline Saint-Jacques, dans la halle du MIN ou sur la zone d'activité proche de l'A7 — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison du melon de Cavaillon de juin à septembre. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, aucun lock-in technologique. L'ensemble est transférable à tout prestataire local du Vaucluse ou de la région PACA, ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Cavaillon ?",

@@ -48,6 +48,183 @@ export const CONCARNEAU_COPY: VilleCopy = {
       en: "Sessions un-à-un à Concarneau pour les dirigeants de conserveries, chantiers et hôtels qui veulent monter en compétence sur l'IA appliquée (ChatGPT pro, Claude, scripting). À partir de {{price:intervention-dirigeants|flat}} la demi-journée.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Concarneau — 20 845 habitants, 3e commune du Finistère — des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Finistère sud, où le 7e port de pêche français en tonnage débarqué, les conserveries héritières des trente conserveries de sardines historiques (maison Courtin, 1883), les chantiers navals de l'estuaire du Moros et l'hôtellerie balnéaire de la Ville Close font vivre un tissu dense de TPE et de PME, jusqu'à Trégunc, Melgven et La Forêt-Fouesnant. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Concarneau, itérations à distance.",
+        whyHere: [
+          "Économie maritime et halieutique : la criée, les mareyeurs et les conserveries du port en eau profonde de l'estuaire du Moros — septième tonnage national — gèrent encore beaucoup de bons de commande à la main, au rythme des arrivages. C'est le terrain idéal pour des portails e-commerce B2B, des catalogues produits de la mer dynamiques et des agents qui automatisent la saisie criée, du débarquement à la facturation du mareyage.",
+          "Hôtellerie et tourisme balnéaire saisonniers : Ville Close, plages, port de plaisance et voie verte n°7 Roscoff-Concarneau (160 km, ouverte en 2016) attirent une clientèle estivale internationale. Nos sites de réservation directe, calibrés mobile-first, et nos chatbots RAG multilingues captent cette demande sans commission d'OTA et lissent le suivi des réservations sur toute la saison touristique.",
+          "Industrie navale et nautisme : autour des chantiers navals historiques du Moros, des voileries et des loueurs de bateaux du port de plaisance, on greffe l'IA sur l'existant — configurateur de devis, suivi d'atelier, recherche sémantique de pièces et de plans — ou on construit une vitrine e-commerce sur mesure (WooCommerce, PrestaShop, Shopify), sans imposer de refonte coûteuse aux PME de la filière.",
+          "Pôle scientifique et souveraineté des données : à deux pas de la Station de biologie marine fondée en 1859, la plus ancienne en activité au monde, l'exigence de rigueur est forte. Toute la chaîne IA est hébergeable en UE (OVH, Scaleway), conforme RGPD et AI Act ; vos données de criée, de réservation et clients de tout le bassin — Trégunc, Melgven, La Forêt-Fouesnant, Saint-Yvi — restent maîtrisées.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Concarneau",
+            detail:
+              "Atelier sur site, au port de pêche, dans la Ville Close, sur les zones d'activité ou aux chantiers du Moros : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, du commerce de la Ville Close au mareyeur du Moros. Prototype cliquable testé avant tout développement, pensé mobile-first pour des visiteurs souvent en mobilité sur le littoral ou sur la voie verte Roscoff-Concarneau.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis nos bureaux : boutique e-commerce de produits de la mer, réservation directe pour l'hôtellerie de la Ville Close, chatbot RAG multilingue, recherche sémantique, agents de saisie et d'automatisation. Démos hebdomadaires en visio, code versionné et lisible.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, contrôle d'accessibilité, puis mise en production sans downtime — y compris en plein pic de réservations estivales sur les plages ou de campagne de pêche au port du Moros. Aucune coupure de service au moment où le trafic compte le plus.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible (OVH, Scaleway). Documentation et passation pour que vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire finistérien de Quimper, Rosporden ou alentour.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, moteur de réservation directe — sur le site d'un hôtelier de la Ville Close, d'un loueur de bateaux du port de plaisance, d'une crêperie ou d'un commerce de détail, en quelques semaines et sans refonte du site existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique en ligne pour une conserverie héritière de la maison Courtin, un mareyeur du Moros ou une voilerie : UX/UI, vente en ligne de produits de la mer, expédition réfrigérée, multilingue et IA intégrée, sur WordPress, WooCommerce, Shopify, PrestaShop ou Magento.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de l'agroalimentaire (conserves de poisson), du mareyage et de l'industrie navale, IA intégrée, branchée sur votre SI (CRM, ERP, gestion de criée et de stock liée aux arrivages).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux de l'agroalimentaire et de la construction navale du Finistère sud : refonte de plateformes, design system, recherche sémantique à grande échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique de produits de la mer ou une plateforme métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first pour le trafic littoral de Concarneau.",
+          },
+          {
+            q: "Pouvez-vous vendre en ligne nos produits de la mer ?",
+            a: "Oui. On construit des boutiques e-commerce pour conserveries, mareyeurs et producteurs du port du Moros : catalogue, paiement sécurisé, gestion de stock liée aux arrivages de la criée, expédition réfrigérée et vente multilingue vers la clientèle touristique. On peut y greffer un chatbot et une recherche sémantique pour guider l'acheteur vers la bonne référence de conserve ou de poisson frais.",
+          },
+          {
+            q: "Gérez-vous la saisonnalité touristique de la Ville Close et des plages ?",
+            a: "Oui. Pour l'hôtellerie, la restauration et les loueurs de bateaux, on conçoit des sites de réservation directe et des chatbots multilingues calibrés pour le pic estival, sans commission d'OTA. Les mises en ligne et montées de version se font sans downtime, même en plein cœur de saison, et l'infrastructure encaisse les pics de trafic des visiteurs de la voie verte Roscoff-Concarneau.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE (OVH, Scaleway), conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vos données de criée, de mareyage, de réservation et clients restent votre propriété complète, sans verrou ni dépendance à un prestataire unique — un enjeu de souveraineté qui résonne près de la Station de biologie marine fondée en 1859.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Concarneau — au port, à la Ville Close ou aux chantiers du Moros — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit que l'on tient jusqu'à la livraison.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, un périmètre écrit tenu jusqu'au bout. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic estival ou de campagne de pêche. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire finistérien — de Quimper à Rosporden — ou repris en interne.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Concarneau — 20 845 habitants, 3e commune du Finistère — des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Finistère sud, où le 7e port de pêche français en tonnage débarqué, les conserveries héritières des trente conserveries de sardines historiques (maison Courtin, 1883), les chantiers navals de l'estuaire du Moros et l'hôtellerie balnéaire de la Ville Close font vivre un tissu dense de TPE et de PME, jusqu'à Trégunc, Melgven et La Forêt-Fouesnant. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Concarneau, itérations à distance.",
+        whyHere: [
+          "Économie maritime et halieutique : la criée, les mareyeurs et les conserveries du port en eau profonde de l'estuaire du Moros — septième tonnage national — gèrent encore beaucoup de bons de commande à la main, au rythme des arrivages. C'est le terrain idéal pour des portails e-commerce B2B, des catalogues produits de la mer dynamiques et des agents qui automatisent la saisie criée, du débarquement à la facturation du mareyage.",
+          "Hôtellerie et tourisme balnéaire saisonniers : Ville Close, plages, port de plaisance et voie verte n°7 Roscoff-Concarneau (160 km, ouverte en 2016) attirent une clientèle estivale internationale. Nos sites de réservation directe, calibrés mobile-first, et nos chatbots RAG multilingues captent cette demande sans commission d'OTA et lissent le suivi des réservations sur toute la saison touristique.",
+          "Industrie navale et nautisme : autour des chantiers navals historiques du Moros, des voileries et des loueurs de bateaux du port de plaisance, on greffe l'IA sur l'existant — configurateur de devis, suivi d'atelier, recherche sémantique de pièces et de plans — ou on construit une vitrine e-commerce sur mesure (WooCommerce, PrestaShop, Shopify), sans imposer de refonte coûteuse aux PME de la filière.",
+          "Pôle scientifique et souveraineté des données : à deux pas de la Station de biologie marine fondée en 1859, la plus ancienne en activité au monde, l'exigence de rigueur est forte. Toute la chaîne IA est hébergeable en UE (OVH, Scaleway), conforme RGPD et AI Act ; vos données de criée, de réservation et clients de tout le bassin — Trégunc, Melgven, La Forêt-Fouesnant, Saint-Yvi — restent maîtrisées.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Concarneau",
+            detail:
+              "Atelier sur site, au port de pêche, dans la Ville Close, sur les zones d'activité ou aux chantiers du Moros : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On repart avec un périmètre clair et un devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, du commerce de la Ville Close au mareyeur du Moros. Prototype cliquable testé avant tout développement, pensé mobile-first pour des visiteurs souvent en mobilité sur le littoral ou sur la voie verte Roscoff-Concarneau.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis nos bureaux : boutique e-commerce de produits de la mer, réservation directe pour l'hôtellerie de la Ville Close, chatbot RAG multilingue, recherche sémantique, agents de saisie et d'automatisation. Démos hebdomadaires en visio, code versionné et lisible.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, contrôle d'accessibilité, puis mise en production sans downtime — y compris en plein pic de réservations estivales sur les plages ou de campagne de pêche au port du Moros. Aucune coupure de service au moment où le trafic compte le plus.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible (OVH, Scaleway). Documentation et passation pour que vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire finistérien de Quimper, Rosporden ou alentour.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, moteur de réservation directe — sur le site d'un hôtelier de la Ville Close, d'un loueur de bateaux du port de plaisance, d'une crêperie ou d'un commerce de détail, en quelques semaines et sans refonte du site existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique en ligne pour une conserverie héritière de la maison Courtin, un mareyeur du Moros ou une voilerie : UX/UI, vente en ligne de produits de la mer, expédition réfrigérée, multilingue et IA intégrée, sur WordPress, WooCommerce, Shopify, PrestaShop ou Magento.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de l'agroalimentaire (conserves de poisson), du mareyage et de l'industrie navale, IA intégrée, branchée sur votre SI (CRM, ERP, gestion de criée et de stock liée aux arrivages).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux de l'agroalimentaire et de la construction navale du Finistère sud : refonte de plateformes, design system, recherche sémantique à grande échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique de produits de la mer ou une plateforme métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first pour le trafic littoral de Concarneau.",
+          },
+          {
+            q: "Pouvez-vous vendre en ligne nos produits de la mer ?",
+            a: "Oui. On construit des boutiques e-commerce pour conserveries, mareyeurs et producteurs du port du Moros : catalogue, paiement sécurisé, gestion de stock liée aux arrivages de la criée, expédition réfrigérée et vente multilingue vers la clientèle touristique. On peut y greffer un chatbot et une recherche sémantique pour guider l'acheteur vers la bonne référence de conserve ou de poisson frais.",
+          },
+          {
+            q: "Gérez-vous la saisonnalité touristique de la Ville Close et des plages ?",
+            a: "Oui. Pour l'hôtellerie, la restauration et les loueurs de bateaux, on conçoit des sites de réservation directe et des chatbots multilingues calibrés pour le pic estival, sans commission d'OTA. Les mises en ligne et montées de version se font sans downtime, même en plein cœur de saison, et l'infrastructure encaisse les pics de trafic des visiteurs de la voie verte Roscoff-Concarneau.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE (OVH, Scaleway), conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vos données de criée, de mareyage, de réservation et clients restent votre propriété complète, sans verrou ni dépendance à un prestataire unique — un enjeu de souveraineté qui résonne près de la Station de biologie marine fondée en 1859.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Concarneau — au port, à la Ville Close ou aux chantiers du Moros — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit que l'on tient jusqu'à la livraison.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée, un périmètre écrit tenu jusqu'au bout. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic estival ou de campagne de pêche. Web Vitals, SEO/AEO et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVH ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire finistérien — de Quimper à Rosporden — ou repris en interne.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA à Concarneau ?",

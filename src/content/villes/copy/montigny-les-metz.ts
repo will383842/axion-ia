@@ -47,6 +47,183 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
       en: "Sessions 1-to-1 à Montigny-lès-Metz pour dirigeants de TPE/PME : roadmap IA, choix d'outils, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
+        whyHere: [
+          "Centre commerçant indépendant fédéré par l'association Montigny Entreprendre : avec une majorité de boutiques en propre rue de Pont-à-Mousson et au cœur de ville, les commerçants gagnent à une vitrine e-commerce mobile-first (click & collect, catalogue, paiement, fiche Google) plutôt qu'à un site figé qui laisse fuir le trafic vers Metz. On conçoit l'UX/UI et l'on branche la recherche sémantique sur leur catalogue.",
+          "Artisans et TPE du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
+          "Siège du groupe Demathieu Bard (BTP, près de 3 000 collaborateurs au national, présent dans la requalification du quartier Lizé) : pour un acteur structurant de cette taille, on construit des plateformes métier et portails client SaaS IA-native, branchés sur le SI (ERP, CRM, gestion de chantier), au-delà du simple site vitrine.",
+          "Cabinets libéraux denses (santé, juridique, comptable) et RGPD strict, alimentés par la proximité immédiate du centre de Metz : toute la chaîne IA — chatbot, recherche, agents — est hébergeable en UE, conforme AI Act, avec un design mobile-first pour la prise de rendez-vous. Les données patients, dossiers et clients restent maîtrisées, registre des traitements à l'appui.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Montigny-lès-Metz",
+            detail:
+              "Atelier sur site (cœur de ville rue de Pont-à-Mousson, quartier Lizé, zones d'activité de l'Eurométropole, ou vos locaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la concurrence messine. On formalise un cahier des charges et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI mobile-first",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale qui consulte d'abord sur smartphone avant de se déplacer rue de Pont-à-Mousson ou de filer vers Metz.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, formulaire de devis, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et documenté.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pendant les pics de commandes ou de demandes de devis liés aux chantiers du bassin messin. Plan de bascule et rollback prévus.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible). Documentation, transfert de compétences et formation des équipes pour piloter l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire lorrain ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, formulaire de devis intelligent) sur le site existant d'un commerçant de la rue de Pont-à-Mousson ou d'un artisan du bâtiment, en quelques semaines et sans refonte. Idéal pour la restauration, la coiffure et les services aux particuliers.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique en ligne avec UX/UI mobile-first et IA intégrée : catalogue, click & collect, prise de rendez-vous, paiement sécurisé — pour le commerce de détail, les professions libérales (santé, juridique, comptable) et les PME tertiaires du secteur.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du BTP et du tertiaire lorrain, IA intégrée, branchée sur votre SI (ERP, CRM, gestion de chantier). Pensée pour les opérations d'aménagement comme le quartier Lizé et les flux multi-intervenants.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux comme les groupes BTP du bassin messin (Demathieu Bard et consorts) : refonte de plateformes, design system, recherche sémantique d'entreprise, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first.",
+          },
+          {
+            q: "Pouvez-vous aider un commerce local de Montigny-lès-Metz à vendre en ligne ?",
+            a: "Oui. Pour les près de 500 commerces de proximité de la commune, souvent fédérés par l'association Montigny Entreprendre, on crée des boutiques e-commerce mobile-first avec click & collect, catalogue, paiement sécurisé et recherche sémantique, pour capter une clientèle qui consulte sur smartphone avant de filer vers Metz.",
+          },
+          {
+            q: "Travaillez-vous avec les acteurs du BTP et des chantiers du quartier Lizé ?",
+            a: "Oui. L'ancienne caserne d'artillerie devenue quartier Lizé (755 logements, environ 4 560 m² de commerces, requalification portée notamment par Demathieu Bard) génère des besoins de plateformes métier : portails client, suivi de chantier, gestion documentaire. On construit ces outils SaaS IA-native branchés sur vos ERP et CRM existants.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Pour les cabinets libéraux denses de Montigny-lès-Metz (santé, juridique, comptable), on précise durées de conservation et bases légales, avec registre des traitements fourni et, si besoin, analyse d'impact.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place (cœur de ville, quartier Lizé ou vos locaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire lorrain de l'Eurométropole de Metz ou repris par vos équipes internes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
+        whyHere: [
+          "Centre commerçant indépendant fédéré par l'association Montigny Entreprendre : avec une majorité de boutiques en propre rue de Pont-à-Mousson et au cœur de ville, les commerçants gagnent à une vitrine e-commerce mobile-first (click & collect, catalogue, paiement, fiche Google) plutôt qu'à un site figé qui laisse fuir le trafic vers Metz. On conçoit l'UX/UI et l'on branche la recherche sémantique sur leur catalogue.",
+          "Artisans et TPE du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
+          "Siège du groupe Demathieu Bard (BTP, près de 3 000 collaborateurs au national, présent dans la requalification du quartier Lizé) : pour un acteur structurant de cette taille, on construit des plateformes métier et portails client SaaS IA-native, branchés sur le SI (ERP, CRM, gestion de chantier), au-delà du simple site vitrine.",
+          "Cabinets libéraux denses (santé, juridique, comptable) et RGPD strict, alimentés par la proximité immédiate du centre de Metz : toute la chaîne IA — chatbot, recherche, agents — est hébergeable en UE, conforme AI Act, avec un design mobile-first pour la prise de rendez-vous. Les données patients, dossiers et clients restent maîtrisées, registre des traitements à l'appui.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Montigny-lès-Metz",
+            detail:
+              "Atelier sur site (cœur de ville rue de Pont-à-Mousson, quartier Lizé, zones d'activité de l'Eurométropole, ou vos locaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la concurrence messine. On formalise un cahier des charges et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI mobile-first",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale qui consulte d'abord sur smartphone avant de se déplacer rue de Pont-à-Mousson ou de filer vers Metz.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, formulaire de devis, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et documenté.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pendant les pics de commandes ou de demandes de devis liés aux chantiers du bassin messin. Plan de bascule et rollback prévus.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible). Documentation, transfert de compétences et formation des équipes pour piloter l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire lorrain ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, formulaire de devis intelligent) sur le site existant d'un commerçant de la rue de Pont-à-Mousson ou d'un artisan du bâtiment, en quelques semaines et sans refonte. Idéal pour la restauration, la coiffure et les services aux particuliers.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique en ligne avec UX/UI mobile-first et IA intégrée : catalogue, click & collect, prise de rendez-vous, paiement sécurisé — pour le commerce de détail, les professions libérales (santé, juridique, comptable) et les PME tertiaires du secteur.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du BTP et du tertiaire lorrain, IA intégrée, branchée sur votre SI (ERP, CRM, gestion de chantier). Pensée pour les opérations d'aménagement comme le quartier Lizé et les flux multi-intervenants.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux comme les groupes BTP du bassin messin (Demathieu Bard et consorts) : refonte de plateformes, design system, recherche sémantique d'entreprise, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first.",
+          },
+          {
+            q: "Pouvez-vous aider un commerce local de Montigny-lès-Metz à vendre en ligne ?",
+            a: "Oui. Pour les près de 500 commerces de proximité de la commune, souvent fédérés par l'association Montigny Entreprendre, on crée des boutiques e-commerce mobile-first avec click & collect, catalogue, paiement sécurisé et recherche sémantique, pour capter une clientèle qui consulte sur smartphone avant de filer vers Metz.",
+          },
+          {
+            q: "Travaillez-vous avec les acteurs du BTP et des chantiers du quartier Lizé ?",
+            a: "Oui. L'ancienne caserne d'artillerie devenue quartier Lizé (755 logements, environ 4 560 m² de commerces, requalification portée notamment par Demathieu Bard) génère des besoins de plateformes métier : portails client, suivi de chantier, gestion documentaire. On construit ces outils SaaS IA-native branchés sur vos ERP et CRM existants.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Pour les cabinets libéraux denses de Montigny-lès-Metz (santé, juridique, comptable), on précise durées de conservation et bases légales, avec registre des traitements fourni et, si besoin, analyse d'impact.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place (cœur de ville, quartier Lizé ou vos locaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant de signer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire lorrain de l'Eurométropole de Metz ou repris par vos équipes internes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Montigny-lès-Metz ?",

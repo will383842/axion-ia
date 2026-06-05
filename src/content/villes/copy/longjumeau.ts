@@ -50,6 +50,183 @@ export const LONGJUMEAU_COPY: VilleCopy = {
       en: "Sites web augmentés à Longjumeau : site ou portail métier sur mesure dopé à l'IA pour santé, pharmacie et commerces de l'axe RN20 — prise de rendez-vous en ligne, réponses automatiques aux questions courantes, visibilité locale améliorée.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Longjumeau des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du sud francilien (Essonne) où la ville s'étire le long de l'historique RN20 dans la vallée de l'Yvette, autour d'un pôle santé structuré par l'hôpital, d'officines, de laboratoires et de répartiteurs pharmaceutiques, d'un commerce de proximité dense et de PME de services tournées vers le bassin d'emploi de Massy-Saclay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Longjumeau, abords de la gare RER C et centre-ville, puis itérations à distance.",
+        whyHere: [
+          "Pôle santé et établissement hospitalier de référence dans la vallée de l'Yvette : un site vitrine ou un portail patient avec prise de rendez-vous en ligne, FAQ automatisée et agent conversationnel conforme RGPD désengorge l'accueil sans jamais toucher aux données sensibles. On greffe aussi une recherche sémantique sur les pages d'information patient et une UX mobile-first pour une file active qui consulte depuis son téléphone.",
+          "Pharmacie, laboratoires et répartition pharmaceutique : pour les officines et grossistes du secteur, on greffe sur l'existant de la recherche sémantique sur catalogues produits, de la classification de documents réglementaires et des automatisations de commandes, ou on construit un portail métier sur mesure connecté au logiciel d'officine, avec chatbot ancré sur vos fiches et hébergement UE.",
+          "Commerce de proximité dense sur l'axe RN20 et au centre-ville : pour les indépendants qui gèrent eux-mêmes devis, relances et réservations, on déploie une vitrine e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) augmentée d'un chatbot ancré sur vos produits, d'un panier mobile-first et d'un click-and-collect adapté à une clientèle de quartier et de passage.",
+          "Position de carrefour vers Massy-Saclay, Paris-Orly et le RER C : vos clients arrivent du bassin d'emploi voisin et du plateau de Saclay, d'où des parcours mobile-first, une recherche locale soignée et une visibilité AEO travaillée, avec toute la chaîne IA hébergeable en UE et conforme RGPD pour les PME de services, de logistique légère et de tertiaire.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Longjumeau",
+            detail:
+              "Atelier sur site (centre-ville le long de la RN20, abords de l'hôpital, officines de la vallée de l'Yvette, gare RER C) : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données santé. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour une clientèle de proximité et de passage venue du bassin Massy-Saclay. Prototype cliquable testé et validé avec vous avant la moindre ligne de développement, accessibilité intégrée dès le départ.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native dans le centre de Longjumeau : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur catalogues, agents et automatisations. Démos hebdomadaires en visio, code versionné et livrable à chaque incrément.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés sur les pages clés, puis mise en production sans downtime — y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible, documentation de reprise incluse. Le dirigeant, le pharmacien ou le professionnel de santé pilote l'outil en autonomie depuis Longjumeau, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot ancré sur vos contenus, prise de rendez-vous en ligne, recherche sémantique) sur le site existant d'un commerce du centre-ville ou de l'axe RN20, d'une officine ou d'un artisan de la vallée de l'Yvette, en quelques semaines et sans refonte lourde.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de santé, de pharmacie, de logistique légère et de services de la vallée de l'Yvette : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot multilingue et recherche sémantique.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un répartiteur pharmaceutique, un laboratoire ou un acteur logistique du sud francilien : IA intégrée, recherche sémantique documentaire, agents, branchée sur votre SI (CRM, ERP, logiciel d'officine).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et établissements de santé du bassin Massy-Saclay et de l'Essonne : refonte de plateformes, design system mutualisé, gouvernance IA et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche utilisateur, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique en ligne ou un portail métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et pensé pour la clientèle de proximité de Longjumeau.",
+          },
+          {
+            q: "Mes données patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA — un point central pour le pôle santé, les laboratoires et les officines de la vallée de l'Yvette qui manipulent des données sensibles. Vous gardez la propriété complète de vos données et de vos modèles, sans aucun verrou propriétaire.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Longjumeau, on remet un devis ferme en forfait fixe avec un périmètre clair. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie au temps passé, pas de dérive horaire cachée, et chaque évolution de périmètre est chiffrée et validée avant d'être engagée.",
+          },
+          {
+            q: "Pouvez-vous gérer la prise de rendez-vous pour une officine ou un cabinet de santé ?",
+            a: "Oui. On déploie une prise de rendez-vous en ligne et un agent conversationnel qui répond aux questions courantes des patients et clients (horaires, disponibilités, services), intégrés à votre site et conformes au RGPD sur les données sensibles. L'accueil de l'officine ou du cabinet, souvent saturé aux heures de pointe sur l'axe RN20, est nettement allégé.",
+          },
+          {
+            q: "Pouvez-vous connecter un site de répartiteur ou de laboratoire à son SI existant ?",
+            a: "Oui. Pour les répartiteurs pharmaceutiques, laboratoires et acteurs de logistique légère du sud francilien, on branche le site ou le portail sur votre CRM, ERP ou logiciel d'officine via API. On y ajoute une recherche sémantique sur les catalogues et la documentation, des automatisations de commandes et un suivi en temps réel, le tout hébergé en UE et transférable sans verrou.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre clair, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud francilien (Massy, Palaiseau, Saclay) ou repris en interne sans rupture.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Longjumeau des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie du sud francilien (Essonne) où la ville s'étire le long de l'historique RN20 dans la vallée de l'Yvette, autour d'un pôle santé structuré par l'hôpital, d'officines, de laboratoires et de répartiteurs pharmaceutiques, d'un commerce de proximité dense et de PME de services tournées vers le bassin d'emploi de Massy-Saclay. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Longjumeau, abords de la gare RER C et centre-ville, puis itérations à distance.",
+        whyHere: [
+          "Pôle santé et établissement hospitalier de référence dans la vallée de l'Yvette : un site vitrine ou un portail patient avec prise de rendez-vous en ligne, FAQ automatisée et agent conversationnel conforme RGPD désengorge l'accueil sans jamais toucher aux données sensibles. On greffe aussi une recherche sémantique sur les pages d'information patient et une UX mobile-first pour une file active qui consulte depuis son téléphone.",
+          "Pharmacie, laboratoires et répartition pharmaceutique : pour les officines et grossistes du secteur, on greffe sur l'existant de la recherche sémantique sur catalogues produits, de la classification de documents réglementaires et des automatisations de commandes, ou on construit un portail métier sur mesure connecté au logiciel d'officine, avec chatbot ancré sur vos fiches et hébergement UE.",
+          "Commerce de proximité dense sur l'axe RN20 et au centre-ville : pour les indépendants qui gèrent eux-mêmes devis, relances et réservations, on déploie une vitrine e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) augmentée d'un chatbot ancré sur vos produits, d'un panier mobile-first et d'un click-and-collect adapté à une clientèle de quartier et de passage.",
+          "Position de carrefour vers Massy-Saclay, Paris-Orly et le RER C : vos clients arrivent du bassin d'emploi voisin et du plateau de Saclay, d'où des parcours mobile-first, une recherche locale soignée et une visibilité AEO travaillée, avec toute la chaîne IA hébergeable en UE et conforme RGPD pour les PME de services, de logistique légère et de tertiaire.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Longjumeau",
+            detail:
+              "Atelier sur site (centre-ville le long de la RN20, abords de l'hôpital, officines de la vallée de l'Yvette, gare RER C) : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et des contraintes de données santé. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour une clientèle de proximité et de passage venue du bassin Massy-Saclay. Prototype cliquable testé et validé avec vous avant la moindre ligne de développement, accessibilité intégrée dès le départ.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native dans le centre de Longjumeau : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur catalogues, agents et automatisations. Démos hebdomadaires en visio, code versionné et livrable à chaque incrément.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés sur les pages clés, puis mise en production sans downtime — y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible, documentation de reprise incluse. Le dirigeant, le pharmacien ou le professionnel de santé pilote l'outil en autonomie depuis Longjumeau, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot ancré sur vos contenus, prise de rendez-vous en ligne, recherche sémantique) sur le site existant d'un commerce du centre-ville ou de l'axe RN20, d'une officine ou d'un artisan de la vallée de l'Yvette, en quelques semaines et sans refonte lourde.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de santé, de pharmacie, de logistique légère et de services de la vallée de l'Yvette : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot multilingue et recherche sémantique.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un répartiteur pharmaceutique, un laboratoire ou un acteur logistique du sud francilien : IA intégrée, recherche sémantique documentaire, agents, branchée sur votre SI (CRM, ERP, logiciel d'officine).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et établissements de santé du bassin Massy-Saclay et de l'Essonne : refonte de plateformes, design system mutualisé, gouvernance IA et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche utilisateur, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique en ligne ou un portail métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et pensé pour la clientèle de proximité de Longjumeau.",
+          },
+          {
+            q: "Mes données patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA — un point central pour le pôle santé, les laboratoires et les officines de la vallée de l'Yvette qui manipulent des données sensibles. Vous gardez la propriété complète de vos données et de vos modèles, sans aucun verrou propriétaire.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Longjumeau, on remet un devis ferme en forfait fixe avec un périmètre clair. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie au temps passé, pas de dérive horaire cachée, et chaque évolution de périmètre est chiffrée et validée avant d'être engagée.",
+          },
+          {
+            q: "Pouvez-vous gérer la prise de rendez-vous pour une officine ou un cabinet de santé ?",
+            a: "Oui. On déploie une prise de rendez-vous en ligne et un agent conversationnel qui répond aux questions courantes des patients et clients (horaires, disponibilités, services), intégrés à votre site et conformes au RGPD sur les données sensibles. L'accueil de l'officine ou du cabinet, souvent saturé aux heures de pointe sur l'axe RN20, est nettement allégé.",
+          },
+          {
+            q: "Pouvez-vous connecter un site de répartiteur ou de laboratoire à son SI existant ?",
+            a: "Oui. Pour les répartiteurs pharmaceutiques, laboratoires et acteurs de logistique légère du sud francilien, on branche le site ou le portail sur votre CRM, ERP ou logiciel d'officine via API. On y ajoute une recherche sémantique sur les catalogues et la documentation, des automatisations de commandes et un suivi en temps réel, le tout hébergé en UE et transférable sans verrou.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre clair, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une officine, un laboratoire ou un cabinet de santé de la vallée de l'Yvette en activité continue. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud francilien (Massy, Palaiseau, Saclay) ou repris en interne sans rupture.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longjumeau et dans le sud de l'Essonne ?",

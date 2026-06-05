@@ -50,6 +50,183 @@ export const DAX_COPY: VilleCopy = {
       en: "Sites web augmentés par l'IA à Dax : plateformes de réservation et outils sur mesure pour thermes, hôtels, restaurants et commerces landais, avec automatisations et SEO local intégrés.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
+        whyHere: [
+          "Première destination thermale de France : autour de la Fontaine chaude et de la Régie Municipale des Boues qui prépare le péloïde TERDAX, les dix-sept établissements thermaux et résidences de cure accueillent chaque saison des dizaines de milliers de curistes. Terrain idéal pour des portails de réservation directe de cures, un parcours d'accueil curiste augmenté à l'IA et un suivi multilingue des séjours, branchés sur vos plannings.",
+          "Forte saisonnalité touristique et clientèle de passage venue par la gare TGV ou l'aéroport de Biarritz : nos chatbots RAG et agents conversationnels, multilingues par défaut, absorbent les pics de demandes de l'hôtellerie, des résidences de cure et de la restauration du cœur de ville sans surcharger les petites équipes dacquoises, avec relances et confirmations automatisées.",
+          "Tissu très majoritairement composé de TPE et de PME — commerces du centre-ville, artisans, cabinets de santé liés aux soins thermaux et boutiques de produits du terroir landais : on greffe l'IA sur l'existant (widget, plugin, API WordPress, Shopify ou PrestaShop) sans refonte coûteuse, ou on construit une vitrine e-commerce sur mesure pour vendre cataplasmes de boue, soins et spécialités landaises en ligne.",
+          "Données de santé et de réservation des curistes particulièrement sensibles, à l'image de celles traitées par la filière thermale qui pèse autour de huit cents salariés sur l'agglomération : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Les informations personnelles et médicales restent maîtrisées et ne transitent pas hors UE sans cadre contractuel.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Dax",
+            detail:
+              "Atelier sur site (centre thermal, cœur de ville autour de la Fontaine chaude, quartier de la gare TGV) : objectifs, parcours curistes et clients, audit de la stack, des contenus et de la saisonnalité de la cure. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour des curistes et touristes qui réservent depuis leur téléphone entre deux soins, avec accessibilité contrôlée.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : moteur de réservation directe de cures et séjours, e-commerce de produits landais et thermaux, chatbot RAG multilingue, recherche sémantique, agents administratifs branchés sur votre SI. Démos hebdomadaires en visio depuis Dax.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO local validés, mise en production sans downtime — y compris en plein démarrage de saison thermale, quand le centre TERDAX et les thermes tournent à plein régime et que chaque réservation compte.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes du quartier thermal ou du centre-ville pilotent l'outil en autonomie, sans verrou ni abonnement imposé, et peuvent le confier à un prestataire local.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue d'accueil curiste, recherche sémantique, mini-moteur de réservation) sur le site existant d'un commerce du centre-ville, d'un cabinet de soins, d'un artisan ou d'un hôtel dacquois, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : réservation directe de cures et séjours pour une résidence, vente en ligne de cataplasmes, soins et produits landais, parcours multilingue pour la restauration et l'hôtellerie locales.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du thermalisme, de l'hébergement de cure ou de la santé, IA intégrée, branchée sur votre SI (CRM, ERP, gestion de cures et de plannings de soins).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands opérateurs thermaux et groupes hôteliers de Nouvelle-Aquitaine : refonte de plateformes de réservation, design system mutualisé et équipe dédiée Axion-IA en mode produit, intégrée à vos cycles de saison.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, mobile-first — pour un site vitrine, une boutique de produits landais et de cataplasmes de boue, ou une plateforme de réservation de cures, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, au choix.",
+          },
+          {
+            q: "Les données sensibles des curistes restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans cadre contractuel. Les données de réservation, de santé et de séjour des curistes — qu'il s'agisse d'un cabinet de soins ou d'une résidence de cure dacquoise — restent votre propriété, sans verrou ni dépendance à un prestataire unique.",
+          },
+          {
+            q: "Gérez-vous la réservation de cures et la saisonnalité thermale ?",
+            a: "Oui. On bâtit des moteurs de réservation directe de cures et de séjours, avec accueil multilingue, confirmations et automatisation des relances. Les sites sont calibrés pour tenir les pics de la saison thermale — quand les dix-sept établissements et le centre TERDAX tournent à plein — sans downtime ni dégradation des performances.",
+          },
+          {
+            q: "Pouvez-vous vendre en ligne des produits landais et thermaux ?",
+            a: "Oui. On construit des boutiques e-commerce sur mesure ou sur CMS (Shopify, WooCommerce, PrestaShop) pour vendre cataplasmes de boue, soins, spécialités landaises et coffrets cadeaux : fiches produits optimisées, paiement, gestion des stocks et de l'expédition, recherche sémantique et recommandations IA pour les curistes et touristes de passage à Dax.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
+        whyHere: [
+          "Première destination thermale de France : autour de la Fontaine chaude et de la Régie Municipale des Boues qui prépare le péloïde TERDAX, les dix-sept établissements thermaux et résidences de cure accueillent chaque saison des dizaines de milliers de curistes. Terrain idéal pour des portails de réservation directe de cures, un parcours d'accueil curiste augmenté à l'IA et un suivi multilingue des séjours, branchés sur vos plannings.",
+          "Forte saisonnalité touristique et clientèle de passage venue par la gare TGV ou l'aéroport de Biarritz : nos chatbots RAG et agents conversationnels, multilingues par défaut, absorbent les pics de demandes de l'hôtellerie, des résidences de cure et de la restauration du cœur de ville sans surcharger les petites équipes dacquoises, avec relances et confirmations automatisées.",
+          "Tissu très majoritairement composé de TPE et de PME — commerces du centre-ville, artisans, cabinets de santé liés aux soins thermaux et boutiques de produits du terroir landais : on greffe l'IA sur l'existant (widget, plugin, API WordPress, Shopify ou PrestaShop) sans refonte coûteuse, ou on construit une vitrine e-commerce sur mesure pour vendre cataplasmes de boue, soins et spécialités landaises en ligne.",
+          "Données de santé et de réservation des curistes particulièrement sensibles, à l'image de celles traitées par la filière thermale qui pèse autour de huit cents salariés sur l'agglomération : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Les informations personnelles et médicales restent maîtrisées et ne transitent pas hors UE sans cadre contractuel.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Dax",
+            detail:
+              "Atelier sur site (centre thermal, cœur de ville autour de la Fontaine chaude, quartier de la gare TGV) : objectifs, parcours curistes et clients, audit de la stack, des contenus et de la saisonnalité de la cure. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour des curistes et touristes qui réservent depuis leur téléphone entre deux soins, avec accessibilité contrôlée.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : moteur de réservation directe de cures et séjours, e-commerce de produits landais et thermaux, chatbot RAG multilingue, recherche sémantique, agents administratifs branchés sur votre SI. Démos hebdomadaires en visio depuis Dax.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO local validés, mise en production sans downtime — y compris en plein démarrage de saison thermale, quand le centre TERDAX et les thermes tournent à plein régime et que chaque réservation compte.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes du quartier thermal ou du centre-ville pilotent l'outil en autonomie, sans verrou ni abonnement imposé, et peuvent le confier à un prestataire local.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue d'accueil curiste, recherche sémantique, mini-moteur de réservation) sur le site existant d'un commerce du centre-ville, d'un cabinet de soins, d'un artisan ou d'un hôtel dacquois, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : réservation directe de cures et séjours pour une résidence, vente en ligne de cataplasmes, soins et produits landais, parcours multilingue pour la restauration et l'hôtellerie locales.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du thermalisme, de l'hébergement de cure ou de la santé, IA intégrée, branchée sur votre SI (CRM, ERP, gestion de cures et de plannings de soins).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands opérateurs thermaux et groupes hôteliers de Nouvelle-Aquitaine : refonte de plateformes de réservation, design system mutualisé et équipe dédiée Axion-IA en mode produit, intégrée à vos cycles de saison.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, mobile-first — pour un site vitrine, une boutique de produits landais et de cataplasmes de boue, ou une plateforme de réservation de cures, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, au choix.",
+          },
+          {
+            q: "Les données sensibles des curistes restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans cadre contractuel. Les données de réservation, de santé et de séjour des curistes — qu'il s'agisse d'un cabinet de soins ou d'une résidence de cure dacquoise — restent votre propriété, sans verrou ni dépendance à un prestataire unique.",
+          },
+          {
+            q: "Gérez-vous la réservation de cures et la saisonnalité thermale ?",
+            a: "Oui. On bâtit des moteurs de réservation directe de cures et de séjours, avec accueil multilingue, confirmations et automatisation des relances. Les sites sont calibrés pour tenir les pics de la saison thermale — quand les dix-sept établissements et le centre TERDAX tournent à plein — sans downtime ni dégradation des performances.",
+          },
+          {
+            q: "Pouvez-vous vendre en ligne des produits landais et thermaux ?",
+            a: "Oui. On construit des boutiques e-commerce sur mesure ou sur CMS (Shopify, WooCommerce, PrestaShop) pour vendre cataplasmes de boue, soins, spécialités landaises et coffrets cadeaux : fiches produits optimisées, paiement, gestion des stocks et de l'expédition, recherche sémantique et recommandations IA pour les curistes et touristes de passage à Dax.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez à l'avance ce que vous payez et ce que vous recevez.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dax et dans les Landes ?",

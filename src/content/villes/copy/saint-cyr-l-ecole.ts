@@ -48,6 +48,183 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
       en: "Accompagnement 1-à-1 à Saint-Cyr-l'École pour dirigeants de TPE/PME : 2 heures de coaching IA opérationnel, cas concrets, prompts métier, sensibilisation RGPD et AI Act.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
+        whyHere: [
+          "Filière aéronautique et aérotechnique structurante : l'aérodrome civil (1907, un des plus anciens de France), géré par le Groupe ADP, et l'héritage de l'Institut aérotechnique fondé en 1911 forment un terrain idéal pour des portails techniques, des plateformes de gestion de pièces et des outils documentaires augmentés par recherche sémantique sur catalogues, procédures et exigences de traçabilité, branchés sur votre GED et votre SI métier.",
+          "Bassin d'enseignement marqué par le Lycée militaire (héritier de l'École spéciale militaire 1808-1940) et un réseau dense d'écoles et d'établissements : nous construisons des sites institutionnels accessibles (RGAA), des espaces élèves/parents sécurisés et des chatbots multilingues calibrés pour répondre aux questions récurrentes de scolarité, d'admission et de calendrier sans alourdir la charge administrative des secrétariats, avec une recherche sémantique sur règlements et procédures internes.",
+          "Tissu commerçant et artisanal de proximité, irrigué par la gare Transilien de Saint-Cyr (lignes N, U, RER C) et le tramway T13 mis en service en 2022 : on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WooCommerce, Shopify, PrestaShop — sans refonte coûteuse, avec prise de rendez-vous et click-and-collect pour les flux pendulaires de la gare.",
+          "Proximité immédiate de Versailles, Guyancourt, Montigny-le-Bretonneux, Bois-d'Arcy, Fontenay-le-Fleury et Bailly, dans le bassin d'emploi de l'ouest francilien accessible par l'A12 via l'échangeur de Bois-d'Arcy : exigence forte sur la conformité et l'hébergement — toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et vos données comme vos modèles restent votre propriété, sans transit hors UE sans DPA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Saint-Cyr-l'École",
+            detail:
+              "Atelier sur site (centre-ville, abords de l'aérodrome géré par le Groupe ADP, quartier de la gare Transilien) : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des contraintes métier. On cartographie les processus à automatiser. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant développement, pensé mobile-first pour des usages en mobilité (Transilien lignes N/U et RER C, tramway T13). On valide l'accessibilité RGAA et les Web Vitals dès la maquette, pour les sites institutionnels comme pour les boutiques e-commerce du centre-ville.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis Saint-Cyr-l'École : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos catalogues, agents et automatisations métier (devis, relances, reporting). Démos hebdomadaires en visio, code versionné, lisible et transparent — sans no-code ni dépendance à un éditeur tiers, livré prêt à reprendre en interne.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité RGAA et SEO/AEO validés ; mise en production sans downtime — y compris pour un site institutionnel du Lycée militaire et des écoles, ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale, sans interruption de service ni perte de référencement.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible, en France). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire local de Versailles, Guyancourt ou du bassin de Montigny-le-Bretonneux. Documentation, prise en main et passation incluses pour que l'outil survive à tout changement de fournisseur.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site d'un commerce de détail, d'un restaurateur ou d'un artisan saint-cyrien du centre-ville ou des abords de la gare Transilien, en quelques semaines et sans refonte de l'existant. On greffe par widget, plugin ou API sur votre WordPress ou WooCommerce actuel, pour capter les flux pendulaires de la gare sans changer votre stack.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI sur mesure et IA intégrée pour les prestataires de services aux entreprises, l'hébergement-restauration et les acteurs de la filière aéronautique : e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), multilingue, espace client et catalogue augmenté par recherche sémantique. Design system, accessibilité RGAA et Web Vitals validés avant la mise en ligne, sans interruption d'activité.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du bassin versaillais (Versailles, Guyancourt, Montigny-le-Bretonneux) et de l'aérotechnique, IA intégrée, branchée sur votre SI (CRM, ERP, GED technique de pièces et procédures) et hébergée en UE. Recherche sémantique documentaire, agents d'automatisation des devis et relances, reporting consolidé — codé maison, transférable, sans dépendance à un éditeur SaaS tiers.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands donneurs d'ordre de l'aéronautique (autour de l'aérodrome historique de 1907 géré par le Groupe ADP) et des services régionaux de l'ouest francilien : refonte de plateformes, design system unifié, recherche sémantique documentaire sur catalogues et procédures, agents et automatisations à l'échelle, équipe dédiée Axion-IA en mode produit. Gouvernance RGPD et AI Act, hébergement UE, code et modèles livrés sans verrou.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, développement — pour un site vitrine, une boutique e-commerce ou une plateforme SaaS, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et accessible RGAA. À Saint-Cyr-l'École, on livre aussi bien la refonte d'un commerce du centre-ville ou d'un restaurateur des abords de la gare qu'un portail technique pour la filière aéronautique.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Pour les acteurs de l'aérotechnique soumis à des exigences de traçabilité et les établissements d'enseignement du bassin versaillais qui manipulent des données d'élèves, on fournit registre de traitement et DPA sur demande, et les données ne transitent jamais par une plateforme no-code propriétaire.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Saint-Cyr-l'École — en centre-ville, aux abords de l'aérodrome ou dans le quartier de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple, plus long pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de coût par exécution comme avec le no-code, et le périmètre est figé par écrit.",
+          },
+          {
+            q: "Gérez-vous des projets pour la filière aéronautique locale ?",
+            a: "Oui. Pour les acteurs gravitant autour de l'aérodrome historique de 1907 géré par le Groupe ADP et de l'héritage de l'Institut aérotechnique fondé en 1911, on construit portails techniques, plateformes documentaires et recherche sémantique sur catalogues de pièces ou procédures, avec agents d'automatisation des devis et du reporting. Le tout est codé maison, hébergé en UE et conforme aux exigences de traçabilité du secteur, branché sur votre GED et votre ERP sans dépendance no-code.",
+          },
+          {
+            q: "Construisez-vous des sites pour les écoles et le Lycée militaire de Saint-Cyr-l'École ?",
+            a: "Oui. Le tissu d'enseignement saint-cyrien — Lycée militaire, héritier de l'École spéciale militaire (1808-1940), et réseau d'écoles et d'établissements — a besoin de sites institutionnels accessibles (RGAA), d'espaces élèves/parents sécurisés et de chatbots multilingues qui répondent aux questions récurrentes d'admission, de calendrier et de scolarité sans alourdir les secrétariats. On les conçoit mobile-first, hébergés en UE, conformes RGPD et AI Act, avec Web Vitals contrôlés, et transférables à vos équipes ou à un prestataire local sans verrou ni abonnement imposé.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
+        whyHere: [
+          "Filière aéronautique et aérotechnique structurante : l'aérodrome civil (1907, un des plus anciens de France), géré par le Groupe ADP, et l'héritage de l'Institut aérotechnique fondé en 1911 forment un terrain idéal pour des portails techniques, des plateformes de gestion de pièces et des outils documentaires augmentés par recherche sémantique sur catalogues, procédures et exigences de traçabilité, branchés sur votre GED et votre SI métier.",
+          "Bassin d'enseignement marqué par le Lycée militaire (héritier de l'École spéciale militaire 1808-1940) et un réseau dense d'écoles et d'établissements : nous construisons des sites institutionnels accessibles (RGAA), des espaces élèves/parents sécurisés et des chatbots multilingues calibrés pour répondre aux questions récurrentes de scolarité, d'admission et de calendrier sans alourdir la charge administrative des secrétariats, avec une recherche sémantique sur règlements et procédures internes.",
+          "Tissu commerçant et artisanal de proximité, irrigué par la gare Transilien de Saint-Cyr (lignes N, U, RER C) et le tramway T13 mis en service en 2022 : on greffe l'IA sur l'existant (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WooCommerce, Shopify, PrestaShop — sans refonte coûteuse, avec prise de rendez-vous et click-and-collect pour les flux pendulaires de la gare.",
+          "Proximité immédiate de Versailles, Guyancourt, Montigny-le-Bretonneux, Bois-d'Arcy, Fontenay-le-Fleury et Bailly, dans le bassin d'emploi de l'ouest francilien accessible par l'A12 via l'échangeur de Bois-d'Arcy : exigence forte sur la conformité et l'hébergement — toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et vos données comme vos modèles restent votre propriété, sans transit hors UE sans DPA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Saint-Cyr-l'École",
+            detail:
+              "Atelier sur site (centre-ville, abords de l'aérodrome géré par le Groupe ADP, quartier de la gare Transilien) : objectifs, parcours utilisateurs, audit de la stack existante, des contenus et des contraintes métier. On cartographie les processus à automatiser. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant développement, pensé mobile-first pour des usages en mobilité (Transilien lignes N/U et RER C, tramway T13). On valide l'accessibilité RGAA et les Web Vitals dès la maquette, pour les sites institutionnels comme pour les boutiques e-commerce du centre-ville.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis Saint-Cyr-l'École : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos catalogues, agents et automatisations métier (devis, relances, reporting). Démos hebdomadaires en visio, code versionné, lisible et transparent — sans no-code ni dépendance à un éditeur tiers, livré prêt à reprendre en interne.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité RGAA et SEO/AEO validés ; mise en production sans downtime — y compris pour un site institutionnel du Lycée militaire et des écoles, ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale, sans interruption de service ni perte de référencement.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible, en France). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire local de Versailles, Guyancourt ou du bassin de Montigny-le-Bretonneux. Documentation, prise en main et passation incluses pour que l'outil survive à tout changement de fournisseur.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site d'un commerce de détail, d'un restaurateur ou d'un artisan saint-cyrien du centre-ville ou des abords de la gare Transilien, en quelques semaines et sans refonte de l'existant. On greffe par widget, plugin ou API sur votre WordPress ou WooCommerce actuel, pour capter les flux pendulaires de la gare sans changer votre stack.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI sur mesure et IA intégrée pour les prestataires de services aux entreprises, l'hébergement-restauration et les acteurs de la filière aéronautique : e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), multilingue, espace client et catalogue augmenté par recherche sémantique. Design system, accessibilité RGAA et Web Vitals validés avant la mise en ligne, sans interruption d'activité.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du bassin versaillais (Versailles, Guyancourt, Montigny-le-Bretonneux) et de l'aérotechnique, IA intégrée, branchée sur votre SI (CRM, ERP, GED technique de pièces et procédures) et hébergée en UE. Recherche sémantique documentaire, agents d'automatisation des devis et relances, reporting consolidé — codé maison, transférable, sans dépendance à un éditeur SaaS tiers.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands donneurs d'ordre de l'aéronautique (autour de l'aérodrome historique de 1907 géré par le Groupe ADP) et des services régionaux de l'ouest francilien : refonte de plateformes, design system unifié, recherche sémantique documentaire sur catalogues et procédures, agents et automatisations à l'échelle, équipe dédiée Axion-IA en mode produit. Gouvernance RGPD et AI Act, hébergement UE, code et modèles livrés sans verrou.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, développement — pour un site vitrine, une boutique e-commerce ou une plateforme SaaS, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et accessible RGAA. À Saint-Cyr-l'École, on livre aussi bien la refonte d'un commerce du centre-ville ou d'un restaurateur des abords de la gare qu'un portail technique pour la filière aéronautique.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Pour les acteurs de l'aérotechnique soumis à des exigences de traçabilité et les établissements d'enseignement du bassin versaillais qui manipulent des données d'élèves, on fournit registre de traitement et DPA sur demande, et les données ne transitent jamais par une plateforme no-code propriétaire.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Saint-Cyr-l'École — en centre-ville, aux abords de l'aérodrome ou dans le quartier de la gare — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple, plus long pour une plateforme métier connectée à votre SI. Pas de régie, pas de dérive horaire cachée, pas de coût par exécution comme avec le no-code, et le périmètre est figé par écrit.",
+          },
+          {
+            q: "Gérez-vous des projets pour la filière aéronautique locale ?",
+            a: "Oui. Pour les acteurs gravitant autour de l'aérodrome historique de 1907 géré par le Groupe ADP et de l'héritage de l'Institut aérotechnique fondé en 1911, on construit portails techniques, plateformes documentaires et recherche sémantique sur catalogues de pièces ou procédures, avec agents d'automatisation des devis et du reporting. Le tout est codé maison, hébergé en UE et conforme aux exigences de traçabilité du secteur, branché sur votre GED et votre ERP sans dépendance no-code.",
+          },
+          {
+            q: "Construisez-vous des sites pour les écoles et le Lycée militaire de Saint-Cyr-l'École ?",
+            a: "Oui. Le tissu d'enseignement saint-cyrien — Lycée militaire, héritier de l'École spéciale militaire (1808-1940), et réseau d'écoles et d'établissements — a besoin de sites institutionnels accessibles (RGAA), d'espaces élèves/parents sécurisés et de chatbots multilingues qui répondent aux questions récurrentes d'admission, de calendrier et de scolarité sans alourdir les secrétariats. On les conçoit mobile-first, hébergés en UE, conformes RGPD et AI Act, avec Web Vitals contrôlés, et transférables à vos équipes ou à un prestataire local sans verrou ni abonnement imposé.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA à Saint-Cyr-l'École ?",

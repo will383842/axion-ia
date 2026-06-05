@@ -50,6 +50,183 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
       en: "Pour les acteurs de Gif-sur-Yvette, nous concevons des sites web et plateformes augmentés par l'IA : portails de présentation deeptech, prise de contact qualifiée pour investisseurs et partenaires, et assistants traitant les demandes entrantes.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Gif-sur-Yvette des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails deeptech, chatbot RAG multilingue ancré sur vos publications, recherche sémantique, agents et automatisations. Pensé pour le plateau de Saclay, où le CNRS (campus de 64 hectares, plus de 1 300 chercheurs et ingénieurs), le CEA, CentraleSupélec sur le plateau de Moulon et le synchrotron SOLEIL voisin nourrissent un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires scientifiques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gif-sur-Yvette, itérations à distance avec vos fondateurs et vos équipes de recherche.",
+        whyHere: [
+          "Cluster scientifique Paris-Saclay (CNRS, CEA, CentraleSupélec sur le plateau de Moulon, grandes écoles) : nous construisons des portails de présentation deeptech et des plateformes de valorisation de la recherche, avec UX/UI sur mesure capable d'expliquer des travaux complexes — physique, matériaux, biologie — à des investisseurs et partenaires non spécialistes, et de structurer une data room claire.",
+          "Tissu de spin-offs et jeunes PME innovantes issues des laboratoires (le CNRS revendique une soixantaine de startups nées de ses unités franciliennes) aux fonctions support limitées : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — recherche sémantique sur la documentation technique, chatbot RAG ancré sur vos publications et brevets, mobile-first pour vos visiteurs en conférence.",
+          "Levées de fonds et appels à projets fréquents dans la deeptech locale, portés par le voisinage du synchrotron SOLEIL et de l'université Paris-Saclay : nos sites et data rooms augmentés qualifient les contacts entrants, structurent le suivi des financements (Bpifrance, ERC, France 2030) et le reporting investisseurs sans alourdir vos équipes scientifiques.",
+          "Confidentialité des travaux scientifiques exigeante, des essais SOLEIL aux données de R&D des spin-offs : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de recherche, modèles et propriété intellectuelle restent maîtrisés, sans transit hors UE ni verrou propriétaire.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Gif-sur-Yvette",
+            detail:
+              "Atelier sur site (vos locaux sur le plateau de Saclay ou de Moulon, à proximité des centres CNRS/CEA, de CentraleSupélec et de l'université Paris-Saclay) : objectifs, parcours utilisateurs, audit de la stack, des contenus scientifiques et des contraintes de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour vos visiteurs en conférence ou sur stand ; prototype testé auprès de vos cibles réelles (investisseurs, partenaires industriels, recruteurs du plateau) avant la moindre ligne de développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail deeptech, vitrine e-commerce multi-CMS, recherche sémantique sur vos publications, chatbot RAG multilingue, agents d'automatisation du reporting et du suivi des appels à projets. Démos hebdomadaires en visio avec vos fondateurs et chercheurs.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine campagne de levée, de recrutement ou de dépôt d'appel à projets, moment où la moindre interruption coûte cher à une startup du plateau.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), avec documentation et transfert de compétences. Vos équipes scientifiques et fondateurs pilotent l'outil en autonomie depuis Gif-sur-Yvette, sans verrou, sans abonnement imposé ni dépendance à un prestataire unique.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG sur vos publications, recherche sémantique, qualification des demandes investisseurs) sur le site existant d'une startup deeptech, d'un cabinet d'ingénierie ou d'un laboratoire de Gif, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un portail deeptech ou d'une boutique en ligne avec UX/UI mobile-first et IA intégrée, pour les spin-offs, éditeurs de logiciels et PME innovantes du plateau de Saclay et de Moulon.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail partenaire sur mesure pour les acteurs structurants de l'écosystème (édition logicielle, ingénierie, services scientifiques), IA intégrée, branchée sur votre SI : CRM, ERP, outils de gestion de projet de recherche.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands organismes de recherche et industriels de Saclay (à l'image des grands instruments comme SOLEIL ou des centres CNRS/CEA) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research utilisateur, wireframes, design system, maquettes Figma, prototype mobile-first — pour un portail deeptech, un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure, selon ce qui sert le mieux votre projet à Gif-sur-Yvette.",
+          },
+          {
+            q: "Mes travaux de recherche restent-ils confidentiels et en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vos données de recherche, brevets, résultats d'essais et modèles restent votre propriété exclusive, sans verrou ni dépendance à un prestataire unique — un point critique pour les acteurs deeptech de Saclay et les utilisateurs d'instruments comme le synchrotron SOLEIL.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Gif-sur-Yvette, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, ce qui sécurise des budgets de startup deeptech souvent calés sur une levée ou un appel à projets précis.",
+          },
+          {
+            q: "Pouvez-vous valoriser nos publications et brevets en ligne ?",
+            a: "Oui. On construit des portails et data rooms qui rendent vos travaux scientifiques lisibles pour investisseurs et industriels : recherche sémantique sur vos publications, chatbot RAG qui répond à partir de vos contenus, et qualification automatique des contacts entrants issus des appels à projets ou des rencontres du plateau de Saclay. L'objectif : transformer une recherche pointue en pipeline commercial clair.",
+          },
+          {
+            q: "Travaillez-vous avec les spin-offs de CentraleSupélec et des labos CNRS du plateau de Moulon ?",
+            a: "Oui. Les jeunes pousses issues de CentraleSupélec, des unités CNRS du campus de Gif ou de l'université Paris-Saclay sont notre cœur de cible : équipes scientifiques excellentes mais ressources support limitées. On leur livre un site ou une plateforme à la hauteur de leur technologie — UX/UI soignée, IA intégrée, hébergement UE — sans détourner les fondateurs de la R&D, et transférable ensuite à un prestataire local francilien si besoin.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un atout pour des budgets de startup deeptech serrés et calés sur une levée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire francilien du plateau de Saclay ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Gif-sur-Yvette des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails deeptech, chatbot RAG multilingue ancré sur vos publications, recherche sémantique, agents et automatisations. Pensé pour le plateau de Saclay, où le CNRS (campus de 64 hectares, plus de 1 300 chercheurs et ingénieurs), le CEA, CentraleSupélec sur le plateau de Moulon et le synchrotron SOLEIL voisin nourrissent un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires scientifiques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gif-sur-Yvette, itérations à distance avec vos fondateurs et vos équipes de recherche.",
+        whyHere: [
+          "Cluster scientifique Paris-Saclay (CNRS, CEA, CentraleSupélec sur le plateau de Moulon, grandes écoles) : nous construisons des portails de présentation deeptech et des plateformes de valorisation de la recherche, avec UX/UI sur mesure capable d'expliquer des travaux complexes — physique, matériaux, biologie — à des investisseurs et partenaires non spécialistes, et de structurer une data room claire.",
+          "Tissu de spin-offs et jeunes PME innovantes issues des laboratoires (le CNRS revendique une soixantaine de startups nées de ses unités franciliennes) aux fonctions support limitées : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — recherche sémantique sur la documentation technique, chatbot RAG ancré sur vos publications et brevets, mobile-first pour vos visiteurs en conférence.",
+          "Levées de fonds et appels à projets fréquents dans la deeptech locale, portés par le voisinage du synchrotron SOLEIL et de l'université Paris-Saclay : nos sites et data rooms augmentés qualifient les contacts entrants, structurent le suivi des financements (Bpifrance, ERC, France 2030) et le reporting investisseurs sans alourdir vos équipes scientifiques.",
+          "Confidentialité des travaux scientifiques exigeante, des essais SOLEIL aux données de R&D des spin-offs : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de recherche, modèles et propriété intellectuelle restent maîtrisés, sans transit hors UE ni verrou propriétaire.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Gif-sur-Yvette",
+            detail:
+              "Atelier sur site (vos locaux sur le plateau de Saclay ou de Moulon, à proximité des centres CNRS/CEA, de CentraleSupélec et de l'université Paris-Saclay) : objectifs, parcours utilisateurs, audit de la stack, des contenus scientifiques et des contraintes de confidentialité. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour vos visiteurs en conférence ou sur stand ; prototype testé auprès de vos cibles réelles (investisseurs, partenaires industriels, recruteurs du plateau) avant la moindre ligne de développement.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail deeptech, vitrine e-commerce multi-CMS, recherche sémantique sur vos publications, chatbot RAG multilingue, agents d'automatisation du reporting et du suivi des appels à projets. Démos hebdomadaires en visio avec vos fondateurs et chercheurs.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine campagne de levée, de recrutement ou de dépôt d'appel à projets, moment où la moindre interruption coûte cher à une startup du plateau.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), avec documentation et transfert de compétences. Vos équipes scientifiques et fondateurs pilotent l'outil en autonomie depuis Gif-sur-Yvette, sans verrou, sans abonnement imposé ni dépendance à un prestataire unique.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG sur vos publications, recherche sémantique, qualification des demandes investisseurs) sur le site existant d'une startup deeptech, d'un cabinet d'ingénierie ou d'un laboratoire de Gif, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un portail deeptech ou d'une boutique en ligne avec UX/UI mobile-first et IA intégrée, pour les spin-offs, éditeurs de logiciels et PME innovantes du plateau de Saclay et de Moulon.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail partenaire sur mesure pour les acteurs structurants de l'écosystème (édition logicielle, ingénierie, services scientifiques), IA intégrée, branchée sur votre SI : CRM, ERP, outils de gestion de projet de recherche.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands organismes de recherche et industriels de Saclay (à l'image des grands instruments comme SOLEIL ou des centres CNRS/CEA) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research utilisateur, wireframes, design system, maquettes Figma, prototype mobile-first — pour un portail deeptech, un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure, selon ce qui sert le mieux votre projet à Gif-sur-Yvette.",
+          },
+          {
+            q: "Mes travaux de recherche restent-ils confidentiels et en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vos données de recherche, brevets, résultats d'essais et modèles restent votre propriété exclusive, sans verrou ni dépendance à un prestataire unique — un point critique pour les acteurs deeptech de Saclay et les utilisateurs d'instruments comme le synchrotron SOLEIL.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Gif-sur-Yvette, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, ce qui sécurise des budgets de startup deeptech souvent calés sur une levée ou un appel à projets précis.",
+          },
+          {
+            q: "Pouvez-vous valoriser nos publications et brevets en ligne ?",
+            a: "Oui. On construit des portails et data rooms qui rendent vos travaux scientifiques lisibles pour investisseurs et industriels : recherche sémantique sur vos publications, chatbot RAG qui répond à partir de vos contenus, et qualification automatique des contacts entrants issus des appels à projets ou des rencontres du plateau de Saclay. L'objectif : transformer une recherche pointue en pipeline commercial clair.",
+          },
+          {
+            q: "Travaillez-vous avec les spin-offs de CentraleSupélec et des labos CNRS du plateau de Moulon ?",
+            a: "Oui. Les jeunes pousses issues de CentraleSupélec, des unités CNRS du campus de Gif ou de l'université Paris-Saclay sont notre cœur de cible : équipes scientifiques excellentes mais ressources support limitées. On leur livre un site ou une plateforme à la hauteur de leur technologie — UX/UI soignée, IA intégrée, hébergement UE — sans détourner les fondateurs de la R&D, et transférable ensuite à un prestataire local francilien si besoin.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un atout pour des budgets de startup deeptech serrés et calés sur une levée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine campagne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire francilien du plateau de Saclay ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il à Gif-sur-Yvette ?",

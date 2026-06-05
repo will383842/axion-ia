@@ -48,6 +48,183 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
       en: "Sessions 1-to-1 à Montaigu-Vendée pour dirigeants de TPE/PME agroalimentaires et industrielles : feuille de route IA et arbitrages, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Montaigu-Vendée des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle agroalimentaire et industriel du nord Vendée — l'un des plus denses du département avec plus de 1 500 entreprises recensées sur le territoire de Terres de Montaigu — où cohabitent grands donneurs d'ordres (Sodebo à Saint-Georges-de-Montaigu, Haworth France, Microcar à Boufféré, Laiterie de Montaigu, siège transport DB Schenker) et un dense réseau de TPE/PME sous-traitantes, commerces et services répartis dans les parcs d'activités. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montaigu, itérations à distance.",
+        whyHere: [
+          "Territoire agroalimentaire structurant autour de Sodebo (site unique à Saint-Georges-de-Montaigu) et de la Laiterie de Montaigu : on construit des portails fournisseurs, des espaces clients B2B et des sites qui automatisent bons de livraison, traçabilité et fiches produits — avec recherche sémantique sur catalogue ou, sans IA imposée, une refonte propre branchée sur vos flux logistiques. Idéal pour les sous-traitants installés dans la Z.I. Les Landes-de-Roussais.",
+          "Donneurs d'ordres industriels comme Haworth France (mobilier de bureau) et Microcar (véhicules électriques à Boufféré) : leurs sous-traitants et équipementiers gagnent une vitrine e-commerce sur mesure ou un configurateur produit branché sur leur catalogue et leur ERP, mobile-first pour les acheteurs et les commerciaux terrain qui circulent entre les parcs Vendée-Sud Loire et La Daunière Nord.",
+          "Tissu majoritairement TPE/PME issu de la commune nouvelle (Boufféré, La Guyonnière, Montaigu, Saint-Georges-de-Montaigu, Saint-Hilaire-de-Loulay) : artisans, commerçants et services implantés au cœur de Montaigu ou en zone d'activité. On greffe l'IA sur le site existant — widget, plugin, API, chatbot RAG multilingue — sans refonte coûteuse, ou on refait une boutique propre multi-CMS quand c'est plus rentable.",
+          "Carrefour logistique sur l'A83 (sortie 4 Boufféré) avec le siège national DB Schenker et le parc Le Point du Jour : nos agents conversationnels et nos automatisations fluidifient suivi de commandes, prise de RDV transport et relation client. Hébergeables en UE, conformes RGPD et AI Act, documentés pour audit CNIL, sans verrou ni dépendance à un prestataire unique.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Montaigu-Vendée",
+            detail:
+              "Atelier sur site (cœur de Montaigu, zones d'activité de Boufféré près de la sortie 4 de l'A83, parc Vendée-Sud Loire ou Z.I. Les Landes-de-Roussais) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux fournisseurs. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre image ; prototype cliquable testé avec vos équipes avant le moindre développement, pensé mobile-first pour vos clients B2B comme pour vos opérateurs terrain qui consultent le site depuis l'atelier ou l'entrepôt logistique de la zone.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, espace client B2B, configurateur produit, chatbot RAG multilingue, recherche sémantique, agents d'automatisation branchés sur ERP/CRM/WMS. Démos hebdomadaires en visio, code versionné et revu à chaque itération.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime — y compris en pleine saison de livraisons agroalimentaires où vos clients du pôle de Montaigu ne tolèrent aucune interruption de commande.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés pour audit CNIL et pour une reprise par vos équipes ou un prestataire régional. Vous pilotez l'outil en autonomie, sans verrou propriétaire ni abonnement imposé, et restez propriétaire de tout.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique sur catalogue, automatisation de devis) sur le site existant d'un artisan, commerçant ou sous-traitant montacutain — par exemple un atelier de mécanique ou un commerce du centre de Montaigu — en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME industrielles et agroalimentaires de la commune nouvelle : catalogue B2B, espace client, configurateur, multilingue — typique des sous-traitants agroalimentaires et équipementiers mobilier des parcs d'activités.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseur sur mesure pour les acteurs structurants du pôle (agroalimentaire, mobilier de bureau, mobilité électrique, transport-logistique), IA intégrée, branchée sur votre SI (CRM, ERP, WMS) et sur vos flux de traçabilité et de livraison.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du nord Vendée (type Sodebo, Haworth France, DB Schenker) : refonte de plateformes clients et fournisseurs, design system, recherche sémantique sur gros catalogues, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, ou seulement l'IA ?",
+            a: "On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first. L'IA est une option, jamais une obligation.",
+          },
+          {
+            q: "Pouvez-vous connecter le site à mon ERP agroalimentaire ou industriel ?",
+            a: "Oui. On branche votre site, espace client ou portail fournisseur sur votre ERP, CRM ou WMS pour synchroniser catalogue, stocks, bons de livraison et traçabilité — un enjeu central pour les sous-traitants de Sodebo, Haworth France ou de la Laiterie de Montaigu installés dans les zones Vendée-Sud Loire et Les Landes-de-Roussais, où les flux logistiques avec les donneurs d'ordres sont quotidiens.",
+          },
+          {
+            q: "Travaillez-vous avec les sous-traitants logistiques autour de l'A83 et de DB Schenker ?",
+            a: "Oui. Le carrefour de l'A83 (sortie 4 Boufféré), le siège national DB Schenker et le parc Le Point du Jour concentrent transporteurs et prestataires logistiques. On y déploie des agents conversationnels et des automatisations pour le suivi de commandes, la prise de RDV transport et la relation client, branchés sur le WMS, hébergeables en UE et conformes RGPD.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou ni dépendance à un prestataire unique. Documentation prête pour audit CNIL, ce qui rassure aussi les grands donneurs d'ordres agroalimentaires sur la chaîne fournisseurs.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Montaigu-Vendée — au cœur de Montaigu ou dans votre zone d'activité — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de chantier.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de livraisons. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, documentés pour audit CNIL : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est transférable à un prestataire local du nord Vendée ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Montaigu-Vendée des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce pôle agroalimentaire et industriel du nord Vendée — l'un des plus denses du département avec plus de 1 500 entreprises recensées sur le territoire de Terres de Montaigu — où cohabitent grands donneurs d'ordres (Sodebo à Saint-Georges-de-Montaigu, Haworth France, Microcar à Boufféré, Laiterie de Montaigu, siège transport DB Schenker) et un dense réseau de TPE/PME sous-traitantes, commerces et services répartis dans les parcs d'activités. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montaigu, itérations à distance.",
+        whyHere: [
+          "Territoire agroalimentaire structurant autour de Sodebo (site unique à Saint-Georges-de-Montaigu) et de la Laiterie de Montaigu : on construit des portails fournisseurs, des espaces clients B2B et des sites qui automatisent bons de livraison, traçabilité et fiches produits — avec recherche sémantique sur catalogue ou, sans IA imposée, une refonte propre branchée sur vos flux logistiques. Idéal pour les sous-traitants installés dans la Z.I. Les Landes-de-Roussais.",
+          "Donneurs d'ordres industriels comme Haworth France (mobilier de bureau) et Microcar (véhicules électriques à Boufféré) : leurs sous-traitants et équipementiers gagnent une vitrine e-commerce sur mesure ou un configurateur produit branché sur leur catalogue et leur ERP, mobile-first pour les acheteurs et les commerciaux terrain qui circulent entre les parcs Vendée-Sud Loire et La Daunière Nord.",
+          "Tissu majoritairement TPE/PME issu de la commune nouvelle (Boufféré, La Guyonnière, Montaigu, Saint-Georges-de-Montaigu, Saint-Hilaire-de-Loulay) : artisans, commerçants et services implantés au cœur de Montaigu ou en zone d'activité. On greffe l'IA sur le site existant — widget, plugin, API, chatbot RAG multilingue — sans refonte coûteuse, ou on refait une boutique propre multi-CMS quand c'est plus rentable.",
+          "Carrefour logistique sur l'A83 (sortie 4 Boufféré) avec le siège national DB Schenker et le parc Le Point du Jour : nos agents conversationnels et nos automatisations fluidifient suivi de commandes, prise de RDV transport et relation client. Hébergeables en UE, conformes RGPD et AI Act, documentés pour audit CNIL, sans verrou ni dépendance à un prestataire unique.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Montaigu-Vendée",
+            detail:
+              "Atelier sur site (cœur de Montaigu, zones d'activité de Boufféré près de la sortie 4 de l'A83, parc Vendée-Sud Loire ou Z.I. Les Landes-de-Roussais) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos flux fournisseurs. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre image ; prototype cliquable testé avec vos équipes avant le moindre développement, pensé mobile-first pour vos clients B2B comme pour vos opérateurs terrain qui consultent le site depuis l'atelier ou l'entrepôt logistique de la zone.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, espace client B2B, configurateur produit, chatbot RAG multilingue, recherche sémantique, agents d'automatisation branchés sur ERP/CRM/WMS. Démos hebdomadaires en visio, code versionné et revu à chaque itération.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime — y compris en pleine saison de livraisons agroalimentaires où vos clients du pôle de Montaigu ne tolèrent aucune interruption de commande.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés pour audit CNIL et pour une reprise par vos équipes ou un prestataire régional. Vous pilotez l'outil en autonomie, sans verrou propriétaire ni abonnement imposé, et restez propriétaire de tout.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique sur catalogue, automatisation de devis) sur le site existant d'un artisan, commerçant ou sous-traitant montacutain — par exemple un atelier de mécanique ou un commerce du centre de Montaigu — en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME industrielles et agroalimentaires de la commune nouvelle : catalogue B2B, espace client, configurateur, multilingue — typique des sous-traitants agroalimentaires et équipementiers mobilier des parcs d'activités.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseur sur mesure pour les acteurs structurants du pôle (agroalimentaire, mobilier de bureau, mobilité électrique, transport-logistique), IA intégrée, branchée sur votre SI (CRM, ERP, WMS) et sur vos flux de traçabilité et de livraison.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du nord Vendée (type Sodebo, Haworth France, DB Schenker) : refonte de plateformes clients et fournisseurs, design system, recherche sémantique sur gros catalogues, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, ou seulement l'IA ?",
+            a: "On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first. L'IA est une option, jamais une obligation.",
+          },
+          {
+            q: "Pouvez-vous connecter le site à mon ERP agroalimentaire ou industriel ?",
+            a: "Oui. On branche votre site, espace client ou portail fournisseur sur votre ERP, CRM ou WMS pour synchroniser catalogue, stocks, bons de livraison et traçabilité — un enjeu central pour les sous-traitants de Sodebo, Haworth France ou de la Laiterie de Montaigu installés dans les zones Vendée-Sud Loire et Les Landes-de-Roussais, où les flux logistiques avec les donneurs d'ordres sont quotidiens.",
+          },
+          {
+            q: "Travaillez-vous avec les sous-traitants logistiques autour de l'A83 et de DB Schenker ?",
+            a: "Oui. Le carrefour de l'A83 (sortie 4 Boufféré), le siège national DB Schenker et le parc Le Point du Jour concentrent transporteurs et prestataires logistiques. On y déploie des agents conversationnels et des automatisations pour le suivi de commandes, la prise de RDV transport et la relation client, branchés sur le WMS, hébergeables en UE et conformes RGPD.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou ni dépendance à un prestataire unique. Documentation prête pour audit CNIL, ce qui rassure aussi les grands donneurs d'ordres agroalimentaires sur la chaîne fournisseurs.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Montaigu-Vendée — au cœur de Montaigu ou dans votre zone d'activité — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité : à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de chantier.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de livraisons. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act, documentés pour audit CNIL : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est transférable à un prestataire local du nord Vendée ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Montaigu-Vendée (85600) ?",

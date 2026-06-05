@@ -40,6 +40,183 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       en: "Coaching 1-to-1 au Creusot : sessions sur site ou en visio pour dirigeants TPE/PME sous-traitantes industrielles, chefs d'atelier, responsables qualité ou méthodes du Technoparc et de la CUCM.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
+        whyHere: [
+          "Tissu de TPE/PME sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
+          "Donneurs d'ordre exigeants — Framatome en composants nucléaires, Alstom sur les bogies TGV, Safran sur les disques moteurs aéronautiques — imposant ISO 9001 et EN 9100 : nos applications gèrent la traçabilité documentaire, la classification de plans et de comptes-rendus techniques par recherche sémantique, et la consolidation des dossiers de fabrication.",
+          "Filière maintenance ferroviaire structurée par le Mecateamcluster (une centaine d'entreprises fédérées depuis 2010 avec la CUCM) et bureaux d'études du Technoparc : on conçoit des sites vitrines et e-commerce mobile-first qui valorisent un savoir-faire d'usinage, de soudage et de maintenance auprès de donneurs d'ordre nationaux.",
+          "Écosystème en mutation énergétique — implantation de la start-up Jimmy (chaleur décarbonée, générateurs thermiques) sur Coriolis, vivier de talents de l'IUT du Creusot et de son BUT Génie mécanique et productique : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, vos plans, nomenclatures et données clients restent maîtrisés.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage au Creusot",
+            detail:
+              "Atelier sur site — Espace Coriolis au pied de la gare TGV, Technoparc, centre-ville ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes qualité ISO/EN. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour un usage réel en atelier d'usinage comme au bureau d'études du Technoparc, sur smartphone et grand écran.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail fournisseurs, configurateur technique, e-commerce de pièces multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos plans et procédures. Démos hebdomadaires en visio, code versionné et lisible.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation avec vos équipes méthodes, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pour un extranet déjà branché sur le SI industriel d'un sous-traitant de rang 1 de la CUCM.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible. Vos équipes méthodes et qualité, formées à proximité de l'IUT du Creusot, pilotent l'outil en autonomie, sans verrou ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot, recherche sémantique sur documents techniques, automatisation de devis) sur le site ou l'extranet existant d'un atelier mécanique, d'un soudeur ou d'un artisan de la CUCM, sans refonte ni changement d'outil.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un catalogue de pièces usinées ou d'un portail fournisseurs pour une PME sous-traitante du Technoparc ou de la filière maintenance ferroviaire (Mecateamcluster), avec UX/UI mobile-first et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un fournisseur de rang 1 de la métallurgie ou de l'aéronautique, IA intégrée, branchée sur votre SI (ERP, GMAO, PLM) avec traçabilité ISO 9001 / EN 9100.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands donneurs d'ordre de la CUCM (composants nucléaires, ferroviaire, aéronautique) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, conforme aux exigences nucléaires et ferroviaires.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, un catalogue de pièces usinées, une boutique e-commerce ou un portail fournisseurs, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, selon ce qui sert le mieux votre atelier ou votre bureau d'études du Technoparc.",
+          },
+          {
+            q: "Mes plans et données techniques restent-ils en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vos plans, nomenclatures et dossiers de fabrication restent votre propriété, ce qui est essentiel pour les sous-traitants des filières nucléaire (Framatome), ferroviaire (Alstom) et aéronautique (Safran) du Creusot, souvent soumis à des clauses de souveraineté.",
+          },
+          {
+            q: "Gérez-vous la traçabilité documentaire ISO 9001 / EN 9100 ?",
+            a: "Oui. Pour les sous-traitants d'ArcelorMittal Industeel, Framatome, Alstom ou Safran, on intègre la recherche sémantique sur plans et procédures, la classification de documents techniques et la traçabilité des dossiers de fabrication, le tout dans une application web conforme à vos exigences qualité et auditable par vos donneurs d'ordre.",
+          },
+          {
+            q: "Travaillez-vous avec la filière maintenance ferroviaire et le Mecateamcluster ?",
+            a: "Oui. La centaine d'entreprises de maintenance d'engins ferroviaires fédérées par le Mecateamcluster depuis 2010 a des besoins concrets : portails de gestion de parc, configurateurs de pièces de rechange, planification d'interventions, recherche dans les manuels techniques. On conçoit ces sites et applications mobile-first, avec IA quand elle apporte un gain réel, et formation des équipes à proximité de l'IUT du Creusot.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site au Creusot — Espace Coriolis, Technoparc ou votre atelier — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un extranet ou un portail déjà en production sur votre SI industriel. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un prestataire local de Bourgogne-Franche-Comté ou repris en interne par vos équipes méthodes et qualité.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
+        whyHere: [
+          "Tissu de TPE/PME sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
+          "Donneurs d'ordre exigeants — Framatome en composants nucléaires, Alstom sur les bogies TGV, Safran sur les disques moteurs aéronautiques — imposant ISO 9001 et EN 9100 : nos applications gèrent la traçabilité documentaire, la classification de plans et de comptes-rendus techniques par recherche sémantique, et la consolidation des dossiers de fabrication.",
+          "Filière maintenance ferroviaire structurée par le Mecateamcluster (une centaine d'entreprises fédérées depuis 2010 avec la CUCM) et bureaux d'études du Technoparc : on conçoit des sites vitrines et e-commerce mobile-first qui valorisent un savoir-faire d'usinage, de soudage et de maintenance auprès de donneurs d'ordre nationaux.",
+          "Écosystème en mutation énergétique — implantation de la start-up Jimmy (chaleur décarbonée, générateurs thermiques) sur Coriolis, vivier de talents de l'IUT du Creusot et de son BUT Génie mécanique et productique : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, vos plans, nomenclatures et données clients restent maîtrisés.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage au Creusot",
+            detail:
+              "Atelier sur site — Espace Coriolis au pied de la gare TGV, Technoparc, centre-ville ou votre atelier : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes qualité ISO/EN. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour un usage réel en atelier d'usinage comme au bureau d'études du Technoparc, sur smartphone et grand écran.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail fournisseurs, configurateur technique, e-commerce de pièces multi-CMS, chatbot RAG multilingue, recherche sémantique sur vos plans et procédures. Démos hebdomadaires en visio, code versionné et lisible.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation avec vos équipes méthodes, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pour un extranet déjà branché sur le SI industriel d'un sous-traitant de rang 1 de la CUCM.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible. Vos équipes méthodes et qualité, formées à proximité de l'IUT du Creusot, pilotent l'outil en autonomie, sans verrou ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot, recherche sémantique sur documents techniques, automatisation de devis) sur le site ou l'extranet existant d'un atelier mécanique, d'un soudeur ou d'un artisan de la CUCM, sans refonte ni changement d'outil.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un catalogue de pièces usinées ou d'un portail fournisseurs pour une PME sous-traitante du Technoparc ou de la filière maintenance ferroviaire (Mecateamcluster), avec UX/UI mobile-first et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un fournisseur de rang 1 de la métallurgie ou de l'aéronautique, IA intégrée, branchée sur votre SI (ERP, GMAO, PLM) avec traçabilité ISO 9001 / EN 9100.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands donneurs d'ordre de la CUCM (composants nucléaires, ferroviaire, aéronautique) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, conforme aux exigences nucléaires et ferroviaires.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, un catalogue de pièces usinées, une boutique e-commerce ou un portail fournisseurs, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, selon ce qui sert le mieux votre atelier ou votre bureau d'études du Technoparc.",
+          },
+          {
+            q: "Mes plans et données techniques restent-ils en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vos plans, nomenclatures et dossiers de fabrication restent votre propriété, ce qui est essentiel pour les sous-traitants des filières nucléaire (Framatome), ferroviaire (Alstom) et aéronautique (Safran) du Creusot, souvent soumis à des clauses de souveraineté.",
+          },
+          {
+            q: "Gérez-vous la traçabilité documentaire ISO 9001 / EN 9100 ?",
+            a: "Oui. Pour les sous-traitants d'ArcelorMittal Industeel, Framatome, Alstom ou Safran, on intègre la recherche sémantique sur plans et procédures, la classification de documents techniques et la traçabilité des dossiers de fabrication, le tout dans une application web conforme à vos exigences qualité et auditable par vos donneurs d'ordre.",
+          },
+          {
+            q: "Travaillez-vous avec la filière maintenance ferroviaire et le Mecateamcluster ?",
+            a: "Oui. La centaine d'entreprises de maintenance d'engins ferroviaires fédérées par le Mecateamcluster depuis 2010 a des besoins concrets : portails de gestion de parc, configurateurs de pièces de rechange, planification d'interventions, recherche dans les manuels techniques. On conçoit ces sites et applications mobile-first, avec IA quand elle apporte un gain réel, et formation des équipes à proximité de l'IUT du Creusot.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site au Creusot — Espace Coriolis, Technoparc ou votre atelier — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre avant de signer. Mise en ligne sans downtime quand on augmente un extranet ou un portail déjà en production sur votre SI industriel. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Tout est transférable à un prestataire local de Bourgogne-Franche-Comté ou repris en interne par vos équipes méthodes et qualité.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Creusot ?",

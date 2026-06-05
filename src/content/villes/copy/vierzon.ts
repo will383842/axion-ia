@@ -50,6 +50,183 @@ export const VIERZON_COPY: VilleCopy = {
       en: "Sites web augmentés à Vierzon : plateformes pour PME industrielles, transporteurs et artisans, avec demande de devis intelligente, catalogue produits et suivi de commande automatisé.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
+        whyHere: [
+          "Héritage du machinisme agricole et de la mécanique de précision : les PME industrielles et métallurgiques vierzonnaises, dans la lignée de la Société Française de Vierzon et autour d'employeurs comme Parker Hannifin (hydraulique), ont besoin de sites catalogues techniques, de configurateurs de devis et de portails de pièces — on greffe l'IA sur l'existant (configurateur, recherche sémantique de références) sans refonte coûteuse.",
+          "Étoile ferroviaire et autoroute A71 : les transporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un portail client de suivi d'expéditions, de prise de commande en ligne et d'automatisation du reporting, que l'on conçoit en plateforme SaaS sur mesure branchée sur votre SI.",
+          "Pôles d'activité structurants — Parc Technologique de Sologne (site clé en main de 87 ha avec pépinière et hôtel d'entreprises), Parc d'activités des Forges (Calibracier, Columbus McKinnon France, Jacobi) et Parc de l'Aujonnière : pour ces industriels et leurs sous-traitants, on déploie e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), demande de devis intelligente et catalogue produit.",
+          "Position de carrefour entre Bourges, Tours et Châteauroux, à la frontière de la Sologne et du Berry : un chatbot et une recherche sémantique multilingues élargissent l'audience des artisans, commerces et industriels au-delà du Cher, hébergés en UE et conformes RGPD — vos données clients et de production restent maîtrisées.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Vierzon",
+            detail:
+              "Atelier sur site (centre-ville, Parc Technologique de Sologne, Parc des Forges, atelier ou entrepôt près de la gare et de l'A71) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement, pensé mobile-first pour des équipes d'atelier sur les zones d'activité comme pour vos clients finaux et donneurs d'ordre.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native à Vierzon : configurateur de devis, catalogue technique, e-commerce, chatbot RAG multilingue, recherche sémantique de pièces, suivi d'expédition, agents et automatisations. Démos hebdomadaires en visio.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis vos locaux du Berry — y compris en pleine saison de production ou de livraison, sans interrompre l'atelier ni l'entrepôt.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible) après une passation depuis votre site vierzonnais. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de références, devis automatisé) sur le site d'un artisan du bâtiment, d'un commerce du centre-ville de Vierzon ou d'un atelier de mécanique, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un catalogue technique ou d'une boutique pour les PME mécaniques, métallurgiques et de fabrication des Forges ou de la Sologne, avec UX/UI mobile-first et configurateur de devis intégré.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Portail client ou plateforme métier sur mesure pour les transporteurs et industriels structurants du carrefour de Vierzon (sous-traitants hydraulique, levage, métallurgie) : suivi d'expéditions, planification, IA branchée sur votre SI (ERP, CRM, GMAO).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs industriels du Centre-Val de Loire et leurs sites vierzonnais : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, intégration multi-sites.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, un catalogue technique, une boutique e-commerce ou une plateforme, avec ou sans brique IA. UX/UI sur mesure et mobile-first, multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure : à Vierzon, on fait tout l'amont design comme le développement.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données de production, de vos catalogues techniques et de vos modèles, sans verrou ni dépendance à un prestataire unique. C'est décisif pour les sous-traitants industriels du Cher liés par des clauses de confidentialité de leurs donneurs d'ordre.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Vierzon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de signer.",
+          },
+          {
+            q: "Pouvez-vous équiper une PME mécanique ou un transporteur de Vierzon ?",
+            a: "Oui. Pour les PME issues du machinisme agricole et de la métallurgie — celles des Forges, de la Sologne ou héritières de la Société Française de Vierzon — on construit catalogues techniques, configurateurs de devis et recherche de pièces ; pour la logistique adossée au carrefour ferroviaire et à l'A71, des portails de suivi d'expéditions et d'automatisation du reporting, branchés sur vos outils existants.",
+          },
+          {
+            q: "Travaillez-vous avec les entreprises du Parc Technologique de Sologne et des zones d'activité ?",
+            a: "Oui. Que vous soyez installé au Parc Technologique de Sologne, au Parc d'activités des Forges (Calibracier, Columbus McKinnon France, Jacobi) ou à l'Aujonnière, on intervient sur site pour le cadrage puis à distance en visio. Industriels, sous-traitants de l'hydraulique et du levage, start-up de la pépinière : on adapte le site, l'e-commerce ou la plateforme SaaS à votre maturité numérique et à vos donneurs d'ordre.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
+        whyHere: [
+          "Héritage du machinisme agricole et de la mécanique de précision : les PME industrielles et métallurgiques vierzonnaises, dans la lignée de la Société Française de Vierzon et autour d'employeurs comme Parker Hannifin (hydraulique), ont besoin de sites catalogues techniques, de configurateurs de devis et de portails de pièces — on greffe l'IA sur l'existant (configurateur, recherche sémantique de références) sans refonte coûteuse.",
+          "Étoile ferroviaire et autoroute A71 : les transporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un portail client de suivi d'expéditions, de prise de commande en ligne et d'automatisation du reporting, que l'on conçoit en plateforme SaaS sur mesure branchée sur votre SI.",
+          "Pôles d'activité structurants — Parc Technologique de Sologne (site clé en main de 87 ha avec pépinière et hôtel d'entreprises), Parc d'activités des Forges (Calibracier, Columbus McKinnon France, Jacobi) et Parc de l'Aujonnière : pour ces industriels et leurs sous-traitants, on déploie e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), demande de devis intelligente et catalogue produit.",
+          "Position de carrefour entre Bourges, Tours et Châteauroux, à la frontière de la Sologne et du Berry : un chatbot et une recherche sémantique multilingues élargissent l'audience des artisans, commerces et industriels au-delà du Cher, hébergés en UE et conformes RGPD — vos données clients et de production restent maîtrisées.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Vierzon",
+            detail:
+              "Atelier sur site (centre-ville, Parc Technologique de Sologne, Parc des Forges, atelier ou entrepôt près de la gare et de l'A71) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes industrielles. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement, pensé mobile-first pour des équipes d'atelier sur les zones d'activité comme pour vos clients finaux et donneurs d'ordre.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native à Vierzon : configurateur de devis, catalogue technique, e-commerce, chatbot RAG multilingue, recherche sémantique de pièces, suivi d'expédition, agents et automatisations. Démos hebdomadaires en visio.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis vos locaux du Berry — y compris en pleine saison de production ou de livraison, sans interrompre l'atelier ni l'entrepôt.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible) après une passation depuis votre site vierzonnais. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de références, devis automatisé) sur le site d'un artisan du bâtiment, d'un commerce du centre-ville de Vierzon ou d'un atelier de mécanique, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un catalogue technique ou d'une boutique pour les PME mécaniques, métallurgiques et de fabrication des Forges ou de la Sologne, avec UX/UI mobile-first et configurateur de devis intégré.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Portail client ou plateforme métier sur mesure pour les transporteurs et industriels structurants du carrefour de Vierzon (sous-traitants hydraulique, levage, métallurgie) : suivi d'expéditions, planification, IA branchée sur votre SI (ERP, CRM, GMAO).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs industriels du Centre-Val de Loire et leurs sites vierzonnais : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, intégration multi-sites.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, un catalogue technique, une boutique e-commerce ou une plateforme, avec ou sans brique IA. UX/UI sur mesure et mobile-first, multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure : à Vierzon, on fait tout l'amont design comme le développement.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données de production, de vos catalogues techniques et de vos modèles, sans verrou ni dépendance à un prestataire unique. C'est décisif pour les sous-traitants industriels du Cher liés par des clauses de confidentialité de leurs donneurs d'ordre.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Vierzon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez exactement ce que vous payez avant de signer.",
+          },
+          {
+            q: "Pouvez-vous équiper une PME mécanique ou un transporteur de Vierzon ?",
+            a: "Oui. Pour les PME issues du machinisme agricole et de la métallurgie — celles des Forges, de la Sologne ou héritières de la Société Française de Vierzon — on construit catalogues techniques, configurateurs de devis et recherche de pièces ; pour la logistique adossée au carrefour ferroviaire et à l'A71, des portails de suivi d'expéditions et d'automatisation du reporting, branchés sur vos outils existants.",
+          },
+          {
+            q: "Travaillez-vous avec les entreprises du Parc Technologique de Sologne et des zones d'activité ?",
+            a: "Oui. Que vous soyez installé au Parc Technologique de Sologne, au Parc d'activités des Forges (Calibracier, Columbus McKinnon France, Jacobi) ou à l'Aujonnière, on intervient sur site pour le cadrage puis à distance en visio. Industriels, sous-traitants de l'hydraulique et du levage, start-up de la pépinière : on adapte le site, l'e-commerce ou la plateforme SaaS à votre maturité numérique et à vos donneurs d'ordre.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vierzon et dans le Cher ?",

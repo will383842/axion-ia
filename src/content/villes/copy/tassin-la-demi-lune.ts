@@ -50,6 +50,183 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
       en: "Sites web augmentés à Tassin-la-Demi-Lune : vitrine ou plateforme dotée d'IA pour cabinets et agences — prise de rendez-vous automatisée, espace client, réponses instantanées aux demandes.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Tassin-la-Demi-Lune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour l'ouest lyonnais, où le tissu compte plus de 3 600 entreprises et près de 300 commerces : professions libérales — santé, droit, expertise comptable —, cabinets de conseil, agences immobilières et PME de services à l'échelle de proximité. Tassin appartient au Pôle économique Ouest du Grand Lyon (tertiaire à environ 86 %), à 15 min de Lyon, tout près du campus Lyon Ouest d'Écully et de la zone d'activités Techlid. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Tassin, itérations à distance.",
+        whyHere: [
+          "Cœur de cible libéral et médical : pour les cabinets de santé, de droit et d'expertise comptable du quartier de la Demi-Lune et le long de l'avenue Charles-de-Gaulle, on greffe une prise de rendez-vous en ligne, un espace client sécurisé et un agent IA de premier contact qui qualifie les demandes hors horaires d'ouverture, sans refonte lourde de l'existant ni rupture de l'agenda en place.",
+          "Densité de cabinets de conseil et d'agences immobilières : avec plus de 3 600 entreprises et 300 commerces, on livre des sites vitrines haut de gamme, des boutiques e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des portails de mandats à recherche sémantique, calibrés pour la clientèle résidentielle exigeante de l'ouest lyonnais et de Sainte-Foy-lès-Lyon.",
+          "Proximité immédiate du campus Lyon Ouest d'Écully (École Centrale de Lyon, EM Lyon, près de 9 000 étudiants) et de la zone Techlid : on construit des plateformes SaaS IA-native branchées sur vos outils métier (CRM, ERP, outils comptables), pour les PME de services et jeunes pousses qui veulent industrialiser sans recruter, en s'appuyant sur ce vivier de talents.",
+          "Données sensibles des professions réglementées du Pôle économique Ouest du Grand Lyon : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — dossiers patients, actes juridiques et pièces comptables restent maîtrisés, sans transit hors Europe, avec minimisation, journalisation et traçabilité de bout en bout.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Tassin",
+            detail:
+              "Atelier sur site au centre de la Demi-Lune (axes vers Écully, Charbonnières-les-Bains et Francheville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On cartographie les irritants et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre image ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité de l'ouest lyonnais qui consulte d'abord depuis un smartphone. Accessibilité et cohérence de marque vérifiées dès cette étape.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio depuis Tassin pour valider chaque incrément.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, puis mise en production sans downtime — y compris pour un cabinet de la Demi-Lune ou une agence immobilière qui ne peut pas couper son agenda ni son tunnel de contact en ligne.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentation et formation comprises. Vos équipes pilotent l'outil en autonomie depuis Tassin, sans verrou technique ni abonnement imposé, avec un transfert possible vers un prestataire de la Métropole de Lyon.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous, relances automatisées) sur le site d'un cabinet libéral, d'un commerce de la Demi-Lune ou d'une agence immobilière, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un portail de mandats ou d'une boutique e-commerce avec UX/UI et IA intégrée : espace client, prise de rendez-vous, paiement en ligne, pour les agences immobilières, conseils et PME de services de l'ouest lyonnais.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du conseil, de l'expertise comptable et des services, IA intégrée, branchée sur votre SI (CRM, ERP, outils comptables) et déployable à l'échelle du Pôle économique Ouest.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et sièges de la Métropole de Lyon et de la zone Techlid : refonte de plateformes, design system, recherche sémantique d'entreprise et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine de cabinet, un portail immobilier ou une boutique e-commerce, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first pour la clientèle de proximité de l'ouest lyonnais.",
+          },
+          {
+            q: "Mes données patients ou dossiers clients restent-ils en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Pour les professions libérales de la Demi-Lune manipulant des données sensibles — santé, droit, comptabilité —, minimisation, journalisation et traçabilité sont la règle. Vous gardez la propriété complète de vos données comme de vos modèles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Tassin, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme SaaS. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez.",
+          },
+          {
+            q: "Pouvez-vous automatiser les rendez-vous d'un cabinet libéral ?",
+            a: "Oui, c'est un usage fréquent à Tassin. On met en place une prise de rendez-vous en ligne, des relances et rappels automatisés, un agent IA de premier contact et le classement documentaire — pour les cabinets de santé, de droit et d'expertise comptable du quartier de la Demi-Lune qui veulent libérer du temps de secrétariat sans rien perdre de la confidentialité.",
+          },
+          {
+            q: "Construisez-vous des portails et plateformes pour les acteurs du campus d'Écully et de Techlid ?",
+            a: "Oui. À deux pas du campus Lyon Ouest d'Écully (École Centrale de Lyon, EM Lyon) et de la zone d'activités Techlid, on conçoit des plateformes SaaS IA-native, des portails clients et des outils de recherche sémantique pour les PME tech, cabinets de conseil et jeunes pousses. On les branche sur votre CRM, ERP ou base documentaire, avec une livraison sans verrou et un transfert possible vers un prestataire de la Métropole de Lyon.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, agenda, espace client et tunnel e-commerce compris. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution documentée et transférable à tout prestataire de la Métropole de Lyon ou reprise en interne par vos équipes, sans dépendance technique durable envers Axion-IA.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Tassin-la-Demi-Lune des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour l'ouest lyonnais, où le tissu compte plus de 3 600 entreprises et près de 300 commerces : professions libérales — santé, droit, expertise comptable —, cabinets de conseil, agences immobilières et PME de services à l'échelle de proximité. Tassin appartient au Pôle économique Ouest du Grand Lyon (tertiaire à environ 86 %), à 15 min de Lyon, tout près du campus Lyon Ouest d'Écully et de la zone d'activités Techlid. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Tassin, itérations à distance.",
+        whyHere: [
+          "Cœur de cible libéral et médical : pour les cabinets de santé, de droit et d'expertise comptable du quartier de la Demi-Lune et le long de l'avenue Charles-de-Gaulle, on greffe une prise de rendez-vous en ligne, un espace client sécurisé et un agent IA de premier contact qui qualifie les demandes hors horaires d'ouverture, sans refonte lourde de l'existant ni rupture de l'agenda en place.",
+          "Densité de cabinets de conseil et d'agences immobilières : avec plus de 3 600 entreprises et 300 commerces, on livre des sites vitrines haut de gamme, des boutiques e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des portails de mandats à recherche sémantique, calibrés pour la clientèle résidentielle exigeante de l'ouest lyonnais et de Sainte-Foy-lès-Lyon.",
+          "Proximité immédiate du campus Lyon Ouest d'Écully (École Centrale de Lyon, EM Lyon, près de 9 000 étudiants) et de la zone Techlid : on construit des plateformes SaaS IA-native branchées sur vos outils métier (CRM, ERP, outils comptables), pour les PME de services et jeunes pousses qui veulent industrialiser sans recruter, en s'appuyant sur ce vivier de talents.",
+          "Données sensibles des professions réglementées du Pôle économique Ouest du Grand Lyon : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — dossiers patients, actes juridiques et pièces comptables restent maîtrisés, sans transit hors Europe, avec minimisation, journalisation et traçabilité de bout en bout.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Tassin",
+            detail:
+              "Atelier sur site au centre de la Demi-Lune (axes vers Écully, Charbonnières-les-Bains et Francheville) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. On cartographie les irritants et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre image ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité de l'ouest lyonnais qui consulte d'abord depuis un smartphone. Accessibilité et cohérence de marque vérifiées dès cette étape.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio depuis Tassin pour valider chaque incrément.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, puis mise en production sans downtime — y compris pour un cabinet de la Demi-Lune ou une agence immobilière qui ne peut pas couper son agenda ni son tunnel de contact en ligne.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentation et formation comprises. Vos équipes pilotent l'outil en autonomie depuis Tassin, sans verrou technique ni abonnement imposé, avec un transfert possible vers un prestataire de la Métropole de Lyon.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous, relances automatisées) sur le site d'un cabinet libéral, d'un commerce de la Demi-Lune ou d'une agence immobilière, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un portail de mandats ou d'une boutique e-commerce avec UX/UI et IA intégrée : espace client, prise de rendez-vous, paiement en ligne, pour les agences immobilières, conseils et PME de services de l'ouest lyonnais.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du conseil, de l'expertise comptable et des services, IA intégrée, branchée sur votre SI (CRM, ERP, outils comptables) et déployable à l'échelle du Pôle économique Ouest.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et sièges de la Métropole de Lyon et de la zone Techlid : refonte de plateformes, design system, recherche sémantique d'entreprise et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine de cabinet, un portail immobilier ou une boutique e-commerce, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first pour la clientèle de proximité de l'ouest lyonnais.",
+          },
+          {
+            q: "Mes données patients ou dossiers clients restent-ils en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Pour les professions libérales de la Demi-Lune manipulant des données sensibles — santé, droit, comptabilité —, minimisation, journalisation et traçabilité sont la règle. Vous gardez la propriété complète de vos données comme de vos modèles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Tassin, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple, davantage pour une plateforme SaaS. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez.",
+          },
+          {
+            q: "Pouvez-vous automatiser les rendez-vous d'un cabinet libéral ?",
+            a: "Oui, c'est un usage fréquent à Tassin. On met en place une prise de rendez-vous en ligne, des relances et rappels automatisés, un agent IA de premier contact et le classement documentaire — pour les cabinets de santé, de droit et d'expertise comptable du quartier de la Demi-Lune qui veulent libérer du temps de secrétariat sans rien perdre de la confidentialité.",
+          },
+          {
+            q: "Construisez-vous des portails et plateformes pour les acteurs du campus d'Écully et de Techlid ?",
+            a: "Oui. À deux pas du campus Lyon Ouest d'Écully (École Centrale de Lyon, EM Lyon) et de la zone d'activités Techlid, on conçoit des plateformes SaaS IA-native, des portails clients et des outils de recherche sémantique pour les PME tech, cabinets de conseil et jeunes pousses. On les branche sur votre CRM, ERP ou base documentaire, avec une livraison sans verrou et un transfert possible vers un prestataire de la Métropole de Lyon.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, agenda, espace client et tunnel e-commerce compris. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution documentée et transférable à tout prestataire de la Métropole de Lyon ou reprise en interne par vos équipes, sans dépendance technique durable envers Axion-IA.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tassin-la-Demi-Lune ?",

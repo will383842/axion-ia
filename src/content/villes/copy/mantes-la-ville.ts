@@ -46,6 +46,183 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Mantes-la-Ville : sessions dans votre atelier industriel, commerce, cabinet ou en visio. Dirigeants industriels, artisans, commerçants, gérants TPE/PME mantois souhaitant maîtriser l'IA.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
+        whyHere: [
+          "Bassin industriel automobile et aéronautique : autour du site Renault Flins-Aubergenville (reconversion batteries-recyclage, plusieurs milliers d'emplois) et de la R&D moteurs Safran à Buchelay gravite un réseau dense de sous-traitants. Terrain idéal pour des portails fournisseurs, des plateformes de suivi qualité et des agents d'automatisation branchés sur l'ERP ou le MES, avec confidentialité industrielle stricte et hébergement UE.",
+          "Tissu mixte de TPE artisans BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
+          "Commerces de proximité et PME tertiaires mantevillois : sites vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec chatbot multilingue et recherche sémantique pour capter une clientèle du centre-ville et de tout le bassin Mantois (Mantes-la-Jolie, Buchelay, Limay, Aubergenville), du click-and-collect au catalogue complet.",
+          "Connexion francilienne forte — RER E récent et Transilien J/N en gare de Mantes-la-Jolie (environ 35 min de Saint-Lazare et de la Gare du Nord), A13 vers Paris et Rouen, La Défense à 35 min — mais hébergement UE strict : toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act, vos données clients et industrielles restant maîtrisées sans transfert hors UE.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Mantes-la-Ville",
+            detail:
+              "Atelier sur site — centre-ville mantevillois, atelier industriel ou zone d'activité du Mantois : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On cartographie vos secteurs (sous-traitance auto-aéro, BTP, commerce) et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour vos clients comme pour vos équipes d'atelier proches de Renault Flins ou Safran Buchelay. On valide l'accessibilité et la cohérence visuelle avant la première ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis le bassin Mantois, avec points d'étape réguliers pour les sous-traitants industriels et les commerces du centre-ville.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis votre infrastructure ou la zone d'activité du Mantois — y compris en pleine cadence de production industrielle pour les sous-traitants auto-aéro ou en saison commerciale pour les boutiques mantevilloises.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes du Mantois pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; on forme vos référents et on reste disponible pour un transfert vers un prestataire local francilien si besoin.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis — sur le site d'un artisan BTP du Mantois (plomberie, électricité, menuiserie) ou d'un commerce du centre-ville mantevillois, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour PME tertiaire, service aux entreprises industrielles ou commerce du Mantois, avec UX/UI mobile-first et IA intégrée : e-commerce multi-CMS, multilingue, chatbot et recherche sémantique pour capter le bassin Mantois.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les sous-traitants automobile-aéronautique du bassin Renault Flins-Aubergenville et Safran Buchelay, IA intégrée, branchée sur votre SI (CRM, ERP, MES) : suivi qualité, gestion fournisseurs, automatisation supply chain.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs industriels du Mantois et leurs filières (mobilité électrique, recyclage batteries, R&D moteurs) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance data et conformité AI Act.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail mantevillois, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, le tout mobile-first et optimisé Web Vitals pour les clients du bassin Mantois.",
+          },
+          {
+            q: "Mes données industrielles restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Pour les sous-traitants du bassin Renault Flins-Aubergenville et Safran Buchelay, la confidentialité industrielle est garantie : vos plans, données qualité et flux fournisseurs restent maîtrisés, et vous gardez la propriété complète de vos données et de vos modèles.",
+          },
+          {
+            q: "Pouvez-vous brancher l'outil sur notre ERP ou MES industriel ?",
+            a: "Oui. Pour les industriels et sous-traitants du Mantois, on connecte le portail ou la plateforme à votre SI existant (ERP, CRM, MES) via API : suivi qualité, gestion fournisseurs, automatisation supply chain, prédiction de maintenance. Greffe sur l'existant ou build IA-native selon votre besoin, avec confidentialité industrielle stricte pour la filière auto-aéro.",
+          },
+          {
+            q: "Travaillez-vous avec les artisans BTP et commerçants du centre-ville mantevillois ?",
+            a: "Oui, et c'est une grande part de notre activité dans le Mantois. Pour un plombier, un électricien, un menuisier ou un commerçant du centre-ville, on livre une vitrine ou une boutique e-commerce mobile-first claire, puis on greffe si utile un agent de prise de RDV, un devis chantier automatisé ou une recherche sémantique catalogue. Sans refonte lourde, à un rythme adapté à des pros souvent sur le terrain.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Mantes-la-Ville, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre, le prix et le planning sont posés avant le premier sprint, que vous soyez un sous-traitant industriel, une PME tertiaire ou un commerce mantevillois.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, le périmètre est posé avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine cadence industrielle ou en saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Tout est documenté et transférable à un prestataire local francilien ou repris en interne par vos équipes du Mantois.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
+        whyHere: [
+          "Bassin industriel automobile et aéronautique : autour du site Renault Flins-Aubergenville (reconversion batteries-recyclage, plusieurs milliers d'emplois) et de la R&D moteurs Safran à Buchelay gravite un réseau dense de sous-traitants. Terrain idéal pour des portails fournisseurs, des plateformes de suivi qualité et des agents d'automatisation branchés sur l'ERP ou le MES, avec confidentialité industrielle stricte et hébergement UE.",
+          "Tissu mixte de TPE artisans BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
+          "Commerces de proximité et PME tertiaires mantevillois : sites vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec chatbot multilingue et recherche sémantique pour capter une clientèle du centre-ville et de tout le bassin Mantois (Mantes-la-Jolie, Buchelay, Limay, Aubergenville), du click-and-collect au catalogue complet.",
+          "Connexion francilienne forte — RER E récent et Transilien J/N en gare de Mantes-la-Jolie (environ 35 min de Saint-Lazare et de la Gare du Nord), A13 vers Paris et Rouen, La Défense à 35 min — mais hébergement UE strict : toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act, vos données clients et industrielles restant maîtrisées sans transfert hors UE.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Mantes-la-Ville",
+            detail:
+              "Atelier sur site — centre-ville mantevillois, atelier industriel ou zone d'activité du Mantois : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On cartographie vos secteurs (sous-traitance auto-aéro, BTP, commerce) et on remet un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour vos clients comme pour vos équipes d'atelier proches de Renault Flins ou Safran Buchelay. On valide l'accessibilité et la cohérence visuelle avant la première ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis le bassin Mantois, avec points d'étape réguliers pour les sous-traitants industriels et les commerces du centre-ville.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime depuis votre infrastructure ou la zone d'activité du Mantois — y compris en pleine cadence de production industrielle pour les sous-traitants auto-aéro ou en saison commerciale pour les boutiques mantevilloises.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes du Mantois pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; on forme vos référents et on reste disponible pour un transfert vers un prestataire local francilien si besoin.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis — sur le site d'un artisan BTP du Mantois (plomberie, électricité, menuiserie) ou d'un commerce du centre-ville mantevillois, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour PME tertiaire, service aux entreprises industrielles ou commerce du Mantois, avec UX/UI mobile-first et IA intégrée : e-commerce multi-CMS, multilingue, chatbot et recherche sémantique pour capter le bassin Mantois.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les sous-traitants automobile-aéronautique du bassin Renault Flins-Aubergenville et Safran Buchelay, IA intégrée, branchée sur votre SI (CRM, ERP, MES) : suivi qualité, gestion fournisseurs, automatisation supply chain.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs industriels du Mantois et leurs filières (mobilité électrique, recyclage batteries, R&D moteurs) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance data et conformité AI Act.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail mantevillois, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, le tout mobile-first et optimisé Web Vitals pour les clients du bassin Mantois.",
+          },
+          {
+            q: "Mes données industrielles restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Pour les sous-traitants du bassin Renault Flins-Aubergenville et Safran Buchelay, la confidentialité industrielle est garantie : vos plans, données qualité et flux fournisseurs restent maîtrisés, et vous gardez la propriété complète de vos données et de vos modèles.",
+          },
+          {
+            q: "Pouvez-vous brancher l'outil sur notre ERP ou MES industriel ?",
+            a: "Oui. Pour les industriels et sous-traitants du Mantois, on connecte le portail ou la plateforme à votre SI existant (ERP, CRM, MES) via API : suivi qualité, gestion fournisseurs, automatisation supply chain, prédiction de maintenance. Greffe sur l'existant ou build IA-native selon votre besoin, avec confidentialité industrielle stricte pour la filière auto-aéro.",
+          },
+          {
+            q: "Travaillez-vous avec les artisans BTP et commerçants du centre-ville mantevillois ?",
+            a: "Oui, et c'est une grande part de notre activité dans le Mantois. Pour un plombier, un électricien, un menuisier ou un commerçant du centre-ville, on livre une vitrine ou une boutique e-commerce mobile-first claire, puis on greffe si utile un agent de prise de RDV, un devis chantier automatisé ou une recherche sémantique catalogue. Sans refonte lourde, à un rythme adapté à des pros souvent sur le terrain.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Mantes-la-Ville, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : le périmètre, le prix et le planning sont posés avant le premier sprint, que vous soyez un sous-traitant industriel, une PME tertiaire ou un commerce mantevillois.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, le périmètre est posé avant le premier sprint. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine cadence industrielle ou en saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Tout est documenté et transférable à un prestataire local francilien ou repris en interne par vos équipes du Mantois.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mantes-la-Ville et Mantois ?",

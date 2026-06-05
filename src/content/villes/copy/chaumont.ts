@@ -50,6 +50,183 @@ export const CHAUMONT_COPY: VilleCopy = {
       en: "Sessions un-à-un avec dirigeants de TPE/PME chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
+        whyHere: [
+          "Sous-traitance industrielle structurée autour des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME de mécanique, logistique et services aux entreprises : terrain idéal pour des portails clients, des configurateurs de devis et des automatisations qui relient atelier, GPAO, facturation et suivi de chantier sans aucune ressaisie entre le bureau et la production.",
+          "Commerce de centre-ville et artisanat (BTP, métallerie) très denses autour de la basilique Saint-Jean-Baptiste et des Halles : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites mobile-first qui captent la clientèle locale, avec un chatbot RAG ancré sur vos fiches produits, vos stocks et vos horaires d'ouverture.",
+          "Économie de services tournée vers l'École de gendarmerie, le 61ᵉ régiment d'artillerie et la santé libérale du quartier de la gare : on greffe l'IA sur l'existant (widget, API, plugin) pour automatiser prise de rendez-vous, relances et reporting, sans refonte coûteuse ni interruption de l'activité en cours.",
+          "Pôle tertiaire émergent autour du Centre national du graphisme (Le Signe) et du campus de l'URCA : nos plateformes SaaS IA-native, nos agents et nos moteurs de recherche sémantique valorisent contenus, archives, affiches et catalogues, hébergeables en UE et conformes RGPD et AI Act, pour un public régional comme national.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Chaumont",
+            detail:
+              "Atelier sur site (centre-ville près des Halles, zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et du SI existants. On remet un devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour la clientèle du centre-ville comme pour les acheteurs professionnels des zones d'activité de la Haute-Marne. Accessibilité et lisibilité validées tôt.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis La Vendue ou à distance : e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur Sage, EBP ou Pennylane. Démos hebdomadaires en visio, code revu en continu.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation menés avec vos équipes, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris quand on augmente un site marchand chaumontais déjà en activité ou un portail relié aux ateliers de Croix Coquillon.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible à Chaumont ou dans le Grand Est). Vos équipes pilotent l'outil en autonomie, avec documentation et passation, sans verrou technique ni abonnement imposé par Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) sur le site existant d'un commerce du centre-ville, d'un artisan du BTP ou d'un professionnel de santé chaumontais, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour le commerce de détail, la métallerie ou la sous-traitance industrielle des zones Plein'Est : UX/UI sur mesure, e-commerce multi-CMS, espace client, IA intégrée et mobile-first.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des zones La Vendue et Dame Huguenotte, IA intégrée, branchée sur votre SI (CRM, ERP, GPAO) afin de relier production, logistique et relation client.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et institutions du territoire haut-marnais (défense, santé, culture autour du Centre national du graphisme) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals pour la clientèle chaumontaise.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou ni dépendance à un prestataire unique. C'est un point clé pour les acteurs liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie, sensibles à la souveraineté des données.",
+          },
+          {
+            q: "Pouvez-vous relier mon site à mes outils industriels ?",
+            a: "Oui. Pour la sous-traitance des zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte, on branche votre site ou portail client sur vos logiciels métier (ERP, GPAO, Sage, EBP) afin d'automatiser devis, suivi de commande et facturation, sans double saisie entre l'atelier et le commercial. Configurateurs de devis et tableaux de bord temps réel inclus.",
+          },
+          {
+            q: "Pouvez-vous valoriser des contenus, archives ou catalogues chaumontais ?",
+            a: "Oui. Pour les acteurs du pôle tertiaire — Centre national du graphisme (Le Signe), campus de l'URCA, structures culturelles ou commerces à fort catalogue — on déploie une recherche sémantique et un chatbot RAG qui indexent affiches, archives, fiches produits et documents. Le public régional comme national retrouve la bonne ressource en quelques mots, en plusieurs langues si besoin.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Chaumont — centre-ville, Plein'Est, La Vendue ou Dame Huguenotte — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
+        whyHere: [
+          "Sous-traitance industrielle structurée autour des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME de mécanique, logistique et services aux entreprises : terrain idéal pour des portails clients, des configurateurs de devis et des automatisations qui relient atelier, GPAO, facturation et suivi de chantier sans aucune ressaisie entre le bureau et la production.",
+          "Commerce de centre-ville et artisanat (BTP, métallerie) très denses autour de la basilique Saint-Jean-Baptiste et des Halles : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites mobile-first qui captent la clientèle locale, avec un chatbot RAG ancré sur vos fiches produits, vos stocks et vos horaires d'ouverture.",
+          "Économie de services tournée vers l'École de gendarmerie, le 61ᵉ régiment d'artillerie et la santé libérale du quartier de la gare : on greffe l'IA sur l'existant (widget, API, plugin) pour automatiser prise de rendez-vous, relances et reporting, sans refonte coûteuse ni interruption de l'activité en cours.",
+          "Pôle tertiaire émergent autour du Centre national du graphisme (Le Signe) et du campus de l'URCA : nos plateformes SaaS IA-native, nos agents et nos moteurs de recherche sémantique valorisent contenus, archives, affiches et catalogues, hébergeables en UE et conformes RGPD et AI Act, pour un public régional comme national.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Chaumont",
+            detail:
+              "Atelier sur site (centre-ville près des Halles, zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et du SI existants. On remet un devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour la clientèle du centre-ville comme pour les acheteurs professionnels des zones d'activité de la Haute-Marne. Accessibilité et lisibilité validées tôt.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis La Vendue ou à distance : e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur Sage, EBP ou Pennylane. Démos hebdomadaires en visio, code revu en continu.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation menés avec vos équipes, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris quand on augmente un site marchand chaumontais déjà en activité ou un portail relié aux ateliers de Croix Coquillon.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible à Chaumont ou dans le Grand Est). Vos équipes pilotent l'outil en autonomie, avec documentation et passation, sans verrou technique ni abonnement imposé par Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) sur le site existant d'un commerce du centre-ville, d'un artisan du BTP ou d'un professionnel de santé chaumontais, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour le commerce de détail, la métallerie ou la sous-traitance industrielle des zones Plein'Est : UX/UI sur mesure, e-commerce multi-CMS, espace client, IA intégrée et mobile-first.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des zones La Vendue et Dame Huguenotte, IA intégrée, branchée sur votre SI (CRM, ERP, GPAO) afin de relier production, logistique et relation client.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et institutions du territoire haut-marnais (défense, santé, culture autour du Centre national du graphisme) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals pour la clientèle chaumontaise.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou ni dépendance à un prestataire unique. C'est un point clé pour les acteurs liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie, sensibles à la souveraineté des données.",
+          },
+          {
+            q: "Pouvez-vous relier mon site à mes outils industriels ?",
+            a: "Oui. Pour la sous-traitance des zones Plein'Est à Croix Coquillon, La Vendue ou Dame Huguenotte, on branche votre site ou portail client sur vos logiciels métier (ERP, GPAO, Sage, EBP) afin d'automatiser devis, suivi de commande et facturation, sans double saisie entre l'atelier et le commercial. Configurateurs de devis et tableaux de bord temps réel inclus.",
+          },
+          {
+            q: "Pouvez-vous valoriser des contenus, archives ou catalogues chaumontais ?",
+            a: "Oui. Pour les acteurs du pôle tertiaire — Centre national du graphisme (Le Signe), campus de l'URCA, structures culturelles ou commerces à fort catalogue — on déploie une recherche sémantique et un chatbot RAG qui indexent affiches, archives, fiches produits et documents. Le public régional comme national retrouve la bonne ressource en quelques mots, en plusieurs langues si besoin.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Chaumont — centre-ville, Plein'Est, La Vendue ou Dame Huguenotte — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Chaumont ?",

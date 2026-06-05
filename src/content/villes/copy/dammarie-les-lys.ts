@@ -50,6 +50,183 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
       en: "Sites web augmentés à Dammarie-les-Lys : vitrines artisans, portails de PME du BTP et de la logistique enrichis d'IA — devis en ligne, prise de contact qualifiée et contenus locaux automatisés.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Dammarie-les-Lys des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des bords de Seine de l'agglomération Melun Val de Seine, où cohabitent artisans et commerces de proximité, zones d'activités, PME du BTP et de la logistique, et sous-traitants du pôle aéronautique de Villaroche (Safran Aircraft Engines) tout proche, vers Réau et Montereau-sur-le-Jard. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Dammarie-les-Lys, itérations à distance.",
+        whyHere: [
+          "Sous-traitance aéronautique du pôle de Villaroche (Safran Aircraft Engines, ex-Snecma) à quinze minutes, vers Réau et Montereau-sur-le-Jard : pour ces PME et TPE techniques, on bâtit des portails de gestion documentaire, des espaces clients et des plateformes de suivi qualité où la recherche sémantique retrouve la bonne procédure, le bon plan ou la bonne certification en quelques secondes.",
+          "Tissu dense de TPE artisans, commerces et PME du BTP de l'agglo melunaise, des bords de Seine aux zones commerciales de Dammarie : on greffe sur l'existant un devis en ligne, une prise de rendez-vous et un chatbot multilingue qui qualifie la demande avant l'appel, sans imposer de refonte coûteuse au commerçant ou à l'artisan.",
+          "Logistique et transport en Seine-et-Marne le long de la Seine et de la N6 vers Fontainebleau : on conçoit des plateformes métier sur mesure et des automatisations branchées sur vos outils — planification de tournées, suivi d'expéditions, tableaux de bord temps réel — plutôt qu'un simple site vitrine, pour les logisticiens et transporteurs du bassin melunais.",
+          "Proximité de Melun (préfecture du 77 à huit minutes) et de Fontainebleau et de leur clientèle touristique et résidentielle : nos vitrines e-commerce multi-CMS et chatbots multilingues s'adressent aux commerces, services aux entreprises, professions libérales et hébergeurs qui captent ce flux à vingt minutes, avec recherche sémantique sur catalogues et prestations.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Dammarie-les-Lys",
+            detail:
+              "Atelier sur site (bords de Seine, zones d'activités et commerciales de l'agglo Melun Val de Seine, ou abords du pôle de Villaroche vers Réau) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé et validé avant toute ligne de code, pensé mobile-first pour l'artisan en déplacement le long de la N6 comme pour le donneur d'ordre aéronautique du bassin de Villaroche.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, devis en ligne, espace client, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchées sur votre SI. Démos hebdomadaires en visio, code versionné et documenté à chaque étape.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison d'activité du chantier BTP, du commerce melunais ou de la logistique le long de la Seine.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes de Dammarie-les-Lys ou de Melun pilotent l'outil en autonomie, formation incluse, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, devis en ligne — sur le site existant de l'artisan, du commerce de proximité ou de la profession libérale de l'agglo melunaise, en quelques semaines et sans refonte coûteuse.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une PME du BTP, de la logistique, du transport ou du commerce de détail, avec UX/UI soignée et IA intégrée : prise de contact qualifiée, e-commerce multi-CMS, espace client.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les sous-traitants aéronautiques du bassin de Villaroche (Safran) et les logisticiens du 77, IA intégrée, branchée sur votre SI (CRM, ERP, GED) avec recherche sémantique et suivi qualité.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands donneurs d'ordre régionaux, de l'aéronautique à la logistique : refonte de plateformes, design system, recherche sémantique à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype testé — pour un site vitrine, une boutique e-commerce ou une plateforme métier, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vous gardez la propriété complète de vos données, contenus, plans et modèles, sans verrou ni dépendance à un prestataire unique — un point clé pour les sous-traitants aéro de Villaroche manipulant des documents sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Dammarie-les-Lys, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale pour la TPE comme pour la PME.",
+          },
+          {
+            q: "Pouvez-vous outiller un sous-traitant aéro de Villaroche ?",
+            a: "Oui. Pour les PME et TPE techniques du pôle de Villaroche (Safran Aircraft Engines), vers Réau et Montereau-sur-le-Jard, on construit des portails de gestion documentaire, des espaces clients et des plateformes de suivi qualité, avec recherche sémantique sur vos procédures, plans et certifications, le tout hébergé en UE et conforme aux exigences de traçabilité.",
+          },
+          {
+            q: "Aidez-vous les commerces et logisticiens de l'agglo melunaise ?",
+            a: "Oui. Pour les commerces de détail des zones d'activités de Dammarie-les-Lys et de Melun, on déploie des vitrines e-commerce multi-CMS et des chatbots multilingues qui captent la clientèle touristique de Fontainebleau. Pour les logisticiens et transporteurs le long de la Seine et de la N6, on conçoit des plateformes de planification de tournées et de suivi d'expéditions branchées sur vos outils.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison du chantier ou de la logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Outil transférable à tout prestataire d'Île-de-France ou de Seine-et-Marne, ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Dammarie-les-Lys des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des bords de Seine de l'agglomération Melun Val de Seine, où cohabitent artisans et commerces de proximité, zones d'activités, PME du BTP et de la logistique, et sous-traitants du pôle aéronautique de Villaroche (Safran Aircraft Engines) tout proche, vers Réau et Montereau-sur-le-Jard. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Dammarie-les-Lys, itérations à distance.",
+        whyHere: [
+          "Sous-traitance aéronautique du pôle de Villaroche (Safran Aircraft Engines, ex-Snecma) à quinze minutes, vers Réau et Montereau-sur-le-Jard : pour ces PME et TPE techniques, on bâtit des portails de gestion documentaire, des espaces clients et des plateformes de suivi qualité où la recherche sémantique retrouve la bonne procédure, le bon plan ou la bonne certification en quelques secondes.",
+          "Tissu dense de TPE artisans, commerces et PME du BTP de l'agglo melunaise, des bords de Seine aux zones commerciales de Dammarie : on greffe sur l'existant un devis en ligne, une prise de rendez-vous et un chatbot multilingue qui qualifie la demande avant l'appel, sans imposer de refonte coûteuse au commerçant ou à l'artisan.",
+          "Logistique et transport en Seine-et-Marne le long de la Seine et de la N6 vers Fontainebleau : on conçoit des plateformes métier sur mesure et des automatisations branchées sur vos outils — planification de tournées, suivi d'expéditions, tableaux de bord temps réel — plutôt qu'un simple site vitrine, pour les logisticiens et transporteurs du bassin melunais.",
+          "Proximité de Melun (préfecture du 77 à huit minutes) et de Fontainebleau et de leur clientèle touristique et résidentielle : nos vitrines e-commerce multi-CMS et chatbots multilingues s'adressent aux commerces, services aux entreprises, professions libérales et hébergeurs qui captent ce flux à vingt minutes, avec recherche sémantique sur catalogues et prestations.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Dammarie-les-Lys",
+            detail:
+              "Atelier sur site (bords de Seine, zones d'activités et commerciales de l'agglo Melun Val de Seine, ou abords du pôle de Villaroche vers Réau) : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé et validé avant toute ligne de code, pensé mobile-first pour l'artisan en déplacement le long de la N6 comme pour le donneur d'ordre aéronautique du bassin de Villaroche.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, devis en ligne, espace client, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchées sur votre SI. Démos hebdomadaires en visio, code versionné et documenté à chaque étape.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison d'activité du chantier BTP, du commerce melunais ou de la logistique le long de la Seine.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes de Dammarie-les-Lys ou de Melun pilotent l'outil en autonomie, formation incluse, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, devis en ligne — sur le site existant de l'artisan, du commerce de proximité ou de la profession libérale de l'agglo melunaise, en quelques semaines et sans refonte coûteuse.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une PME du BTP, de la logistique, du transport ou du commerce de détail, avec UX/UI soignée et IA intégrée : prise de contact qualifiée, e-commerce multi-CMS, espace client.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les sous-traitants aéronautiques du bassin de Villaroche (Safran) et les logisticiens du 77, IA intégrée, branchée sur votre SI (CRM, ERP, GED) avec recherche sémantique et suivi qualité.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands donneurs d'ordre régionaux, de l'aéronautique à la logistique : refonte de plateformes, design system, recherche sémantique à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype testé — pour un site vitrine, une boutique e-commerce ou une plateforme métier, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vous gardez la propriété complète de vos données, contenus, plans et modèles, sans verrou ni dépendance à un prestataire unique — un point clé pour les sous-traitants aéro de Villaroche manipulant des documents sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Dammarie-les-Lys, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise sur la facture finale pour la TPE comme pour la PME.",
+          },
+          {
+            q: "Pouvez-vous outiller un sous-traitant aéro de Villaroche ?",
+            a: "Oui. Pour les PME et TPE techniques du pôle de Villaroche (Safran Aircraft Engines), vers Réau et Montereau-sur-le-Jard, on construit des portails de gestion documentaire, des espaces clients et des plateformes de suivi qualité, avec recherche sémantique sur vos procédures, plans et certifications, le tout hébergé en UE et conforme aux exigences de traçabilité.",
+          },
+          {
+            q: "Aidez-vous les commerces et logisticiens de l'agglo melunaise ?",
+            a: "Oui. Pour les commerces de détail des zones d'activités de Dammarie-les-Lys et de Melun, on déploie des vitrines e-commerce multi-CMS et des chatbots multilingues qui captent la clientèle touristique de Fontainebleau. Pour les logisticiens et transporteurs le long de la Seine et de la N6, on conçoit des plateformes de planification de tournées et de suivi d'expéditions branchées sur vos outils.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison du chantier ou de la logistique. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Outil transférable à tout prestataire d'Île-de-France ou de Seine-et-Marne, ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dammarie-les-Lys et dans l'agglo de Melun ?",

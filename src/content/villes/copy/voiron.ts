@@ -48,6 +48,183 @@ export const VOIRON_COPY: VilleCopy = {
       en: "Accompagnement un-à-un des dirigeants de TPE et PME voironnaises : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Pays Voironnais.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Voiron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants), aux portes du parc naturel régional de Chartreuse, où cohabitent l'agroalimentaire d'exception (liqueurs de Chartreuse, chocolaterie Bonnat), le textile historique (tissages Denantes), l'industrie de la zone de Champfeuillet, le tourisme de montagne et la santé. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Voiron, itérations à distance.",
+        whyHere: [
+          "Patrimoine agroalimentaire à forte image de marque (liqueurs de Chartreuse, chocolaterie Bonnat) : nous construisons des vitrines e-commerce premium sur WordPress, Shopify ou PrestaShop et des parcours d'achat multilingues capables de raconter l'origine et le savoir-faire, avec paiement sécurisé, fiches produits enrichies et logistique connectée à votre gestion de stock.",
+          "Économie touristique adossée au massif de Chartreuse et au monastère de la Grande Chartreuse : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, les hébergements de montagne et les activités de plein air, avec UX mobile-first pour des visiteurs qui réservent depuis leur smartphone en chemin vers Saint-Pierre-de-Chartreuse.",
+          "Tissu industriel dense sur la zone de Champfeuillet (plus de 200 entreprises) et le parc technologique Centr'Alp à Moirans-Voreppe (200 sociétés, environ 6 000 emplois) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on développe un portail de suivi de production, de devis et de reporting sur mesure pour les TPE/PME et les tissages Denantes.",
+          "Pôle santé structurant avec le centre hospitalier de Voiron et bonne desserte TER (cadencé 20 min vers Grenoble et Lyon) qui irrigue l'initiative économique Econex : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, clients et de production restent maîtrisées et ne transitent jamais hors UE sans DPA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Voiron",
+            detail:
+              "Atelier sur site (cœur de ville, zone industrielle de Champfeuillet, parcs d'activité Parvis 1 et 2, gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Chartreuse. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement, pensé mobile-first et accessible pour une clientèle qui réserve un hébergement de montagne ou achète un coffret du terroir depuis son smartphone.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS de produits du terroir, moteur de réservation, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos ERP et logiciels de production. Démos hebdomadaires en visio.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison touristique du massif de Chartreuse ou pendant un pic de commandes de fin d'année pour la chocolaterie Bonnat ou les liqueurs.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis vos bureaux du Voironnais, sans verrou ni abonnement imposé, avec documentation et transfert de compétences à la clé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de réservation) sur le site existant d'un artisan, commerçant, hébergeur de Chartreuse ou producteur du terroir voironnais, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour l'agroalimentaire (chocolaterie, liqueurs), le textile (tissages Denantes) ou le tourisme de montagne : e-commerce multi-CMS, réservation, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de Champfeuillet et de Centr'Alp, IA intégrée, branchée sur votre SI (ERP industriel, CRM, logiciels santé du centre hospitalier, outils logistiques).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et marques régionales du Pays Voironnais : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance et roadmap partagées.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, une boutique e-commerce de produits du terroir ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Un point essentiel pour le centre hospitalier de Voiron et les acteurs santé qui manipulent des données sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Voiron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+          },
+          {
+            q: "Gérez-vous le multilingue pour la clientèle touristique de Chartreuse ?",
+            a: "Oui. Nos sites, boutiques et chatbots RAG sont multilingues par défaut, adaptés aux visiteurs du massif de Chartreuse et aux acheteurs internationaux de liqueurs et de chocolat Bonnat. Réservation directe, fiches produits et assistance conversationnelle sont déclinables dans plusieurs langues, avec détection automatique de la langue du visiteur.",
+          },
+          {
+            q: "Pouvez-vous connecter l'IA aux outils industriels de Champfeuillet ou Centr'Alp ?",
+            a: "Oui. Pour les TPE/PME industrielles et logistiques de la zone de Champfeuillet (plus de 200 entreprises) ou du parc Centr'Alp à Moirans-Voreppe, on développe des connecteurs sur mesure entre vos ERP, vos logiciels de production et un portail web : suivi de fabrication, génération automatique de devis, reporting et recherche sémantique dans vos documents techniques, le tout en code custom maintenable.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de Chartreuse. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire local d'Auvergne-Rhône-Alpes ou repris en interne par vos équipes du Voironnais.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Voiron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants), aux portes du parc naturel régional de Chartreuse, où cohabitent l'agroalimentaire d'exception (liqueurs de Chartreuse, chocolaterie Bonnat), le textile historique (tissages Denantes), l'industrie de la zone de Champfeuillet, le tourisme de montagne et la santé. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Voiron, itérations à distance.",
+        whyHere: [
+          "Patrimoine agroalimentaire à forte image de marque (liqueurs de Chartreuse, chocolaterie Bonnat) : nous construisons des vitrines e-commerce premium sur WordPress, Shopify ou PrestaShop et des parcours d'achat multilingues capables de raconter l'origine et le savoir-faire, avec paiement sécurisé, fiches produits enrichies et logistique connectée à votre gestion de stock.",
+          "Économie touristique adossée au massif de Chartreuse et au monastère de la Grande Chartreuse : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, les hébergements de montagne et les activités de plein air, avec UX mobile-first pour des visiteurs qui réservent depuis leur smartphone en chemin vers Saint-Pierre-de-Chartreuse.",
+          "Tissu industriel dense sur la zone de Champfeuillet (plus de 200 entreprises) et le parc technologique Centr'Alp à Moirans-Voreppe (200 sociétés, environ 6 000 emplois) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on développe un portail de suivi de production, de devis et de reporting sur mesure pour les TPE/PME et les tissages Denantes.",
+          "Pôle santé structurant avec le centre hospitalier de Voiron et bonne desserte TER (cadencé 20 min vers Grenoble et Lyon) qui irrigue l'initiative économique Econex : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, clients et de production restent maîtrisées et ne transitent jamais hors UE sans DPA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Voiron",
+            detail:
+              "Atelier sur site (cœur de ville, zone industrielle de Champfeuillet, parcs d'activité Parvis 1 et 2, gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique de Chartreuse. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype testé avant tout développement, pensé mobile-first et accessible pour une clientèle qui réserve un hébergement de montagne ou achète un coffret du terroir depuis son smartphone.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS de produits du terroir, moteur de réservation, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos ERP et logiciels de production. Démos hebdomadaires en visio.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison touristique du massif de Chartreuse ou pendant un pic de commandes de fin d'année pour la chocolaterie Bonnat ou les liqueurs.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis vos bureaux du Voironnais, sans verrou ni abonnement imposé, avec documentation et transfert de compétences à la clé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de réservation) sur le site existant d'un artisan, commerçant, hébergeur de Chartreuse ou producteur du terroir voironnais, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour l'agroalimentaire (chocolaterie, liqueurs), le textile (tissages Denantes) ou le tourisme de montagne : e-commerce multi-CMS, réservation, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de Champfeuillet et de Centr'Alp, IA intégrée, branchée sur votre SI (ERP industriel, CRM, logiciels santé du centre hospitalier, outils logistiques).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et marques régionales du Pays Voironnais : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance et roadmap partagées.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, une boutique e-commerce de produits du terroir ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Un point essentiel pour le centre hospitalier de Voiron et les acteurs santé qui manipulent des données sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Voiron, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route.",
+          },
+          {
+            q: "Gérez-vous le multilingue pour la clientèle touristique de Chartreuse ?",
+            a: "Oui. Nos sites, boutiques et chatbots RAG sont multilingues par défaut, adaptés aux visiteurs du massif de Chartreuse et aux acheteurs internationaux de liqueurs et de chocolat Bonnat. Réservation directe, fiches produits et assistance conversationnelle sont déclinables dans plusieurs langues, avec détection automatique de la langue du visiteur.",
+          },
+          {
+            q: "Pouvez-vous connecter l'IA aux outils industriels de Champfeuillet ou Centr'Alp ?",
+            a: "Oui. Pour les TPE/PME industrielles et logistiques de la zone de Champfeuillet (plus de 200 entreprises) ou du parc Centr'Alp à Moirans-Voreppe, on développe des connecteurs sur mesure entre vos ERP, vos logiciels de production et un portail web : suivi de fabrication, génération automatique de devis, reporting et recherche sémantique dans vos documents techniques, le tout en code custom maintenable.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique de Chartreuse. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Le projet reste transférable à tout prestataire local d'Auvergne-Rhône-Alpes ou repris en interne par vos équipes du Voironnais.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA à Voiron ?",

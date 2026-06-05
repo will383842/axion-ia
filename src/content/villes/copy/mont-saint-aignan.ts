@@ -49,6 +49,183 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Mont-Saint-Aignan : sessions dans vos locaux du plateau, sur le campus ou en visio. Format dédié aux gérants TPE/PME commerces, services, laboratoires et artisans mont-saint-aignanais.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Mont-Saint-Aignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le plateau nord rouennais, ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus de l'Université de Rouen Normandie et de NEOMA Business School), où le tissu mêle siège Ferrero France, parc technologique de la Vatine, parc Biosciences de Normandie autour d'UniLaSalle, laboratoires de recherche, commerces de détail et services aux étudiants. On greffe une brique IA sur votre site existant ou on construit une plateforme IA-native sur mesure, selon votre maturité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou ni abonnement imposé. Kick-off en présentiel à Mont-Saint-Aignan, itérations à distance pour avancer vite.",
+        whyHere: [
+          "Ville la plus étudiante de France en proportion : un campus de ~12 000 étudiants (Université de Rouen Normandie, NEOMA Business School) appelle des portails de services, des intranets de scolarité et des applis mobiles à fort trafic. On y déploie des parcours utilisateurs augmentés à l'IA, une recherche sémantique sur vos contenus de scolarité et un chatbot RAG multilingue dimensionné pour les pics de rentrée et les campagnes d'admission.",
+          "Pôles d'activités structurants du plateau — parc technologique de la Vatine et parc Biosciences de Normandie autour de l'Institut Polytechnique UniLaSalle — où cohabitent PME tertiaires, sociétés de services et acteurs des biosciences : pour ces établissements, on construit des plateformes métier IA-native branchées sur le SI (CRM, ERP) ou on greffe une brique IA sur l'existant, sans refonte coûteuse ni rupture d'exploitation.",
+          "Siège Ferrero France et laboratoires universitaires manipulant des corpus de recherche et des données réglementées : nos chatbots RAG, agents et OCR documentaires s'ancrent sur vos jeux de données internes, avec hébergement strictement UE, conformité RGPD et AI Act, traçabilité des traitements — indispensable pour des données sensibles industrielles ou scientifiques.",
+          "Tissu dense de TPE du commerce de détail, de la restauration et de l'artisanat BTP du plateau (Mont-Saint-Aignan, Bois-Guillaume, Déville-lès-Rouen) : on livre des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), mobile-first, avec automatisation des devis, des factures et du suivi de stock, calibrées pour de petites équipes sans DSI.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Mont-Saint-Aignan",
+            detail:
+              "Atelier sur site — campus universitaire, espace Marc-Sangnier, bureaux du parc de la Vatine, locaux du parc Biosciences ou commerces du centre : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour un public étudiant ultra-connecté et pour des usages terrain sur le plateau. Tests d'accessibilité et de lisibilité intégrés dès cette phase.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, portails de services, agents et automatisations branchés sur votre SI. Démos hebdomadaires en visio, code versionné et documenté, intégration continue à chaque étape.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation conduits avec vos équipes, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine rentrée universitaire sur le plateau de la Vatine ou en pic de campagne commerciale. Plan de rollback prêt.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), documentation et passation aux équipes mont-saint-aignanaises. Vous pilotez l'outil en autonomie, sans verrou propriétaire ni abonnement imposé, libre de toute reprise interne ou externe.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis et de factures) sur le site existant d'un commerce de détail, d'un restaurateur, d'un artisan BTP ou d'un service de campus, en quelques semaines et sans refonte du site.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'une boutique ou d'un portail avec UX/UI et IA intégrée pour les prestataires du plateau, les sociétés de services du parc de la Vatine, les services aux étudiants et les commerces de détail : e-commerce multi-CMS, multilingue, mobile-first.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants, les laboratoires et les sociétés du parc Biosciences de Normandie : IA intégrée, branchée sur votre SI (CRM, ERP) et vos corpus de recherche, avec gestion fine des droits et des données sensibles.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs comme Ferrero France et les institutions de la Métropole Rouen Normandie : refonte de plateformes à fort trafic, design system d'entreprise, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, c'est même le cœur du métier. On conçoit l'expérience complète — research utilisateur, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail, avec ou sans brique IA. On livre en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé pour les Web Vitals.",
+          },
+          {
+            q: "Pouvez-vous accompagner les sociétés du parc de la Vatine et du parc Biosciences de Normandie ?",
+            a: "Oui. Pour les PME tertiaires, sociétés de services et acteurs des biosciences installés au parc technologique de la Vatine ou au parc Biosciences de Normandie (autour de l'Institut Polytechnique UniLaSalle), on construit des plateformes métier, des portails clients et des assistants RAG branchés sur le SI. Greffe sur l'existant ou build IA-native, hébergement UE et propriété complète du code.",
+          },
+          {
+            q: "Travaillez-vous avec le campus, NEOMA et les laboratoires universitaires ?",
+            a: "Oui. Pour les services du campus mont-saint-aignanais, NEOMA Business School et les laboratoires de l'Université de Rouen Normandie, on déploie portails de scolarité, intranets, chatbots RAG multilingues et OCR de documents administratifs. Tout est dimensionné pour le fort trafic étudiant des pics de rentrée et ancré sur vos corpus de recherche, avec hébergement UE strict.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et conformes RGPD ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. C'est essentiel pour le siège Ferrero France, les laboratoires universitaires et les services traitant des données étudiantes du plateau. Registre des traitements fourni, minimisation appliquée, traçabilité complète. Vous gardez la propriété totale de vos données et de vos modèles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur le plateau — sur le campus, au parc de la Vatine ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de frais de licence surprise : vous savez ce que vous payez avant de signer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de coût de licence surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine rentrée universitaire ou en pic de campagne sur le plateau. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire de la Métropole Rouen Normandie ou reprise en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Mont-Saint-Aignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le plateau nord rouennais, ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus de l'Université de Rouen Normandie et de NEOMA Business School), où le tissu mêle siège Ferrero France, parc technologique de la Vatine, parc Biosciences de Normandie autour d'UniLaSalle, laboratoires de recherche, commerces de détail et services aux étudiants. On greffe une brique IA sur votre site existant ou on construit une plateforme IA-native sur mesure, selon votre maturité. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou ni abonnement imposé. Kick-off en présentiel à Mont-Saint-Aignan, itérations à distance pour avancer vite.",
+        whyHere: [
+          "Ville la plus étudiante de France en proportion : un campus de ~12 000 étudiants (Université de Rouen Normandie, NEOMA Business School) appelle des portails de services, des intranets de scolarité et des applis mobiles à fort trafic. On y déploie des parcours utilisateurs augmentés à l'IA, une recherche sémantique sur vos contenus de scolarité et un chatbot RAG multilingue dimensionné pour les pics de rentrée et les campagnes d'admission.",
+          "Pôles d'activités structurants du plateau — parc technologique de la Vatine et parc Biosciences de Normandie autour de l'Institut Polytechnique UniLaSalle — où cohabitent PME tertiaires, sociétés de services et acteurs des biosciences : pour ces établissements, on construit des plateformes métier IA-native branchées sur le SI (CRM, ERP) ou on greffe une brique IA sur l'existant, sans refonte coûteuse ni rupture d'exploitation.",
+          "Siège Ferrero France et laboratoires universitaires manipulant des corpus de recherche et des données réglementées : nos chatbots RAG, agents et OCR documentaires s'ancrent sur vos jeux de données internes, avec hébergement strictement UE, conformité RGPD et AI Act, traçabilité des traitements — indispensable pour des données sensibles industrielles ou scientifiques.",
+          "Tissu dense de TPE du commerce de détail, de la restauration et de l'artisanat BTP du plateau (Mont-Saint-Aignan, Bois-Guillaume, Déville-lès-Rouen) : on livre des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), mobile-first, avec automatisation des devis, des factures et du suivi de stock, calibrées pour de petites équipes sans DSI.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Mont-Saint-Aignan",
+            detail:
+              "Atelier sur site — campus universitaire, espace Marc-Sangnier, bureaux du parc de la Vatine, locaux du parc Biosciences ou commerces du centre : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. Devis ferme remis à partir de 24-48 h selon la complexité du projet.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour un public étudiant ultra-connecté et pour des usages terrain sur le plateau. Tests d'accessibilité et de lisibilité intégrés dès cette phase.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, portails de services, agents et automatisations branchés sur votre SI. Démos hebdomadaires en visio, code versionné et documenté, intégration continue à chaque étape.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation conduits avec vos équipes, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine rentrée universitaire sur le plateau de la Vatine ou en pic de campagne commerciale. Plan de rollback prêt.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), documentation et passation aux équipes mont-saint-aignanaises. Vous pilotez l'outil en autonomie, sans verrou propriétaire ni abonnement imposé, libre de toute reprise interne ou externe.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis et de factures) sur le site existant d'un commerce de détail, d'un restaurateur, d'un artisan BTP ou d'un service de campus, en quelques semaines et sans refonte du site.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'une boutique ou d'un portail avec UX/UI et IA intégrée pour les prestataires du plateau, les sociétés de services du parc de la Vatine, les services aux étudiants et les commerces de détail : e-commerce multi-CMS, multilingue, mobile-first.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants, les laboratoires et les sociétés du parc Biosciences de Normandie : IA intégrée, branchée sur votre SI (CRM, ERP) et vos corpus de recherche, avec gestion fine des droits et des données sensibles.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs comme Ferrero France et les institutions de la Métropole Rouen Normandie : refonte de plateformes à fort trafic, design system d'entreprise, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, c'est même le cœur du métier. On conçoit l'expérience complète — research utilisateur, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail, avec ou sans brique IA. On livre en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé pour les Web Vitals.",
+          },
+          {
+            q: "Pouvez-vous accompagner les sociétés du parc de la Vatine et du parc Biosciences de Normandie ?",
+            a: "Oui. Pour les PME tertiaires, sociétés de services et acteurs des biosciences installés au parc technologique de la Vatine ou au parc Biosciences de Normandie (autour de l'Institut Polytechnique UniLaSalle), on construit des plateformes métier, des portails clients et des assistants RAG branchés sur le SI. Greffe sur l'existant ou build IA-native, hébergement UE et propriété complète du code.",
+          },
+          {
+            q: "Travaillez-vous avec le campus, NEOMA et les laboratoires universitaires ?",
+            a: "Oui. Pour les services du campus mont-saint-aignanais, NEOMA Business School et les laboratoires de l'Université de Rouen Normandie, on déploie portails de scolarité, intranets, chatbots RAG multilingues et OCR de documents administratifs. Tout est dimensionné pour le fort trafic étudiant des pics de rentrée et ancré sur vos corpus de recherche, avec hébergement UE strict.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et conformes RGPD ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. C'est essentiel pour le siège Ferrero France, les laboratoires universitaires et les services traitant des données étudiantes du plateau. Registre des traitements fourni, minimisation appliquée, traçabilité complète. Vous gardez la propriété totale de vos données et de vos modèles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur le plateau — sur le campus, au parc de la Vatine ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de frais de licence surprise : vous savez ce que vous payez avant de signer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de coût de licence surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine rentrée universitaire ou en pic de campagne sur le plateau. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire de la Métropole Rouen Normandie ou reprise en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Mont-Saint-Aignan ?",

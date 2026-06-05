@@ -48,6 +48,183 @@ export const LA_MADELEINE_COPY: VilleCopy = {
       en: "L'accompagnement un-à-un à La Madeleine (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à La Madeleine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 21 790 habitants, à 3 km au nord de Lille au cœur de la Métropole européenne de Lille, où le tissu mêle commerces le long de la rue du Général de Gaulle, le quartier d'affaires du Romarin redéveloppé depuis 1990 aux portes d'Euralille, le Parc LINEO le long de la rocade et l'A22, des sièges sociaux comme Supermarchés Match, services financiers et cabinets de conseil issus de la reconversion des anciennes friches textiles. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Madeleine, itérations à distance.",
+        whyHere: [
+          "Économie de centre-ville commerçant : la rue du Général de Gaulle, le pôle de proximité et l'axe des Grands Boulevards desservi par l'arrêt Romarin concentrent boutiques, restaurants et artisans — terrain idéal pour des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des parcours click-and-collect mobile-first augmentés à l'IA, branchés sur la caisse et le stock existants.",
+          "Quartier d'affaires du Romarin et Parc LINEO le long de la rocade et de l'A22 : sièges sociaux, bureaux et locaux mixtes commerciaux-artisanaux accueillent des entreprises comme Supermarchés Match. Pour elles, on construit des portails clients, intranets et plateformes SaaS IA-native branchés sur vos ERP et CRM, sans refonte brutale du système d'information.",
+          "Forte densité de banque-assurance, conseil et activités juridiques/comptables héritée du bassin lillois — incarnée par des structures comme le Hub Valoxy, incubateur et espace de coworking madeleinois : nos chatbots RAG et notre recherche sémantique s'ancrent sur vos contrats, procédures et bases documentaires pour fiabiliser la relation client et la recherche interne.",
+          "Insertion dans la MEL et proximité immédiate d'Euralille et de Lille-Europe, à 4 minutes de Lille-Flandres en TER : toute la chaîne IA, du design UX/UI à l'agent métier, est hébergeable en UE, conforme RGPD et AI Act — vos données clients et financières restent maîtrisées, sans transit hors UE non encadré, avec un code transférable à tout prestataire de la métropole lilloise.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à La Madeleine",
+            detail:
+              "Atelier sur site (centre-ville rue du Général de Gaulle, quartier d'affaires du Romarin, Parc LINEO, abords de la gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des intégrations existantes. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité de la rue du Général de Gaulle comme pour vos comptes B2B du Romarin et de la MEL.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, espace client, chatbot RAG multilingue, recherche sémantique, agents et automatisations des flux administratifs. Démos hebdomadaires en visio, code versionné et documenté à chaque itération.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un commerce des Grands Boulevards ou un cabinet du Romarin en pleine activité, avec bascule progressive et plan de rollback.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible), documentation et transfert de compétences inclus. Vos équipes pilotent l'outil en autonomie depuis La Madeleine, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site d'un commerce de la rue du Général de Gaulle, d'un artisan du Parc LINEO ou d'un cabinet comptable de La Madeleine, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI mobile-first et IA intégrée : e-commerce multi-CMS, click-and-collect, espace client, pour le commerce de détail des Grands Boulevards et les services de la métropole lilloise.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les sièges sociaux du Romarin, enseignes de distribution comme Supermarchés Match et acteurs banque-assurance, IA intégrée, branchée sur votre SI (CRM, ERP).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux de la MEL : refonte de plateformes, design system, recherche sémantique d'entreprise et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration mobile-first — pour une vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. L'IA est une option, pas un prérequis.",
+          },
+          {
+            q: "Pouvez-vous moderniser une boutique des Grands Boulevards ou du centre ?",
+            a: "Oui. Pour les commerces de la rue du Général de Gaulle et de l'axe des Grands Boulevards desservi par l'arrêt Romarin, on livre un site ou une boutique mobile-first avec click-and-collect, paiement en ligne et chatbot multilingue, intégrés à votre caisse ou votre stock existant, pour capter la clientèle de proximité madeleinoise et au-delà, jusqu'à Euralille.",
+          },
+          {
+            q: "Travaillez-vous avec les sièges sociaux et bureaux du Romarin ou du Parc LINEO ?",
+            a: "Oui. Pour les sièges sociaux du quartier d'affaires du Romarin, les bureaux du Parc LINEO et les enseignes comme Supermarchés Match, on construit des portails clients, intranets et plateformes SaaS IA-native branchés sur vos ERP et CRM. On greffe l'IA sur le SI existant, sans refonte brutale ni interruption de service.",
+          },
+          {
+            q: "Mes données clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique — un point clé pour les acteurs banque-assurance et les cabinets juridiques/comptables nombreux dans le bassin lillois et à La Madeleine.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à La Madeleine — au Romarin, au Parc LINEO ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de la métropole lilloise ou reprise en interne par vos équipes madeleinoises.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à La Madeleine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 21 790 habitants, à 3 km au nord de Lille au cœur de la Métropole européenne de Lille, où le tissu mêle commerces le long de la rue du Général de Gaulle, le quartier d'affaires du Romarin redéveloppé depuis 1990 aux portes d'Euralille, le Parc LINEO le long de la rocade et l'A22, des sièges sociaux comme Supermarchés Match, services financiers et cabinets de conseil issus de la reconversion des anciennes friches textiles. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Madeleine, itérations à distance.",
+        whyHere: [
+          "Économie de centre-ville commerçant : la rue du Général de Gaulle, le pôle de proximité et l'axe des Grands Boulevards desservi par l'arrêt Romarin concentrent boutiques, restaurants et artisans — terrain idéal pour des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des parcours click-and-collect mobile-first augmentés à l'IA, branchés sur la caisse et le stock existants.",
+          "Quartier d'affaires du Romarin et Parc LINEO le long de la rocade et de l'A22 : sièges sociaux, bureaux et locaux mixtes commerciaux-artisanaux accueillent des entreprises comme Supermarchés Match. Pour elles, on construit des portails clients, intranets et plateformes SaaS IA-native branchés sur vos ERP et CRM, sans refonte brutale du système d'information.",
+          "Forte densité de banque-assurance, conseil et activités juridiques/comptables héritée du bassin lillois — incarnée par des structures comme le Hub Valoxy, incubateur et espace de coworking madeleinois : nos chatbots RAG et notre recherche sémantique s'ancrent sur vos contrats, procédures et bases documentaires pour fiabiliser la relation client et la recherche interne.",
+          "Insertion dans la MEL et proximité immédiate d'Euralille et de Lille-Europe, à 4 minutes de Lille-Flandres en TER : toute la chaîne IA, du design UX/UI à l'agent métier, est hébergeable en UE, conforme RGPD et AI Act — vos données clients et financières restent maîtrisées, sans transit hors UE non encadré, avec un code transférable à tout prestataire de la métropole lilloise.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à La Madeleine",
+            detail:
+              "Atelier sur site (centre-ville rue du Général de Gaulle, quartier d'affaires du Romarin, Parc LINEO, abords de la gare TER) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des intégrations existantes. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de proximité de la rue du Général de Gaulle comme pour vos comptes B2B du Romarin et de la MEL.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, espace client, chatbot RAG multilingue, recherche sémantique, agents et automatisations des flux administratifs. Démos hebdomadaires en visio, code versionné et documenté à chaque itération.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un commerce des Grands Boulevards ou un cabinet du Romarin en pleine activité, avec bascule progressive et plan de rollback.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible), documentation et transfert de compétences inclus. Vos équipes pilotent l'outil en autonomie depuis La Madeleine, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site d'un commerce de la rue du Général de Gaulle, d'un artisan du Parc LINEO ou d'un cabinet comptable de La Madeleine, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI mobile-first et IA intégrée : e-commerce multi-CMS, click-and-collect, espace client, pour le commerce de détail des Grands Boulevards et les services de la métropole lilloise.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les sièges sociaux du Romarin, enseignes de distribution comme Supermarchés Match et acteurs banque-assurance, IA intégrée, branchée sur votre SI (CRM, ERP).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux de la MEL : refonte de plateformes, design system, recherche sémantique d'entreprise et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration mobile-first — pour une vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. L'IA est une option, pas un prérequis.",
+          },
+          {
+            q: "Pouvez-vous moderniser une boutique des Grands Boulevards ou du centre ?",
+            a: "Oui. Pour les commerces de la rue du Général de Gaulle et de l'axe des Grands Boulevards desservi par l'arrêt Romarin, on livre un site ou une boutique mobile-first avec click-and-collect, paiement en ligne et chatbot multilingue, intégrés à votre caisse ou votre stock existant, pour capter la clientèle de proximité madeleinoise et au-delà, jusqu'à Euralille.",
+          },
+          {
+            q: "Travaillez-vous avec les sièges sociaux et bureaux du Romarin ou du Parc LINEO ?",
+            a: "Oui. Pour les sièges sociaux du quartier d'affaires du Romarin, les bureaux du Parc LINEO et les enseignes comme Supermarchés Match, on construit des portails clients, intranets et plateformes SaaS IA-native branchés sur vos ERP et CRM. On greffe l'IA sur le SI existant, sans refonte brutale ni interruption de service.",
+          },
+          {
+            q: "Mes données clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique — un point clé pour les acteurs banque-assurance et les cabinets juridiques/comptables nombreux dans le bassin lillois et à La Madeleine.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à La Madeleine — au Romarin, au Parc LINEO ou dans vos locaux du centre — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de chantier.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, avec plan de rollback. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de la métropole lilloise ou reprise en interne par vos équipes madeleinoises.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à La Madeleine ?",

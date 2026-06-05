@@ -48,6 +48,183 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
       en: "Accompagnement un-à-un des dirigeants de TPE et PME de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
+        whyHere: [
+          "Commerce de détail dominant autour de l'hypermarché Corail et des zones commerçantes du centre : c'est le terrain idéal pour une vitrine e-commerce multi-CMS, du click-and-collect et un chatbot produit qui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en heures de pointe.",
+          "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des TPE plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
+          "Construction et artisanat structurants sur la commune, portés par la croissance résidentielle de la Haute-Garonne : on greffe l'IA sur l'existant — chiffrage de devis, suivi de chantier, relances de paiement, recherche sémantique dans les pièces techniques — via widget, API ou plugin, sans imposer de refonte coûteuse aux petites structures de Cugnaux ou Fonsorbes.",
+          "Proximité immédiate de l'aéroport Toulouse-Blagnac (10 km) et de la métropole toulousaine : on construit des portails clients et des plateformes SaaS IA-native pour les sous-traitants aéronautiques et PME tech qui gravitent autour de ce pôle, avec recherche sémantique documentaire et agents d'automatisation, hébergeables en UE et conformes RGPD et AI Act.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Plaisance-du-Touch",
+            detail:
+              "Atelier sur site — centre-ville, secteur de l'hypermarché Corail ou siège du Grand Ouest Toulousain Agglomération : objectifs, parcours utilisateurs, audit de la stack, de la caisse et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour une clientèle plaisançoise majoritairement sur smartphone qui consulte horaires, stocks et avis avant de se déplacer en zone commerçante.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de commande, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio entre Plaisance-du-Touch et nos équipes, avec ajustements continus selon vos retours terrain.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison commerciale autour du secteur Corail ou en période de forte activité chantier dans le bassin résidentiel ouest toulousain.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentation et transfert de compétences inclus. Vos équipes pilotent l'outil en autonomie depuis Plaisance-du-Touch, sans verrou ni abonnement imposé, transférable à tout prestataire toulousain.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous ou de commande — sur le site existant d'un commerçant, restaurateur ou artisan plaisançois (par exemple un restaurant du centre ou un artisan du bâtiment), en quelques semaines et sans refonte ni changement de caisse.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : e-commerce multi-CMS, click-and-collect, multilingue, pour les acteurs du commerce de détail, du transport et des services du Grand Ouest Toulousain qui veulent vendre au-delà de leur zone de chalandise locale.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les structures établies du bassin toulousain — distribution, santé et action sociale, sous-traitance aéronautique de Blagnac — IA intégrée, branchée sur votre SI (caisse, CRM, ERP, logiciel de gestion).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et donneurs d'ordre de l'agglomération toulousaine et de la filière aéronautique : refonte de plateformes, design system, recherche sémantique à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, ou seulement l'IA ?",
+            a: "Les deux. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, à Plaisance-du-Touch comme dans tout le Grand Ouest Toulousain.",
+          },
+          {
+            q: "Pouvez-vous augmenter ma boutique du secteur Corail sans casser ma caisse ?",
+            a: "Oui. Pour un commerce ou un restaurant plaisançois, on greffe le click-and-collect, la prise de commande ou un chatbot produit en se branchant sur votre caisse et votre stock existants, via API ou plugin. Pas de refonte forcée, mise en ligne sans interruption de service, même en pleine affluence autour de l'hypermarché Corail ou des zones commerçantes du centre.",
+          },
+          {
+            q: "Travaillez-vous avec les sous-traitants aéronautiques proches de Blagnac ?",
+            a: "Oui. À 10 km de l'aéroport Toulouse-Blagnac, beaucoup de PME tech et de sous-traitants gravitent autour du pôle aéronautique. On leur construit des portails clients et des plateformes SaaS IA-native : recherche sémantique dans les pièces techniques, agents d'automatisation des relances et du reporting, le tout hébergeable en UE et conforme RGPD et AI Act, sans dépendance à un éditeur unique.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, de vos contenus et de vos modèles, sans verrou ni dépendance à un prestataire unique. Les clauses DPA et le registre des traitements sont fournis dès le démarrage du projet.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
+        whyHere: [
+          "Commerce de détail dominant autour de l'hypermarché Corail et des zones commerçantes du centre : c'est le terrain idéal pour une vitrine e-commerce multi-CMS, du click-and-collect et un chatbot produit qui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en heures de pointe.",
+          "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des TPE plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
+          "Construction et artisanat structurants sur la commune, portés par la croissance résidentielle de la Haute-Garonne : on greffe l'IA sur l'existant — chiffrage de devis, suivi de chantier, relances de paiement, recherche sémantique dans les pièces techniques — via widget, API ou plugin, sans imposer de refonte coûteuse aux petites structures de Cugnaux ou Fonsorbes.",
+          "Proximité immédiate de l'aéroport Toulouse-Blagnac (10 km) et de la métropole toulousaine : on construit des portails clients et des plateformes SaaS IA-native pour les sous-traitants aéronautiques et PME tech qui gravitent autour de ce pôle, avec recherche sémantique documentaire et agents d'automatisation, hébergeables en UE et conformes RGPD et AI Act.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Plaisance-du-Touch",
+            detail:
+              "Atelier sur site — centre-ville, secteur de l'hypermarché Corail ou siège du Grand Ouest Toulousain Agglomération : objectifs, parcours utilisateurs, audit de la stack, de la caisse et des contenus. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour une clientèle plaisançoise majoritairement sur smartphone qui consulte horaires, stocks et avis avant de se déplacer en zone commerçante.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de commande, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio entre Plaisance-du-Touch et nos équipes, avec ajustements continus selon vos retours terrain.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison commerciale autour du secteur Corail ou en période de forte activité chantier dans le bassin résidentiel ouest toulousain.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentation et transfert de compétences inclus. Vos équipes pilotent l'outil en autonomie depuis Plaisance-du-Touch, sans verrou ni abonnement imposé, transférable à tout prestataire toulousain.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous ou de commande — sur le site existant d'un commerçant, restaurateur ou artisan plaisançois (par exemple un restaurant du centre ou un artisan du bâtiment), en quelques semaines et sans refonte ni changement de caisse.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : e-commerce multi-CMS, click-and-collect, multilingue, pour les acteurs du commerce de détail, du transport et des services du Grand Ouest Toulousain qui veulent vendre au-delà de leur zone de chalandise locale.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les structures établies du bassin toulousain — distribution, santé et action sociale, sous-traitance aéronautique de Blagnac — IA intégrée, branchée sur votre SI (caisse, CRM, ERP, logiciel de gestion).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et donneurs d'ordre de l'agglomération toulousaine et de la filière aéronautique : refonte de plateformes, design system, recherche sémantique à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, ou seulement l'IA ?",
+            a: "Les deux. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, à Plaisance-du-Touch comme dans tout le Grand Ouest Toulousain.",
+          },
+          {
+            q: "Pouvez-vous augmenter ma boutique du secteur Corail sans casser ma caisse ?",
+            a: "Oui. Pour un commerce ou un restaurant plaisançois, on greffe le click-and-collect, la prise de commande ou un chatbot produit en se branchant sur votre caisse et votre stock existants, via API ou plugin. Pas de refonte forcée, mise en ligne sans interruption de service, même en pleine affluence autour de l'hypermarché Corail ou des zones commerçantes du centre.",
+          },
+          {
+            q: "Travaillez-vous avec les sous-traitants aéronautiques proches de Blagnac ?",
+            a: "Oui. À 10 km de l'aéroport Toulouse-Blagnac, beaucoup de PME tech et de sous-traitants gravitent autour du pôle aéronautique. On leur construit des portails clients et des plateformes SaaS IA-native : recherche sémantique dans les pièces techniques, agents d'automatisation des relances et du reporting, le tout hébergeable en UE et conforme RGPD et AI Act, sans dépendance à un éditeur unique.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données clients, de vos contenus et de vos modèles, sans verrou ni dépendance à un prestataire unique. Les clauses DPA et le registre des traitements sont fournis dès le démarrage du projet.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise à la facturation.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA à Plaisance-du-Touch ?",

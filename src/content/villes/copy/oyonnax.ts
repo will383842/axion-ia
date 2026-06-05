@@ -47,6 +47,183 @@ export const OYONNAX_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Oyonnax : sessions dirigeants TPE plasturgiques, gérants PME industrielles, artisans et commerçants du Haut-Bugey. Format adapté aux structures familiales de la Plastics Vallée.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
+        whyHere: [
+          "Capitale française de la plasturgie, héritière de la « cité du peigne » : moulistes, sous-traitants injection et ateliers d'usinage de précision ont besoin de portails B2B, de configurateurs de pièces et de catalogues techniques en ligne. On construit ces parcours sur mesure, avec recherche sémantique sur vos fiches matières, références et cahiers des charges, et une UX mobile-first utilisable jusqu'au pied de la presse.",
+          "Filière structurée autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme, vivier d'export et de donneurs d'ordre exigeants : on déploie des chatbots RAG multilingues (français, anglais, allemand, italien) et des espaces clients pour fluidifier devis, suivi de commandes et SAV, en reliant l'outil à votre ERP ou GPAO sans rupture.",
+          "Tissu majoritairement TPE/PME familiales sur Arbent, Bellignat, Dortan et Géovreisset à quelques minutes, aux côtés d'acteurs structurants comme Grosfillex : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce pour valoriser une production locale auprès d'acheteurs nationaux.",
+          "Données industrielles sensibles — plans, moules, cahiers des charges, grilles de prix : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, avec des modèles européens ou open-source quand la confidentialité l'exige. Vos données techniques et clients restent maîtrisées, sans transit hors Europe ni dépendance à un prestataire unique.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Oyonnax",
+            detail:
+              "Atelier sur site — centre-ville, zones d'activité d'Arbent et Bellignat, cœur de la Plastics Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et du catalogue technique. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour les acheteurs en déplacement et les techniciens qui consultent une fiche au pied de la presse à injection dans l'atelier de Bellignat.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio depuis Oyonnax, code versionné et lisible.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime depuis le cœur du Haut-Bugey — sans interrompre votre activité commerciale, vos prises de commande ni votre référencement existant.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes de la Plastics Vallée pilotent l'outil en autonomie, sans verrou technique, sans abonnement imposé, transférable à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur fiches techniques, OCR de cahiers des charges — sur le site existant d'un atelier d'injection, d'un négoce de matières ou d'un commerce de centre-ville d'Oyonnax, sans refonte ni interruption.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un portail B2B ou d'une boutique pour un mouliste, un finisseur ou une PME plasturgiste du Haut-Bugey : UX/UI, configurateur de pièces, espace client, paiement et versions multilingues pour l'export européen.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les acteurs structurants de la vallée (décoration plastique, machines spéciales, négoce), IA intégrée, branchée sur votre SI : ERP, GPAO, CRM, MES.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les groupes industriels du Haut-Bugey, à l'image d'un acteur comme Grosfillex : refonte de plateformes, design system unifié, e-commerce international et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype, intégration — pour un site vitrine, un portail B2B, une boutique e-commerce ou une plateforme métier, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure, toujours mobile-first et optimisé Web Vitals pour les acheteurs et techniciens de la Plastics Vallée.",
+          },
+          {
+            q: "Pouvez-vous gérer un catalogue technique de pièces plastiques ?",
+            a: "Oui. On construit des catalogues et configurateurs avec recherche sémantique sur vos fiches matières, références, plans et cahiers des charges, plus un chatbot RAG capable de répondre aux acheteurs en plusieurs langues. C'est idéal pour les moulistes et ateliers d'injection d'Oyonnax, d'Arbent et de Bellignat qui vendent à des donneurs d'ordre exigeants de l'automobile, du médical ou de la cosmétique.",
+          },
+          {
+            q: "Mes données techniques restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vos plans, moules, cahiers des charges et données clients restent votre propriété, avec des modèles européens ou open-source quand la confidentialité l'exige — un point clé pour les sous-traitants de la Plastics Vallée travaillant sur des pièces sous secret industriel.",
+          },
+          {
+            q: "Pouvez-vous faire une boutique multilingue pour exporter depuis le Haut-Bugey ?",
+            a: "Oui. Beaucoup d'acteurs d'Oyonnax exportent vers l'Allemagne, l'Italie ou la Suisse voisine. On livre des sites et boutiques e-commerce multilingues (PrestaShop, WooCommerce, Shopify ou sur mesure), avec recherche sémantique et chatbot RAG dans la langue de l'acheteur, hreflang propre et SEO international pour capter la demande au-delà de la vallée jurassienne.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Oyonnax, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée sur un site existant d'atelier ou de commerce.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
+        whyHere: [
+          "Capitale française de la plasturgie, héritière de la « cité du peigne » : moulistes, sous-traitants injection et ateliers d'usinage de précision ont besoin de portails B2B, de configurateurs de pièces et de catalogues techniques en ligne. On construit ces parcours sur mesure, avec recherche sémantique sur vos fiches matières, références et cahiers des charges, et une UX mobile-first utilisable jusqu'au pied de la presse.",
+          "Filière structurée autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme, vivier d'export et de donneurs d'ordre exigeants : on déploie des chatbots RAG multilingues (français, anglais, allemand, italien) et des espaces clients pour fluidifier devis, suivi de commandes et SAV, en reliant l'outil à votre ERP ou GPAO sans rupture.",
+          "Tissu majoritairement TPE/PME familiales sur Arbent, Bellignat, Dortan et Géovreisset à quelques minutes, aux côtés d'acteurs structurants comme Grosfillex : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce pour valoriser une production locale auprès d'acheteurs nationaux.",
+          "Données industrielles sensibles — plans, moules, cahiers des charges, grilles de prix : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, avec des modèles européens ou open-source quand la confidentialité l'exige. Vos données techniques et clients restent maîtrisées, sans transit hors Europe ni dépendance à un prestataire unique.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Oyonnax",
+            detail:
+              "Atelier sur site — centre-ville, zones d'activité d'Arbent et Bellignat, cœur de la Plastics Vallée : objectifs commerciaux, parcours utilisateurs, audit de la stack, des contenus et du catalogue technique. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour les acheteurs en déplacement et les techniciens qui consultent une fiche au pied de la presse à injection dans l'atelier de Bellignat.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio depuis Oyonnax, code versionné et lisible.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime depuis le cœur du Haut-Bugey — sans interrompre votre activité commerciale, vos prises de commande ni votre référencement existant.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes de la Plastics Vallée pilotent l'outil en autonomie, sans verrou technique, sans abonnement imposé, transférable à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur fiches techniques, OCR de cahiers des charges — sur le site existant d'un atelier d'injection, d'un négoce de matières ou d'un commerce de centre-ville d'Oyonnax, sans refonte ni interruption.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un portail B2B ou d'une boutique pour un mouliste, un finisseur ou une PME plasturgiste du Haut-Bugey : UX/UI, configurateur de pièces, espace client, paiement et versions multilingues pour l'export européen.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les acteurs structurants de la vallée (décoration plastique, machines spéciales, négoce), IA intégrée, branchée sur votre SI : ERP, GPAO, CRM, MES.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les groupes industriels du Haut-Bugey, à l'image d'un acteur comme Grosfillex : refonte de plateformes, design system unifié, e-commerce international et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype, intégration — pour un site vitrine, un portail B2B, une boutique e-commerce ou une plateforme métier, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure, toujours mobile-first et optimisé Web Vitals pour les acheteurs et techniciens de la Plastics Vallée.",
+          },
+          {
+            q: "Pouvez-vous gérer un catalogue technique de pièces plastiques ?",
+            a: "Oui. On construit des catalogues et configurateurs avec recherche sémantique sur vos fiches matières, références, plans et cahiers des charges, plus un chatbot RAG capable de répondre aux acheteurs en plusieurs langues. C'est idéal pour les moulistes et ateliers d'injection d'Oyonnax, d'Arbent et de Bellignat qui vendent à des donneurs d'ordre exigeants de l'automobile, du médical ou de la cosmétique.",
+          },
+          {
+            q: "Mes données techniques restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vos plans, moules, cahiers des charges et données clients restent votre propriété, avec des modèles européens ou open-source quand la confidentialité l'exige — un point clé pour les sous-traitants de la Plastics Vallée travaillant sur des pièces sous secret industriel.",
+          },
+          {
+            q: "Pouvez-vous faire une boutique multilingue pour exporter depuis le Haut-Bugey ?",
+            a: "Oui. Beaucoup d'acteurs d'Oyonnax exportent vers l'Allemagne, l'Italie ou la Suisse voisine. On livre des sites et boutiques e-commerce multilingues (PrestaShop, WooCommerce, Shopify ou sur mesure), avec recherche sémantique et chatbot RAG dans la langue de l'acheteur, hreflang propre et SEO international pour capter la demande au-delà de la vallée jurassienne.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Oyonnax, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée sur un site existant d'atelier ou de commerce.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oyonnax ?",

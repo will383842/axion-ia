@@ -50,6 +50,183 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
       en: "Sites web augmentés à Coudekerque-Branche : site ou outil métier sur mesure dopé à l'IA pour artisans, transporteurs et commerces de l'agglomération dunkerquoise — demandes de devis intelligentes, suivi client, visibilité locale renforcée.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Coudekerque-Branche des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de l'agglomération de Dunkerque, troisième port maritime français, qui vit dans l'orbite du grand port industriel et de la sidérurgie du littoral, avec un tissu dense de TPE et PME en sous-traitance, maintenance, logistique portuaire, transport routier et commerce de proximité. Que vous soyez un transporteur du Tonkin, un atelier de maintenance ou une boutique du centre, on greffe l'IA sur votre site ou on le rebâtit de zéro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Coudekerque-Branche, itérations à distance.",
+        whyHere: [
+          "Économie gravitant autour du port industriel de Dunkerque et de la sidérurgie du littoral (ArcelorMittal Dunkerque, l'un des plus grands sites sidérurgiques de France à quelques kilomètres) : pour la sous-traitance et la maintenance industrielle, on bâtit des portails clients B2B, des configurateurs de devis et des espaces de suivi d'interventions qui parlent à vos ERP et logiciels de GMAO, avec recherche sémantique sur vos catalogues de pièces.",
+          "Zones d'activités du Tonkin, rue Ledru Rollin et centre d'affaires CREANOR qui regroupe une centaine d'entreprises : on greffe l'IA sur l'existant — widget, API, plugin sur WordPress, PrestaShop ou WooCommerce — ou on construit une vitrine e-commerce sur mesure avec UX/UI dédiée, sans refonte coûteuse pour une TPE accolée au pôle Flandre Dunkerque.",
+          "Logistique portuaire, entreposage et transport routier de marchandises très représentés dans l'agglomération : nos agents et automatisations classent bons de livraison et documents techniques, optimisent tournées et plannings, fiabilisent la saisie répétitive et branchent un chatbot RAG sur vos procédures, le tout connecté à vos WMS et TMS existants.",
+          "Commerce de proximité actif, fédéré par l'UNICC et le club Coudekerque Entreprendre : on conçoit des sites vitrines, des boutiques en ligne mobile-first et des chatbots multilingues — utiles pour une clientèle frontalière proche de la Belgique — qui renforcent la visibilité locale et le référencement, le tout hébergeable en UE et conforme RGPD.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Coudekerque-Branche",
+            detail:
+              "Atelier sur site (zones du Tonkin, rue Ledru Rollin, centre d'affaires CREANOR ou vos bureaux) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques liés au port. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour des équipes souvent en atelier, en entrepôt ou en tournée sur les zones industrielles dunkerquoises. On valide l'ergonomie avant d'écrire la moindre ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, puis mise en production sans downtime depuis vos bureaux du Tonkin ou de la rue Ledru Rollin — sans interrompre vos commandes ni vos flux d'expédition portuaires.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). On forme vos équipes au pilotage de l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire de l'agglomération dunkerquoise ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, demande de devis intelligente) sur le site existant d'un artisan du BTP, d'un transporteur routier ou d'un commerçant du centre, en quelques semaines et sans refonte. Idéal pour les indépendants des zones du Tonkin.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI mobile-first et IA intégrée pour la sous-traitance industrielle, la maintenance ou le commerce de proximité : suivi client, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), multilingue pour la clientèle frontalière.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs logistiques et industriels structurants du littoral, IA intégrée, branchée sur votre SI (ERP, GMAO, WMS, TMS, CRM). Pour l'entreposage portuaire et la sous-traitance sidérurgique qui veulent industrialiser leurs flux.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du littoral dunkerquois et leurs filières (sidérurgie, énergie, logistique portuaire) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, avec gouvernance et roadmap partagées.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration mobile-first — pour un site vitrine, une boutique e-commerce ou un portail métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, selon ce qui sert le mieux votre activité à Coudekerque-Branche.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Un point clé pour la sous-traitance sidérurgique et logistique du littoral qui manipule des documents techniques sensibles.",
+          },
+          {
+            q: "Pouvez-vous outiller la sous-traitance et la logistique portuaire ?",
+            a: "Oui. Pour les acteurs gravitant autour du port de Dunkerque et de la sidérurgie, on construit des portails B2B, des configurateurs de devis et des agents qui classent bons de livraison et documents techniques, optimisent tournées et plannings d'entreposage, branchés sur vos ERP, GMAO, WMS et TMS existants. On greffe aussi une recherche sémantique sur vos catalogues de pièces et procédures.",
+          },
+          {
+            q: "Mon commerce du centre peut-il vendre en ligne et toucher la clientèle frontalière ?",
+            a: "Oui. Pour un commerce de proximité fédéré par l'UNICC ou le club Coudekerque Entreprendre, on conçoit une boutique en ligne mobile-first sur le CMS de votre choix, avec chatbot multilingue (utile à deux pas de la frontière belge), paiement, suivi de commande et SEO local. Vous restez propriétaire du site, hébergé en UE, sans abonnement imposé.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site (zones du Tonkin, rue Ledru Rollin ou centre d'affaires CREANOR), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre verrouillé avant le premier sprint.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre commandes ni expéditions portuaires. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Coudekerque-Branche des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de l'agglomération de Dunkerque, troisième port maritime français, qui vit dans l'orbite du grand port industriel et de la sidérurgie du littoral, avec un tissu dense de TPE et PME en sous-traitance, maintenance, logistique portuaire, transport routier et commerce de proximité. Que vous soyez un transporteur du Tonkin, un atelier de maintenance ou une boutique du centre, on greffe l'IA sur votre site ou on le rebâtit de zéro. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Coudekerque-Branche, itérations à distance.",
+        whyHere: [
+          "Économie gravitant autour du port industriel de Dunkerque et de la sidérurgie du littoral (ArcelorMittal Dunkerque, l'un des plus grands sites sidérurgiques de France à quelques kilomètres) : pour la sous-traitance et la maintenance industrielle, on bâtit des portails clients B2B, des configurateurs de devis et des espaces de suivi d'interventions qui parlent à vos ERP et logiciels de GMAO, avec recherche sémantique sur vos catalogues de pièces.",
+          "Zones d'activités du Tonkin, rue Ledru Rollin et centre d'affaires CREANOR qui regroupe une centaine d'entreprises : on greffe l'IA sur l'existant — widget, API, plugin sur WordPress, PrestaShop ou WooCommerce — ou on construit une vitrine e-commerce sur mesure avec UX/UI dédiée, sans refonte coûteuse pour une TPE accolée au pôle Flandre Dunkerque.",
+          "Logistique portuaire, entreposage et transport routier de marchandises très représentés dans l'agglomération : nos agents et automatisations classent bons de livraison et documents techniques, optimisent tournées et plannings, fiabilisent la saisie répétitive et branchent un chatbot RAG sur vos procédures, le tout connecté à vos WMS et TMS existants.",
+          "Commerce de proximité actif, fédéré par l'UNICC et le club Coudekerque Entreprendre : on conçoit des sites vitrines, des boutiques en ligne mobile-first et des chatbots multilingues — utiles pour une clientèle frontalière proche de la Belgique — qui renforcent la visibilité locale et le référencement, le tout hébergeable en UE et conforme RGPD.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Coudekerque-Branche",
+            detail:
+              "Atelier sur site (zones du Tonkin, rue Ledru Rollin, centre d'affaires CREANOR ou vos bureaux) : objectifs business, parcours utilisateurs, audit de la stack, des contenus et des flux logistiques liés au port. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour des équipes souvent en atelier, en entrepôt ou en tournée sur les zones industrielles dunkerquoises. On valide l'ergonomie avant d'écrire la moindre ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail B2B, e-commerce multi-CMS, configurateur de devis, chatbot RAG multilingue, recherche sémantique, agents de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, puis mise en production sans downtime depuis vos bureaux du Tonkin ou de la rue Ledru Rollin — sans interrompre vos commandes ni vos flux d'expédition portuaires.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). On forme vos équipes au pilotage de l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire de l'agglomération dunkerquoise ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, demande de devis intelligente) sur le site existant d'un artisan du BTP, d'un transporteur routier ou d'un commerçant du centre, en quelques semaines et sans refonte. Idéal pour les indépendants des zones du Tonkin.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI mobile-first et IA intégrée pour la sous-traitance industrielle, la maintenance ou le commerce de proximité : suivi client, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), multilingue pour la clientèle frontalière.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs logistiques et industriels structurants du littoral, IA intégrée, branchée sur votre SI (ERP, GMAO, WMS, TMS, CRM). Pour l'entreposage portuaire et la sous-traitance sidérurgique qui veulent industrialiser leurs flux.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du littoral dunkerquois et leurs filières (sidérurgie, énergie, logistique portuaire) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, avec gouvernance et roadmap partagées.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration mobile-first — pour un site vitrine, une boutique e-commerce ou un portail métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, selon ce qui sert le mieux votre activité à Coudekerque-Branche.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Un point clé pour la sous-traitance sidérurgique et logistique du littoral qui manipule des documents techniques sensibles.",
+          },
+          {
+            q: "Pouvez-vous outiller la sous-traitance et la logistique portuaire ?",
+            a: "Oui. Pour les acteurs gravitant autour du port de Dunkerque et de la sidérurgie, on construit des portails B2B, des configurateurs de devis et des agents qui classent bons de livraison et documents techniques, optimisent tournées et plannings d'entreposage, branchés sur vos ERP, GMAO, WMS et TMS existants. On greffe aussi une recherche sémantique sur vos catalogues de pièces et procédures.",
+          },
+          {
+            q: "Mon commerce du centre peut-il vendre en ligne et toucher la clientèle frontalière ?",
+            a: "Oui. Pour un commerce de proximité fédéré par l'UNICC ou le club Coudekerque Entreprendre, on conçoit une boutique en ligne mobile-first sur le CMS de votre choix, avec chatbot multilingue (utile à deux pas de la frontière belge), paiement, suivi de commande et SEO local. Vous restez propriétaire du site, hébergé en UE, sans abonnement imposé.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site (zones du Tonkin, rue Ledru Rollin ou centre d'affaires CREANOR), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre verrouillé avant le premier sprint.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, un périmètre verrouillé avant développement. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre commandes ni expéditions portuaires. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coudekerque-Branche et dans l'agglomération de Dunkerque ?",

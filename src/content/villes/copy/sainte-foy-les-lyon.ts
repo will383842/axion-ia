@@ -48,6 +48,183 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
       en: "Sessions un-à-un à Sainte-Foy-lès-Lyon pour dirigeants de cabinets, professions libérales et PME tertiaires qui veulent maîtriser l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Sainte-Foy-lès-Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle et tertiaire de l'ouest lyonnais (21 692 habitants, territoire artificialisé à 95 %), siège des Laboratoires Boiron — leader mondial de l'homéopathie depuis 1974, 550 salariés — et dotée d'une offre de santé dense entre l'Hôpital de Sainte-Foy (170 lits) et la Clinique Charcot (106 lits). On greffe l'IA sur vos cabinets, vos sièges et vos commerces du Plateau, ou on construit une plateforme métier complète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sainte-Foy-lès-Lyon, itérations à distance.",
+        whyHere: [
+          "Pôle santé dense — Hôpital de Sainte-Foy (170 lits : maternité, gériatrie, EHPAD), Clinique Charcot (106 lits : imagerie, radiothérapie, dialyse) et de nombreux cabinets médicaux et professions libérales : on conçoit des portails patients, prises de rendez-vous en ligne et espaces praticiens hébergés en HDS, avec une UX rassurante, accessible et conforme au RGPD santé.",
+          "Siège des Laboratoires Boiron (550 salariés, industrie pharmaceutique) et écosystème de sous-traitants et de services aux entreprises : terrain idéal pour des plateformes métier sur mesure, des portails fournisseurs et des automatisations greffées sur vos SI (CRM, ERP), avec la traçabilité et l'auditabilité qu'exige le secteur pharmaceutique, et une recherche sémantique sur vos référentiels.",
+          "Tissu de quelque 350 entreprises tertiaires — activités juridiques et comptables, commerce de détail, enseignement et formation, sièges sociaux — sur un territoire résidentiel : on greffe une brique IA (chatbot multilingue, recherche sémantique, génération de devis) sur l'existant, ou on bâtit une vitrine e-commerce multi-CMS sans refonte coûteuse pour les commerçants du Plateau de Sainte-Foy.",
+          "Commune intégrée à la Métropole de Lyon, à 15 minutes en voiture du centre et desservie par une dizaine de lignes TCL (C19, C20, 6, 11, 12, 14, 45, 49, 65, 90), bordée par Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost : on capte une clientèle métropolitaine via des sites rapides (Web Vitals au vert), un référencement local soigné et des parcours mobile-first pensés pour des Fidésiens connectés.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Sainte-Foy-lès-Lyon",
+            detail:
+              "Atelier sur site — centre-ville du Plateau, abords de l'Hôpital de Sainte-Foy ou de la Clinique Charcot, ou locaux Boiron : on pose les objectifs, les parcours utilisateurs, l'audit de la stack et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle tertiaire, juridique et de santé fidésienne exigeante en clarté, en accessibilité et en réassurance. On valide les parcours clés avec vous.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail patient, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos outils (CRM, ERP, agenda, facturation). Démos hebdomadaires en visio depuis la Métropole de Lyon.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris pour un cabinet médical du Plateau ou un site marchand fidésien qui ne peut pas se permettre la moindre interruption de service.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE, ou HDS pour les acteurs de santé proches de l'Hôpital et de la Clinique Charcot). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, génération de devis) sur le site d'un cabinet médical, d'un commerce de détail du Plateau ou d'une profession libérale juridique ou comptable fidésienne, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les PME tertiaires, les organismes de formation et les acteurs de santé fidésiens : UX/UI sur mesure, e-commerce multi-CMS, portail de prise de rendez-vous, IA intégrée et mobile-first.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants comme les Laboratoires Boiron et leurs sous-traitants pharmaceutiques, IA intégrée, branchée sur votre SI (CRM, ERP), avec traçabilité, auditabilité et recherche sémantique sur vos référentiels.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et sièges sociaux de la Métropole de Lyon : refonte de plateformes, design system, agents et automatisations à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail patient, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et conçu pour des Web Vitals au vert.",
+          },
+          {
+            q: "Mes données patients restent-elles en France et conformes RGPD ?",
+            a: "Oui. Pour les cabinets et acteurs de santé fidésiens — autour de l'Hôpital de Sainte-Foy et de la Clinique Charcot — l'hébergement se fait chez un hébergeur de données de santé (HDS) en France, nous signons un DPA, et les données restent sur votre infrastructure sans transfert hors UE. Vous gardez la propriété complète, sans verrou.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Sainte-Foy-lès-Lyon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine de commerce du Plateau. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint.",
+          },
+          {
+            q: "Pouvez-vous outiller un siège ou un sous-traitant des Laboratoires Boiron ?",
+            a: "Oui. On construit des plateformes métier et portails fournisseurs sur mesure, branchés sur vos systèmes existants (CRM, ERP), avec la traçabilité et l'auditabilité qu'attend le secteur pharmaceutique. On peut y ajouter une recherche sémantique sur vos référentiels et procédures. Le code est livré chez vous, hébergeable en UE, conforme RGPD et auditable de bout en bout.",
+          },
+          {
+            q: "Concevez-vous des sites pour les commerces et professions libérales du Plateau de Sainte-Foy ?",
+            a: "Oui. Pour les commerces de détail, les organismes de formation, les études juridiques et les cabinets comptables fidésiens, on conçoit des vitrines et boutiques e-commerce multi-CMS rapides et mobile-first, avec un référencement local soigné pour capter une clientèle de la Métropole de Lyon. On y greffe au besoin un chatbot multilingue, une prise de rendez-vous ou une génération de devis — sans refonte coûteuse, et conformes AI Act.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour un cabinet médical du Plateau ou un site marchand fidésien. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE, ou HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Sainte-Foy-lès-Lyon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle et tertiaire de l'ouest lyonnais (21 692 habitants, territoire artificialisé à 95 %), siège des Laboratoires Boiron — leader mondial de l'homéopathie depuis 1974, 550 salariés — et dotée d'une offre de santé dense entre l'Hôpital de Sainte-Foy (170 lits) et la Clinique Charcot (106 lits). On greffe l'IA sur vos cabinets, vos sièges et vos commerces du Plateau, ou on construit une plateforme métier complète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Sainte-Foy-lès-Lyon, itérations à distance.",
+        whyHere: [
+          "Pôle santé dense — Hôpital de Sainte-Foy (170 lits : maternité, gériatrie, EHPAD), Clinique Charcot (106 lits : imagerie, radiothérapie, dialyse) et de nombreux cabinets médicaux et professions libérales : on conçoit des portails patients, prises de rendez-vous en ligne et espaces praticiens hébergés en HDS, avec une UX rassurante, accessible et conforme au RGPD santé.",
+          "Siège des Laboratoires Boiron (550 salariés, industrie pharmaceutique) et écosystème de sous-traitants et de services aux entreprises : terrain idéal pour des plateformes métier sur mesure, des portails fournisseurs et des automatisations greffées sur vos SI (CRM, ERP), avec la traçabilité et l'auditabilité qu'exige le secteur pharmaceutique, et une recherche sémantique sur vos référentiels.",
+          "Tissu de quelque 350 entreprises tertiaires — activités juridiques et comptables, commerce de détail, enseignement et formation, sièges sociaux — sur un territoire résidentiel : on greffe une brique IA (chatbot multilingue, recherche sémantique, génération de devis) sur l'existant, ou on bâtit une vitrine e-commerce multi-CMS sans refonte coûteuse pour les commerçants du Plateau de Sainte-Foy.",
+          "Commune intégrée à la Métropole de Lyon, à 15 minutes en voiture du centre et desservie par une dizaine de lignes TCL (C19, C20, 6, 11, 12, 14, 45, 49, 65, 90), bordée par Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost : on capte une clientèle métropolitaine via des sites rapides (Web Vitals au vert), un référencement local soigné et des parcours mobile-first pensés pour des Fidésiens connectés.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Sainte-Foy-lès-Lyon",
+            detail:
+              "Atelier sur site — centre-ville du Plateau, abords de l'Hôpital de Sainte-Foy ou de la Clinique Charcot, ou locaux Boiron : on pose les objectifs, les parcours utilisateurs, l'audit de la stack et des contenus. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle tertiaire, juridique et de santé fidésienne exigeante en clarté, en accessibilité et en réassurance. On valide les parcours clés avec vous.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : portail patient, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos outils (CRM, ERP, agenda, facturation). Démos hebdomadaires en visio depuis la Métropole de Lyon.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris pour un cabinet médical du Plateau ou un site marchand fidésien qui ne peut pas se permettre la moindre interruption de service.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE, ou HDS pour les acteurs de santé proches de l'Hôpital et de la Clinique Charcot). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, génération de devis) sur le site d'un cabinet médical, d'un commerce de détail du Plateau ou d'une profession libérale juridique ou comptable fidésienne, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les PME tertiaires, les organismes de formation et les acteurs de santé fidésiens : UX/UI sur mesure, e-commerce multi-CMS, portail de prise de rendez-vous, IA intégrée et mobile-first.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants comme les Laboratoires Boiron et leurs sous-traitants pharmaceutiques, IA intégrée, branchée sur votre SI (CRM, ERP), avec traçabilité, auditabilité et recherche sémantique sur vos référentiels.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et sièges sociaux de la Métropole de Lyon : refonte de plateformes, design system, agents et automatisations à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — recherche, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail patient, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et conçu pour des Web Vitals au vert.",
+          },
+          {
+            q: "Mes données patients restent-elles en France et conformes RGPD ?",
+            a: "Oui. Pour les cabinets et acteurs de santé fidésiens — autour de l'Hôpital de Sainte-Foy et de la Clinique Charcot — l'hébergement se fait chez un hébergeur de données de santé (HDS) en France, nous signons un DPA, et les données restent sur votre infrastructure sans transfert hors UE. Vous gardez la propriété complète, sans verrou.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Sainte-Foy-lès-Lyon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une vitrine de commerce du Plateau. Pas de régie, pas de dérive horaire cachée, et le périmètre est figé par écrit avant le premier sprint.",
+          },
+          {
+            q: "Pouvez-vous outiller un siège ou un sous-traitant des Laboratoires Boiron ?",
+            a: "Oui. On construit des plateformes métier et portails fournisseurs sur mesure, branchés sur vos systèmes existants (CRM, ERP), avec la traçabilité et l'auditabilité qu'attend le secteur pharmaceutique. On peut y ajouter une recherche sémantique sur vos référentiels et procédures. Le code est livré chez vous, hébergeable en UE, conforme RGPD et auditable de bout en bout.",
+          },
+          {
+            q: "Concevez-vous des sites pour les commerces et professions libérales du Plateau de Sainte-Foy ?",
+            a: "Oui. Pour les commerces de détail, les organismes de formation, les études juridiques et les cabinets comptables fidésiens, on conçoit des vitrines et boutiques e-commerce multi-CMS rapides et mobile-first, avec un référencement local soigné pour capter une clientèle de la Métropole de Lyon. On y greffe au besoin un chatbot multilingue, une prise de rendez-vous ou une génération de devis — sans refonte coûteuse, et conformes AI Act.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour un cabinet médical du Plateau ou un site marchand fidésien. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE, ou HDS pour la santé), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, le tout transférable à tout prestataire local de l'ouest lyonnais ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA à Sainte-Foy-lès-Lyon ?",

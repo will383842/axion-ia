@@ -48,6 +48,183 @@ export const LANNION_COPY: VilleCopy = {
       en: "Accompagnement un-à-un des dirigeants de TPE et PME lannionnaises : sessions de cadrage IA en face-à-face dans vos bureaux, technopole Anticipa ou centre-ville.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Lannion des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Trégor et son écosystème télécoms et photonique unique en Bretagne, où la technopole Anticipa réunit près de 360 entreprises et 8 000 emplois autour d'Orange Labs (héritier du CNET), de Nokia, d'Ekinops et de Lumibird, à côté du cluster Photonics Bretagne, des filières images et réseaux, agroalimentaire et industries marines. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lannion, itérations à distance.",
+        whyHere: [
+          "Pôle télécoms et photonique de rang national : autour d'Orange Labs, de Nokia, d'Ekinops (transport optique, coté en Bourse) et de Lumibird (lasers, ~200 salariés), les PME R&D ont besoin de portails techniques, de documentations interactives et d'agents IA branchés sur leurs outils métiers et leurs bases de mesure — c'est exactement ce qu'on développe en code custom (Python, TypeScript, SQL).",
+          "Technopole Anticipa et son vivier de près de 360 entreprises sur le Pôle Pégase et le Photonics Park : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une plateforme SaaS IA-native pour des acteurs comme IDIL Fibres Optiques et les jeunes pousses de l'optique, des images et des réseaux.",
+          "Tissu trégorois de TPE du commerce (zone Bel Air), de l'agroalimentaire et de la logistique (espace Beg Ar C'hra) et du tourisme côtier (Côte de Granit rose toute proche) : sites vitrines, boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues calibrés pour une clientèle française et estivale.",
+          "Point d'atterrage des câbles sous-marins APOLLO et WASACE Nord et culture data forte (filière photonique à ~420 M€ de chiffre d'affaires, 55 % à l'export) : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients, R&D et propriété intellectuelle restent maîtrisées, sans transit hors Europe.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Lannion",
+            detail:
+              "Atelier sur site (centre-ville historique, technopole Anticipa, Pôle Pégase ou vos bureaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils R&D ou métiers. Devis ferme à partir de 24-48 h selon la complexité du projet.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour vos clients comme pour vos équipes techniques et commerciales du Trégor. Accessibilité et Web Vitals intégrés dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique ou outils R&D. Démos hebdomadaires en visio depuis le Photonics Park.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un site déjà en exploitation auprès de vos clients industriels ou touristiques du Trégor.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, le tout réintégrable par n'importe quel prestataire du Trégor ou de Lannion-Trégor Communauté.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation des devis et relances) sur le site existant d'un commerce de la zone Bel Air, d'un artisan ou d'un acteur touristique de la Côte de Granit rose, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de la technopole Anticipa, de l'agroalimentaire et de la logistique trégorois (Beg Ar C'hra) ou des industries marines : e-commerce, multilingue, portail technique et documentaire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des télécoms, de l'optique-photonique et de la R&D — type Ekinops, Lumibird ou IDIL Fibres Optiques — IA intégrée, branchée sur votre SI (CRM, ERP, outils de mesure et bancs optiques).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du pôle Images et Réseaux et de la filière photonique : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance data et IA.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé Web Vitals pour vos clients lannionnais et trégorois.",
+          },
+          {
+            q: "Mes données R&D et de propriété intellectuelle restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Un point crucial pour les acteurs télécoms et photonique du Trégor — défense, spatial, mesure optique chez des sociétés comme IDIL Fibres Optiques : vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un fournisseur extra-européen.",
+          },
+          {
+            q: "Pouvez-vous brancher l'IA sur nos outils télécoms, optiques et R&D ?",
+            a: "Oui. On développe en code custom (Python, TypeScript, SQL) des connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique, bancs photoniques ou outils de R&D, pour intégrer chatbot, recherche sémantique et agents sans casser votre environnement existant. C'est notre cœur de métier auprès des PME du Photonics Park et de la technopole Anticipa.",
+          },
+          {
+            q: "Accompagnez-vous le commerce, le tourisme et l'agroalimentaire du Trégor ?",
+            a: "Oui, autant que les acteurs high-tech. Pour un commerce de la zone Bel Air, un producteur agroalimentaire de l'espace Beg Ar C'hra ou un hébergeur de la Côte de Granit rose, on livre un site vitrine ou une boutique e-commerce multilingue, avec réservation en ligne, chatbot saisonnier et SEO local. UX soignée, mobile-first, et une brique IA seulement si elle apporte un vrai gain.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Lannion (technopole Anticipa, Pôle Pégase ou vos bureaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre et le prix avant de démarrer. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, zéro lock-in. L'ensemble est transférable à tout prestataire de Lannion-Trégor Communauté ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Lannion des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Trégor et son écosystème télécoms et photonique unique en Bretagne, où la technopole Anticipa réunit près de 360 entreprises et 8 000 emplois autour d'Orange Labs (héritier du CNET), de Nokia, d'Ekinops et de Lumibird, à côté du cluster Photonics Bretagne, des filières images et réseaux, agroalimentaire et industries marines. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lannion, itérations à distance.",
+        whyHere: [
+          "Pôle télécoms et photonique de rang national : autour d'Orange Labs, de Nokia, d'Ekinops (transport optique, coté en Bourse) et de Lumibird (lasers, ~200 salariés), les PME R&D ont besoin de portails techniques, de documentations interactives et d'agents IA branchés sur leurs outils métiers et leurs bases de mesure — c'est exactement ce qu'on développe en code custom (Python, TypeScript, SQL).",
+          "Technopole Anticipa et son vivier de près de 360 entreprises sur le Pôle Pégase et le Photonics Park : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une plateforme SaaS IA-native pour des acteurs comme IDIL Fibres Optiques et les jeunes pousses de l'optique, des images et des réseaux.",
+          "Tissu trégorois de TPE du commerce (zone Bel Air), de l'agroalimentaire et de la logistique (espace Beg Ar C'hra) et du tourisme côtier (Côte de Granit rose toute proche) : sites vitrines, boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues calibrés pour une clientèle française et estivale.",
+          "Point d'atterrage des câbles sous-marins APOLLO et WASACE Nord et culture data forte (filière photonique à ~420 M€ de chiffre d'affaires, 55 % à l'export) : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients, R&D et propriété intellectuelle restent maîtrisées, sans transit hors Europe.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Lannion",
+            detail:
+              "Atelier sur site (centre-ville historique, technopole Anticipa, Pôle Pégase ou vos bureaux) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils R&D ou métiers. Devis ferme à partir de 24-48 h selon la complexité du projet.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour vos clients comme pour vos équipes techniques et commerciales du Trégor. Accessibilité et Web Vitals intégrés dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique ou outils R&D. Démos hebdomadaires en visio depuis le Photonics Park.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un site déjà en exploitation auprès de vos clients industriels ou touristiques du Trégor.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, le tout réintégrable par n'importe quel prestataire du Trégor ou de Lannion-Trégor Communauté.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation des devis et relances) sur le site existant d'un commerce de la zone Bel Air, d'un artisan ou d'un acteur touristique de la Côte de Granit rose, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de la technopole Anticipa, de l'agroalimentaire et de la logistique trégorois (Beg Ar C'hra) ou des industries marines : e-commerce, multilingue, portail technique et documentaire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des télécoms, de l'optique-photonique et de la R&D — type Ekinops, Lumibird ou IDIL Fibres Optiques — IA intégrée, branchée sur votre SI (CRM, ERP, outils de mesure et bancs optiques).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du pôle Images et Réseaux et de la filière photonique : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance data et IA.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé Web Vitals pour vos clients lannionnais et trégorois.",
+          },
+          {
+            q: "Mes données R&D et de propriété intellectuelle restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Un point crucial pour les acteurs télécoms et photonique du Trégor — défense, spatial, mesure optique chez des sociétés comme IDIL Fibres Optiques : vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un fournisseur extra-européen.",
+          },
+          {
+            q: "Pouvez-vous brancher l'IA sur nos outils télécoms, optiques et R&D ?",
+            a: "Oui. On développe en code custom (Python, TypeScript, SQL) des connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique, bancs photoniques ou outils de R&D, pour intégrer chatbot, recherche sémantique et agents sans casser votre environnement existant. C'est notre cœur de métier auprès des PME du Photonics Park et de la technopole Anticipa.",
+          },
+          {
+            q: "Accompagnez-vous le commerce, le tourisme et l'agroalimentaire du Trégor ?",
+            a: "Oui, autant que les acteurs high-tech. Pour un commerce de la zone Bel Air, un producteur agroalimentaire de l'espace Beg Ar C'hra ou un hébergeur de la Côte de Granit rose, on livre un site vitrine ou une boutique e-commerce multilingue, avec réservation en ligne, chatbot saisonnier et SEO local. UX soignée, mobile-first, et une brique IA seulement si elle apporte un vrai gain.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Lannion (technopole Anticipa, Pôle Pégase ou vos bureaux), on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de démarrer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous validez le périmètre et le prix avant de démarrer. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, zéro lock-in. L'ensemble est transférable à tout prestataire de Lannion-Trégor Communauté ou repris en interne par vos équipes, sans dépendance à Axion-IA.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Lannion ?",

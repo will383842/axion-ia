@@ -47,6 +47,183 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
       en: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Roissy-en-Brie des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 229 habitants de Paris-Vallée de la Marne, à 25 km au sud-est de Paris, où le tissu repose sur le commerce de détail, le transport routier, la restauration et la construction — plus de 1 100 établissements locaux recensés, répartis entre le centre-ville et des zones structurantes comme la Z.I. des 50 Arpents, le Techniparc de la ZAC de la Vallée et le parc commercial Gecko. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Roissy-en-Brie, itérations à distance.",
+        whyHere: [
+          "Commerce de détail dominant et clientèle de proximité reliée par le RER E (gare de Roissy-en-Brie, branche Tournan) : entre le centre-ville et le parc commercial Gecko, le terrain est idéal pour des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des parcours click-and-collect augmentés à l'IA, plutôt que des sites vitrines figés qui ne convertissent pas la demande locale.",
+          "Forte densité de transporteurs routiers, de logisticiens et d'artisans du BTP, ancrée sur la Z.I. des 50 Arpents (pôle logistique d'une dizaine d'hectares, plus d'une centaine d'entreprises) et les zones voisines de Pontault-Combault et Émerainville : on greffe des automatisations métier — extraction de bons de commande, suivi de chantier, suivi de tournées, devis — directement sur vos logiciels existants, sans refonte coûteuse.",
+          "Tissu quasi exclusivement TPE/PME de 1 à 50 salariés (commerce, restauration, industrie légère du Techniparc de la ZAC de la Vallée) : on branche une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur l'existant via widget, API ou plugin, ou on reconstruit une plateforme IA-native sur mesure selon l'ambition et le budget.",
+          "Proximité immédiate du pôle Marne-la-Vallée-Chessy (à environ 10 km) et de l'A4/RN 104 : flux de visiteurs, de touristes et de clients à capter — nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour le commerce, l'hôtellerie-restauration et les services de proximité qui captent cette clientèle de passage.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Roissy-en-Brie",
+            detail:
+              "Atelier sur site — centre-ville, abords de la gare RER E, Z.I. des 50 Arpents, Techniparc de la ZAC de la Vallée ou zones voisines de Pontault-Combault et Émerainville : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle roisséenne qui consulte d'abord sur smartphone avant de pousser la porte d'un commerce du centre-ville.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation (devis, relances, suivi de tournées, extraction de bons de commande). Démos hebdomadaires en visio, ajustements continus à votre rythme.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité, pour qui une coupure de service n'est jamais acceptable.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou technique ni abonnement imposé ; documentation et transfert de compétences inclus à la remise.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce du centre-ville, d'un restaurant ou d'un artisan roisséen, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour le commerce de détail du parc Gecko, le transport ou la construction : e-commerce multi-CMS, prise de commande en ligne, espace client, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du transport et de la logistique de la Z.I. des 50 Arpents et de Paris-Vallée de la Marne, IA intégrée, branchée sur votre SI (CRM, ERP, logiciel TMS) et vos flux de tournées.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs logistiques et industriels du bassin : refonte de plateformes, design system unifié, équipe dédiée Axion-IA en mode produit, roadmap pilotée trimestre par trimestre.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure. L'IA est une option, jamais une obligation imposée.",
+          },
+          {
+            q: "Pouvez-vous outiller un transporteur ou un logisticien de la Z.I. des 50 Arpents ?",
+            a: "Oui. Pour les transporteurs routiers et logisticiens implantés sur la Z.I. des 50 Arpents, on automatise devis, extraction de bons de commande, suivi de tournées et relances clients, en branchant l'IA sur vos outils métier (ERP, CRM, TMS) sans changer votre logiciel. On peut aussi construire un portail client sur mesure pour suivre les expéditions en temps réel.",
+          },
+          {
+            q: "J'ai un commerce ou un restaurant au centre-ville ou au parc Gecko : que pouvez-vous faire ?",
+            a: "On crée ou refond votre boutique e-commerce avec click-and-collect, prise de réservation en ligne et un chatbot multilingue qui répond aux clients 24/7, calibré pour le commerce de détail et l'hôtellerie-restauration. Pensé mobile-first pour la clientèle de proximité roisséenne et les visiteurs du pôle Marne-la-Vallée-Chessy tout proche.",
+          },
+          {
+            q: "Pouvez-vous outiller un artisan du BTP ou une PME du Techniparc de la Vallée ?",
+            a: "Oui. Pour les artisans du bâtiment et les PME d'industrie légère du Techniparc de la ZAC de la Vallée ou des zones voisines de Pontault-Combault et Émerainville, on automatise devis, suivi de chantier, planning et relances, et on connecte le tout à un site ou un espace client clair. Code propriétaire intégré à vos logiciels, sans dépendance à un éditeur tiers.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Roissy-en-Brie, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire local de Seine-et-Marne ou de Paris-Vallée de la Marne, ou reprise en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Roissy-en-Brie des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune de 23 229 habitants de Paris-Vallée de la Marne, à 25 km au sud-est de Paris, où le tissu repose sur le commerce de détail, le transport routier, la restauration et la construction — plus de 1 100 établissements locaux recensés, répartis entre le centre-ville et des zones structurantes comme la Z.I. des 50 Arpents, le Techniparc de la ZAC de la Vallée et le parc commercial Gecko. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Roissy-en-Brie, itérations à distance.",
+        whyHere: [
+          "Commerce de détail dominant et clientèle de proximité reliée par le RER E (gare de Roissy-en-Brie, branche Tournan) : entre le centre-ville et le parc commercial Gecko, le terrain est idéal pour des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des parcours click-and-collect augmentés à l'IA, plutôt que des sites vitrines figés qui ne convertissent pas la demande locale.",
+          "Forte densité de transporteurs routiers, de logisticiens et d'artisans du BTP, ancrée sur la Z.I. des 50 Arpents (pôle logistique d'une dizaine d'hectares, plus d'une centaine d'entreprises) et les zones voisines de Pontault-Combault et Émerainville : on greffe des automatisations métier — extraction de bons de commande, suivi de chantier, suivi de tournées, devis — directement sur vos logiciels existants, sans refonte coûteuse.",
+          "Tissu quasi exclusivement TPE/PME de 1 à 50 salariés (commerce, restauration, industrie légère du Techniparc de la ZAC de la Vallée) : on branche une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur l'existant via widget, API ou plugin, ou on reconstruit une plateforme IA-native sur mesure selon l'ambition et le budget.",
+          "Proximité immédiate du pôle Marne-la-Vallée-Chessy (à environ 10 km) et de l'A4/RN 104 : flux de visiteurs, de touristes et de clients à capter — nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour le commerce, l'hôtellerie-restauration et les services de proximité qui captent cette clientèle de passage.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Roissy-en-Brie",
+            detail:
+              "Atelier sur site — centre-ville, abords de la gare RER E, Z.I. des 50 Arpents, Techniparc de la ZAC de la Vallée ou zones voisines de Pontault-Combault et Émerainville : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils métier. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle roisséenne qui consulte d'abord sur smartphone avant de pousser la porte d'un commerce du centre-ville.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation (devis, relances, suivi de tournées, extraction de bons de commande). Démos hebdomadaires en visio, ajustements continus à votre rythme.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité, pour qui une coupure de service n'est jamais acceptable.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou technique ni abonnement imposé ; documentation et transfert de compétences inclus à la remise.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce du centre-ville, d'un restaurant ou d'un artisan roisséen, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour le commerce de détail du parc Gecko, le transport ou la construction : e-commerce multi-CMS, prise de commande en ligne, espace client, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du transport et de la logistique de la Z.I. des 50 Arpents et de Paris-Vallée de la Marne, IA intégrée, branchée sur votre SI (CRM, ERP, logiciel TMS) et vos flux de tournées.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs logistiques et industriels du bassin : refonte de plateformes, design system unifié, équipe dédiée Axion-IA en mode produit, roadmap pilotée trimestre par trimestre.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure. L'IA est une option, jamais une obligation imposée.",
+          },
+          {
+            q: "Pouvez-vous outiller un transporteur ou un logisticien de la Z.I. des 50 Arpents ?",
+            a: "Oui. Pour les transporteurs routiers et logisticiens implantés sur la Z.I. des 50 Arpents, on automatise devis, extraction de bons de commande, suivi de tournées et relances clients, en branchant l'IA sur vos outils métier (ERP, CRM, TMS) sans changer votre logiciel. On peut aussi construire un portail client sur mesure pour suivre les expéditions en temps réel.",
+          },
+          {
+            q: "J'ai un commerce ou un restaurant au centre-ville ou au parc Gecko : que pouvez-vous faire ?",
+            a: "On crée ou refond votre boutique e-commerce avec click-and-collect, prise de réservation en ligne et un chatbot multilingue qui répond aux clients 24/7, calibré pour le commerce de détail et l'hôtellerie-restauration. Pensé mobile-first pour la clientèle de proximité roisséenne et les visiteurs du pôle Marne-la-Vallée-Chessy tout proche.",
+          },
+          {
+            q: "Pouvez-vous outiller un artisan du BTP ou une PME du Techniparc de la Vallée ?",
+            a: "Oui. Pour les artisans du bâtiment et les PME d'industrie légère du Techniparc de la ZAC de la Vallée ou des zones voisines de Pontault-Combault et Émerainville, on automatise devis, suivi de chantier, planning et relances, et on connecte le tout à un site ou un espace client clair. Code propriétaire intégré à vos logiciels, sans dépendance à un éditeur tiers.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Roissy-en-Brie, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise en cours de route. Mise en ligne sans downtime quand on augmente l'existant — essentiel pour une boutique du parc Gecko ou un transporteur des 50 Arpents en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire local de Seine-et-Marne ou de Paris-Vallée de la Marne, ou reprise en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Roissy-en-Brie ?",

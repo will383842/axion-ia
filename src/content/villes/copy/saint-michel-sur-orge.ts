@@ -49,6 +49,183 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
       en: "Accompagner en 1-to-1 les dirigeants de TPE/PME à Saint-Michel-sur-Orge — sessions personnalisées — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Saint-Michel-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville essonnienne de 21 776 habitants où le tissu repose à 40,4 % sur les services, 21,9 % sur le commerce de détail et 9,9 % sur la construction — un terrain de TPE et PME du centre-ville, de l'artisanat du BTP et du transport, le long des 2 km de berges de l'Orge. Population jeune (39,7 % de moins de 30 ans) et écosystème sportif structurant (handball Nationale 1 féminine, basket, tennis). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Michel-sur-Orge, itérations à distance.",
+        whyHere: [
+          "Tissu dominé par les services aux entreprises et aux particuliers (40,4 % de l'emploi local, employés et professions intermédiaires en tête à 29,9 % et 27,9 % des actifs) : nous greffons chatbots RAG, prise de rendez-vous en ligne et automatisations de relances sur les sites des cabinets, agences et prestataires de proximité du centre-ville et des abords de la gare RER C, sans refonte lourde de l'existant.",
+          "Commerce de détail très présent (21,9 % de l'emploi) dans une commune jeune (39,7 % de moins de 30 ans, revenu médian 34 972 €) : nous construisons des vitrines et boutiques e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pensées mobile-first pour une clientèle locale connectée des quartiers du Bois des Roches et de la Grande Maison, avec paiement, click-and-collect et SEO local.",
+          "Artisans du BTP et de la construction (9,9 % de l'emploi, artisans-commerçants à 5,3 % des actifs) le long de l'Orge et de la RN20 : nous développons des outils sur mesure de devis assistés par IA, de plannings de chantiers et de suivi photo, branchés sur vos logiciels de compta et ERP métier existants, consultables depuis le terrain en mobile.",
+          "Connexion francilienne directe (RER C, RN20, francilienne N104, gare TGV de Massy à ~15 km, Orly à ~20 km) et écosystème sportif/événementiel structurant porté par les clubs de handball, basket et tennis : portails de réservation, billetterie et plateformes associatives bénéficient d'une recherche sémantique, d'un calendrier d'événements intelligent et d'un hébergement UE conforme RGPD.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Saint-Michel-sur-Orge",
+            detail:
+              "Atelier sur site (centre-ville, abords de la gare RER C, bords de l'Orge, zone du Bois des Roches) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos outils métier compta/ERP. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement de régie.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une audience locale jeune et nomade (39,7 % de moins de 30 ans) qui consulte majoritairement depuis son smartphone dans les transports du RER C.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, devis assistés pour le BTP, chatbot RAG multilingue, recherche sémantique, agents et automatisations de relances. Démos hebdomadaires en visio, code versionné et accessible en continu, recette intermédiaire à chaque sprint.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO validés ; mise en production sans downtime — même en pleine saison commerciale du centre-ville ou pendant un week-end de matchs de handball Nationale 1 au gymnase municipal.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes pilotent l'outil en autonomie depuis Saint-Michel-sur-Orge, sans verrou technique ni abonnement imposé, et peuvent confier la maintenance à tout prestataire francilien.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous, recherche sémantique) sur le site d'un commerce du centre-ville, d'un artisan du BTP ou d'un prestataire de services michellois, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), devis BTP automatisés, multilingue, pensé pour le tissu local du commerce de détail, de la construction et des sociétés de transport.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des services et des transports terrestres du sud-Essonne, IA intégrée, branchée sur votre SI (CRM, ERP, compta), avec gestion fine des droits et traçabilité RGPD.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et collectivités de l'agglomération Cœur d'Essonne : refonte de plateformes, design system, portails événementiels et sportifs, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first, avec paiement, click-and-collect et SEO local pour les commerces du centre de Saint-Michel-sur-Orge.",
+          },
+          {
+            q: "Pouvez-vous outiller les artisans du BTP locaux ?",
+            a: "Oui. La construction pèse près de 10 % de l'emploi à Saint-Michel-sur-Orge et les artisans-commerçants représentent 5,3 % des actifs. On développe des devis assistés par IA, des plannings de chantiers, du suivi photo et des relances automatisées, branchés sur vos logiciels de compta et ERP existants, accessibles depuis le terrain en mobile, le long de l'Orge comme sur les chantiers desservis par la RN20.",
+          },
+          {
+            q: "Quels secteurs michellois gagnent le plus à un site avec IA ?",
+            a: "Les services aux entreprises et particuliers (40,4 % de l'emploi local), le commerce de détail (21,9 %) et le BTP (9,9 %) sont les premiers concernés : prise de rendez-vous, chatbot RAG, e-commerce, devis automatisés. Les sociétés de transport terrestre et l'écosystème sportif/événementiel (handball Nationale 1 féminine, basket, tennis) bénéficient aussi de portails de réservation et de billetterie en ligne.",
+          },
+          {
+            q: "Gérez-vous la billetterie et la réservation pour les clubs et associations sportives ?",
+            a: "Oui. Saint-Michel-sur-Orge investit dans le sport de haut niveau (handball Nationale 1 féminine, basket, tennis) et l'événementiel associatif structure la vie locale. Nous construisons des portails de réservation, de la billetterie en ligne, des calendriers d'événements et des plateformes associatives avec recherche sémantique, le tout hébergé en UE et conforme RGPD, pensé mobile-first pour un public jeune.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données, code et modèles. Côté budget, après le cadrage à Saint-Michel-sur-Orge on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale du centre-ville ou un week-end de matchs. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique ni abonnement imposé. Projet transférable à tout prestataire de l'agglomération Cœur d'Essonne ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Saint-Michel-sur-Orge des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville essonnienne de 21 776 habitants où le tissu repose à 40,4 % sur les services, 21,9 % sur le commerce de détail et 9,9 % sur la construction — un terrain de TPE et PME du centre-ville, de l'artisanat du BTP et du transport, le long des 2 km de berges de l'Orge. Population jeune (39,7 % de moins de 30 ans) et écosystème sportif structurant (handball Nationale 1 féminine, basket, tennis). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Michel-sur-Orge, itérations à distance.",
+        whyHere: [
+          "Tissu dominé par les services aux entreprises et aux particuliers (40,4 % de l'emploi local, employés et professions intermédiaires en tête à 29,9 % et 27,9 % des actifs) : nous greffons chatbots RAG, prise de rendez-vous en ligne et automatisations de relances sur les sites des cabinets, agences et prestataires de proximité du centre-ville et des abords de la gare RER C, sans refonte lourde de l'existant.",
+          "Commerce de détail très présent (21,9 % de l'emploi) dans une commune jeune (39,7 % de moins de 30 ans, revenu médian 34 972 €) : nous construisons des vitrines et boutiques e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pensées mobile-first pour une clientèle locale connectée des quartiers du Bois des Roches et de la Grande Maison, avec paiement, click-and-collect et SEO local.",
+          "Artisans du BTP et de la construction (9,9 % de l'emploi, artisans-commerçants à 5,3 % des actifs) le long de l'Orge et de la RN20 : nous développons des outils sur mesure de devis assistés par IA, de plannings de chantiers et de suivi photo, branchés sur vos logiciels de compta et ERP métier existants, consultables depuis le terrain en mobile.",
+          "Connexion francilienne directe (RER C, RN20, francilienne N104, gare TGV de Massy à ~15 km, Orly à ~20 km) et écosystème sportif/événementiel structurant porté par les clubs de handball, basket et tennis : portails de réservation, billetterie et plateformes associatives bénéficient d'une recherche sémantique, d'un calendrier d'événements intelligent et d'un hébergement UE conforme RGPD.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Saint-Michel-sur-Orge",
+            detail:
+              "Atelier sur site (centre-ville, abords de la gare RER C, bords de l'Orge, zone du Bois des Roches) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de vos outils métier compta/ERP. Devis ferme remis à partir de 24-48 h selon la complexité, sans engagement de régie.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une audience locale jeune et nomade (39,7 % de moins de 30 ans) qui consulte majoritairement depuis son smartphone dans les transports du RER C.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, devis assistés pour le BTP, chatbot RAG multilingue, recherche sémantique, agents et automatisations de relances. Démos hebdomadaires en visio, code versionné et accessible en continu, recette intermédiaire à chaque sprint.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO validés ; mise en production sans downtime — même en pleine saison commerciale du centre-ville ou pendant un week-end de matchs de handball Nationale 1 au gymnase municipal.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes pilotent l'outil en autonomie depuis Saint-Michel-sur-Orge, sans verrou technique ni abonnement imposé, et peuvent confier la maintenance à tout prestataire francilien.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous, recherche sémantique) sur le site d'un commerce du centre-ville, d'un artisan du BTP ou d'un prestataire de services michellois, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), devis BTP automatisés, multilingue, pensé pour le tissu local du commerce de détail, de la construction et des sociétés de transport.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des services et des transports terrestres du sud-Essonne, IA intégrée, branchée sur votre SI (CRM, ERP, compta), avec gestion fine des droits et traçabilité RGPD.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et collectivités de l'agglomération Cœur d'Essonne : refonte de plateformes, design system, portails événementiels et sportifs, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first, avec paiement, click-and-collect et SEO local pour les commerces du centre de Saint-Michel-sur-Orge.",
+          },
+          {
+            q: "Pouvez-vous outiller les artisans du BTP locaux ?",
+            a: "Oui. La construction pèse près de 10 % de l'emploi à Saint-Michel-sur-Orge et les artisans-commerçants représentent 5,3 % des actifs. On développe des devis assistés par IA, des plannings de chantiers, du suivi photo et des relances automatisées, branchés sur vos logiciels de compta et ERP existants, accessibles depuis le terrain en mobile, le long de l'Orge comme sur les chantiers desservis par la RN20.",
+          },
+          {
+            q: "Quels secteurs michellois gagnent le plus à un site avec IA ?",
+            a: "Les services aux entreprises et particuliers (40,4 % de l'emploi local), le commerce de détail (21,9 %) et le BTP (9,9 %) sont les premiers concernés : prise de rendez-vous, chatbot RAG, e-commerce, devis automatisés. Les sociétés de transport terrestre et l'écosystème sportif/événementiel (handball Nationale 1 féminine, basket, tennis) bénéficient aussi de portails de réservation et de billetterie en ligne.",
+          },
+          {
+            q: "Gérez-vous la billetterie et la réservation pour les clubs et associations sportives ?",
+            a: "Oui. Saint-Michel-sur-Orge investit dans le sport de haut niveau (handball Nationale 1 féminine, basket, tennis) et l'événementiel associatif structure la vie locale. Nous construisons des portails de réservation, de la billetterie en ligne, des calendriers d'événements et des plateformes associatives avec recherche sémantique, le tout hébergé en UE et conforme RGPD, pensé mobile-first pour un public jeune.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données, code et modèles. Côté budget, après le cadrage à Saint-Michel-sur-Orge on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple — sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale du centre-ville ou un week-end de matchs. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique ni abonnement imposé. Projet transférable à tout prestataire de l'agglomération Cœur d'Essonne ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Michel-sur-Orge ?",

@@ -50,6 +50,183 @@ export const ABBEVILLE_COPY: VilleCopy = {
       en: "Sites web augmentés à Abbeville : plateformes pour PME industrielles, hôtels et restaurants de la baie de Somme et artisans, avec devis intelligent, réservation en ligne et suivi client automatisé.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Abbeville des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Ponthieu, son agroalimentaire laitier autour de la laiterie Lactinov du groupe Lact'Union route de Vauchelles, ses ateliers de serrurerie et de métallurgie héritiers du savoir-faire des Établissements Decayeux, et l'hôtellerie-restauration tournée vers la baie de Somme. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Abbeville, itérations à distance, sans verrou ni abonnement imposé.",
+        whyHere: [
+          "Tissu agroalimentaire laitier du Ponthieu : autour de la laiterie Lactinov (groupe Lact'Union, route de Vauchelles), qui collecte le lait de centaines de fermes du secteur, on bâtit pour les PME agroalimentaires des portails B2B de commande, des fiches produits avec traçabilité du lot et de la DLC, et de la recherche sémantique sur catalogue, ou on greffe l'IA sur l'ERP existant sans refonte.",
+          "Métallurgie et serrurerie, dans la lignée des Établissements Decayeux et des ateliers de la Z.I. Est (près de 50 hectares d'activité industrielle) : on construit des configurateurs de devis en ligne, du catalogue technique illustré et des agents de relance, ou on automatise la chaîne devis-production sans toucher à l'outil métier.",
+          "Tourisme saisonnier de la baie de Somme, classée parmi les plus belles baies du monde : hôtels, restaurants et hébergeurs de la baie et du centre historique gagnent un site de réservation directe et un chatbot multilingue pour absorber le pic estival et la clientèle de passage venue par l'A16.",
+          "Économie de TPE — artisans du bâtiment et commerces de centre-ville autour de la collégiale Saint-Vulfran : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec devis automatisés, paiement en ligne et relances, à un budget de très petite structure, toute la chaîne hébergeable en UE et conforme RGPD et AI Act.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Abbeville",
+            detail:
+              "Atelier sur site (centre historique autour de la collégiale Saint-Vulfran, Z.I. Est, abords de la baie de Somme) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype mobile-first testé avant tout développement, pensé pour vos visiteurs comme pour vos équipes en atelier de métallurgie, en laiterie ou en cuisine, avec une attention forte à l'accessibilité.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison estivale de la baie de Somme, quand le trafic d'un hôtel ou d'un restaurant abbevillois grimpe et qu'aucune coupure n'est tolérable.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible, sur infrastructure Z.I. Est ou cloud souverain). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, le tout transférable à tout prestataire local des Hauts-de-France.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé, paiement en ligne) sur le site existant d'un artisan du bâtiment, d'un commerce du centre abbevillois ou d'un restaurant de la baie, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour PME agroalimentaire, hôtel ou restaurant de la baie de Somme : UX/UI sur mesure, e-commerce multi-CMS, réservation directe, fiches produits avec traçabilité et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les industriels structurants du Ponthieu — laiterie type Lactinov / Lact'Union, serrurerie et métallurgie de la Z.I. Est — branchée sur votre SI (CRM, ERP, traçabilité).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du bassin abbevillois et du Ponthieu : refonte de plateformes, design system, portails B2B multi-pays et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, selon ce qui sert le mieux votre activité abbevilloise.",
+          },
+          {
+            q: "Pouvez-vous bâtir un portail B2B pour l'agroalimentaire laitier abbevillois ?",
+            a: "Oui. Pour une PME agroalimentaire du bassin de la laiterie Lactinov (groupe Lact'Union), on construit des portails de commande B2B, des fiches produits avec traçabilité du lot et de la DLC, de la recherche sémantique sur catalogue et des agents de relance. On se branche sur votre ERP existant sans imposer de refonte, et la chaîne reste hébergée en UE.",
+          },
+          {
+            q: "Travaillez-vous avec la serrurerie et la métallurgie de la Z.I. Est ?",
+            a: "Oui, c'est un terrain privilégié. Dans la lignée des Établissements Decayeux et des ateliers de la zone industrielle Est, on déploie des configurateurs de devis en ligne, des catalogues techniques illustrés, de la recherche sémantique sur références et des automatisations devis-production. L'IA se greffe sur votre outil métier sans bloquer la production.",
+          },
+          {
+            q: "Pouvez-vous gérer la saison touristique de la baie de Somme ?",
+            a: "Oui. Pour un hôtel ou un restaurant proche de la baie de Somme, on met en place réservation directe, chatbot multilingue, optimisation de l'occupation saisonnière et relances, avec une mise en ligne sans downtime même en plein pic estival, quand la clientèle de passage afflue par l'A16 et la gare d'Abbeville.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA et e-commerce est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou ni dépendance à un prestataire unique : le projet reste transférable à tout prestataire local des Hauts-de-France.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic touristique de la baie de Somme. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, projet transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Abbeville des sites web, boutiques en ligne, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Ponthieu, son agroalimentaire laitier autour de la laiterie Lactinov du groupe Lact'Union route de Vauchelles, ses ateliers de serrurerie et de métallurgie héritiers du savoir-faire des Établissements Decayeux, et l'hôtellerie-restauration tournée vers la baie de Somme. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Abbeville, itérations à distance, sans verrou ni abonnement imposé.",
+        whyHere: [
+          "Tissu agroalimentaire laitier du Ponthieu : autour de la laiterie Lactinov (groupe Lact'Union, route de Vauchelles), qui collecte le lait de centaines de fermes du secteur, on bâtit pour les PME agroalimentaires des portails B2B de commande, des fiches produits avec traçabilité du lot et de la DLC, et de la recherche sémantique sur catalogue, ou on greffe l'IA sur l'ERP existant sans refonte.",
+          "Métallurgie et serrurerie, dans la lignée des Établissements Decayeux et des ateliers de la Z.I. Est (près de 50 hectares d'activité industrielle) : on construit des configurateurs de devis en ligne, du catalogue technique illustré et des agents de relance, ou on automatise la chaîne devis-production sans toucher à l'outil métier.",
+          "Tourisme saisonnier de la baie de Somme, classée parmi les plus belles baies du monde : hôtels, restaurants et hébergeurs de la baie et du centre historique gagnent un site de réservation directe et un chatbot multilingue pour absorber le pic estival et la clientèle de passage venue par l'A16.",
+          "Économie de TPE — artisans du bâtiment et commerces de centre-ville autour de la collégiale Saint-Vulfran : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec devis automatisés, paiement en ligne et relances, à un budget de très petite structure, toute la chaîne hébergeable en UE et conforme RGPD et AI Act.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Abbeville",
+            detail:
+              "Atelier sur site (centre historique autour de la collégiale Saint-Vulfran, Z.I. Est, abords de la baie de Somme) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité touristique. On remet un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype mobile-first testé avant tout développement, pensé pour vos visiteurs comme pour vos équipes en atelier de métallurgie, en laiterie ou en cuisine, avec une attention forte à l'accessibilité.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, moteur de réservation directe, configurateur de devis, chatbot RAG multilingue, recherche sémantique sur catalogue, agents et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison estivale de la baie de Somme, quand le trafic d'un hôtel ou d'un restaurant abbevillois grimpe et qu'aucune coupure n'est tolérable.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible, sur infrastructure Z.I. Est ou cloud souverain). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, le tout transférable à tout prestataire local des Hauts-de-France.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé, paiement en ligne) sur le site existant d'un artisan du bâtiment, d'un commerce du centre abbevillois ou d'un restaurant de la baie, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour PME agroalimentaire, hôtel ou restaurant de la baie de Somme : UX/UI sur mesure, e-commerce multi-CMS, réservation directe, fiches produits avec traçabilité et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les industriels structurants du Ponthieu — laiterie type Lactinov / Lact'Union, serrurerie et métallurgie de la Z.I. Est — branchée sur votre SI (CRM, ERP, traçabilité).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du bassin abbevillois et du Ponthieu : refonte de plateformes, design system, portails B2B multi-pays et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, selon ce qui sert le mieux votre activité abbevilloise.",
+          },
+          {
+            q: "Pouvez-vous bâtir un portail B2B pour l'agroalimentaire laitier abbevillois ?",
+            a: "Oui. Pour une PME agroalimentaire du bassin de la laiterie Lactinov (groupe Lact'Union), on construit des portails de commande B2B, des fiches produits avec traçabilité du lot et de la DLC, de la recherche sémantique sur catalogue et des agents de relance. On se branche sur votre ERP existant sans imposer de refonte, et la chaîne reste hébergée en UE.",
+          },
+          {
+            q: "Travaillez-vous avec la serrurerie et la métallurgie de la Z.I. Est ?",
+            a: "Oui, c'est un terrain privilégié. Dans la lignée des Établissements Decayeux et des ateliers de la zone industrielle Est, on déploie des configurateurs de devis en ligne, des catalogues techniques illustrés, de la recherche sémantique sur références et des automatisations devis-production. L'IA se greffe sur votre outil métier sans bloquer la production.",
+          },
+          {
+            q: "Pouvez-vous gérer la saison touristique de la baie de Somme ?",
+            a: "Oui. Pour un hôtel ou un restaurant proche de la baie de Somme, on met en place réservation directe, chatbot multilingue, optimisation de l'occupation saisonnière et relances, avec une mise en ligne sans downtime même en plein pic estival, quand la clientèle de passage afflue par l'A16 et la gare d'Abbeville.",
+          },
+          {
+            q: "Mes données et celles de mes clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA et e-commerce est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou ni dépendance à un prestataire unique : le projet reste transférable à tout prestataire local des Hauts-de-France.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en plein pic touristique de la baie de Somme. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, projet transférable à tout prestataire local des Hauts-de-France ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Abbeville et dans la Somme ?",
