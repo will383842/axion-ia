@@ -82,6 +82,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: view.metaTitle ?? view.title,
     description: view.metaDescription ?? view.excerpt,
     ogType: "article", // VIS-05/SEO-05
+    // D2 (VIS-08) — utilise la hero réelle comme og:image quand dispo (au lieu
+    // de la carte /api/og générique) pour les partages sociaux + previews LLM.
+    ...(view.featuredImage
+      ? {
+          ogImage: view.featuredImage.startsWith("http")
+            ? view.featuredImage
+            : `${SITE_URL}${view.featuredImage}`,
+        }
+      : {}),
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
   // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow
