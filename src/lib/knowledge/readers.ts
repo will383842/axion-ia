@@ -45,6 +45,26 @@ export interface PublicEntryFacade {
    * La page /blog/[slug] l'utilise pour le rendu <Image priority> LCP.
    */
   readonly featuredImage?: string | null;
+  /**
+   * VIS-02 (audit visibilité 2026-06-05) — Tier d'indexation réel de l'Article.
+   * Optionnel : absent pour KnowledgeEntry (défaut tier-2 côté loader).
+   * Permet à /blog/[slug] de dériver le `<meta robots>` correct (avant ce patch
+   * le loader hardcodait tier-2 → un article promu tier-1 restait noindex).
+   */
+  readonly indexationTier?:
+    | "tier_1_indexable"
+    | "tier_2_noindex_follow"
+    | "tier_3_noindex_nofollow";
+  /**
+   * VIS-03 — Réponse directe (featured snippet / snippet 0) générée par le
+   * content-gen. Optionnel : null si non générée.
+   */
+  readonly directAnswer?: string | null;
+  /**
+   * VIS-08 — Alt sémantique de l'image hero (image-bank), localisé.
+   * Optionnel : null si pas d'image / pas d'alt.
+   */
+  readonly featuredImageAlt?: string | null;
 }
 
 // ============================================================
@@ -421,6 +441,14 @@ export async function findArticleBySlug(
       updatedAt: translation.updatedAt,
       // P2-3 — Image hero article (Article.featuredImage DB String?).
       featuredImage: translation.article.featuredImage ?? null,
+      // VIS-02/03/08 (audit visibilité 2026-06-05) — tier réel, snippet 0 et alt
+      // hero pour que /blog/[slug] rende le bon robots + directAnswer + alt.
+      indexationTier: translation.article.indexationTier,
+      directAnswer: translation.article.directAnswer ?? null,
+      featuredImageAlt:
+        (locale === "fr"
+          ? translation.article.featuredImageAltFr
+          : translation.article.featuredImageAltEn) ?? null,
     };
   }
 

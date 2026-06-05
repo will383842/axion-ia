@@ -42,6 +42,10 @@ export interface BlogArticleView {
    * null = pas d'image hero disponible (articles FS ou articles DB sans image).
    */
   readonly featuredImage: string | null;
+  /** VIS-08 — Alt sémantique de l'image hero (image-bank). null si absent. */
+  readonly featuredImageAlt: string | null;
+  /** VIS-03 — Réponse directe (snippet 0 / featured snippet). null si absente. */
+  readonly directAnswer: string | null;
   /** Attribution photographe (CGU Unsplash §6 — obligatoire si photo Unsplash). */
   readonly photographerName: string | null;
   readonly photographerUrl: string | null;
@@ -70,6 +74,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     source: "fs",
     // P2-3 — Les articles FS (hardcodés) n'ont pas d'image hero.
     featuredImage: null,
+    featuredImageAlt: null,
+    directAnswer: null,
     photographerName: null,
     photographerUrl: null,
     citations: [],
@@ -80,6 +86,25 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
 function isoDate(d: Date | null | undefined): string {
   if (!d) return new Date().toISOString().slice(0, 10);
   return d.toISOString().slice(0, 10);
+}
+
+/**
+ * VIS-02 — Mappe l'enum Prisma `IndexationTier` (underscore) vers le format
+ * dash consommé par `BlogArticleView.tier` / le `<meta robots>` de la page.
+ * Défaut sûr : tier-2-noindex-follow (si tier absent — ex. KnowledgeEntry).
+ */
+function mapIndexationTier(
+  tier: "tier_1_indexable" | "tier_2_noindex_follow" | "tier_3_noindex_nofollow" | undefined | null,
+): BlogArticleView["tier"] {
+  switch (tier) {
+    case "tier_1_indexable":
+      return "tier-1-indexable";
+    case "tier_3_noindex_nofollow":
+      return "tier-3-noindex-nofollow";
+    case "tier_2_noindex_follow":
+    default:
+      return "tier-2-noindex-follow";
+  }
 }
 
 /**
@@ -122,10 +147,18 @@ export async function loadBlogArticleForView(
       author: "Manon",
       category: "Cas d'usage",
       tags: [],
-      tier: "tier-2-noindex-follow",
+      // VIS-02 (audit visibilité 2026-06-05) — dérive le tier RÉEL de l'Article
+      // (avant : hardcodé tier-2 → un article promu tier-1 restait noindex alors
+      // qu'il était au sitemap = jamais indexé). KnowledgeEntry n'expose pas le
+      // tier → défaut sûr tier-2-noindex-follow.
+      tier: mapIndexationTier(dbArticle.indexationTier),
       source: "db",
       // P2-3 — Image hero DB article (Article.featuredImage String?).
       featuredImage: dbArticle.featuredImage ?? null,
+      // VIS-08 — Alt sémantique image-bank (fallback titre côté page si null).
+      featuredImageAlt: dbArticle.featuredImageAlt ?? null,
+      // VIS-03 — Snippet 0 généré (fallback excerpt côté page si null).
+      directAnswer: dbArticle.directAnswer ?? null,
       // CGU Unsplash §6 — attribution photographe (null si pas image Unsplash).
       photographerName:
         imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerName ?? null) : null,
@@ -175,6 +208,9 @@ export async function loadBlogIndexForView(
     source: "db",
     // P2-3 — Index n'expose pas featuredImage (non sélectionné dans listPublishedArticles).
     featuredImage: null,
+    // VIS-08/03 — La vue liste n'a pas besoin de l'alt ni du directAnswer (détail page).
+    featuredImageAlt: null,
+    directAnswer: null,
     photographerName: null,
     photographerUrl: null,
     citations: [],
