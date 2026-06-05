@@ -130,6 +130,32 @@ const EXEMPT_FILES: ReadonlySet<string> = new Set([
   "content/villes/copy/montigny-les-cormeilles.ts", // revenu médian 21 970 €
   "content/villes/copy/saint-michel-sur-orge.ts", // revenu médian 34 972 €
   "content/villes/copy/sannois.ts", // revenu médian 24 250 €
+  // Audit GSC 2026-06-05 — 21 villes dont le SEUL € est une donnée ÉCONOMIQUE de
+  // marché (montant d'investissement, CA d'entreprise tierce, revenu médian INSEE,
+  // prix de commodité agricole) citée en prose écosystème — PAS un tarif Axion-IA.
+  // Même catégorie que les 5 ci-dessus. Leurs prix Axion (s'il y en a) sont tokenisés
+  // ({{price:…}}) ; aucune violation de prix Axion détectée dans ces fichiers.
+  "content/villes/copy/agde.ts", // parc Héliopôle 65 M€
+  "content/villes/copy/angouleme.ts", // Pôle Magelis 124 M€ de CA
+  "content/villes/copy/antibes.ts", // Port Vauban 135 M€, plages 20 M€
+  "content/villes/copy/aubagne.ts", // campus Sartorius 200 M€
+  "content/villes/copy/brive-la-gaillarde.ts", // Silab ~67 M€ de CA
+  "content/villes/copy/gagny.ts", // comblement carrières > 16,5 M€
+  "content/villes/copy/houilles.ts", // revenu médian ~39 200 €
+  "content/villes/copy/hyeres.ts", // SICA marché aux fleurs ~30 M€
+  "content/villes/copy/illkirch-graffenstaden.ts", // Flender 123 M€ de CA
+  "content/villes/copy/martigues.ts", // décarbonation 300 M€ / H2V 750 M€
+  "content/villes/copy/meudon.ts", // data center Equinix 350 M€
+  "content/villes/copy/narbonne.ts", // Groupe Narbonne ~14 M€ web / Port-La-Nouvelle 600 M€
+  "content/villes/copy/noisy-le-grand.ts", // restructuration Mont d'Est ~37 M€
+  "content/villes/copy/saint-laurent-du-var.ts", // port 34 M€ de travaux
+  "content/villes/copy/saint-quentin.ts", // Soprocos L'Oréal 70 M€
+  "content/villes/copy/sens.ts", // usine plasturgie 11 M€
+  "content/villes/copy/soissons.ts", // betterave 41,44 €/t → 30-35 €/t
+  "content/villes/copy/sotteville-les-rouen.ts", // Technicentre SNCF ~250 M€
+  "content/villes/copy/vannes.ts", // campus cyber 16 M€
+  "content/villes/copy/villeneuve-saint-georges.ts", // chantier Villeneuve Demain ~685 M€
+  "content/villes/copy/villiers-le-bel.ts", // NPNRU ~200 M€ ANRU
 ]);
 
 // ── Détection des montants € en dur ─────────────────────────────────────────
