@@ -66,8 +66,14 @@ describe("Phase 6.bis — robustesse transverse (infra réelle)", () => {
       consentement: true,
       sessionUuid: session,
     };
-    const r1 = (await (await postLead(payload)).json()) as { submissionId: string; idempotent: boolean };
-    const r2 = (await (await postLead(payload)).json()) as { submissionId: string; idempotent: boolean };
+    const r1 = (await (await postLead(payload)).json()) as {
+      submissionId: string;
+      idempotent: boolean;
+    };
+    const r2 = (await (await postLead(payload)).json()) as {
+      submissionId: string;
+      idempotent: boolean;
+    };
     expect(r1.idempotent).toBe(false);
     expect(r2.idempotent).toBe(true);
     expect(r2.submissionId).toBe(r1.submissionId);
@@ -87,10 +93,10 @@ describe("Phase 6.bis — robustesse transverse (infra réelle)", () => {
     };
     // Lancement RÉELLEMENT concurrent (Promise.all, pas séquentiel).
     const [a, b] = await Promise.all([postLead(payload), postLead(payload)]);
-    const [ja, jb] = (await Promise.all([a.json(), b.json()])) as Array<{
-      submissionId: string;
-      idempotent: boolean;
-    }>;
+    const [ja, jb] = (await Promise.all([a.json(), b.json()])) as [
+      { submissionId: string; idempotent: boolean },
+      { submissionId: string; idempotent: boolean },
+    ];
     expect(ja.submissionId).toBe(jb.submissionId);
     // Un seul Submission malgré la course (contrainte chat_action_idempotency + P2002).
     const count = await prisma.submission.count({ where: { contactEmail: email } });

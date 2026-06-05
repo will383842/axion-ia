@@ -16,7 +16,7 @@
 
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { generateEmbedding } from "@/lib/knowledge/embeddings";
+import { embedChatbotText } from "@/server/chatbot/embeddings";
 import type { TenantSettings } from "@/server/chatbot/constants";
 
 export interface CachedAnswer {
@@ -34,8 +34,8 @@ interface CacheRow {
 /** Embedding → littéral pgvector, ou null si indisponible (repli gracieux). */
 async function embedToLiteral(text: string): Promise<string | null> {
   try {
-    const embed = await generateEmbedding(text);
-    // Sans VOYAGE_API_KEY, generateEmbedding renvoie un STUB déterministe (hash).
+    const embed = await embedChatbotText(text);
+    // Si aucun provider réel n'est dispo, embedChatbotText délègue au STUB (hash).
     // Un vecteur-stub ne porte aucune sémantique : on désactive le cache plutôt
     // que de risquer un faux-hit (servir une réponse cachée pour une question
     // différente). Cohérent avec le repli FTS de hybrid-search (D-1).

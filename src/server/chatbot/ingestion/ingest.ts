@@ -7,7 +7,7 @@
 
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { generateEmbedding } from "@/lib/knowledge/embeddings";
+import { embedChatbotText } from "@/server/chatbot/embeddings";
 import { getDefaultTenant } from "@/server/chatbot/tenant";
 import { chunkText } from "@/server/chatbot/ingestion/chunker";
 import { gatherSources, type IngestSource } from "@/server/chatbot/ingestion/seed-sources";
@@ -73,8 +73,8 @@ export async function ingestAllSources(
   for (const src of sources) {
     const chunks = chunkText(src.contenu, { contextLabel: src.contexte });
     for (const ch of chunks) {
-      // Refus confidentialité géré dans generateEmbedding (et déjà filtré en amont).
-      const { embedding } = await generateEmbedding(ch.contenu, src.confidentiality);
+      // Refus confidentialité géré dans embedChatbotText (et déjà filtré en amont).
+      const { embedding } = await embedChatbotText(ch.contenu, src.confidentiality);
       const ref = chunks.length > 1 ? `${src.sourceRef}#${ch.index}` : src.sourceRef;
       await insertChunk(
         tenant.id,

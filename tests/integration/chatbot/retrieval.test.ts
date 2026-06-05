@@ -36,15 +36,34 @@ describe("retrieval hybride T-06 (DB réelle)", () => {
     expect(chunks.length).toBe(0);
   });
 
-  it("charabia sans clé Voyage : repli FTS-seul propre, PAS de pollution stub-vecteur", async () => {
+  const hasRealEmbeddings =
+    !!process.env.OPENAI_API_KEY && process.env.CHATBOT_EMBEDDINGS_PROVIDER === "openai";
+
+  it("charabia : pas de pollution stub-vecteur quand AUCUN provider réel (D-1)", async () => {
     const chunks = await hybridSearch(tenantId, "zzqq xkcd wpfm vbnt gibberish nonsense token", {
       topK: 8,
     });
     expect(Array.isArray(chunks)).toBe(true);
-    if (!process.env.VOYAGE_API_KEY) {
-      // Sans vrai provider d'embedding, on ne doit PAS retourner des voisins
-      // d'un vecteur-requête factice (D-1). FTS ne matche rien → 0 résultat.
+    if (!hasRealEmbeddings && !process.env.VOYAGE_API_KEY) {
+      // Sans provider réel, embedChatbotText délègue au STUB → hybrid-search bascule
+      // FTS-seul (D-1). FTS ne matche rien → 0 résultat (pas de voisins factices).
       expect(chunks.length).toBe(0);
     }
   });
+
+  it.runIf(hasRealEmbeddings)(
+    "recall sémantique réel (OpenAI 1024-dim) : requête NL multi-mots → bon chunk",
+    async () => {
+      // Le FTS seul (websearch AND) ne matcherait pas ; le vecteur OpenAI assure
+      // le recall sémantique.
+      const chunks = await hybridSearch(
+        tenantId,
+        "comment se déroule un audit IA dans mon entreprise",
+        { topK: 4 },
+      );
+      expect(chunks.length).toBeGreaterThan(0);
+      const joined = chunks.map((c) => c.contenu.toLowerCase()).join(" ");
+      expect(joined).toContain("audit");
+    },
+  );
 });

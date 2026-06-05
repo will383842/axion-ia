@@ -6,7 +6,7 @@
 // Toutes les requêtes sont paramétrées ($queryRaw) → pas d'injection SQL.
 
 import { prisma } from "@/lib/prisma";
-import { generateEmbedding } from "@/lib/knowledge/embeddings";
+import { embedChatbotText } from "@/server/chatbot/embeddings";
 import { RETRIEVAL_TOP_K } from "@/server/chatbot/constants";
 
 export interface RetrievedChunk {
@@ -104,8 +104,9 @@ export async function hybridSearch(
 
   let vector: RankedRow[] = [];
   try {
-    const embed = await generateEmbedding(query);
-    // Sans VOYAGE_API_KEY, generateEmbedding renvoie un STUB déterministe (hash)
+    const embed = await embedChatbotText(query);
+    // Si aucun provider réel (OpenAI/Voyage) n'est dispo, embedChatbotText délègue
+    // au module partagé qui renvoie un STUB déterministe (hash)
     // au lieu de throw : un vecteur-requête factice comparé aux vrais embeddings
     // des chunks donne des voisins sémantiquement aberrants (pollution RRF). On
     // détecte le stub (modelVersion suffixée `-stub`) et on bascule en FTS-seul,
