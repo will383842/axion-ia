@@ -215,15 +215,18 @@ const VILLES_PER_DAY = 50;
 // Garde-fou « l'indexation ne rétracte JAMAIS » : `min(elapsed, FREEZE_DAYS)` est
 // monotone croissant puis constant → pour une même date, la cohorte post-patch est
 // IDENTIQUE à pré-patch tant que elapsed ≤ FREEZE_DAYS, puis plafonne. Aucune ville
-// déjà indexable ne repasse noindex pour tout deploy ≤ 2026-06-09.
+// déjà indexable ne repasse noindex pour tout deploy ≤ 2026-06-06.
+//
+// Gel calé sur le jour du déploiement (2026-06-05) : FREEZE_DAYS=9 plafonne la cohorte
+// à sa valeur actuelle (+1 jour de marge anti-rétraction pour couvrir le passage minuit
+// UTC pendant le build/deploy). On cesse donc d'élargir MAINTENANT au lieu de noyer
+// Google de villes thin supplémentaires.
 //
 // Réouverture = MANUELLE et explicite : augmenter FREEZE_DAYS (commit dédié), cohorte
 // par cohorte, conditionnée au taux d'indexation observé en GSC (cf.
 // _AUDIT/GSC-INDEXATION-2026-06-05/03b-STRATEGIE-RAMP-UP.md). JAMAIS temporel.
-// ⚠️ Déployer avant 2026-06-09 ; si plus tard, AUGMENTER FREEZE_DAYS d'abord (sinon
-// la prod aurait dépassé le plafond entre-temps → rétraction interdite).
 const DRIP_FROZEN = true;
-const FREEZE_DAYS = 12; // 2026-05-28 + 12 j = 2026-06-09 (plafond ≈ cohorte actuelle + marge anti-rétraction)
+const FREEZE_DAYS = 9; // 2026-05-28 + 9 j = 2026-06-06 — gel ≈ cohorte du jour du deploy (2026-06-05)
 
 /** Ville premium = a un copy ET (pop ≥ 20k OU rewrite premium MANUAL-REWRITE). */
 export function isPremiumVille(v: Ville): boolean {
