@@ -22,7 +22,6 @@ const DEV_FALLBACK = "admin-dev-x7k2n9";
 
 /**
  * Retourne le segment admin courant (ADMIN_URL_PREFIX) ou le fallback dev.
- * Le fallback est validé en prod par `src/env.ts` (refusé via superRefine).
  */
 export function adminSegment(): string {
   return process.env.ADMIN_URL_PREFIX ?? DEV_FALLBACK;
