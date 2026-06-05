@@ -13,14 +13,13 @@
 //  - CLS 0 : aucun rendu tant que l'idle n'a pas eu lieu ; quand le widget
 //    apparaît il est `position: fixed` (hors flux) → aucun reflow.
 //
-// Kill-switch : gated sur `NEXT_PUBLIC_CHATBOT_ENABLED === "true"`. Tant que
-// Will n'active pas le flag (D-PROD), le composant ne monte RIEN et n'émet
-// aucune requête réseau. La route serveur reste de toute façon gardée par
-// `CHATBOT_ENABLED` (503 sinon).
+// Kill-switch maître : env serveur `CHATBOT_ENABLED` (Coolify, scope RUN). Tant
+// qu'il n'est pas "true", l'endpoint /api/chatbot/widget-config renvoie
+// enabled:false (sans DB) → le widget ne monte RIEN. La route SSE reste aussi
+// gardée par `CHATBOT_ENABLED` (503 sinon). On/off fin + canary = console (DB).
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { env } from "@/env";
 
 const ChatWidgetLazy = dynamic(
   () =>
@@ -66,14 +65,14 @@ function scheduleIdle(cb: () => void): () => void {
 export function ChatWidgetMount() {
   const [config, setConfig] = React.useState<WidgetConfig | null>(null);
 
-  // Garde BUILD-TIME « feature déployée » (NEXT_PUBLIC_CHATBOT_ENABLED) : tant
-  // qu'elle est ≠ "true", on ne fait AUCUN fetch (zéro coût site-wide). Une fois
-  // posée à la mise en service, le pilotage FIN — on/off + canary par page — est
-  // RUNTIME via /api/chatbot/widget-config (ChatTenant.actif + reglages.pages),
-  // modifiable depuis la console SANS redéploiement. Le kill-switch maître reste
-  // l'env serveur CHATBOT_ENABLED (l'endpoint renvoie enabled:false sinon).
+  // Pilotage 100 % RUNTIME (aucune dépendance build-time, car le build est
+  // externalisé sur GitHub Actions et ne bake pas NEXT_PUBLIC_CHATBOT_ENABLED).
+  // On lit la config à l'idle via /api/chatbot/widget-config : l'endpoint renvoie
+  // enabled:false SANS requête DB tant que le kill-switch serveur CHATBOT_ENABLED
+  // ≠ "true" → le widget ne monte pas quand le chatbot est éteint (coût ~nul,
+  // réponse CDN-cachée 30 s). Une fois allumé, on/off + canary par page sont
+  // pilotés depuis la console (ChatTenant.actif + reglages.pages), SANS redéploiement.
   React.useEffect(() => {
-    if (env.NEXT_PUBLIC_CHATBOT_ENABLED !== "true") return;
     let cancelled = false;
     const cancelIdle = scheduleIdle(() => {
       fetch("/api/chatbot/widget-config")
@@ -89,7 +88,6 @@ export function ChatWidgetMount() {
     };
   }, []);
 
-  if (env.NEXT_PUBLIC_CHATBOT_ENABLED !== "true") return null;
   if (!config?.enabled) return null;
   if (!isPageAllowed(config.pages)) return null;
   return <ChatWidgetLazy />;
