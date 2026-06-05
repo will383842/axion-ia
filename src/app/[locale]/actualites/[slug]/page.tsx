@@ -34,6 +34,8 @@ import { prisma } from "@/lib/prisma";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { SuggestedContent } from "@/components/suggested/SuggestedContent";
+import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
@@ -231,6 +233,10 @@ export default async function NewsArticlePage({ params }: Props) {
   // NewsArticle (sinon @id orphelin → warning Rich Results + perte E-E-A-T).
   const personJsonLd = newsJsonLd ? await getManonPersonJsonLd() : null;
 
+  // VIS-10 — articles connexes (anti dead-end de maillage : la page news n'en
+  // avait aucun). Tier-1 only (anti-doorway).
+  const related = await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 });
+
   const breadcrumbItems = [
     { href: "/actualites", label: "Actualités" },
     { href: `/actualites/${slug}`, label: t.title },
@@ -341,6 +347,21 @@ export default async function NewsArticlePage({ params }: Props) {
           <AiContentDisclaimer locale="fr" />
         </Container>
       </Section>
+
+      <SuggestedContent
+        variant="articles"
+        items={related.map((r) => ({
+          href: `/blog/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+        }))}
+        eyebrow="Articles connexes"
+        title="À lire aussi"
+        tone="sand"
+        emitJsonLd
+      />
 
       <CtaBlock
         title="Mettre en pratique"

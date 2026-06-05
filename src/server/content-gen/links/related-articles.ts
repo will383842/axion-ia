@@ -49,6 +49,10 @@ export async function findRelatedArticles(opts: FindRelatedOptions): Promise<Rel
     const dbArticles = await listPublishedArticles(locale);
     dbItems = dbArticles
       .filter((a) => a.slug !== currentSlug)
+      // VIS-10 — anti-doorway : ne pas suggérer d'article tier-2/tier-3 noindex.
+      // Avant ce patch, `tier1Only` ne filtrait QUE les items FS → des articles
+      // DB auto-générés noindex fuitaient dans le bloc « articles connexes ».
+      .filter((a) => (tier1Only ? a.indexationTier === "tier_1_indexable" : true))
       .map((a) => ({
         slug: a.slug,
         title: a.title,

@@ -20,7 +20,7 @@ import {
   isServiceSlug,
   type ServiceSlug,
 } from "@/content/knowledge/services";
-import type { KbType, Locale } from "../../../prisma/generated/client";
+import type { KbType, Locale, IndexationTier } from "../../../prisma/generated/client";
 
 /**
  * Façade uniforme pour le rendu public.
@@ -350,6 +350,12 @@ export interface ArticleSummary {
   readonly readingTime: number | null;
   readonly author: { readonly slug: string; readonly name: string } | null;
   readonly category: { readonly slug: string; readonly name: string } | null;
+  /**
+   * VIS-10 (audit visibilité 2026-06-05) — Tier d'indexation, pour filtrer les
+   * articles connexes (anti-doorway : ne pas suggérer du tier-2 noindex).
+   * Articles éditoriaux KB = tier-1 par nature.
+   */
+  readonly indexationTier: IndexationTier;
 }
 
 /**
@@ -380,6 +386,9 @@ export async function listPublishedArticles(locale: Locale): Promise<readonly Ar
         category: a.category
           ? { slug: a.category.slug, name: locale === "fr" ? a.category.nameFr : a.category.nameEn }
           : null,
+        // VIS-10 — tier réel de l'Article (le leak tier-2 dans les suggestions
+        // venait de l'absence de ce filtre).
+        indexationTier: a.indexationTier,
       };
     });
   }
@@ -409,6 +418,9 @@ export async function listPublishedArticles(locale: Locale): Promise<readonly Ar
       readingTime: null, // V1 : pas dans KnowledgeEntry direct, à enrichir KB-16 readingTime helper
       author: e.assignedAuthor,
       category: null, // V1 : tags KB → category mapping KB-7+
+      // VIS-10 — KnowledgeEntry (articles éditoriaux) n'a pas de colonne tier ;
+      // éditorial = indexable par nature.
+      indexationTier: "tier_1_indexable",
     };
   });
 }

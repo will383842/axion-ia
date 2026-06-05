@@ -215,6 +215,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: 8,
         author: { slug: "manon", name: "Manon" },
         category: null,
+        indexationTier: "tier_1_indexable",
       },
     ]);
 
@@ -238,6 +239,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: 8,
         author: { slug: "manon", name: "Manon" },
         category: null,
+        indexationTier: "tier_1_indexable",
       },
     ]);
 
@@ -277,6 +279,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: null,
         author: null,
         category: null,
+        indexationTier: "tier_1_indexable",
       },
       {
         id: "u2",
@@ -287,6 +290,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: null,
         author: null,
         category: null,
+        indexationTier: "tier_1_indexable",
       },
     ]);
 
