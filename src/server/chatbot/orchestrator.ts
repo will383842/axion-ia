@@ -42,6 +42,18 @@ import type { ResolvedTenant } from "@/server/chatbot/tenant";
 /** Lien RDV découverte (route FR connue). */
 const RDV_URL = "/fr/appel";
 
+/**
+ * Détecte une question de financement (CPF, OPCO, subvention…). Axion-IA ne gère
+ * AUCUN dispositif de financement (§0.7 — le chatbot ne promet aucun financement) :
+ * on répond honnêtement plutôt que de router vers les offres (« vos formations
+ * finançables » contient « formation » → partirait sinon en recherche d'offre).
+ */
+function isFinancingQuestion(message: string): boolean {
+  return /\bcpf\b|\bopco\b|financ(ement|able|er|ée?s?|ables?)|prise en charge|subvention|cr[ée]dit d['’]?imp[ôo]t|op[ée]rateur de comp[ée]tences|p[ôo]le emploi|france travail|fonds de formation/i.test(
+    message,
+  );
+}
+
 export interface TurnContext {
   readonly tenant: ResolvedTenant;
   readonly conversationId?: string;
@@ -144,6 +156,21 @@ export async function handleTurn(
     sources: [] as Array<{ sourceType: string; sourceRef: string }>,
     guard: OK_GUARD,
   };
+
+  // — Financement (CPF/OPCO/subvention) : réponse HONNÊTE sans promesse (§0.7),
+  //   AVANT le routage vertical (sinon « vos formations finançables » → offres). —
+  if (isFinancingQuestion(message)) {
+    return {
+      ...base,
+      intent: "explication",
+      text: "Nous ne gérons pas de dispositif de financement (CPF, OPCO, subvention…) : nos prestations — formations, audits, implémentation — sont facturées en direct. Je peux vous présenter nos offres et leurs tarifs, ou organiser un court échange pour cadrer votre besoin :",
+      cards: [],
+      sendLinks: false,
+      rdvUrl: RDV_URL,
+      linkFlow: INITIAL_FLOW,
+      escalate: false,
+    };
+  }
 
   // — Confirmation d'un envoi de liens en attente —
   if (

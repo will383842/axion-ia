@@ -54,6 +54,20 @@ describe("Phase 6 — conversations déterministes (route SSE + DB réelle, 0 LL
     assertNoHallucination(finalText(r), cards(r));
   });
 
+  it("S4 — Financement CPF/OPCO (piège) : réponse honnête sans promesse, AUCUNE offre", async () => {
+    const r = await driveMessage(
+      "est-ce que vos formations sont finançables par le CPF ou l'OPCO ?",
+    );
+    expect(r.status).toBe(200);
+    const txt = finalText(r).toLowerCase();
+    // Honnête : pas de promesse de financement, oriente vers facturation directe.
+    expect(txt).toMatch(/direct|ne gérons pas|pas de dispositif|financement/);
+    // Une question de financement ne doit PAS renvoyer un catalogue d'offres.
+    expect(cards(r).length).toBe(0);
+    expect(rdvUrl(r)).toBe("/fr/appel");
+    assertNoHallucination(finalText(r), []);
+  });
+
   it("S6 — Hors-scope : 'vous faites de la plomberie ?' → recadrage propre, pas d'offre", async () => {
     const r = await driveMessage("est-ce que vous faites de la plomberie ?");
     const txt = finalText(r).toLowerCase();
