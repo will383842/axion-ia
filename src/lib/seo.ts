@@ -63,6 +63,12 @@ interface ProductSeoInput {
   ogImage?: string;
   /** Optional accent for `/api/og` dynamic image (primary/purple/orange/green). */
   ogAccent?: "primary" | "purple" | "orange" | "green";
+  /**
+   * VIS-05/SEO-05 — type OpenGraph. Défaut "website" (rétro-compat). Les pages
+   * d'article (blog/actualites/guides/connaissances/centre-aide) passent
+   * "article" pour un og:type correct (preview sociale + signal éditorial).
+   */
+  ogType?: "website" | "article";
 }
 
 /**
@@ -109,6 +115,7 @@ export function buildProductMetadata({
   alternates,
   ogImage,
   ogAccent,
+  ogType = "website",
 }: ProductSeoInput): Metadata {
   const fr = alternates?.fr ?? resolveLocalizedPath(path, "fr");
   const en = alternates?.en ?? resolveLocalizedPath(path, "en");
@@ -145,7 +152,7 @@ export function buildProductMetadata({
       languages,
     },
     openGraph: {
-      type: "website",
+      type: ogType,
       locale: locale === "fr" ? "fr_FR" : "en_US",
       url: `${SITE_URL}/${locale}${pathNorm}`,
       title,
@@ -689,7 +696,8 @@ export function buildArticleJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline,
+    // VIS-13 — borne à 110 car. (recommandation Google Rich Results).
+    headline: headline.length > 110 ? `${headline.slice(0, 109).trimEnd()}…` : headline,
     description,
     image: resolvedImage,
     datePublished,
@@ -1526,12 +1534,18 @@ export function buildImageGraphJsonLd({
       acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
       creator: {
         "@type": "Organization",
-        "@id": `${SITE_URL}#org`,
+        // VIS-17 (audit visibilité 2026-06-05) — aligne sur l'@id canonique de
+        // l'Organization globale (`/#organization`) pour fusionner l'entité dans
+        // le graphe (avant : `#org` ≠ `/#organization` → entité non reliée).
+        "@id": `${SITE_URL}/#organization`,
         name: organizationName,
       },
       copyrightHolder: {
         "@type": "Organization",
-        "@id": `${SITE_URL}#org`,
+        // VIS-17 (audit visibilité 2026-06-05) — aligne sur l'@id canonique de
+        // l'Organization globale (`/#organization`) pour fusionner l'entité dans
+        // le graphe (avant : `#org` ≠ `/#organization` → entité non reliée).
+        "@id": `${SITE_URL}/#organization`,
         name: organizationName,
       },
       copyrightNotice: `© ${organizationName} 2026 — CC BY 4.0`,

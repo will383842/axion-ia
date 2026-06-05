@@ -34,7 +34,7 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDetailSection";
 
 import { getRegion } from "@/content/regions";
-import { VILLES, getIndexableVilles, getVille } from "@/content/villes";
+import { VILLES, getIndexableVilles, getVille, isVilleIndexable } from "@/content/villes";
 import { getNearbyVilles, haversineKm } from "@/lib/geo";
 import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
 import {
@@ -274,6 +274,12 @@ export async function buildPageMetadata(
         ? (serviceCopy?.fr.hero.slice(0, 155) ?? description)
         : (serviceCopy?.en.hero.slice(0, 155) ?? description),
     },
+    // VIS-07 (audit visibilité 2026-06-05) — applique le drip d'indexation aussi
+    // aux pages service×ville. Avant : gate seulement sur hasCopy → une ville
+    // avec copy mais hors cohorte du jour émettait robots:index TOUT en étant
+    // absente du sitemap (qui, lui, gate sur isVilleIndexable) → incohérence,
+    // Google pouvait l'indexer via le maillage. Aligne page ↔ sitemap ↔ hub.
+    ...(isVilleIndexable(ville.slug) ? {} : { robots: { index: false, follow: true } }),
   };
 }
 

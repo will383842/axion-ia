@@ -33,6 +33,9 @@ import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { SuggestedContent } from "@/components/suggested/SuggestedContent";
+import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
@@ -139,6 +142,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/actualites/${slug}`,
     title: t.metaTitle ?? `${t.title} · Axion-IA`,
     description: t.metaDescription ?? t.excerpt ?? t.title,
+    ogType: "article", // VIS-05/SEO-05
   });
 
   // Anti-doorway HCU 2024 — robots dérivé du tier (cohérence § 28.5 + § 21).
@@ -205,26 +209,34 @@ export default async function NewsArticlePage({ params }: Props) {
   // Query séparée car Article n'expose pas la relation inverse Prisma.
   const citations = await loadArticleCitations(article.id);
 
-  const newsJsonLd =
-    sourceUrl && sourceName
-      ? buildNewsArticleJsonLd({
-          title: t.title,
-          description: t.excerpt ?? t.metaDescription ?? t.title,
-          slug,
-          locale: "fr",
-          publishedAt: article.publishedAt ?? article.createdAt,
-          updatedAt: article.updatedAt,
-          wordCount,
-          urlSegment: "actualites",
-          sourceUrl,
-          sourceName,
-          ...(imageUrl ? { imageUrl } : {}),
-          ...(authorIdRef ? { authorIdRef } : {}),
-          ...(section ? { section } : {}),
-          ...(article.publishedAtDateline ? { dateline: article.publishedAtDateline } : {}),
-          ...(citations.length > 0 ? { citations } : {}),
-        })
-      : null;
+  // VIS-14 — NewsArticle émis SYSTÉMATIQUEMENT (avant : seulement si source
+  // tracée → une actu éditoriale sans source n'avait aucun JSON-LD article).
+  // La source (isBasedOn) reste conditionnelle côté factory.
+  const newsJsonLd = buildNewsArticleJsonLd({
+    title: t.title,
+    description: t.excerpt ?? t.metaDescription ?? t.title,
+    slug,
+    locale: "fr",
+    publishedAt: article.publishedAt ?? article.createdAt,
+    updatedAt: article.updatedAt,
+    wordCount,
+    urlSegment: "actualites",
+    ...(sourceUrl ? { sourceUrl } : {}),
+    ...(sourceName ? { sourceName } : {}),
+    ...(imageUrl ? { imageUrl } : {}),
+    ...(authorIdRef ? { authorIdRef } : {}),
+    ...(section ? { section } : {}),
+    ...(article.publishedAtDateline ? { dateline: article.publishedAtDateline } : {}),
+    ...(citations.length > 0 ? { citations } : {}),
+  });
+
+  // VIS-05 — co-émet le nœud Person Manon pour résoudre l'author @id du
+  // NewsArticle (sinon @id orphelin → warning Rich Results + perte E-E-A-T).
+  const personJsonLd = await getManonPersonJsonLd();
+
+  // VIS-10 — articles connexes (anti dead-end de maillage : la page news n'en
+  // avait aucun). Tier-1 only (anti-doorway).
+  const related = await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 });
 
   const breadcrumbItems = [
     { href: "/actualites", label: "Actualités" },
@@ -337,6 +349,21 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       </Section>
 
+      <SuggestedContent
+        variant="articles"
+        items={related.map((r) => ({
+          href: `/blog/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+        }))}
+        eyebrow="Articles connexes"
+        title="À lire aussi"
+        tone="sand"
+        emitJsonLd
+      />
+
       <CtaBlock
         title="Mettre en pratique"
         description={`Démarrez par une intervention Essentielle ${formatAmount(
@@ -353,6 +380,7 @@ export default async function NewsArticlePage({ params }: Props) {
       />
 
       {newsJsonLd ? <JsonLd data={newsJsonLd} /> : null}
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
 }

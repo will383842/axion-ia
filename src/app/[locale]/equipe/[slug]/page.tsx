@@ -21,6 +21,7 @@ import { prisma } from "@/lib/prisma";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 
@@ -82,6 +83,12 @@ export default async function PublicAuthorPage({ params }: Props) {
   return (
     <>
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
+      {/* VIS / E-E-A-T — fil d'ariane (+ BreadcrumbList JSON-LD) : la fiche
+          auteur était la seule page détail sans breadcrumb. Niveau unique
+          (Accueil > Auteur) car il n'existe pas d'index /equipe. */}
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={[{ href: `/equipe/${slug}`, label: profile.displayName }]} />
+      </Container>
       <Section>
         <Container>
           <header style={{ marginBottom: 32 }}>

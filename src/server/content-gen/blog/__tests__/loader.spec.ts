@@ -90,6 +90,64 @@ describe("loadBlogArticleForView", () => {
     expect(view?.fsPost).toBeNull();
   });
 
+  // VIS-02/03/08 (audit visibilité 2026-06-05) — le loader doit refléter le tier
+  // RÉEL de l'Article (avant : hardcodé tier-2) + exposer directAnswer + alt hero.
+  const dbBase = {
+    id: "a1",
+    type: "article" as const,
+    slug: "vis-test",
+    title: "VIS",
+    excerpt: "ex",
+    body: "<h2>Titre</h2><p>Corps.</p>",
+    bodyText: "Titre Corps.",
+    metaTitle: null,
+    metaDescription: null,
+    locale: "fr" as const,
+    publishedAt: new Date("2026-05-10"),
+    updatedAt: new Date("2026-05-10"),
+  };
+
+  it("VIS-02 maps tier_1_indexable → tier-1-indexable (article promu indexable)", async () => {
+    mockFindArticleBySlug.mockResolvedValue({ ...dbBase, indexationTier: "tier_1_indexable" });
+    const view = await loadBlogArticleForView("vis-test", "fr");
+    expect(view?.tier).toBe("tier-1-indexable");
+  });
+
+  it("VIS-02 maps tier_3_noindex_nofollow → tier-3-noindex-nofollow", async () => {
+    mockFindArticleBySlug.mockResolvedValue({
+      ...dbBase,
+      indexationTier: "tier_3_noindex_nofollow",
+    });
+    const view = await loadBlogArticleForView("vis-test", "fr");
+    expect(view?.tier).toBe("tier-3-noindex-nofollow");
+  });
+
+  it("VIS-02 defaults to tier-2 when tier absent (KnowledgeEntry path)", async () => {
+    mockFindArticleBySlug.mockResolvedValue({ ...dbBase });
+    const view = await loadBlogArticleForView("vis-test", "fr");
+    expect(view?.tier).toBe("tier-2-noindex-follow");
+  });
+
+  it("VIS-03/08 exposes directAnswer + featuredImageAlt from DB", async () => {
+    mockFindArticleBySlug.mockResolvedValue({
+      ...dbBase,
+      indexationTier: "tier_1_indexable",
+      directAnswer: "Réponse directe optimisée snippet 0.",
+      featuredImageAlt: "Alt sémantique image-bank",
+    });
+    const view = await loadBlogArticleForView("vis-test", "fr");
+    expect(view?.directAnswer).toBe("Réponse directe optimisée snippet 0.");
+    expect(view?.featuredImageAlt).toBe("Alt sémantique image-bank");
+  });
+
+  it("VIS-03/08 directAnswer + featuredImageAlt are null for FS articles", async () => {
+    mockFindArticleBySlug.mockResolvedValue(null);
+    const view = await loadBlogArticleForView("fixture-fs-post", "fr");
+    expect(view?.source).toBe("fs");
+    expect(view?.directAnswer).toBeNull();
+    expect(view?.featuredImageAlt).toBeNull();
+  });
+
   it("falls back to FS when DB returns null", async () => {
     mockFindArticleBySlug.mockResolvedValue(null);
 
@@ -157,6 +215,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: 8,
         author: { slug: "manon", name: "Manon" },
         category: null,
+        indexationTier: "tier_1_indexable",
       },
     ]);
 
@@ -180,6 +239,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: 8,
         author: { slug: "manon", name: "Manon" },
         category: null,
+        indexationTier: "tier_1_indexable",
       },
     ]);
 
@@ -219,6 +279,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: null,
         author: null,
         category: null,
+        indexationTier: "tier_1_indexable",
       },
       {
         id: "u2",
@@ -229,6 +290,7 @@ describe("loadBlogIndexForView", () => {
         readingTime: null,
         author: null,
         category: null,
+        indexationTier: "tier_1_indexable",
       },
     ]);
 

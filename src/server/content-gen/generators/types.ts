@@ -100,6 +100,13 @@ export interface GeneratorOutput {
    * Optionnel : V1 generators ou cas filtres trop stricts → array vide acceptable.
    */
   readonly selectedExternalLinkIds?: ReadonlyArray<string>;
+  /**
+   * H2 (audit grounding 2026-06-05) — IDs des entrées KB (KnowledgeEntry)
+   * réellement injectées dans le prompt via `kbRetrieve()`. Persisté tel quel
+   * dans `ContentGenJob.outputJsonRaw` (spread `...output`) → traçabilité :
+   * « quels faits KB ont nourri quel article ». Optionnel (KB vide → []).
+   */
+  readonly kbEntryIds?: ReadonlyArray<string>;
 }
 
 export interface Generator<TInput extends GeneratorBaseInput = GeneratorBaseInput> {

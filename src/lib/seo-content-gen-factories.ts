@@ -142,6 +142,18 @@ const AI_DISCLAIMER_FR =
 const AI_DISCLAIMER_EN =
   "Editorial content drafted with generative AI assistance (OpenAI / Anthropic / Perplexity) and supervised by the Axion-IA team prior to publication. See /equipe/manon for full AI transparency (EU AI Act art. 50).";
 
+/**
+ * VIS-13 — Borne un `headline` à 110 caractères (recommandation Google Rich
+ * Results). Coupe au dernier mot complet sous la limite + ellipse, sans casser
+ * les titres déjà courts.
+ */
+export function truncateHeadline(title: string, max = 110): string {
+  if (title.length <= max) return title;
+  const slice = title.slice(0, max - 1);
+  const lastSpace = slice.lastIndexOf(" ");
+  return `${(lastSpace > 40 ? slice.slice(0, lastSpace) : slice).trimEnd()}…`;
+}
+
 function buildArticleBase(
   type: "Article" | "BlogPosting" | "TechArticle" | "NewsArticle",
   input: ArticleJsonLdInput,
@@ -154,7 +166,9 @@ function buildArticleBase(
     "@context": "https://schema.org",
     "@type": type,
     "@id": `${url}#article`,
-    headline: input.title,
+    // VIS-13 (audit visibilité 2026-06-05) — Google tronque/avertit au-delà de
+    // 110 caractères pour `headline`. On borne proprement (mot le plus proche).
+    headline: truncateHeadline(input.title),
     description: input.description,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
@@ -229,10 +243,11 @@ export interface NewsArticleJsonLdInput extends ArticleJsonLdInput {
   readonly dateline?: string;
   /** ex: "Actualités IA", "Marché", "Réglementation". */
   readonly printSection?: string;
-  /** URL source originale. */
-  readonly sourceUrl: string;
-  /** Nom de la source originale (ex: "Le Monde Informatique"). */
-  readonly sourceName: string;
+  /** URL source originale. Optionnel (VIS-14) : une actu éditoriale sans source
+   *  émet quand même un NewsArticle (sans isBasedOn). */
+  readonly sourceUrl?: string;
+  /** Nom de la source originale (ex: "Le Monde Informatique"). Optionnel. */
+  readonly sourceName?: string;
 }
 
 export function buildNewsArticleJsonLd(input: NewsArticleJsonLdInput): Record<string, unknown> {
@@ -241,11 +256,16 @@ export function buildNewsArticleJsonLd(input: NewsArticleJsonLdInput): Record<st
     ...base,
     ...(input.dateline ? { dateline: input.dateline } : {}),
     ...(input.printSection ? { printSection: input.printSection } : {}),
-    isBasedOn: {
-      "@type": "CreativeWork",
-      url: input.sourceUrl,
-      publisher: input.sourceName,
-    },
+    // VIS-14 — isBasedOn seulement si une source originale est tracée.
+    ...(input.sourceUrl
+      ? {
+          isBasedOn: {
+            "@type": "CreativeWork",
+            url: input.sourceUrl,
+            ...(input.sourceName ? { publisher: input.sourceName } : {}),
+          },
+        }
+      : {}),
   };
 }
 

@@ -30,6 +30,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
@@ -54,6 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/guides/${slug}`,
     title: `${guide.title} · Guide Axion-IA`,
     description: guide.excerpt || `Guide pratique : ${guide.title}.`,
+    ogType: "article", // VIS-05/SEO-05
   });
 
   // Anti-doorway HCU : robots dérivé du tier (Sprint 14.10 pattern).
@@ -110,6 +112,9 @@ export default async function GuidePiliersPage({ params }: Props) {
         urlSegment: "guides",
       });
 
+  // VIS-05 — co-émet le nœud Person Manon (résout l'author @id du HowTo/Article).
+  const personJsonLd = await getManonPersonJsonLd();
+
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
     { href: `/guides/${slug}`, label: guide.title },
@@ -138,6 +143,7 @@ export default async function GuidePiliersPage({ params }: Props) {
   return (
     <>
       <JsonLd data={jsonLd} />
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>

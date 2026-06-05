@@ -60,9 +60,65 @@ Règles supplémentaires obligatoires :
 - Premier H2 = la question exacte reformulée (pas de paraphrase)
 - Pas d'introduction promotionnelle avant le snippet (Google l'ignore)`;
 
+// VIS-06 (audit visibilité 2026-06-05) — Les 5 intents « legacy » retournaient
+// "" (aucune différenciation). Or l'intention commerciale/transactionnelle/locale
+// est celle qui CONVERTIT. On ajoute un addendum structurel par intent. Doctrine
+// respectée : 0 prix en dur (tokens {{price:...}}), FR, anti-doorway, 0 téléphone.
+
+const INFORMATIONAL_ADDENDUM = `
+
+## MODE INFORMATIONNEL — PÉDAGOGIE & PROFONDEUR
+L'internaute cherche à COMPRENDRE (pas encore à acheter). Règles :
+- Définition claire dès le 1er paragraphe, puis progression du simple au complexe
+- Privilégier exemples concrets, schémas mentaux, analogies métier
+- 0 argumentaire commercial agressif ; 1 seul CTA discret en fin (« Pour approfondir »)
+- Liens internes vers ressources/guides plus profonds (maillage d'autorité)
+- Chaque affirmation factuelle = source citable (INSEE, DARES, BPI, EU AI Act)`;
+
+const COMMERCIAL_INVESTIGATION_ADDENDUM = `
+
+## MODE INVESTIGATION COMMERCIALE — AIDE À LA DÉCISION
+L'internaute COMPARE des solutions/prestataires avant de choisir. Règles :
+- Exposer les CRITÈRES DE CHOIX objectifs (méthodologie, périmètre, livrables, délais)
+- Tableau comparatif léger (3-5 lignes) si pertinent — facteurs de décision, pas de dénigrement concurrent
+- Preuves : cas concrets, métriques de résultat, méthode Axion-IA
+- CTA orienté évaluation (« Demander un audit », « Cadrer votre besoin »)
+- AUCUN tarif chiffré dans le corps (0 prix en dur) ; renvoyer vers la page tarifs / un devis via le CTA
+- Lever les objections (risque, réversibilité, montée en compétence interne)`;
+
+const TRANSACTIONAL_ADDENDUM = `
+
+## MODE TRANSACTIONNEL — PASSAGE À L'ACTION
+L'internaute est PRÊT à engager. Règles :
+- Bénéfices concrets et résultats attendus en tête (pas de théorie longue)
+- CTA clair dès le 1er tiers ET en fin (« Demander un devis », « Réserver un cadrage »)
+- Réassurance : déroulé de la prestation, livrables, étapes, garanties de méthode
+- Section FAQ traitant les objections d'achat (périmètre, engagement, délais)
+- AUCUN tarif chiffré dans le corps (0 prix en dur) ; orienter vers la page tarifs / un devis`;
+
+const NAVIGATIONAL_ADDENDUM = `
+
+## MODE NAVIGATIONNEL — ORIENTATION
+L'internaute cherche une page/un service Axion-IA précis. Règles :
+- Désambiguïser l'entité dès l'intro (qui est Axion-IA, quel service exact)
+- Aller droit au but : liens internes directs vers la bonne page service/contact
+- Contenu concis, pas de remplissage ; structure scannable (H2 = sections claires)
+- Éviter la confusion avec d'autres entités au nom proche`;
+
+const LOCAL_ADDENDUM = `
+
+## MODE LOCAL — ANCRAGE GÉOGRAPHIQUE
+L'internaute cherche une réponse ancrée sur SA ville/zone. Règles :
+- Nommer la ville/zone dans le H1 et le 1er paragraphe (sans bourrage)
+- Mentionner la couverture (intervention sur site + distanciel) — areaServed
+- Exemples ou enjeux propres au tissu économique local quand pertinent
+- Lien interne vers le hub ville correspondant
+- NE PAS inventer d'adresse/horaires locaux (Axion-IA = service-area, pas vitrine physique)`;
+
 /**
  * Retourne l'addendum à ajouter au SYSTEM_PROMPT selon l'intent.
- * Retourne "" pour les intents legacy (comportement inchangé).
+ * VIS-06 : différenciation des 8 intents (3 AEO 2026 + 5 legacy). Seuls null /
+ * undefined / intent inconnu retournent "".
  */
 export function getIntentPromptAddendum(intent: string | null | undefined): string {
   switch (intent) {
@@ -72,6 +128,16 @@ export function getIntentPromptAddendum(intent: string | null | undefined): stri
       return AI_OVERVIEW_ADDENDUM;
     case "featured_snippet":
       return FEATURED_SNIPPET_ADDENDUM;
+    case "informational":
+      return INFORMATIONAL_ADDENDUM;
+    case "commercial_investigation":
+      return COMMERCIAL_INVESTIGATION_ADDENDUM;
+    case "transactional":
+      return TRANSACTIONAL_ADDENDUM;
+    case "navigational":
+      return NAVIGATIONAL_ADDENDUM;
+    case "local":
+      return LOCAL_ADDENDUM;
     default:
       return "";
   }

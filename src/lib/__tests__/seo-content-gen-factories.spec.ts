@@ -13,6 +13,7 @@ import {
   buildSpeakableSpec,
   buildCitationArray,
   buildIndexNowPayload,
+  truncateHeadline,
 } from "../seo-content-gen-factories";
 
 const MANON_FIXTURE = {
@@ -24,6 +25,27 @@ const MANON_FIXTURE = {
   knowsAbout: ["Intelligence artificielle opérationnelle"],
   personaDisclaimer: "Manon est une persona éditoriale fictive.",
 };
+
+describe("truncateHeadline (VIS-13)", () => {
+  it("laisse intact un titre ≤ 110 caractères", () => {
+    const t = "Audit IA pour PME à Lyon";
+    expect(truncateHeadline(t)).toBe(t);
+  });
+
+  it("borne à 110 caractères max", () => {
+    const long = "Mot ".repeat(60).trim(); // > 110 car.
+    const out = truncateHeadline(long);
+    expect(out.length).toBeLessThanOrEqual(110);
+    expect(out.endsWith("…")).toBe(true);
+  });
+
+  it("coupe au mot complet (pas de mot tronqué)", () => {
+    const long = `${"a".repeat(50)} ${"b".repeat(80)}`;
+    const out = truncateHeadline(long);
+    // Coupe après le 1er bloc (lastSpace > 40) → pas de "bbb…" tronqué au milieu.
+    expect(out).toBe(`${"a".repeat(50)}…`);
+  });
+});
 
 describe("buildPersonManonJsonLd", () => {
   it("emits valid Person JSON-LD with @id and no sameAs", () => {
@@ -81,6 +103,20 @@ describe("buildNewsArticleJsonLd", () => {
     expect(ld["@type"]).toBe("NewsArticle");
     expect(ld["dateline"]).toBe("Paris, 2026-05-14");
     expect(ld["isBasedOn"]).toBeDefined();
+  });
+
+  it("VIS-14 — émet un NewsArticle même sans source (isBasedOn omis)", () => {
+    const ld = buildNewsArticleJsonLd({
+      title: "Actu éditoriale sans source externe",
+      description: "Édito interne.",
+      slug: "edito-interne",
+      locale: "fr",
+      publishedAt: "2026-06-05",
+      updatedAt: "2026-06-05",
+    });
+    expect(ld["@type"]).toBe("NewsArticle");
+    expect(ld["headline"]).toBeDefined();
+    expect(ld["isBasedOn"]).toBeUndefined();
   });
 });
 

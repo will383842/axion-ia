@@ -20,7 +20,7 @@ import {
   isServiceSlug,
   type ServiceSlug,
 } from "@/content/knowledge/services";
-import type { KbType, Locale } from "../../../prisma/generated/client";
+import type { KbType, Locale, IndexationTier } from "../../../prisma/generated/client";
 
 /**
  * Façade uniforme pour le rendu public.
@@ -45,6 +45,26 @@ export interface PublicEntryFacade {
    * La page /blog/[slug] l'utilise pour le rendu <Image priority> LCP.
    */
   readonly featuredImage?: string | null;
+  /**
+   * VIS-02 (audit visibilité 2026-06-05) — Tier d'indexation réel de l'Article.
+   * Optionnel : absent pour KnowledgeEntry (défaut tier-2 côté loader).
+   * Permet à /blog/[slug] de dériver le `<meta robots>` correct (avant ce patch
+   * le loader hardcodait tier-2 → un article promu tier-1 restait noindex).
+   */
+  readonly indexationTier?:
+    | "tier_1_indexable"
+    | "tier_2_noindex_follow"
+    | "tier_3_noindex_nofollow";
+  /**
+   * VIS-03 — Réponse directe (featured snippet / snippet 0) générée par le
+   * content-gen. Optionnel : null si non générée.
+   */
+  readonly directAnswer?: string | null;
+  /**
+   * VIS-08 — Alt sémantique de l'image hero (image-bank), localisé.
+   * Optionnel : null si pas d'image / pas d'alt.
+   */
+  readonly featuredImageAlt?: string | null;
 }
 
 // ============================================================
@@ -330,6 +350,12 @@ export interface ArticleSummary {
   readonly readingTime: number | null;
   readonly author: { readonly slug: string; readonly name: string } | null;
   readonly category: { readonly slug: string; readonly name: string } | null;
+  /**
+   * VIS-10 (audit visibilité 2026-06-05) — Tier d'indexation, pour filtrer les
+   * articles connexes (anti-doorway : ne pas suggérer du tier-2 noindex).
+   * Articles éditoriaux KB = tier-1 par nature.
+   */
+  readonly indexationTier: IndexationTier;
 }
 
 /**
@@ -360,6 +386,9 @@ export async function listPublishedArticles(locale: Locale): Promise<readonly Ar
         category: a.category
           ? { slug: a.category.slug, name: locale === "fr" ? a.category.nameFr : a.category.nameEn }
           : null,
+        // VIS-10 — tier réel de l'Article (le leak tier-2 dans les suggestions
+        // venait de l'absence de ce filtre).
+        indexationTier: a.indexationTier,
       };
     });
   }
@@ -389,6 +418,9 @@ export async function listPublishedArticles(locale: Locale): Promise<readonly Ar
       readingTime: null, // V1 : pas dans KnowledgeEntry direct, à enrichir KB-16 readingTime helper
       author: e.assignedAuthor,
       category: null, // V1 : tags KB → category mapping KB-7+
+      // VIS-10 — KnowledgeEntry (articles éditoriaux) n'a pas de colonne tier ;
+      // éditorial = indexable par nature.
+      indexationTier: "tier_1_indexable",
     };
   });
 }
@@ -421,6 +453,14 @@ export async function findArticleBySlug(
       updatedAt: translation.updatedAt,
       // P2-3 — Image hero article (Article.featuredImage DB String?).
       featuredImage: translation.article.featuredImage ?? null,
+      // VIS-02/03/08 (audit visibilité 2026-06-05) — tier réel, snippet 0 et alt
+      // hero pour que /blog/[slug] rende le bon robots + directAnswer + alt.
+      indexationTier: translation.article.indexationTier,
+      directAnswer: translation.article.directAnswer ?? null,
+      featuredImageAlt:
+        (locale === "fr"
+          ? translation.article.featuredImageAltFr
+          : translation.article.featuredImageAltEn) ?? null,
     };
   }
 

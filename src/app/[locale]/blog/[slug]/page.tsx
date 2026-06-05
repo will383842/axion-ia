@@ -27,6 +27,19 @@ import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+// VIS-01 (audit visibilité 2026-06-05) — rendu HTML sanitisé du body des
+// articles DB (bodyHtml) + injection d'ancres h2. Aligne /blog sur le chemin
+// correct déjà utilisé par /connaissances (avant : parseBody rendait le HTML
+// en texte échappé → balises visibles, 0 titre/lien/mise en forme).
+import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
+import { buildToc } from "@/lib/knowledge/article-enrich";
+// H3 (audit grounding 2026-06-05) — résout les tokens prix {{price:...}} au
+// rendu (no-op si aucun) : filet anti-fuite de token brut + cohérence SSOT.
+import { resolvePriceTokens } from "@/content/pricing-tokens";
+// VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
+// BlogPosting (type correct + author @id résolu + AI Act + image hero).
+import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -71,6 +84,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/blog/${slug}`,
     title: view.metaTitle ?? view.title,
     description: view.metaDescription ?? view.excerpt,
+    ogType: "article", // VIS-05/SEO-05
+    // D2 (VIS-08) — utilise la hero réelle comme og:image quand dispo (au lieu
+    // de la carte /api/og générique) pour les partages sociaux + previews LLM.
+    ...(view.featuredImage
+      ? {
+          ogImage: view.featuredImage.startsWith("http")
+            ? view.featuredImage
+            : `${SITE_URL}${view.featuredImage}`,
+        }
+      : {}),
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
   // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow
@@ -222,35 +245,81 @@ export default async function BlogArticle({ params }: Props) {
   }
 
   const wordCount = view.body.trim().split(/\s+/).length;
-  // P3 QW — TOC Featured Snippets : extrait headings du bodyHtml pour articles DB longs.
-  const tocItems: TocItem[] = wordCount > 1500 ? extractTocItems(view.body) : [];
+  // VIS-01 — Les articles DB stockent du bodyHtml (sortie content-gen) ; les
+  // articles FS legacy stockent de la prose brute. On rend le HTML sanitisé pour
+  // les DB (avec ancres h2 via buildToc) et on garde parseBody pour les FS.
+  const isDbHtml = view.source === "db";
+  const dbBody = isDbHtml ? buildToc(sanitizeContentGenHtml(view.body)) : null;
+  // H3 — body DB avec tokens prix résolus (no-op si aucun token).
+  const dbBodyHtml = dbBody ? resolvePriceTokens(dbBody.html, loc) : null;
+  // P3 QW — TOC Featured Snippets : ancres alignées sur les id réellement injectés
+  // (VIS-04, fini les ancres mortes). DB → toc de buildToc ; FS → extractTocItems.
+  const tocItems: TocItem[] = dbBody
+    ? dbBody.toc.map((h) => ({ anchor: h.id, title: h.text, level: 2 as const }))
+    : wordCount > 1500
+      ? extractTocItems(view.body)
+      : [];
   const pageUrl = `${SITE_URL}/${loc}/blog/${slug}`;
   // P1.5 QW-1 — AI Act art. 50 (deadline 2026-08-02) : flag machine-readable
   // obligatoire sur tout contenu IA-assisté. `buildArticleJsonLd` (seo.ts générique)
   // n'émet pas `aiGenerated` — spread explicite ici pour les articles DB (Manon)
   // et FS (auteur humain : flag reste vrai car pipeline IA-assisté).
-  const articleJsonLd = {
-    ...buildArticleJsonLd({
-      locale: loc,
-      path: `/blog/${slug}`,
-      headline: view.title,
-      description: view.excerpt,
-      datePublished: view.publishedAt,
-      dateModified: view.updatedAt ?? view.publishedAt,
-      articleBody: view.body,
-      authorName: view.author,
-      authorSlug: view.author.toLowerCase(),
-      keywords: view.tags,
-      articleSection: view.category,
-      wordCount,
-      ...(view.citations.length > 0 ? { isBasedOn: view.citations } : {}),
-    }),
-    aiGenerated: true,
-    additionalType: "https://schema.org/AIGeneratedContent",
-    speakable: buildSpeakableSpecification({
-      selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
-    }),
-  };
+  // VIS-08/09 — URL absolue de l'image hero pour le JSON-LD (image ImageObject).
+  const heroImageAbs = view.featuredImage
+    ? view.featuredImage.startsWith("http")
+      ? view.featuredImage
+      : `${SITE_URL}${view.featuredImage}`
+    : undefined;
+
+  // VIS-09 — Articles DB (content-gen, auteur Manon) → factory BlogPosting
+  // (`@type` correct + author @id résolu par le nœud Person + AI Act riche +
+  // image hero). Articles FS legacy (auteur humain réel) → helper générique
+  // avec le vrai auteur (NE PAS attribuer à Manon).
+  const articleJsonLd = isDbHtml
+    ? buildBlogPostingJsonLd({
+        title: view.title,
+        description: view.excerpt,
+        slug,
+        locale: loc,
+        publishedAt: view.publishedAt,
+        updatedAt: view.updatedAt ?? view.publishedAt,
+        urlSegment: "blog",
+        wordCount,
+        ...(heroImageAbs
+          ? { imageUrl: heroImageAbs, imageAlt: view.featuredImageAlt ?? view.title }
+          : {}),
+        ...(view.tags.length > 0 ? { tags: [...view.tags] } : {}),
+        ...(view.category ? { section: view.category } : {}),
+        ...(view.citations.length > 0
+          ? { citations: view.citations.map((c) => ({ url: c.url, title: c.name })) }
+          : {}),
+      })
+    : {
+        ...buildArticleJsonLd({
+          locale: loc,
+          path: `/blog/${slug}`,
+          headline: view.title,
+          description: view.excerpt,
+          datePublished: view.publishedAt,
+          dateModified: view.updatedAt ?? view.publishedAt,
+          articleBody: view.body,
+          authorName: view.author,
+          authorSlug: view.author.toLowerCase(),
+          keywords: view.tags,
+          articleSection: view.category,
+          wordCount,
+          ...(view.citations.length > 0 ? { isBasedOn: view.citations } : {}),
+        }),
+        aiGenerated: true,
+        additionalType: "https://schema.org/AIGeneratedContent",
+        speakable: buildSpeakableSpecification({
+          selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+        }),
+      };
+
+  // VIS-05/09 — Person Manon co-émis pour les articles DB (résout l'author @id
+  // de la factory). FS legacy = auteur humain → pas de nœud Manon.
+  const personJsonLd = isDbHtml ? await getManonPersonJsonLd() : null;
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
@@ -258,10 +327,14 @@ export default async function BlogArticle({ params }: Props) {
   ];
 
   const titleParts = splitTitleEm(view.title);
-  const blocks = parseBody(view.body);
+  // VIS-01 — parseBody UNIQUEMENT pour les articles FS legacy (prose brute).
+  const blocks = isDbHtml ? null : parseBody(view.body);
 
   // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
-  const tldrText = deriveTldr(view.excerpt, view.body);
+  // VIS-03 — Préfère le directAnswer généré (snippet 0) ; fallback excerpt/body.
+  // H3 — tokens prix résolus (no-op si aucun).
+  const rawTldr = view.directAnswer ?? deriveTldr(view.excerpt, view.body);
+  const tldrText = rawTldr ? resolvePriceTokens(rawTldr, loc) : null;
 
   // V-14 sprint UX 2026-05-22 — Articles connexes : DB+FS merge via helper.
   // Auparavant FS uniquement (3 articles hardcodés) → maintenant inclut articles
@@ -359,7 +432,7 @@ export default async function BlogArticle({ params }: Props) {
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
             <Image
               src={view.featuredImage}
-              alt={view.title}
+              alt={view.featuredImageAlt ?? view.title}
               fill
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
@@ -390,23 +463,33 @@ export default async function BlogArticle({ params }: Props) {
 
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-          {blocks.map((block, idx) => {
-            if (block.kind === "ol") {
-              return (
-                <ol
-                  key={`b-${idx}`}
-                  className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
-                >
-                  {block.items.map((it, j) => (
-                    <li key={`i-${j}`} className="pl-1">
-                      {it}
-                    </li>
-                  ))}
-                </ol>
-              );
-            }
-            return <p key={`b-${idx}`}>{block.text}</p>;
-          })}
+          {dbBodyHtml ? (
+            // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
+            // anti-XSS) rendu en vrai HTML (titres, liens, listes), + ancres h2.
+            // H3 — tokens prix résolus.
+            <div
+              className="prose prose-axionia max-w-none"
+              dangerouslySetInnerHTML={{ __html: dbBodyHtml }}
+            />
+          ) : (
+            blocks!.map((block, idx) => {
+              if (block.kind === "ol") {
+                return (
+                  <ol
+                    key={`b-${idx}`}
+                    className="text-fg marker:text-terracotta list-decimal space-y-3 pl-6 marker:font-semibold"
+                  >
+                    {block.items.map((it, j) => (
+                      <li key={`i-${j}`} className="pl-1">
+                        {it}
+                      </li>
+                    ))}
+                  </ol>
+                );
+              }
+              return <p key={`b-${idx}`}>{block.text}</p>;
+            })
+          )}
         </Container>
       </Section>
 
@@ -447,6 +530,7 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
 }
