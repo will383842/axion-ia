@@ -68,5 +68,25 @@ else
   unset MIGRATE_OK
 fi
 
+# H1 / VIS (audit visibilité 2026-06-05) — applique les setups FTS raw SQL
+# (colonnes tsvector GENERATED + index GIN/trgm) que `prisma migrate deploy` ne
+# gère PAS. Sans `knowledge_translations.search_vector`, `searchKnowledge` throw
+# → toute la génération content-gen (RAG/KB) casse sur une DB reconstruite.
+# Tous les fichiers sont idempotents (ADD COLUMN / CREATE INDEX IF NOT EXISTS) :
+# le 1er boot crée, les suivants sont des no-op rapides. NON-fatal (ne bloque
+# jamais le boot). Utilise `prisma db execute` (binaire déjà présent, pas besoin
+# de psql). DATABASE_URL = vraie DB prod au runtime (jamais stub.invalid).
+if [ -n "$PRISMA_BIN" ] && [ -d "./prisma/migrations_fts" ]; then
+  for sql in ./prisma/migrations_fts/*.sql; do
+    [ -f "$sql" ] || continue
+    echo "[entrypoint] Applying FTS setup: $sql"
+    if ( set +e; "$PRISMA_BIN" db execute --file "$sql" --schema=./prisma/schema.prisma ); then
+      echo "[entrypoint] FTS setup applied: $sql"
+    else
+      echo "[entrypoint] WARNING: FTS setup $sql failed (non-fatal, idempotent retry next boot)."
+    fi
+  done
+fi
+
 echo "[entrypoint] Starting Next.js server on port ${PORT:-3000}…"
 exec node server.js
