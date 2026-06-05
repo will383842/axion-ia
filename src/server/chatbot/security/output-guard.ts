@@ -82,9 +82,20 @@ export function extractCitedUrls(text: string): string[] {
   return [...out];
 }
 
+export interface VerifyOutputOptions {
+  /**
+   * URLs supplémentaires réputées VALIDES (ex. lien d'une ressource publiée
+   * remontée par `chercher_ressource`, déjà vérifiée en DB). Permet d'autoriser
+   * un chemin de contenu dynamique (`/fr/blog/<slug>`, `/fr/cas-concrets/<slug>`)
+   * SANS ouvrir la porte aux URLs inventées : seules les URLs DB-vérifiées passent.
+   */
+  readonly extraKnownUrls?: ReadonlyArray<string>;
+}
+
 /** Vérifie qu'un texte ne cite QUE des prix SSOT et des URLs existantes. */
-export function verifyOutput(text: string): OutputGuardResult {
+export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): OutputGuardResult {
   const violations: OutputViolation[] = [];
+  const allowed = new Set((opts.extraKnownUrls ?? []).map((u) => u.replace(/\/+$/, "")));
 
   for (const price of extractCitedPrices(text)) {
     if (!KNOWN_PRICES.has(price)) {
@@ -99,7 +110,7 @@ export function verifyOutput(text: string): OutputGuardResult {
   for (const url of extractCitedUrls(text)) {
     // On ne vérifie que notre domaine / chemins internes (liens externes laissés).
     const isInternal = url.startsWith("/") || /axion-ia\.com/i.test(url);
-    if (isInternal && !isKnownFrUrl(url)) {
+    if (isInternal && !isKnownFrUrl(url) && !allowed.has(url.replace(/\/+$/, ""))) {
       violations.push({
         type: "url",
         value: url,

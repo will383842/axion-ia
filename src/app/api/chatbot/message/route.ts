@@ -18,6 +18,7 @@ import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { inspectUserMessage } from "@/server/chatbot/security/prompt-guard";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { generateAnswer } from "@/server/chatbot/generation/generate-stream";
+import { generateAnswerWithTools } from "@/server/chatbot/generation/tool-calling";
 import { escaladerQuestion } from "@/server/chatbot/tools/escalader-question";
 import { shouldSummarize, summarizeConversation } from "@/server/chatbot/context/summarize";
 import { getActivePromptContent } from "@/server/chatbot/generation/prompt-version";
@@ -284,6 +285,18 @@ export async function POST(req: NextRequest): Promise<Response> {
               ? {
                   refineHorsSujet: (msg: string) =>
                     isOnTopicViaLlm(msg, generateAnswer, tenant.settings.llmTier.reformulation),
+                }
+              : {}),
+            // T-12/T-13 — tool-calling (gated CHATBOT_TOOL_CALLING). On injecte
+            // ici pour câbler le streaming token-par-token (onChunk → delta SSE),
+            // que l'orchestrateur ne connaît pas. Off → génération simple.
+            ...(process.env.CHATBOT_TOOL_CALLING === "true"
+              ? {
+                  generateWithTools: (opts) =>
+                    generateAnswerWithTools({
+                      ...opts,
+                      onChunk: (c) => send({ type: "delta", text: c }),
+                    }),
                 }
               : {}),
           },

@@ -28,6 +28,7 @@ import { assessConfidence } from "@/server/chatbot/retrieval/confidence";
 import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/output-guard";
 import { assembleSystemPrompt } from "@/server/chatbot/generation/system-prompt";
 import { generateAnswer, type GenerateAnswerFn } from "@/server/chatbot/generation/generate-stream";
+import type { ToolCallingResult } from "@/server/chatbot/generation/tool-calling";
 import { lookupSemanticCache, writeSemanticCache } from "@/server/chatbot/semantic-cache/cache";
 import { TokenBucket } from "@/server/chatbot/resilience/token-bucket";
 
@@ -90,6 +91,14 @@ export interface OrchestratorDeps {
   readonly acquireLlmSlot?: () => boolean;
   /** T-18 — raffine un hors_sujet déterministe : true = en réalité dans le périmètre. */
   readonly refineHorsSujet?: (message: string) => Promise<boolean>;
+  /** T-12/T-13 — génération avec tool-calling (injectée par la route si activée). */
+  readonly generateWithTools?: (opts: {
+    systemPrompt: string;
+    userPrompt: string;
+    tier: import("@/server/chatbot/constants").LlmTier;
+    tenantId: string;
+    conversationId: string;
+  }) => Promise<ToolCallingResult>;
 }
 
 const OK_GUARD: OutputGuardResult = { ok: true, violations: [] };
@@ -313,16 +322,33 @@ export async function handleTurn(
         };
       }
 
-      // T-16 — mode dégradé : panne LLM (Anthropic down / rate-limit / circuit
+      // T-16 — mode dégradé : panne LLM (provider down / rate-limit / circuit
       // ouvert) ⇒ JAMAIS d'erreur brute. On bascule sur une réponse de repli +
       // RDV + escalade (la saisie n'est pas perdue côté widget).
-      let answer: Awaited<ReturnType<typeof llm>>;
+      // T-12/T-13 — si la route injecte `generateWithTools` (flag CHATBOT_TOOL_CALLING),
+      // le LLM peut appeler les tools d'enrichissement (qualifier_prospect →
+      // prospect_profile ; chercher_ressource → ressource publiée).
+      let answer: { text: string; model?: string; costUsd?: number };
+      let resource: { titre: string; url: string; extrait: string | null; type: string } | null =
+        null;
       try {
-        answer = await llm({
-          systemPrompt,
-          userPrompt: message,
-          tier: ctx.tenant.settings.llmTier.faqSimple,
-        });
+        if (deps.generateWithTools && ctx.conversationId) {
+          const r = await deps.generateWithTools({
+            systemPrompt,
+            userPrompt: message,
+            tier: ctx.tenant.settings.llmTier.faqSimple,
+            tenantId,
+            conversationId: ctx.conversationId,
+          });
+          answer = { text: r.text, model: r.model, costUsd: r.costUsd };
+          resource = r.resource;
+        } else {
+          answer = await llm({
+            systemPrompt,
+            userPrompt: message,
+            tier: ctx.tenant.settings.llmTier.faqSimple,
+          });
+        }
       } catch (err) {
         console.warn("[chatbot:orchestrator] LLM indisponible, mode dégradé:", err);
         return {
@@ -339,7 +365,10 @@ export async function handleTurn(
         };
       }
 
-      const guard = verifyOutput(answer.text);
+      // L'URL d'une ressource publiée (chercher_ressource, DB-vérifiée) est
+      // autorisée explicitement : sinon l'output-guard la prendrait pour une URL
+      // inventée (chemin de contenu dynamique hors routes statiques).
+      const guard = verifyOutput(answer.text, resource ? { extraKnownUrls: [resource.url] } : {});
       if (!guard.ok) {
         // Garde-fou : on n'émet pas une sortie qui invente prix/URL.
         return {
@@ -355,9 +384,21 @@ export async function handleTurn(
           guard,
         };
       }
+      // T-13 — une ressource publiée trouvée (chercher_ressource) est ajoutée aux
+      // sources citées (URL ∈ routes connues, déjà validée par l'output-guard via
+      // le texte qui la mentionne).
+      const outSources = resource
+        ? [...sources, { sourceType: "ressource", sourceRef: resource.url }]
+        : sources;
+
       // T-26 : mémorise la réponse validée pour les questions proches futures
       // (best-effort, no-op si cache off / embedding indisponible).
-      await cacheWrite(tenantId, message, { reponse: answer.text, sources }, ctx.tenant.settings);
+      await cacheWrite(
+        tenantId,
+        message,
+        { reponse: answer.text, sources: outSources },
+        ctx.tenant.settings,
+      );
 
       return {
         intent: "explication",
@@ -365,12 +406,12 @@ export async function handleTurn(
         cards: [],
         sendLinks: false,
         slots,
-        sources,
+        sources: outSources,
         linkFlow: INITIAL_FLOW,
         escalate: false,
         guard,
-        model: answer.model,
-        costUsd: answer.costUsd,
+        ...(answer.model ? { model: answer.model } : {}),
+        ...(answer.costUsd !== undefined ? { costUsd: answer.costUsd } : {}),
       };
     }
   }
