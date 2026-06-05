@@ -144,9 +144,11 @@ const EXEMPT_FILES: ReadonlySet<string> = new Set([
   "content/villes/copy/houilles.ts", // revenu médian ~39 200 €
   "content/villes/copy/hyeres.ts", // SICA marché aux fleurs ~30 M€
   "content/villes/copy/illkirch-graffenstaden.ts", // Flender 123 M€ de CA
+  "content/villes/copy/lannion.ts", // filière photonique ~420 M€ de CA (donnée marché)
   "content/villes/copy/martigues.ts", // décarbonation 300 M€ / H2V 750 M€
   "content/villes/copy/meudon.ts", // data center Equinix 350 M€
   "content/villes/copy/narbonne.ts", // Groupe Narbonne ~14 M€ web / Port-La-Nouvelle 600 M€
+  "content/villes/copy/neuilly-plaisance.ts", // revenu fiscal médian 25 910 € (donnée INSEE)
   "content/villes/copy/noisy-le-grand.ts", // restructuration Mont d'Est ~37 M€
   "content/villes/copy/saint-laurent-du-var.ts", // port 34 M€ de travaux
   "content/villes/copy/saint-quentin.ts", // Soprocos L'Oréal 70 M€
