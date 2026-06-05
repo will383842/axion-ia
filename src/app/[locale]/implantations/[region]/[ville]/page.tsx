@@ -63,6 +63,7 @@ import {
   buildBreadcrumbJsonLd,
   buildServiceJsonLd,
   SITE_URL,
+  BUILD_DATE,
 } from "@/lib/seo";
 
 import type { City } from "@/lib/cities";
@@ -821,7 +822,9 @@ export default async function VilleHubPage({ params }: Props) {
               cssSelector: ["[data-speakable-hero]", "#axion-direct-answer"],
             },
             datePublished: "2026-05-26",
-            dateModified: new Date().toISOString().slice(0, 10),
+            // VIS-16 — date stable (BUILD_DATE) au lieu de new Date() runtime qui
+            // mentait sur la fraîcheur à chaque ISR/cold-start.
+            dateModified: BUILD_DATE,
           } as const,
           serviceJsonLd,
           placeJsonLd,
