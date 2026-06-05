@@ -8,7 +8,11 @@
 // qui valide des env vars au module load (cf. audit 5xx 2026-05-18).
 // On résout `resolveVilleWithCopy` qui est safe edge (lecture statique).
 
-import { ImageResponse } from "next/og";
+// Audit GSC 2026-06-05 A-02 (P0-2) — même cause que `/opengraph-image` : Satori refuse
+// `display: "inline-flex"` → throw au rendu (502). Fix = `inline-flex` → `flex` (plus bas).
+// Runtime "edge" on-demand : NE PAS passer en nodejs (forcerait un pré-rendu de milliers
+// d'OG villes au build). `resolveVilleWithCopy` = lecture statique, safe edge.
+import { ImageResponse } from "@vercel/og";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 
 export const runtime = "edge";
@@ -50,7 +54,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
       {/* Logo badge ivoire */}
       <div
         style={{
-          display: "inline-flex",
+          display: "flex", // A-02 : Satori refuse inline-flex (cause du 502)
           alignItems: "center",
           background: PAPER,
           color: FG,
@@ -103,6 +107,9 @@ export default async function VilleOpengraphImage({ params }: Params) {
         </div>
         <div
           style={{
+            display: "flex", // A-02 : Satori exige display:flex si >1 enfant (nom ville + span dept)
+            alignItems: "baseline",
+            flexWrap: "wrap",
             fontSize: 92,
             fontWeight: 500,
             fontStyle: "italic",
@@ -110,8 +117,6 @@ export default async function VilleOpengraphImage({ params }: Params) {
             letterSpacing: "-0.02em",
             marginTop: 16,
             maxWidth: "100%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
           }}
         >
           {villeName}

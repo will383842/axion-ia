@@ -41,6 +41,13 @@ import { absoluteUrl, pageUrlFor } from "@/server/image-bank/utils/paths";
 const LANG = "fr" as const;
 const OTHER_LANG = "en" as const;
 
+// Audit GSC 2026-06-05 A-04 (Invariant #1) — ce Route Handler XML brut ne passe pas
+// par `filterEnIfDisabled` (app/sitemap.ts). Sans ce garde, il émettait des
+// `hreflang="en"` vers /en/gallery/* alors que EN est désactivé (301→FR), créant
+// une fuite EN dans un signal d'indexation. On conditionne donc toute émission EN
+// au flag. Togglable : EN_LOCALE_ENABLED=true ré-émet les alternates EN.
+const EN_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
+
 // Cap soft 1 000 URLs/chunk (best practice 2026, cf. `app/sitemap.ts`).
 // Chunking explicit non implémenté V1 (volume galerie attendu < 1 000).
 // V1.5+ : si volume > 1 000 → activer chunking dynamique
@@ -114,14 +121,22 @@ export async function GET(): Promise<Response> {
   // Index galerie (page liste)
   const indexUrl = `${SITE_URL}/${LANG}/${GALLERY_SEGMENT[LANG]}/`;
   const indexUrlOther = `${SITE_URL}/${OTHER_LANG}/${GALLERY_SEGMENT[OTHER_LANG]}/`;
+  const indexAlternates = [
+    `<xhtml:link rel="alternate" hreflang="${LOCALE_BCP47[LANG]}" href="${indexUrl}" />`,
+    // A-04 : alternate EN émis seulement si EN réactivé (sinon fuite vers 301).
+    ...(EN_ENABLED
+      ? [
+          `<xhtml:link rel="alternate" hreflang="${LOCALE_BCP47[OTHER_LANG]}" href="${indexUrlOther}" />`,
+        ]
+      : []),
+    `<xhtml:link rel="alternate" hreflang="x-default" href="${indexUrl}" />`,
+  ];
   urlBlocks.push(
     `  <url>
     <loc>${indexUrl}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="${LOCALE_BCP47[LANG]}" href="${indexUrl}" />
-    <xhtml:link rel="alternate" hreflang="${LOCALE_BCP47[OTHER_LANG]}" href="${indexUrlOther}" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${indexUrl}" />
+    ${indexAlternates.join("\n    ")}
   </url>`,
   );
 
@@ -136,6 +151,8 @@ export async function GET(): Promise<Response> {
     // Hreflang alternates pour toutes les translations publiées de cette image
     const hreflang: string[] = [];
     for (const tr of image.translations) {
+      // A-04 : ne pas émettre d'alternate EN quand EN est désactivé (fuite → 301).
+      if (!EN_ENABLED && tr.languageCode !== "fr") continue;
       const url = pageUrlFor(SITE_URL, tr.languageCode as "fr" | "en", tr.slug);
       const code = LOCALE_BCP47[tr.languageCode as "fr" | "en"] ?? tr.languageCode;
       hreflang.push(`<xhtml:link rel="alternate" hreflang="${code}" href="${url}" />`);

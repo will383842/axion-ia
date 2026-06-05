@@ -7,7 +7,13 @@
 // Pour des OG images par-page paramétrées (avec titre custom), utiliser
 // `/api/og?title=...&accent=...` (cf. `src/app/api/og/route.tsx`).
 
-import { ImageResponse } from "next/og";
+// Audit GSC 2026-06-05 A-02 (P0-2) — VRAIE cause du 502 trouvée via le build :
+// Satori (moteur de `ImageResponse`) REJETTE `display: "inline-flex"` (n'accepte que
+// flex|block|contents|none|-webkit-box). En edge on-demand ça throw au rendu → 502 ;
+// en nodejs ça throw au pré-rendu build → build KO. Fix réel = `inline-flex` → `flex`
+// (cf. plus bas), runtime "edge" on-demand comme `/api/og` (qui marche, n'a que `flex`).
+// Ni l'import ni le runtime n'étaient en cause ; on garde `@vercel/og` (= api/og).
+import { ImageResponse } from "@vercel/og";
 
 // Audit GSC 5xx 2026-05-18 — fix `/opengraph-image` retournant 502 Bad Gateway.
 //
@@ -20,7 +26,7 @@ import { ImageResponse } from "next/og";
 // l'alt text. SSOT préservée côté UI (Header, JSON-LD) qui restent en nodejs
 // runtime. Précédent : `/api/og/route.tsx` édge runtime aussi mais sans BRAND
 // import → fonctionne en prod (curl 200, image/png).
-export const runtime = "edge";
+export const runtime = "edge"; // on-demand comme /api/og ; le 502 venait du CSS inline-flex, pas du runtime
 
 export const alt = "Axion-IA — Cabinet IA opérationnel B2B";
 
@@ -59,7 +65,7 @@ export default function OpengraphImage() {
       {/* Logo badge ivoire — signature visuelle Axion-IA */}
       <div
         style={{
-          display: "inline-flex",
+          display: "flex", // A-02 : Satori refuse inline-flex (cause du 502)
           alignItems: "center",
           background: PAPER,
           color: FG,

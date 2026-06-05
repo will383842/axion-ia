@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
-import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 
 // Doctrine AI bots 2026 (cert C1+C2+C6 2026-05-08) :
 // - ALLOW les LLM bots de search/answer (visibilité AEO/GEO + citations)
@@ -89,10 +88,16 @@ const AI_BOTS_DISALLOWED = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  // EN locale désactivé (2026-05-16) → bloquer /en/* globalement pour
-  // empêcher Googlebot/Bingbot de crawler les 301s (waste crawl budget).
-  // Désactiver automatiquement quand EN_LOCALE_ENABLED=true à nouveau.
-  const dynamicDisallow = isEnLocaleDisabled() ? [...COMMON_DISALLOW, "/en/"] : COMMON_DISALLOW;
+  // EN locale désactivé : neutralisation par 301 1-hop UNIQUEMENT (proxy.ts → mapEnToFr).
+  // Audit GSC 2026-06-05 A-03 (Invariant #1) — on NE bloque PLUS /en/* en robots :
+  // un `Disallow: /en/` empêchait Googlebot de crawler le 301→FR, donc les anciennes
+  // URLs EN restaient en index « bloquées robots » au lieu d'être proprement purgées
+  // et consolidées vers FR. Laisser crawler le 301 = mécanisme unique et propre.
+  // Les surfaces privées EN spécifiques (/en/my-data, /en/booking, /en/admin, /en/design…)
+  // restent listées dans COMMON_DISALLOW (privées dans TOUTES les locales).
+  // Réversibilité : si EN_LOCALE_ENABLED=true (EN réactivé), /en/* doit rester crawlable
+  // pour être indexé → toujours aucun blocage robots. Rien à toggler ici.
+  const dynamicDisallow = COMMON_DISALLOW;
   return {
     rules: [
       {

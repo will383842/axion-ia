@@ -196,7 +196,7 @@ export function buildVilleServiceJsonLdGraph(
       addressRegion: region.nameFr,
       addressCountry: "FR",
     },
-    sameAs: ["https://www.linkedin.com/company/axion-ia", cityWikiUrl, cityWikidataUrl],
+    sameAs: ["https://www.linkedin.com/company/axion-ia-france", cityWikiUrl, cityWikidataUrl],
     parentOrganization: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
