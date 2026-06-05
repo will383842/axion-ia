@@ -121,7 +121,7 @@ function msUntilDripStart(): number {
   return now.getTime() + hoursUntil * 60 * 60 * 1000;
 }
 
-async function processJob(job: Job<PublishJobPayload>): Promise<void> {
+async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   const { reviewQueueId, promoteToTier1 } = job.data;
 
   // Audit 2026-05-15 P1-8 — kill-switch hard-gate avant publish
@@ -297,6 +297,12 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     typeof output["heroImageFilePath"] === "string"
       ? (output["heroImageFilePath"] as string)
       : null;
+  // VIS-08 (audit visibilité 2026-06-05) — alt sémantique de l'image hero
+  // (calculé par assign-hero-image, propagé par content-gen-worker dans
+  // outputJsonRaw.heroImageAlt). Avant ce patch il n'était jamais persisté →
+  // la page retombait sur alt={title} (signal Google Images faible).
+  const heroImageAlt =
+    typeof output["heroImageAlt"] === "string" ? (output["heroImageAlt"] as string) : null;
 
   // B.7 P0-6 P1.5 — Outline SimHash propage depuis content-gen-worker.
   const outlineSimhash =
@@ -362,6 +368,8 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
         ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
         // B.6 P0-4 — Hero image image-bank (URL filePath ou null si pas de match).
         ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
+        // VIS-08 — Alt sémantique hero (FR ; EN miroir non requis, locale FR canonique).
+        ...(heroImageAlt ? { featuredImageAltFr: heroImageAlt } : {}),
         // B.7 P0-6 — Outline SimHash (couche dedup 3, persiste pour future comparaison).
         ...(outlineSimhash ? { outlineSimhash } : {}),
       },
@@ -727,6 +735,62 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   console.log(
     `[publish] article ${article.id} published (tier=${indexationTier}, slug=${slugCandidate}, isNews=${isNews})`,
   );
+}
+
+/**
+ * P1 fix audit content-gen 2026-06-05 (A-P1-03) — marque le ContentGenJob
+ * `failed` quand le pipeline de publication échoue de façon inattendue.
+ *
+ * Avant ce patch, si la `$transaction` Article throwait (slug dupliqué, FK
+ * manquant) ou si un throw survenait avant l'update final, le job restait
+ * bloqué indéfiniment en `publishing` / `approved` (état fantôme compté « en
+ * cours »), le handler BullMQ `failed` ne touchant jamais la DB.
+ *
+ * Garde-fou `updateMany` avec filtre de statut : on ne flippe QUE les états de
+ * publication en cours → un job déjà `published` (race retry réussi) ou
+ * `quarantined_*` n'est jamais écrasé. Un retry BullMQ ultérieur qui réussit
+ * re-passe le job en `published` (transaction publish), donc l'état `failed`
+ * est auto-réparant. Best-effort : un échec de ce marquage ne masque pas
+ * l'erreur d'origine (re-throw conservé par l'appelant).
+ *
+ * Le ciblage se fait en UNE requête via la relation inverse `reviewQueue`
+ * (pas de findUnique préalable) pour ne pas dupliquer la lecture déjà faite
+ * par le pipeline.
+ */
+async function markPublishJobFailed(reviewQueueId: string, errMsg: string): Promise<void> {
+  try {
+    await prisma.contentGenJob.updateMany({
+      where: {
+        reviewQueue: { id: reviewQueueId },
+        status: { in: ["approved", "publishing", "needs_review"] },
+      },
+      data: { status: "failed", errorMessage: errMsg.slice(0, 500) },
+    });
+  } catch (e) {
+    console.warn(
+      `[publish] could not mark job failed for review ${reviewQueueId}:`,
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+}
+
+/**
+ * Wrapper de `runPublishPipeline` : tout échec inattendu marque le job `failed`
+ * (cf. markPublishJobFailed) AVANT de re-throw, pour que BullMQ gère le
+ * retry/backoff et déclenche le handler `failed` (Sentry + Telegram) comme
+ * avant. Le throw `kill_switch_active` est volontaire (pause Will) → requeue
+ * sans marquer `failed`.
+ */
+async function processJob(job: Job<PublishJobPayload>): Promise<void> {
+  try {
+    await runPublishPipeline(job);
+  } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    if (errMsg !== "kill_switch_active") {
+      await markPublishJobFailed(job.data.reviewQueueId, errMsg);
+    }
+    throw err;
+  }
 }
 
 let workerInstance: Worker<PublishJobPayload> | null = null;

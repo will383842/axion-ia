@@ -100,7 +100,16 @@ export function _resetCircuits(): void {
  * Lu depuis ProviderConfig DB en Day 2 (V1 hardcodé pour squelette).
  */
 const ROLE_TO_PROVIDERS = {
-  text: [openaiProvider],
+  // P1 fix audit content-gen 2026-06-05 (A-P1-01) — fallback Claude câblé pour
+  // TOUT le contenu texte. Avant ce patch, `text: [openaiProvider]` faisait
+  // d'OpenAI un single point of failure : une panne OpenAI (503 / circuit
+  // ouvert) arrêtait ~80 % de la génération (blog-article, blog-from-rss,
+  // blog-from-title, blog-from-keywords, comparison, guide-pilier,
+  // faq-standalone, qa-derived appellent role:"text" sans preferredProvider).
+  // Le fallback ne se déclenche QUE sur erreur retryable : un cost-cap ou un
+  // content_filter (ProviderError.retryable=false) throw toujours sans bascule
+  // inutile (cf. boucle generate() ligne ~162).
+  text: [openaiProvider, anthropicProvider],
   image: [openaiProvider], // V1 = OpenAI image (V2 = gpt_image + fallback Unsplash)
   data: [perplexityProvider],
   stock_image: [unsplashProvider],
