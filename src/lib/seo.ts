@@ -689,7 +689,8 @@ export function buildArticleJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline,
+    // VIS-13 — borne à 110 car. (recommandation Google Rich Results).
+    headline: headline.length > 110 ? `${headline.slice(0, 109).trimEnd()}…` : headline,
     description,
     image: resolvedImage,
     datePublished,
