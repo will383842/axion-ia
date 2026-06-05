@@ -31,30 +31,15 @@ export const env = createEnv({
       }),
     AUTH_URL: z.string().url().optional(),
 
-    // P2 audit OWASP-RUNTIME — durci de min(4) → min(16) + refus dev fallback en prod.
-    // ADMIN_URL_PREFIX agit comme secret URL pour eviter brute-force admin —
-    // 16 chars random alphanumeriques = entropie ~96 bits. La valeur dev
-    // `admin-dev-x7k2n9` (publique dans le repo) doit etre refusee en prod.
-    ADMIN_URL_PREFIX: z
-      .string()
-      .min(16)
-      .optional()
-      .superRefine((val, ctx) => {
-        if (process.env.NODE_ENV !== "production") return;
-        if (!val) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "ADMIN_URL_PREFIX is required in production",
-          });
-          return;
-        }
-        if (val.startsWith("admin-dev") || val === "admin-dev-x7k2n9") {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "ADMIN_URL_PREFIX must not use the public dev fallback in production",
-          });
-        }
-      }),
+    // Segment d'URL de l'admin (cf. src/lib/admin-path.ts ; fallback dev
+    // `admin-dev-x7k2n9`). Optionnel.
+    // NB : décision Will 2026-06-05 — validation assouplie (l'ancien durcissement
+    // OWASP P2 imposait min(16) + refus du fallback dev en prod pour cacher l'admin
+    // du brute-force). Compromis ASSUMÉ : URL d'admin simple/mémorisable >
+    // obfuscation. Protection restante = mot de passe + rate-limit + lockout /login.
+    // ⚠️ Si tu poses `ADMIN_URL_PREFIX=admin-dev-x7k2n9` (valeur publique du repo),
+    // l'URL de login est connue de tous → repose uniquement sur le mot de passe.
+    ADMIN_URL_PREFIX: z.string().min(1).optional(),
     ADMIN_EMAIL: z.string().email().optional(),
 
     SMTP_HOST: z.string().default("localhost"),
