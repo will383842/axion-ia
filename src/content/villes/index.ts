@@ -207,26 +207,39 @@ export function getVillesByRegion(regionSlug: string): ReadonlyArray<Ville> {
 const INDEXATION_START = new Date("2026-05-28T00:00:00Z");
 const VILLES_PER_DAY = 50;
 
-// D-1 — GEL DU DRIP (audit GSC 2026-06-05 A-01, cause racine = famine de crawl).
-// Le ramp calendaire +50/j poussait la cohorte vers ~1815 villes sur un domaine
-// jeune dont Google n'indexe que ~1-2 pages/jour → la dette « Détectée non indexée »
-// explose. On FIGE la cohorte à un plafond fixe au lieu de laisser `days` croître.
+// DRIP EN 2 PHASES (audit GSC 2026-06-05 A-01 ; décision Will 2026-06-05).
 //
-// Garde-fou « l'indexation ne rétracte JAMAIS » : `min(elapsed, FREEZE_DAYS)` est
-// monotone croissant puis constant → pour une même date, la cohorte post-patch est
-// IDENTIQUE à pré-patch tant que elapsed ≤ FREEZE_DAYS, puis plafonne. Aucune ville
-// déjà indexable ne repasse noindex pour tout deploy ≤ 2026-06-06.
+// PHASE 1 — BURST initial figé (~cohorte du 2026-06-06) : `min(elapsed, BURST_DAYS)`.
+//   L'ancien ramp +50/JOUR noyait Google (famine crawl → 0 indexé). On fige donc le
+//   socle initial à premium + BURST_DAYS*50.
 //
-// Gel calé sur le jour du déploiement (2026-06-05) : FREEZE_DAYS=9 plafonne la cohorte
-// à sa valeur actuelle (+1 jour de marge anti-rétraction pour couvrir le passage minuit
-// UTC pendant le build/deploy). On cesse donc d'élargir MAINTENANT au lieu de noyer
-// Google de villes thin supplémentaires.
+// PHASE 2 — RÉOUVERTURE PROGRESSIVE AUTOMATIQUE & ACCÉLÉRANTE (à partir de REOPEN_START) :
+//   les villes UNIQUES restantes ressortent du noindex toutes seules, par semaine, à un
+//   rythme qui MONTE (le crawl de Google grandit avec l'âge + l'autorité du domaine) :
+//     semaine 1 = +REOPEN_WEEK1 villes, puis +REOPEN_ACCEL de plus chaque semaine
+//     (S1=100, S2=125, S3=150, S4=175, S5=200…) jusqu'à couvrir TOUTES les villes uniques.
+//   → ~710 villes uniques restantes rouvertes en ~5-6 semaines, sans intervention.
 //
-// Réouverture = MANUELLE et explicite : augmenter FREEZE_DAYS (commit dédié), cohorte
-// par cohorte, conditionnée au taux d'indexation observé en GSC (cf.
-// _AUDIT/GSC-INDEXATION-2026-06-05/03b-STRATEGIE-RAMP-UP.md). JAMAIS temporel.
-const DRIP_FROZEN = true;
-const FREEZE_DAYS = 9; // 2026-05-28 + 9 j = 2026-06-06 — gel ≈ cohorte du jour du deploy (2026-06-05)
+// Garde-fous :
+//   • « l'indexation ne rétracte JAMAIS » : `cohortSize` est monotone croissant (BURST figé
+//     + réouverture qui ne fait qu'augmenter) → aucune ville déjà indexable ne repasse noindex.
+//   • Les ~341 villes NON-uniques (quasi-doublons) ne sont PAS dans `RANKED_INDEXABLE` →
+//     elles restent noindex pour toujours (anti-doorway HCU), la réouverture ne les touche pas.
+//   • Pour accélérer/ralentir : ajuster REOPEN_WEEK1 / REOPEN_ACCEL (1 commit).
+const BURST_DAYS = 9; // socle figé = premium + 9*50 (~cohorte du 2026-06-06)
+const REOPEN_START = new Date("2026-06-06T00:00:00Z");
+const REOPEN_WEEK1 = 100; // villes rouvertes la 1re semaine
+const REOPEN_ACCEL = 25; // +25 villes/semaine de plus chaque semaine (S1=100…S5=200)
+const WEEK_MS = 7 * 86_400_000;
+
+/** Nb de villes uniques rouvertes (cumul) depuis REOPEN_START — accélérant par semaine. */
+function reopenedSince(now: Date): number {
+  const ms = now.getTime() - REOPEN_START.getTime();
+  if (ms <= 0) return 0;
+  const w = Math.floor(ms / WEEK_MS); // semaines pleines écoulées
+  // cumul = Σ_{k=1..w} (REOPEN_WEEK1 + REOPEN_ACCEL*(k-1))
+  return REOPEN_WEEK1 * w + (REOPEN_ACCEL * (w * (w - 1))) / 2;
+}
 
 /** Ville premium = a un copy ET (pop ≥ 20k OU rewrite premium MANUAL-REWRITE). */
 export function isPremiumVille(v: Ville): boolean {
@@ -268,9 +281,10 @@ export function cohortSize(now: Date = new Date()): number {
     0,
     Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000),
   );
-  // GEL (D-1) : `days` plafonné à FREEZE_DAYS → la cohorte cesse de croître.
-  const days = DRIP_FROZEN ? Math.min(elapsed, FREEZE_DAYS) : elapsed;
-  return Math.min(RANKED_INDEXABLE.length, PREMIUM_COUNT + days * VILLES_PER_DAY);
+  // Phase 1 : socle initial figé (~cohorte du 2026-06-06). Phase 2 : réouverture
+  // automatique accélérante des villes uniques restantes (cf. reopenedSince).
+  const burst = PREMIUM_COUNT + Math.min(elapsed, BURST_DAYS) * VILLES_PER_DAY;
+  return Math.min(RANKED_INDEXABLE.length, burst + reopenedSince(now));
 }
 
 /**
