@@ -63,6 +63,12 @@ interface ProductSeoInput {
   ogImage?: string;
   /** Optional accent for `/api/og` dynamic image (primary/purple/orange/green). */
   ogAccent?: "primary" | "purple" | "orange" | "green";
+  /**
+   * VIS-05/SEO-05 — type OpenGraph. Défaut "website" (rétro-compat). Les pages
+   * d'article (blog/actualites/guides/connaissances/centre-aide) passent
+   * "article" pour un og:type correct (preview sociale + signal éditorial).
+   */
+  ogType?: "website" | "article";
 }
 
 /**
@@ -109,6 +115,7 @@ export function buildProductMetadata({
   alternates,
   ogImage,
   ogAccent,
+  ogType = "website",
 }: ProductSeoInput): Metadata {
   const fr = alternates?.fr ?? resolveLocalizedPath(path, "fr");
   const en = alternates?.en ?? resolveLocalizedPath(path, "en");
@@ -145,7 +152,7 @@ export function buildProductMetadata({
       languages,
     },
     openGraph: {
-      type: "website",
+      type: ogType,
       locale: locale === "fr" ? "fr_FR" : "en_US",
       url: `${SITE_URL}/${locale}${pathNorm}`,
       title,

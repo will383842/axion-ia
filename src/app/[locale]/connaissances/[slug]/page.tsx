@@ -84,6 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       entry.excerpt ??
       `Article de la base de connaissances Axion-IA — ${entry.title}.`,
     alternates: { fr: `/connaissances/${slug}`, en: `/connaissances/${slug}` },
+    ogType: "article", // VIS-05/SEO-05
   });
 }
 

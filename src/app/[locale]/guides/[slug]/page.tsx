@@ -55,6 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/guides/${slug}`,
     title: `${guide.title} · Guide Axion-IA`,
     description: guide.excerpt || `Guide pratique : ${guide.title}.`,
+    ogType: "article", // VIS-05/SEO-05
   });
 
   // Anti-doorway HCU : robots dérivé du tier (Sprint 14.10 pattern).

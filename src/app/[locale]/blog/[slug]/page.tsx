@@ -81,6 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/blog/${slug}`,
     title: view.metaTitle ?? view.title,
     description: view.metaDescription ?? view.excerpt,
+    ogType: "article", // VIS-05/SEO-05
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
   // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow

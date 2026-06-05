@@ -142,6 +142,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/actualites/${slug}`,
     title: t.metaTitle ?? `${t.title} · Axion-IA`,
     description: t.metaDescription ?? t.excerpt ?? t.title,
+    ogType: "article", // VIS-05/SEO-05
   });
 
   // Anti-doorway HCU 2024 — robots dérivé du tier (cohérence § 28.5 + § 21).

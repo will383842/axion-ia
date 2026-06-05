@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${copy.title} · ${locale === "fr" ? "Aide Axion-IA" : "Axion-IA help"}`,
     description: copy.excerpt,
     alternates: { fr: `/centre-aide/${slug}`, en: `/help/${slug}` },
+    ogType: "article", // VIS-05/SEO-05
   });
 }
 
