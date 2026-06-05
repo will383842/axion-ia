@@ -98,7 +98,14 @@ async function main() {
     startKeywordOpportunityDetectorWorker(), // Phase 8 Keywords Perfection 2026-05-22 — weekly lundi 06:00 UTC
     // Sprint Final 2026-05-22 (P0-2 + P0-3 audit final pré-prod)
     startCostCapResetWorker(), // P0-2 — Reset compteurs cost mensuel (1er du mois 00:00 UTC)
-    startExternalLinksMonitorWorker(), // P0-3 — HEAD check liens externes (1er du mois 02:00 UTC)
+    // P0-3 — HEAD check liens externes (1er du mois 02:00 UTC). Env-gated comme
+    // GSC/CONTENT_REFRESH/CHATBOT ci-dessous : startExternalLinksMonitorWorker()
+    // THROW si EXTERNAL_LINKS_MONITOR_ENABLED!=true (external-links-monitor-worker.ts:368).
+    // Sans ce spread conditionnel, un worker sans ce flag (ex. axion-ia-worker)
+    // crashait tout le boot (donc AUCUN job, dont l'ingestion chatbot). Fix 2026-06-05.
+    ...(process.env.EXTERNAL_LINKS_MONITOR_ENABLED === "true"
+      ? [startExternalLinksMonitorWorker()]
+      : []),
     // Sprint Site Explorer Admin 2026-05-22
     startSiteRouteInspectorWorker(), // daily 02:00 UTC — inspection URLs publiques
     startSiteRouteAnomalyDetectorWorker(), // daily 03:00 UTC — détection anomalies
