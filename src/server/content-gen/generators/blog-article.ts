@@ -13,6 +13,7 @@ import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
+import { outlineFeedback } from "../quality/outline-validator";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
@@ -221,6 +222,9 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
         );
       }
       if (wordCount < 600) issues.push(`contenu trop court (${wordCount} mots, minimum 600)`);
+      // VIS-11 — feedback additif sur la hiérarchie de titres (jamais bloquant).
+      const outlineMsg = outlineFeedback(_bh, { minH2: 3 });
+      if (outlineMsg) issues.push(outlineMsg);
       prevFeedback = `Score ${qualityScore}/100 insuffisant. Améliore : ${issues.join(" ; ")}.`;
     }
 
