@@ -97,7 +97,11 @@ jobs:
     # garder ubuntu-latest + réduire SSG villes via env var BUILD_SSG_VILLES_INDEXABLE_ONLY=true
     # (cf. src/components/sections/VilleServicePageTemplate.tsx D4-QW1).
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 2026-06-05 : relevé 60 → 90. Le build SSG (~17k routes) est pile à la limite
+    # 60 min et déborde selon la variance du runner (run 26999460963 annulé à 1h0m0s
+    # « exceeded maximum execution time », image jamais poussée). cache-to étant
+    # désactivé (peak disque), le rerun n'accélère pas. 90 min donne la marge.
+    timeout-minutes: 90
     outputs:
       image_tag: ${{ steps.meta.outputs.version }}
       image_digest: ${{ steps.build.outputs.digest }}
