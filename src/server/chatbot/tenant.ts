@@ -2,8 +2,13 @@
 //
 // Toutes les requêtes chatbot filtrent par `tenant_id` résolu ici (jamais une
 // valeur fournie par le widget/LLM). MVP : un seul tenant « axion-ia » seedé.
+//
+// NB : PAS de `import "server-only"` ici. Ce module est aussi importé par le
+// worker BullMQ (process Node pur, sans Next.js, via la chaîne d'ingestion T-05)
+// où le package `server-only` n'est pas résoluble → crash boot du worker
+// (ERR_MODULE_NOT_FOUND). tenant.ts est de toute façon du code 100% serveur
+// (Prisma, résolution tenant) jamais importé par un composant client.
 
-import "server-only";
 import { prisma } from "@/lib/prisma";
 import {
   CHATBOT_TENANT_KEY,
