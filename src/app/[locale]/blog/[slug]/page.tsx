@@ -33,6 +33,10 @@ import { findRelatedArticles } from "@/server/content-gen/links/related-articles
 // en texte échappé → balises visibles, 0 titre/lien/mise en forme).
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { buildToc } from "@/lib/knowledge/article-enrich";
+// VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
+// BlogPosting (type correct + author @id résolu + AI Act + image hero).
+import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -245,28 +249,62 @@ export default async function BlogArticle({ params }: Props) {
   // obligatoire sur tout contenu IA-assisté. `buildArticleJsonLd` (seo.ts générique)
   // n'émet pas `aiGenerated` — spread explicite ici pour les articles DB (Manon)
   // et FS (auteur humain : flag reste vrai car pipeline IA-assisté).
-  const articleJsonLd = {
-    ...buildArticleJsonLd({
-      locale: loc,
-      path: `/blog/${slug}`,
-      headline: view.title,
-      description: view.excerpt,
-      datePublished: view.publishedAt,
-      dateModified: view.updatedAt ?? view.publishedAt,
-      articleBody: view.body,
-      authorName: view.author,
-      authorSlug: view.author.toLowerCase(),
-      keywords: view.tags,
-      articleSection: view.category,
-      wordCount,
-      ...(view.citations.length > 0 ? { isBasedOn: view.citations } : {}),
-    }),
-    aiGenerated: true,
-    additionalType: "https://schema.org/AIGeneratedContent",
-    speakable: buildSpeakableSpecification({
-      selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
-    }),
-  };
+  // VIS-08/09 — URL absolue de l'image hero pour le JSON-LD (image ImageObject).
+  const heroImageAbs = view.featuredImage
+    ? view.featuredImage.startsWith("http")
+      ? view.featuredImage
+      : `${SITE_URL}${view.featuredImage}`
+    : undefined;
+
+  // VIS-09 — Articles DB (content-gen, auteur Manon) → factory BlogPosting
+  // (`@type` correct + author @id résolu par le nœud Person + AI Act riche +
+  // image hero). Articles FS legacy (auteur humain réel) → helper générique
+  // avec le vrai auteur (NE PAS attribuer à Manon).
+  const articleJsonLd = isDbHtml
+    ? buildBlogPostingJsonLd({
+        title: view.title,
+        description: view.excerpt,
+        slug,
+        locale: loc,
+        publishedAt: view.publishedAt,
+        updatedAt: view.updatedAt ?? view.publishedAt,
+        urlSegment: "blog",
+        wordCount,
+        ...(heroImageAbs
+          ? { imageUrl: heroImageAbs, imageAlt: view.featuredImageAlt ?? view.title }
+          : {}),
+        ...(view.tags.length > 0 ? { tags: [...view.tags] } : {}),
+        ...(view.category ? { section: view.category } : {}),
+        ...(view.citations.length > 0
+          ? { citations: view.citations.map((c) => ({ url: c.url, title: c.name })) }
+          : {}),
+      })
+    : {
+        ...buildArticleJsonLd({
+          locale: loc,
+          path: `/blog/${slug}`,
+          headline: view.title,
+          description: view.excerpt,
+          datePublished: view.publishedAt,
+          dateModified: view.updatedAt ?? view.publishedAt,
+          articleBody: view.body,
+          authorName: view.author,
+          authorSlug: view.author.toLowerCase(),
+          keywords: view.tags,
+          articleSection: view.category,
+          wordCount,
+          ...(view.citations.length > 0 ? { isBasedOn: view.citations } : {}),
+        }),
+        aiGenerated: true,
+        additionalType: "https://schema.org/AIGeneratedContent",
+        speakable: buildSpeakableSpecification({
+          selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+        }),
+      };
+
+  // VIS-05/09 — Person Manon co-émis pour les articles DB (résout l'author @id
+  // de la factory). FS legacy = auteur humain → pas de nœud Manon.
+  const personJsonLd = isDbHtml ? await getManonPersonJsonLd() : null;
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
@@ -474,6 +512,7 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
 }
