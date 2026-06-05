@@ -288,7 +288,7 @@ export async function handleTurn(
         return {
           ...base,
           intent: "explication",
-          text: "Je n'ai pas cette information sous la main. Souhaitez-vous en discuter lors d'un court échange ?",
+          text: "Je n'ai pas la réponse précise sous la main — je transmets votre question à un expert Axion-IA, qui vous répondra sous 24 h. Laissez-moi vos coordonnées (bouton ci-dessous), ou réservez un échange dès maintenant :",
           cards: [],
           sendLinks: false,
           rdvUrl: RDV_URL,

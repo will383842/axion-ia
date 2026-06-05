@@ -81,6 +81,31 @@ describe("ChatWidget — envoi", () => {
   });
 });
 
+describe("ChatWidget — menu guidé d'accueil", () => {
+  it("affiche les boutons de verticales quand la conversation est vide", () => {
+    renderWidget();
+    fireEvent.click(screen.getByRole("button", { name: "Ouvrir l'assistant Axion-IA" }));
+    expect(screen.getByText("Que concerne votre demande ?")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Formations/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Audit en entreprise/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Site web/ })).toBeInTheDocument();
+  });
+
+  it("clic sur une verticale envoie le message pré-écrit (routage déterministe)", () => {
+    renderWidget();
+    fireEvent.click(screen.getByRole("button", { name: "Ouvrir l'assistant Axion-IA" }));
+    fireEvent.click(screen.getByRole("button", { name: /Formations/ }));
+    expect(sendMock).toHaveBeenCalledWith("Je cherche une formation IA", undefined);
+  });
+
+  it("masque le menu dès qu'une conversation existe", () => {
+    mockMessages = [{ id: "u-1", role: "user", text: "bonjour" }];
+    renderWidget();
+    fireEvent.click(screen.getByRole("button", { name: "Ouvrir l'assistant Axion-IA" }));
+    expect(screen.queryByText("Que concerne votre demande ?")).not.toBeInTheDocument();
+  });
+});
+
 describe("ChatWidget — rendu des réponses", () => {
   it("affiche une carte d'offre avec son lien quand sendLinks=true", () => {
     mockMessages = [

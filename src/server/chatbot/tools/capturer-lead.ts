@@ -8,8 +8,33 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendTelegram } from "@/lib/telegram";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
+
+/**
+ * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
+ * jamais échouer la capture). Même canal que l'escalade (Telegram via le hub
+ * notify()). No-op silencieux si Telegram non configuré (pas de token).
+ */
+async function notifyNewLead(input: CapturerLeadInput, submissionId: string): Promise<void> {
+  const body = [
+    "🟢 Nouveau lead chatbot",
+    `Nom : ${input.nom}`,
+    `Email : ${input.email}`,
+    input.telephone ? `Tél : ${input.telephone}` : null,
+    input.structure ? `Structure : ${input.structure}` : null,
+    `Besoin : ${input.besoin_resume}`,
+    `Submission #${submissionId}`,
+  ]
+    .filter((l): l is string => l !== null)
+    .join("\n");
+  try {
+    await sendTelegram({ tag: "CONTACT", body, silent: false });
+  } catch (err) {
+    console.warn("[capturer_lead] notification Telegram échouée:", err);
+  }
+}
 
 export const CapturerLeadInputSchema = z
   .object({
@@ -72,8 +97,9 @@ export async function capturerLead(
   //  - crash partiel → la transaction rollback → jamais de Submission orpheline ;
   //  - course concurrente → le perdant rollback (Submission incluse) → 0 doublon,
   //    puis relit le résultat du gagnant ci-dessous.
+  let result: CapturerLeadResult;
   try {
-    return await prisma.$transaction(async (tx) => {
+    result = await prisma.$transaction(async (tx) => {
       const submission = await tx.submission.create({
         data: {
           type: "contact",
@@ -113,6 +139,13 @@ export async function capturerLead(
     }
     throw err;
   }
+
+  // Notification équipe sur NOUVEAU lead uniquement (jamais sur un retry
+  // idempotent → pas de double-ping). Fail-soft : n'impacte pas le résultat.
+  if (!result.idempotent) {
+    await notifyNewLead(input, result.submissionId);
+  }
+  return result;
 }
 
 /** Relit l'id de Submission mémorisé pour une clé d'idempotence, ou null. */

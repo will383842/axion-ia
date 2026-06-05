@@ -24,6 +24,21 @@ import { useChatStream } from "./useChatStream";
 import { LeadForm } from "./LeadForm";
 import type { ChatCard, ChatMessage } from "./types";
 
+// Menu d'accueil guidé (FR — le chatbot est FR-only, EN désactivé au runtime).
+// Chaque bouton envoie un message pré-écrit, routé par le classifieur
+// déterministe (extractVertical) vers la bonne verticale → pas de faute de
+// frappe possible, verticales mises en avant dès l'ouverture (conversion).
+const WELCOME_MENU: ReadonlyArray<{ label: string; message: string }> = [
+  { label: "🎓 Formations", message: "Je cherche une formation IA" },
+  { label: "🤝 Coaching 1-to-1", message: "Je veux un coaching individuel (1 to 1)" },
+  { label: "🔍 Audit en entreprise", message: "Je veux un audit IA pour mon entreprise" },
+  {
+    label: "⚙️ Création d'un outil IA",
+    message: "Je veux créer un outil IA (intégration et automatisation)",
+  },
+  { label: "🌐 Site web / SaaS IA", message: "Je veux un site web ou un SaaS augmenté par l'IA" },
+];
+
 export function ChatWidget() {
   const t = useTranslations("chatbot");
   const [open, setOpen] = React.useState(false);
@@ -95,16 +110,25 @@ export function ChatWidget() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, close]);
 
+  // Envoi d'un message (saisie libre OU bouton du menu guidé).
+  const sendMessage = React.useCallback(
+    (text: string) => {
+      if (text.trim().length === 0) return;
+      // T-22 — « Chat Started » au premier message de la session (une seule fois).
+      if (!startedRef.current) {
+        startedRef.current = true;
+        trackFunnel("Chat Started");
+      }
+      void send(text, turnstileToken || undefined);
+    },
+    [send, turnstileToken],
+  );
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const text = draft;
     setDraft("");
-    // T-22 — « Chat Started » au premier message de la session (une seule fois).
-    if (!startedRef.current) {
-      startedRef.current = true;
-      trackFunnel("Chat Started");
-    }
-    void send(text, turnstileToken || undefined);
+    sendMessage(text);
   }
 
   return (
@@ -148,6 +172,24 @@ export function ChatWidget() {
             ) : (
               <>
                 <p className="text-fg-soft text-sm leading-snug">{t("intro")}</p>
+                {messages.length === 0 ? (
+                  <div className="flex flex-col gap-1.5" data-testid="chatbot-welcome-menu">
+                    <p className="text-fg-soft text-xs font-medium">Que concerne votre demande ?</p>
+                    {WELCOME_MENU.map((item) => (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={() => sendMessage(item.message)}
+                        className="border-border bg-bg-soft text-fg hover:border-terracotta focus-visible:ring-terracotta rounded-lg border px-3 py-2 text-left text-sm transition focus-visible:ring-2 focus-visible:outline-none"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                    <p className="text-fg-soft text-xs">
+                      …ou posez directement votre question ci-dessous 👇
+                    </p>
+                  </div>
+                ) : null}
                 {messages.map((m) => (
                   <MessageBubble key={m.id} message={m} t={t} />
                 ))}
