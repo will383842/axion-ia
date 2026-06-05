@@ -8,13 +8,14 @@
 // qui valide des env vars au module load (cf. audit 5xx 2026-05-18).
 // On résout `resolveVilleWithCopy` qui est safe edge (lecture statique).
 
-// Audit GSC 2026-06-05 A-02 (P0-2 / D-4) — même fix que `/opengraph-image` : `next/og`
-// (metadata route) échoue à charger Satori en standalone Coolify (502). Import direct
-// `@vercel/og` (aligné sur `api/og` qui répond 200 sur le même edge runtime).
+// Audit GSC 2026-06-05 A-02 (P0-2 / D-4) — même fix que `/opengraph-image`. Le 502 en
+// standalone Coolify vient du runtime "edge" sur une route image file-convention (pas
+// de l'import). Fallback D-4 : `runtime = "nodejs"`. `resolveVilleWithCopy` est une
+// lecture statique → safe en node comme en edge ; aucun import qui valide @/env au load.
 import { ImageResponse } from "@vercel/og";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const alt = "Axion-IA — IA pour votre entreprise";
 export const size = { width: 1200, height: 675 };
 export const contentType = "image/png";

@@ -8,10 +8,12 @@
 // `/api/og?title=...&accent=...` (cf. `src/app/api/og/route.tsx`).
 
 // Audit GSC 2026-06-05 A-02 (P0-2 / D-4) — `/opengraph-image` renvoyait 502 en prod
-// (Coolify standalone). `api/og/route.tsx` (même edge runtime) répond 200 en important
-// `@vercel/og` directement, alors que `next/og` (metadata route convention) échoue à
-// charger le runtime Satori dans le bundle standalone. Fix : aligner sur `api/og` =
-// import direct `@vercel/og`. Fallback `runtime="nodejs"` si le 502 persiste post-deploy.
+// (Coolify standalone). 1re tentative (import `@vercel/og`) déployée 2026-06-05
+// (SHA 0d97c528) : 502 PERSISTE → ce n'était pas l'import. Cause = le runtime "edge"
+// pour une route image *file-convention* (metadata) n'est pas servi correctement par
+// le serveur standalone `next start` (alors que `/api/og`, route handler edge, marche).
+// Fallback D-4 appliqué : `runtime = "nodejs"` (ImageResponse pleinement supporté en
+// node). On garde l'import `@vercel/og` (identique à `api/og`).
 import { ImageResponse } from "@vercel/og";
 
 // Audit GSC 5xx 2026-05-18 — fix `/opengraph-image` retournant 502 Bad Gateway.
@@ -25,7 +27,7 @@ import { ImageResponse } from "@vercel/og";
 // l'alt text. SSOT préservée côté UI (Header, JSON-LD) qui restent en nodejs
 // runtime. Précédent : `/api/og/route.tsx` édge runtime aussi mais sans BRAND
 // import → fonctionne en prod (curl 200, image/png).
-export const runtime = "edge";
+export const runtime = "nodejs"; // A-02 fallback D-4 — edge file-convention 502 en standalone Coolify
 
 export const alt = "Axion-IA — Cabinet IA opérationnel B2B";
 
