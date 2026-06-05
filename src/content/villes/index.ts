@@ -207,6 +207,24 @@ export function getVillesByRegion(regionSlug: string): ReadonlyArray<Ville> {
 const INDEXATION_START = new Date("2026-05-28T00:00:00Z");
 const VILLES_PER_DAY = 50;
 
+// D-1 — GEL DU DRIP (audit GSC 2026-06-05 A-01, cause racine = famine de crawl).
+// Le ramp calendaire +50/j poussait la cohorte vers ~1815 villes sur un domaine
+// jeune dont Google n'indexe que ~1-2 pages/jour → la dette « Détectée non indexée »
+// explose. On FIGE la cohorte à un plafond fixe au lieu de laisser `days` croître.
+//
+// Garde-fou « l'indexation ne rétracte JAMAIS » : `min(elapsed, FREEZE_DAYS)` est
+// monotone croissant puis constant → pour une même date, la cohorte post-patch est
+// IDENTIQUE à pré-patch tant que elapsed ≤ FREEZE_DAYS, puis plafonne. Aucune ville
+// déjà indexable ne repasse noindex pour tout deploy ≤ 2026-06-09.
+//
+// Réouverture = MANUELLE et explicite : augmenter FREEZE_DAYS (commit dédié), cohorte
+// par cohorte, conditionnée au taux d'indexation observé en GSC (cf.
+// _AUDIT/GSC-INDEXATION-2026-06-05/03b-STRATEGIE-RAMP-UP.md). JAMAIS temporel.
+// ⚠️ Déployer avant 2026-06-09 ; si plus tard, AUGMENTER FREEZE_DAYS d'abord (sinon
+// la prod aurait dépassé le plafond entre-temps → rétraction interdite).
+const DRIP_FROZEN = true;
+const FREEZE_DAYS = 12; // 2026-05-28 + 12 j = 2026-06-09 (plafond ≈ cohorte actuelle + marge anti-rétraction)
+
 /** Ville premium = a un copy ET (pop ≥ 20k OU rewrite premium MANUAL-REWRITE). */
 export function isPremiumVille(v: Ville): boolean {
   return !!v.copy && (v.population >= 20_000 || PREMIUM_REWRITE_SLUGS.has(v.slug));
@@ -243,7 +261,12 @@ const INDEXABLE_RANK = new Map(RANKED_INDEXABLE.map((v, i) => [v.slug, i] as con
 
 /** Taille de la cohorte indexable à la date `now` (premium + ramp quotidien). */
 export function cohortSize(now: Date = new Date()): number {
-  const days = Math.max(0, Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000));
+  const elapsed = Math.max(
+    0,
+    Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000),
+  );
+  // GEL (D-1) : `days` plafonné à FREEZE_DAYS → la cohorte cesse de croître.
+  const days = DRIP_FROZEN ? Math.min(elapsed, FREEZE_DAYS) : elapsed;
   return Math.min(RANKED_INDEXABLE.length, PREMIUM_COUNT + days * VILLES_PER_DAY);
 }
 
