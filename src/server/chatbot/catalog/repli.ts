@@ -28,6 +28,7 @@ export type RepliStrategy =
   | "relaxed-duree"
   | "nearest-price"
   | "entry-level"
+  | "custom-effectif"
   | "none";
 
 export interface RepliResult {
@@ -58,6 +59,24 @@ export function repli(
   catalog: ReadonlyArray<Offer> = OFFERS,
 ): RepliResult {
   const hasPrice = criteria.prixMin !== undefined || criteria.prixMax !== undefined;
+
+  // (b) Effectif hors catalogue (T-36 raffinement 2026-06-05) : besoin SUR MESURE.
+  // On déclenche si l'effectif demandé est celui d'une ETI/grande entreprise
+  // (≥ 250, seuil INSEE PME→ETI) OU si des offres dimensionnées existent mais
+  // qu'aucune ne couvre l'effectif. Dans ces cas on n'affiche PAS une offre
+  // sous-calibrée (ex. audit TPE 1 j pour 1200 salariés) → on oriente vers un
+  // échange (RDV) avec un message « sur mesure » côté orchestrateur.
+  if (criteria.effectif !== undefined) {
+    const ETI_THRESHOLD = 250;
+    const sized = pool(criteria, catalog).filter((o) => o.effectifMax !== undefined);
+    const covered = sized.some(
+      (o) => (o.effectifMin ?? 0) <= criteria.effectif! && o.effectifMax! >= criteria.effectif!,
+    );
+    const beyondCatalog = sized.length > 0 && !covered;
+    if (criteria.effectif >= ETI_THRESHOLD || beyondCatalog) {
+      return { offres: [], strategy: "custom-effectif", proposeRdv: true };
+    }
+  }
 
   // A. Élargir la fourchette de prix ±25 %.
   if (hasPrice) {

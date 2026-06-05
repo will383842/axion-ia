@@ -39,13 +39,14 @@ describe("Phase 6 — conversations déterministes (route SSE + DB réelle, 0 LL
     assertNoHallucination(finalText(r), c);
   });
 
-  it("S3 — ETI : 'audit IA pour 1200 salariés' → offre audit, prix SSOT exact, 0 invention", async () => {
+  it("S3 — ETI : 'audit pour 1200 salariés' → SUR MESURE (RDV), pas de carte sous-calibrée (b)", async () => {
     const r = await driveMessage("je veux un audit IA pour mon entreprise de 1200 salariés");
-    const c = cards(r);
-    expect(c.length).toBeGreaterThan(0);
-    expect(c.some((x) => x.vertical === "audit")).toBe(true);
-    // Les prix affichés viennent du formateur SSOT → output-guard vert.
-    assertNoHallucination(finalText(r), c);
+    expect(r.status).toBe(200);
+    // (b) : plus de carte audit TPE mal calibrée pour un effectif hors catalogue.
+    expect(cards(r).length).toBe(0);
+    expect(rdvUrl(r)).toBe("/fr/appel");
+    expect(finalText(r).toLowerCase()).toMatch(/sur mesure|échange|cadrer/);
+    assertNoHallucination(finalText(r), []);
   });
 
   it("S5 — Prix sites-web (piège hallucination) : que des prix SSOT", async () => {

@@ -208,6 +208,20 @@ export async function handleTurn(
     case "comparaison": {
       const res = await rechercherOffres(slots, { tenantId });
       const cards = res.offres.slice(0, max);
+      // (b) Repli SUR MESURE (effectif hors catalogue, ou périmètre sans offre) :
+      // pas de carte sous-calibrée → on oriente vers un échange pour cadrer.
+      if (res.replied && cards.length === 0) {
+        return {
+          ...base,
+          intent,
+          text: "Pour une structure de cette taille, un accompagnement sur mesure s'impose. Organisons un court échange pour le cadrer précisément :",
+          cards: [],
+          sendLinks: false,
+          rdvUrl: RDV_URL,
+          linkFlow: INITIAL_FLOW,
+          escalate: false,
+        };
+      }
       const direct = signal === "shortcut_direct";
       const flow = onSearchResults(
         cards.map((c) => c.id),
