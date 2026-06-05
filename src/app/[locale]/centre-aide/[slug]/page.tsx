@@ -20,6 +20,7 @@ import {
 } from "@/lib/help-articles/reader";
 import { buildProductMetadata, BUILD_DATE, buildQAPageJsonLd } from "@/lib/seo";
 import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { splitTitleEm } from "@/lib/title";
 
 interface Props {
@@ -102,6 +103,9 @@ export default async function HelpArticlePage({ params }: Props) {
     question: copy.title,
     acceptedAnswer: { text: copy.excerpt || copy.body.slice(0, 300) },
   });
+
+  // VIS-05 — co-émet le nœud Person Manon (résout l'author @id de l'Article factory).
+  const personJsonLd = await getManonPersonJsonLd();
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -233,6 +237,7 @@ export default async function HelpArticlePage({ params }: Props) {
 
       {/* V-04 P1 — Article inline (SEO racine), QAPage déféré afterInteractive. */}
       <JsonLd data={articleJsonLd} />
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
       <JsonLd data={qaJsonLd} strategy="afterInteractive" scriptId="jsonld-centre-aide-qa" />
     </>
   );

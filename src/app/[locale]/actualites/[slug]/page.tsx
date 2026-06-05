@@ -33,6 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
@@ -226,6 +227,10 @@ export default async function NewsArticlePage({ params }: Props) {
         })
       : null;
 
+  // VIS-05 — co-émet le nœud Person Manon pour résoudre l'author @id du
+  // NewsArticle (sinon @id orphelin → warning Rich Results + perte E-E-A-T).
+  const personJsonLd = newsJsonLd ? await getManonPersonJsonLd() : null;
+
   const breadcrumbItems = [
     { href: "/actualites", label: "Actualités" },
     { href: `/actualites/${slug}`, label: t.title },
@@ -353,6 +358,7 @@ export default async function NewsArticlePage({ params }: Props) {
       />
 
       {newsJsonLd ? <JsonLd data={newsJsonLd} /> : null}
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
 }

@@ -21,6 +21,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
 import { buildQAPageJsonLd } from "@/lib/seo-content-gen-factories";
+import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { splitTitleEm } from "@/lib/title";
 import { listFaqs, isFaqItemIndexable, type FaqItem } from "@/lib/knowledge/readers";
 import { WasHelpful } from "@/components/marketing/WasHelpful";
@@ -119,6 +120,8 @@ export default async function FaqEntryPage({ params }: Props) {
     dateModified: BUILD_DATE,
     aiGenerated: isAutoGen,
   });
+  // VIS-05 — co-émet le nœud Person Manon pour résoudre l'author @id du QAPage.
+  const personJsonLd = await getManonPersonJsonLd();
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -377,6 +380,7 @@ export default async function FaqEntryPage({ params }: Props) {
       />
 
       <JsonLd data={qaJsonLd} />
+      {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </>
   );
 }
