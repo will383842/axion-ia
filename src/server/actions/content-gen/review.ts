@@ -328,6 +328,13 @@ export async function rejectReview(id: string, notes: string): Promise<void> {
     if (result.count === 0) {
       throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
     }
+    // A-P2-04 (audit content-gen 2026-06-05) — aligne le ContentGenJob : avant ce
+    // patch il restait bloqué en `needs_review` (orphelin, compteurs faussés).
+    // Une review rejetée → job `cancelled` (terminal, non publié).
+    await prisma.contentGenJob.updateMany({
+      where: { reviewQueue: { id }, status: { in: ["needs_review", "quality_improving"] } },
+      data: { status: "cancelled", errorMessage: "review_rejected" },
+    });
     await logActivity({
       session,
       action: "content-gen.review.reject",

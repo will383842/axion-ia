@@ -16,6 +16,7 @@ const reviewFindManyMock = vi.fn();
 const reviewCountMock = vi.fn();
 const reviewUpdateMock = vi.fn();
 const jobUpdateMock = vi.fn();
+const jobUpdateManyMock = vi.fn();
 const transactionMock = vi.fn();
 const activityLogMock = vi.fn();
 const revalidatePathMock = vi.fn();
@@ -34,6 +35,7 @@ vi.mock("@/lib/prisma", () => ({
     },
     contentGenJob: {
       update: (args: unknown) => jobUpdateMock(args),
+      updateMany: (args: unknown) => jobUpdateManyMock(args),
     },
     $transaction: (ops: unknown) => transactionMock(ops),
   },
@@ -183,6 +185,14 @@ describe("rejectReview", () => {
     expect(activityLogMock).toHaveBeenCalledWith(
       expect.objectContaining({ action: "content-gen.review.reject" }),
     );
+  });
+
+  it("A-P2-04 — aligne le ContentGenJob en cancelled (anti-orphelin)", async () => {
+    await rejectReview("rev-1", "contenu rejete definitivement");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const call = jobUpdateManyMock.mock.calls[0] as [{ where: any; data: any }];
+    expect(call[0].data.status).toBe("cancelled");
+    expect(call[0].where.reviewQueue).toMatchObject({ id: "rev-1" });
   });
 });
 
