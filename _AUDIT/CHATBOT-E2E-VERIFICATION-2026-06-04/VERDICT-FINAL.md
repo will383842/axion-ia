@@ -1,6 +1,14 @@
 # VERDICT FINAL — vérification E2E chatbot Axion-IA
 
-## 🟡 PROD-READY sous réserve secrets LLM (= SUCCÈS au sens §1.0.5)
+> **MISE À JOUR 2026-06-05** (cf. `ADDENDUM-2026-06-05-OPENAI-MVP2.md`) : après fourniture des secrets, test réel des clés → **Voyage invalide (401), Anthropic 0 crédit, OpenAI OK**. Décisions Will appliquées : génération **OpenAI gpt-4o-mini**, embeddings **OpenAI 1024-dim** (595 chunks ré-embeddés), **tool-calling MVP2 câblé**. Le volet LLM est désormais **PROUVÉ EN RÉEL** (plus BLOQUÉ-SECRET sauf Telegram).
+>
+> **Nouveau verdict : 🟢 PROD-READY (validé en local, non poussé — décision Will).** Réserves restantes : Telegram absent (notif escalade/alertes coût), KB à ré-ingérer pour la copie « experts », activation canary prod = action Will. Coût LLM réel session : **< 0,02 USD**. Tests : **222 unit + 40 integration (dont RAG OpenAI réel + tool-calling) verts**.
+>
+> Le verdict 🟡 ci-dessous reflète l'état de la PREMIÈRE passe (sans secrets) ; il est conservé pour traçabilité.
+
+---
+
+## 🟡 PROD-READY sous réserve secrets LLM (PREMIÈRE PASSE — historique)
 
 Le chatbot est **production-ready sur tout son chemin déterministe**, exécuté **réellement** contre une infra **réelle** (Postgres+pgvector, Redis), **sans aucun mock dans le runtime**. Les seules réserves sont les briques **LLM-dépendantes** (génération RAG narrative, embeddings/retrieval vectoriel, rerank) qui exigent `VOYAGE_API_KEY` + `ANTHROPIC_API_KEY` — **absentes** sur cette machine. C'est le cas nominal annoncé (§1.0) : un verdict `🟡 PROD-READY sous réserve secrets` est un **succès**, pas un échec. **Aucun mock n'a été substitué** à un secret manquant.
 

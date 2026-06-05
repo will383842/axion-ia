@@ -1,7 +1,7 @@
 # Conversations réelles — chatbot Axion-IA (capturées E2E)
 
 > Pilotées via la **vraie route SSE** `POST /api/chatbot/message` + **vraie DB** (Postgres docker), driver Node direct (`drive-conversation.ts`).
-> `VOYAGE_API_KEY` + `ANTHROPIC_API_KEY` ABSENTES → chemin déterministe (0 LLM) pleinement joué ; scénarios `llm:true` jouent le **mode dégradé déterministe** (preuve d'absence de crash), la génération RAG narrative réelle restant `⛔ BLOQUÉ-SECRET`.
+> Génération RAG via **OpenAI gpt-4o-mini** + embeddings **OpenAI text-embedding-3-small (1024-dim)** réels (Voyage invalide, Anthropic 0 crédit — décision Will 2026-06-05). Scénarios `llm:true` = vraie génération RAG streamée + citations.
 
 
 ## S1 — Prospect pressé
@@ -137,25 +137,29 @@
   _SSE: status=200, events=[session → message → cards → done]_
 
 
-## S20 — Prospect sceptique (argumentaire — RAG) *(RAG → mode dégradé sans clé)*
+## S20 — Prospect sceptique (argumentaire — RAG) *(RAG réel OpenAI)*
 
 **👤 Prospect :** pourquoi vous et pas un autre prestataire ?
-**🤖 Bot :** Je n'ai pas cette information sous la main. Souhaitez-vous en discuter lors d'un court échange ?
+**🤖 Bot :** Axion-IA se distingue par sa capacité à livrer du code sur mesure, garantissant la souveraineté de vos données et évitant le lock-in avec des éditeurs tiers. Nous utilisons des technologies de pointe et offrons des performances supérieures grâce à des appels API directs. De plus, notre approche est conforme à l'AI Act, avec un audit trail et des tests automatisés. Nous sommes des architectes IA seniors, construisant des solutions adaptées à vos besoins spécifiques. 
 
-  RDV : `/fr/appel`
+L'équipe Axion-IA.
 
-  ⚠️ escalade déclenchée
-
-  _SSE: status=200, events=[session → message → rdv → escalate → done]_
+  _SSE: status=200, events=[session → message → sources → done]_
 
 
-## S19 — Panne provider / mode dégradé (sans clé Anthropic) *(RAG → mode dégradé sans clé)*
+## S16 — Explication méthodologie (RAG génératif) *(RAG réel OpenAI)*
 
 **👤 Prospect :** explique-moi en détail votre méthodologie de formation
-**🤖 Bot :** Je n'ai pas cette information sous la main. Souhaitez-vous en discuter lors d'un court échange ?
+**🤖 Bot :** Notre méthodologie de formation IA repose sur une approche 100 % pratique, adaptée aux besoins spécifiques de votre entreprise. Voici les points clés :
 
-  RDV : `/fr/appel`
+1. **Questionnaire de positionnement** : Avant la formation, nous envoyons un questionnaire de 15 minutes pour personnaliser 40 % du contenu pédagogique selon le niveau et les cas d'usage réels de votre équipe (source : [2]).
 
-  ⚠️ escalade déclenchée
+2. **Apprentissage par la pratique** : Nous utilisons la méthode « apprendre en faisant », ce qui permet un taux de rétention des compétences 40 % supérieur aux formations théoriques (source : [1]).
 
-  _SSE: status=200, events=[session → message → rdv → escalate → done]_
+3. **Manipulation d'outils réels** : Les participants travaillent sur leurs propres données et processus, apprenant à rédiger des prompts efficaces et à garantir la sécurité des données (source : [3]).
+
+4. **Résultats concrets** : À l'issue de la formation, vos équipes repartent autonomes et opérationnelles, avec des workflows adaptés à leurs tâches quotidiennes (source : [4]).
+
+L'équipe Axion-IA.
+
+  _SSE: status=200, events=[session → message → sources → done]_
