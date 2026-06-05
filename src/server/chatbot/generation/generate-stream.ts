@@ -20,9 +20,23 @@ const llmBreaker = new CircuitBreaker({
   cooldownMs: 15_000,
 });
 
-const MODEL_BY_TIER: Record<LlmTier, string> = {
-  sonnet: "claude-sonnet-4-6",
-  haiku: "claude-haiku-4-5",
+// Provider de génération du chatbot. Décision Will 2026-06-05 : bascule sur
+// OpenAI (Anthropic = 0 crédit ; gpt-4o-mini ~7-8× moins cher que Haiku pour ce
+// usage, et l'output-guard garantit le zéro-hallucination quel que soit le modèle).
+// Le tier "haiku" (faqSimple) → gpt-4o-mini (le moins cher) ; "sonnet" → gpt-4o.
+const GENERATION_PROVIDER = (process.env.CHATBOT_LLM_PROVIDER ?? "openai") as
+  | "openai"
+  | "anthropic";
+
+const MODEL_BY_TIER: Record<"openai" | "anthropic", Record<LlmTier, string>> = {
+  openai: {
+    sonnet: "gpt-4o",
+    haiku: "gpt-4o-mini",
+  },
+  anthropic: {
+    sonnet: "claude-sonnet-4-6",
+    haiku: "claude-haiku-4-5",
+  },
 };
 
 export interface GenerateAnswerOptions {
@@ -52,8 +66,8 @@ export const generateAnswer: GenerateAnswerFn = async (opts) =>
       jobId: `chatbot-${Date.now()}`,
       contentType: "qa_derived",
       role: "text",
-      preferredProvider: "anthropic",
-      model: MODEL_BY_TIER[opts.tier],
+      preferredProvider: GENERATION_PROVIDER,
+      model: MODEL_BY_TIER[GENERATION_PROVIDER][opts.tier],
       systemPrompt: opts.systemPrompt,
       userPrompt: opts.userPrompt,
       stream: true,

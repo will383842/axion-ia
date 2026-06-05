@@ -338,8 +338,17 @@ export async function trackCost(args: CostTrackingArgs): Promise<void> {
       });
     });
   } catch (err) {
-    if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
+    const code = err instanceof Error && "code" in err ? (err as { code: string }).code : "";
+    if (code === "P2021") {
       // Tables pas migrées → no-op
+      return;
+    }
+    if (code === "P2025") {
+      // Ligne provider_config absente pour ce provider → le suivi de coût agrégé
+      // est best-effort (le coût par message est déjà persisté ailleurs, ex.
+      // chat_messages.cout_estime pour le chatbot). On ne fait JAMAIS échouer la
+      // génération à cause du tracking. (Le CostLedger.create a rollback avec la
+      // transaction → pas de ligne orpheline.)
       return;
     }
     if (err instanceof Error && err.constructor.name === "PrismaClientInitializationError") {
