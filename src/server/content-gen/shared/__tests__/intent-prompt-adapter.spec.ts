@@ -38,12 +38,41 @@ describe("getIntentPromptAddendum", () => {
     expect(result).toContain("data-aeo");
   });
 
-  it("informational (legacy) returns empty string", () => {
-    expect(getIntentPromptAddendum("informational")).toBe("");
+  // VIS-06 — les 5 intents legacy sont désormais différenciés (avant : "").
+  it("informational returns a dedicated addendum (VIS-06)", () => {
+    const r = getIntentPromptAddendum("informational");
+    expect(r.length).toBeGreaterThan(0);
+    expect(r).toContain("INFORMATIONNEL");
   });
 
-  it("transactional (legacy) returns empty string", () => {
-    expect(getIntentPromptAddendum("transactional")).toBe("");
+  it("commercial_investigation returns a dedicated addendum (VIS-06)", () => {
+    const r = getIntentPromptAddendum("commercial_investigation");
+    expect(r).toContain("INVESTIGATION COMMERCIALE");
+    // Doctrine : pas de prix en dur ET pas de token {{price:}} non résolu en blog/Phase8.
+    expect(r).not.toContain("{{price:");
+  });
+
+  it("transactional returns a dedicated addendum (VIS-06)", () => {
+    const r = getIntentPromptAddendum("transactional");
+    expect(r).toContain("TRANSACTIONNEL");
+    expect(r).not.toContain("{{price:");
+  });
+
+  it("navigational + local return dedicated addenda (VIS-06)", () => {
+    expect(getIntentPromptAddendum("navigational")).toContain("NAVIGATIONNEL");
+    expect(getIntentPromptAddendum("local")).toContain("LOCAL");
+  });
+
+  it("the 5 legacy intents no longer differentiate to empty (8/8 covered)", () => {
+    for (const i of [
+      "informational",
+      "commercial_investigation",
+      "transactional",
+      "navigational",
+      "local",
+    ]) {
+      expect(getIntentPromptAddendum(i)).not.toBe("");
+    }
   });
 
   it("null returns empty string", () => {
