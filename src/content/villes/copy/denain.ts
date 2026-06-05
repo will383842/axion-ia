@@ -48,6 +48,183 @@ export const DENAIN_COPY: VilleCopy = {
       en: "Accompagnement 1-to-1 des dirigeants denaisiens à {{price:intervention-dirigeants|flat}} pour adopter l'IA sans dépendre du no-code, avec code auditable hébergé en France.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Denain des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire qui a tourné la page du charbon et de la sidérurgie pour devenir un hub logistique : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon, inaugurée en 2025 sur le Parc d'activités des Pierres Blanches (ex-friche Usinor de 85 ha), et l'usine Lesaffre qui s'implante sur le même bassin. Au cœur de la Porte du Hainaut, à 10 km de Valenciennes, à la jonction des autoroutes A2 et A21 le long du canal de l'Escaut. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Denain, itérations à distance.",
+        whyHere: [
+          "Bascule logistique sur les Pierres Blanches : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon (≈350 emplois), embranchée fer et à la jonction A2/A21 le long du canal de l'Escaut, appelle des portails de suivi de commandes, de gestion d'entrepôt et des tableaux de bord temps réel — terrain idéal pour des applications métier et des automatisations branchées sur votre WMS.",
+          "Sous-traitance automobile et mécanique : à proximité de Toyota Onnaing et de Stellantis à Valenciennes-Trith, les PME industrielles héritières du tissu métallurgique denaisien gagnent un portail fournisseur, un reporting d'atelier ou une recherche sémantique dans les nomenclatures — on greffe l'IA sur l'existant, sans imposer de refonte coûteuse ni de migration risquée.",
+          "Tissu dense de TPE du commerce, de l'artisanat et du bâtiment dans le bassin de la Porte du Hainaut (Douchy-les-Mines, Escaudain, Lourches, Wallers) : on construit des sites vitrines et des boutiques e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — à votre marque, mobile-first, avec ou sans brique IA, pour vendre au-delà du centre-ville.",
+          "Nouvelle industrie agroalimentaire et patrimoine minier UNESCO : l'usine Lesaffre qui s'implante à Denain ouvre des besoins de portails qualité et de traçabilité, tandis que le tourisme industriel naissant (Terril Renard, Fosse Mathilde, Cité Chabaud-Latour) se valorise via chatbots et parcours augmentés, hébergés en UE et conformes RGPD, vos données maîtrisées de bout en bout.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Denain",
+            detail:
+              "Atelier sur site — centre-ville, Parc d'activités des Pierres Blanches sur l'ex-friche Usinor, ateliers du bassin : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour des artisans et des équipes terrain de la Porte du Hainaut. Prototype cliquable testé avec vos utilisateurs avant la moindre ligne de développement, pour figer le périmètre.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, portail de suivi de commandes, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Denain, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime — y compris sur un outil déjà en exploitation dans un atelier mécanique ou un entrepôt des Pierres Blanches, sans interrompre l'activité.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible et documentation de reprise. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; transfert possible à un prestataire des Hauts-de-France à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis et de factures — sur le site existant d'un commerçant, d'un artisan du bâtiment ou d'un garagiste denaisien, en quelques semaines et sans refonte du site.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une PME mécanique, du second œuvre ou du commerce de détail du bassin, avec UX/UI sur mesure et IA intégrée : e-commerce multi-CMS, multilingue, reporting de ventes et relances automatisées.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client pour les acteurs logistiques et industriels structurants des Pierres Blanches (entreposage, agroalimentaire type Lesaffre, sous-traitance auto), IA intégrée et branchée sur votre SI : WMS, ERP, CRM.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux de la logistique et de l'automobile : refonte de plateformes, design system, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit, sur la durée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, c'est même notre socle. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Pouvez-vous outiller un acteur logistique des Pierres Blanches ?",
+            a: "Oui. Pour les plateformes et PME de la Porte du Hainaut — comme l'entrepôt GLP de 100 000 m² exploité par Maersk pour Amazon sur l'ex-site Usinor — on développe des portails de suivi de commandes, des tableaux de bord d'entrepôt et des automatisations branchés sur votre WMS ou ERP, avec recherche sémantique dans vos référentiels et hébergement UE. On s'interface aussi avec l'embranchement fer et le multimodal du parc.",
+          },
+          {
+            q: "Travaillez-vous avec la sous-traitance automobile et mécanique du bassin ?",
+            a: "Oui. Les PME proches de Toyota Onnaing et de Stellantis à Valenciennes-Trith héritent d'un tissu métallurgique exigeant. On greffe l'IA sur leur existant : portail fournisseur, reporting d'atelier en temps réel, recherche sémantique dans les nomenclatures et plans, automatisation des devis et des relances — sans imposer de refonte ni de migration risquée de l'outil de production.",
+          },
+          {
+            q: "Accompagnez-vous l'agroalimentaire qui s'implante à Denain ?",
+            a: "Oui. Avec l'arrivée de l'usine Lesaffre sur le bassin, les besoins de traçabilité, de qualité et de gestion documentaire montent. On construit des portails qualité, des recherches sémantiques dans les fiches techniques et des automatisations de reporting, branchés sur votre SI, hébergés en UE et conformes RGPD et AI Act, pour fiabiliser vos process sans alourdir le quotidien des équipes.",
+          },
+          {
+            q: "Mes données restent-elles en Europe, et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles, sans verrou. Après le cadrage sur site à Denain, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée, à partir de 24-48 h pour un projet simple.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un outil déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes, à tout moment, sans dépendance à Axion-IA.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Denain des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un territoire qui a tourné la page du charbon et de la sidérurgie pour devenir un hub logistique : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon, inaugurée en 2025 sur le Parc d'activités des Pierres Blanches (ex-friche Usinor de 85 ha), et l'usine Lesaffre qui s'implante sur le même bassin. Au cœur de la Porte du Hainaut, à 10 km de Valenciennes, à la jonction des autoroutes A2 et A21 le long du canal de l'Escaut. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Denain, itérations à distance.",
+        whyHere: [
+          "Bascule logistique sur les Pierres Blanches : la plateforme GLP de 100 000 m² exploitée par Maersk pour Amazon (≈350 emplois), embranchée fer et à la jonction A2/A21 le long du canal de l'Escaut, appelle des portails de suivi de commandes, de gestion d'entrepôt et des tableaux de bord temps réel — terrain idéal pour des applications métier et des automatisations branchées sur votre WMS.",
+          "Sous-traitance automobile et mécanique : à proximité de Toyota Onnaing et de Stellantis à Valenciennes-Trith, les PME industrielles héritières du tissu métallurgique denaisien gagnent un portail fournisseur, un reporting d'atelier ou une recherche sémantique dans les nomenclatures — on greffe l'IA sur l'existant, sans imposer de refonte coûteuse ni de migration risquée.",
+          "Tissu dense de TPE du commerce, de l'artisanat et du bâtiment dans le bassin de la Porte du Hainaut (Douchy-les-Mines, Escaudain, Lourches, Wallers) : on construit des sites vitrines et des boutiques e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — à votre marque, mobile-first, avec ou sans brique IA, pour vendre au-delà du centre-ville.",
+          "Nouvelle industrie agroalimentaire et patrimoine minier UNESCO : l'usine Lesaffre qui s'implante à Denain ouvre des besoins de portails qualité et de traçabilité, tandis que le tourisme industriel naissant (Terril Renard, Fosse Mathilde, Cité Chabaud-Latour) se valorise via chatbots et parcours augmentés, hébergés en UE et conformes RGPD, vos données maîtrisées de bout en bout.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Denain",
+            detail:
+              "Atelier sur site — centre-ville, Parc d'activités des Pierres Blanches sur l'ex-friche Usinor, ateliers du bassin : objectifs, parcours utilisateurs, audit de la stack, des contenus et des flux. Devis ferme à partir de 24-48 h selon la complexité, sans engagement.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first pour des artisans et des équipes terrain de la Porte du Hainaut. Prototype cliquable testé avec vos utilisateurs avant la moindre ligne de développement, pour figer le périmètre.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, portail de suivi de commandes, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Denain, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime — y compris sur un outil déjà en exploitation dans un atelier mécanique ou un entrepôt des Pierres Blanches, sans interrompre l'activité.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible et documentation de reprise. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé ; transfert possible à un prestataire des Hauts-de-France à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis et de factures — sur le site existant d'un commerçant, d'un artisan du bâtiment ou d'un garagiste denaisien, en quelques semaines et sans refonte du site.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une PME mécanique, du second œuvre ou du commerce de détail du bassin, avec UX/UI sur mesure et IA intégrée : e-commerce multi-CMS, multilingue, reporting de ventes et relances automatisées.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client pour les acteurs logistiques et industriels structurants des Pierres Blanches (entreposage, agroalimentaire type Lesaffre, sous-traitance auto), IA intégrée et branchée sur votre SI : WMS, ERP, CRM.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux de la logistique et de l'automobile : refonte de plateformes, design system, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit, sur la durée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, c'est même notre socle. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail métier, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Pouvez-vous outiller un acteur logistique des Pierres Blanches ?",
+            a: "Oui. Pour les plateformes et PME de la Porte du Hainaut — comme l'entrepôt GLP de 100 000 m² exploité par Maersk pour Amazon sur l'ex-site Usinor — on développe des portails de suivi de commandes, des tableaux de bord d'entrepôt et des automatisations branchés sur votre WMS ou ERP, avec recherche sémantique dans vos référentiels et hébergement UE. On s'interface aussi avec l'embranchement fer et le multimodal du parc.",
+          },
+          {
+            q: "Travaillez-vous avec la sous-traitance automobile et mécanique du bassin ?",
+            a: "Oui. Les PME proches de Toyota Onnaing et de Stellantis à Valenciennes-Trith héritent d'un tissu métallurgique exigeant. On greffe l'IA sur leur existant : portail fournisseur, reporting d'atelier en temps réel, recherche sémantique dans les nomenclatures et plans, automatisation des devis et des relances — sans imposer de refonte ni de migration risquée de l'outil de production.",
+          },
+          {
+            q: "Accompagnez-vous l'agroalimentaire qui s'implante à Denain ?",
+            a: "Oui. Avec l'arrivée de l'usine Lesaffre sur le bassin, les besoins de traçabilité, de qualité et de gestion documentaire montent. On construit des portails qualité, des recherches sémantiques dans les fiches techniques et des automatisations de reporting, branchés sur votre SI, hébergés en UE et conformes RGPD et AI Act, pour fiabiliser vos process sans alourdir le quotidien des équipes.",
+          },
+          {
+            q: "Mes données restent-elles en Europe, et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA, et vous gardez la propriété complète de vos données et modèles, sans verrou. Après le cadrage sur site à Denain, on remet un devis ferme en forfait fixe : pas de régie, pas de dérive horaire cachée, à partir de 24-48 h pour un projet simple.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un outil déjà en exploitation. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est documenté et transférable à un prestataire des Hauts-de-France ou repris en interne par vos équipes, à tout moment, sans dépendance à Axion-IA.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Denain ?",

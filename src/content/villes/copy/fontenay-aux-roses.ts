@@ -46,6 +46,183 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Fontenay : sessions dans votre atelier, cabinet, laboratoire ou en visio. Artisans BTP, médecins, avocats, chercheurs, gérants TPE/PME fontenaysiennes souhaitant intégrer l'IA.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
+        whyHere: [
+          "Pôle de recherche et de sûreté nucléaire structurant : le CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie, démantèlement) et l'IRSN-ASNR de l'avenue de la Division Leclerc, voisins de Centrale-Supélec sur le plateau de Saclay, appellent des portails documentaires augmentés à l'IA — recherche sémantique sur publications et rapports techniques, classification de documents réglementaires, agents de veille scientifique, le tout en hébergement UE conforme.",
+          "Tissu résidentiel et professions libérales denses : cabinets médicaux, avocats et experts-comptables fontenaysiens, souvent installés autour du centre-ville et du quartier Scarron, gagnent à un site clair et mobile-first avec prise de RDV en ligne, chatbot de premier contact, formulaires sécurisés et automatisation des devis d'honoraires, sans complexité ni jargon inutile.",
+          "Commerce de proximité rythmé par la halle du marché (mardi, jeudi, samedi) et les commerces de la rue Boucicaut : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, agenda et fidélité, pour que boulangers, fleuristes, librairies, opticiens et traiteurs prolongent en ligne, sur mobile, leur clientèle de quartier toute la semaine.",
+          "TPE artisanat BTP du sud-ouest 92 (plombiers, électriciens, menuisiers, peintres) très présentes sur ce territoire pavillonnaire entre Châtenay-Malabry, Le Plessis-Robinson et Sceaux : on greffe l'IA sur l'existant — automatisation des devis de chantier, agent de prise de RDV, classification des photos de chantier, suivi des plannings — sans refonte coûteuse ni abonnement imposé.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Fontenay-aux-Roses",
+            detail:
+              "Atelier sur site (centre-ville autour de la halle du marché, abords du CEA et de l'IRSN-ASNR avenue de la Division Leclerc, gare RER B Fontenay-aux-Roses) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des données. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI mobile-first",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle résidentielle fontenaysienne qui navigue surtout au téléphone, avec accessibilité et Web Vitals intégrés dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de RDV, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur votre SI. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un cabinet médical du centre-ville ou un commerce de la halle qui ne peut pas couper son site en pleine activité de service.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), documentation et transfert de compétences inclus. Vos équipes fontenaysiennes pilotent l'outil en autonomie, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, prise de RDV, recherche sémantique, automatisation de devis) sur le site existant d'un artisan BTP du sud-ouest 92, d'un commerce de la halle du marché, d'une boulangerie ou d'un cabinet libéral, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour PME tertiaire, opticien, traiteur ou agence fontenaysienne : UX/UI mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), click-and-collect, fidélité et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail documentaire sur mesure pour acteurs structurants du bassin (recherche, sûreté nucléaire, services aux entreprises), IA intégrée et branchée sur votre SI (CRM, ERP, GED), recherche sémantique et agents internes.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands établissements du territoire (CEA, IRSN-ASNR, enseignement supérieur du plateau de Saclay) : refonte de plateformes, design system, recherche sémantique sur corpus scientifique et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration responsive — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique — un point clé pour un cabinet de santé fontenaysien ou un acteur de la recherche comme le CEA ou l'IRSN-ASNR, soumis à des exigences de confidentialité fortes.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Fontenay-aux-Roses, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre et le prix sont actés avant le premier sprint.",
+          },
+          {
+            q: "Pouvez-vous équiper un commerce de la halle du marché ?",
+            a: "Oui. Pour les commerces de proximité fontenaysiens — halle du marché, rue Boucicaut, centre-ville — on déploie une vitrine ou boutique en ligne avec click-and-collect, agenda de réservation, fidélité client et chatbot de premier contact. Objectif : prolonger la clientèle des jours de marché (mardi, jeudi, samedi) en ligne, sur mobile, toute la semaine, sans dépendre d'une grosse marketplace.",
+          },
+          {
+            q: "Travaillez-vous avec le CEA, l'IRSN-ASNR et les structures de recherche ?",
+            a: "Oui. Pour les structures de recherche et de sûreté nucléaire de Fontenay-aux-Roses — CEA, IRSN devenu ASNR avenue de la Division Leclerc, proximité de Centrale-Supélec — on construit des portails documentaires et des plateformes internes avec recherche sémantique sur publications et rapports techniques, classification de documents réglementaires et agents de veille. Tout est hébergeable en UE, conforme RGPD et AI Act, avec code et données livrés dans votre infrastructure.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
+        whyHere: [
+          "Pôle de recherche et de sûreté nucléaire structurant : le CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie, démantèlement) et l'IRSN-ASNR de l'avenue de la Division Leclerc, voisins de Centrale-Supélec sur le plateau de Saclay, appellent des portails documentaires augmentés à l'IA — recherche sémantique sur publications et rapports techniques, classification de documents réglementaires, agents de veille scientifique, le tout en hébergement UE conforme.",
+          "Tissu résidentiel et professions libérales denses : cabinets médicaux, avocats et experts-comptables fontenaysiens, souvent installés autour du centre-ville et du quartier Scarron, gagnent à un site clair et mobile-first avec prise de RDV en ligne, chatbot de premier contact, formulaires sécurisés et automatisation des devis d'honoraires, sans complexité ni jargon inutile.",
+          "Commerce de proximité rythmé par la halle du marché (mardi, jeudi, samedi) et les commerces de la rue Boucicaut : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, agenda et fidélité, pour que boulangers, fleuristes, librairies, opticiens et traiteurs prolongent en ligne, sur mobile, leur clientèle de quartier toute la semaine.",
+          "TPE artisanat BTP du sud-ouest 92 (plombiers, électriciens, menuisiers, peintres) très présentes sur ce territoire pavillonnaire entre Châtenay-Malabry, Le Plessis-Robinson et Sceaux : on greffe l'IA sur l'existant — automatisation des devis de chantier, agent de prise de RDV, classification des photos de chantier, suivi des plannings — sans refonte coûteuse ni abonnement imposé.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Fontenay-aux-Roses",
+            detail:
+              "Atelier sur site (centre-ville autour de la halle du marché, abords du CEA et de l'IRSN-ASNR avenue de la Division Leclerc, gare RER B Fontenay-aux-Roses) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des données. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI mobile-first",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle résidentielle fontenaysienne qui navigue surtout au téléphone, avec accessibilité et Web Vitals intégrés dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de RDV, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur votre SI. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un cabinet médical du centre-ville ou un commerce de la halle qui ne peut pas couper son site en pleine activité de service.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible), documentation et transfert de compétences inclus. Vos équipes fontenaysiennes pilotent l'outil en autonomie, sans verrou technique ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, prise de RDV, recherche sémantique, automatisation de devis) sur le site existant d'un artisan BTP du sud-ouest 92, d'un commerce de la halle du marché, d'une boulangerie ou d'un cabinet libéral, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour PME tertiaire, opticien, traiteur ou agence fontenaysienne : UX/UI mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), click-and-collect, fidélité et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail documentaire sur mesure pour acteurs structurants du bassin (recherche, sûreté nucléaire, services aux entreprises), IA intégrée et branchée sur votre SI (CRM, ERP, GED), recherche sémantique et agents internes.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands établissements du territoire (CEA, IRSN-ASNR, enseignement supérieur du plateau de Saclay) : refonte de plateformes, design system, recherche sémantique sur corpus scientifique et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration responsive — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique — un point clé pour un cabinet de santé fontenaysien ou un acteur de la recherche comme le CEA ou l'IRSN-ASNR, soumis à des exigences de confidentialité fortes.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Fontenay-aux-Roses, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en cours de route : le périmètre et le prix sont actés avant le premier sprint.",
+          },
+          {
+            q: "Pouvez-vous équiper un commerce de la halle du marché ?",
+            a: "Oui. Pour les commerces de proximité fontenaysiens — halle du marché, rue Boucicaut, centre-ville — on déploie une vitrine ou boutique en ligne avec click-and-collect, agenda de réservation, fidélité client et chatbot de premier contact. Objectif : prolonger la clientèle des jours de marché (mardi, jeudi, samedi) en ligne, sur mobile, toute la semaine, sans dépendre d'une grosse marketplace.",
+          },
+          {
+            q: "Travaillez-vous avec le CEA, l'IRSN-ASNR et les structures de recherche ?",
+            a: "Oui. Pour les structures de recherche et de sûreté nucléaire de Fontenay-aux-Roses — CEA, IRSN devenu ASNR avenue de la Division Leclerc, proximité de Centrale-Supélec — on construit des portails documentaires et des plateformes internes avec recherche sémantique sur publications et rapports techniques, classification de documents réglementaires et agents de veille. Tout est hébergeable en UE, conforme RGPD et AI Act, avec code et données livrés dans votre infrastructure.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-aux-Roses ?",

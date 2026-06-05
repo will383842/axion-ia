@@ -51,6 +51,183 @@ export const EYSINES_COPY: VilleCopy = {
       en: "Session 1-to-1 dirigeant TPE/PME à Eysines dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Eysines des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de Bordeaux Métropole héritière du « potager de Bordeaux », où la zone maraîchère de 162 hectares le long de la jalle (une quinzaine d'exploitations en pomme de terre et citrouille, la SICA Maraîchère et son circuit de paniers) côtoie le marché dominical de Migron, place Florale, et la ZAC Carès-Cantinolle qui réunit des dizaines de PME, artisans et services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Eysines, itérations à distance, sans verrou ni abonnement imposé.",
+        whyHere: [
+          "Héritage maraîcher toujours vivant : la zone maraîchère de 162 hectares le long de la jalle abrite une quinzaine d'exploitations en pomme de terre et citrouille, et la SICA Maraîchère fédère des producteurs en circuit court avec livraison de paniers — terrain idéal pour des boutiques e-commerce de producteurs, des systèmes d'abonnement aux paniers et une traçabilité récolte automatisée par agent.",
+          "Commerce de proximité animé par le marché dominical de Migron, place Florale, qui rassemble plus de soixante commerçants et producteurs : bouchers, primeurs, fromagers, fleuristes. Pour ces étals et les boutiques du cœur de ville, on bâtit des vitrines e-commerce mobile-first, click-and-collect et réservation en ligne, avec un chatbot multilingue qui répond aux questions d'horaires et de disponibilités.",
+          "Tissu d'artisans et de PME dense autour de la ZAC Carès-Cantinolle et de la zone d'activité de Cantinolle, où voisinent des entreprises comme la Chocolaterie Segonzac ou des négoces de matériaux du bâtiment : on greffe des outils concrets sur l'existant (générateur de devis, suivi de chantier, relances clients par agent) ou un site qui convertit la demande de proximité.",
+          "Commune intégrée à Bordeaux Métropole, reliée par le tramway ligne D à Eysines-Cantinolle, la rocade A630 et l'aéroport de Bordeaux-Mérignac tout proche : commerces, services et acteurs tertiaires captent une clientèle métropolitaine. Nos parcours UX/UI, notre recherche sémantique et notre hébergement UE conforme RGPD et AI Act sécurisent données clients et commandes sans transfert hors Europe.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Eysines",
+            detail:
+              "Atelier sur site (cœur de ville, place Florale à Migron, ZAC Carès-Cantinolle, zone maraîchère de la jalle) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité maraîchère. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale d'Eysines et métropolitaine de Bordeaux. On valide accessibilité et parcours d'achat avant la première ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, vente directe de producteurs, chatbot RAG multilingue, recherche sémantique, agents de devis et de relance. Démos hebdomadaires en visio pour décider sprint après sprint, sans tunnel ni effet boîte noire.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison de récolte maraîchère ou pendant le pic dominical du marché de Migron. On vérifie chaque parcours sur mobile réel avant l'ouverture.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases de données et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes d'Eysines pilotent l'outil en autonomie, sans verrou ni abonnement imposé, et peuvent le confier à un autre prestataire de Bordeaux Métropole à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, générateur de devis) sur le site existant d'un maraîcher de la jalle, d'un artisan ou d'un commerçant du marché de Migron, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : vente directe de produits du terroir, abonnement paniers SICA, réservation et paiement en ligne, multilingue, sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de la ZAC Carès-Cantinolle et de Bordeaux Métropole (négoce de matériaux, agroalimentaire, services), IA intégrée, branchée sur votre SI (CRM, ERP, comptabilité).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux : refonte de plateformes, design system mutualisé, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique de vente directe ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé pour la conversion d'une clientèle eysinaise et métropolitaine.",
+          },
+          {
+            q: "Pouvez-vous équiper un maraîcher ou la SICA en vente directe en ligne ?",
+            a: "Oui. Pour les exploitations de la zone maraîchère d'Eysines (pomme de terre, citrouille, paniers) et les circuits courts type SICA Maraîchère, on conçoit une boutique e-commerce de circuit court : catalogue saisonnier, abonnement aux paniers, commande et paiement en ligne, points de retrait et un agent qui gère relances et traçabilité des récoltes le long de la jalle.",
+          },
+          {
+            q: "Pouvez-vous créer un site pour les commerçants du marché de Migron ?",
+            a: "Oui. Pour les producteurs et commerçants du marché dominical de Migron, place Florale, on bâtit des vitrines mobile-first avec horaires, disponibilité des produits du jour, click-and-collect et réservation. Un chatbot multilingue répond aux questions courantes, et la recherche sémantique aide les clients à trouver le bon étal ou produit avant de venir sur place.",
+          },
+          {
+            q: "Travaillez-vous avec les PME de la ZAC Carès-Cantinolle ?",
+            a: "Oui. Pour les artisans, négoces de matériaux et PME de la ZAC Carès-Cantinolle et de la zone de Cantinolle, on greffe des outils concrets (générateur de devis, suivi de chantier, portail client, relances par agent) ou on développe une plateforme métier branchée sur votre CRM ou ERP, avec passation complète à vos équipes.",
+          },
+          {
+            q: "Mes données clients restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Eysines, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison maraîchère ou pendant le pic du marché de Migron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes d'Eysines.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Eysines des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de Bordeaux Métropole héritière du « potager de Bordeaux », où la zone maraîchère de 162 hectares le long de la jalle (une quinzaine d'exploitations en pomme de terre et citrouille, la SICA Maraîchère et son circuit de paniers) côtoie le marché dominical de Migron, place Florale, et la ZAC Carès-Cantinolle qui réunit des dizaines de PME, artisans et services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à Eysines, itérations à distance, sans verrou ni abonnement imposé.",
+        whyHere: [
+          "Héritage maraîcher toujours vivant : la zone maraîchère de 162 hectares le long de la jalle abrite une quinzaine d'exploitations en pomme de terre et citrouille, et la SICA Maraîchère fédère des producteurs en circuit court avec livraison de paniers — terrain idéal pour des boutiques e-commerce de producteurs, des systèmes d'abonnement aux paniers et une traçabilité récolte automatisée par agent.",
+          "Commerce de proximité animé par le marché dominical de Migron, place Florale, qui rassemble plus de soixante commerçants et producteurs : bouchers, primeurs, fromagers, fleuristes. Pour ces étals et les boutiques du cœur de ville, on bâtit des vitrines e-commerce mobile-first, click-and-collect et réservation en ligne, avec un chatbot multilingue qui répond aux questions d'horaires et de disponibilités.",
+          "Tissu d'artisans et de PME dense autour de la ZAC Carès-Cantinolle et de la zone d'activité de Cantinolle, où voisinent des entreprises comme la Chocolaterie Segonzac ou des négoces de matériaux du bâtiment : on greffe des outils concrets sur l'existant (générateur de devis, suivi de chantier, relances clients par agent) ou un site qui convertit la demande de proximité.",
+          "Commune intégrée à Bordeaux Métropole, reliée par le tramway ligne D à Eysines-Cantinolle, la rocade A630 et l'aéroport de Bordeaux-Mérignac tout proche : commerces, services et acteurs tertiaires captent une clientèle métropolitaine. Nos parcours UX/UI, notre recherche sémantique et notre hébergement UE conforme RGPD et AI Act sécurisent données clients et commandes sans transfert hors Europe.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Eysines",
+            detail:
+              "Atelier sur site (cœur de ville, place Florale à Migron, ZAC Carès-Cantinolle, zone maraîchère de la jalle) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité maraîchère. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale d'Eysines et métropolitaine de Bordeaux. On valide accessibilité et parcours d'achat avant la première ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, vente directe de producteurs, chatbot RAG multilingue, recherche sémantique, agents de devis et de relance. Démos hebdomadaires en visio pour décider sprint après sprint, sans tunnel ni effet boîte noire.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison de récolte maraîchère ou pendant le pic dominical du marché de Migron. On vérifie chaque parcours sur mobile réel avant l'ouverture.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases de données et modèles livrés chez vous (hébergement UE possible), avec documentation et passation. Vos équipes d'Eysines pilotent l'outil en autonomie, sans verrou ni abonnement imposé, et peuvent le confier à un autre prestataire de Bordeaux Métropole à tout moment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, générateur de devis) sur le site existant d'un maraîcher de la jalle, d'un artisan ou d'un commerçant du marché de Migron, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : vente directe de produits du terroir, abonnement paniers SICA, réservation et paiement en ligne, multilingue, sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de la ZAC Carès-Cantinolle et de Bordeaux Métropole (négoce de matériaux, agroalimentaire, services), IA intégrée, branchée sur votre SI (CRM, ERP, comptabilité).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux : refonte de plateformes, design system mutualisé, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique de vente directe ou une plateforme, avec ou sans brique IA. On travaille en multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first et optimisé pour la conversion d'une clientèle eysinaise et métropolitaine.",
+          },
+          {
+            q: "Pouvez-vous équiper un maraîcher ou la SICA en vente directe en ligne ?",
+            a: "Oui. Pour les exploitations de la zone maraîchère d'Eysines (pomme de terre, citrouille, paniers) et les circuits courts type SICA Maraîchère, on conçoit une boutique e-commerce de circuit court : catalogue saisonnier, abonnement aux paniers, commande et paiement en ligne, points de retrait et un agent qui gère relances et traçabilité des récoltes le long de la jalle.",
+          },
+          {
+            q: "Pouvez-vous créer un site pour les commerçants du marché de Migron ?",
+            a: "Oui. Pour les producteurs et commerçants du marché dominical de Migron, place Florale, on bâtit des vitrines mobile-first avec horaires, disponibilité des produits du jour, click-and-collect et réservation. Un chatbot multilingue répond aux questions courantes, et la recherche sémantique aide les clients à trouver le bon étal ou produit avant de venir sur place.",
+          },
+          {
+            q: "Travaillez-vous avec les PME de la ZAC Carès-Cantinolle ?",
+            a: "Oui. Pour les artisans, négoces de matériaux et PME de la ZAC Carès-Cantinolle et de la zone de Cantinolle, on greffe des outils concrets (générateur de devis, suivi de chantier, portail client, relances par agent) ou on développe une plateforme métier branchée sur votre CRM ou ERP, avec passation complète à vos équipes.",
+          },
+          {
+            q: "Mes données clients restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA ; vous gardez la propriété complète de vos données et modèles. Après le cadrage sur place à Eysines, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de verrou.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie surprise. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison maraîchère ou pendant le pic du marché de Migron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Le projet reste transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes d'Eysines.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Eysines ?",

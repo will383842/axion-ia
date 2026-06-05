@@ -48,6 +48,183 @@ export const ETAMPES_COPY: VilleCopy = {
       en: "Nos formations un-à-un à Étampes accompagnent les dirigeants de TPE et PME franciliennes dans la maîtrise pratique de l'IA générative au quotidien.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Étampes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture du sud-Essonne où le tissu mêle les TPE du commerce de détail du centre médiéval, les enseignes de la zone commerciale du Plateau de Guinette le long de la RN191, l'industrie du parc Sudessor (autour de l'équipementier automobile Faurecia), les artisans du bâtiment, les logisticiens de la RN20 et les exploitations céréalières de la Beauce francilienne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Étampes, accessible par le RER C (terminus) ou la RN20, puis itérations à distance avec vos équipes.",
+        whyHere: [
+          "Commerce de proximité du centre médiéval et enseignes du Plateau de Guinette : les boutiques de la rue Saint-Jacques comme les grandes surfaces de la zone commerciale de Guinette (E.Leclerc, Intersport, Kiabi) le long de la RN191 vivent d'une clientèle de quartier et de passage — on bâtit des vitrines e-commerce mobile-first avec clic-et-collect, fiche Google et chatbot de prise de commande ancré sur votre catalogue.",
+          "Industrie du parc Sudessor et logistique de la RN20 : sur les 132 hectares du parc d'activités qui regroupe ~148 entreprises et ~3 300 emplois autour de l'équipementier Faurecia, et pour les PME de transport routier de l'axe Paris-Orléans, on développe des portails de suivi, des automatisations de devis et de bons de transport, et des agents qui digèrent vos flux d'expédition et de production.",
+          "Agriculture céréalière de la Beauce et artisanat du bâtiment : pour les exploitations beauceronnes et les artisans qui rayonnent vers La Ferté-Alais, Dourdan et Guillerval, on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — relevé de chantier, planification de tournées, recherche sémantique dans vos fiches techniques et tarifs.",
+          "Sous-préfecture, services administratifs et de santé : pour les acteurs du tertiaire et du soin local (sous-préfecture, hôpital d'Étampes, professions libérales), toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, usagers et clients restent maîtrisées, sans transit hors UE non encadré.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Étampes",
+            detail:
+              "Atelier sur site (centre historique autour de la collégiale Notre-Dame, zone commerciale du Plateau de Guinette sur la RN191, parc Sudessor, gare RER C terminus) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle étampoise qui consulte d'abord depuis son téléphone, que ce soit en flânant rue Saint-Jacques ou en zone commerciale de Guinette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, clic-et-collect, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis ou de tournées pour les logisticiens de la RN20. Démos hebdomadaires en visio avec vos équipes du sud-Essonne.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un commerce du Plateau de Guinette en pleine saison, un industriel du parc Sudessor en flux tendu ou un transporteur en flux continu.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Étampes, sans verrou ni abonnement imposé, transférable à tout prestataire local du sud-Essonne ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande clic-et-collect) sur le site d'un commerçant du centre médiéval, d'un restaurateur ou d'un artisan étampois, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les commerces du Plateau de Guinette, les artisans du bâtiment et les logisticiens de la RN20 : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), automatisation de devis, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du parc Sudessor et du sud-Essonne (industrie, équipementiers, transport), IA intégrée, branchée sur votre SI (CRM, ERP, gestion de transport ou de production).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs industriels du bassin (à l'image d'un équipementier comme Faurecia) et services régionaux : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, pensé mobile-first pour vos clients étampois, qu'ils viennent du centre médiéval ou de la zone de Guinette.",
+          },
+          {
+            q: "Pouvez-vous outiller un commerce de la zone commerciale du Plateau de Guinette ?",
+            a: "Oui. Pour les enseignes installées le long de la RN191 (alimentaire, équipement de la personne, sport, restauration rapide), on bâtit des boutiques e-commerce avec clic-et-collect, fiche Google optimisée, recherche sémantique dans le catalogue et chatbot de prise de commande. L'objectif : capter la clientèle de passage qui prépare ses achats sur mobile avant de venir en magasin.",
+          },
+          {
+            q: "Pouvez-vous outiller un industriel du parc Sudessor ou un logisticien de la RN20 ?",
+            a: "Oui. Sur le parc Sudessor (≈148 entreprises, ≈3 300 emplois) comme pour les PME de transport routier de l'axe Paris-Orléans, on développe des portails de suivi d'expédition et de production, l'automatisation des devis et bons de transport, et des agents qui exploitent vos flux. Branchés sur votre ERP ou votre gestion de transport, hébergés en UE.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et conformes RGPD ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique — un point décisif pour les services administratifs de la sous-préfecture, l'hôpital d'Étampes et les professions de santé locales qui manipulent des données sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Étampes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du Plateau de Guinette en pleine saison ou un industriel du parc Sudessor en flux tendu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud-Essonne ou repris en interne par vos équipes étampoises.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Étampes des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture du sud-Essonne où le tissu mêle les TPE du commerce de détail du centre médiéval, les enseignes de la zone commerciale du Plateau de Guinette le long de la RN191, l'industrie du parc Sudessor (autour de l'équipementier automobile Faurecia), les artisans du bâtiment, les logisticiens de la RN20 et les exploitations céréalières de la Beauce francilienne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Étampes, accessible par le RER C (terminus) ou la RN20, puis itérations à distance avec vos équipes.",
+        whyHere: [
+          "Commerce de proximité du centre médiéval et enseignes du Plateau de Guinette : les boutiques de la rue Saint-Jacques comme les grandes surfaces de la zone commerciale de Guinette (E.Leclerc, Intersport, Kiabi) le long de la RN191 vivent d'une clientèle de quartier et de passage — on bâtit des vitrines e-commerce mobile-first avec clic-et-collect, fiche Google et chatbot de prise de commande ancré sur votre catalogue.",
+          "Industrie du parc Sudessor et logistique de la RN20 : sur les 132 hectares du parc d'activités qui regroupe ~148 entreprises et ~3 300 emplois autour de l'équipementier Faurecia, et pour les PME de transport routier de l'axe Paris-Orléans, on développe des portails de suivi, des automatisations de devis et de bons de transport, et des agents qui digèrent vos flux d'expédition et de production.",
+          "Agriculture céréalière de la Beauce et artisanat du bâtiment : pour les exploitations beauceronnes et les artisans qui rayonnent vers La Ferté-Alais, Dourdan et Guillerval, on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — relevé de chantier, planification de tournées, recherche sémantique dans vos fiches techniques et tarifs.",
+          "Sous-préfecture, services administratifs et de santé : pour les acteurs du tertiaire et du soin local (sous-préfecture, hôpital d'Étampes, professions libérales), toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, usagers et clients restent maîtrisées, sans transit hors UE non encadré.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Étampes",
+            detail:
+              "Atelier sur site (centre historique autour de la collégiale Notre-Dame, zone commerciale du Plateau de Guinette sur la RN191, parc Sudessor, gare RER C terminus) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle étampoise qui consulte d'abord depuis son téléphone, que ce soit en flânant rue Saint-Jacques ou en zone commerciale de Guinette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, clic-et-collect, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis ou de tournées pour les logisticiens de la RN20. Démos hebdomadaires en visio avec vos équipes du sud-Essonne.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un commerce du Plateau de Guinette en pleine saison, un industriel du parc Sudessor en flux tendu ou un transporteur en flux continu.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Étampes, sans verrou ni abonnement imposé, transférable à tout prestataire local du sud-Essonne ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande clic-et-collect) sur le site d'un commerçant du centre médiéval, d'un restaurateur ou d'un artisan étampois, en quelques semaines et sans refonte de l'existant.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les commerces du Plateau de Guinette, les artisans du bâtiment et les logisticiens de la RN20 : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), automatisation de devis, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du parc Sudessor et du sud-Essonne (industrie, équipementiers, transport), IA intégrée, branchée sur votre SI (CRM, ERP, gestion de transport ou de production).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs industriels du bassin (à l'image d'un équipementier comme Faurecia) et services régionaux : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, pensé mobile-first pour vos clients étampois, qu'ils viennent du centre médiéval ou de la zone de Guinette.",
+          },
+          {
+            q: "Pouvez-vous outiller un commerce de la zone commerciale du Plateau de Guinette ?",
+            a: "Oui. Pour les enseignes installées le long de la RN191 (alimentaire, équipement de la personne, sport, restauration rapide), on bâtit des boutiques e-commerce avec clic-et-collect, fiche Google optimisée, recherche sémantique dans le catalogue et chatbot de prise de commande. L'objectif : capter la clientèle de passage qui prépare ses achats sur mobile avant de venir en magasin.",
+          },
+          {
+            q: "Pouvez-vous outiller un industriel du parc Sudessor ou un logisticien de la RN20 ?",
+            a: "Oui. Sur le parc Sudessor (≈148 entreprises, ≈3 300 emplois) comme pour les PME de transport routier de l'axe Paris-Orléans, on développe des portails de suivi d'expédition et de production, l'automatisation des devis et bons de transport, et des agents qui exploitent vos flux. Branchés sur votre ERP ou votre gestion de transport, hébergés en UE.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et conformes RGPD ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique — un point décisif pour les services administratifs de la sous-préfecture, l'hôpital d'Étampes et les professions de santé locales qui manipulent des données sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Étampes, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez ce que vous payez avant qu'on écrive la première ligne de code.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du Plateau de Guinette en pleine saison ou un industriel du parc Sudessor en flux tendu. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble est transférable à tout prestataire local du sud-Essonne ou repris en interne par vos équipes étampoises.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Étampes ?",

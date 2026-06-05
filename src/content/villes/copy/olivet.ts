@@ -50,6 +50,183 @@ export const OLIVET_COPY: VilleCopy = {
       en: "Concevoir à Olivet un site ou une plateforme web augmentée par l'IA pour une PME de la cosmétique ou de l'horticulture — vente en ligne, catalogue et relation client enrichis intelligemment.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
+        whyHere: [
+          "Territoire Cosmetic Valley : laboratoires, façonniers et marques de parfumerie-cosmétique gravitent autour d'Orléans et de son réseau de PME industrielles — on construit des vitrines e-commerce premium sous Shopify ou WooCommerce, des catalogues produits multilingues et des portails de suivi qualité augmentés par l'IA, branchés sur vos référentiels formulation et réglementaires.",
+          "Tradition horticole et pépinières le long du Loiret : pour ces TPE saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
+          "Tissu de services et commerce de proximité dans le sillage de la métropole orléanaise, des commerces du bourg aux libéraux et acteurs de la santé : recherche sémantique, prise de rendez-vous en ligne et automatisation des devis et relances, calibrées pour des structures à taille humaine qui veulent rester maîtresses de leur outil.",
+          "Proximité d'Orléans, de Saran et de la gare des Aubrais (Paris à une heure, A71 à portée) : clientèle exigeante et mobile, en partie résidentielle et navetteuse — UX/UI mobile-first, Web Vitals soignés et hébergement UE conforme RGPD pour des données cosmétiques, horticoles et clients pleinement maîtrisées.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Olivet",
+            detail:
+              "Atelier sur site (bords du Loiret, zones d'activité du sud d'Orléans, locaux de l'entreprise) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité horticole ou des cycles de lancement cosmétique. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale et régionale, des commerces du bourg aux marques de la Cosmetic Valley exportatrices.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou sur mesure, catalogue produits multilingue, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison de vente horticole printanière ou de lancement produit cosmétique, quand chaque heure de visibilité compte.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes pilotent l'outil en autonomie depuis Olivet, sans verrou ni abonnement imposé, avec une passation claire et un accompagnement à la prise en main.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot conseil, recherche sémantique, prise de rendez-vous, relance de devis) sur le site d'une pépinière, d'un commerce du bourg, d'un libéral ou d'un prestataire de services d'Olivet, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une marque cosmétique, un façonnier de la Cosmetic Valley, un horticulteur ou un acteur des services : UX/UI mobile-first, catalogue multilingue, e-commerce multi-CMS et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de la Cosmetic Valley, de l'agroalimentaire ou des services, IA intégrée, branchée sur votre SI (CRM, ERP, suivi qualité, traçabilité réglementaire).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et donneurs d'ordre de la métropole orléanaise : refonte de plateformes, design system, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, selon ce qui sert vraiment votre activité à Olivet, sans vous enfermer dans une techno.",
+          },
+          {
+            q: "Mes données cosmétiques et clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Pour les acteurs de la Cosmetic Valley, c'est essentiel : vous gardez la propriété complète de vos données, formulations, fiches produits et modèles, sans verrou ni dépendance à un prestataire unique. Le suivi qualité et la traçabilité réglementaire restent sous votre contrôle.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
+          },
+          {
+            q: "Gérez-vous la saisonnalité d'une pépinière ou d'un horticulteur ?",
+            a: "Oui. On modélise les pics de vente printaniers et automnaux propres aux pépinières et horticulteurs du Loiret : catalogue variétés en ligne avec recherche par usage et exposition, configurateur de commande, chatbot conseil planté sur vos fiches plantes, et mise en ligne sans downtime même en pleine saison de plantation, quand votre site travaille pour vous jour et nuit.",
+          },
+          {
+            q: "Pouvez-vous reprendre un site existant sans tout casser ?",
+            a: "Oui. Beaucoup de commerces et de PME d'Olivet ont déjà un site WordPress, WooCommerce ou PrestaShop fonctionnel : on greffe alors l'IA et on optimise l'UX/UI, les Web Vitals et l'e-commerce sans refonte inutile. Si une reconstruction se justifie, on la propose franchement, mais l'objectif reste de préserver votre acquis, votre référencement et votre budget.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
+        whyHere: [
+          "Territoire Cosmetic Valley : laboratoires, façonniers et marques de parfumerie-cosmétique gravitent autour d'Orléans et de son réseau de PME industrielles — on construit des vitrines e-commerce premium sous Shopify ou WooCommerce, des catalogues produits multilingues et des portails de suivi qualité augmentés par l'IA, branchés sur vos référentiels formulation et réglementaires.",
+          "Tradition horticole et pépinières le long du Loiret : pour ces TPE saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
+          "Tissu de services et commerce de proximité dans le sillage de la métropole orléanaise, des commerces du bourg aux libéraux et acteurs de la santé : recherche sémantique, prise de rendez-vous en ligne et automatisation des devis et relances, calibrées pour des structures à taille humaine qui veulent rester maîtresses de leur outil.",
+          "Proximité d'Orléans, de Saran et de la gare des Aubrais (Paris à une heure, A71 à portée) : clientèle exigeante et mobile, en partie résidentielle et navetteuse — UX/UI mobile-first, Web Vitals soignés et hébergement UE conforme RGPD pour des données cosmétiques, horticoles et clients pleinement maîtrisées.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Olivet",
+            detail:
+              "Atelier sur site (bords du Loiret, zones d'activité du sud d'Orléans, locaux de l'entreprise) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité horticole ou des cycles de lancement cosmétique. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale et régionale, des commerces du bourg aux marques de la Cosmetic Valley exportatrices.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou sur mesure, catalogue produits multilingue, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris en pleine saison de vente horticole printanière ou de lancement produit cosmétique, quand chaque heure de visibilité compte.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible), documentés et transférables. Vos équipes pilotent l'outil en autonomie depuis Olivet, sans verrou ni abonnement imposé, avec une passation claire et un accompagnement à la prise en main.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot conseil, recherche sémantique, prise de rendez-vous, relance de devis) sur le site d'une pépinière, d'un commerce du bourg, d'un libéral ou d'un prestataire de services d'Olivet, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une marque cosmétique, un façonnier de la Cosmetic Valley, un horticulteur ou un acteur des services : UX/UI mobile-first, catalogue multilingue, e-commerce multi-CMS et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de la Cosmetic Valley, de l'agroalimentaire ou des services, IA intégrée, branchée sur votre SI (CRM, ERP, suivi qualité, traçabilité réglementaire).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et donneurs d'ordre de la métropole orléanaise : refonte de plateformes, design system, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. On travaille multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, selon ce qui sert vraiment votre activité à Olivet, sans vous enfermer dans une techno.",
+          },
+          {
+            q: "Mes données cosmétiques et clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Pour les acteurs de la Cosmetic Valley, c'est essentiel : vous gardez la propriété complète de vos données, formulations, fiches produits et modèles, sans verrou ni dépendance à un prestataire unique. Le suivi qualité et la traçabilité réglementaire restent sous votre contrôle.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
+          },
+          {
+            q: "Gérez-vous la saisonnalité d'une pépinière ou d'un horticulteur ?",
+            a: "Oui. On modélise les pics de vente printaniers et automnaux propres aux pépinières et horticulteurs du Loiret : catalogue variétés en ligne avec recherche par usage et exposition, configurateur de commande, chatbot conseil planté sur vos fiches plantes, et mise en ligne sans downtime même en pleine saison de plantation, quand votre site travaille pour vous jour et nuit.",
+          },
+          {
+            q: "Pouvez-vous reprendre un site existant sans tout casser ?",
+            a: "Oui. Beaucoup de commerces et de PME d'Olivet ont déjà un site WordPress, WooCommerce ou PrestaShop fonctionnel : on greffe alors l'IA et on optimise l'UX/UI, les Web Vitals et l'e-commerce sans refonte inutile. Si une reconstruction se justifie, on la propose franchement, mais l'objectif reste de préserver votre acquis, votre référencement et votre budget.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il sur site à Olivet ?",

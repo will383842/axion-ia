@@ -48,6 +48,183 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
       en: "Accompagner en un-à-un les dirigeants de TPE et PME de Carrières-sous-Poissy pour une adoption sereine de l'IA, sans no-code, avec transfert de compétences progressif.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
+        whyHere: [
+          "Filière automobile et R&D : autour du centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, gravitent sous-traitants et bureaux d'études. Terrain idéal pour des portails fournisseurs, des plateformes SaaS métier et des agents qui pilotent devis, documentation technique et homologation — branchés sur vos CRM et ERP, avec une recherche sémantique qui retrouve une référence pièce en quelques mots.",
+          "Logistique et commerce de gros le long du bord de Seine : nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues produits et relances, avec des interfaces mobile-first pensées pour les caristes et équipes terrain des entrepôts riverains. Un chatbot RAG multilingue répond aux clients sur les délais, les stocks et le transport fluvial sans mobiliser le back-office.",
+          "Tissu majoritairement TPE/PME des Trois Cèdres et des zones d'activité riveraines : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento pour un commerçant, un artisan du bâtiment ou un négociant de gros. UX/UI sur mesure, design system à votre marque, le tout transférable.",
+          "Ancrage Grand Paris Seine et Oise et desserte par la gare de Poissy (RER A, Transilien J) : à 30 km de Paris et 10 km de Saint-Germain-en-Laye, la commune capte une clientèle francilienne exigeante sur la performance et la conformité. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act ; vos données clients et fournisseurs restent maîtrisées, sans transit hors UE sans DPA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Carrières-sous-Poissy",
+            detail:
+              "Atelier sur site — quartier des Trois Cèdres, zones d'activité du bord de Seine ou abords du centre technique PSA : objectifs commerciaux, parcours utilisateurs, audit de la stack et des contenus existants. On identifie ce qui se greffe et ce qui se reconstruit. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI mobile-first",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement. Parcours pensés mobile-first pour vos clients du commerce de détail comme pour les équipes terrain de la logistique et de la construction qui consultent depuis un chantier ou un entrepôt.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs de la filière automobile, chatbot RAG multilingue, recherche sémantique, agents et automatisations des relances et devis. Démos hebdomadaires en visio depuis Carrières-sous-Poissy, code versionné et revue à chaque sprint.",
+          },
+          {
+            step: "Recette et mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO validés. Mise en production sans downtime — y compris quand on augmente un site déjà en exploitation pour un négociant du bord de Seine ou un acteur logistique en pleine activité saisonnière.",
+          },
+          {
+            step: "Livraison et autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous, hébergement UE possible. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé. Transfert de compétences et documentation pour qu'un prestataire des Yvelines ou votre équipe interne puisse reprendre la main.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation des relances et devis — sur le site existant d'un commerçant, d'un artisan du bâtiment ou d'un négociant des Trois Cèdres, sans refonte. Idéal pour le commerce de détail et les services de proximité du bord de Seine.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site vitrine ou d'une boutique pour le commerce de gros, la logistique, l'entreposage ou la construction : UX/UI mobile-first, catalogue produits, paiement et IA intégrée. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les acteurs de la filière automobile, du commerce de gros et de la logistique riveraine, IA intégrée et branchée sur votre SI (CRM, ERP, WMS). Recherche sémantique sur catalogues et documentation technique.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du bord de Seine et de la R&D automobile (orbite du centre technique PSA) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance data et conformité AI Act.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable et développement — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et conforme aux Web Vitals.",
+          },
+          {
+            q: "Travaillez-vous pour la filière automobile et la R&D autour du centre technique PSA ?",
+            a: "Oui. Dans l'orbite du centre technique PSA Peugeot Citroën — recherche autoroutière, moteurs électriques — et de ses sous-traitants, on construit portails fournisseurs, plateformes de suivi de commandes, recherche sémantique sur documentation technique et agents qui automatisent devis, homologation et relances. Le tout branché sur vos CRM et ERP existants, sans no-code.",
+          },
+          {
+            q: "Accompagnez-vous la logistique et le commerce de gros du bord de Seine ?",
+            a: "Oui. Pour les entrepôts, négociants et acteurs de l'entreposage des zones d'activité riveraines, nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues, relances et SAV. Un chatbot RAG multilingue répond aux clients sur stocks, délais et transport, avec des interfaces mobile-first pour les équipes terrain qui scannent et expédient.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : minimisation des données, journalisation des accès, droit à l'effacement. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Une fiche conformité accompagne chaque projet.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Carrières-sous-Poissy — quartier des Trois Cèdres ou zones d'activité du bord de Seine — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, le périmètre et le prix sont actés avant le premier sprint.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
+        whyHere: [
+          "Filière automobile et R&D : autour du centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, gravitent sous-traitants et bureaux d'études. Terrain idéal pour des portails fournisseurs, des plateformes SaaS métier et des agents qui pilotent devis, documentation technique et homologation — branchés sur vos CRM et ERP, avec une recherche sémantique qui retrouve une référence pièce en quelques mots.",
+          "Logistique et commerce de gros le long du bord de Seine : nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues produits et relances, avec des interfaces mobile-first pensées pour les caristes et équipes terrain des entrepôts riverains. Un chatbot RAG multilingue répond aux clients sur les délais, les stocks et le transport fluvial sans mobiliser le back-office.",
+          "Tissu majoritairement TPE/PME des Trois Cèdres et des zones d'activité riveraines : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento pour un commerçant, un artisan du bâtiment ou un négociant de gros. UX/UI sur mesure, design system à votre marque, le tout transférable.",
+          "Ancrage Grand Paris Seine et Oise et desserte par la gare de Poissy (RER A, Transilien J) : à 30 km de Paris et 10 km de Saint-Germain-en-Laye, la commune capte une clientèle francilienne exigeante sur la performance et la conformité. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act ; vos données clients et fournisseurs restent maîtrisées, sans transit hors UE sans DPA.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Carrières-sous-Poissy",
+            detail:
+              "Atelier sur site — quartier des Trois Cèdres, zones d'activité du bord de Seine ou abords du centre technique PSA : objectifs commerciaux, parcours utilisateurs, audit de la stack et des contenus existants. On identifie ce qui se greffe et ce qui se reconstruit. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI mobile-first",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement. Parcours pensés mobile-first pour vos clients du commerce de détail comme pour les équipes terrain de la logistique et de la construction qui consultent depuis un chantier ou un entrepôt.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs de la filière automobile, chatbot RAG multilingue, recherche sémantique, agents et automatisations des relances et devis. Démos hebdomadaires en visio depuis Carrières-sous-Poissy, code versionné et revue à chaque sprint.",
+          },
+          {
+            step: "Recette et mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO validés. Mise en production sans downtime — y compris quand on augmente un site déjà en exploitation pour un négociant du bord de Seine ou un acteur logistique en pleine activité saisonnière.",
+          },
+          {
+            step: "Livraison et autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous, hébergement UE possible. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé. Transfert de compétences et documentation pour qu'un prestataire des Yvelines ou votre équipe interne puisse reprendre la main.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation des relances et devis — sur le site existant d'un commerçant, d'un artisan du bâtiment ou d'un négociant des Trois Cèdres, sans refonte. Idéal pour le commerce de détail et les services de proximité du bord de Seine.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site vitrine ou d'une boutique pour le commerce de gros, la logistique, l'entreposage ou la construction : UX/UI mobile-first, catalogue produits, paiement et IA intégrée. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les acteurs de la filière automobile, du commerce de gros et de la logistique riveraine, IA intégrée et branchée sur votre SI (CRM, ERP, WMS). Recherche sémantique sur catalogues et documentation technique.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du bord de Seine et de la R&D automobile (orbite du centre technique PSA) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit, gouvernance data et conformité AI Act.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable et développement — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et conforme aux Web Vitals.",
+          },
+          {
+            q: "Travaillez-vous pour la filière automobile et la R&D autour du centre technique PSA ?",
+            a: "Oui. Dans l'orbite du centre technique PSA Peugeot Citroën — recherche autoroutière, moteurs électriques — et de ses sous-traitants, on construit portails fournisseurs, plateformes de suivi de commandes, recherche sémantique sur documentation technique et agents qui automatisent devis, homologation et relances. Le tout branché sur vos CRM et ERP existants, sans no-code.",
+          },
+          {
+            q: "Accompagnez-vous la logistique et le commerce de gros du bord de Seine ?",
+            a: "Oui. Pour les entrepôts, négociants et acteurs de l'entreposage des zones d'activité riveraines, nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues, relances et SAV. Un chatbot RAG multilingue répond aux clients sur stocks, délais et transport, avec des interfaces mobile-first pour les équipes terrain qui scannent et expédient.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : minimisation des données, journalisation des accès, droit à l'effacement. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique. Une fiche conformité accompagne chaque projet.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Carrières-sous-Poissy — quartier des Trois Cèdres ou zones d'activité du bord de Seine — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, le périmètre et le prix sont actés avant le premier sprint.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention à Carrières-sous-Poissy ?",

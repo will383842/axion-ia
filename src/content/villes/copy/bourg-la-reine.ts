@@ -46,6 +46,183 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
+        whyHere: [
+          "Forte densité de professions libérales — médecins, avocats, experts-comptables, notaires installés autour de la gare RER B et de l'avenue du Général-Leclerc : nous bâtissons des sites de prise de rendez-vous, des portails patients-clients sécurisés et des chatbots de pré-qualification, conçus pour la confidentialité des données sensibles soumises au secret professionnel.",
+          "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des TPE qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
+          "Présence de sièges et marques connus — Faber-Castell, le fabricant de chauffage Atlantic, le voyagiste Belambra — et de PME tertiaires branchées sur le coworking Stop&Work à trois minutes de la gare : terrain idéal pour des plateformes SaaS, portails métier et agents IA intégrés aux SI (CRM, ERP) de l'axe Sceaux-Antony-Massy.",
+          "Accès direct RER B vers Paris-Denfert en 15 min, Massy-Palaiseau TGV en 12 min et le pôle scientifique de Saclay : les structures de conseil et d'ingénierie réservent l'hébergement UE strict — toute la chaîne IA est conforme RGPD et AI Act, vos données de clients, patients ou dossiers restent maîtrisées, sans transit hors UE.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Bourg-la-Reine",
+            detail:
+              "Atelier sur site — votre cabinet ou commerce de l'avenue du Général-Leclerc, vos bureaux près de la gare RER B ou un espace de coworking type Stop&Work : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale du sud 92 qui réserve, prend rendez-vous et achète depuis son téléphone, dans les transports comme à pied dans le centre-ville.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations de gestion clients. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau, sans boîte noire.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pendant les heures d'ouverture d'un cabinet de l'avenue du Général-Leclerc ou d'une boutique du quartier de la Faïencerie. Bascule planifiée hors pics d'affluence.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne. Transfert de compétences inclus à la remise.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce de l'avenue du Général-Leclerc ou d'un cabinet libéral réginaburgien, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME tertiaires, agences de services et commerces du sud 92 : e-commerce multi-CMS, click-and-collect, recherche sémantique, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de l'axe RER B Sceaux-Antony-Massy, IA intégrée, branchée sur votre SI (CRM, ERP, outils de gestion de cabinet ou de production).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et sièges du Grand Paris sud, à l'image des marques industrielles et de services implantées à Bourg-la-Reine : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail de rendez-vous, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données de patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. C'est particulièrement adapté aux cabinets médicaux, juridiques et comptables de Bourg-la-Reine, nombreux autour de la gare RER B et soumis au secret professionnel. Vous gardez la propriété complète de vos données et modèles.",
+          },
+          {
+            q: "Pouvez-vous outiller un commerce du quartier de la Faïencerie ou de l'avenue du Général-Leclerc ?",
+            a: "Oui. Pour un commerce de proximité : vitrine e-commerce multi-CMS, click-and-collect et recherche sémantique, afin de vendre au-delà du quartier vers Antony, Sceaux et tout le sud des Hauts-de-Seine. Le futur écoquartier de la Faïencerie, à 700 m de la gare, amène une nouvelle clientèle résidentielle qu'un site bien pensé capte directement.",
+          },
+          {
+            q: "Travaillez-vous avec les PME tertiaires et sièges de l'axe RER B ?",
+            a: "Oui. Bourg-la-Reine accueille des marques connues comme Faber-Castell, Atlantic ou Belambra et de nombreuses PME de services proches du coworking Stop&Work. Pour elles, on construit des plateformes SaaS, portails clients et agents IA branchés sur le SI (CRM, ERP), avec démos hebdomadaires et code livré chez vous, sans verrou éditeur.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
+        whyHere: [
+          "Forte densité de professions libérales — médecins, avocats, experts-comptables, notaires installés autour de la gare RER B et de l'avenue du Général-Leclerc : nous bâtissons des sites de prise de rendez-vous, des portails patients-clients sécurisés et des chatbots de pré-qualification, conçus pour la confidentialité des données sensibles soumises au secret professionnel.",
+          "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des TPE qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
+          "Présence de sièges et marques connus — Faber-Castell, le fabricant de chauffage Atlantic, le voyagiste Belambra — et de PME tertiaires branchées sur le coworking Stop&Work à trois minutes de la gare : terrain idéal pour des plateformes SaaS, portails métier et agents IA intégrés aux SI (CRM, ERP) de l'axe Sceaux-Antony-Massy.",
+          "Accès direct RER B vers Paris-Denfert en 15 min, Massy-Palaiseau TGV en 12 min et le pôle scientifique de Saclay : les structures de conseil et d'ingénierie réservent l'hébergement UE strict — toute la chaîne IA est conforme RGPD et AI Act, vos données de clients, patients ou dossiers restent maîtrisées, sans transit hors UE.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Bourg-la-Reine",
+            detail:
+              "Atelier sur site — votre cabinet ou commerce de l'avenue du Général-Leclerc, vos bureaux près de la gare RER B ou un espace de coworking type Stop&Work : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle locale du sud 92 qui réserve, prend rendez-vous et achète depuis son téléphone, dans les transports comme à pied dans le centre-ville.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations de gestion clients. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau, sans boîte noire.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pendant les heures d'ouverture d'un cabinet de l'avenue du Général-Leclerc ou d'une boutique du quartier de la Faïencerie. Bascule planifiée hors pics d'affluence.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne. Transfert de compétences inclus à la remise.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce de l'avenue du Général-Leclerc ou d'un cabinet libéral réginaburgien, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME tertiaires, agences de services et commerces du sud 92 : e-commerce multi-CMS, click-and-collect, recherche sémantique, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants de l'axe RER B Sceaux-Antony-Massy, IA intégrée, branchée sur votre SI (CRM, ERP, outils de gestion de cabinet ou de production).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et sièges du Grand Paris sud, à l'image des marques industrielles et de services implantées à Bourg-la-Reine : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou un portail de rendez-vous, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données de patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. C'est particulièrement adapté aux cabinets médicaux, juridiques et comptables de Bourg-la-Reine, nombreux autour de la gare RER B et soumis au secret professionnel. Vous gardez la propriété complète de vos données et modèles.",
+          },
+          {
+            q: "Pouvez-vous outiller un commerce du quartier de la Faïencerie ou de l'avenue du Général-Leclerc ?",
+            a: "Oui. Pour un commerce de proximité : vitrine e-commerce multi-CMS, click-and-collect et recherche sémantique, afin de vendre au-delà du quartier vers Antony, Sceaux et tout le sud des Hauts-de-Seine. Le futur écoquartier de la Faïencerie, à 700 m de la gare, amène une nouvelle clientèle résidentielle qu'un site bien pensé capte directement.",
+          },
+          {
+            q: "Travaillez-vous avec les PME tertiaires et sièges de l'axe RER B ?",
+            a: "Oui. Bourg-la-Reine accueille des marques connues comme Faber-Castell, Atlantic ou Belambra et de nombreuses PME de services proches du coworking Stop&Work. Pour elles, on construit des plateformes SaaS, portails clients et agents IA branchés sur le SI (CRM, ERP), avec démos hebdomadaires et code livré chez vous, sans verrou éditeur.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France : le tarif est le même qu'à Antony, Sceaux ou Massy.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût géographique en Île-de-France. Mise en ligne sans downtime quand on augmente l'existant, bascule planifiée hors heures d'affluence. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou éditeur imposé, transférable à tout prestataire local du Grand Paris sud ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-la-Reine ?",

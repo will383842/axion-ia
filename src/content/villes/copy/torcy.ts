@@ -50,6 +50,183 @@ export const TORCY_COPY: VilleCopy = {
       en: "Sites web augmentés à Torcy : plateformes pour PME tertiaires, prestataires numériques et commerces, avec recherche IA, devis automatisés et formulaires intelligents.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
+        whyHere: [
+          "Pôle tertiaire et informatique de l'est francilien : services aux entreprises, éditeurs et prestataires numériques dominent le tissu local autour des quartiers d'affaires de Marne-la-Vallée — terrain idéal pour des portails clients, des plateformes SaaS métier et des assistants de développement greffés sur votre SI, du CRM jusqu'à l'ERP, sans réécrire l'existant.",
+          "Commerce de zone d'activités et chalandise du centre commercial Bay 2, nourries par le RER A et la proximité de Marne-la-Vallée - Chessy : on construit des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recherche sémantique et chatbot pour capter une clientèle franchement mobile-first venue de Noisiel, Lognes et Bussy-Saint-Georges.",
+          "Artisanat du bâtiment soutenu par la croissance urbaine de la ville nouvelle et les chantiers autour de l'Arche Guédon : sites de génération de devis automatisés, formulaires intelligents et agents de qualification de leads, branchés sur vos outils de gestion existants sans refonte lourde, pour transformer chaque demande en intervention planifiée.",
+          "Flux touristique, sportif et résidentiel de l'agglomération de Marne-la-Vallée, de la base de loisirs de Vaires-Torcy au pôle de Chessy : nos chatbots RAG sont multilingues par défaut, calibrés pour la restauration, l'hôtellerie et les commerces de proximité qui croisent une clientèle visiteuse internationale et une demande locale fidèle.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Torcy",
+            detail:
+              "Atelier sur site (centre-ville, zones d'activités proches de l'Arche Guédon, centre commercial Bay 2) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de Marne-la-Vallée qui navigue depuis le RER A et le smartphone, entre deux correspondances ou en boutique.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, devis automatisés, chatbot RAG multilingue, recherche sémantique, agents et portails métier. Démos hebdomadaires en visio, code versionné et revu, pour que vous validiez chaque incrément sans surprise.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pour un commerce du quartier Bay 2 ou un prestataire informatique de l'est francilien en pleine activité, sans coupure de chiffre d'affaires.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Torcy, avec documentation, passation et formation, sans verrou technique ni abonnement imposé par Axion-IA ; tout reste transférable à un prestataire de l'est francilien si vous le souhaitez.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé) sur le site existant d'un commerce, d'un restaurant ou d'un artisan du bâtiment de Torcy et de l'Arche Guédon, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les PME tertiaires, les enseignes du secteur Bay 2 et les commerces de l'est francilien : UX/UI, e-commerce multi-CMS et IA intégrée, du panier à la fiche produit.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les éditeurs et prestataires informatiques de Marne-la-Vallée, IA intégrée et branchée sur votre SI (CRM, ERP, outils de support et de facturation).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les acteurs structurants du pôle tertiaire francilien et les groupes implantés autour de Marne-la-Vallée : refonte de plateformes, design system et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, avec un design mobile-first pensé pour la chalandise du secteur Bay 2 et de Marne-la-Vallée.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos contenus, données et modèles, sans verrou ni dépendance à un prestataire unique : tout reste transférable à une autre équipe de l'est francilien ou repris en interne.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Torcy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer, et le périmètre validé est tenu.",
+          },
+          {
+            q: "Pouvez-vous outiller les prestataires informatiques locaux ?",
+            a: "Oui. Pour les éditeurs et prestataires numériques de Marne-la-Vallée, on construit des plateformes SaaS IA-native, des portails clients et des assistants de développement, branchés sur votre SI existant et livrés avec le code source dans votre infrastructure. On accélère vos cycles de dev sans vous enfermer dans un outil propriétaire.",
+          },
+          {
+            q: "Pouvez-vous gérer le multilingue pour la clientèle touristique de Marne-la-Vallée ?",
+            a: "Oui. Avec la proximité du pôle touristique de Marne-la-Vallée - Chessy et de la base de loisirs de Vaires-Torcy, beaucoup de commerces, restaurants et hôtels croisent une clientèle internationale. Nos chatbots RAG et nos interfaces sont multilingues par défaut : ils répondent dans la langue du visiteur en s'appuyant sur vos contenus réels, sans inventer, et orientent vers la réservation ou l'achat.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
+        whyHere: [
+          "Pôle tertiaire et informatique de l'est francilien : services aux entreprises, éditeurs et prestataires numériques dominent le tissu local autour des quartiers d'affaires de Marne-la-Vallée — terrain idéal pour des portails clients, des plateformes SaaS métier et des assistants de développement greffés sur votre SI, du CRM jusqu'à l'ERP, sans réécrire l'existant.",
+          "Commerce de zone d'activités et chalandise du centre commercial Bay 2, nourries par le RER A et la proximité de Marne-la-Vallée - Chessy : on construit des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recherche sémantique et chatbot pour capter une clientèle franchement mobile-first venue de Noisiel, Lognes et Bussy-Saint-Georges.",
+          "Artisanat du bâtiment soutenu par la croissance urbaine de la ville nouvelle et les chantiers autour de l'Arche Guédon : sites de génération de devis automatisés, formulaires intelligents et agents de qualification de leads, branchés sur vos outils de gestion existants sans refonte lourde, pour transformer chaque demande en intervention planifiée.",
+          "Flux touristique, sportif et résidentiel de l'agglomération de Marne-la-Vallée, de la base de loisirs de Vaires-Torcy au pôle de Chessy : nos chatbots RAG sont multilingues par défaut, calibrés pour la restauration, l'hôtellerie et les commerces de proximité qui croisent une clientèle visiteuse internationale et une demande locale fidèle.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Torcy",
+            detail:
+              "Atelier sur site (centre-ville, zones d'activités proches de l'Arche Guédon, centre commercial Bay 2) : objectifs, parcours utilisateurs, audit de la stack, des contenus et des outils existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle de Marne-la-Vallée qui navigue depuis le RER A et le smartphone, entre deux correspondances ou en boutique.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, devis automatisés, chatbot RAG multilingue, recherche sémantique, agents et portails métier. Démos hebdomadaires en visio, code versionné et revu, pour que vous validiez chaque incrément sans surprise.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — y compris pour un commerce du quartier Bay 2 ou un prestataire informatique de l'est francilien en pleine activité, sans coupure de chiffre d'affaires.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Torcy, avec documentation, passation et formation, sans verrou technique ni abonnement imposé par Axion-IA ; tout reste transférable à un prestataire de l'est francilien si vous le souhaitez.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé) sur le site existant d'un commerce, d'un restaurant ou d'un artisan du bâtiment de Torcy et de l'Arche Guédon, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les PME tertiaires, les enseignes du secteur Bay 2 et les commerces de l'est francilien : UX/UI, e-commerce multi-CMS et IA intégrée, du panier à la fiche produit.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les éditeurs et prestataires informatiques de Marne-la-Vallée, IA intégrée et branchée sur votre SI (CRM, ERP, outils de support et de facturation).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les acteurs structurants du pôle tertiaire francilien et les groupes implantés autour de Marne-la-Vallée : refonte de plateformes, design system et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, avec un design mobile-first pensé pour la chalandise du secteur Bay 2 et de Marne-la-Vallée.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos contenus, données et modèles, sans verrou ni dépendance à un prestataire unique : tout reste transférable à une autre équipe de l'est francilien ou repris en interne.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Torcy, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de signer, et le périmètre validé est tenu.",
+          },
+          {
+            q: "Pouvez-vous outiller les prestataires informatiques locaux ?",
+            a: "Oui. Pour les éditeurs et prestataires numériques de Marne-la-Vallée, on construit des plateformes SaaS IA-native, des portails clients et des assistants de développement, branchés sur votre SI existant et livrés avec le code source dans votre infrastructure. On accélère vos cycles de dev sans vous enfermer dans un outil propriétaire.",
+          },
+          {
+            q: "Pouvez-vous gérer le multilingue pour la clientèle touristique de Marne-la-Vallée ?",
+            a: "Oui. Avec la proximité du pôle touristique de Marne-la-Vallée - Chessy et de la base de loisirs de Vaires-Torcy, beaucoup de commerces, restaurants et hôtels croisent une clientèle internationale. Nos chatbots RAG et nos interfaces sont multilingues par défaut : ils répondent dans la langue du visiteur en s'appuyant sur vos contenus réels, sans inventer, et orientent vers la réservation ou l'achat.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Torcy et dans Marne-la-Vallée ?",

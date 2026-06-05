@@ -50,6 +50,183 @@ export const VERTOU_COPY: VilleCopy = {
       en: "Concevoir à Vertou des plateformes web et SaaS IA sur-mesure pour les domaines Muscadet (vente directe AOC), les industriels du bassin Manitou (portails fournisseurs) et les PME agroalimentaires Nantes Sud.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Vertou des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour la 4e ville de Loire-Atlantique, porte Sud de Nantes Métropole le long de la Sèvre Nantaise, où cohabitent les domaines Muscadet AOC Sèvre-et-Maine fédérés autour du Château de la Frémoire, l'écosystème industriel Manitou, la chimie SNF Floerger, l'agroalimentaire de Tipiak et un BTP périurbain en pleine croissance le long du tramway TAN. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Vertou, itérations à distance, livraison clé en main et accompagnement à la prise en main.",
+        whyHere: [
+          "Vente directe viticole : les domaines Muscadet AOC Sèvre-et-Maine le long de la Sèvre Nantaise, fédérés autour du Château de la Frémoire (siège de la Fédération des Vins de Nantes depuis 1989) et de caves comme le Domaine des Cormiers, vendent au caveau, en négoce et à l'export — terrain idéal pour des boutiques e-commerce de vins, des fiches AOC enrichies et des chatbots multilingues pour la clientèle internationale.",
+          "Tissu industriel structuré autour de Manitou (chariots élévateurs, bassin Ancenis-Vertou, 4 500 salariés) et de SNF Floerger (chimie des acrylamides) : on bâtit des portails fournisseurs, des configurateurs de produits et des outils de suivi commande pour les sous-traitants des ZI La Brosse, Tubé Nord et La Riollais, qui concentrent près d'un tiers des surfaces de zones d'activité du secteur, sans imposer de refonte lourde de leur SI existant.",
+          "Agroalimentaire dense (Tipiak en siège, Brioche Pasquier et Bel à proximité) : nos automatisations IA lisent bons de commande, bordereaux de livraison et fiches recettes, on greffe recherche sémantique et catalogues produits sur les sites WooCommerce ou PrestaShop existants des PME du secteur, et on connecte des agents qui répondent aux demandes acheteurs en plusieurs langues.",
+          "Proximité immédiate de Nantes (13 km, tramway TAN, rattachement au Pôle de proximité Loire-Sèvre-et-Vignoble de Nantes Métropole) et hébergement UE strict : toute la chaîne IA reste en Europe, conforme RGPD et AI Act — vos données clients, recettes, registres de cave et fichiers fournisseurs restent maîtrisés, hébergés en UE et ne quittent jamais le territoire ni votre propriété.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Vertou",
+            detail:
+              "Atelier sur site (centre-ville le long de la Sèvre Nantaise, Château de la Frémoire, ZI La Brosse, Tubé Nord ou La Riollais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité viticole. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour vos clients export comme pour vos équipes au caveau, à l'atelier ou en zone d'activité La Riollais.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de vins, portail fournisseurs industriel, plateforme SaaS métier, chatbot RAG multilingue, recherche sémantique, agents d'extraction de documents. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris pendant un pic de commandes vendanges sur le Vignoble Nantais ou un rush logistique agroalimentaire chez Tipiak ou Pasquier.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes, du caveau de la Frémoire aux ateliers des ZI Manitou, pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, extraction de commandes négoce Muscadet) sur le site existant d'un domaine viticole AOC Sèvre-et-Maine, d'un caviste ou d'un artisan BTP du périurbain, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les PME agroalimentaires (sphère Tipiak, Pasquier) et viticoles du bassin : UX/UI mobile-first, vente directe AOC, multilingue, paiement sécurisé, IA intégrée, sur le CMS de votre choix.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les acteurs de l'écosystème Manitou, la chimie SNF Floerger et l'industrie de Nantes Sud, IA intégrée, branchée sur votre SI existant (ERP, CRM, GPAO).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux (industrie de la manutention, agroalimentaire, chimie de spécialités) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration responsive — pour un site vitrine, une boutique de vins Muscadet ou un portail industriel, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Pouvez-vous gérer la vente de vins Muscadet en ligne ?",
+            a: "Oui. On construit des boutiques e-commerce pour les domaines AOC Sèvre-et-Maine du Vignoble Nantais, comme ceux fédérés autour du Château de la Frémoire : fiches cuvées et millésimes, gestion des stocks de cave, paiement sécurisé, expédition, et chatbot multilingue pour la clientèle export. Le tout conforme à la réglementation de vente d'alcool en ligne et au RGPD.",
+          },
+          {
+            q: "Aidez-vous les sous-traitants industriels de l'écosystème Manitou ?",
+            a: "Oui. Pour les sous-traitants gravitant autour de Manitou et de SNF Floerger, implantés dans les ZI La Brosse, Tubé Nord et La Riollais, on développe des portails fournisseurs, des configurateurs de produits, du suivi commande et des plateformes SaaS branchées sur l'ERP ou la GPAO. On greffe aussi des agents de prévision de stocks et de lecture documentaire, sans refonte lourde du SI.",
+          },
+          {
+            q: "Travaillez-vous avec les PME agroalimentaires autour de Tipiak et Pasquier ?",
+            a: "Oui. Pour les PME agroalimentaires du bassin (sphère Tipiak en siège, Brioche Pasquier, Bel à proximité), on refond ou augmente les sites et catalogues produits, on ajoute de la recherche sémantique, et on déploie des automatisations IA qui lisent bons de commande, bordereaux de livraison et fiches recettes pour soulager les équipes administratives et logistiques.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, recettes, registres de cave et fichiers fournisseurs. Après le cadrage à Vertou, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vendanges ou rush agroalimentaire. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire local des Pays de la Loire ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Vertou des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour la 4e ville de Loire-Atlantique, porte Sud de Nantes Métropole le long de la Sèvre Nantaise, où cohabitent les domaines Muscadet AOC Sèvre-et-Maine fédérés autour du Château de la Frémoire, l'écosystème industriel Manitou, la chimie SNF Floerger, l'agroalimentaire de Tipiak et un BTP périurbain en pleine croissance le long du tramway TAN. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Vertou, itérations à distance, livraison clé en main et accompagnement à la prise en main.",
+        whyHere: [
+          "Vente directe viticole : les domaines Muscadet AOC Sèvre-et-Maine le long de la Sèvre Nantaise, fédérés autour du Château de la Frémoire (siège de la Fédération des Vins de Nantes depuis 1989) et de caves comme le Domaine des Cormiers, vendent au caveau, en négoce et à l'export — terrain idéal pour des boutiques e-commerce de vins, des fiches AOC enrichies et des chatbots multilingues pour la clientèle internationale.",
+          "Tissu industriel structuré autour de Manitou (chariots élévateurs, bassin Ancenis-Vertou, 4 500 salariés) et de SNF Floerger (chimie des acrylamides) : on bâtit des portails fournisseurs, des configurateurs de produits et des outils de suivi commande pour les sous-traitants des ZI La Brosse, Tubé Nord et La Riollais, qui concentrent près d'un tiers des surfaces de zones d'activité du secteur, sans imposer de refonte lourde de leur SI existant.",
+          "Agroalimentaire dense (Tipiak en siège, Brioche Pasquier et Bel à proximité) : nos automatisations IA lisent bons de commande, bordereaux de livraison et fiches recettes, on greffe recherche sémantique et catalogues produits sur les sites WooCommerce ou PrestaShop existants des PME du secteur, et on connecte des agents qui répondent aux demandes acheteurs en plusieurs langues.",
+          "Proximité immédiate de Nantes (13 km, tramway TAN, rattachement au Pôle de proximité Loire-Sèvre-et-Vignoble de Nantes Métropole) et hébergement UE strict : toute la chaîne IA reste en Europe, conforme RGPD et AI Act — vos données clients, recettes, registres de cave et fichiers fournisseurs restent maîtrisés, hébergés en UE et ne quittent jamais le territoire ni votre propriété.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Vertou",
+            detail:
+              "Atelier sur site (centre-ville le long de la Sèvre Nantaise, Château de la Frémoire, ZI La Brosse, Tubé Nord ou La Riollais) : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité viticole. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour vos clients export comme pour vos équipes au caveau, à l'atelier ou en zone d'activité La Riollais.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce de vins, portail fournisseurs industriel, plateforme SaaS métier, chatbot RAG multilingue, recherche sémantique, agents d'extraction de documents. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime — y compris pendant un pic de commandes vendanges sur le Vignoble Nantais ou un rush logistique agroalimentaire chez Tipiak ou Pasquier.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes, du caveau de la Frémoire aux ateliers des ZI Manitou, pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, extraction de commandes négoce Muscadet) sur le site existant d'un domaine viticole AOC Sèvre-et-Maine, d'un caviste ou d'un artisan BTP du périurbain, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les PME agroalimentaires (sphère Tipiak, Pasquier) et viticoles du bassin : UX/UI mobile-first, vente directe AOC, multilingue, paiement sécurisé, IA intégrée, sur le CMS de votre choix.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail fournisseurs sur mesure pour les acteurs de l'écosystème Manitou, la chimie SNF Floerger et l'industrie de Nantes Sud, IA intégrée, branchée sur votre SI existant (ERP, CRM, GPAO).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux (industrie de la manutention, agroalimentaire, chimie de spécialités) : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, intégration responsive — pour un site vitrine, une boutique de vins Muscadet ou un portail industriel, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Pouvez-vous gérer la vente de vins Muscadet en ligne ?",
+            a: "Oui. On construit des boutiques e-commerce pour les domaines AOC Sèvre-et-Maine du Vignoble Nantais, comme ceux fédérés autour du Château de la Frémoire : fiches cuvées et millésimes, gestion des stocks de cave, paiement sécurisé, expédition, et chatbot multilingue pour la clientèle export. Le tout conforme à la réglementation de vente d'alcool en ligne et au RGPD.",
+          },
+          {
+            q: "Aidez-vous les sous-traitants industriels de l'écosystème Manitou ?",
+            a: "Oui. Pour les sous-traitants gravitant autour de Manitou et de SNF Floerger, implantés dans les ZI La Brosse, Tubé Nord et La Riollais, on développe des portails fournisseurs, des configurateurs de produits, du suivi commande et des plateformes SaaS branchées sur l'ERP ou la GPAO. On greffe aussi des agents de prévision de stocks et de lecture documentaire, sans refonte lourde du SI.",
+          },
+          {
+            q: "Travaillez-vous avec les PME agroalimentaires autour de Tipiak et Pasquier ?",
+            a: "Oui. Pour les PME agroalimentaires du bassin (sphère Tipiak en siège, Brioche Pasquier, Bel à proximité), on refond ou augmente les sites et catalogues produits, on ajoute de la recherche sémantique, et on déploie des automatisations IA qui lisent bons de commande, bordereaux de livraison et fiches recettes pour soulager les équipes administratives et logistiques.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui sur les deux points. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété de vos données clients, recettes, registres de cave et fichiers fournisseurs. Après le cadrage à Vertou, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vendanges ou rush agroalimentaire. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé, transférable à tout prestataire local des Pays de la Loire ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-elle vraiment sur place à Vertou ?",

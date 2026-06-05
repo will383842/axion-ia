@@ -50,6 +50,183 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
       en: "Sites web augmentés à Beaupréau-en-Mauges : vitrine ou e-boutique B2B avec IA intégrée (devis, catalogue, recherche) pour industriels textile, agroalimentaire et artisans des Mauges.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Beaupréau-en-Mauges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, catalogues B2B, e-commerce, chatbot RAG ancré sur vos fiches produits, recherche sémantique, agents et automatisations. Pensé pour une économie mauclésienne née de la chaussure et du textile — la mémoire d'Éram et d'Humeau-Beaupréau, façonniers depuis cinq générations — désormais portée par un agroalimentaire dense et une myriade de TPE et PME familiales d'artisanat, de mécanique et de transformation sur les ZA Anjou Actiparc, la Grande Lande et Èvre et Loire. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers.",
+        whyHere: [
+          "Héritage chaussure et textile reconverti, encore vivant avec Éram et Humeau-Beaupréau (120 ans, cinq générations de façonniers) : pour les ateliers et sous-traitants cuir-textile des Mauges, on bâtit des catalogues B2B en ligne, des configurateurs de commandes et des moteurs de devis automatisés qui valorisent le savoir-faire sans alourdir l'atelier.",
+          "Agroalimentaire dense et tourné vers l'export régional — près de trente unités de transformation recensées dans la commune nouvelle : nos plateformes intègrent traçabilité, fiches produits enrichies et recherche sémantique multilingue, calibrées pour les transformateurs et négociants des Mauges qui vendent au-delà du Choletais.",
+          "Tissu rural-industriel de TPE et PME familiales sur les ZA Anjou Actiparc, la Grande Lande et la ZI Èvre et Loire (mécanique, produits métalliques, logistique, commerce des onze bourgs fusionnés) : on greffe une brique IA sur l'existant — widget, API, plugin WordPress ou PrestaShop — sans refonte coûteuse, ou on conçoit une vitrine e-commerce sur mesure.",
+          "Éloignement des grands pôles numériques (Nantes à 1 h, Angers à 45 min) : toute la chaîne UX/UI, e-commerce et IA est hébergeable en UE, conforme RGPD et AI Act, et le code vous est livré — vos données restent à Beaupréau, sur les terres de Mauges Communauté, pas chez un prestataire lointain.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Beaupréau-en-Mauges",
+            detail:
+              "Atelier sur site, en cœur de bourg ou sur les ZA Anjou Actiparc, la Grande Lande ou la ZI Èvre et Loire : objectifs, parcours utilisateurs, audit de la stack, des contenus et des catalogues existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour vos clients B2B, vos donneurs d'ordre chaussure-textile comme pour le grand public des Mauges.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré sur vos fiches, recherche sémantique, automatisation des devis et plannings d'atelier. Démos hebdomadaires en visio depuis Cholet ou Angers.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — même en pleine saison de commandes pour les façonniers cuir-textile et les transformateurs agroalimentaires de la Grande Lande.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Beaupréau, sans verrou propriétaire ni abonnement imposé, documentation et passation incluses.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot ancré sur vos contenus, recherche sémantique, automatisation de devis) sur le site existant d'un artisan, d'un commerce de bourg ou d'un atelier cuir-textile des Mauges, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un catalogue B2B ou d'une boutique pour les industriels chaussure et textile, l'agroalimentaire de la Grande Lande ou la mécanique d'Anjou Actiparc : UX/UI, e-commerce multi-CMS et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des Mauges, à la manière des groupes chaussure historiques type Éram, IA intégrée et branchée sur votre SI (ERP, CRM, gestion de production).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux du Choletais et des Mauges : refonte de plateformes, design system, recherche sémantique à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, un catalogue B2B ou une boutique e-commerce, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, le tout mobile-first pour vos clients des Mauges.",
+          },
+          {
+            q: "Pouvez-vous outiller un atelier chaussure ou textile des Mauges ?",
+            a: "Oui. Sur les terres d'Éram et d'Humeau-Beaupréau, on construit des catalogues B2B, des configurateurs de commande et des moteurs de devis automatisés pour les façonniers cuir-textile et leurs donneurs d'ordre. On greffe la brique IA sur votre savoir-faire existant, sans jamais toucher à la main de l'atelier ni à votre gestion de production.",
+          },
+          {
+            q: "Accompagnez-vous l'agroalimentaire et la mécanique des zones d'activité ?",
+            a: "Oui. Pour les transformateurs agroalimentaires de la Grande Lande et les ateliers de mécanique et produits métalliques d'Anjou Actiparc ou de la ZI Èvre et Loire, on déploie traçabilité, fiches produits enrichies, recherche sémantique multilingue et portails de commande B2B, branchés sur votre ERP ou votre gestion de stock existante.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne UX/UI, e-commerce et IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou propriétaire ni dépendance à un prestataire unique — vos fichiers clients des Mauges restent les vôtres.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Beaupréau, sur site ou sur l'une des ZA, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de commandes. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution transférable à tout prestataire des Pays de la Loire ou reprise en interne par vos équipes à Beaupréau.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Beaupréau-en-Mauges des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, catalogues B2B, e-commerce, chatbot RAG ancré sur vos fiches produits, recherche sémantique, agents et automatisations. Pensé pour une économie mauclésienne née de la chaussure et du textile — la mémoire d'Éram et d'Humeau-Beaupréau, façonniers depuis cinq générations — désormais portée par un agroalimentaire dense et une myriade de TPE et PME familiales d'artisanat, de mécanique et de transformation sur les ZA Anjou Actiparc, la Grande Lande et Èvre et Loire. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers.",
+        whyHere: [
+          "Héritage chaussure et textile reconverti, encore vivant avec Éram et Humeau-Beaupréau (120 ans, cinq générations de façonniers) : pour les ateliers et sous-traitants cuir-textile des Mauges, on bâtit des catalogues B2B en ligne, des configurateurs de commandes et des moteurs de devis automatisés qui valorisent le savoir-faire sans alourdir l'atelier.",
+          "Agroalimentaire dense et tourné vers l'export régional — près de trente unités de transformation recensées dans la commune nouvelle : nos plateformes intègrent traçabilité, fiches produits enrichies et recherche sémantique multilingue, calibrées pour les transformateurs et négociants des Mauges qui vendent au-delà du Choletais.",
+          "Tissu rural-industriel de TPE et PME familiales sur les ZA Anjou Actiparc, la Grande Lande et la ZI Èvre et Loire (mécanique, produits métalliques, logistique, commerce des onze bourgs fusionnés) : on greffe une brique IA sur l'existant — widget, API, plugin WordPress ou PrestaShop — sans refonte coûteuse, ou on conçoit une vitrine e-commerce sur mesure.",
+          "Éloignement des grands pôles numériques (Nantes à 1 h, Angers à 45 min) : toute la chaîne UX/UI, e-commerce et IA est hébergeable en UE, conforme RGPD et AI Act, et le code vous est livré — vos données restent à Beaupréau, sur les terres de Mauges Communauté, pas chez un prestataire lointain.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Beaupréau-en-Mauges",
+            detail:
+              "Atelier sur site, en cœur de bourg ou sur les ZA Anjou Actiparc, la Grande Lande ou la ZI Èvre et Loire : objectifs, parcours utilisateurs, audit de la stack, des contenus et des catalogues existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour vos clients B2B, vos donneurs d'ordre chaussure-textile comme pour le grand public des Mauges.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré sur vos fiches, recherche sémantique, automatisation des devis et plannings d'atelier. Démos hebdomadaires en visio depuis Cholet ou Angers.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime — même en pleine saison de commandes pour les façonniers cuir-textile et les transformateurs agroalimentaires de la Grande Lande.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Beaupréau, sans verrou propriétaire ni abonnement imposé, documentation et passation incluses.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot ancré sur vos contenus, recherche sémantique, automatisation de devis) sur le site existant d'un artisan, d'un commerce de bourg ou d'un atelier cuir-textile des Mauges, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site, d'un catalogue B2B ou d'une boutique pour les industriels chaussure et textile, l'agroalimentaire de la Grande Lande ou la mécanique d'Anjou Actiparc : UX/UI, e-commerce multi-CMS et IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants des Mauges, à la manière des groupes chaussure historiques type Éram, IA intégrée et branchée sur votre SI (ERP, CRM, gestion de production).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux du Choletais et des Mauges : refonte de plateformes, design system, recherche sémantique à l'échelle, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, un catalogue B2B ou une boutique e-commerce, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, le tout mobile-first pour vos clients des Mauges.",
+          },
+          {
+            q: "Pouvez-vous outiller un atelier chaussure ou textile des Mauges ?",
+            a: "Oui. Sur les terres d'Éram et d'Humeau-Beaupréau, on construit des catalogues B2B, des configurateurs de commande et des moteurs de devis automatisés pour les façonniers cuir-textile et leurs donneurs d'ordre. On greffe la brique IA sur votre savoir-faire existant, sans jamais toucher à la main de l'atelier ni à votre gestion de production.",
+          },
+          {
+            q: "Accompagnez-vous l'agroalimentaire et la mécanique des zones d'activité ?",
+            a: "Oui. Pour les transformateurs agroalimentaires de la Grande Lande et les ateliers de mécanique et produits métalliques d'Anjou Actiparc ou de la ZI Èvre et Loire, on déploie traçabilité, fiches produits enrichies, recherche sémantique multilingue et portails de commande B2B, branchés sur votre ERP ou votre gestion de stock existante.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne UX/UI, e-commerce et IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vous gardez la propriété complète de vos données, contenus et modèles, sans verrou propriétaire ni dépendance à un prestataire unique — vos fichiers clients des Mauges restent les vôtres.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage à Beaupréau, sur site ou sur l'une des ZA, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de surprise en fin de mission.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de commandes. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Solution transférable à tout prestataire des Pays de la Loire ou reprise en interne par vos équipes à Beaupréau.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaupréau-en-Mauges ?",

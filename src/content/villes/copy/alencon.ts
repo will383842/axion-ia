@@ -50,6 +50,183 @@ export const ALENCON_COPY: VilleCopy = {
       en: "Sites web augmentés et plateformes SaaS IA sur mesure pour les TPE-PME d'Alençon : vitrine artisans dentelle et patrimoine, outil métier sous-traitance auto, portail traçabilité agroalimentaire ou prise de rendez-vous santé.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Alençon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de l'Orne (26 000 habitants intra-muros, 50 000 en agglomération), carrefour entre Normandie et Pays-de-la-Loire à 50 km du Mans et de sa gare TGV, où le tissu mêle sous-traitance automobile de l'écosystème Faurecia, agroalimentaire de la plaine d'Alençon, presses optiques MPO, artisanat héritier de la dentelle au point d'Alençon (UNESCO 2010) et santé départementale. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Alençon, itérations à distance.",
+        whyHere: [
+          "Sous-traitance automobile rang 1 et rang 2 (écosystème Faurecia, équipementiers de Renault et Stellantis) le long de l'A28 : on construit des portails qualité, des outils de pilotage de production et des tableaux de bord clients connectés à votre MES, avec maintenance prédictive et contrôle visuel augmentés à l'IA pour réduire les rebuts en ligne.",
+          "Agroalimentaire de la plaine d'Alençon (lait, viande bovine normande, céréales) relié aux filières régionales et à Lactalis à Laval (70 km) : on développe des portails de traçabilité produit, des plateformes fournisseurs et des recherches sémantiques sur vos référentiels qualité, du champ jusqu'à la commande client en ligne.",
+          "Artisanat textile-patrimoine et commerce du centre historique (Basilique Notre-Dame, Musée de la Dentelle, Maison d'Ozé, maison natale de Sainte Thérèse) : on greffe une vitrine e-commerce multi-CMS et un chatbot multilingue sur l'existant, sans refonte lourde, pour vendre savoir-faire et produits normands à une clientèle touristique et internationale.",
+          "Santé et médico-social denses (Polyclinique de l'Orne, maillage d'EHPAD lié au vieillissement départemental) : prise de rendez-vous, portails patients et assistants internes pour soulager les équipes ; toute la chaîne IA hébergeable en UE et conforme RGPD et AI Act, avec données de santé classées et maîtrisées de bout en bout.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Alençon",
+            detail:
+              "Atelier sur site — centre historique autour de la Basilique Notre-Dame, zones d'activité de l'agglomération, sites industriels des sous-traitants auto le long de l'A28 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour les artisans dentelle, les équipementiers industriels et les structures de santé alençonnaises, avec un objectif strict de Web Vitals au vert dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio depuis nos bases Île-de-France.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un site marchand de produits normands en pleine saison touristique ou un portail industriel d'équipementier en flux continu autour d'Alençon.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par votre service informatique.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un artisan dentelle du centre historique, d'un commerçant indépendant, d'une exploitation agricole ou d'un cabinet de santé de l'Orne, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour une PME agroalimentaire normande (lait, viande, céréales), un acteur BTP rénovation du bâti patrimonial ou un commerçant : e-commerce multi-CMS, multilingue, portail produit et paiement en ligne.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un équipementier de l'écosystème Faurecia, MPO ou une ETI agroalimentaire : pilotage qualité, traçabilité, contrôle visuel, IA intégrée, branchée sur votre SI (CRM, ERP, MES) et vos référentiels normalisés.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit pour la sous-traitance auto, les presses optiques et les filières lait, viande et céréales normandes structurantes.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, design mobile-first — pour un site vitrine, une boutique de produits normands ou un portail métier, avec ou sans brique IA. E-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure : à vous de choisir, on s'adapte à votre existant.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et conformes RGPD ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. C'est essentiel pour les structures de santé de l'Orne comme la Polyclinique et les EHPAD, ainsi que pour les sous-traitants industriels : vous gardez la propriété complète de vos données, modèles et code, sans verrou ni dépendance à un fournisseur unique.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Alençon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant que la moindre ligne de code ne soit écrite.",
+          },
+          {
+            q: "Pouvez-vous outiller un sous-traitant automobile de l'Orne ?",
+            a: "Oui. Pour les équipementiers de l'écosystème Faurecia et les sous-traitants rang 1 et 2 de Renault et Stellantis implantés le long de l'A28 autour d'Alençon, on développe des portails qualité, des tableaux de bord clients, du contrôle visuel de défauts et de la maintenance prédictive, branchés sur vos systèmes industriels (ERP, MES) pour réduire les rebuts et fiabiliser les reportings.",
+          },
+          {
+            q: "Faites-vous une boutique en ligne pour vendre la dentelle et les produits normands à l'international ?",
+            a: "Oui. On bâtit des vitrines e-commerce multilingues pour les artisans dentelle, les commerces du centre historique et les producteurs agroalimentaires normands, avec un chatbot RAG multilingue qui répond aux visiteurs touristiques et internationaux dans leur langue. Greffé sur WooCommerce, Shopify ou PrestaShop, ou en code sur mesure, avec paiement sécurisé et SEO/AEO optimisé pour capter les recherches « point d'Alençon » et « produits normands ».",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison marchande ou en flux industriel continu. Web Vitals et accessibilité contrôlés et tenus au vert à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par vos équipes à tout moment.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Alençon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de l'Orne (26 000 habitants intra-muros, 50 000 en agglomération), carrefour entre Normandie et Pays-de-la-Loire à 50 km du Mans et de sa gare TGV, où le tissu mêle sous-traitance automobile de l'écosystème Faurecia, agroalimentaire de la plaine d'Alençon, presses optiques MPO, artisanat héritier de la dentelle au point d'Alençon (UNESCO 2010) et santé départementale. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Alençon, itérations à distance.",
+        whyHere: [
+          "Sous-traitance automobile rang 1 et rang 2 (écosystème Faurecia, équipementiers de Renault et Stellantis) le long de l'A28 : on construit des portails qualité, des outils de pilotage de production et des tableaux de bord clients connectés à votre MES, avec maintenance prédictive et contrôle visuel augmentés à l'IA pour réduire les rebuts en ligne.",
+          "Agroalimentaire de la plaine d'Alençon (lait, viande bovine normande, céréales) relié aux filières régionales et à Lactalis à Laval (70 km) : on développe des portails de traçabilité produit, des plateformes fournisseurs et des recherches sémantiques sur vos référentiels qualité, du champ jusqu'à la commande client en ligne.",
+          "Artisanat textile-patrimoine et commerce du centre historique (Basilique Notre-Dame, Musée de la Dentelle, Maison d'Ozé, maison natale de Sainte Thérèse) : on greffe une vitrine e-commerce multi-CMS et un chatbot multilingue sur l'existant, sans refonte lourde, pour vendre savoir-faire et produits normands à une clientèle touristique et internationale.",
+          "Santé et médico-social denses (Polyclinique de l'Orne, maillage d'EHPAD lié au vieillissement départemental) : prise de rendez-vous, portails patients et assistants internes pour soulager les équipes ; toute la chaîne IA hébergeable en UE et conforme RGPD et AI Act, avec données de santé classées et maîtrisées de bout en bout.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Alençon",
+            detail:
+              "Atelier sur site — centre historique autour de la Basilique Notre-Dame, zones d'activité de l'agglomération, sites industriels des sous-traitants auto le long de l'A28 : objectifs, parcours utilisateurs, audit de la stack, des contenus et des contraintes métier. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour les artisans dentelle, les équipementiers industriels et les structures de santé alençonnaises, avec un objectif strict de Web Vitals au vert dès la maquette.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio depuis nos bases Île-de-France.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime — y compris pour un site marchand de produits normands en pleine saison touristique ou un portail industriel d'équipementier en flux continu autour d'Alençon.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible. Vos équipes pilotent l'outil en autonomie, sans verrou ni abonnement imposé, transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par votre service informatique.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un artisan dentelle du centre historique, d'un commerçant indépendant, d'une exploitation agricole ou d'un cabinet de santé de l'Orne, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour une PME agroalimentaire normande (lait, viande, céréales), un acteur BTP rénovation du bâti patrimonial ou un commerçant : e-commerce multi-CMS, multilingue, portail produit et paiement en ligne.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour un équipementier de l'écosystème Faurecia, MPO ou une ETI agroalimentaire : pilotage qualité, traçabilité, contrôle visuel, IA intégrée, branchée sur votre SI (CRM, ERP, MES) et vos référentiels normalisés.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs régionaux : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit pour la sous-traitance auto, les presses optiques et les filières lait, viande et céréales normandes structurantes.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable, design mobile-first — pour un site vitrine, une boutique de produits normands ou un portail métier, avec ou sans brique IA. E-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure : à vous de choisir, on s'adapte à votre existant.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et conformes RGPD ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. C'est essentiel pour les structures de santé de l'Orne comme la Polyclinique et les EHPAD, ainsi que pour les sous-traitants industriels : vous gardez la propriété complète de vos données, modèles et code, sans verrou ni dépendance à un fournisseur unique.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Alençon, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé : vous savez exactement ce que vous payez avant que la moindre ligne de code ne soit écrite.",
+          },
+          {
+            q: "Pouvez-vous outiller un sous-traitant automobile de l'Orne ?",
+            a: "Oui. Pour les équipementiers de l'écosystème Faurecia et les sous-traitants rang 1 et 2 de Renault et Stellantis implantés le long de l'A28 autour d'Alençon, on développe des portails qualité, des tableaux de bord clients, du contrôle visuel de défauts et de la maintenance prédictive, branchés sur vos systèmes industriels (ERP, MES) pour réduire les rebuts et fiabiliser les reportings.",
+          },
+          {
+            q: "Faites-vous une boutique en ligne pour vendre la dentelle et les produits normands à l'international ?",
+            a: "Oui. On bâtit des vitrines e-commerce multilingues pour les artisans dentelle, les commerces du centre historique et les producteurs agroalimentaires normands, avec un chatbot RAG multilingue qui répond aux visiteurs touristiques et internationaux dans leur langue. Greffé sur WooCommerce, Shopify ou PrestaShop, ou en code sur mesure, avec paiement sécurisé et SEO/AEO optimisé pour capter les recherches « point d'Alençon » et « produits normands ».",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison marchande ou en flux industriel continu. Web Vitals et accessibilité contrôlés et tenus au vert à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, projet transférable à tout prestataire local de l'Orne, du Mans ou de Caen, ou repris en interne par vos équipes à tout moment.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il vraiment à Alençon depuis Paris ?",

@@ -48,6 +48,183 @@ export const BRUNOY_COPY: VilleCopy = {
       en: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Brunoy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de l'Essonne (~25 643 habitants), portée par les commerces du centre-ville et du Centre Commercial Talma, les professions libérales de santé et du droit, l'artisanat du bâtiment et les services à la personne du Val d'Yerres. Du commerce de quartier La Pyramide à l'étal des marchés des Bosserons et des Provinciales, on construit l'outil web qui transforme votre trafic local en rendez-vous. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brunoy, itérations à distance — la gare RER D vous relie à Paris-Gare-de-Lyon en 30 min.",
+        whyHere: [
+          "Tissu de commerces de proximité et d'artisans du bâtiment concentré au centre-ville, au Centre Commercial Talma (2 ha, une soixantaine d'enseignes) et sur les marchés des Bosserons et des Provinciales : on construit des vitrines et boutiques e-commerce mobile-first (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, paiement, prise de rendez-vous et devis en ligne, plutôt qu'une refonte lourde et coûteuse.",
+          "Forte densité de professions libérales de santé et du droit, beaucoup installées au centre et dans le quartier prioritaire de La Pyramide : nos chatbots RAG répondent aux patients et clients à partir de vos seuls documents, prennent les rendez-vous et filtrent les demandes en plusieurs langues, sans jamais inventer ni divulguer une donnée sensible — chaîne hébergeable en UE et conforme RGPD.",
+          "Commune résidentielle reliée à Paris par le RER D et intégrée à l'agglomération Val d'Yerres Val de Seine, avec un accompagnement local incarné par la Maison de l'éco (25 rue de la République) : on greffe l'IA sur l'existant (widget, API, plugin, recherche sémantique) pour les TPE de services qui n'ont ni le temps ni le budget d'un grand chantier, sans casser ce qui marche déjà.",
+          "Clientèle de particuliers exigeante en proximité (forêt de Sénart, centre-ville, services à domicile du Val d'Yerres) : on déploie des parcours mobile-first, une recherche sémantique qui comprend l'intention réelle et des agents qui automatisent relances et confirmations, pour convertir le trafic local en rendez-vous concrets — code et données livrés chez vous, sans verrou.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Brunoy",
+            detail:
+              "Atelier sur site (centre-ville, Centre Commercial Talma, locaux de la Maison de l'éco rue de la République ou visio) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle du Val d'Yerres qui navigue surtout au téléphone, sur le marché ou en gare RER D.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents et automatisation des relances. Code custom, démos hebdomadaires en visio et points sur site à Brunoy.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime depuis nos points de cadrage Brunoy — vos pages commerçantes et vos prises de rendez-vous restent en ligne pendant toute la bascule.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Brunoy, sans verrou ni abonnement imposé, le tout transférable à tout prestataire local du Val d'Yerres ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, relances automatiques) sur le site existant d'un commerce du Talma, d'un artisan du bâtiment ou d'un cabinet libéral de Brunoy, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les commerces de détail, restaurateurs et structures de services à la personne du Val d'Yerres : UX/UI sur mesure, e-commerce multi-CMS, devis et rendez-vous en ligne, IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du tertiaire local et de l'action sociale, IA intégrée et branchée sur votre SI (CRM, ERP, comptabilité, agenda de rendez-vous).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et réseaux du sud-est francilien : refonte de plateformes, design system, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure pour les commerces du Talma et les services de Brunoy.",
+          },
+          {
+            q: "Un commerce du centre-ville ou du Centre Commercial Talma peut-il avoir une boutique en ligne ?",
+            a: "Bien sûr. On déploie une vitrine ou une boutique e-commerce mobile-first avec catalogue, paiement, prise de rendez-vous et relances automatiques, dimensionnée pour une TPE de proximité comme celles du Talma, de La Pyramide ou des marchés des Bosserons et des Provinciales. On peut greffer ensuite chatbot et recherche sémantique, sans tout refaire.",
+          },
+          {
+            q: "Mes données patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Essentiel pour les nombreuses professions de santé et du droit installées au centre et à La Pyramide à Brunoy : vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique.",
+          },
+          {
+            q: "Le chatbot peut-il prendre les rendez-vous d'un cabinet libéral de Brunoy ?",
+            a: "Oui. Notre chatbot RAG multilingue répond à partir de vos seuls documents, qualifie la demande, propose un créneau et inscrit le rendez-vous dans votre agenda, en filtrant les sollicitations hors sujet. Idéal pour un cabinet de santé ou de droit du Val d'Yerres : il ne divulgue aucune donnée sensible et n'invente jamais de réponse.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Brunoy — au centre-ville, au Talma ou à la Maison de l'éco — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant — vos pages commerçantes et vos prises de rendez-vous restent en ligne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local du Val d'Yerres ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Brunoy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de l'Essonne (~25 643 habitants), portée par les commerces du centre-ville et du Centre Commercial Talma, les professions libérales de santé et du droit, l'artisanat du bâtiment et les services à la personne du Val d'Yerres. Du commerce de quartier La Pyramide à l'étal des marchés des Bosserons et des Provinciales, on construit l'outil web qui transforme votre trafic local en rendez-vous. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Brunoy, itérations à distance — la gare RER D vous relie à Paris-Gare-de-Lyon en 30 min.",
+        whyHere: [
+          "Tissu de commerces de proximité et d'artisans du bâtiment concentré au centre-ville, au Centre Commercial Talma (2 ha, une soixantaine d'enseignes) et sur les marchés des Bosserons et des Provinciales : on construit des vitrines et boutiques e-commerce mobile-first (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, paiement, prise de rendez-vous et devis en ligne, plutôt qu'une refonte lourde et coûteuse.",
+          "Forte densité de professions libérales de santé et du droit, beaucoup installées au centre et dans le quartier prioritaire de La Pyramide : nos chatbots RAG répondent aux patients et clients à partir de vos seuls documents, prennent les rendez-vous et filtrent les demandes en plusieurs langues, sans jamais inventer ni divulguer une donnée sensible — chaîne hébergeable en UE et conforme RGPD.",
+          "Commune résidentielle reliée à Paris par le RER D et intégrée à l'agglomération Val d'Yerres Val de Seine, avec un accompagnement local incarné par la Maison de l'éco (25 rue de la République) : on greffe l'IA sur l'existant (widget, API, plugin, recherche sémantique) pour les TPE de services qui n'ont ni le temps ni le budget d'un grand chantier, sans casser ce qui marche déjà.",
+          "Clientèle de particuliers exigeante en proximité (forêt de Sénart, centre-ville, services à domicile du Val d'Yerres) : on déploie des parcours mobile-first, une recherche sémantique qui comprend l'intention réelle et des agents qui automatisent relances et confirmations, pour convertir le trafic local en rendez-vous concrets — code et données livrés chez vous, sans verrou.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Brunoy",
+            detail:
+              "Atelier sur site (centre-ville, Centre Commercial Talma, locaux de la Maison de l'éco rue de la République ou visio) : objectifs, parcours utilisateurs, audit de votre stack, de vos contenus et de votre saisonnalité commerciale. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle du Val d'Yerres qui navigue surtout au téléphone, sur le marché ou en gare RER D.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents et automatisation des relances. Code custom, démos hebdomadaires en visio et points sur site à Brunoy.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés, mise en production sans downtime depuis nos points de cadrage Brunoy — vos pages commerçantes et vos prises de rendez-vous restent en ligne pendant toute la bascule.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible). Vos équipes pilotent l'outil en autonomie depuis Brunoy, sans verrou ni abonnement imposé, le tout transférable à tout prestataire local du Val d'Yerres ou repris en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, relances automatiques) sur le site existant d'un commerce du Talma, d'un artisan du bâtiment ou d'un cabinet libéral de Brunoy, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour les commerces de détail, restaurateurs et structures de services à la personne du Val d'Yerres : UX/UI sur mesure, e-commerce multi-CMS, devis et rendez-vous en ligne, IA intégrée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du tertiaire local et de l'action sociale, IA intégrée et branchée sur votre SI (CRM, ERP, comptabilité, agenda de rendez-vous).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et réseaux du sud-est francilien : refonte de plateformes, design system, recherche sémantique à l'échelle et équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype mobile-first — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure pour les commerces du Talma et les services de Brunoy.",
+          },
+          {
+            q: "Un commerce du centre-ville ou du Centre Commercial Talma peut-il avoir une boutique en ligne ?",
+            a: "Bien sûr. On déploie une vitrine ou une boutique e-commerce mobile-first avec catalogue, paiement, prise de rendez-vous et relances automatiques, dimensionnée pour une TPE de proximité comme celles du Talma, de La Pyramide ou des marchés des Bosserons et des Provinciales. On peut greffer ensuite chatbot et recherche sémantique, sans tout refaire.",
+          },
+          {
+            q: "Mes données patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Essentiel pour les nombreuses professions de santé et du droit installées au centre et à La Pyramide à Brunoy : vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un prestataire unique.",
+          },
+          {
+            q: "Le chatbot peut-il prendre les rendez-vous d'un cabinet libéral de Brunoy ?",
+            a: "Oui. Notre chatbot RAG multilingue répond à partir de vos seuls documents, qualifie la demande, propose un créneau et inscrit le rendez-vous dans votre agenda, en filtrant les sollicitations hors sujet. Idéal pour un cabinet de santé ou de droit du Val d'Yerres : il ne divulgue aucune donnée sensible et n'invente jamais de réponse.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Brunoy — au centre-ville, au Talma ou à la Maison de l'éco — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant — vos pages commerçantes et vos prises de rendez-vous restent en ligne. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, transférable à tout prestataire local du Val d'Yerres ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Brunoy ?",

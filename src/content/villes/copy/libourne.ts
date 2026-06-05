@@ -49,6 +49,183 @@ export const LIBOURNE_COPY: VilleCopy = {
       en: "Accompagnement individuel dirigeant TPE/PME à Libourne : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Libourne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture girondine de 25 036 habitants, au confluent de la Dordogne et de l'Isle, où le tissu mêle les domaines des AOC Saint-Émilion, Pomerol et Fronsac, le cœur marchand de la bastille desservi par le réseau gratuit Calibus, le centre hospitalier Robert-Boulin et la garnison militaire avec son école de santé des armées, et les zones d'activités gérées par La Cali. On fait tout, de la maquette Figma à la plateforme SaaS IA-native, en passant par l'e-commerce viticole multilingue. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Libourne, itérations à distance.",
+        whyHere: [
+          "Vignobles d'appellation tout autour (Saint-Émilion, Pomerol, Fronsac) : on construit des boutiques de vente directe au domaine, des fiches techniques multilingues générées par IA et des espaces acheteurs B2B avec relance automatisée, calibrés pour la clientèle internationale du négoce qui achète en primeurs comme en livrable. Recherche sémantique sur vos millésimes incluse.",
+          "Cœur marchand de la bastille et commerces du centre desservis par le réseau gratuit Calibus : nos vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots ancrés sur vos contenus rapprochent boutiques et clients locaux, avec click-and-collect, gestion de stock et UX mobile-first pour les achats sur smartphone en rue piétonne.",
+          "Pôle santé du centre hospitalier Robert-Boulin, cabinets associés et école de santé des armées : portails patients, prise de contact en ligne, formulaires accessibles et recherche sémantique documentaire, conçus avec une exigence RGPD stricte propre aux données de santé et un hébergement certifié en UE. Aucune donnée patient hors Europe.",
+          "Carrefour ferroviaire et routier — gare sur la ligne Paris-Bordeaux en plein centre, A89 vers Bordeaux à ~31 km, aéroport de Mérignac à ~45 km — et zones d'activités gérées par La Cali (Communauté d'Agglomération du Libournais) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse pour les TPE et PME logistiques, viticoles et industrielles du Libournais.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Libourne",
+            detail:
+              "Atelier sur site — quartier de la bastille, quais de la Dordogne, abords de la gare ou directement au chai d'un domaine de Pomerol : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des ventes (primeurs, vendanges, fêtes). Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour les visiteurs en boutique de la bastille comme pour les acheteurs B2B à distance. Accessibilité et Web Vitals intégrés dès la maquette, pas après coup.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique de vente directe, espace acheteurs B2B, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur votre SI (CRM, ERP, stock). Démos hebdomadaires en visio, code versionné et revu, déploiement continu maîtrisé.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, SEO/AEO et accessibilité validés, migration des contenus et redirections SEO contrôlées, puis mise en production sans downtime — y compris en pleine campagne de primeurs, de vendanges ou de fêtes de fin d'année où le secrétariat du Père Noël anime la ville.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible), documentation et formation de vos équipes du Libournais incluses. Vous pilotez l'outil en autonomie, sans verrou propriétaire ni abonnement imposé, et restez libre de reprendre la main ou de changer de prestataire.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, fiches techniques assistées, formulaire intelligent) sur le site existant d'un domaine viticole de Saint-Émilion, d'un commerce de la bastille ou d'un cabinet libournais, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique de vente directe avec UX/UI et IA intégrée : e-commerce viticole multilingue pour le négoce de Pomerol et Fronsac, espace acheteurs B2B, vitrine pour l'hôtellerie-restauration ou la logistique du Libournais.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du Libournais (négoce viticole, santé liée au centre hospitalier Robert-Boulin, transport et logistique), IA intégrée, branchée sur votre SI (CRM, ERP, traçabilité des chais).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs girondins et les groupes du négoce des vins de Bordeaux : refonte de plateformes, design system, gouvernance data, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research utilisateur, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique de vente directe au domaine ou une plateforme SaaS, avec ou sans brique IA. E-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure, le tout mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. C'est essentiel pour les structures liées au centre hospitalier Robert-Boulin, à l'école de santé des armées et pour les domaines qui traitent des données acheteurs internationaux. Vous gardez la propriété complète de vos données, de votre code et de vos modèles.",
+          },
+          {
+            q: "Pouvez-vous gérer une boutique viticole multilingue pour le négoce ?",
+            a: "Oui. Pour les domaines de Saint-Émilion, Pomerol ou Fronsac, on construit des boutiques de vente directe et des espaces acheteurs B2B avec fiches techniques générées par IA, traduites pour le négoce international, gestion des allocations en primeurs et un chatbot RAG ancré sur vos millésimes, vos notes de dégustation et vos contenus. Paiement, suivi de commande et relance acheteurs automatisés.",
+          },
+          {
+            q: "Travaillez-vous avec les commerces et l'hôtellerie-restauration du centre-ville ?",
+            a: "Oui. Pour le cœur marchand de la bastille, les commerces desservis par le réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Libourne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de coût surprise à la livraison. Vous savez exactement ce que vous payez et ce que vous recevez.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine campagne de primeurs, de vendanges ou de fêtes. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé. Outil transférable à tout prestataire de la région bordelaise ou repris en interne par vos équipes du Libournais.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Libourne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette sous-préfecture girondine de 25 036 habitants, au confluent de la Dordogne et de l'Isle, où le tissu mêle les domaines des AOC Saint-Émilion, Pomerol et Fronsac, le cœur marchand de la bastille desservi par le réseau gratuit Calibus, le centre hospitalier Robert-Boulin et la garnison militaire avec son école de santé des armées, et les zones d'activités gérées par La Cali. On fait tout, de la maquette Figma à la plateforme SaaS IA-native, en passant par l'e-commerce viticole multilingue. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Libourne, itérations à distance.",
+        whyHere: [
+          "Vignobles d'appellation tout autour (Saint-Émilion, Pomerol, Fronsac) : on construit des boutiques de vente directe au domaine, des fiches techniques multilingues générées par IA et des espaces acheteurs B2B avec relance automatisée, calibrés pour la clientèle internationale du négoce qui achète en primeurs comme en livrable. Recherche sémantique sur vos millésimes incluse.",
+          "Cœur marchand de la bastille et commerces du centre desservis par le réseau gratuit Calibus : nos vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots ancrés sur vos contenus rapprochent boutiques et clients locaux, avec click-and-collect, gestion de stock et UX mobile-first pour les achats sur smartphone en rue piétonne.",
+          "Pôle santé du centre hospitalier Robert-Boulin, cabinets associés et école de santé des armées : portails patients, prise de contact en ligne, formulaires accessibles et recherche sémantique documentaire, conçus avec une exigence RGPD stricte propre aux données de santé et un hébergement certifié en UE. Aucune donnée patient hors Europe.",
+          "Carrefour ferroviaire et routier — gare sur la ligne Paris-Bordeaux en plein centre, A89 vers Bordeaux à ~31 km, aéroport de Mérignac à ~45 km — et zones d'activités gérées par La Cali (Communauté d'Agglomération du Libournais) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse pour les TPE et PME logistiques, viticoles et industrielles du Libournais.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Libourne",
+            detail:
+              "Atelier sur site — quartier de la bastille, quais de la Dordogne, abords de la gare ou directement au chai d'un domaine de Pomerol : objectifs, parcours utilisateurs, audit de la stack, des contenus et de la saisonnalité des ventes (primeurs, vendanges, fêtes). Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant toute ligne de code, pensé mobile-first pour les visiteurs en boutique de la bastille comme pour les acheteurs B2B à distance. Accessibilité et Web Vitals intégrés dès la maquette, pas après coup.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique de vente directe, espace acheteurs B2B, chatbot RAG multilingue, recherche sémantique, agents et automatisations branchés sur votre SI (CRM, ERP, stock). Démos hebdomadaires en visio, code versionné et revu, déploiement continu maîtrisé.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, SEO/AEO et accessibilité validés, migration des contenus et redirections SEO contrôlées, puis mise en production sans downtime — y compris en pleine campagne de primeurs, de vendanges ou de fêtes de fin d'année où le secrétariat du Père Noël anime la ville.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases et modèles livrés chez vous (hébergement UE possible), documentation et formation de vos équipes du Libournais incluses. Vous pilotez l'outil en autonomie, sans verrou propriétaire ni abonnement imposé, et restez libre de reprendre la main ou de changer de prestataire.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, fiches techniques assistées, formulaire intelligent) sur le site existant d'un domaine viticole de Saint-Émilion, d'un commerce de la bastille ou d'un cabinet libournais, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique de vente directe avec UX/UI et IA intégrée : e-commerce viticole multilingue pour le négoce de Pomerol et Fronsac, espace acheteurs B2B, vitrine pour l'hôtellerie-restauration ou la logistique du Libournais.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du Libournais (négoce viticole, santé liée au centre hospitalier Robert-Boulin, transport et logistique), IA intégrée, branchée sur votre SI (CRM, ERP, traçabilité des chais).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs girondins et les groupes du négoce des vins de Bordeaux : refonte de plateformes, design system, gouvernance data, équipe dédiée Axion-IA en mode produit avec roadmap partagée.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research utilisateur, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique de vente directe au domaine ou une plateforme SaaS, avec ou sans brique IA. E-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code 100 % sur mesure, le tout mobile-first et optimisé Web Vitals.",
+          },
+          {
+            q: "Mes données restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA signé. C'est essentiel pour les structures liées au centre hospitalier Robert-Boulin, à l'école de santé des armées et pour les domaines qui traitent des données acheteurs internationaux. Vous gardez la propriété complète de vos données, de votre code et de vos modèles.",
+          },
+          {
+            q: "Pouvez-vous gérer une boutique viticole multilingue pour le négoce ?",
+            a: "Oui. Pour les domaines de Saint-Émilion, Pomerol ou Fronsac, on construit des boutiques de vente directe et des espaces acheteurs B2B avec fiches techniques générées par IA, traduites pour le négoce international, gestion des allocations en primeurs et un chatbot RAG ancré sur vos millésimes, vos notes de dégustation et vos contenus. Paiement, suivi de commande et relance acheteurs automatisés.",
+          },
+          {
+            q: "Travaillez-vous avec les commerces et l'hôtellerie-restauration du centre-ville ?",
+            a: "Oui. Pour le cœur marchand de la bastille, les commerces desservis par le réseau gratuit Calibus et l'hôtellerie-restauration libournaise, on déploie des vitrines e-commerce avec click-and-collect, réservation en ligne, gestion de stock et chatbot d'accueil multilingue. UX pensée pour l'achat au smartphone en rue piétonne, et SEO local pour capter les visiteurs de Saint-Émilion de passage.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Libourne, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas de coût surprise à la livraison. Vous savez exactement ce que vous payez et ce que vous recevez.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine campagne de primeurs, de vendanges ou de fêtes. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in propriétaire, aucun abonnement imposé. Outil transférable à tout prestataire de la région bordelaise ou repris en interne par vos équipes du Libournais.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il physiquement à Libourne pour les audits et interventions ?",

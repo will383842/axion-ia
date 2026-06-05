@@ -50,6 +50,183 @@ export const EPERNAY_COPY: VilleCopy = {
       en: "Pour les acteurs d'Épernay, nous concevons des sites web et plateformes augmentés par l'IA : réservation de visites de cave, vente en ligne de champagne et assistants qui qualifient les demandes des clients particuliers et professionnels.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Épernay des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation de visites de cave, vente de champagne en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Champagne, où l'économie se joue le long de l'avenue de Champagne — classée au patrimoine mondial de l'UNESCO depuis 2015 et bordée de plus de 100 km de caves creusées dans la craie — entre grandes maisons emblématiques et une multitude de vignerons indépendants, coopératives et négociants tournés vers l'export et l'œnotourisme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Épernay, près de la place de la République, itérations à distance dans la vallée de la Marne.",
+        whyHere: [
+          "Filière champagne tournée vers l'export et une clientèle internationale, des États-Unis au Japon : nos boutiques e-commerce (Shopify, WooCommerce, PrestaShop) et chatbots RAG sont multilingues par défaut, calibrés pour la vente directe de cuvées, l'allotement par marché, la gestion des commandes professionnelles et les contraintes de transport d'alcool par pays de destination.",
+          "Avenue de Champagne classée à l'UNESCO et œnotourisme dense — maisons comme Moët & Chandon, Mercier et De Castellane, plus des dizaines de domaines visitables et leurs galeries souterraines : on construit des moteurs de réservation de visites de cave, d'ateliers de dégustation et de billetterie, branchés sur vos disponibilités réelles, avec parcours mobile-first pour les visiteurs en mobilité place de la République comme dans la vallée de la Marne.",
+          "Tissu de TPE et PME familiales attachées au savoir-faire artisanal, vignerons indépendants et coopératives autour d'Épernay : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure qui valorise terroir, parcellaire, millésimes et récits de maison, avec recherche sémantique sur vos fiches cuvées.",
+          "Données commerciales sensibles encadrées par l'appellation et le négoce — carnets clients, allocations, prix, traçabilité des lots : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Vos fichiers clients et historiques de vente restent maîtrisés et ne transitent jamais hors UE sans DPA, condition clé pour les maisons exportatrices de la Marne soucieuses de confidentialité.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Épernay",
+            detail:
+              "Atelier sur site — cave, domaine ou bureau, le long de l'avenue de Champagne classée UNESCO ou dans la vallée de la Marne : objectifs commerciaux, parcours visiteurs et acheteurs, audit de la stack, des contenus et de la saisonnalité des ventes. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à l'image de votre maison, depuis vos ateliers près de la place de la République ; prototype cliquable testé avant tout développement, pensé mobile-first pour les visiteurs en mobilité comme pour les acheteurs professionnels à l'export.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique de vente directe multi-CMS, réservation de visites et dégustations, chatbot RAG multilingue ancré sur vos fiches cuvées, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime depuis nos itérations dans la vallée de la Marne — y compris en pleine saison œnotouristique ou en période de campagne de vente de fin d'année.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible. Vos équipes pilotent l'outil en autonomie depuis Épernay, sans verrou ni abonnement imposé, et peuvent le confier à tout prestataire local de la Marne ou du Grand Est, ou le reprendre en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, formulaire de réservation de visite — sur le site existant d'un vigneron indépendant, d'un négociant ou d'un acteur de l'œnotourisme épernéen, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une maison familiale, une coopérative ou un domaine visitable de la vallée de la Marne : vente directe de champagne, réservation de dégustations, UX/UI et IA intégrée, multilingue export (WordPress, Shopify, WooCommerce, PrestaShop).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Portail B2B ou plateforme métier sur mesure pour les acteurs structurants du négoce, de la distribution et de la logistique du champagne, IA intégrée, branchée sur votre SI : CRM, ERP, gestion des stocks, des millésimes et des allocations par marché.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grandes maisons et groupes du champagne implantés sur l'avenue de Champagne : refonte de plateformes de marque, design system, e-commerce international, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine de domaine, une boutique de vente directe de champagne ou une plateforme de négoce, avec ou sans brique IA. On travaille multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first.",
+          },
+          {
+            q: "Pouvez-vous gérer la vente d'alcool en ligne et l'export multilingue ?",
+            a: "Oui. On construit des boutiques de vente directe de champagne avec contrôle d'âge, gestion des frais et restrictions de transport d'alcool par pays, allotement par marché et facturation professionnelle. Le tunnel d'achat et le chatbot RAG sont multilingues, pensés pour la clientèle internationale qui afflue sur l'avenue de Champagne et pour l'export depuis la Marne.",
+          },
+          {
+            q: "Peut-on gérer la réservation de visites de cave et de dégustations ?",
+            a: "Oui. On développe des moteurs de réservation de visites de cave et d'ateliers de dégustation branchés sur vos disponibilités réelles, avec billetterie, jauges et parcours mobile-first pour les visiteurs en mobilité le long de l'avenue de Champagne. Le chatbot répond aux particuliers et aux professionnels dans leur langue, ancré sur vos fiches cuvées et vos horaires de domaine.",
+          },
+          {
+            q: "Mes fichiers clients et données de vente restent-ils en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vos carnets clients, allocations, prix négoce et historiques de commandes restent votre propriété, sans verrou ni dépendance à un prestataire unique — un point crucial pour les maisons et négociants épernéens qui protègent leurs données commerciales sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Épernay, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant le premier sprint de développement.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison œnotouristique ou pendant les campagnes de vente de fin d'année. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Solution transférable à tout prestataire local de la Marne ou du Grand Est, ou reprise en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Épernay des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation de visites de cave, vente de champagne en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale du Champagne, où l'économie se joue le long de l'avenue de Champagne — classée au patrimoine mondial de l'UNESCO depuis 2015 et bordée de plus de 100 km de caves creusées dans la craie — entre grandes maisons emblématiques et une multitude de vignerons indépendants, coopératives et négociants tournés vers l'export et l'œnotourisme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Épernay, près de la place de la République, itérations à distance dans la vallée de la Marne.",
+        whyHere: [
+          "Filière champagne tournée vers l'export et une clientèle internationale, des États-Unis au Japon : nos boutiques e-commerce (Shopify, WooCommerce, PrestaShop) et chatbots RAG sont multilingues par défaut, calibrés pour la vente directe de cuvées, l'allotement par marché, la gestion des commandes professionnelles et les contraintes de transport d'alcool par pays de destination.",
+          "Avenue de Champagne classée à l'UNESCO et œnotourisme dense — maisons comme Moët & Chandon, Mercier et De Castellane, plus des dizaines de domaines visitables et leurs galeries souterraines : on construit des moteurs de réservation de visites de cave, d'ateliers de dégustation et de billetterie, branchés sur vos disponibilités réelles, avec parcours mobile-first pour les visiteurs en mobilité place de la République comme dans la vallée de la Marne.",
+          "Tissu de TPE et PME familiales attachées au savoir-faire artisanal, vignerons indépendants et coopératives autour d'Épernay : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure qui valorise terroir, parcellaire, millésimes et récits de maison, avec recherche sémantique sur vos fiches cuvées.",
+          "Données commerciales sensibles encadrées par l'appellation et le négoce — carnets clients, allocations, prix, traçabilité des lots : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Vos fichiers clients et historiques de vente restent maîtrisés et ne transitent jamais hors UE sans DPA, condition clé pour les maisons exportatrices de la Marne soucieuses de confidentialité.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Épernay",
+            detail:
+              "Atelier sur site — cave, domaine ou bureau, le long de l'avenue de Champagne classée UNESCO ou dans la vallée de la Marne : objectifs commerciaux, parcours visiteurs et acheteurs, audit de la stack, des contenus et de la saisonnalité des ventes. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à l'image de votre maison, depuis vos ateliers près de la place de la République ; prototype cliquable testé avant tout développement, pensé mobile-first pour les visiteurs en mobilité comme pour les acheteurs professionnels à l'export.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : boutique de vente directe multi-CMS, réservation de visites et dégustations, chatbot RAG multilingue ancré sur vos fiches cuvées, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, mise en production sans downtime depuis nos itérations dans la vallée de la Marne — y compris en pleine saison œnotouristique ou en période de campagne de vente de fin d'année.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases et modèles livrés chez vous, hébergement UE possible. Vos équipes pilotent l'outil en autonomie depuis Épernay, sans verrou ni abonnement imposé, et peuvent le confier à tout prestataire local de la Marne ou du Grand Est, ou le reprendre en interne.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, formulaire de réservation de visite — sur le site existant d'un vigneron indépendant, d'un négociant ou d'un acteur de l'œnotourisme épernéen, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique pour une maison familiale, une coopérative ou un domaine visitable de la vallée de la Marne : vente directe de champagne, réservation de dégustations, UX/UI et IA intégrée, multilingue export (WordPress, Shopify, WooCommerce, PrestaShop).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Portail B2B ou plateforme métier sur mesure pour les acteurs structurants du négoce, de la distribution et de la logistique du champagne, IA intégrée, branchée sur votre SI : CRM, ERP, gestion des stocks, des millésimes et des allocations par marché.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grandes maisons et groupes du champagne implantés sur l'avenue de Champagne : refonte de plateformes de marque, design system, e-commerce international, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine de domaine, une boutique de vente directe de champagne ou une plateforme de négoce, avec ou sans brique IA. On travaille multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou en code sur mesure, toujours mobile-first.",
+          },
+          {
+            q: "Pouvez-vous gérer la vente d'alcool en ligne et l'export multilingue ?",
+            a: "Oui. On construit des boutiques de vente directe de champagne avec contrôle d'âge, gestion des frais et restrictions de transport d'alcool par pays, allotement par marché et facturation professionnelle. Le tunnel d'achat et le chatbot RAG sont multilingues, pensés pour la clientèle internationale qui afflue sur l'avenue de Champagne et pour l'export depuis la Marne.",
+          },
+          {
+            q: "Peut-on gérer la réservation de visites de cave et de dégustations ?",
+            a: "Oui. On développe des moteurs de réservation de visites de cave et d'ateliers de dégustation branchés sur vos disponibilités réelles, avec billetterie, jauges et parcours mobile-first pour les visiteurs en mobilité le long de l'avenue de Champagne. Le chatbot répond aux particuliers et aux professionnels dans leur langue, ancré sur vos fiches cuvées et vos horaires de domaine.",
+          },
+          {
+            q: "Mes fichiers clients et données de vente restent-ils en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA. Vos carnets clients, allocations, prix négoce et historiques de commandes restent votre propriété, sans verrou ni dépendance à un prestataire unique — un point crucial pour les maisons et négociants épernéens qui protègent leurs données commerciales sensibles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Épernay, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité du projet — à partir de 24-48 h pour un périmètre simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant le premier sprint de développement.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison œnotouristique ou pendant les campagnes de vente de fin d'année. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Solution transférable à tout prestataire local de la Marne ou du Grand Est, ou reprise en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il à Épernay ?",

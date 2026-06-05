@@ -50,6 +50,183 @@ export const MONTMORENCY_COPY: VilleCopy = {
       en: "Sites web augmentés à Montmorency : plateformes sur mesure avec IA intégrée pour commerces, cabinets de santé et libéraux souhaitant gérer rendez-vous et demandes en ligne.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Montmorency des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville résidentielle du Val-d'Oise, dominée par sa collégiale Saint-Martin et marquée par la mémoire de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency et voisine d'Enghien-les-Bains, où l'économie repose sur les commerces du centre, les cabinets de santé, les professions libérales et l'artisanat. Que vous soyez un commerce du centre, un cabinet médical ou dentaire, un artisan du bâtiment ou une profession libérale, on couvre tout : vitrine e-commerce multi-CMS, application métier ou plateforme SaaS IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Montmorency, itérations à distance pour tout le nord du Val-d'Oise.",
+        whyHere: [
+          "Forte densité de cabinets de santé et paramédicaux dans ce bassin résidentiel aisé du nord parisien, entre le centre historique et les quartiers proches de la forêt de Montmorency : nous construisons des portails de prise de rendez-vous en ligne, rappels SMS automatisés et formulaires sécurisés, conformes RGPD et hébergés en UE, pour que les données patients des praticiens médicaux et dentaires restent maîtrisées.",
+          "Commerce de proximité du centre-ville, à l'ombre de la collégiale Saint-Martin et le long des rues marchandes proches de la place du Marché : vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, fiches produits optimisées et chatbot qui répond aux demandes clients 7j/7, calibrées pour une clientèle habituée au standard d'Enghien-les-Bains et de Paris.",
+          "Tissu d'artisans et de professions libérales — avocats, experts-comptables, architectes, métiers du bâtiment — riche en devis et relances : on greffe l'IA sur l'existant (plugin, widget, API) pour générer des devis, relancer les prospects et trier les demandes, sans refonte coûteuse du site actuel, en réutilisant votre CMS et votre logiciel de gestion déjà en place.",
+          "Position aux portes de Paris via la gare voisine d'Enghien-les-Bains (Transilien ligne H, gare Paris-Nord, centre de la capitale à une vingtaine de minutes) et proximité de Saint-Leu-la-Forêt, Sannois et Soisy-sous-Montmorency : sites mobile-first, rapides et soignés, recherche sémantique et agents d'automatisation pour une clientèle locale exigeante et mobile.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Montmorency",
+            detail:
+              "Atelier sur site, au cœur du centre-ville autour de la collégiale Saint-Martin et de la place du Marché, dans vos cabinets ou commerces : objectifs, parcours utilisateurs, audit de la stack, des contenus et du référencement existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre image ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle résidentielle exigeante du Val-d'Oise, habituée au niveau de finition des sites parisiens et d'Enghien-les-Bains voisine.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents de relance et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Montmorency.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, puis mise en production sans downtime — sans interrompre l'accueil de vos patients ou clients, ni la prise de commandes des commerces du centre, même en pleine saison.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases de données et modèles livrés chez vous (hébergement UE possible chez un hébergeur français ou européen). Vos équipes pilotent l'outil en autonomie depuis Montmorency, avec documentation et passation, sans verrou ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot d'accueil, prise de rendez-vous, recherche sémantique) sur le site existant d'un commerce du centre, d'un artisan du bâtiment ou d'un cabinet libéral de Montmorency, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : rendez-vous en ligne, click-and-collect, formulaires sécurisés pour cabinets de santé, dentistes, professions libérales et commerces du centre-ville.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les structures de services et de santé structurantes du nord du Val-d'Oise, IA intégrée, branchée sur votre SI (CRM, ERP, logiciel de gestion de cabinet ou de planning).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit pour les grands employeurs et groupes du bassin parisien voisin, de la Plaine de France et du Val-d'Oise.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et soigné, comme l'attend la clientèle résidentielle de Montmorency.",
+          },
+          {
+            q: "Mes données patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et au règlement européen sur l'IA (AI Act), sans transit hors UE sans DPA — un point clé pour les cabinets médicaux et dentaires de Montmorency et de la forêt de Montmorency. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un éditeur.",
+          },
+          {
+            q: "Pouvez-vous gérer la prise de rendez-vous en ligne d'un cabinet ?",
+            a: "Oui. C'est un usage central dans ce bassin résidentiel : agenda en ligne, rappels automatisés par SMS ou e-mail, formulaires sécurisés et chatbot d'accueil pour cabinets médicaux, paramédicaux, dentaires et professions libérales du centre-ville, le tout intégré à votre site, branché sur votre logiciel de planning et conforme RGPD.",
+          },
+          {
+            q: "Travaillez-vous avec les commerces et artisans du centre de Montmorency ?",
+            a: "Oui, c'est notre cœur de cible. Pour les commerces autour de la collégiale Saint-Martin et de la place du Marché, on déploie des vitrines e-commerce avec click-and-collect et chatbot ; pour les artisans du bâtiment et professions libérales, on automatise devis et relances. On greffe l'IA sur l'existant ou on refait le site, selon votre budget.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Montmorency, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc avant de démarrer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre l'accueil de vos patients ou la prise de commandes des commerces. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local du Val-d'Oise ou de la région parisienne, ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Montmorency des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, prise de rendez-vous en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville résidentielle du Val-d'Oise, dominée par sa collégiale Saint-Martin et marquée par la mémoire de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency et voisine d'Enghien-les-Bains, où l'économie repose sur les commerces du centre, les cabinets de santé, les professions libérales et l'artisanat. Que vous soyez un commerce du centre, un cabinet médical ou dentaire, un artisan du bâtiment ou une profession libérale, on couvre tout : vitrine e-commerce multi-CMS, application métier ou plateforme SaaS IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Montmorency, itérations à distance pour tout le nord du Val-d'Oise.",
+        whyHere: [
+          "Forte densité de cabinets de santé et paramédicaux dans ce bassin résidentiel aisé du nord parisien, entre le centre historique et les quartiers proches de la forêt de Montmorency : nous construisons des portails de prise de rendez-vous en ligne, rappels SMS automatisés et formulaires sécurisés, conformes RGPD et hébergés en UE, pour que les données patients des praticiens médicaux et dentaires restent maîtrisées.",
+          "Commerce de proximité du centre-ville, à l'ombre de la collégiale Saint-Martin et le long des rues marchandes proches de la place du Marché : vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, fiches produits optimisées et chatbot qui répond aux demandes clients 7j/7, calibrées pour une clientèle habituée au standard d'Enghien-les-Bains et de Paris.",
+          "Tissu d'artisans et de professions libérales — avocats, experts-comptables, architectes, métiers du bâtiment — riche en devis et relances : on greffe l'IA sur l'existant (plugin, widget, API) pour générer des devis, relancer les prospects et trier les demandes, sans refonte coûteuse du site actuel, en réutilisant votre CMS et votre logiciel de gestion déjà en place.",
+          "Position aux portes de Paris via la gare voisine d'Enghien-les-Bains (Transilien ligne H, gare Paris-Nord, centre de la capitale à une vingtaine de minutes) et proximité de Saint-Leu-la-Forêt, Sannois et Soisy-sous-Montmorency : sites mobile-first, rapides et soignés, recherche sémantique et agents d'automatisation pour une clientèle locale exigeante et mobile.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Montmorency",
+            detail:
+              "Atelier sur site, au cœur du centre-ville autour de la collégiale Saint-Martin et de la place du Marché, dans vos cabinets ou commerces : objectifs, parcours utilisateurs, audit de la stack, des contenus et du référencement existants. Devis ferme remis à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre image ; prototype cliquable testé avant tout développement, pensé mobile-first pour une clientèle résidentielle exigeante du Val-d'Oise, habituée au niveau de finition des sites parisiens et d'Enghien-les-Bains voisine.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents de relance et automatisations branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Montmorency.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals, accessibilité et SEO/AEO validés, puis mise en production sans downtime — sans interrompre l'accueil de vos patients ou clients, ni la prise de commandes des commerces du centre, même en pleine saison.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases de données et modèles livrés chez vous (hébergement UE possible chez un hébergeur français ou européen). Vos équipes pilotent l'outil en autonomie depuis Montmorency, avec documentation et passation, sans verrou ni abonnement imposé.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot d'accueil, prise de rendez-vous, recherche sémantique) sur le site existant d'un commerce du centre, d'un artisan du bâtiment ou d'un cabinet libéral de Montmorency, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : rendez-vous en ligne, click-and-collect, formulaires sécurisés pour cabinets de santé, dentistes, professions libérales et commerces du centre-ville.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les structures de services et de santé structurantes du nord du Val-d'Oise, IA intégrée, branchée sur votre SI (CRM, ERP, logiciel de gestion de cabinet ou de planning).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit pour les grands employeurs et groupes du bassin parisien voisin, de la Plaine de France et du Val-d'Oise.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous vraiment l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui, on fait tout. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, toujours mobile-first et soigné, comme l'attend la clientèle résidentielle de Montmorency.",
+          },
+          {
+            q: "Mes données patients ou clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD et au règlement européen sur l'IA (AI Act), sans transit hors UE sans DPA — un point clé pour les cabinets médicaux et dentaires de Montmorency et de la forêt de Montmorency. Vous gardez la propriété complète de vos données et modèles, sans verrou ni dépendance à un éditeur.",
+          },
+          {
+            q: "Pouvez-vous gérer la prise de rendez-vous en ligne d'un cabinet ?",
+            a: "Oui. C'est un usage central dans ce bassin résidentiel : agenda en ligne, rappels automatisés par SMS ou e-mail, formulaires sécurisés et chatbot d'accueil pour cabinets médicaux, paramédicaux, dentaires et professions libérales du centre-ville, le tout intégré à votre site, branché sur votre logiciel de planning et conforme RGPD.",
+          },
+          {
+            q: "Travaillez-vous avec les commerces et artisans du centre de Montmorency ?",
+            a: "Oui, c'est notre cœur de cible. Pour les commerces autour de la collégiale Saint-Martin et de la place du Marché, on déploie des vitrines e-commerce avec click-and-collect et chatbot ; pour les artisans du bâtiment et professions libérales, on automatise devis et relances. On greffe l'IA sur l'existant ou on refait le site, selon votre budget.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site à Montmorency, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple comme une brique IA greffée. Pas de régie, pas de dérive horaire cachée, et un périmètre écrit noir sur blanc avant de démarrer.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant de démarrer. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre l'accueil de vos patients ou la prise de commandes des commerces. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local du Val-d'Oise ou de la région parisienne, ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Montmorency ?",

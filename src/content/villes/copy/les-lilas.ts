@@ -48,6 +48,183 @@ export const LES_LILAS_COPY: VilleCopy = {
       en: "Coaching un-à-un aux Lilas pour dirigeants de TPE/PME : poser la stratégie IA, comprendre les coûts réels d'un déploiement, éviter les dépendances no-code. 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou visio.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente aux Lilas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 23 800 habitants à la porte Est de Paris, limitrophe du 19e, où près de 2 335 entreprises — dont 77 % de commerces et services — animent un tissu tertiaire structuré autour de la ZAC Cœur de Ville et de la ligne 11 du métro. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Lilas, itérations à distance.",
+        whyHere: [
+          "Tissu tertiaire dense en lien direct avec Paris Est et le 19e : avec environ 2 335 entreprises locales dont plus de 1 800 en commerces et services, les cabinets de services aux entreprises et professions libérales gagnent un site vitrine performant, une prise de rendez-vous en ligne et des automatisations back-office greffées sur l'existant sans refonte lourde.",
+          "Santé de proximité structurante autour de la Maternité des Lilas (180 salariés), de la médecine de ville et des cabinets libéraux : nous construisons des espaces patients et des outils internes RGPD-first, avec données sensibles hébergées en UE, registre des traitements maîtrisé et chatbot d'orientation ancré sur vos protocoles.",
+          "Écosystème télécoms et industrie spécialisée — TDF (tour de 124 m, diffusion) et Drieux-Combaluzier (ascenseurs, 220 salariés) : on développe des portails métier, des plateformes SaaS IA-native branchées sur le SI (CRM, ERP) et des interfaces de supervision sur mesure, pensées pour des équipes techniques exigeantes.",
+          "Commerce de centre-ville concentré sur la ZAC Cœur de Ville et les stations Mairie des Lilas et Serge Gainsbourg (métro 11), où voisinent enseignes comme Naturalia et Picard : boutiques et artisans gagnent une vitrine e-commerce multi-CMS, un click-and-collect et un chatbot multilingue qui répond aux clients de Paris Est comme des communes limitrophes.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage aux Lilas",
+            detail:
+              "Atelier sur site — autour de la mairie, de la ZAC Cœur de Ville, des stations de la ligne 11 ou de votre cabinet : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour la clientèle urbaine connectée de Paris Est et accessible (RGAA). Validation des écrans clés avant d'écrire la première ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis la ZAC Cœur de Ville aux quartiers résidentiels : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour piloter le périmètre.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés autour de la ligne 11, mise en production sans downtime — sans interrompre votre activité commerciale, vos prises de rendez-vous ni vos prises de contact entrantes.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases de données et modèles livrés chez vous, hébergement UE possible, documentation et passation incluses. Vos équipes pilotent l'outil en autonomie depuis Les Lilas, sans verrou ni abonnement imposé, transférable à tout prestataire local d'Île-de-France.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site d'un commerce de la ZAC Cœur de Ville, d'un artisan ou d'un cabinet libéral des Lilas, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de services aux entreprises et acteurs santé des Lilas : e-commerce multi-CMS, espace client, prise de rendez-vous, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du Paris Est (télécoms type TDF, industrie spécialisée type Drieux-Combaluzier, transports urbains), IA intégrée, branchée sur votre SI (CRM, ERP).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du Paris Est, tels les opérateurs de transport et de diffusion : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. Pour un commerce de la ZAC Cœur de Ville comme pour une PME tertiaire des Lilas, l'UX et le mobile-first sont au cœur de la prestation.",
+          },
+          {
+            q: "Mes données patients et clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD, sans transit hors UE sans DPA. Un point clé pour les acteurs santé des Lilas — Maternité des Lilas, médecine de ville, cabinets libéraux — qui traitent des données sensibles, et plus largement pour les commerces de la ligne 11 qui gèrent des comptes clients. Vous gardez la propriété complète de vos données et modèles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site aux Lilas — mairie, ZAC Cœur de Ville ou vos locaux — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+          },
+          {
+            q: "Gérez-vous la prise de rendez-vous et le click-and-collect pour cabinets et commerces ?",
+            a: "Oui. Pour les professions de santé, libéraux et commerces de la ligne 11 et de la ZAC Cœur de Ville, on intègre une prise de rendez-vous en ligne, un espace client, du click-and-collect et un chatbot multilingue qui répond aux habitants des Lilas et des communes limitrophes (Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville).",
+          },
+          {
+            q: "Pouvez-vous brancher une plateforme sur le SI d'un acteur télécoms ou industriel des Lilas ?",
+            a: "Oui. Pour l'écosystème télécoms et diffusion (TDF) et l'industrie spécialisée (Drieux-Combaluzier, ascenseurs), on développe des portails métier et des plateformes SaaS IA-native branchées sur votre SI : CRM, ERP, supervision technique. Recherche sémantique sur la documentation, agents d'automatisation et interfaces de pilotage sur mesure, livrés avec le code et hébergeables en UE.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, sans interrompre votre activité ni vos prises de contact. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act 2026 : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Île-de-France ou repris en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente aux Lilas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 23 800 habitants à la porte Est de Paris, limitrophe du 19e, où près de 2 335 entreprises — dont 77 % de commerces et services — animent un tissu tertiaire structuré autour de la ZAC Cœur de Ville et de la ligne 11 du métro. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Lilas, itérations à distance.",
+        whyHere: [
+          "Tissu tertiaire dense en lien direct avec Paris Est et le 19e : avec environ 2 335 entreprises locales dont plus de 1 800 en commerces et services, les cabinets de services aux entreprises et professions libérales gagnent un site vitrine performant, une prise de rendez-vous en ligne et des automatisations back-office greffées sur l'existant sans refonte lourde.",
+          "Santé de proximité structurante autour de la Maternité des Lilas (180 salariés), de la médecine de ville et des cabinets libéraux : nous construisons des espaces patients et des outils internes RGPD-first, avec données sensibles hébergées en UE, registre des traitements maîtrisé et chatbot d'orientation ancré sur vos protocoles.",
+          "Écosystème télécoms et industrie spécialisée — TDF (tour de 124 m, diffusion) et Drieux-Combaluzier (ascenseurs, 220 salariés) : on développe des portails métier, des plateformes SaaS IA-native branchées sur le SI (CRM, ERP) et des interfaces de supervision sur mesure, pensées pour des équipes techniques exigeantes.",
+          "Commerce de centre-ville concentré sur la ZAC Cœur de Ville et les stations Mairie des Lilas et Serge Gainsbourg (métro 11), où voisinent enseignes comme Naturalia et Picard : boutiques et artisans gagnent une vitrine e-commerce multi-CMS, un click-and-collect et un chatbot multilingue qui répond aux clients de Paris Est comme des communes limitrophes.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage aux Lilas",
+            detail:
+              "Atelier sur site — autour de la mairie, de la ZAC Cœur de Ville, des stations de la ligne 11 ou de votre cabinet : objectifs, parcours utilisateurs, audit de la stack et des contenus existants. On repart avec un périmètre clair et un devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque ; prototype cliquable testé avant tout développement, pensé mobile-first pour la clientèle urbaine connectée de Paris Est et accessible (RGAA). Validation des écrans clés avant d'écrire la première ligne de code.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native depuis la ZAC Cœur de Ville aux quartiers résidentiels : e-commerce multi-CMS, prise de rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour piloter le périmètre.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, Web Vitals (LCP, INP, CLS) et SEO/AEO validés autour de la ligne 11, mise en production sans downtime — sans interrompre votre activité commerciale, vos prises de rendez-vous ni vos prises de contact entrantes.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code, bases de données et modèles livrés chez vous, hébergement UE possible, documentation et passation incluses. Vos équipes pilotent l'outil en autonomie depuis Les Lilas, sans verrou ni abonnement imposé, transférable à tout prestataire local d'Île-de-France.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site d'un commerce de la ZAC Cœur de Ville, d'un artisan ou d'un cabinet libéral des Lilas, en quelques semaines et sans refonte.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée pour les PME de services aux entreprises et acteurs santé des Lilas : e-commerce multi-CMS, espace client, prise de rendez-vous, multilingue.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs structurants du Paris Est (télécoms type TDF, industrie spécialisée type Drieux-Combaluzier, transports urbains), IA intégrée, branchée sur votre SI (CRM, ERP).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs du Paris Est, tels les opérateurs de transport et de diffusion : refonte de plateformes, design system, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure. Pour un commerce de la ZAC Cœur de Ville comme pour une PME tertiaire des Lilas, l'UX et le mobile-first sont au cœur de la prestation.",
+          },
+          {
+            q: "Mes données patients et clients restent-elles en Europe ?",
+            a: "Oui. Toute la chaîne IA est hébergeable en UE, conforme RGPD, sans transit hors UE sans DPA. Un point clé pour les acteurs santé des Lilas — Maternité des Lilas, médecine de ville, cabinets libéraux — qui traitent des données sensibles, et plus largement pour les commerces de la ligne 11 qui gèrent des comptes clients. Vous gardez la propriété complète de vos données et modèles.",
+          },
+          {
+            q: "Le devis est-il ferme et le tarif fixe ?",
+            a: "Oui. Après le cadrage sur site aux Lilas — mairie, ZAC Cœur de Ville ou vos locaux — on remet un devis ferme en forfait fixe. Le délai dépend de la complexité, à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+          },
+          {
+            q: "Gérez-vous la prise de rendez-vous et le click-and-collect pour cabinets et commerces ?",
+            a: "Oui. Pour les professions de santé, libéraux et commerces de la ligne 11 et de la ZAC Cœur de Ville, on intègre une prise de rendez-vous en ligne, un espace client, du click-and-collect et un chatbot multilingue qui répond aux habitants des Lilas et des communes limitrophes (Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville).",
+          },
+          {
+            q: "Pouvez-vous brancher une plateforme sur le SI d'un acteur télécoms ou industriel des Lilas ?",
+            a: "Oui. Pour l'écosystème télécoms et diffusion (TDF) et l'industrie spécialisée (Drieux-Combaluzier, ascenseurs), on développe des portails métier et des plateformes SaaS IA-native branchées sur votre SI : CRM, ERP, supervision technique. Recherche sémantique sur la documentation, agents d'automatisation et interfaces de pilotage sur mesure, livrés avec le code et hébergeables en UE.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, sans interrompre votre activité ni vos prises de contact. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act 2026 : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble reste transférable à tout prestataire local d'Île-de-France ou repris en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA aux Lilas ?",

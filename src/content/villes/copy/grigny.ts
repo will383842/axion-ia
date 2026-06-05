@@ -49,6 +49,183 @@ export const GRIGNY_COPY: VilleCopy = {
       en: "Accompagnement un-à-un dirigeant à Grigny dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans la gouvernance de votre TPE ou PME.",
     },
   },
+  services: {
+    sitesWeb: {
+      fr: {
+        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
+        whyHere: [
+          "Le centre commercial Grigny 2 (deuxième plus grande copropriété de France) et ses enseignes comme le Casino et Le Fournil de Grigny structurent la chalandise locale : pour ces commerces de détail et artisans, on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec click-and-collect, paiement en ligne et zone de chalandise géolocalisée jusqu'à Viry-Châtillon et Ris-Orangis.",
+          "La Z.A.E. des Noues de Seine, 41,68 ha au nord entre Seine et RN7, concentre une soixantaine d'entreprises du BTP et des fondations (SEFI-INTRAFOR, Franki Fondation, Jean Lefebvre Île-de-France) : pour ces acteurs de la construction et du transport, nos plateformes SaaS et agents automatisent suivi de chantiers, planning de tournées et portails de réservation, branchés sur vos ERP et TMS existants.",
+          "Le tissu résidentiel dense de La Grande Borne et de Grigny 2 implique syndics, bailleurs et acteurs sociaux desservant une population multilingue : on déploie des portails locataires et chatbots RAG ancrés sur vos contenus, qui répondent 24/7 aux demandes courantes (loyers, incidents, démarches) en plusieurs langues.",
+          "La Z.A.C. de la Plaine Basse et la zone des Radars (Planète Fitness, marché IST, services aux entreprises) complètent un écosystème PME proche d'Évry-Courcouronnes : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients, contrats et réservations restent maîtrisées, sans transit hors Europe ni verrou plateforme.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Grigny",
+            detail:
+              "Atelier sur site — centre-ville près de la gare Grigny-Centre, Z.A.E. des Noues de Seine bord de Seine, centre commercial Grigny 2 ou Z.A.C. de la Plaine Basse : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first et accessibles ; prototype cliquable testé avec vos équipes avant tout développement, qu'il s'agisse d'un commerce de Grigny 2, d'un transporteur des Noues de Seine ou d'un service public local.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce et click-and-collect, portail de réservation, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, contrôle des Web Vitals (LCP, INP, CLS) et du SEO/AEO, validation accessibilité, puis mise en production sans downtime — même pendant un pic d'activité commerciale à Grigny 2 ou logistique sur les axes A6 / RN7.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). On forme vos équipes pour piloter l'outil en autonomie depuis Grigny, sans verrou ni abonnement imposé, avec documentation et transfert de compétences inclus.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce de Grigny 2, d'un artisan du BTP ou d'un restaurant de Grigny, sans refonte ni interruption.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : e-commerce multi-CMS, click-and-collect, multilingue, pour le commerce de détail, la restauration et les services locaux de l'Essonne.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs du transport, de la logistique et du BTP de la Z.A.E. des Noues de Seine, IA intégrée et branchée sur votre SI (CRM, ERP, TMS, outils de chantier).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et bailleurs du sud francilien et de l'agglomération Grand Paris Sud : refonte de plateformes, design system, portails locataires, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, mobile-first et accessible par défaut.",
+          },
+          {
+            q: "Comment équipez-vous les commerces du centre commercial Grigny 2 ?",
+            a: "Pour les enseignes de Grigny 2, on déploie des vitrines e-commerce avec click-and-collect, paiement en ligne et fiches produits optimisées, reliées à une recherche sémantique et un chatbot RAG multilingue. La zone de chalandise est géolocalisée pour capter les flux locaux jusqu'à Viry-Châtillon, Ris-Orangis et Évry-Courcouronnes, sans refonte de l'existant si vous préférez greffer.",
+          },
+          {
+            q: "Travaillez-vous avec les entreprises du BTP de la Z.A.E. des Noues de Seine ?",
+            a: "Oui. Pour les acteurs de la construction et des fondations implantés dans la Z.A.E. des Noues de Seine, au nord entre Seine et RN7, on développe des plateformes SaaS et des agents qui automatisent le suivi de chantiers, les plannings de tournées et les portails de réservation, branchés sur vos ERP, TMS et outils métier existants.",
+          },
+          {
+            q: "Gérez-vous le multilingue pour un quartier comme Grigny 2 ou La Grande Borne ?",
+            a: "Oui. Nos chatbots RAG et portails locataires sont multilingues par défaut, ancrés sur vos propres contenus. Pour un syndic, un bailleur ou un commerce desservant la population diverse de La Grande Borne et de Grigny 2, ils répondent 24/7 aux demandes courantes — loyers, incidents, démarches, horaires — en plusieurs langues, sans externaliser le support.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Grigny, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
+      },
+      en: {
+        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
+        whyHere: [
+          "Le centre commercial Grigny 2 (deuxième plus grande copropriété de France) et ses enseignes comme le Casino et Le Fournil de Grigny structurent la chalandise locale : pour ces commerces de détail et artisans, on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec click-and-collect, paiement en ligne et zone de chalandise géolocalisée jusqu'à Viry-Châtillon et Ris-Orangis.",
+          "La Z.A.E. des Noues de Seine, 41,68 ha au nord entre Seine et RN7, concentre une soixantaine d'entreprises du BTP et des fondations (SEFI-INTRAFOR, Franki Fondation, Jean Lefebvre Île-de-France) : pour ces acteurs de la construction et du transport, nos plateformes SaaS et agents automatisent suivi de chantiers, planning de tournées et portails de réservation, branchés sur vos ERP et TMS existants.",
+          "Le tissu résidentiel dense de La Grande Borne et de Grigny 2 implique syndics, bailleurs et acteurs sociaux desservant une population multilingue : on déploie des portails locataires et chatbots RAG ancrés sur vos contenus, qui répondent 24/7 aux demandes courantes (loyers, incidents, démarches) en plusieurs langues.",
+          "La Z.A.C. de la Plaine Basse et la zone des Radars (Planète Fitness, marché IST, services aux entreprises) complètent un écosystème PME proche d'Évry-Courcouronnes : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients, contrats et réservations restent maîtrisées, sans transit hors Europe ni verrou plateforme.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage à Grigny",
+            detail:
+              "Atelier sur site — centre-ville près de la gare Grigny-Centre, Z.A.E. des Noues de Seine bord de Seine, centre commercial Grigny 2 ou Z.A.C. de la Plaine Basse : objectifs, parcours utilisateurs, audit de la stack et des contenus. Devis ferme à partir de 24-48 h selon la complexité.",
+          },
+          {
+            step: "Conception UX/UI",
+            detail:
+              "Wireframes, design system et maquettes Figma à votre marque, pensés mobile-first et accessibles ; prototype cliquable testé avec vos équipes avant tout développement, qu'il s'agisse d'un commerce de Grigny 2, d'un transporteur des Noues de Seine ou d'un service public local.",
+          },
+          {
+            step: "Développement par sprints",
+            detail:
+              "Greffe IA sur l'existant ou build IA-native : e-commerce et click-and-collect, portail de réservation, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+          },
+          {
+            step: "Recette + mise en ligne",
+            detail:
+              "Tests d'acceptation, contrôle des Web Vitals (LCP, INP, CLS) et du SEO/AEO, validation accessibilité, puis mise en production sans downtime — même pendant un pic d'activité commerciale à Grigny 2 ou logistique sur les axes A6 / RN7.",
+          },
+          {
+            step: "Livraison + autonomie",
+            detail:
+              "Code source, bases de données et modèles livrés chez vous (hébergement UE possible). On forme vos équipes pour piloter l'outil en autonomie depuis Grigny, sans verrou ni abonnement imposé, avec documentation et transfert de compétences inclus.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Brique IA greffée",
+            detail:
+              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce de Grigny 2, d'un artisan du BTP ou d'un restaurant de Grigny, sans refonte ni interruption.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Site / vitrine e-commerce sur mesure",
+            detail:
+              "Conception ou refonte d'un site ou d'une boutique avec UX/UI et IA intégrée : e-commerce multi-CMS, click-and-collect, multilingue, pour le commerce de détail, la restauration et les services locaux de l'Essonne.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Plateforme SaaS IA-native",
+            detail:
+              "Plateforme métier ou portail client sur mesure pour les acteurs du transport, de la logistique et du BTP de la Z.A.E. des Noues de Seine, IA intégrée et branchée sur votre SI (CRM, ERP, TMS, outils de chantier).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Programme produit",
+            detail:
+              "Programmes pluriannuels pour les grands employeurs et bailleurs du sud francilien et de l'agglomération Grand Paris Sud : refonte de plateformes, design system, portails locataires, équipe dédiée Axion-IA en mode produit.",
+          },
+        ],
+        faq: [
+          {
+            q: "Faites-vous l'UX/UI et l'e-commerce, pas seulement l'IA ?",
+            a: "Oui. On conçoit l'expérience complète — research, wireframes, design system, maquettes Figma, prototype cliquable — pour un site vitrine, une boutique e-commerce ou une plateforme, avec ou sans brique IA. Multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou code sur mesure, mobile-first et accessible par défaut.",
+          },
+          {
+            q: "Comment équipez-vous les commerces du centre commercial Grigny 2 ?",
+            a: "Pour les enseignes de Grigny 2, on déploie des vitrines e-commerce avec click-and-collect, paiement en ligne et fiches produits optimisées, reliées à une recherche sémantique et un chatbot RAG multilingue. La zone de chalandise est géolocalisée pour capter les flux locaux jusqu'à Viry-Châtillon, Ris-Orangis et Évry-Courcouronnes, sans refonte de l'existant si vous préférez greffer.",
+          },
+          {
+            q: "Travaillez-vous avec les entreprises du BTP de la Z.A.E. des Noues de Seine ?",
+            a: "Oui. Pour les acteurs de la construction et des fondations implantés dans la Z.A.E. des Noues de Seine, au nord entre Seine et RN7, on développe des plateformes SaaS et des agents qui automatisent le suivi de chantiers, les plannings de tournées et les portails de réservation, branchés sur vos ERP, TMS et outils métier existants.",
+          },
+          {
+            q: "Gérez-vous le multilingue pour un quartier comme Grigny 2 ou La Grande Borne ?",
+            a: "Oui. Nos chatbots RAG et portails locataires sont multilingues par défaut, ancrés sur vos propres contenus. Pour un syndic, un bailleur ou un commerce desservant la population diverse de La Grande Borne et de Grigny 2, ils répondent 24/7 aux demandes courantes — loyers, incidents, démarches, horaires — en plusieurs langues, sans externaliser le support.",
+          },
+          {
+            q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
+            a: "Oui aux deux. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, sans transit hors UE sans DPA : vous gardez la propriété complète de vos données et modèles. Et après le cadrage sur site à Grigny, on remet un devis ferme en forfait fixe — à partir de 24-48 h pour un projet simple, sans régie ni dérive horaire cachée.",
+          },
+        ],
+        guarantees:
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
+      },
+    },
+  },
+
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention à Grigny ?",
