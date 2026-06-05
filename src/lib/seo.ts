@@ -397,15 +397,17 @@ interface OrganizationJsonLdInput {
 // AI consultancies). `sameAs` provides external corroboration, `foundingLocation`
 // + `areaServed` ground geography, `contactPoint` makes it actionable.
 //
-// `vatID` + `identifier (immatriculation RCS / SIREN)` are optional — once Will transmits the
-// French legal references (SIREN / RCS), pass them in from the call site without rewriting
-// this helper.
+// `vatID` + `identifier (immatriculation RCS / SIREN)` + `telephone` + `address` :
+// audit GSC 2026-06-05 A-14 (faille E-E-A-T Trust). Câblés par défaut sur les env
+// vars `COMPANY_*` (toutes `optional` dans `env.ts`) — Will les renseigne côté Coolify
+// (RUN scope) et le schéma Organization les émet automatiquement, sans réécrire les
+// call sites. Tout reste conditionnel : env absent ⇒ champ omis ⇒ 0 régression.
 export function buildOrganizationJsonLd({
   locale,
-  contactEmail = "presse@axion-ia.com",
+  contactEmail = env.COMPANY_EMAIL ?? "presse@axion-ia.com",
   contactType,
-  vatID,
-  registrationNumber,
+  vatID = env.COMPANY_VAT_NUMBER,
+  registrationNumber = env.COMPANY_REGISTRATION_NUMBER,
 }: OrganizationJsonLdInput) {
   const isFr = locale === "fr";
   const resolvedContactType = contactType ?? (isFr ? "Service client" : "Customer service");
@@ -424,7 +426,17 @@ export function buildOrganizationJsonLd({
     // Wikidata Q-number prepended si WIKIDATA_QNUMBER_AXIONIA configuré
     // (Sprint v7 Phase 10 — Knowledge Graph triangulation). Fallback safe :
     // sans env var, retombe sur les 2 sources sociales historiques.
-    sameAs: [...buildOrganizationSameAs(), "https://www.linkedin.com/company/axion-ia"],
+    // Profils/citations entité (audit GSC 2026-06-05 A-16). Liens nofollow côté
+    // plateformes (n'apportent pas d'autorité) mais corroborent l'entité pour Google
+    // + LLMs (sameAs = vérification d'identité, pas de link juice).
+    // LinkedIn = vanity public réel `company/axion-ia-france` (confirmé Will 2026-06-05 ;
+    // page interne /company/123134154).
+    sameAs: [
+      ...buildOrganizationSameAs(),
+      "https://www.linkedin.com/company/axion-ia-france",
+      "https://about.me/axion-ia",
+      "https://www.indiehackers.com/AxionIA",
+    ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
@@ -448,7 +460,19 @@ export function buildOrganizationJsonLd({
       contactType: resolvedContactType,
       email: contactEmail,
       availableLanguage: ["French", "English"],
+      ...(env.COMPANY_PHONE ? { telephone: env.COMPANY_PHONE } : {}),
     },
+    // Adresse postale complète (audit A-14) — émise si `COMPANY_ADDRESS` renseigné.
+    ...(env.COMPANY_ADDRESS
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: env.COMPANY_ADDRESS,
+            addressLocality: "Paris",
+            addressCountry: "FR",
+          },
+        }
+      : {}),
     ...(vatID ? { vatID } : {}),
     ...(registrationNumber
       ? {
