@@ -8,14 +8,14 @@
 // qui valide des env vars au module load (cf. audit 5xx 2026-05-18).
 // On résout `resolveVilleWithCopy` qui est safe edge (lecture statique).
 
-// Audit GSC 2026-06-05 A-02 (P0-2 / D-4) — même fix que `/opengraph-image`. Le 502 en
-// standalone Coolify vient du runtime "edge" sur une route image file-convention (pas
-// de l'import). Fallback D-4 : `runtime = "nodejs"`. `resolveVilleWithCopy` est une
-// lecture statique → safe en node comme en edge ; aucun import qui valide @/env au load.
+// Audit GSC 2026-06-05 A-02 (P0-2) — même cause que `/opengraph-image` : Satori refuse
+// `display: "inline-flex"` → throw au rendu (502). Fix = `inline-flex` → `flex` (plus bas).
+// Runtime "edge" on-demand : NE PAS passer en nodejs (forcerait un pré-rendu de milliers
+// d'OG villes au build). `resolveVilleWithCopy` = lecture statique, safe edge.
 import { ImageResponse } from "@vercel/og";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 export const alt = "Axion-IA — IA pour votre entreprise";
 export const size = { width: 1200, height: 675 };
 export const contentType = "image/png";
@@ -54,7 +54,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
       {/* Logo badge ivoire */}
       <div
         style={{
-          display: "inline-flex",
+          display: "flex", // A-02 : Satori refuse inline-flex (cause du 502)
           alignItems: "center",
           background: PAPER,
           color: FG,
@@ -107,6 +107,9 @@ export default async function VilleOpengraphImage({ params }: Params) {
         </div>
         <div
           style={{
+            display: "flex", // A-02 : Satori exige display:flex si >1 enfant (nom ville + span dept)
+            alignItems: "baseline",
+            flexWrap: "wrap",
             fontSize: 92,
             fontWeight: 500,
             fontStyle: "italic",
@@ -114,8 +117,6 @@ export default async function VilleOpengraphImage({ params }: Params) {
             letterSpacing: "-0.02em",
             marginTop: 16,
             maxWidth: "100%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
           }}
         >
           {villeName}
