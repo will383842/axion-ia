@@ -24,6 +24,7 @@ vi.mock("@/lib/prisma", () => ({
 import { prisma } from "@/lib/prisma";
 import {
   validateOpcoAccord,
+  validateOpcoConventionTripartite,
   validateCpfEdof,
   validateFranceTravail,
   validateSousTraitant,
@@ -45,6 +46,7 @@ function makeSession(overrides: Record<string, unknown> = {}) {
     opcoStatut: "non_demande" as const,
     opcoSubrogation: false,
     numeroDossierOpco: null,
+    conventionTripartiteSigneeAt: null,
     edofVerifieAt: null,
     ftDispositif: null,
     ftAifPrescriptionDate: null,
@@ -106,6 +108,66 @@ describe("validateOpcoAccord", () => {
       makeSession({ financementType: "opco", opcoStatut: "refuse", statut: "planifiee" }),
     );
     expect(result.alerte).toContain("OPCO");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// validateOpcoConventionTripartite (R2 — audit E2E 2026-06-06)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("validateOpcoConventionTripartite", () => {
+  it("ok=true si financementType != opco", () => {
+    expect(validateOpcoConventionTripartite(makeSession({ financementType: "direct" })).ok).toBe(
+      true,
+    );
+  });
+
+  it("ok=true si opco SANS subrogation (pas de tripartite requise)", () => {
+    expect(
+      validateOpcoConventionTripartite(
+        makeSession({ financementType: "opco", opcoSubrogation: false, statut: "planifiee" }),
+      ).ok,
+    ).toBe(true);
+  });
+
+  it("ok=false + critique si opco + subrogation + planifiee + tripartite non signée", () => {
+    const result = validateOpcoConventionTripartite(
+      makeSession({
+        financementType: "opco",
+        opcoSubrogation: true,
+        statut: "planifiee",
+        conventionTripartiteSigneeAt: null,
+      }),
+    );
+    expect(result.ok).toBe(false);
+    expect(result.gravite).toBe("critique");
+    expect(result.alerte).toContain("tripartite");
+  });
+
+  it("ok=true si opco + subrogation + tripartite signée", () => {
+    expect(
+      validateOpcoConventionTripartite(
+        makeSession({
+          financementType: "opco",
+          opcoSubrogation: true,
+          statut: "planifiee",
+          conventionTripartiteSigneeAt: new Date(),
+        }),
+      ).ok,
+    ).toBe(true);
+  });
+
+  it("ok=true si subrogation sans tripartite mais session déjà démarrée (non planifiee)", () => {
+    expect(
+      validateOpcoConventionTripartite(
+        makeSession({
+          financementType: "opco",
+          opcoSubrogation: true,
+          statut: "en_cours",
+          conventionTripartiteSigneeAt: null,
+        }),
+      ).ok,
+    ).toBe(true);
   });
 });
 
@@ -373,12 +435,13 @@ describe("getFinancementValidations", () => {
     }
   });
 
-  it("retourne 4 entrées (opco_accord, cpf_edof, cpf_eligibilite, france_travail)", async () => {
+  it("retourne 5 entrées (opco_accord, opco_tripartite, cpf_edof, cpf_eligibilite, france_travail)", async () => {
     mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue({
       financementType: "direct",
       opcoStatut: "non_demande",
       opcoSubrogation: false,
       numeroDossierOpco: null,
+      conventionTripartiteSigneeAt: null,
       edofVerifieAt: null,
       ftDispositif: null,
       ftAifPrescriptionDate: null,
@@ -389,9 +452,10 @@ describe("getFinancementValidations", () => {
       formation: { edofVerifieAt: null, cpfEligible: false },
     });
     const results = await getFinancementValidations("sess-uuid-1");
-    expect(results).toHaveLength(4);
+    expect(results).toHaveLength(5);
     const codes = results.map((r) => r.code);
     expect(codes).toContain("opco_accord");
+    expect(codes).toContain("opco_tripartite");
     expect(codes).toContain("cpf_edof");
     expect(codes).toContain("cpf_eligibilite");
     expect(codes).toContain("france_travail");

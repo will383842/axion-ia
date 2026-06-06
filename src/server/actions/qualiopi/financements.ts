@@ -88,6 +88,10 @@ const setFinancementSessionSchema = z.object({
     .optional(),
   cpfPayeurResteCharge: z.enum(CPF_PAYEUR_VALEURS).optional(),
   conventionTripartiteSigneeAt: z.coerce.date().optional(),
+  // France Travail POEI — 3 preuves bloquantes avant démarrage (R3 audit 2026-06-06)
+  ftPoeiOffreEmploiNumero: z.string().max(60).optional(),
+  ftPoeiAccordFinancementAt: z.coerce.date().optional(),
+  ftPoeiEngagementSigneAt: z.coerce.date().optional(),
 });
 
 const validerAccordOpcoSchema = z.object({
@@ -182,6 +186,9 @@ export async function setFinancementSessionAction(input: {
   ftDispositif?: FranceTravailDispositif;
   cpfPayeurResteCharge?: string;
   conventionTripartiteSigneeAt?: Date;
+  ftPoeiOffreEmploiNumero?: string;
+  ftPoeiAccordFinancementAt?: Date;
+  ftPoeiEngagementSigneAt?: Date;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = setFinancementSessionSchema.safeParse(input);
@@ -199,6 +206,12 @@ export async function setFinancementSessionAction(input: {
     updateData.cpfPayeurResteCharge = fields.cpfPayeurResteCharge;
   if (fields.conventionTripartiteSigneeAt !== undefined)
     updateData.conventionTripartiteSigneeAt = fields.conventionTripartiteSigneeAt;
+  if (fields.ftPoeiOffreEmploiNumero !== undefined)
+    updateData.ftPoeiOffreEmploiNumero = fields.ftPoeiOffreEmploiNumero;
+  if (fields.ftPoeiAccordFinancementAt !== undefined)
+    updateData.ftPoeiAccordFinancementAt = fields.ftPoeiAccordFinancementAt;
+  if (fields.ftPoeiEngagementSigneAt !== undefined)
+    updateData.ftPoeiEngagementSigneAt = fields.ftPoeiEngagementSigneAt;
 
   if (Object.keys(updateData).length === 0) return { error: "Aucun champ à mettre à jour" };
 

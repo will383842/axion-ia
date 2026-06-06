@@ -32,6 +32,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/** Formate une date en `yyyy-mm-dd` pour un `<input type="date">` (ou null). */
+function toDateInput(d: Date | null): string | null {
+  return d ? d.toISOString().slice(0, 10) : null;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Libellés
 // ─────────────────────────────────────────────────────────────────────────────
@@ -125,6 +130,7 @@ export default async function FinancementSessionPage({ params }: PageProps) {
       edofVerifieAt: true,
       ftDispositif: true,
       ftAifPrescriptionDate: true,
+      ftPoeiOffreEmploiNumero: true,
       ftPoeiAccordFinancementAt: true,
       ftPoeiEngagementSigneAt: true,
       cpfPayeurResteCharge: true,
@@ -370,6 +376,10 @@ export default async function FinancementSessionPage({ params }: PageProps) {
           numeroDossierOpco={trainingSession.numeroDossierOpco}
           ftDispositif={trainingSession.ftDispositif}
           cpfPayeurResteCharge={trainingSession.cpfPayeurResteCharge}
+          conventionTripartiteSigneeAt={toDateInput(trainingSession.conventionTripartiteSigneeAt)}
+          ftPoeiOffreEmploiNumero={trainingSession.ftPoeiOffreEmploiNumero}
+          ftPoeiAccordFinancementAt={toDateInput(trainingSession.ftPoeiAccordFinancementAt)}
+          ftPoeiEngagementSigneAt={toDateInput(trainingSession.ftPoeiEngagementSigneAt)}
         />
       </section>
 

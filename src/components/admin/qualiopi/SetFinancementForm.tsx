@@ -36,6 +36,14 @@ export interface SetFinancementFormProps {
   numeroDossierOpco: string | null;
   ftDispositif: FranceTravailDispositif | null;
   cpfPayeurResteCharge: string | null;
+  /** Date (yyyy-mm-dd) de signature de la convention tripartite OPCO (subrogation). */
+  conventionTripartiteSigneeAt: string | null;
+  /** POEI — numéro d'offre d'emploi France Travail. */
+  ftPoeiOffreEmploiNumero: string | null;
+  /** POEI — date (yyyy-mm-dd) d'accord de financement. */
+  ftPoeiAccordFinancementAt: string | null;
+  /** POEI — date (yyyy-mm-dd) d'engagement signé. */
+  ftPoeiEngagementSigneAt: string | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -87,6 +95,10 @@ export function SetFinancementForm({
   numeroDossierOpco,
   ftDispositif,
   cpfPayeurResteCharge,
+  conventionTripartiteSigneeAt,
+  ftPoeiOffreEmploiNumero,
+  ftPoeiAccordFinancementAt,
+  ftPoeiEngagementSigneAt,
 }: SetFinancementFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -101,10 +113,17 @@ export function SetFinancementForm({
     ftDispositif ?? "",
   );
   const [cpfPayeur, setCpfPayeur] = useState<string>(cpfPayeurResteCharge ?? "");
+  const [tripartiteDate, setTripartiteDate] = useState<string>(conventionTripartiteSigneeAt ?? "");
+  const [poeiOffre, setPoeiOffre] = useState<string>(ftPoeiOffreEmploiNumero ?? "");
+  const [poeiAccordDate, setPoeiAccordDate] = useState<string>(ftPoeiAccordFinancementAt ?? "");
+  const [poeiEngagementDate, setPoeiEngagementDate] = useState<string>(
+    ftPoeiEngagementSigneAt ?? "",
+  );
 
   const showOpco = selectedType === "opco" || selectedType === "mixte";
   const showFT = selectedType === "france_travail";
   const showCPF = selectedType === "cpf";
+  const showPoei = showFT && selectedFtDispositif === "poei";
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -119,6 +138,16 @@ export function SetFinancementForm({
         ...(showOpco ? { opcoSubrogation: subrogation } : {}),
         ...(showOpco && numeroDossier ? { numeroDossierOpco: numeroDossier } : {}),
         ...(showFT && selectedFtDispositif !== "" ? { ftDispositif: selectedFtDispositif } : {}),
+        ...(showOpco && subrogation && tripartiteDate
+          ? { conventionTripartiteSigneeAt: new Date(tripartiteDate) }
+          : {}),
+        ...(showPoei && poeiOffre ? { ftPoeiOffreEmploiNumero: poeiOffre } : {}),
+        ...(showPoei && poeiAccordDate
+          ? { ftPoeiAccordFinancementAt: new Date(poeiAccordDate) }
+          : {}),
+        ...(showPoei && poeiEngagementDate
+          ? { ftPoeiEngagementSigneAt: new Date(poeiEngagementDate) }
+          : {}),
         ...(showCPF && cpfPayeur !== "" ? { cpfPayeurResteCharge: cpfPayeur } : {}),
       });
 
@@ -241,6 +270,25 @@ export function SetFinancementForm({
           </div>
         )}
 
+        {/* OPCO — convention tripartite (bloquante si subrogation, R2) */}
+        {showOpco && subrogation && (
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="convention-tripartite">
+              Convention tripartite signée le
+              <span className="ml-1 text-[color:var(--color-admin-error)]">*</span>
+            </label>
+            <input
+              id="convention-tripartite"
+              type="date"
+              value={tripartiteDate}
+              onChange={(e) => setTripartiteDate(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+              aria-required
+            />
+          </div>
+        )}
+
         {/* France Travail — dispositif */}
         {showFT && (
           <div className={fieldCls}>
@@ -262,6 +310,61 @@ export function SetFinancementForm({
                 </option>
               ))}
             </select>
+          </div>
+        )}
+
+        {/* POEI — 3 preuves bloquantes avant démarrage (R3) */}
+        {showPoei && (
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="poei-offre">
+              POEI — N° offre d&apos;emploi France Travail
+              <span className="ml-1 text-[color:var(--color-admin-error)]">*</span>
+            </label>
+            <input
+              id="poei-offre"
+              type="text"
+              value={poeiOffre}
+              onChange={(e) => setPoeiOffre(e.target.value)}
+              disabled={isPending}
+              placeholder="Ex. OFF-2026-123456"
+              maxLength={60}
+              className={inputCls}
+              aria-required
+            />
+          </div>
+        )}
+        {showPoei && (
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="poei-accord">
+              POEI — Accord de financement signé le
+              <span className="ml-1 text-[color:var(--color-admin-error)]">*</span>
+            </label>
+            <input
+              id="poei-accord"
+              type="date"
+              value={poeiAccordDate}
+              onChange={(e) => setPoeiAccordDate(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+              aria-required
+            />
+          </div>
+        )}
+        {showPoei && (
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="poei-engagement">
+              POEI — Engagement signé le
+              <span className="ml-1 text-[color:var(--color-admin-error)]">*</span>
+            </label>
+            <input
+              id="poei-engagement"
+              type="date"
+              value={poeiEngagementDate}
+              onChange={(e) => setPoeiEngagementDate(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+              aria-required
+            />
           </div>
         )}
 

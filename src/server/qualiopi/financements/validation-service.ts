@@ -36,6 +36,7 @@ type SessionFinancementFields = Pick<
   | "opcoStatut"
   | "opcoSubrogation"
   | "numeroDossierOpco"
+  | "conventionTripartiteSigneeAt"
   | "edofVerifieAt"
   | "ftDispositif"
   | "ftAifPrescriptionDate"
@@ -69,6 +70,33 @@ export function validateOpcoAccord(session: SessionFinancementFields): Validatio
     return {
       ok: false,
       alerte: "Accord OPCO non reçu — JAMAIS commencer avant accord écrit.",
+      gravite: "critique",
+    };
+  }
+  return { ok: true };
+}
+
+/**
+ * Convention tripartite OPCO BLOQUANTE (audit E2E 2026-06-06, R2) :
+ * en cas de **subrogation de paiement** (l'OPCO paie directement Axion-IA), une
+ * convention tripartite (financeur ↔ Axion-IA ↔ bénéficiaire) doit être signée
+ * AVANT le démarrage (art. L.6353-2). Sans elle, la subrogation est irrégulière.
+ *
+ * Règle : financement=opco ET subrogation ET session non démarrée (planifiee)
+ * ET conventionTripartiteSigneeAt manquant → gravité critique (bloque en_cours).
+ * Complète l'alerte post-hoc `convention_tripartite` (evaluateur.ts) par un
+ * vrai blocage en amont.
+ */
+export function validateOpcoConventionTripartite(
+  session: SessionFinancementFields,
+): ValidationResult {
+  if (session.financementType !== "opco") return { ok: true };
+  if (!session.opcoSubrogation) return { ok: true };
+  if (session.statut === "planifiee" && !session.conventionTripartiteSigneeAt) {
+    return {
+      ok: false,
+      alerte:
+        "Subrogation OPCO : convention tripartite non signée — interdit de démarrer avant signature (art. L.6353-2).",
       gravite: "critique",
     };
   }
@@ -231,6 +259,7 @@ export async function getFinancementValidations(
 
   const results: FinancementValidationEntry[] = [
     { code: "opco_accord", result: validateOpcoAccord(session) },
+    { code: "opco_tripartite", result: validateOpcoConventionTripartite(session) },
     { code: "cpf_edof", result: validateCpfEdof(session, session.formation) },
     { code: "cpf_eligibilite", result: validateCpfEligibilite(session, session.formation) },
     { code: "france_travail", result: validateFranceTravail(session) },
