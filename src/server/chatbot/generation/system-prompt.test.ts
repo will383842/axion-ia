@@ -28,7 +28,15 @@ describe("T-07 assembleSystemPrompt", () => {
 
   it("injecte les chunks comme seule source autorisée", () => {
     const chunks: RetrievedChunk[] = [
-      { id: "c1", sourceType: "faq", sourceRef: "slug-x", categorie: "faq", contenu: "Texte de contexte unique.", contexte: null, score: 1 },
+      {
+        id: "c1",
+        sourceType: "faq",
+        sourceRef: "slug-x",
+        categorie: "faq",
+        contenu: "Texte de contexte unique.",
+        contexte: null,
+        score: 1,
+      },
     ];
     const p = assembleSystemPrompt({ tenant, chunks });
     expect(p).toContain("Texte de contexte unique.");

@@ -53,8 +53,11 @@ function jaccard(a, b) {
 }
 
 const sh = cities.map((c) => ({ slug: c.slug, set: shingles(frText(c)), len: frText(c).length }));
-console.log(`\n=== ${cities.length} villes — longueur FR (hero+whyHere+faq+pricing+guarantees) ===`);
-for (const s of sh) console.log(`  ${s.slug.padEnd(12)} ${s.len} chars · ${s.set.size} shingles(3-grammes)`);
+console.log(
+  `\n=== ${cities.length} villes — longueur FR (hero+whyHere+faq+pricing+guarantees) ===`,
+);
+for (const s of sh)
+  console.log(`  ${s.slug.padEnd(12)} ${s.len} chars · ${s.set.size} shingles(3-grammes)`);
 
 console.log(`\n=== Similarité Jaccard inter-villes (3-grammes de mots) — DOORWAY si > 0.40 ===`);
 let maxPair = { v: 0, a: "", b: "" };
@@ -66,7 +69,9 @@ for (let i = 0; i < sh.length; i++) {
     if (v > maxPair.v) maxPair = { v, a: sh[i].slug, b: sh[j].slug };
   }
 }
-console.log(`\n→ Pire paire : ${maxPair.a} vs ${maxPair.b} = ${maxPair.v.toFixed(3)} ${maxPair.v > 0.4 ? "⚠️ DOORWAY — NE PAS publier tel quel" : maxPair.v > 0.25 ? "~ acceptable mais à surveiller" : "✅ UNIQUE — sûr"}`);
+console.log(
+  `\n→ Pire paire : ${maxPair.a} vs ${maxPair.b} = ${maxPair.v.toFixed(3)} ${maxPair.v > 0.4 ? "⚠️ DOORWAY — NE PAS publier tel quel" : maxPair.v > 0.25 ? "~ acceptable mais à surveiller" : "✅ UNIQUE — sûr"}`,
+);
 
 // Spot: show each city's 1st whyHere bullet (proves grounding)
 console.log(`\n=== 1re puce whyHere de chaque ville (preuve d'ancrage local) ===`);

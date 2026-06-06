@@ -44,14 +44,12 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 }));
 
 vi.mock("@/server/qualiopi/documents/documents-service", () => ({
-  generateDocument: vi
-    .fn()
-    .mockResolvedValue({
-      id: "doc-uuid-1",
-      numero: "AXI-FACT-2026-001",
-      pdfUrl: null,
-      hashSha256: "abc",
-    }),
+  generateDocument: vi.fn().mockResolvedValue({
+    id: "doc-uuid-1",
+    numero: "AXI-FACT-2026-001",
+    pdfUrl: null,
+    hashSha256: "abc",
+  }),
 }));
 
 import { prisma } from "@/lib/prisma";
