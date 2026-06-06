@@ -5038,10 +5038,17 @@ model Enrollment {
   tauxPresencePct      Int?             @map("taux_presence_pct")
   emargementSigneAt    DateTime?        @map("emargement_signe_at")
   adaptationsRealisees String?          @map("adaptations_realisees") @db.Text
+  /// Résultat d'attestation calculé (décision #7 : ≥80 complète / 60-79 partielle / <60 aucune).
+  attestationResultat  AttestationResultat? @map("attestation_resultat")
+  /// Attestation officielle générée (DocumentGenere). Null tant que non émise / si <60%.
+  attestationDocumentId String?         @map("attestation_document_id") @db.Uuid
+  attestationDocument  DocumentGenere?  @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
+  attestationGenereeAt DateTime?        @map("attestation_generee_at")
   createdAt            DateTime         @default(now()) @map("created_at")
   updatedAt            DateTime         @updatedAt @map("updated_at")
 
-  presences PresenceCreneau[]
+  presences   PresenceCreneau[]
+  evaluations EvaluationAcquis[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
@@ -5229,6 +5236,8 @@ model DocumentGenere {
   createdAt           DateTime         @default(now()) @map("created_at")
   updatedAt           DateTime         @updatedAt @map("updated_at")
 
+  enrollmentsAttestation Enrollment[] @relation("EnrollmentAttestation")
+
   @@index([type, sessionId])
   @@index([traineeId, type])
   @@index([suppressionPrevueAt])
@@ -5303,6 +5312,65 @@ model PresenceCreneau {
   @@index([enrollmentId])
   @@index([importId])
   @@map("presence_creneaux")
+}
+
+// ============================================================
+// QUALIOPI — T9 : Évaluations des acquis + attestations auto
+// Indicateur 11⭐ (éval EN COURS + après). 3 types : initiale (positionnement),
+// intermédiaire, finale. Score par objectif pédagogique. Attestation auto J+1
+// (complète ≥80% / partielle 60-79% / aucune <60% — décision Will #7).
+// Migration ADDITIVE.
+// ============================================================
+
+/// Moment de l'évaluation des acquis (indicateur 11 : en cours ET après).
+enum EvaluationType {
+  initiale
+  intermediaire
+  finale
+}
+
+/// Niveau global d'acquisition (synthèse de la grille).
+enum NiveauAcquisition {
+  non_acquis
+  partiellement_acquis
+  acquis
+}
+
+/// Résultat d'éligibilité à l'attestation (décision #7, basé sur l'assiduité).
+enum AttestationResultat {
+  complete
+  partielle
+  aucune
+}
+
+/// Évaluation des acquis d'un stagiaire (grille par objectif pédagogique).
+/// Plusieurs lignes par inscription possibles (initiale + intermédiaire(s) +
+/// finale). La `finale` la plus récente fait foi pour la réussite.
+model EvaluationAcquis {
+  id              String            @id @default(uuid()) @db.Uuid
+  enrollmentId    String            @map("enrollment_id") @db.Uuid
+  enrollment      Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  type            EvaluationType
+  dateEvaluation  DateTime          @map("date_evaluation")
+  scoreObtenu     Int               @map("score_obtenu")
+  scoreMax        Int               @map("score_max")
+  scorePct        Int               @map("score_pct")
+  niveauGlobal    NiveauAcquisition @map("niveau_global")
+  /// scorePct ≥ seuil_reussite_pct de la formation.
+  reussite        Boolean           @default(false)
+  /// [{ libelle, note(1-3), observations?, objectifRef? }] — lien objectif↔éval.
+  competences     Json              @default("[]")
+  recommandations String?           @db.Text
+  /// Admin/formateur ayant saisi l'évaluation.
+  evalueParId     String?           @map("evalue_par_id") @db.Uuid
+  /// Grille PDF générée (DocumentGenere type grille_evaluation), optionnel.
+  documentId      String?           @map("document_id") @db.Uuid
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  @@index([enrollmentId])
+  @@index([type])
+  @@map("evaluations_acquis")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

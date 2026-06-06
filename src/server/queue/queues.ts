@@ -1008,6 +1008,13 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 8 * * *",
         jobId: "formation-crons-cloture-auto-cron",
       },
+      {
+        // T9 — génération automatique des attestations J+1 (sessions realisee)
+        // Daily 09:00 UTC (décalé de 1h après cloture-auto 08:00 pour garantir J+1)
+        type: "formation-crons.attestations-auto",
+        pattern: "0 9 * * *",
+        jobId: "formation-crons-attestations-auto-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

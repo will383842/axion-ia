@@ -1,4 +1,4 @@
-// Worker BullMQ — Qualiopi Formation crons (T6).
+// Worker BullMQ — Qualiopi Formation crons (T6 + T9).
 //
 // Queue unique `formation-crons` qui dispatche par `type`. Pattern miroir de
 // `booking-crons-worker.ts` — 1 seule queue, handlers idempotents, fail-soft
@@ -7,6 +7,10 @@
 // Jobs actifs (T6) :
 //   - formation-crons.date-debut   : planifiee → en_cours quand dateDebut <= now
 //   - formation-crons.cloture-auto : en_cours  → realisee quand dateFin + 24h <= now
+//
+// Jobs actifs (T9) :
+//   - formation-crons.attestations-auto : scan sessions realisee → génère attestations
+//                                         pour enrollments sans attestation (daily 09:00).
 //
 // Extension T15 (RAPPELS — hors T6) :
 //   Rappels J-7/J-5 (convocation stagiaires), J+1 (satisfaction), J+30 (suivi)
@@ -29,12 +33,16 @@ import {
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
+import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type FormationCronJobType = "formation-crons.date-debut" | "formation-crons.cloture-auto";
+export type FormationCronJobType =
+  | "formation-crons.date-debut"
+  | "formation-crons.cloture-auto"
+  | "formation-crons.attestations-auto";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -195,6 +203,52 @@ async function handleClotureAuto(): Promise<void> {
   );
 }
 
+/**
+ * Daily 09:00 — Génère les attestations automatiques pour les sessions `realisee`.
+ *
+ * Scan toutes les sessions `realisee` ayant des enrollments (statut planifiee ou
+ * presente) dont l'attestation n'a pas encore été générée (attestationGenereeAt: null).
+ * Pour chaque enrollment, délègue à `genererAttestationPourEnrollment` (AGENT A).
+ * Fail-soft par enrollment : une erreur ne bloque pas les autres.
+ * Idempotence garantie car `realisee` n'arrive qu'après dateFin + 24h (cloture-auto).
+ */
+async function handleAttestationsAuto(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] attestations-auto: stub DB, skip");
+    return;
+  }
+
+  // Trouve tous les enrollments éligibles : session realisee, pas encore d'attestation
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      session: { statut: "realisee" },
+      statut: { in: ["planifiee", "presente"] },
+      attestationGenereeAt: null,
+    },
+    select: { id: true, session: { select: { id: true } } },
+  });
+
+  let ok = 0;
+  let ko = 0;
+
+  for (const enrollment of enrollments) {
+    try {
+      await genererAttestationPourEnrollment(enrollment.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] attestations-auto: erreur enrollment ${enrollment.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] attestations-auto: ${ok} générées, ${ko} erreurs (${enrollments.length} candidats scannés)`,
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Worker dispatcher (exporté pour test d'intégration)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -202,6 +256,7 @@ async function handleClotureAuto(): Promise<void> {
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
+  "formation-crons.attestations-auto": handleAttestationsAuto,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

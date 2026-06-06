@@ -184,12 +184,20 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
 
                   {/* Actions */}
                   <td className={cellCls}>
-                    <Link
-                      href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/emargement`}
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                    >
-                      Émargement
-                    </Link>
+                    <div className="flex flex-col gap-[var(--space-admin-1)]">
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/emargement`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      >
+                        Émargement
+                      </Link>
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/evaluations`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      >
+                        Évaluations
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}
