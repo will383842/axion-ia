@@ -151,6 +151,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     { href: `${base}/qualiopi/sessions`, label: "Sessions", icon: "📅", group: "qualiopi" },
     { href: `${base}/qualiopi/formateurs`, label: "Formateurs", icon: "👨‍🏫", group: "qualiopi" },
+    { href: `${base}/qualiopi/stagiaires`, label: "Stagiaires", icon: "🧑‍🎓", group: "qualiopi" },
     { href: `${base}/qualiopi/offres`, label: "Offres", icon: "🏷️", group: "qualiopi" },
     { href: `${base}/qualiopi/clients`, label: "Clients (CRM)", icon: "🏢", group: "qualiopi" },
     { href: `${base}/qualiopi/devis`, label: "Devis", icon: "📄", group: "qualiopi" },
