@@ -5033,8 +5033,11 @@ model Trainee {
   createdAt              DateTime     @default(now()) @map("created_at")
   updatedAt              DateTime     @updatedAt @map("updated_at")
 
-  enrollments Enrollment[]
-  documents   DocumentGenere[]
+  enrollments   Enrollment[]
+  documents     DocumentGenere[]
+  portailAcces  PortailAcces[]
+  appreciations Appreciation[]
+  rgpdDemandes  RgpdDemande[]
 
   @@index([email])
   @@index([entreprise])
@@ -5670,6 +5673,89 @@ model SupportFormation {
   @@index([formationId])
   @@index([type])
   @@map("supports_formation")
+}
+
+// ============================================================
+// QUALIOPI — T14 : Portail stagiaire + appréciations multi-parties (off.30)
+// Token 90 j révocable → cookie HttpOnly. Espace stagiaire (attestations,
+// satisfaction, handicap, RGPD export/suppression). Appréciations stagiaire/
+// entreprise/financeur/formateur (off.30, ≠ réclamations). Migration ADDITIVE.
+// ============================================================
+
+/// Source d'une appréciation (recueil multi-parties — off.30).
+enum AppreciationSource {
+  stagiaire
+  entreprise
+  financeur
+  formateur
+}
+
+/// Type de demande RGPD (droit d'accès / droit à l'effacement).
+enum RgpdDemandeType {
+  export
+  suppression
+}
+
+/// Statut d'une demande RGPD.
+enum RgpdDemandeStatut {
+  demandee
+  traitee
+  refusee
+}
+
+/// Accès portail stagiaire. Token non-guessable 90 j, révocable, renouvelable.
+/// Flux : token URL → vérif (timingSafeEqual) → cookie HttpOnly → /portail/mon-espace.
+model PortailAcces {
+  id         String    @id @default(uuid()) @db.Uuid
+  traineeId  String    @map("trainee_id") @db.Uuid
+  trainee    Trainee   @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  token      String    @unique @db.VarChar(64)
+  expiresAt  DateTime  @map("expires_at")
+  revoked    Boolean   @default(false)
+  lastUsedAt DateTime? @map("last_used_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([traineeId])
+  @@map("portail_acces")
+}
+
+/// Appréciation multi-parties (off.30) : recueil structuré des retours
+/// stagiaire / entreprise / financeur / formateur (≠ réclamations off.31).
+model Appreciation {
+  id               String             @id @default(uuid()) @db.Uuid
+  source           AppreciationSource
+  enrollmentId     String?            @map("enrollment_id") @db.Uuid
+  traineeId        String?            @map("trainee_id") @db.Uuid
+  trainee          Trainee?           @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId         String?            @map("client_id") @db.Uuid
+  /// Note /5 (facultative).
+  note             Int?
+  commentaire      String?            @db.Text
+  dateAppreciation DateTime           @map("date_appreciation")
+  createdAt        DateTime           @default(now()) @map("created_at")
+
+  @@index([source])
+  @@index([dateAppreciation])
+  @@index([enrollmentId])
+  @@map("appreciations")
+}
+
+/// Demande RGPD d'un stagiaire (export ou suppression). Traçabilité du droit
+/// d'accès / effacement (la suppression effective passe par `Trainee.deletedAt`).
+model RgpdDemande {
+  id        String            @id @default(uuid()) @db.Uuid
+  traineeId String            @map("trainee_id") @db.Uuid
+  trainee   Trainee           @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  type      RgpdDemandeType
+  statut    RgpdDemandeStatut @default(demandee)
+  demandeAt DateTime          @map("demande_at")
+  traiteeAt DateTime?         @map("traitee_at")
+  note      String?           @db.Text
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  @@index([traineeId])
+  @@index([statut])
+  @@map("rgpd_demandes")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le
