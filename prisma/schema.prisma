@@ -5047,8 +5047,9 @@ model Enrollment {
   createdAt            DateTime         @default(now()) @map("created_at")
   updatedAt            DateTime         @updatedAt @map("updated_at")
 
-  presences   PresenceCreneau[]
-  evaluations EvaluationAcquis[]
+  presences      PresenceCreneau[]
+  evaluations    EvaluationAcquis[]
+  questionnaires Questionnaire[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
@@ -5371,6 +5372,45 @@ model EvaluationAcquis {
   @@index([enrollmentId])
   @@index([type])
   @@map("evaluations_acquis")
+}
+
+// ============================================================
+// QUALIOPI — T10 : Satisfaction + positionnement (questionnaires)
+// Indicateur 31⭐ (collecte/exploitation satisfaction) + off.8 (positionnement
+// entrée) + off.2. Questionnaire chaud (fin de session), froid (J+30), et
+// positionnement (attentes/besoins à l'entrée). Token d'accès portail stagiaire.
+// Migration ADDITIVE. Indicateurs Qualiopi = calculés (pas de table) + cache Redis.
+// ============================================================
+
+/// Type de questionnaire stagiaire.
+enum QuestionnaireType {
+  positionnement
+  satisfaction_chaud
+  satisfaction_froid
+}
+
+/// Questionnaire d'un stagiaire (1 par inscription × type). Rempli via portail
+/// (token) ou saisie admin. `noteGlobale` (1-5) alimente le taux de satisfaction.
+model Questionnaire {
+  id           String            @id @default(uuid()) @db.Uuid
+  enrollmentId String            @map("enrollment_id") @db.Uuid
+  enrollment   Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  type         QuestionnaireType
+  /// Token d'accès portail (non-guessable). timingSafeEqual à la lecture.
+  token        String            @unique @db.VarChar(64)
+  /// Réponses structurées : { questionId: valeur }.
+  reponses     Json              @default("{}")
+  /// Note globale /5 (satisfaction). Null tant que non répondu.
+  noteGlobale  Int?              @map("note_globale")
+  envoyeAt     DateTime?         @map("envoye_at")
+  reponduAt    DateTime?         @map("repondu_at")
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+
+  @@unique([enrollmentId, type], map: "questionnaire_unique_per_type")
+  @@index([enrollmentId])
+  @@index([type])
+  @@map("questionnaires")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

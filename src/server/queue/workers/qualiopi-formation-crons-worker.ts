@@ -34,6 +34,7 @@ import { writeSessionTransition } from "@/server/qualiopi/formations/transition-
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
+import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -201,6 +202,28 @@ async function handleClotureAuto(): Promise<void> {
   console.log(
     `[formation-crons] cloture-auto: ${applied}/${decisions.length} transition(s) en_cours→realisee (${candidates.length} candidats scannés)`,
   );
+
+  // Invalide le cache indicateurs pour chaque année touchée (best-effort, fail-soft).
+  // Les sessions clôturées alimentent les indicateurs Qualiopi — le cache doit être
+  // purgé pour que le prochain accès recalcule avec les données à jour.
+  if (applied > 0) {
+    const anneesTouches = new Set(
+      decisions
+        .filter((d) => d.to === "realisee")
+        .map((d) => {
+          const candidate = candidates.find((c) => c.id === d.sessionId);
+          return candidate?.dateFin?.getFullYear() ?? null;
+        })
+        .filter((a): a is number => a !== null),
+    );
+    for (const annee of anneesTouches) {
+      try {
+        await invalidateIndicateursCache(annee);
+      } catch {
+        // fail-soft : invalidation cache non bloquante
+      }
+    }
+  }
 }
 
 /**
