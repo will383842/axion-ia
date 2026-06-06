@@ -4876,6 +4876,7 @@ model Formation {
   objectifsPedagogiques Json                     @default("[]") @map("objectifs_pedagogiques")
   /// [{ moduleId, titre, dureeMin, sequences:[...] }].
   programmeDetaille    Json                      @default("[]") @map("programme_detaille")
+  supports             SupportFormation[]
   methodesPedagogiques String                    @default("") @map("methodes_pedagogiques") @db.Text
   /// Moyens techniques mis à disposition (off.17/21 : salle, plateforme, matériel). [T11]
   moyensTechniques     String                    @default("") @map("moyens_techniques") @db.Text
@@ -5617,6 +5618,58 @@ model RevueDirection {
   updatedAt           DateTime @updatedAt @map("updated_at")
 
   @@map("revues_direction")
+}
+
+// ============================================================
+// QUALIOPI — T13 : Supports de formation (slides, livret, mémo, guide,
+// exercices, grille d'éval) à la charte + kit excellence. off.17 (moyens
+// pédagogiques) / off.19. PDF rendus react-pdf, stockés en propre (R2),
+// distincts des DocumentGenere légaux. Migration ADDITIVE.
+// ============================================================
+
+/// Type de support pédagogique généré pour une formation.
+enum SupportType {
+  slides_formateur
+  slides_stagiaire
+  livret_stagiaire
+  memo
+  guide_animation
+  exercices
+  grille_eval
+}
+
+/// Statut de génération d'un support.
+enum SupportStatut {
+  brouillon
+  genere
+  archive
+}
+
+/// Support pédagogique d'une formation (PDF à la charte). Contenu structuré
+/// (assemblé depuis le programme + objectifs, enrichi IA), versionné.
+model SupportFormation {
+  id          String        @id @default(uuid()) @db.Uuid
+  formationId String        @map("formation_id") @db.Uuid
+  formation   Formation     @relation(fields: [formationId], references: [id], onDelete: Cascade)
+  type        SupportType
+  titre       String        @db.VarChar(300)
+  /// Contenu structuré du support : { sections:[{titre, blocs:[...]}], ... }.
+  contenu     Json          @default("{}")
+  /// Clé R2 du PDF rendu + URL signée (regénérée à la demande).
+  pdfKey      String?       @map("pdf_key") @db.Text
+  pdfUrl      String?       @map("pdf_url") @db.Text
+  hashSha256  String?       @map("hash_sha256") @db.VarChar(64)
+  sizeBytes   Int           @default(0) @map("size_bytes")
+  version     Int           @default(1)
+  aiGenerated Boolean       @default(false) @map("ai_generated")
+  statut      SupportStatut @default(brouillon)
+  generatedAt DateTime?     @map("generated_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@index([formationId])
+  @@index([type])
+  @@map("supports_formation")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

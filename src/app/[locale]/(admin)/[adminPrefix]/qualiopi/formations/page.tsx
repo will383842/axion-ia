@@ -8,6 +8,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -97,6 +98,7 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
                 <th className={headCls}>Statut génération</th>
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Validée</th>
+                <th className={headCls}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -167,6 +169,16 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
                     ) : (
                       <span className="text-[color:var(--color-admin-fg-muted)]">Non</span>
                     )}
+                  </td>
+
+                  {/* Actions */}
+                  <td className={cellCls}>
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/supports`}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                    >
+                      Supports
+                    </Link>
                   </td>
                 </tr>
               ))}
