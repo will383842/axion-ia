@@ -1,9 +1,11 @@
 /**
- * Tests — Server Actions Financements + Facturation (T11 AGENT B).
+ * Tests — Server Actions Financements + Facturation (T11 AGENT B + T16).
  *
  * Stratégie :
  *   - Mock `@/lib/prisma` + `@/server/actions/qualiopi/_guards`
  *     (requireAdminWrite + logQualiopiActivity).
+ *   - Mock `@/server/qualiopi/documents/organisme` + `@/server/qualiopi/documents/documents-service`
+ *     + `@/server/qualiopi/documents/templates/facture` (pour genererFacturePdfAction T16).
  *   - Vérifie les flux principaux + bloquants métier :
  *       OPCO accord, CPF EDOF, subrogation dossier, validations FT.
  *   - Pas d'import `next/headers` en test (mocké via _guards).
@@ -15,6 +17,9 @@
  *   setMoyensFormationAction       ✓
  *   verifierSousTraitantAction     ✓
  *   exportComptaCsvAction          ✓
+ *
+ * Couverture T16 :
+ *   genererFacturePdfAction        ✓ (cas nominal + facture introuvable + PDF fail-soft)
  */
 
 import { describe, it, expect, vi, beforeEach, assert } from "vitest";
@@ -40,6 +45,8 @@ vi.mock("@/lib/prisma", () => ({
       count: vi.fn(),
       create: vi.fn(),
       findMany: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
     },
     formation: {
       findUnique: vi.fn(),
@@ -50,6 +57,34 @@ vi.mock("@/lib/prisma", () => ({
       update: vi.fn(),
     },
   },
+}));
+
+// Mocks pour genererFacturePdfAction (T16)
+vi.mock("@/server/qualiopi/documents/organisme", () => ({
+  getOrganismeIdentite: vi.fn().mockResolvedValue({
+    raisonSociale: "Axion-IA SAS",
+    nda: "11380000038",
+    qualiopi: "FR-2024-001",
+    siret: "12345678900001",
+    adresseSiege: "Paris 75001",
+    adresseExercice: "Saint-Lattier, Isère",
+    email: "contact@axion-ia.com",
+    telephone: "+33600000000",
+    site: "https://axion-ia.com",
+  }),
+}));
+
+vi.mock("@/server/qualiopi/documents/documents-service", () => ({
+  generateDocument: vi.fn().mockResolvedValue({
+    id: "doc-uuid-pdf-test",
+    numero: "AXI-FACT-2026-001",
+    pdfUrl: null,
+    hashSha256: "abc",
+  }),
+}));
+
+vi.mock("@/server/qualiopi/documents/templates/facture", () => ({
+  FacturePdf: vi.fn(() => null),
 }));
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -63,11 +98,13 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 
 import {
   setFinancementSessionAction,
   validerAccordOpcoAction,
   genererFactureFormationAction,
+  genererFacturePdfAction,
   setMoyensFormationAction,
   verifierSousTraitantAction,
   exportComptaCsvAction,
@@ -86,6 +123,8 @@ const mockPrisma = prisma as unknown as {
     count: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
+    findUnique: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
   };
   formation: {
     findUnique: ReturnType<typeof vi.fn>;
@@ -96,6 +135,8 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
   };
 };
+
+const mockGenerateDocument = generateDocument as ReturnType<typeof vi.fn>;
 
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
@@ -856,5 +897,131 @@ describe("exportComptaCsvAction", () => {
     // Seulement le header
     const lines = result.data.csv.split("\n").filter(Boolean);
     expect(lines).toHaveLength(1); // header uniquement
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// genererFacturePdfAction (T16 — réconcile dette PDF)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Facture minimale pour les tests PDF. */
+function makeFacture(overrides: Record<string, unknown> = {}) {
+  return {
+    id: FACTURE_UUID,
+    numero: "AXI-FACT-2026-003",
+    destinataireNom: "Acme SA",
+    destinataireSiret: null,
+    destinataireAdresse: null,
+    montantHtCents: 150000,
+    lignes: [
+      {
+        designation: "Formation professionnelle — forfait",
+        quantite: 1,
+        prixUnitaireHtCents: 150000,
+      },
+    ],
+    subrogation: false,
+    numeroDossierOpco: null,
+    emiseAt: new Date("2026-06-01T10:00:00.000Z"),
+    echeanceAt: new Date("2026-07-01T10:00:00.000Z"),
+    sessionId: SESSION_UUID,
+    ...overrides,
+  };
+}
+
+describe("genererFacturePdfAction (T16)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
+    mockLogActivity.mockResolvedValue(undefined);
+    mockPrisma.factureFormation.findUnique.mockResolvedValue(makeFacture());
+    mockPrisma.factureFormation.update.mockResolvedValue({
+      id: FACTURE_UUID,
+      documentId: "doc-uuid-pdf-test",
+    });
+    mockGenerateDocument.mockResolvedValue({
+      id: "doc-uuid-pdf-test",
+      numero: "AXI-FACT-2026-003",
+      pdfUrl: null,
+      hashSha256: "abc",
+    });
+  });
+
+  it("retourne { data: { factureId, documentId } } en cas nominal", async () => {
+    const result = await genererFacturePdfAction({ factureId: FACTURE_UUID });
+
+    expect("data" in result).toBe(true);
+    if (!("data" in result)) return;
+    expect(result.data.factureId).toBe(FACTURE_UUID);
+    expect(result.data.documentId).toBe("doc-uuid-pdf-test");
+  });
+
+  it("met à jour documentId sur la facture en base", async () => {
+    await genererFacturePdfAction({ factureId: FACTURE_UUID });
+
+    expect(mockPrisma.factureFormation.update).toHaveBeenCalledOnce();
+    const updateCall = mockCall<{ where: { id: string }; data: { documentId: string } }>(
+      mockPrisma.factureFormation.update,
+    );
+    expect(updateCall.where.id).toBe(FACTURE_UUID);
+    expect(updateCall.data.documentId).toBe("doc-uuid-pdf-test");
+  });
+
+  it("logge l'activité avec l'action correcte", async () => {
+    await genererFacturePdfAction({ factureId: FACTURE_UUID });
+
+    expect(mockLogActivity).toHaveBeenCalledOnce();
+    const logCall = mockCall<{ action: string; targetType: string; targetId: string }>(
+      mockLogActivity,
+    );
+    expect(logCall.action).toBe("qualiopi.facture.pdf.generer");
+    expect(logCall.targetType).toBe("FactureFormation");
+    expect(logCall.targetId).toBe(FACTURE_UUID);
+  });
+
+  it("retourne { error } si factureId invalide (pas UUID)", async () => {
+    const result = await genererFacturePdfAction({ factureId: "pas-un-uuid" });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toBe("Données invalides");
+  });
+
+  it("retourne { error } si la facture est introuvable", async () => {
+    mockPrisma.factureFormation.findUnique.mockResolvedValue(null);
+
+    const result = await genererFacturePdfAction({ factureId: FACTURE_UUID });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toBe("Facture introuvable");
+  });
+
+  it("fail-soft : retourne { error } si generateDocument rejette (PDF renderer failure)", async () => {
+    mockGenerateDocument.mockRejectedValue(new Error("Renderer PDF indisponible"));
+
+    const result = await genererFacturePdfAction({ factureId: FACTURE_UUID });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toMatch(/PDF non généré/i);
+    // La facture ne doit pas être mise à jour si le PDF a échoué
+    expect(mockPrisma.factureFormation.update).not.toHaveBeenCalled();
+  });
+
+  it("supporte la subrogation OPCO (mention dans FactureData)", async () => {
+    mockPrisma.factureFormation.findUnique.mockResolvedValue(
+      makeFacture({
+        subrogation: true,
+        numeroDossierOpco: "DOSSIER-2026-001",
+        destinataireNom: "OPCO Atlas",
+      }),
+    );
+
+    const result = await genererFacturePdfAction({ factureId: FACTURE_UUID });
+
+    expect("data" in result).toBe(true);
+    // generateDocument doit avoir été appelé (PDF construit avec subrogationOpco)
+    expect(mockGenerateDocument).toHaveBeenCalledOnce();
   });
 });

@@ -1,9 +1,15 @@
 /**
- * Qualiopi — Server Actions Financements + Facturation (T11).
+ * Qualiopi — Server Actions Financements + Facturation (T11 + T16).
  *
  * setFinancementSessionAction  : mise à jour des champs financement d'une session.
  * validerAccordOpcoAction      : validation manuelle de l'accord OPCO (opcoStatut→accord_recu).
  * genererFactureFormationAction: génération d'une facture de formation (forfait|horaire).
+ * genererFacturePdfAction      : génère (ou régénère) le PDF d'une facture existante et pose
+ *                                documentId. Action séparée pour ne pas casser les 50 tests
+ *                                existants de genererFactureFormationAction (choix T16 AGENT B :
+ *                                action séparée plutôt que câblage direct du service dans l'action
+ *                                existante, car les tests mockent prisma.factureFormation.create
+ *                                et ne mockent pas facturation-service / generateDocument).
  * setMoyensFormationAction     : mise à jour moyens techniques + ressources pédagogiques.
  * verifierSousTraitantAction   : horodatage de la vérification data.gouv.fr d'un sous-traitant.
  * exportComptaCsvAction        : export CSV comptable des factures d'une année.
@@ -14,10 +20,15 @@
 
 "use server";
 
+import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
+import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import type {
   FinancementType,
   OpcoStatut,
@@ -476,6 +487,137 @@ export async function verifierSousTraitantAction(input: {
   });
 
   return { data: { id: trainerId } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// genererFacturePdfAction (T16 — réconcile dette PDF)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const genererFacturePdfSchema = z.object({
+  factureId: z.string().uuid(),
+});
+
+/**
+ * Génère (ou régénère) le PDF d'une FactureFormation existante, puis stocke
+ * documentId sur la facture.
+ *
+ * Choix T16 : action séparée (ne modifie pas genererFactureFormationAction) pour
+ * préserver les 50 tests existants qui mockent prisma.factureFormation.create
+ * et s'attendent à documentId=null.
+ *
+ * Stub-aware : retourne un résultat minimal sans appel DB si build stub.invalid.
+ * Fail-soft : si le renderer PDF échoue, retourne { error } sans crasher.
+ */
+export async function genererFacturePdfAction(input: {
+  factureId: string;
+}): Promise<ActionResult<{ factureId: string; documentId: string }>> {
+  const adminSession = await requireAdminWrite();
+
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
+    return { error: "Génération PDF désactivée en mode build (stub)" };
+  }
+
+  const parsed = genererFacturePdfSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { factureId } = parsed.data;
+
+  // Chargement de la facture avec les données nécessaires pour reconstruire le PDF
+  const facture = await prisma.factureFormation.findUnique({
+    where: { id: factureId },
+    select: {
+      id: true,
+      numero: true,
+      destinataireNom: true,
+      destinataireSiret: true,
+      destinataireAdresse: true,
+      montantHtCents: true,
+      lignes: true,
+      subrogation: true,
+      numeroDossierOpco: true,
+      emiseAt: true,
+      echeanceAt: true,
+      sessionId: true,
+    },
+  });
+  if (!facture) return { error: "Facture introuvable" };
+
+  // Reconstruction de FactureData pour le renderer
+  const identite = await getOrganismeIdentite();
+
+  const formatDate = (d: Date | null | undefined): string =>
+    d ? d.toLocaleDateString("fr-FR") : new Date().toLocaleDateString("fr-FR");
+
+  const echeance =
+    facture.echeanceAt ??
+    (() => {
+      const d = new Date(facture.emiseAt ?? new Date());
+      d.setDate(d.getDate() + 30);
+      return d;
+    })();
+
+  const lignes = (Array.isArray(facture.lignes) ? facture.lignes : []) as Array<{
+    designation: string;
+    quantite: number;
+    prixUnitaireHtCents: number;
+  }>;
+
+  const factureData: FactureData = {
+    numero: facture.numero,
+    dateEmission: formatDate(facture.emiseAt),
+    dateEcheance: formatDate(echeance),
+    identite,
+    client: {
+      raisonSociale: facture.destinataireNom,
+      ...(facture.destinataireSiret !== null && facture.destinataireSiret !== undefined
+        ? { siret: facture.destinataireSiret }
+        : {}),
+      ...(facture.destinataireAdresse !== null && facture.destinataireAdresse !== undefined
+        ? { adresse: facture.destinataireAdresse }
+        : {}),
+    },
+    lignes,
+    ...(facture.subrogation &&
+    facture.numeroDossierOpco !== null &&
+    facture.numeroDossierOpco !== undefined
+      ? {
+          subrogationOpco: {
+            nomOpco: facture.destinataireNom,
+            numeroDossier: facture.numeroDossierOpco,
+          },
+        }
+      : {}),
+  };
+
+  // Génération PDF via le service central
+  let documentId: string;
+  try {
+    const element = React.createElement(FacturePdf, { data: factureData });
+    const docResult = await generateDocument({
+      type: "facture",
+      element,
+      refs: { sessionId: facture.sessionId },
+    });
+    documentId = docResult.id;
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Erreur de génération PDF";
+    return { error: `PDF non généré : ${msg}` };
+  }
+
+  // Mise à jour de la facture avec documentId
+  await prisma.factureFormation.update({
+    where: { id: factureId },
+    data: { documentId },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.facture.pdf.generer",
+    targetType: "FactureFormation",
+    targetId: factureId,
+    changes: { documentId },
+    session: adminSession,
+  });
+
+  return { data: { factureId, documentId } };
 }
 
 /**

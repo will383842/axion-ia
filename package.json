@@ -69,6 +69,7 @@
     "image-bank:seed": "tsx prisma/seeds/image-bank/index.ts",
     "image-bank:isolation-check": "tsx scripts/image-bank/isolation-check.ts",
     "qualiopi:seed": "tsx prisma/seeds/qualiopi/index.ts",
+    "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
     "qualiopi:isolation-check": "tsx scripts/qualiopi/isolation-check.ts",
     "villes:import": "tsx scripts/import-insee-villes.ts",
     "posts:check": "tsx scripts/check-posts.ts",

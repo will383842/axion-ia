@@ -27,6 +27,8 @@ export default defineConfig({
       "src/**/*.{test,spec}.{ts,tsx}",
       "tests/unit/**/*.{test,spec}.{ts,tsx}",
       "tests/schemas/**/*.{test,spec}.{ts,tsx}",
+      // T16 — seeds qualiopi (buildDemoData pure, no DB)
+      "prisma/seeds/qualiopi/**/*.spec.ts",
     ],
     exclude: ["node_modules", ".next", "tests/e2e/**", "tests/integration/**"],
     coverage: {
