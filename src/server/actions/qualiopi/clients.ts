@@ -21,6 +21,7 @@ type ActionResult<T> = { data: T } | { error: string };
 // ─────────────────────────────────────────────────────────────────────────────
 
 const COMPANY_SIZES = ["TPE", "PME", "ETI", "GRANDE_ENTREPRISE"] as const;
+const CLIENT_TYPES = ["entreprise", "particulier"] as const;
 const CLIENT_STATUTS = [
   "prospect",
   "devis_envoye",
@@ -30,6 +31,8 @@ const CLIENT_STATUTS = [
 ] as const;
 
 const createClientSchema = z.object({
+  /** entreprise (B2B) | particulier (B2C). Défaut entreprise. */
+  type: z.enum(CLIENT_TYPES).optional(),
   raisonSociale: z.string().min(1).max(250),
   siret: z.string().max(14).optional(),
   nafCode: z.string().max(6).optional(),
@@ -54,6 +57,7 @@ const createClientSchema = z.object({
 
 const updateClientSchema = z.object({
   id: z.string().uuid(),
+  type: z.enum(CLIENT_TYPES).optional(),
   raisonSociale: z.string().min(1).max(250).optional(),
   siret: z.string().max(14).optional(),
   nafCode: z.string().max(6).optional(),
@@ -108,6 +112,7 @@ export async function createClientAction(
       numero,
       raisonSociale: v.raisonSociale,
       statut: "prospect",
+      ...(v.type !== undefined ? { type: v.type } : {}),
       ...(v.siret !== undefined ? { siret: v.siret } : {}),
       ...(v.nafCode !== undefined ? { nafCode: v.nafCode } : {}),
       ...(v.conventionCollective !== undefined
@@ -159,6 +164,7 @@ export async function updateClientAction(
   await prisma.client.update({
     where: { id },
     data: {
+      ...(fields.type !== undefined ? { type: fields.type } : {}),
       ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
       ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
       ...(fields.nafCode !== undefined ? { nafCode: fields.nafCode } : {}),

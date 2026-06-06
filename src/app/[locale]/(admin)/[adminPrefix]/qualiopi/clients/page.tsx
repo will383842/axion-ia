@@ -6,6 +6,7 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -70,8 +71,14 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Clients / Prospects"
-        description="CRM organisme de formation — suivi des clients, OPCO inféré depuis le code NAF."
+        description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO inféré depuis le code NAF."
       />
+
+      <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
+        <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
+          + Nouveau client
+        </Link>
+      </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard label="Total" value={clients.length} />
@@ -94,6 +101,7 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
               <tr>
                 <th className={headCls}>Numéro</th>
                 <th className={headCls}>Raison sociale</th>
+                <th className={headCls}>Type</th>
                 <th className={headCls}>SIRET</th>
                 <th className={headCls}>NAF</th>
                 <th className={headCls}>IDCC</th>
@@ -121,6 +129,9 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                         {client.contactEmail}
                       </div>
                     )}
+                  </td>
+                  <td className={cellCls}>
+                    {client.type === "particulier" ? "Particulier" : "Entreprise"}
                   </td>
                   <td className={cellCls}>
                     <span className="font-mono text-[length:var(--text-admin-xs)]">

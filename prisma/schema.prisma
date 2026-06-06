@@ -4682,6 +4682,12 @@ enum ClientStatut {
   perdu
 }
 
+/// Type de client : entreprise (B2B) ou particulier (B2C, ex. CPF perso). [R-B2C]
+enum ClientType {
+  entreprise
+  particulier
+}
+
 /// Statut d'un devis (CRM, distinct de QuoteStatus lié au Booking).
 enum DevisStatut {
   brouillon
@@ -4697,6 +4703,8 @@ model Client {
   id                          String        @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-CLI-NNN.
   numero                      String        @unique @db.VarChar(40)
+  /// entreprise (B2B) | particulier (B2C). Pour un particulier, raisonSociale = "Prénom Nom".
+  type                        ClientType    @default(entreprise)
   raisonSociale               String        @map("raison_sociale") @db.VarChar(250)
   siret                       String?       @db.VarChar(14)
   nafCode                     String?       @map("naf_code") @db.VarChar(6)
