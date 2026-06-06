@@ -21,7 +21,9 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
+import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntreprisesSection";
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
+import { listClients } from "@/server/qualiopi/crm/clients";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import {
@@ -126,6 +128,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       montantHtCents: true,
       financementType: true,
       formateurPrincipalId: true,
+      interEntreprises: true,
       sessionParentId: true,
       sessionReporteeId: true,
       formation: {
@@ -160,6 +163,12 @@ export default async function SessionHubPage({ params }: PageProps) {
     habilite: isTrainerHabilite(t, trainingSession.formation.id).ok,
   }));
 
+  // ── Inter-entreprises (R-INTER) — clients payeurs sélectionnables ──────────
+  const clientsForInter = (await listClients()).map((c) => ({
+    id: c.id,
+    label: c.raisonSociale,
+  }));
+
   // ── Données des sections (Vague 2) ────────────────────────────────────────
   const [enrollmentsRaw, documentsRaw, traineesRaw] = await Promise.all([
     prisma.enrollment.findMany({
@@ -169,6 +178,12 @@ export default async function SessionHubPage({ params }: PageProps) {
         id: true,
         statut: true,
         tauxPresencePct: true,
+        // Financement par participant (R-INTER)
+        financementType: true,
+        clientId: true,
+        numeroDossierOpco: true,
+        edofVerifieAt: true,
+        montantHtCents: true,
         trainee: {
           select: {
             id: true,
@@ -229,6 +244,17 @@ export default async function SessionHubPage({ params }: PageProps) {
   const enrollmentsLight = enrollmentsRaw.map((e) => ({
     id: e.id,
     nomStagiaire: `${e.trainee.prenom} ${e.trainee.nom}`,
+  }));
+
+  // Inter-entreprises (R-INTER) : financement par inscription
+  const interEnrollments = enrollmentsRaw.map((e) => ({
+    id: e.id,
+    traineeNom: `${e.trainee.prenom} ${e.trainee.nom}`,
+    financementType: e.financementType,
+    clientId: e.clientId,
+    numeroDossierOpco: e.numeroDossierOpco,
+    edofVerifie: e.edofVerifieAt != null,
+    montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
@@ -433,6 +459,17 @@ export default async function SessionHubPage({ params }: PageProps) {
           sessionId={id}
           currentTrainerId={trainingSession.formateurPrincipalId}
           trainers={formateurOptions}
+        />
+      </section>
+
+      {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Inter-entreprises</h2>
+        <InterEntreprisesSection
+          sessionId={id}
+          interEntreprises={trainingSession.interEntreprises}
+          enrollments={interEnrollments}
+          clients={clientsForInter}
         />
       </section>
 
