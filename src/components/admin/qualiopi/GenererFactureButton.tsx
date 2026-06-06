@@ -46,7 +46,7 @@ const VENTILATION_OPTIONS: Array<{ value: "forfait" | "horaire"; label: string; 
   {
     value: "horaire",
     label: "Ventilation horaire (OPCO)",
-    hint: "Durée réelle × participants × tarif horaire (Atlas 60 €/h par défaut)",
+    hint: "Durée réelle × participants × tarif horaire (plafond Atlas configurable, SiteSetting)",
   },
 ];
 

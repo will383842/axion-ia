@@ -37,7 +37,7 @@ sans second système parallèle.
 | T15 | Alertes + emails + SSE + RGPD | `…250000` | AlerteSysteme (28 codes), 6 emails auto, SSE temps réel, consentement versionné |
 | T16 | Raccordements + audit démo + récap | (aucune) | hub navigation, dossier d'audit de démonstration (seed), reconcile facture PDF, ce récap |
 
-15 migrations Qualiopi additives (timestamps `20260606120000`→`20260606250000`).
+14 migrations Qualiopi additives (timestamps `20260606120000`→`20260606250000`).
 
 ## 3. Briques réutilisées (pas de second système)
 - Prisma `@/lib/prisma` (stub-aware), Redis `@/lib/redis` (cache indicateurs/pilotage),

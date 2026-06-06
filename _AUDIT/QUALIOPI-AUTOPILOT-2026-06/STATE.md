@@ -4,7 +4,7 @@
 > DOIT lire ce fichier en premier et continuer à la première tranche non terminée.
 > SSOT de l'avancement. Mis à jour à chaque commit.
 
-Dernière MAJ : 2026-06-06 — **🎉 T0→T16 TERMINÉES — AUTOPILOT COMPLET**. Toutes les tranches livrées, gate vert, poussées sur main (déployées). Récapitulatif final : `_AUDIT/QUALIOPI-AUTOPILOT-2026-06/RECAP-FINAL.md`. Dossier d'audit de démonstration : `pnpm qualiopi:seed-demo` (idempotent, vérifié). **15 migrations, ~38 modèles Prisma, ~1295 tests Qualiopi**. Reste à la main de Will : remplir les placeholders légaux SiteSetting + certification tierce + bascule `OF_PUBLIC_DISCLOSURE_ENABLED=true` (Phase B).
+Dernière MAJ : 2026-06-06 — **🎉 T0→T16 TERMINÉES — AUTOPILOT COMPLET**. Toutes les tranches livrées, gate vert, poussées sur main (déployées). Récapitulatif final : `_AUDIT/QUALIOPI-AUTOPILOT-2026-06/RECAP-FINAL.md`. Dossier d'audit de démonstration : `pnpm qualiopi:seed-demo` (idempotent, vérifié). **14 migrations, ~38 modèles Prisma, ~1295 tests Qualiopi**. Reste à la main de Will : remplir les placeholders légaux SiteSetting + certification tierce + bascule `OF_PUBLIC_DISCLOSURE_ENABLED=true` (Phase B).
 
 ### REPRISE RAPIDE (après redémarrage machine — checklist complète)
 0. **Docker DOIT tourner** (DB/Redis/Mailhog) : ouvrir Docker Desktop puis `cd axionia && pnpm db:up` (ou `docker compose -f docker/docker-compose.yml up -d`). Vérifier : `docker ps` montre `axion-ia-postgres` (5433) + `axion-ia-redis` (6381). ⚠️ Aucun `pnpm dev`/build qui tourne (sinon verrou DLL `prisma generate`).
