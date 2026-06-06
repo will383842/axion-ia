@@ -82,6 +82,17 @@ const eslintConfig = defineConfig([
       "react-hooks/incompatible-library": "off",
     },
   },
+  {
+    // Templates PDF Qualiopi (@react-pdf/renderer) : ce ne sont PAS des
+    // composants DOM. La règle DOM `react/no-unescaped-entities` est un
+    // FAUX POSITIF ici — les apostrophes françaises (« l'organisme ») se
+    // rendent parfaitement dans un PDF et ne posent aucun problème d'entité
+    // HTML. On la désactive pour ce dossier uniquement.
+    files: ["src/server/qualiopi/documents/**/*.{ts,tsx}"],
+    rules: {
+      "react/no-unescaped-entities": "off",
+    },
+  },
   globalIgnores([
     // Claude Code agent worktrees (locaux, jamais commités). Sans ce
     // pattern, ESLint scanne les copies complètes du repo dans chaque
