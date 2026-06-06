@@ -1,0 +1,113 @@
+/**
+ * Tests — Server Actions formateurs (R9 audit E2E 2026-06-06).
+ * Mock @/lib/prisma + @/server/actions/qualiopi/_guards.
+ */
+
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+const mockCreate = vi.fn();
+const mockUpdate = vi.fn();
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    trainer: {
+      create: (...args: unknown[]) => mockCreate(...args),
+      update: (...args: unknown[]) => mockUpdate(...args),
+    },
+  },
+}));
+
+vi.mock("@/server/actions/qualiopi/_guards", () => ({
+  requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
+  logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
+}));
+
+import {
+  createTrainerAction,
+  setTrainerHabilitationsAction,
+  verifyTrainerSousTraitantAction,
+  setTrainerActifAction,
+} from "./trainers";
+
+const FORMATION_ID = "11111111-1111-1111-1111-111111111111";
+const TRAINER_ID = "22222222-2222-2222-2222-222222222222";
+
+beforeEach(() => {
+  mockCreate.mockReset();
+  mockUpdate.mockReset();
+});
+
+describe("createTrainerAction", () => {
+  it("crée un formateur valide", async () => {
+    mockCreate.mockResolvedValue({ id: TRAINER_ID });
+    const r = await createTrainerAction({
+      nom: "Dupont",
+      prenom: "Marie",
+      email: "marie@example.com",
+      statut: "salarie",
+    });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+  });
+
+  it("refuse des données invalides (email)", async () => {
+    const r = await createTrainerAction({
+      nom: "X",
+      prenom: "Y",
+      email: "pas-un-email",
+      statut: "salarie",
+    } as never);
+    expect("error" in r).toBe(true);
+    expect(mockCreate).not.toHaveBeenCalled();
+  });
+
+  it("renvoie une erreur claire si email déjà pris (P2002)", async () => {
+    mockCreate.mockRejectedValue({ code: "P2002" });
+    const r = await createTrainerAction({
+      nom: "Dupont",
+      prenom: "Marie",
+      email: "marie@example.com",
+      statut: "salarie",
+    });
+    expect(r).toHaveProperty("error");
+    if ("error" in r) expect(r.error).toContain("email");
+  });
+});
+
+describe("setTrainerHabilitationsAction", () => {
+  it("remplace la liste des formations habilitées", async () => {
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    const r = await setTrainerHabilitationsAction({
+      id: TRAINER_ID,
+      formationsHabilitees: [FORMATION_ID],
+    });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+    const arg = mockUpdate.mock.calls[0]?.[0] as { data: { formationsHabilitees: string[] } };
+    expect(arg.data.formationsHabilitees).toEqual([FORMATION_ID]);
+  });
+});
+
+describe("verifyTrainerSousTraitantAction", () => {
+  it("pose sousTraitantVerifieAt + NDA", async () => {
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    const r = await verifyTrainerSousTraitantAction({
+      id: TRAINER_ID,
+      sousTraitantNda: "12345678",
+    });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+    const arg = mockUpdate.mock.calls[0]?.[0] as {
+      data: { sousTraitantNda: string; sousTraitantVerifieAt: Date };
+    };
+    expect(arg.data.sousTraitantNda).toBe("12345678");
+    expect(arg.data.sousTraitantVerifieAt).toBeInstanceOf(Date);
+  });
+});
+
+describe("setTrainerActifAction", () => {
+  it("désactive un formateur", async () => {
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    const r = await setTrainerActifAction({ id: TRAINER_ID, actif: false });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+    const arg = mockUpdate.mock.calls[0]?.[0] as { data: { actif: boolean } };
+    expect(arg.data.actif).toBe(false);
+  });
+});
