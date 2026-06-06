@@ -4595,3 +4595,70 @@ model ChatActionIdempotency {
   @@index([createdAt])
   @@map("chat_action_idempotency")
 }
+
+// ============================================================
+// QUALIOPI / FORMATION ENGINE — T1 : référentiel offres_site
+// Modèles additifs cloisonnés (skill axionia-qualiopi). Le prix N'est PAS
+// stocké : il est dérivé de `src/content/pricing.ts` via `tierId` (SSOT).
+// ============================================================
+
+/// Catégorie de prestation rattachable au Formation Engine (v1 : intervention).
+enum OffreCategorie {
+  intervention
+}
+
+/// Format pédagogique d'une offre (dérive l'applicabilité des règles métier
+/// du Formation Engine — effectif, durée, ratio pratique).
+enum OffreFormatPedagogique {
+  collectif_4h
+  collectif_1jour
+  collectif_2jours
+  conference
+  dirigeant_1to1
+  individuel
+  sur_devis
+}
+
+/// Type d'affichage tarifaire (le montant lui-même vient de pricing.ts).
+enum OffreTarifType {
+  fixe
+  a_partir_de
+  sur_devis
+}
+
+/// Référentiel des offres publiques rattachables à une formation (PART5 A.1).
+/// Le Formation Engine ne crée QUE des formations correspondant à une offre
+/// active. `tierId` lie au SSOT pricing.ts (prix + durée dérivés, jamais en dur).
+model OffreSite {
+  id                       String                 @id @default(uuid()) @db.Uuid
+  /// Numérotation séquentielle officielle AXI-OFF-NNN.
+  code                     String                 @unique @db.VarChar(40)
+  /// Identifiant de tier pricing.ts (SSOT prix/durée). Unique → 1 offre / tier.
+  tierId                   String                 @unique @map("tier_id") @db.VarChar(80)
+  titreFr                  String                 @map("titre_fr") @db.VarChar(200)
+  /// Slug public (fiche `/formations/[slug]` Phase B).
+  slug                     String                 @unique @db.VarChar(160)
+  categorie                OffreCategorie         @default(intervention)
+  formatPedagogique        OffreFormatPedagogique @map("format_pedagogique")
+  publicViseFr             String                 @map("public_vise_fr") @db.Text
+  dureeHeuresMin           Int                    @map("duree_heures_min")
+  dureeHeuresMax           Int                    @map("duree_heures_max")
+  /// Modalités possibles : presentiel | distanciel | hybride.
+  modalites                String[]               @default([])
+  tarifType                OffreTarifType         @map("tarif_type")
+  promessePrincipaleFr     String                 @map("promesse_principale_fr") @db.Text
+  nbModulesMin             Int                    @default(2) @map("nb_modules_min")
+  nbModulesMax             Int                    @default(6) @map("nb_modules_max")
+  /// Ratio pratique plancher (cf. SiteSetting qualiopi.ratio_pratique_min).
+  ratioPratiqueMin         Float                  @default(0.6) @map("ratio_pratique_min")
+  anglePedagogiqueFr       String                 @map("angle_pedagogique_fr") @db.VarChar(300)
+  actif                    Boolean                @default(true)
+  /// Dernière vérification de cohérence offre ↔ pricing.ts (alerte si > 30 j).
+  derniereVerifCoherenceAt DateTime?              @map("derniere_verif_coherence_at")
+  createdAt                DateTime               @default(now()) @map("created_at")
+  updatedAt                DateTime               @updatedAt @map("updated_at")
+
+  @@index([categorie])
+  @@index([actif])
+  @@map("offres_site")
+}

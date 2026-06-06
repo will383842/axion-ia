@@ -4,7 +4,7 @@
 > DOIT lire ce fichier en premier et continuer à la première tranche non terminée.
 > SSOT de l'avancement. Mis à jour à chaque commit.
 
-Dernière MAJ : 2026-06-06 — Phase 0/0.5 terminées. **T0 TERMINÉE (gate vert, committée).** Prochaine : T1 (référentiel offres_site).
+Dernière MAJ : 2026-06-06 — Phase 0/0.5 + **T0 + T1 TERMINÉES** (gate vert, committées+poussées main). Prochaine : T2 (CRM clients + devis). Mode : enchaînement continu sans pause (réveil 30 min supprimé sur demande Will).
 
 ### REPRISE RAPIDE (pour la relance auto)
 1. `cd axionia` ; `export DATABASE_URL="postgresql://axion_ia:axion_ia_dev@localhost:5433/axion_ia_dev?schema=public"; export DIRECT_URL="$DATABASE_URL"`.
@@ -114,7 +114,8 @@ C1:1-3 / C2:4-8 / C3:9-16 / C4:17-20 / C5:21-22 / C6:23-29 / C7:30-32 (total 32)
 Légende : ⬜ à faire · 🔄 en cours · ✅ done (artefact + test vert + commit) · ➖ hors v1.
 
 - ✅ **T0** Fondations : SiteSetting cat `qualiopi` + `get/setQualiopiConfig` + registre pur + seed idempotent ; `legal-mentions.ts` ; `brand-tokens.ts` (parité @theme) ; numérotation (formats) ; `_guards.ts` + `logQualiopiActivity` ; flag `OF_PUBLIC_DISCLOSURE_ENABLED` + helper ; `qualiopi:isolation-check` câblé verify:all ; groupe admin-nav + page d'accueil. **GATE VERT** (typecheck, lint, anti-hex/use-client/radius/contrast/i18n/anti-siren, isolation-check, suite complète 15086 verts dont 53 qualiopi). Migration `20260606120000_qualiopi_t0_foundations` appliquée. [socle transverse + A.4 AI-Act/silence financement]
-- ⬜ **T1** Référentiel `offres_site` (taxonomie réelle pricing.ts/interventions.ts/routing.ts) + lien formation→offre obligatoire. [off.1 socle]
+- ✅ **T1** Référentiel `offres_site` : modèle + 3 enums (migration `20260606130000`), 11 offres seedées depuis INTERVENTION_TIERS (zéro prix en DB → dérivé pricing.ts via `tierId`), résolveur prix + vérif cohérence offre↔pricing, server actions (update/toggle/verify), page admin liste + nav « Offres ». **GATE VERT** (typecheck heap 8G, 73 tests qualiopi+nav, isolation-check, suite complète). Lien formation→offre = FK posée en T3. [off.1 socle]
+  - ⚠️ NOTE TECHNIQUE : `tsc --noEmit` OOM avec le heap par défaut (~2 Go) sur ce repo → exporter `NODE_OPTIONS="--max-old-space-size=8192"` avant typecheck/push. Code config `exactOptionalPropertyTypes:true` → ne jamais passer `where: undefined` (spread conditionnel).
 - ⬜ **T2** CRM `clients` (SIRET/NAF→OPCO) + `devis` (réutiliser Quote/ContractDocument). [B financeurs socle]
 - ⬜ **T3** Modèles cœur Formation/TrainingSession/Trainer/Trainee/Enrollment + lien Booking + fiche publique `/formations/[slug]` (flag-gated, 11 champs). [off.1,2,26-fiche]
 - ⬜ **T4** Formation Engine pipeline (grille qualité Zod, structure→éval→raffine→validation humaine→assemblage→export, cache_ia, file_validation, coûts, AI-Act). [off.5,6,7,8-entrée]
