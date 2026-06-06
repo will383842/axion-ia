@@ -1502,6 +1502,7 @@ model AdminUser {
   refunds               Refund[]
   cadrageMeetingsHeld   CadrageMeeting[]    @relation("CadrageHeldBy")
   bookingTransitions    BookingTransition[] @relation("BookingTransitionActor")
+  formationTransitions  FormationTransition[] @relation("FormationTransitionActor")
   pricingConfigsUpdated PricingConfig[]
   siteSettingsUpdated   SiteSetting[]
   // Sprint Notif Infra 2026-05-26 — reply system admin
@@ -4658,6 +4659,8 @@ model OffreSite {
   createdAt                DateTime               @default(now()) @map("created_at")
   updatedAt                DateTime               @updatedAt @map("updated_at")
 
+  formations Formation[]
+
   @@index([categorie])
   @@index([actif])
   @@map("offres_site")
@@ -4722,7 +4725,9 @@ model Client {
   createdAt                   DateTime      @default(now()) @map("created_at")
   updatedAt                   DateTime      @updatedAt @map("updated_at")
 
-  devis Devis[]
+  devis      Devis[]
+  formations Formation[]
+  sessions   TrainingSession[]
 
   @@index([statut])
   @@index([nafCode])
@@ -4756,7 +4761,305 @@ model Devis {
   createdAt             DateTime    @default(now()) @map("created_at")
   updatedAt             DateTime    @updatedAt @map("updated_at")
 
+  sessions TrainingSession[]
+
   @@index([clientId])
   @@index([statut])
   @@map("devis")
+}
+
+// ============================================================
+// QUALIOPI — T3 : modèles cœur (Formation, Session, Trainer, Trainee,
+// Enrollment) + machine à états session. Modèles additifs (nouvelles tables).
+// Lien Booking = scalaire `trainingSessionId` existant (lien logique, pas de
+// FK ajoutée → table bookings intacte). PII handicap chiffrée via pii-crypto.
+// ============================================================
+
+enum FormationStatutGeneration {
+  intention
+  structure_generee
+  contenu_evalue
+  structure_validee
+  contenu_genere
+  contenu_valide
+  assemble
+  publie
+  archive
+}
+
+enum FormationStatut {
+  actif
+  publie
+  archive
+}
+
+enum TrainingSessionStatut {
+  planifiee
+  en_cours
+  realisee
+  annulee
+  reportee
+}
+
+enum EnrollmentStatut {
+  planifiee
+  presente
+  abandon
+  exclu
+}
+
+/// Types d'action Qualiopi (multi-valeur). Pilote l'applicabilité des
+/// indicateurs conditionnels + lecture miroir CPF V9.
+enum TypeActionQualiopi {
+  classique
+  certifiante
+  foad
+  alternance_afest
+  sous_traitance
+  cpf
+  opco
+  france_travail
+  handicap
+}
+
+enum TrainerStatut {
+  salarie
+  sous_traitant
+}
+
+enum ModaliteFormation {
+  presentiel
+  distanciel
+  hybride
+}
+
+enum CertificationType {
+  aucune
+  rs
+  rncp
+}
+
+enum FinancementType {
+  direct
+  opco
+  cpf
+  france_travail
+  mixte
+}
+
+enum OpcoStatut {
+  non_demande
+  demande_en_cours
+  accord_recu
+  refuse
+  paiement_recu
+}
+
+/// Formation (pivot Module A↔B). Sélectionnable pour une session UNIQUEMENT si
+/// statutGeneration='publie' ET statut='actif'. Contenu IA marqué (AI Act 50).
+model Formation {
+  id                   String                    @id @default(uuid()) @db.Uuid
+  numero               String                    @unique @db.VarChar(40)
+  titre                String                    @db.VarChar(255)
+  slug                 String                    @unique @db.VarChar(180)
+  /// Offre rattachée (OBLIGATOIRE — pas de formation hors catalogue).
+  offreSiteId          String                    @map("offre_site_id") @db.Uuid
+  offreSite            OffreSite                 @relation(fields: [offreSiteId], references: [id], onDelete: Restrict)
+  /// Client si formation sur-mesure.
+  clientId             String?                   @map("client_id") @db.Uuid
+  client               Client?                   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  estSurMesure         Boolean                   @default(false) @map("est_sur_mesure")
+  dureeHeures          Int                       @map("duree_heures")
+  modalite             ModaliteFormation         @default(presentiel)
+  /// [{ id, verbe, description, niveauBloom }] — verbes d'action (indicateur 5).
+  objectifsPedagogiques Json                     @default("[]") @map("objectifs_pedagogiques")
+  /// [{ moduleId, titre, dureeMin, sequences:[...] }].
+  programmeDetaille    Json                      @default("[]") @map("programme_detaille")
+  methodesPedagogiques String                    @default("") @map("methodes_pedagogiques") @db.Text
+  seuilReussitePct     Int                       @default(70) @map("seuil_reussite_pct")
+  ratioPratiquePct     Int?                      @map("ratio_pratique_pct")
+  accessibleHandicap   Boolean                   @default(false) @map("accessible_handicap")
+  certificationType    CertificationType         @default(aucune) @map("certification_type")
+  codeCpf              String?                   @map("code_cpf") @db.VarChar(20)
+  edofVerifieAt        DateTime?                 @map("edof_verifie_at")
+  edofVerifiePar       String?                   @map("edof_verifie_par") @db.Uuid
+  statutGeneration     FormationStatutGeneration @default(intention) @map("statut_generation")
+  statut               FormationStatut           @default(actif)
+  versionProgramme     String                    @default("1.0") @map("version_programme")
+  versionHistorique    Json                      @default("[]") @map("version_historique")
+  langueGeneration     String                    @default("fr") @map("langue_generation")
+  typesActionQualiopi  TypeActionQualiopi[]      @default([]) @map("types_action_qualiopi")
+  /// AI Act art. 50 (ADR 0024) — traçabilité + validation humaine bloquante.
+  aiGenerated          Boolean                   @default(false) @map("ai_generated")
+  aiModel              String?                   @map("ai_model") @db.VarChar(80)
+  aiPromptVersion      Int?                      @map("ai_prompt_version")
+  validatedBy          String?                   @map("validated_by") @db.Uuid
+  validatedAt          DateTime?                 @map("validated_at")
+  /// Prix négocié optionnel (sinon dérivé offre/pricing.ts).
+  tarifHtCents         Int?                      @map("tarif_ht_cents")
+  createdAt            DateTime                  @default(now()) @map("created_at")
+  updatedAt            DateTime                  @updatedAt @map("updated_at")
+
+  sessions TrainingSession[]
+
+  @@index([offreSiteId])
+  @@index([clientId])
+  @@index([statut])
+  @@index([statutGeneration])
+  @@index([certificationType])
+  @@map("formations")
+}
+
+/// Session de formation (machine à états planifiee→en_cours→realisee).
+model TrainingSession {
+  id                           String                @id @default(uuid()) @db.Uuid
+  numero                       String                @unique @db.VarChar(40)
+  titreSession                 String                @map("titre_session") @db.VarChar(300)
+  formationId                  String                @map("formation_id") @db.Uuid
+  formation                    Formation             @relation(fields: [formationId], references: [id], onDelete: Restrict)
+  dateDebut                    DateTime              @map("date_debut")
+  dateFin                      DateTime              @map("date_fin")
+  dureeReelleHeures            Int?                  @map("duree_reelle_heures")
+  modalite                     ModaliteFormation
+  icalUid                      String?               @map("ical_uid") @db.VarChar(255)
+  clientId                     String?               @map("client_id") @db.Uuid
+  client                       Client?               @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId                      String?               @map("devis_id") @db.Uuid
+  devis                        Devis?                @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  financementType              FinancementType?      @map("financement_type")
+  montantHtCents               Int                   @map("montant_ht_cents")
+  opcoStatut                   OpcoStatut            @default(non_demande) @map("opco_statut")
+  opcoSubrogation              Boolean               @default(false) @map("opco_subrogation")
+  conventionTripartiteSigneeAt DateTime?             @map("convention_tripartite_signee_at")
+  edofVerifieAt                DateTime?             @map("edof_verifie_at")
+  ftPoeiOffreEmploiNumero      String?               @map("ft_poei_offre_emploi_numero") @db.VarChar(50)
+  ftPoeiAccordFinancementAt    DateTime?             @map("ft_poei_accord_financement_at")
+  ftPoeiEngagementSigneAt      DateTime?             @map("ft_poei_engagement_signe_at")
+  ftAifPrescriptionDate        DateTime?             @map("ft_aif_prescription_date")
+  nbParticipantsPrevus         Int                   @map("nb_participants_prevus")
+  nbParticipantsReels          Int?                  @map("nb_participants_reels")
+  /// [{ trainerId, role, heuresAnimees }] — 1 principal obligatoire.
+  coFormateurs                 Json                  @default("[]") @map("co_formateurs")
+  /// Récurrence (self-relation, max 52 occurrences).
+  sessionParentId              String?               @map("session_parent_id") @db.Uuid
+  sessionParent                TrainingSession?      @relation("SessionRecurrences", fields: [sessionParentId], references: [id], onDelete: SetNull)
+  sessionEnfants               TrainingSession[]     @relation("SessionRecurrences")
+  /// Report (self-relation).
+  sessionReporteeId            String?               @map("session_reportee_id") @db.Uuid
+  sessionReportee              TrainingSession?      @relation("SessionReportees", fields: [sessionReporteeId], references: [id], onDelete: SetNull)
+  sessionRemplacement          TrainingSession[]     @relation("SessionReportees")
+  statut                       TrainingSessionStatut @default(planifiee)
+  createdAt                    DateTime              @default(now()) @map("created_at")
+  updatedAt                    DateTime              @updatedAt @map("updated_at")
+
+  enrollments Enrollment[]
+  transitions FormationTransition[]
+
+  @@index([formationId])
+  @@index([clientId])
+  @@index([devisId])
+  @@index([statut])
+  @@index([dateDebut])
+  @@index([sessionParentId])
+  @@index([sessionReporteeId])
+  @@map("training_sessions")
+}
+
+/// Formateur (salarié ou sous-traitant). Habilitations = liste de formationIds.
+model Trainer {
+  id                   String        @id @default(uuid()) @db.Uuid
+  nom                  String        @db.VarChar(200)
+  prenom               String        @db.VarChar(200)
+  email                String        @unique @db.Citext
+  telephone            String?       @db.VarChar(40)
+  statut               TrainerStatut
+  cvUrl                String?       @map("cv_url") @db.Text
+  cvUploadedAt         DateTime?     @map("cv_uploaded_at")
+  /// [{ domaine, niveauMaitrise, verifiedAt }].
+  domainesCompetences  Json          @default("[]") @map("domaines_competences")
+  /// formationIds pour lesquels le formateur est habilité.
+  formationsHabilitees String[]      @default([]) @map("formations_habilitees")
+  dateEmbauche         DateTime?     @map("date_embauche")
+  tarifJourneeHtCents  Int?          @map("tarif_journee_ht_cents")
+  actif                Boolean       @default(true)
+  createdAt            DateTime      @default(now()) @map("created_at")
+  updatedAt            DateTime      @updatedAt @map("updated_at")
+
+  @@index([statut])
+  @@index([actif])
+  @@map("trainers")
+}
+
+/// Stagiaire. PII ; détails handicap chiffrés AES-256-GCM (pii-crypto).
+model Trainee {
+  id                     String       @id @default(uuid()) @db.Uuid
+  nom                    String       @db.VarChar(200)
+  prenom                 String       @db.VarChar(200)
+  email                  String       @unique @db.Citext
+  telephone              String?      @db.VarChar(40)
+  entreprise             String?      @db.VarChar(250)
+  fonction               String?      @db.VarChar(200)
+  situationHandicap      Boolean      @default(false) @map("situation_handicap")
+  /// Chiffré pii-crypto (jamais en clair). Lecture serveur référent uniquement.
+  handicapDetailsChiffre String?      @map("handicap_details_chiffre") @db.Text
+  handicapVerifiePar     String?      @map("handicap_verifie_par") @db.Uuid
+  handicapVerifieAt      DateTime?    @map("handicap_verifie_at")
+  consentementFormation  Boolean      @default(false) @map("consentement_formation")
+  consentementEmail      Boolean      @default(false) @map("consentement_email")
+  consentementVersion    String?      @map("consentement_version") @db.VarChar(20)
+  consentementAt         DateTime?    @map("consentement_at")
+  deletedAt              DateTime?    @map("deleted_at")
+  createdAt              DateTime     @default(now()) @map("created_at")
+  updatedAt              DateTime     @updatedAt @map("updated_at")
+
+  enrollments Enrollment[]
+
+  @@index([email])
+  @@index([entreprise])
+  @@index([situationHandicap])
+  @@map("trainees")
+}
+
+/// Inscription stagiaire ↔ session (unicité par couple).
+model Enrollment {
+  id                   String           @id @default(uuid()) @db.Uuid
+  sessionId            String           @map("session_id") @db.Uuid
+  session              TrainingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  traineeId            String           @map("trainee_id") @db.Uuid
+  trainee              Trainee          @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  statut               EnrollmentStatut @default(planifiee)
+  tauxPresencePct      Int?             @map("taux_presence_pct")
+  emargementSigneAt    DateTime?        @map("emargement_signe_at")
+  adaptationsRealisees String?          @map("adaptations_realisees") @db.Text
+  createdAt            DateTime         @default(now()) @map("created_at")
+  updatedAt            DateTime         @updatedAt @map("updated_at")
+
+  @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
+  @@index([sessionId])
+  @@index([traineeId])
+  @@index([statut])
+  @@map("enrollments")
+}
+
+/// Event sourcing des transitions d'état de session (miroir BookingTransition).
+model FormationTransition {
+  id               String                 @id @default(uuid()) @db.Uuid
+  sessionId        String                 @map("session_id") @db.Uuid
+  session          TrainingSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  fromStatus       TrainingSessionStatut? @map("from_status")
+  toStatus         TrainingSessionStatut  @map("to_status")
+  trigger          String                 @db.VarChar(80)
+  triggeredBy      TransitionTriggeredBy  @map("triggered_by")
+  triggeredById    String?                @map("triggered_by_id") @db.Uuid
+  triggeredByAdmin AdminUser?             @relation("FormationTransitionActor", fields: [triggeredById], references: [id], onDelete: SetNull)
+  reason           String?                @db.VarChar(500)
+  snapshotBefore   Json?                  @map("snapshot_before")
+  snapshotAfter    Json?                  @map("snapshot_after")
+  notes            String?                @db.Text
+  createdAt        DateTime               @default(now()) @map("created_at")
+
+  @@unique([sessionId, toStatus, trigger], map: "formation_transitions_idempotence")
+  @@index([sessionId, createdAt])
+  @@index([triggeredBy])
+  @@map("formation_transitions")
 }

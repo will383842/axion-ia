@@ -1,0 +1,153 @@
+/**
+ * Qualiopi — Server Actions Inscriptions (Enrollment) T3.
+ *
+ * enrollTraineeAction            : inscrit un stagiaire à une session.
+ * updateEnrollmentPresenceAction : met à jour le taux de présence + émargement.
+ * setEnrollmentStatutAction      : change le statut d'une inscription.
+ *
+ * Idempotence enrollTraineeAction : P2002 sur @@unique [sessionId, traineeId]
+ * → retour error "déjà inscrit" (pas de doublon silencieux).
+ */
+
+"use server";
+
+import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+
+type ActionResult<T> = { data: T } | { error: string };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enums Zod
+// ─────────────────────────────────────────────────────────────────────────────
+
+const ENROLLMENT_STATUTS = ["planifiee", "presente", "abandon", "exclu"] as const;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Schémas Zod
+// ─────────────────────────────────────────────────────────────────────────────
+
+const enrollTraineeSchema = z.object({
+  sessionId: z.string().uuid(),
+  traineeId: z.string().uuid(),
+});
+
+const updateEnrollmentPresenceSchema = z.object({
+  id: z.string().uuid(),
+  tauxPresencePct: z.number().int().min(0).max(100),
+  emargementSigneAt: z.coerce.date().optional(),
+});
+
+const setEnrollmentStatutSchema = z.object({
+  id: z.string().uuid(),
+  statut: z.enum(ENROLLMENT_STATUTS),
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Actions
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Inscrit un stagiaire à une session de formation.
+ *
+ * Statut initial : 'planifiee'.
+ * @@unique [sessionId, traineeId] : P2002 → error "déjà inscrit".
+ */
+export async function enrollTraineeAction(input: {
+  sessionId: string;
+  traineeId: string;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = enrollTraineeSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const v = parsed.data;
+
+  let created: { id: string };
+  try {
+    created = await prisma.enrollment.create({
+      data: {
+        sessionId: v.sessionId,
+        traineeId: v.traineeId,
+        statut: "planifiee",
+      },
+      select: { id: true },
+    });
+  } catch (err) {
+    const code = (err as { code?: string })?.code;
+    if (code === "P2002") return { error: "Ce stagiaire est déjà inscrit à cette session" };
+    return { error: "Erreur lors de l'inscription" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.enrollment.create",
+    targetType: "Enrollment",
+    targetId: created.id,
+    changes: { sessionId: v.sessionId, traineeId: v.traineeId },
+    session,
+  });
+
+  return { data: { id: created.id } };
+}
+
+/**
+ * Met à jour le taux de présence et la date de signature de l'émargement.
+ * Appelé lors du traitement de la feuille d'émargement (post-session).
+ */
+export async function updateEnrollmentPresenceAction(input: {
+  id: string;
+  tauxPresencePct: number;
+  emargementSigneAt?: Date;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = updateEnrollmentPresenceSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { id, ...fields } = parsed.data;
+
+  await prisma.enrollment.update({
+    where: { id },
+    data: {
+      tauxPresencePct: fields.tauxPresencePct,
+      ...(fields.emargementSigneAt !== undefined
+        ? { emargementSigneAt: fields.emargementSigneAt }
+        : {}),
+    },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.enrollment.presence",
+    targetType: "Enrollment",
+    targetId: id,
+    changes: { tauxPresencePct: fields.tauxPresencePct },
+    session,
+  });
+
+  return { data: { id } };
+}
+
+/**
+ * Change le statut d'une inscription (planifiee → presente / abandon / exclu).
+ */
+export async function setEnrollmentStatutAction(input: {
+  id: string;
+  statut: (typeof ENROLLMENT_STATUTS)[number];
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = setEnrollmentStatutSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { id, statut } = parsed.data;
+
+  await prisma.enrollment.update({
+    where: { id },
+    data: { statut },
+  });
+
+  await logQualiopiActivity({
+    action: `qualiopi.enrollment.statut.${statut}`,
+    targetType: "Enrollment",
+    targetId: id,
+    changes: { statut },
+    session,
+  });
+
+  return { data: { id } };
+}
