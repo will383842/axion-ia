@@ -53,6 +53,12 @@ export interface GenerateDocumentInput {
   };
   estCopie?: boolean;
   qrToken?: string | null;
+  /**
+   * Clé R2 du fichier source original (ex. CSV relevé de connexion archivé).
+   * Stockée dans `DocumentGenere.fichierOriginalPath` pour traçabilité CDC.
+   * Optionnel — absent pour les documents PDF sans source d'import.
+   */
+  fichierOriginalPath?: string;
 }
 
 export interface GenerateDocumentResult {
@@ -132,6 +138,9 @@ export async function generateDocument(
           ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
           ...(input.refs?.traineeId != null ? { traineeId: input.refs.traineeId } : {}),
           ...(input.refs?.clientId != null ? { clientId: input.refs.clientId } : {}),
+          ...(input.fichierOriginalPath != null
+            ? { fichierOriginalPath: input.fichierOriginalPath }
+            : {}),
         },
         select: { id: true, numero: true, pdfUrl: true, hashSha256: true },
       });

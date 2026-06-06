@@ -1,0 +1,170 @@
+/**
+ * Qualiopi — Lectures serveur pour l'émargement et les créneaux de présence.
+ *
+ * Stub-safe (try/catch → [] / null). Jamais de `*OrThrow`.
+ * Ces fonctions sont exclusivement appelées depuis des Server Components.
+ */
+
+import { prisma } from "@/lib/prisma";
+import type { PresenceCreneau } from "../../../../prisma/generated/client";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Types composés
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface SessionEmargementRow {
+  session: {
+    id: string;
+    numero: string;
+    titreSession: string | null;
+    dateDebut: Date;
+    dateFin: Date;
+    dureeReelleHeures: number | null;
+    modalite: string;
+    statut: string;
+    formationId: string;
+    nbParticipantsPrevus: number;
+    nbParticipantsReels: number | null;
+  };
+  enrollments: Array<{
+    id: string;
+    traineeId: string;
+    statut: string;
+    tauxPresencePct: number | null;
+    emargementSigneAt: Date | null;
+    trainee: {
+      nom: string;
+      prenom: string;
+      email: string;
+    };
+  }>;
+  creneaux: PresenceCreneau[];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lectures
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Charge une session avec ses enrollments (stagiaire inclus) et tous les
+ * créneaux de présence. Utilisé par la page d'émargement.
+ * Stub-safe → null.
+ */
+export async function getSessionEmargement(
+  sessionId: string,
+): Promise<SessionEmargementRow | null> {
+  try {
+    const session = await prisma.trainingSession.findUnique({
+      where: { id: sessionId },
+      include: {
+        enrollments: {
+          where: {
+            statut: { notIn: ["abandon", "exclu"] },
+          },
+          include: {
+            trainee: {
+              select: { nom: true, prenom: true, email: true },
+            },
+          },
+          orderBy: [{ trainee: { nom: "asc" } }, { trainee: { prenom: "asc" } }],
+        },
+      },
+    });
+
+    if (!session) return null;
+
+    const creneaux = await prisma.presenceCreneau.findMany({
+      where: { enrollmentId: { in: session.enrollments.map((e) => e.id) } },
+      orderBy: [{ date: "asc" }, { demiJournee: "asc" }],
+    });
+
+    return {
+      session: {
+        id: session.id,
+        numero: session.numero,
+        titreSession: session.titreSession,
+        dateDebut: session.dateDebut,
+        dateFin: session.dateFin,
+        dureeReelleHeures: session.dureeReelleHeures,
+        modalite: session.modalite,
+        statut: session.statut,
+        formationId: session.formationId,
+        nbParticipantsPrevus: session.nbParticipantsPrevus,
+        nbParticipantsReels: session.nbParticipantsReels,
+      },
+      enrollments: session.enrollments.map((e) => ({
+        id: e.id,
+        traineeId: e.traineeId,
+        statut: e.statut,
+        tauxPresencePct: e.tauxPresencePct,
+        emargementSigneAt: e.emargementSigneAt,
+        trainee: {
+          nom: e.trainee.nom,
+          prenom: e.trainee.prenom,
+          email: e.trainee.email,
+        },
+      })),
+      creneaux,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Liste enrichie des sessions pour la page liste admin.
+ * Charge le nombre d'inscrits + taux de présence moyen.
+ * Stub-safe → [].
+ */
+export interface SessionListRow {
+  id: string;
+  numero: string;
+  titreSession: string | null;
+  formationId: string;
+  dateDebut: Date;
+  dateFin: Date;
+  modalite: string;
+  statut: string;
+  nbInscrits: number;
+  tauxPresenceMoyen: number | null;
+}
+
+export async function listSessionsForAdmin(): Promise<SessionListRow[]> {
+  try {
+    const sessions = await prisma.trainingSession.findMany({
+      orderBy: { dateDebut: "desc" },
+      include: {
+        _count: { select: { enrollments: true } },
+        enrollments: {
+          select: { tauxPresencePct: true, statut: true },
+          where: { statut: { notIn: ["abandon", "exclu"] } },
+        },
+      },
+    });
+
+    return sessions.map((s) => {
+      const tauxValues = s.enrollments
+        .map((e) => e.tauxPresencePct)
+        .filter((v): v is number => v !== null);
+      const tauxMoyen =
+        tauxValues.length > 0
+          ? Math.round(tauxValues.reduce((a, b) => a + b, 0) / tauxValues.length)
+          : null;
+
+      return {
+        id: s.id,
+        numero: s.numero,
+        titreSession: s.titreSession,
+        formationId: s.formationId,
+        dateDebut: s.dateDebut,
+        dateFin: s.dateFin,
+        modalite: s.modalite,
+        statut: s.statut,
+        nbInscrits: s._count.enrollments,
+        tauxPresenceMoyen: tauxMoyen,
+      };
+    });
+  } catch {
+    return [];
+  }
+}

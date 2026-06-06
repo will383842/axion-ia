@@ -3,6 +3,9 @@
  *
  * `renderPdfToBuffer`  : React element → Buffer + hash SHA-256 + sizeBytes.
  * `storeAndSignPdf`    : Buffer → upload R2 + URL signée 900s (fail-soft si R2 absent).
+ * `storeAndSignCsv`    : string → upload R2 (text/csv) + retourne la clé stockée
+ *                        (fail-soft si R2 absent). Utilisé pour archiver les
+ *                        relevés de connexion bruts (obligation CDC 5 ans).
  *
  * Pattern identique à `src/lib/invoice-pdf.tsx`.
  * Utilise les signatures EXACTES de `src/lib/r2-storage.ts`.
@@ -73,4 +76,26 @@ export async function storeAndSignPdf(buffer: Buffer, key: string): Promise<stri
   await uploadToR2(key, buffer, "application/pdf");
   const signedUrl = await getSignedUrlR2(key, 900);
   return signedUrl;
+}
+
+/**
+ * Upload un relevé de connexion CSV brut dans R2 sous la clé donnée.
+ *
+ * Contrairement à `storeAndSignPdf`, retourne la **clé R2** (pas une URL
+ * signée) car le CSV est un document d'archive interne (pas distribué au
+ * stagiaire directement). La clé est stockée dans
+ * `ReleveConnexionImport.fichierOriginalPath` pour traçabilité + re-téléchargement
+ * admin à la demande.
+ *
+ * Fail-soft : si R2 n'est pas configuré, retourne `null`.
+ * Stub-aware : l'upload CSV ne se produit qu'à l'exécution admin (pas au build
+ * SSG), mais le check R2 garde la cohérence.
+ */
+export async function storeAndSignCsv(content: string, key: string): Promise<string | null> {
+  if (!isR2Configured()) {
+    return null;
+  }
+  const buffer = Buffer.from(content, "utf8");
+  await uploadToR2(key, buffer, "text/csv");
+  return key;
 }

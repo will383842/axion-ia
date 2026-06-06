@@ -4956,9 +4956,10 @@ model TrainingSession {
   createdAt                    DateTime              @default(now()) @map("created_at")
   updatedAt                    DateTime              @updatedAt @map("updated_at")
 
-  enrollments Enrollment[]
-  transitions FormationTransition[]
-  documents   DocumentGenere[]
+  enrollments      Enrollment[]
+  transitions      FormationTransition[]
+  documents        DocumentGenere[]
+  relevesConnexion ReleveConnexionImport[]
 
   @@index([formationId])
   @@index([clientId])
@@ -5039,6 +5040,8 @@ model Enrollment {
   adaptationsRealisees String?          @map("adaptations_realisees") @db.Text
   createdAt            DateTime         @default(now()) @map("created_at")
   updatedAt            DateTime         @updatedAt @map("updated_at")
+
+  presences PresenceCreneau[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
@@ -5219,6 +5222,9 @@ model DocumentGenere {
   envoyeAt            DateTime?        @map("envoye_at")
   /// = createdAt + 5 ans (rétention légale).
   suppressionPrevueAt DateTime         @map("suppression_prevue_at")
+  /// Pointe vers le fichier source ORIGINAL archivé (ex. CSV Zoom/Teams pour un
+  /// relevé de connexion). Obligation CDC : archiver l'original, pas que le PDF.
+  fichierOriginalPath String?          @map("fichier_original_path") @db.Text
   metadata            Json             @default("{}")
   createdAt           DateTime         @default(now()) @map("created_at")
   updatedAt           DateTime         @updatedAt @map("updated_at")
@@ -5227,4 +5233,104 @@ model DocumentGenere {
   @@index([traineeId, type])
   @@index([suppressionPrevueAt])
   @@map("documents_generes")
+}
+
+// ============================================================
+// QUALIOPI — T8 : Émargement présentiel + relevé de connexion distanciel
+// Suivi de l'exécution (indicateur 12). Présence par créneau (demi-journée)
+// → consolidation tauxPresencePct sur Enrollment. Import CSV Zoom/Teams/Meet
+// → parsing → matching → présence distancielle. Migration ADDITIVE.
+// ============================================================
+
+/// Demi-journée d'un créneau de présence. `journee` = créneau plein (distanciel
+/// global ou journée continue sans pause méridienne).
+enum DemiJournee {
+  matin
+  apres_midi
+  journee
+}
+
+/// Origine d'un enregistrement de présence (traçabilité émargement vs import).
+enum PresenceSource {
+  emargement_presentiel
+  import_zoom
+  import_teams
+  import_meet
+  manuel
+}
+
+/// Plateforme distancielle source du relevé de connexion.
+enum PlateformeDistanciel {
+  zoom
+  teams
+  meet
+  autre
+}
+
+/// Créneau de présence d'un stagiaire (1 ligne = 1 inscription × 1 demi-journée).
+/// Source unique de vérité pour `Enrollment.tauxPresencePct` (= Σ minutes
+/// réalisées / Σ minutes prévues). Présentiel : saisie émargement. Distanciel :
+/// alimenté par l'import du relevé de connexion (Zoom/Teams/Meet).
+model PresenceCreneau {
+  id                   String         @id @default(uuid()) @db.Uuid
+  enrollmentId         String         @map("enrollment_id") @db.Uuid
+  enrollment           Enrollment     @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  /// Jour du créneau (date civile, heure de Paris).
+  date                 DateTime       @db.Date
+  demiJournee          DemiJournee    @map("demi_journee")
+  /// Libellé lisible (ex. "2026-06-10 matin"). Stable pour affichage/PDF.
+  libelle              String         @map("libelle") @db.VarChar(120)
+  /// Durée planifiée du créneau (minutes). Base du dénominateur du taux.
+  dureePrevueMinutes   Int            @map("duree_prevue_minutes")
+  /// Durée réellement réalisée (minutes). 0 si absent.
+  dureeRealiseeMinutes Int            @default(0) @map("duree_realisee_minutes")
+  /// Présence validée pour ce créneau (réalisé ≥ seuil × prévu).
+  present              Boolean        @default(false)
+  source               PresenceSource
+  /// Distanciel : horodatage connexion/déconnexion (UTC stocké, affiché Paris).
+  heureConnexion       DateTime?      @map("heure_connexion")
+  heureDeconnexion     DateTime?      @map("heure_deconnexion")
+  /// Import associé (si distanciel) — permet traçabilité + re-calcul.
+  importId             String?        @map("import_id") @db.Uuid
+  import               ReleveConnexionImport? @relation(fields: [importId], references: [id], onDelete: SetNull)
+  commentaire          String?        @db.Text
+  /// Admin ayant saisi/validé (null si import système).
+  enregistreParId      String?        @map("enregistre_par_id") @db.Uuid
+  createdAt            DateTime       @default(now()) @map("created_at")
+  updatedAt            DateTime       @updatedAt @map("updated_at")
+
+  @@unique([enrollmentId, date, demiJournee], map: "presence_creneau_unique")
+  @@index([enrollmentId])
+  @@index([importId])
+  @@map("presence_creneaux")
+}
+
+/// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le
+/// fichier ORIGINAL (obligation CDC) et trace le rapprochement participants↔
+/// stagiaires (matched/unmatched). Génère les `PresenceCreneau` distanciels.
+model ReleveConnexionImport {
+  id                String               @id @default(uuid()) @db.Uuid
+  sessionId         String               @map("session_id") @db.Uuid
+  session           TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  plateforme        PlateformeDistanciel
+  /// Nom du fichier d'origine (ex. "participants_2026-06-10.csv").
+  fichierOriginalNom String              @map("fichier_original_nom") @db.VarChar(255)
+  /// Clé R2 du CSV original archivé (conservation 5 ans). Null si R2 absent.
+  fichierOriginalPath String?            @map("fichier_original_path") @db.Text
+  /// SHA-256 du contenu brut importé (intégrité).
+  hashSha256        String               @map("hash_sha256") @db.VarChar(64)
+  nbLignes          Int                  @default(0) @map("nb_lignes")
+  nbMatched         Int                  @default(0) @map("nb_matched")
+  nbUnmatched       Int                  @default(0) @map("nb_unmatched")
+  /// Participants non rapprochés (pour revue manuelle) : [{ nom, email, dureeMin }].
+  unmatched         Json                 @default("[]")
+  /// Métadonnées du parse (idReunion, fuseau détecté, etc.).
+  meta              Json                 @default("{}")
+  importeParId      String?              @map("importe_par_id") @db.Uuid
+  createdAt         DateTime             @default(now()) @map("created_at")
+
+  presences PresenceCreneau[]
+
+  @@index([sessionId])
+  @@map("releves_connexion_imports")
 }

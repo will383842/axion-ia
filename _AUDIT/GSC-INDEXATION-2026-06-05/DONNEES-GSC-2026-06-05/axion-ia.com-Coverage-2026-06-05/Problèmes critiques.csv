@@ -1,0 +1,11 @@
+Raison,Source,Validation,Pages
+"Exclue par la balise ""noindex""",Site Web,Commencé,252
+Bloquée par le fichier robots.txt,Site Web,Commencé,40
+Page avec redirection,Site Web,Commencé,38
+Autre page avec balise canonique correcte,Site Web,Commencé,4
+Erreur serveur (5xx),Site Web,Commencé,3
+Bloquée en raison d'une interdiction d'accès (403),Site Web,Commencé,3
+Page en double sans URL canonique sélectionnée par l'utilisateur,Site Web,Commencé,3
+"Détectée, actuellement non indexée",Systèmes Google,Commencé,2558
+"Explorée, actuellement non indexée",Systèmes Google,Commencé,0
+Introuvable (404),Site Web,Sans objet,0
