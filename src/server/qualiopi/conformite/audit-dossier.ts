@@ -146,6 +146,9 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   // off.26 : nom du référent handicap
   const referentHandicapNom = await getQualiopiConfig("referent_handicap_nom").catch(() => "");
 
+  // off.1 : numéro NDA DREETS (obligatoire pour considérer off.1 comme couvert)
+  const ndaNumero = await getQualiopiConfig("nda_numero").catch(() => "");
+
   // off.30 : appréciations multi-parties
   const nbAppreciations = await prisma.appreciation.count();
 
@@ -157,6 +160,14 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
 
   // Preuves supplémentaires par indicateur (complètent celles de conformite-service)
   const preuvesSuppMap = new Map<number, string[]>([
+    [
+      1,
+      [
+        ndaNumero.trim().length > 0
+          ? `NDA DREETS obtenu : ${ndaNumero}`
+          : "NDA DREETS : non renseigné — off.1 ne peut pas être couvert sans numéro de déclaration d'activité",
+      ],
+    ],
     [23, nbVeilleLegale > 0 ? [`${nbVeilleLegale} entrée(s) de veille légale/réglementaire`] : []],
     [24, nbVeilleMetiers > 0 ? [`${nbVeilleMetiers} entrée(s) de veille emplois/métiers`] : []],
     [

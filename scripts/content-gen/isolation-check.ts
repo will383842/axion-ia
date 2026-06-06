@@ -253,6 +253,21 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // commentaire JSDoc (crédit + conformité Unsplash), pas du code du pipeline de
   // génération. Même exception explicite que ses jumeaux audit & sites-web.
   /^src\/components\/services\/implementation\/ImplementationClientReviews\.tsx$/,
+  // Exceptions 2026-06-06 (audit Qualiopi end-to-end). CONSOMMATEURS LÉGITIMES des
+  // briques content-gen (provider Anthropic, cost-tracker, retry, KB) — réutilisation
+  // cross-module imposée par le contrat (« réutiliser les briques existantes »), pas
+  // de logique content-gen dupliquée. Le module Qualiopi a son propre garde-fou
+  // (qualiopi:isolation-check). + consommateurs pré-existants (chatbot IA, refs UI).
+  /^src\/server\/qualiopi\//,
+  /^src\/server\/actions\/qualiopi\//,
+  /^src\/server\/queue\/workers\/qualiopi-.*\.ts$/,
+  /^src\/server\/chatbot\/generation\//,
+  /^src\/server\/chatbot\/ingestion\//,
+  /^src\/content\/villes\/copy\//,
+  /^src\/components\/services\/sites-web\/SitesWebVisualShowcase\.tsx$/,
+  /^src\/lib\/seo\/manon-person\.ts$/,
+  /^scripts\/docker-entrypoint\.sh$/,
+  /^scripts\/curate-sites-web-unsplash\.mjs$/,
 ];
 
 /**

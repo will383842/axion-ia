@@ -27,7 +27,13 @@ vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: vi.fn((v: string | null) => (v === null ? null : `decrypted:${v}`)),
 }));
 
+vi.mock("@/lib/r2-storage", () => ({
+  isR2Configured: vi.fn().mockReturnValue(false),
+  getSignedUrlR2: vi.fn().mockResolvedValue("https://r2.example.com/signed-fresh.pdf"),
+}));
+
 import { prisma } from "@/lib/prisma";
+import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
 import { creerAcces, verifierToken, revoquerAcces, getEspaceStagiaire } from "./portail-service";
 
 const mockPrisma = prisma as unknown as {
@@ -40,6 +46,9 @@ const mockPrisma = prisma as unknown as {
     findUnique: ReturnType<typeof vi.fn>;
   };
 };
+
+const mockIsR2Configured = isR2Configured as ReturnType<typeof vi.fn>;
+const mockGetSignedUrlR2 = getSignedUrlR2 as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // creerAcces
@@ -212,7 +221,11 @@ describe("revoquerAcces", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("getEspaceStagiaire", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockIsR2Configured.mockReturnValue(false);
+    mockGetSignedUrlR2.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
+  });
 
   const fakeTrainee = {
     prenom: "Alice",
@@ -229,10 +242,11 @@ describe("getEspaceStagiaire", () => {
           dateFin: new Date("2026-02-02"),
         },
         attestationDocument: {
-          type: "attestation_realisation",
-          numero: "ATT-001",
+          type: "attestation",
+          numero: "AXI-ATT-2026-001",
           pdfUrl: "https://example.com/att.pdf",
           qrToken: "qr-token-64-chars-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          createdAt: new Date("2026-02-02T10:00:00Z"),
         },
         questionnaires: [
           {
@@ -254,7 +268,7 @@ describe("getEspaceStagiaire", () => {
     expect(espace.formations).toHaveLength(1);
     expect(espace.formations[0]!.titre).toBe("Formation IA");
     expect(espace.attestations).toHaveLength(1);
-    expect(espace.attestations[0]!.numero).toBe("ATT-001");
+    expect(espace.attestations[0]!.numero).toBe("AXI-ATT-2026-001");
     expect(espace.questionnaires).toHaveLength(1);
   });
 
@@ -298,5 +312,89 @@ describe("getEspaceStagiaire", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+
+  // ── S1 : URL signée régénérée (24 h) ──────────────────────────────────────
+
+  it("S1 : régénère une URL signée fraîche (24 h) si R2 configuré", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockGetSignedUrlR2.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
+    mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
+
+    const espace = await getEspaceStagiaire("trainee-s1");
+
+    expect(mockGetSignedUrlR2).toHaveBeenCalledOnce();
+    expect(mockGetSignedUrlR2).toHaveBeenCalledWith(
+      "documents/2026/attestation/AXI-ATT-2026-001.pdf",
+      86400,
+    );
+    expect(espace.attestations[0]!.pdfUrl).toBe("https://r2.example.com/signed-fresh.pdf");
+  });
+
+  it("S1 : construit la clé R2 à partir de createdAt.getFullYear(), type et numero", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      ...fakeTrainee,
+      enrollments: [
+        {
+          ...fakeTrainee.enrollments[0],
+          attestationDocument: {
+            type: "attestation_partielle",
+            numero: "AXI-ATT-2025-042",
+            pdfUrl: "https://example.com/old.pdf",
+            qrToken: null,
+            createdAt: new Date("2025-11-15T09:00:00Z"),
+          },
+        },
+      ],
+    });
+
+    await getEspaceStagiaire("trainee-s1b");
+
+    expect(mockGetSignedUrlR2).toHaveBeenCalledWith(
+      "documents/2025/attestation_partielle/AXI-ATT-2025-042.pdf",
+      86400,
+    );
+  });
+
+  it("S1 : fallback vers pdfUrl DB si R2 non configuré", async () => {
+    mockIsR2Configured.mockReturnValue(false);
+    mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
+
+    const espace = await getEspaceStagiaire("trainee-s1c");
+
+    expect(mockGetSignedUrlR2).not.toHaveBeenCalled();
+    expect(espace.attestations[0]!.pdfUrl).toBe("https://example.com/att.pdf");
+  });
+
+  it("S1 : fallback fail-soft vers pdfUrl DB si getSignedUrlR2 lève", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockGetSignedUrlR2.mockRejectedValue(new Error("R2 network error"));
+    mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
+
+    const espace = await getEspaceStagiaire("trainee-s1d");
+
+    // Ne doit pas lever — retourne la pdfUrl DB (fallback)
+    expect(espace.attestations[0]!.pdfUrl).toBe("https://example.com/att.pdf");
+  });
+
+  it("S1 : retourne pdfUrl=null si pdfUrl DB null et R2 non configuré", async () => {
+    mockIsR2Configured.mockReturnValue(false);
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      ...fakeTrainee,
+      enrollments: [
+        {
+          ...fakeTrainee.enrollments[0],
+          attestationDocument: {
+            ...fakeTrainee.enrollments[0]!.attestationDocument,
+            pdfUrl: null,
+          },
+        },
+      ],
+    });
+
+    const espace = await getEspaceStagiaire("trainee-s1e");
+
+    expect(espace.attestations[0]!.pdfUrl).toBeNull();
   });
 });

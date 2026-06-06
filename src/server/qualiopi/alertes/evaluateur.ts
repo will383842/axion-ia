@@ -272,16 +272,16 @@ async function regleQualiopiExpiration(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /** R09 — BPF : selon la date (>1er avril, >1er mai, >24 mai, >31 mai) et bpf non déposé.
- *  La notion de "BPF déposé" est représentée par une RevueDirection de l'année courante
- *  dont le statut n'est pas "brouillon" — c'est l'approximation la plus proche dans le schéma.
- *  En pratique, le BPF est un rapport DREETS annuel distinct mais le schéma T15 ne le modélise
- *  pas encore séparément. On utilise une heuristique conservatrice : si RevueDirection de l'année
- *  courante est "valide" → BPF considéré déposé (FIXME quand le modèle BPF sera distinct).
+ *  Marqueur réel "BPF déposé" = SiteSetting `bpf_annee_deposee` (mise à jour par l'admin
+ *  après dépôt sur maf.fr) >= année du BPF dû. [T17.1 — remplace l'ancienne heuristique
+ *  RevueDirection.] Le BPF d'une année N se dépose en N+1 ; on évalue l'obligation de
+ *  l'année précédente (déclarable au printemps de l'année courante).
  */
 async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
   const annee = now.getFullYear();
-  const revue = await prisma.revueDirection.findUnique({ where: { annee } });
-  const bpfDepose = revue?.statut === "valide";
+  const anneeBpf = annee - 1; // BPF de l'année N-1, à déposer avant le 31 mai de l'année N.
+  const anneeDeposee = await getQualiopiConfig("bpf_annee_deposee");
+  const bpfDepose = typeof anneeDeposee === "number" && anneeDeposee >= anneeBpf;
   if (bpfDepose) return [];
 
   // Seuils BPF (dates légales françaises DREETS — fixées par décret, pas configurables)
@@ -296,7 +296,7 @@ async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
         code: "bpf_en_retard",
         niveau: "critique",
         titre: "Bilan Pédagogique et Financier en retard",
-        message: `Le BPF ${annee} aurait dû être déposé avant le 31 mai. Régularisation urgente auprès de la DREETS.`,
+        message: `Le BPF ${anneeBpf} aurait dû être déposé avant le 31 mai. Régularisation urgente auprès de la DREETS.`,
       },
     ];
   }
@@ -306,7 +306,7 @@ async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
         code: "bpf_a_deposer_j7",
         niveau: "critique",
         titre: "Bilan Pédagogique et Financier à déposer (J-7)",
-        message: `Le BPF ${annee} doit être déposé avant le 31 mai (dans ≤7 jours).`,
+        message: `Le BPF ${anneeBpf} doit être déposé avant le 31 mai (dans ≤7 jours).`,
       },
     ];
   }
@@ -316,7 +316,7 @@ async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
         code: "bpf_a_deposer_j30",
         niveau: "important",
         titre: "Bilan Pédagogique et Financier à déposer (J-30)",
-        message: `Le BPF ${annee} doit être déposé avant le 31 mai (dans ≤30 jours).`,
+        message: `Le BPF ${anneeBpf} doit être déposé avant le 31 mai (dans ≤30 jours).`,
       },
     ];
   }
@@ -326,7 +326,7 @@ async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
         code: "bpf_a_deposer_j60",
         niveau: "info",
         titre: "Bilan Pédagogique et Financier à déposer (J-60)",
-        message: `Le BPF ${annee} doit être déposé avant le 31 mai. Préparez vos données.`,
+        message: `Le BPF ${anneeBpf} doit être déposé avant le 31 mai. Préparez vos données.`,
       },
     ];
   }
@@ -569,6 +569,28 @@ async function regleRgpdSuppression(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
+/** R17 — Convention de formation (L.6353-1) manquante avant démarrage (off.9⭐).
+ *  Session planifiee dont dateDebut ∈ [now, now+5j] sans DocumentGenere convention. */
+async function regleConventionFormation(now: Date): Promise<AlerteCandidate[]> {
+  const limite = daysFromNow(5, now);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      dateDebut: { gte: now, lte: limite },
+      documents: { none: { type: { in: ["convention", "convention_tripartite"] } } },
+    },
+    select: { id: true, numero: true, dateDebut: true },
+  });
+  return sessions.map((s) => ({
+    code: "convention_formation_manquante",
+    niveau: "critique" as AlerteNiveau,
+    titre: "Convention de formation manquante avant démarrage",
+    message: `La convention de formation (L.6353-1) de la session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) n'est pas générée. Obligatoire avant démarrage (ind.9⭐).`,
+    cibleType: "TrainingSession",
+    cibleId: s.id,
+  }));
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalogue des règles
 // ─────────────────────────────────────────────────────────────────────────────
@@ -590,6 +612,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
   { nom: "opco", fn: regleOpco },
   { nom: "convention_tripartite", fn: regleConventionTripartite },
+  { nom: "convention_formation", fn: regleConventionFormation },
   { nom: "factures_impayees", fn: regleFacturesImpayees },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
 ];

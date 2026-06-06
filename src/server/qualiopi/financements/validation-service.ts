@@ -122,12 +122,12 @@ export function validateFranceTravail(session: SessionFinancementFields): Valida
   if (dispositif === "poei") {
     const sessionNonDemarree = session.statut === "planifiee";
     // Vérification des 3 preuves POEI (bloquant si session non démarrée)
-    if (!session.ftPoeiOffreEmploiNumero && sessionNonDemarree) {
+    if (!session.ftPoeiOffreEmploiNumero) {
       return {
         ok: false,
         alerte:
           "POEI : numéro d'offre d'emploi France Travail obligatoire avant démarrage de la session.",
-        gravite: "critique",
+        gravite: sessionNonDemarree ? "critique" : "warning",
       };
     }
     if (!session.ftPoeiAccordFinancementAt) {

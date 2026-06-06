@@ -380,4 +380,74 @@ describe("genererAttestationPourEnrollment", () => {
 
     expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
   });
+
+  // ── S2 : invariant statut exclu / abandon ──────────────────────────────────
+
+  it("S2 : retourne { resultat: 'aucune', documentId: null } si statut=exclu", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "exclu" }));
+
+    const result = await genererAttestationPourEnrollment("enroll-exclu");
+
+    expect(result).toEqual({ resultat: "aucune", documentId: null });
+    expect(mockGenDoc).not.toHaveBeenCalled();
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+  });
+
+  it("S2 : retourne { resultat: 'aucune', documentId: null } si statut=abandon", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "abandon" }));
+
+    const result = await genererAttestationPourEnrollment("enroll-abandon");
+
+    expect(result).toEqual({ resultat: "aucune", documentId: null });
+    expect(mockGenDoc).not.toHaveBeenCalled();
+  });
+
+  it("S2 : log l'activité qualiopi.attestation.refusee_statut si statut=exclu", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "exclu" }));
+
+    await genererAttestationPourEnrollment("enroll-exclu-log");
+
+    expect(mockPrisma.activityLog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          action: "qualiopi.attestation.refusee_statut",
+          targetType: "Enrollment",
+          targetId: "enroll-exclu-log",
+        }),
+      }),
+    );
+  });
+
+  it("S2 : log l'activité qualiopi.attestation.refusee_statut si statut=abandon", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "abandon" }));
+
+    await genererAttestationPourEnrollment("enroll-abandon-log");
+
+    expect(mockPrisma.activityLog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          action: "qualiopi.attestation.refusee_statut",
+        }),
+      }),
+    );
+  });
+
+  it("S2 : ignore l'erreur de log (best-effort) si activityLog.create lève", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "exclu" }));
+    mockPrisma.activityLog.create.mockRejectedValue(new Error("DB error"));
+
+    // Ne doit pas lever
+    const result = await genererAttestationPourEnrollment("enroll-exclu-nolog");
+
+    expect(result).toEqual({ resultat: "aucune", documentId: null });
+  });
+
+  it("S2 : génère normalement si statut=presente (non bloqué)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "presente" }));
+
+    const result = await genererAttestationPourEnrollment("enroll-presente");
+
+    expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
+    expect(mockGenDoc).toHaveBeenCalledOnce();
+  });
 });

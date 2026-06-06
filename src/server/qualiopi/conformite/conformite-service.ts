@@ -77,6 +77,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbDocuments,
     nbRevues,
     referentHandicapNom,
+    ndaNumero,
     typesActionResult,
   ] = await Promise.all([
     prisma.formation.count(),
@@ -100,6 +101,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.revueDirection.count(),
     // off.26 : nom du référent handicap (config Qualiopi)
     getQualiopiConfig("referent_handicap_nom").catch(() => ""),
+    // off.1 : numéro NDA DREETS (condition supplémentaire pour couverture off.1)
+    getQualiopiConfig("nda_numero").catch(() => ""),
     // Types d'action déclarés : liste des modalités présentes sur les formations
     prisma.formation
       .findMany({
@@ -133,10 +136,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   }
 
   // Critère 1
+  // off.1 : couvert seulement si formations/fiches présentes ET NDA DREETS renseigné
   set(
     1,
-    [`${nbFormations} formation(s) créée(s)`, `${nbDocuments} document(s) généré(s)`],
-    nbFormations > 0,
+    [
+      `${nbFormations} formation(s) créée(s)`,
+      `${nbDocuments} document(s) généré(s)`,
+      ndaNumero.trim().length > 0
+        ? `NDA DREETS : ${ndaNumero}`
+        : "NDA DREETS : non renseigné (requis pour couverture off.1)",
+    ],
+    nbFormations > 0 && ndaNumero.trim().length > 0,
   );
   set(2, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
   set(3, [], false); // certifiant conditionnel — non couvert par défaut (TC seul)

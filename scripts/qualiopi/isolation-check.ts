@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Qualiopi — Isolation check CI (miroir de scripts/content-gen + image-bank).
+ * Qualiopi — Isolation check CI (miroir des autres checks d'isolation du repo).
  *
  * Garantit que tout le code Formation Engine + Qualiopi Manager vit
  * EXCLUSIVEMENT dans ses zones dédiées (cloisonnement, skill `reference/01` §2) :

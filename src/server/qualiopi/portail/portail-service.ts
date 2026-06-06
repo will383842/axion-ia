@@ -19,6 +19,7 @@
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
+import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
 import type {
   EnrollmentStatut,
   DocumentType,
@@ -228,6 +229,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               numero: true,
               pdfUrl: true,
               qrToken: true,
+              createdAt: true,
             },
           },
           questionnaires: {
@@ -261,14 +263,31 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     statut: e.statut,
   }));
 
-  const attestations: AttestationResume[] = trainee.enrollments
-    .flatMap((e) => (e.attestationDocument ? [e.attestationDocument] : []))
-    .map((doc) => ({
-      type: doc.type,
-      numero: doc.numero,
-      pdfUrl: doc.pdfUrl ?? null,
-      qrToken: doc.qrToken ?? null,
-    }));
+  const attestations: AttestationResume[] = await Promise.all(
+    trainee.enrollments
+      .flatMap((e) => (e.attestationDocument ? [e.attestationDocument] : []))
+      .map(async (doc) => {
+        // S1 : régénère une URL signée fraîche (24 h) à la lecture pour éviter
+        // les liens expirés (pdfUrl stockée en DB expire après 900 s).
+        let pdfUrl: string | null = doc.pdfUrl ?? null;
+        try {
+          if (isR2Configured()) {
+            const year = doc.createdAt.getFullYear();
+            const key = `documents/${year}/${doc.type}/${doc.numero}.pdf`;
+            pdfUrl = await getSignedUrlR2(key, 86400);
+          }
+        } catch {
+          // Fail-soft : on garde pdfUrl DB (peut être expirée mais vaut mieux
+          // qu'une erreur bloquante).
+        }
+        return {
+          type: doc.type,
+          numero: doc.numero,
+          pdfUrl,
+          qrToken: doc.qrToken ?? null,
+        };
+      }),
+  );
 
   const questionnaires: QuestionnaireResume[] = trainee.enrollments
     .flatMap((e) => e.questionnaires)

@@ -80,6 +80,14 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description: "Seuil J+15 alerte réclamation sans réponse.",
   },
 
+  // ── BPF (Bilan Pédagogique et Financier — dépôt DREETS) ──
+  // Dernière année dont le BPF a été déposé sur maf.fr (l'admin la met à jour
+  // après dépôt). Sert de marqueur réel pour les alertes BPF (≠ heuristique). [T17.1]
+  bpf_annee_deposee: {
+    ...num(0),
+    description: "Dernière année dont le BPF a été déposé (DREETS).",
+  },
+
   // ── Seuils pédagogiques / qualité ──
   ratio_pratique_min: {
     ...num(0.6),

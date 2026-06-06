@@ -205,8 +205,8 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
 
   // ── Formation publiée ─────────────────────────────────────────────────────
 
-  it("formation : statutGeneration=publie et statut=publie avec programme détaillé", () => {
-    expect(data.formation.statut).toBe("publie");
+  it("formation : statutGeneration=publie et statut=actif (condition fiche publique) avec programme détaillé", () => {
+    expect(data.formation.statut).toBe("actif");
     expect(data.formation.statutGeneration).toBe("publie");
     expect(data.formation.programmeDetaille.length).toBeGreaterThanOrEqual(3);
   });

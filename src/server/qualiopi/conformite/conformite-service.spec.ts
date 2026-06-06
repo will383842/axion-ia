@@ -253,6 +253,57 @@ describe("evaluerConformite", () => {
     expect(ind26?.statut).toBe("a_completer");
   });
 
+  // ── off.1 : information accessible sur les prestations (S5) ─────────────
+
+  it("off.1 couvert si formations > 0 ET nda_numero non vide", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    mockP.formation.findMany.mockResolvedValue([]);
+    mockP.documentGenere.count.mockResolvedValue(1);
+    // getQualiopiConfig appelé pour referent_handicap_nom puis nda_numero
+    mockGetConfig.mockResolvedValueOnce("").mockResolvedValueOnce("11075XXXX75");
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    expect(ind1?.statut).toBe("couvert");
+  });
+
+  it("off.1 a_completer si formations > 0 MAIS nda_numero vide", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    mockP.formation.findMany.mockResolvedValue([]);
+    mockP.documentGenere.count.mockResolvedValue(1);
+    // Les deux appels getQualiopiConfig retournent ""
+    mockGetConfig.mockResolvedValue("");
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    expect(ind1?.statut).toBe("a_completer");
+  });
+
+  it("off.1 a_completer si nda_numero renseigné MAIS 0 formation", async () => {
+    mockP.formation.count.mockResolvedValue(0);
+    mockP.formation.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValueOnce("").mockResolvedValueOnce("11075XXXX75");
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    expect(ind1?.statut).toBe("a_completer");
+  });
+
+  it("off.1 preuve mentionne le NDA si renseigné", async () => {
+    mockP.formation.count.mockResolvedValue(1);
+    mockP.formation.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValueOnce("").mockResolvedValueOnce("11075XXXX75");
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    expect(ind1?.preuves.join(" ")).toContain("11075XXXX75");
+  });
+
+  it("off.1 preuve signale NDA manquant si vide", async () => {
+    mockP.formation.count.mockResolvedValue(1);
+    mockP.formation.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    expect(ind1?.preuves.join(" ")).toMatch(/non renseigné/i);
+  });
+
   // ── off.21 : formateurs avec CV réel (T17 — CLUSTER 2) ───────────────────
 
   it("off.21 couvert si ≥1 formateur actif avec cvUrl non null", async () => {

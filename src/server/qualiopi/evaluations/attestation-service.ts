@@ -115,6 +115,28 @@ export async function genererAttestationPourEnrollment(
     };
   }
 
+  // 2b. Invariant métier S2 : un stagiaire exclu ou en abandon ne peut pas
+  //     recevoir d'attestation, même via l'action manuelle admin.
+  //     (Le cron filtre déjà ces statuts, mais l'action manuelle ne le faisait pas.)
+  if (enrollment.statut === "exclu" || enrollment.statut === "abandon") {
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: null,
+          action: "qualiopi.attestation.refusee_statut",
+          targetType: "Enrollment",
+          targetId: enrollmentId,
+          changes: { statut: enrollment.statut } as never,
+          ipAddress: null,
+          userAgent: null,
+        },
+      });
+    } catch {
+      // best-effort
+    }
+    return { resultat: "aucune", documentId: null };
+  }
+
   // 3. Classifie la présence
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const tauxPct = enrollment.tauxPresencePct ?? 0;

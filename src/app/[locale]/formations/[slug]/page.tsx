@@ -24,10 +24,12 @@ import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
 
 // ── Dynamisme & ISR ──────────────────────────────────────────────────────────
-// force-dynamic car la page dépend de `isQualiopiPublicDisclosureEnabled()`
-// (process.env lu au runtime). dynamicParams=true permet les slugs non
-// pré-rendus (ISR les hydratera sous revalidate).
-export const dynamic = "force-dynamic";
+// ISR `revalidate=3600` (budget Web Vitals Phase B : éviter un appel DB par requête
+// → LCP). Le flag `isQualiopiPublicDisclosureEnabled()` est ré-évalué à chaque
+// régénération ISR (acceptable : en Phase B le flag est activé de façon permanente ;
+// au basculement Phase A→B, la page se rouvre sous ≤1h). dynamicParams=true permet
+// les slugs non pré-rendus (générés à la demande puis cachés). [T17.1 — S9]
+export const revalidate = 3600;
 export const dynamicParams = true;
 
 // ── Params pré-rendus ────────────────────────────────────────────────────────

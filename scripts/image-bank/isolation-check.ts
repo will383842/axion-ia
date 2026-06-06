@@ -141,6 +141,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^scripts\/generate-image-sitemap-t3-t4\.ts$/,
   /^scripts\/extract-service-sitemap-data\.ts$/,
   /^scripts\/seed-images\.cjs$/,
+  // Exceptions 2026-06-06 (audit Qualiopi end-to-end). Fichiers mentionnant
+  // "image-bank" hors zone de façon légitime : script de backup R2 dédié,
+  // KB readers consommés en lecture, spec loader blog (référence cross-module).
+  // Pas de logique image-bank dupliquée.
+  /^scripts\/backup-image-bank-r2\.sh$/,
+  /^src\/lib\/knowledge\/readers\.ts$/,
+  /^src\/server\/content-gen\/blog\/__tests__\/loader\.spec\.ts$/,
 ];
 
 const IMAGE_BANK_MARKERS: ReadonlyArray<string> = [

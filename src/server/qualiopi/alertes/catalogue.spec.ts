@@ -1,7 +1,7 @@
 /**
  * Tests — alertes/catalogue.ts (T15 AGENT A).
  *
- * Vérifie : exhaustivité du catalogue (28 codes), cohérence niveau/resolutionAuto,
+ * Vérifie : exhaustivité du catalogue (29 codes), cohérence niveau/resolutionAuto,
  * niveauFromSpec (mapping spec→enum), types corrects.
  * Module PUR : aucun mock requis.
  */
@@ -37,6 +37,7 @@ const CODES_ATTENDUS: string[] = [
   "opco_sans_accord",
   "opco_formation_demarree_sans_accord",
   "convention_tripartite_manquante",
+  "convention_formation_manquante",
   "facture_impayee_j30",
   "facture_impayee_j60",
   "budget_ia_depasse",
@@ -52,7 +53,7 @@ const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("ALERTE_CATALOGUE", () => {
-  it("contient exactement les 28 codes attendus", () => {
+  it("contient exactement les 29 codes attendus", () => {
     const codesPresents = Object.keys(ALERTE_CATALOGUE).sort();
     const codesAttendus = [...CODES_ATTENDUS].sort();
     expect(codesPresents).toEqual(codesAttendus);

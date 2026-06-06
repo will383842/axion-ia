@@ -21,6 +21,7 @@
 import type { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { countNonLues, listAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,6 +42,20 @@ export async function GET(req: NextRequest): Promise<Response> {
   const role = (session.user as { role?: string }).role ?? "reader";
   if (role !== "super_admin" && role !== "admin") {
     return new Response("forbidden", { status: 401 });
+  }
+
+  // ── Rate-limit SSE : 30 connexions / 60 s par userId ─────────────────────
+  // Évite les connexions SSE abusives (tab duplication, script mal bouclé…).
+  // Fail-open si Redis indispo (checkRateLimit gère déjà ce cas).
+  const rl = await checkRateLimit(`alertes:stream:${session.user.id}`, {
+    limit: 30,
+    windowSec: 60,
+  });
+  if (!rl.allowed) {
+    return new Response("Trop de connexions simultanées — réessayez dans un instant.", {
+      status: 429,
+      headers: { "Content-Type": "text/plain; charset=utf-8", "Retry-After": "60" },
+    });
   }
 
   // ── Stub-aware : close immédiat ────────────────────────────────────────────

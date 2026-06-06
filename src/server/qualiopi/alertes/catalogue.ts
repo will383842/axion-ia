@@ -155,6 +155,12 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Convention tripartite manquante (subrogation OPCO)",
     resolutionAuto: true,
   },
+  // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
+  convention_formation_manquante: {
+    niveau: "critique",
+    titre: "Convention de formation manquante avant démarrage",
+    resolutionAuto: true,
+  },
 
   // ── Facturation ───────────────────────────────────────────────────────────
   facture_impayee_j30: {

@@ -71,6 +71,8 @@ function setupEmptyMocks() {
   mockGetConfig.mockImplementation((key: string) => {
     if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
     if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
+    // BPF de l'année N-1 considéré déposé (marqueur config) → pas d'alerte BPF par défaut.
+    if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
     return Promise.resolve("");
   });
 }
@@ -297,20 +299,24 @@ describe("evaluerAlertes — BPF", () => {
     setupEmptyMocks();
   });
 
-  it("ne crée PAS d'alerte BPF si revue de l'année est 'valide'", async () => {
-    mp.revueDirection.findUnique.mockResolvedValue({ statut: "valide" });
+  it("ne crée PAS d'alerte BPF si le BPF de l'année est déposé (bpf_annee_deposee)", async () => {
+    // setupEmptyMocks règle déjà bpf_annee_deposee = année courante (≥ N-1) → déposé.
     const alertes = await evaluerAlertes();
     const bpf = alertes.filter((x) => x.code.startsWith("bpf_"));
     expect(bpf).toHaveLength(0);
   });
 
-  it("crée bpf_a_deposer_j60 si revue non valide + date > 1er avril", async () => {
-    // On simule une date dans une période post-avril : on utilise le mock
-    // de revue brouillon et on vérifie que le code retourné correspond
-    // à la période actuelle (le test est temporel, on vérifie juste la cohérence)
-    mp.revueDirection.findUnique.mockResolvedValue({ statut: "brouillon" });
-
+  it("crée bpf_a_deposer si BPF non déposé + date > 1er avril", async () => {
     const now = new Date();
+    const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
+    // BPF non déposé (année 0) → l'alerte BPF dépend de la date courante.
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
+      if (key === "bpf_annee_deposee") return Promise.resolve(0);
+      return Promise.resolve("");
+    });
+
     const alertes = await evaluerAlertes();
     const bpf = alertes.filter((x) => x.code.startsWith("bpf_"));
 

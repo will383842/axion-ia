@@ -21,6 +21,7 @@
  */
 
 import type { PrismaClient } from "../../generated/client";
+import { seedGrilleV2 } from "./grille-v2";
 
 // ─── Types d'identification stables ─────────────────────────────────────────
 
@@ -105,7 +106,8 @@ export interface FormationDemo {
   seuilReussitePct: number;
   ratioPratiquePct: number;
   statutGeneration: "publie";
-  statut: "publie";
+  /// "actif" = condition de publication publique (statut !== archive) — cf. getPublicFormationBySlug.
+  statut: "actif";
   typesActionQualiopi: Array<"classique" | "opco">;
   /** Indicateurs publiés off.1/2 (T17). */
   indicateursPublies: Array<{ libelle: string; valeur: number; unite: string; annee: number }>;
@@ -448,7 +450,7 @@ export function buildDemoData(): DemoData {
     seuilReussitePct: 70,
     ratioPratiquePct: 65,
     statutGeneration: "publie",
-    statut: "publie",
+    statut: "actif",
     typesActionQualiopi: ["classique", "opco"],
     indicateursPublies: [
       { libelle: "Taux de satisfaction stagiaires", valeur: 92, unite: "%", annee: 2025 },
@@ -989,6 +991,15 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     console.log("[qualiopi:seed-demo] Environnement stub détecté — no-op.");
     return;
+  }
+
+  // [T17.1 — S8] Auto-suffisance : si aucune grille qualité active (le seed de base
+  // `qualiopi:seed` n'a pas été lancé), on la seede pour que le Formation Engine soit
+  // opérationnel même si seed-demo est exécuté sur une DB fraîche.
+  const grilleActive = await prisma.grilleQualiteConfig.findFirst({ where: { actif: true } });
+  if (!grilleActive) {
+    console.log("[qualiopi:seed-demo] Aucune grille active — seed de la grille v2…");
+    await seedGrilleV2(prisma);
   }
 
   const data = buildDemoData();

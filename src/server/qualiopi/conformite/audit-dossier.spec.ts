@@ -218,6 +218,28 @@ describe("genererManifesteAudit", () => {
     expect(preuvesText).toMatch(/aucun formateur/i);
   });
 
+  // ── off.1 : NDA DREETS requis pour couverture (S5) ────────────────────────
+
+  it("off.1 : manifeste affiche le NDA si renseigné", async () => {
+    // getQualiopiConfig : 1er appel = referent_handicap_nom, 2e = nda_numero
+    mockGetConfig.mockResolvedValueOnce("").mockResolvedValueOnce("11075XXXX75");
+    const result = await genererManifesteAudit();
+    const ind1 = result.json.indicateurs.find((i) => i.numero === 1);
+    const preuvesText = ind1?.preuves.join(" ") ?? "";
+    expect(preuvesText).toContain("11075XXXX75");
+    expect(preuvesText).toMatch(/NDA DREETS obtenu/i);
+  });
+
+  it("off.1 : manifeste signale NDA manquant si config vide", async () => {
+    // Les deux appels retournent ""
+    mockGetConfig.mockResolvedValue("");
+    const result = await genererManifesteAudit();
+    const ind1 = result.json.indicateurs.find((i) => i.numero === 1);
+    const preuvesText = ind1?.preuves.join(" ") ?? "";
+    expect(preuvesText).toMatch(/non renseigné/i);
+    expect(preuvesText).toMatch(/off\.1/i);
+  });
+
   it("off.23/24/25 : manifeste affiche le compte de veille par type", async () => {
     mockPrisma.veille.count
       .mockResolvedValueOnce(3) // legale
