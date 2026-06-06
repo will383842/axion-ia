@@ -173,12 +173,20 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
 
                   {/* Actions */}
                   <td className={cellCls}>
-                    <Link
-                      href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/supports`}
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
-                    >
-                      Supports
-                    </Link>
+                    <div className="flex flex-col gap-[var(--space-admin-1)]">
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/supports`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Supports
+                      </Link>
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/certification`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Certification
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}

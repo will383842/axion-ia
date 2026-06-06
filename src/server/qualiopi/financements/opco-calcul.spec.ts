@@ -6,7 +6,12 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { tarifHoraireOpco, computeVentilationHoraire, computeForfait } from "./opco-calcul";
+import {
+  tarifHoraireOpco,
+  computeVentilationHoraire,
+  computeForfait,
+  computeVentilationDossier,
+} from "./opco-calcul";
 import type { PlafondOpco } from "./opco-calcul";
 
 const PLAFONDS_TEST: PlafondOpco = {
@@ -140,5 +145,171 @@ describe("computeForfait", () => {
     const result = computeForfait(0);
     expect(result.totalHtCents).toBe(0);
     expect(result.lignes[0]!.prixUnitaireHtCents).toBe(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// computeVentilationDossier
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("computeVentilationDossier", () => {
+  // ── euro_heure ─────────────────────────────────────────────────────────────
+
+  it("euro_heure : total = dureeHeures × nbParticipants × montantCents", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 4000, // 40 €/h
+      dureeHeures: 7,
+      nbParticipants: 5,
+    });
+    // 7 h × 4000 cts/h = 28 000 cts/participant × 5 = 140 000 cts
+    expect(result.totalHtCents).toBe(140_000);
+    expect(result.lignes).toHaveLength(1);
+    expect(result.lignes[0]!.quantite).toBe(5);
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(28_000);
+  });
+
+  it("euro_heure : désignation mentionne l'unité €/h", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 3500,
+      dureeHeures: 3.5,
+      nbParticipants: 2,
+    });
+    expect(result.lignes[0]!.designation).toContain("€/h");
+  });
+
+  // ── euro_jour ──────────────────────────────────────────────────────────────
+
+  it("euro_jour : nbJours = ceil(7/7)=1, total = 1 × 5 × 5000 = 25 000", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_jour",
+      montantCents: 5000, // 50 €/j
+      dureeHeures: 7,
+      nbParticipants: 5,
+    });
+    expect(result.totalHtCents).toBe(25_000);
+  });
+
+  it("euro_jour : ceil(8/7)=2 jours", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_jour",
+      montantCents: 5000,
+      dureeHeures: 8,
+      nbParticipants: 3,
+    });
+    // 2 j × 5000 = 10 000 par participant × 3 = 30 000
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(10_000);
+    expect(result.totalHtCents).toBe(30_000);
+  });
+
+  // ── euro_formation ─────────────────────────────────────────────────────────
+
+  it("euro_formation : total = nbParticipants × montantCents", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_formation",
+      montantCents: 60_000, // 600 €/formation
+      dureeHeures: 14,
+      nbParticipants: 4,
+    });
+    expect(result.totalHtCents).toBe(240_000);
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(60_000);
+  });
+
+  // ── euro_an_salarie ────────────────────────────────────────────────────────
+
+  it("euro_an_salarie : total = nbParticipants × montantCents", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_an_salarie",
+      montantCents: 100_000, // 1000 €/an/salarié
+      dureeHeures: 21,
+      nbParticipants: 3,
+    });
+    expect(result.totalHtCents).toBe(300_000);
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(100_000);
+  });
+
+  // ── Plafonds ───────────────────────────────────────────────────────────────
+
+  it("plafondFormationCents : plafonne le coût par participant si brut > plafond", () => {
+    // 7h × 4000 cts/h = 28 000 par participant ; plafond = 20 000
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 4000,
+      dureeHeures: 7,
+      nbParticipants: 5,
+      plafondFormationCents: 20_000,
+    });
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(20_000);
+    expect(result.totalHtCents).toBe(100_000); // 20 000 × 5
+  });
+
+  it("plafondFormationCents : pas d'impact si brut <= plafond", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 4000,
+      dureeHeures: 7,
+      nbParticipants: 5,
+      plafondFormationCents: 50_000, // plafond supérieur au brut → pas de cap
+    });
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(28_000);
+  });
+
+  it("plafondAnnuelCents : plafonne si brut > plafond annuel", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_an_salarie",
+      montantCents: 150_000, // 1500 €
+      dureeHeures: 7,
+      nbParticipants: 2,
+      plafondAnnuelCents: 100_000,
+    });
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(100_000);
+    expect(result.totalHtCents).toBe(200_000);
+  });
+
+  it("plafond annuel < plafond formation → plafond annuel s'applique (le plus restrictif)", () => {
+    // brut = 7h × 4000 = 28 000 ; plafondFormation=25 000 ; plafondAnnuel=15 000
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 4000,
+      dureeHeures: 7,
+      nbParticipants: 3,
+      plafondFormationCents: 25_000,
+      plafondAnnuelCents: 15_000,
+    });
+    expect(result.lignes[0]!.prixUnitaireHtCents).toBe(15_000);
+    expect(result.totalHtCents).toBe(45_000);
+  });
+
+  it("désignation mentionne 'plafonné' si plafond actif", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 4000,
+      dureeHeures: 7,
+      nbParticipants: 2,
+      plafondFormationCents: 10_000,
+    });
+    expect(result.lignes[0]!.designation).toContain("plafonné");
+  });
+
+  it("désignation ne mentionne pas 'plafonné' si pas de cap", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_formation",
+      montantCents: 50_000,
+      dureeHeures: 7,
+      nbParticipants: 1,
+    });
+    expect(result.lignes[0]!.designation).not.toContain("plafonné");
+  });
+
+  it("totalHtCents = lignes[0].quantite × lignes[0].prixUnitaireHtCents", () => {
+    const result = computeVentilationDossier({
+      unite: "euro_heure",
+      montantCents: 2500,
+      dureeHeures: 4,
+      nbParticipants: 6,
+    });
+    const sumLignes = result.lignes.reduce((acc, l) => acc + l.quantite * l.prixUnitaireHtCents, 0);
+    expect(result.totalHtCents).toBe(sumLignes);
   });
 });

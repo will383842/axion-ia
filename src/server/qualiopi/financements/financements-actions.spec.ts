@@ -108,6 +108,7 @@ import {
   setMoyensFormationAction,
   verifierSousTraitantAction,
   exportComptaCsvAction,
+  setPriseEnChargeAction,
 } from "@/server/actions/qualiopi/financements";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -168,6 +169,12 @@ function makeSession(overrides: Record<string, unknown> = {}) {
     ftPoeiAccordFinancementAt: null,
     ftPoeiEngagementSigneAt: null,
     statut: "planifiee",
+    // Barème prise en charge (T18) — valide par défaut pour les tests ventilation horaire
+    priseEnChargeMontantCents: 4000, // 40 €/h
+    priseEnChargeUnite: "euro_heure",
+    priseEnChargePlafondFormationCents: null,
+    priseEnChargePlafondAnnuelCents: null,
+    client: { raisonSociale: "ACME SAS" },
     ...overrides,
   };
 }
@@ -566,7 +573,7 @@ describe("genererFactureFormationAction", () => {
     expect(result.error).toMatch(/durée/i);
   });
 
-  it("ventilation horaire : crée la facture si dureeReelleHeures renseigné", async () => {
+  it("ventilation horaire : crée la facture si dureeReelleHeures renseigné + barème présent", async () => {
     const result = await genererFactureFormationAction({
       sessionId: SESSION_UUID,
       destinataire: "opco",
@@ -574,6 +581,22 @@ describe("genererFactureFormationAction", () => {
     });
 
     expect("data" in result).toBe(true);
+  });
+
+  it("ventilation horaire : retourne { error } si barème absent (priseEnChargeMontantCents=null)", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({ priseEnChargeMontantCents: null, priseEnChargeUnite: null }),
+    );
+
+    const result = await genererFactureFormationAction({
+      sessionId: SESSION_UUID,
+      destinataire: "opco",
+      ventilation: "horaire",
+    });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toMatch(/barème|prise en charge/i);
   });
 
   // ── Cas d'erreur ──────────────────────────────────────────────────────────
@@ -1036,5 +1059,135 @@ describe("genererFacturePdfAction (T16)", () => {
     expect("data" in result).toBe(true);
     // generateDocument doit avoir été appelé (PDF construit avec subrogationOpco)
     expect(mockGenerateDocument).toHaveBeenCalledOnce();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// setPriseEnChargeAction (T18)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("setPriseEnChargeAction", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
+    mockLogActivity.mockResolvedValue(undefined);
+    mockPrisma.trainingSession.update.mockResolvedValue({ id: SESSION_UUID });
+  });
+
+  it("retourne { data: { id } } pour une mise à jour valide (euro_heure)", async () => {
+    const result = await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: 4000,
+      unite: "euro_heure",
+    });
+
+    expect("data" in result).toBe(true);
+    if (!("data" in result)) return;
+    expect(result.data.id).toBe(SESSION_UUID);
+  });
+
+  it("met à jour priseEnChargeMontantCents et priseEnChargeUnite", async () => {
+    await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: 5000,
+      unite: "euro_jour",
+    });
+
+    const updateCall = mockCall<{ data: Record<string, unknown> }>(
+      mockPrisma.trainingSession.update,
+    );
+    expect(updateCall.data["priseEnChargeMontantCents"]).toBe(5000);
+    expect(updateCall.data["priseEnChargeUnite"]).toBe("euro_jour");
+  });
+
+  it("met à jour les plafonds si fournis", async () => {
+    await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: 4000,
+      unite: "euro_heure",
+      plafondFormationCents: 20_000,
+      plafondAnnuelCents: 50_000,
+    });
+
+    const updateCall = mockCall<{ data: Record<string, unknown> }>(
+      mockPrisma.trainingSession.update,
+    );
+    expect(updateCall.data["priseEnChargePlafondFormationCents"]).toBe(20_000);
+    expect(updateCall.data["priseEnChargePlafondAnnuelCents"]).toBe(50_000);
+  });
+
+  it("ne passe pas les plafonds si absents (exactOptionalPropertyTypes)", async () => {
+    await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: 4000,
+      unite: "euro_formation",
+    });
+
+    const updateCall = mockCall<{ data: Record<string, unknown> }>(
+      mockPrisma.trainingSession.update,
+    );
+    expect("priseEnChargePlafondFormationCents" in updateCall.data).toBe(false);
+    expect("priseEnChargePlafondAnnuelCents" in updateCall.data).toBe(false);
+  });
+
+  it("retourne { error } si sessionId invalide", async () => {
+    const result = await setPriseEnChargeAction({
+      sessionId: "pas-un-uuid",
+      montantCents: 4000,
+      unite: "euro_heure",
+    });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toBe("Données invalides");
+  });
+
+  it("retourne { error } si unite invalide", async () => {
+    const result = await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: 4000,
+      unite: "euro_inconnu" as "euro_heure",
+    });
+
+    expect("error" in result).toBe(true);
+  });
+
+  it("retourne { error } si montantCents négatif", async () => {
+    const result = await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: -1,
+      unite: "euro_heure",
+    });
+
+    expect("error" in result).toBe(true);
+  });
+
+  it("accepte toutes les unités PriseEnChargeUnite", async () => {
+    const unites = ["euro_heure", "euro_jour", "euro_formation", "euro_an_salarie"] as const;
+    for (const unite of unites) {
+      mockPrisma.trainingSession.update.mockResolvedValue({ id: SESSION_UUID });
+      const result = await setPriseEnChargeAction({
+        sessionId: SESSION_UUID,
+        montantCents: 1000,
+        unite,
+      });
+      expect("data" in result).toBe(true);
+    }
+  });
+
+  it("logge l'activité qualiopi.session.prise_en_charge", async () => {
+    await setPriseEnChargeAction({
+      sessionId: SESSION_UUID,
+      montantCents: 4000,
+      unite: "euro_heure",
+    });
+
+    expect(mockLogActivity).toHaveBeenCalledOnce();
+    const logCall = mockCall<{ action: string; targetType: string; targetId: string }>(
+      mockLogActivity,
+    );
+    expect(logCall.action).toBe("qualiopi.financement.prise_en_charge.set");
+    expect(logCall.targetType).toBe("TrainingSession");
+    expect(logCall.targetId).toBe(SESSION_UUID);
   });
 });

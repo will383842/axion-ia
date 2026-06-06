@@ -9,7 +9,7 @@
  *   - Sorties `prixUnitaireHtCents` / `totalHtCents` : **centimes** (integer, sans arrondi flottant).
  */
 
-import type { ModaliteFormation } from "../../../../prisma/generated/client";
+import type { ModaliteFormation, PriseEnChargeUnite } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -125,4 +125,113 @@ export function computeForfait(montantHtCents: number): ResultatVentilation {
     },
   ];
   return { lignes, totalHtCents: montantHtCents };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// computeVentilationDossier
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Calcule les lignes de facturation à partir du barème de prise en charge
+ * saisi sur le dossier (TrainingSession.priseEnChargeMontantCents +
+ * priseEnChargeUnite), en remplacement du référentiel OPCO centralisé.
+ *
+ * Formules par unité :
+ *   - euro_heure      → dureeHeures × nbParticipants × montantCents
+ *   - euro_jour       → ceil(dureeHeures / 7) × nbParticipants × montantCents
+ *   - euro_formation  → nbParticipants × montantCents
+ *   - euro_an_salarie → nbParticipants × montantCents
+ *
+ * Plafonds (optionnels) :
+ *   - plafondFormationCents : cap du coût par participant sur l'ensemble de la formation.
+ *   - plafondAnnuelCents    : cap du coût par salarié sur l'année (même logique par participant).
+ *
+ * @param input.unite                  unité de prise en charge issue du dossier.
+ * @param input.montantCents           montant unitaire en centimes.
+ * @param input.dureeHeures            durée réelle de la session (heures, peut être décimal).
+ * @param input.nbParticipants         nombre de participants réels.
+ * @param input.plafondFormationCents  plafond par participant pour la formation (optionnel).
+ * @param input.plafondAnnuelCents     plafond annuel par salarié (optionnel).
+ */
+export function computeVentilationDossier(input: {
+  unite: PriseEnChargeUnite;
+  montantCents: number;
+  dureeHeures: number;
+  nbParticipants: number;
+  plafondFormationCents?: number | null;
+  plafondAnnuelCents?: number | null;
+}): ResultatVentilation {
+  const {
+    unite,
+    montantCents,
+    dureeHeures,
+    nbParticipants,
+    plafondFormationCents,
+    plafondAnnuelCents,
+  } = input;
+
+  // ── Désignation lisible selon l'unité ────────────────────────────────────
+  const UNITE_LABELS: Record<PriseEnChargeUnite, string> = {
+    euro_heure: `€/h`,
+    euro_jour: `€/j`,
+    euro_formation: `€/formation`,
+    euro_an_salarie: `€/an/salarié`,
+  };
+  const uniteLabel = UNITE_LABELS[unite];
+
+  // ── Coût brut par participant selon l'unité ──────────────────────────────
+  let puBrutCents: number;
+  let quantiteLabel: string;
+
+  switch (unite) {
+    case "euro_heure": {
+      puBrutCents = Math.round(dureeHeures * montantCents);
+      quantiteLabel = `${dureeHeures} h × ${nbParticipants} participant${nbParticipants > 1 ? "s" : ""}`;
+      break;
+    }
+    case "euro_jour": {
+      const nbJours = Math.ceil(dureeHeures / 7);
+      puBrutCents = nbJours * montantCents;
+      quantiteLabel = `${nbJours} j × ${nbParticipants} participant${nbParticipants > 1 ? "s" : ""}`;
+      break;
+    }
+    case "euro_formation": {
+      puBrutCents = montantCents;
+      quantiteLabel = `${nbParticipants} participant${nbParticipants > 1 ? "s" : ""}`;
+      break;
+    }
+    case "euro_an_salarie": {
+      puBrutCents = montantCents;
+      quantiteLabel = `${nbParticipants} salarié${nbParticipants > 1 ? "s" : ""}`;
+      break;
+    }
+  }
+
+  // ── Application des plafonds par participant ─────────────────────────────
+  let puPlafonneCents = puBrutCents;
+
+  if (plafondFormationCents != null && puPlafonneCents > plafondFormationCents) {
+    puPlafonneCents = plafondFormationCents;
+  }
+  if (plafondAnnuelCents != null && puPlafonneCents > plafondAnnuelCents) {
+    puPlafonneCents = plafondAnnuelCents;
+  }
+
+  const totalHtCents = puPlafonneCents * nbParticipants;
+
+  const designation =
+    `Prise en charge formation — ${quantiteLabel} @ ${(montantCents / 100).toFixed(2)} ${uniteLabel}` +
+    (puPlafonneCents < puBrutCents
+      ? ` (plafonné à ${(puPlafonneCents / 100).toFixed(2)} €/participant)`
+      : "");
+
+  const lignes: LigneFacture[] = [
+    {
+      designation,
+      quantite: nbParticipants,
+      prixUnitaireHtCents: puPlafonneCents,
+    },
+  ];
+
+  return { lignes, totalHtCents };
 }

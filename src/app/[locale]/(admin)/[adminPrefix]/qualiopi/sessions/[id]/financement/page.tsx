@@ -20,6 +20,7 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SetFinancementForm } from "@/components/admin/qualiopi/SetFinancementForm";
+import { PriseEnChargeForm } from "@/components/admin/qualiopi/PriseEnChargeForm";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
@@ -206,6 +207,12 @@ export default async function FinancementSessionPage({ params }: PageProps) {
       ftPoeiAccordFinancementAt: true,
       ftPoeiEngagementSigneAt: true,
       cpfPayeurResteCharge: true,
+      priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      priseEnChargePlafondFormationCents: true,
+      priseEnChargePlafondAnnuelCents: true,
+      priseEnChargeSourceUrl: true,
+      priseEnChargeReleveLe: true,
       montantHtCents: true,
       dureeReelleHeures: true,
       nbParticipantsPrevus: true,
@@ -445,6 +452,20 @@ export default async function FinancementSessionPage({ params }: PageProps) {
           numeroDossierOpco={trainingSession.numeroDossierOpco}
           ftDispositif={trainingSession.ftDispositif}
           cpfPayeurResteCharge={trainingSession.cpfPayeurResteCharge}
+        />
+      </section>
+
+      {/* ── Barème de prise en charge OPCO ──────────────────────────────── */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Barème de prise en charge OPCO (dossier)</h2>
+        <PriseEnChargeForm
+          sessionId={id}
+          priseEnChargeMontantCents={trainingSession.priseEnChargeMontantCents}
+          priseEnChargeUnite={trainingSession.priseEnChargeUnite}
+          priseEnChargePlafondFormationCents={trainingSession.priseEnChargePlafondFormationCents}
+          priseEnChargePlafondAnnuelCents={trainingSession.priseEnChargePlafondAnnuelCents}
+          priseEnChargeSourceUrl={trainingSession.priseEnChargeSourceUrl}
+          priseEnChargeReleveLe={trainingSession.priseEnChargeReleveLe}
         />
       </section>
 

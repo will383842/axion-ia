@@ -4701,6 +4701,8 @@ model Client {
   siret                       String?       @db.VarChar(14)
   nafCode                     String?       @map("naf_code") @db.VarChar(6)
   conventionCollective        String?       @map("convention_collective") @db.VarChar(200)
+  /// Code IDCC de la branche (précise la convention collective — saisi, NAF non fiable). [T18]
+  idcc                        String?       @db.VarChar(10)
   secteur                     String?       @db.VarChar(200)
   taille                      CompanySize?
   adresse                     String?       @db.Text
@@ -4893,6 +4895,25 @@ model Formation {
   accessibleHandicap   Boolean                   @default(false) @map("accessible_handicap")
   certificationType    CertificationType         @default(aucune) @map("certification_type")
   codeCpf              String?                   @map("code_cpf") @db.VarChar(20)
+  // ── Certification France Compétences (RS / RNCP) — finançabilité CPF. [T18] ──
+  /// Code RNCP (Répertoire National des Certifications Professionnelles).
+  codeRncp             String?                   @map("code_rncp") @db.VarChar(20)
+  /// Code RS (Répertoire Spécifique — compétences ciblées).
+  codeRs               String?                   @map("code_rs") @db.VarChar(20)
+  /// N° d'enregistrement France Compétences.
+  numeroEnregistrementFc String?                 @map("numero_enregistrement_fc") @db.VarChar(40)
+  /// Nom du certificateur (déposant France Compétences).
+  certificateurNom     String?                   @map("certificateur_nom") @db.VarChar(250)
+  /// True si Axion-IA est le certificateur (déposant) ; false si partenaire habilité.
+  estCertificateur     Boolean                   @default(false) @map("est_certificateur")
+  /// N° d'habilitation si Axion-IA est partenaire d'un certificateur tiers.
+  numeroHabilitation   String?                   @map("numero_habilitation") @db.VarChar(60)
+  dateEnregistrementCertif DateTime?             @map("date_enregistrement_certif")
+  dateEcheanceCertif   DateTime?                 @map("date_echeance_certif")
+  /// Blocs de compétences (RNCP) : [{ code, libelle }].
+  blocsCompetences     Json                      @default("[]") @map("blocs_competences")
+  /// Éligible CPF (dérivé : certifiante RS/RNCP ou bloc + EDOF vérifié).
+  cpfEligible          Boolean                   @default(false) @map("cpf_eligible")
   edofVerifieAt        DateTime?                 @map("edof_verifie_at")
   edofVerifiePar       String?                   @map("edof_verifie_par") @db.Uuid
   statutGeneration     FormationStatutGeneration @default(intention) @map("statut_generation")
@@ -4955,6 +4976,15 @@ model TrainingSession {
   ftDispositif                 FranceTravailDispositif? @map("ft_dispositif")
   /// Numéro de dossier OPCO (mention obligatoire sur la facture en subrogation). [T11]
   numeroDossierOpco            String?               @map("numero_dossier_opco") @db.VarChar(60)
+  // ── Prise en charge OPCO PAR DOSSIER (relevée sur le portail de la branche). [T18] ──
+  /// Montant de prise en charge relevé (centimes), selon `priseEnChargeUnite`.
+  priseEnChargeMontantCents       Int?               @map("prise_en_charge_montant_cents")
+  priseEnChargeUnite              PriseEnChargeUnite? @map("prise_en_charge_unite")
+  priseEnChargePlafondFormationCents Int?            @map("prise_en_charge_plafond_formation_cents")
+  priseEnChargePlafondAnnuelCents Int?               @map("prise_en_charge_plafond_annuel_cents")
+  /// Traçabilité auditeur : URL du portail OPCO + date du relevé du barème.
+  priseEnChargeSourceUrl          String?            @map("prise_en_charge_source_url") @db.Text
+  priseEnChargeReleveLe           DateTime?          @map("prise_en_charge_releve_le")
   /// Payeur du reste à charge CPF (stagiaire/employeur/opco/france_travail/exonere). [T11]
   cpfPayeurResteCharge         String?               @map("cpf_payeur_reste_charge") @db.VarChar(40)
   nbParticipantsPrevus         Int                   @map("nb_participants_prevus")
@@ -5826,6 +5856,23 @@ model BpfDepense {
 
   @@index([annee])
   @@map("bpf_depenses")
+}
+
+// ============================================================
+// QUALIOPI — T18 : Certification RS/RNCP + prise en charge OPCO PAR DOSSIER.
+// Les barèmes OPCO varient par branche (IDCC) × taille × dispositif → impossible
+// de pré-remplir un barème générique fiable. Donc le barème est saisi PAR DOSSIER
+// (sur la session), relevé sur le portail OPCO de la branche du client au moment
+// du montage, avec source + date (traçabilité auditeur). Pas de référentiel.
+// Champs prise-en-charge portés par TrainingSession + Client.idcc (cf. schema).
+// ============================================================
+
+/// Unité du montant de prise en charge OPCO relevé sur le portail de la branche.
+enum PriseEnChargeUnite {
+  euro_heure
+  euro_jour
+  euro_formation
+  euro_an_salarie
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

@@ -16,8 +16,7 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
-import { computeVentilationHoraire, computeForfait } from "./opco-calcul";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { computeVentilationDossier, computeForfait } from "./opco-calcul";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
@@ -86,21 +85,25 @@ export async function genererFactureFormation(
   let totalHtCents: number;
 
   if (input.ventilation === "horaire") {
-    // Tarif horaire OPCO : lire les plafonds depuis la config
-    const [intraHoraire, interPresentiel, interDistanciel] = await Promise.all([
-      getQualiopiConfig("opco_atlas_intra_horaire"),
-      getQualiopiConfig("opco_atlas_inter_presentiel"),
-      getQualiopiConfig("opco_atlas_inter_distanciel"),
-    ]);
-    // Détermination intra/inter selon le type de financement de la session
-    const estIntra = session.financementType === "opco" && session.modalite === "presentiel";
-    const { tarifHoraireOpco } = await import("./opco-calcul");
-    const tarifHoraireCents = tarifHoraireOpco(session.formation.modalite, estIntra, {
-      intraHoraire,
-      interPresentiel,
-      interDistanciel,
+    // Barème de prise en charge saisi sur le dossier (T18).
+    // priseEnChargeMontantCents et priseEnChargeUnite sont obligatoires en ventilation horaire.
+    if (session.priseEnChargeMontantCents == null || session.priseEnChargeUnite == null) {
+      throw new Error(
+        "Barème de prise en charge non renseigné sur le dossier — à relever sur le portail OPCO de la branche du client.",
+      );
+    }
+    const result = computeVentilationDossier({
+      unite: session.priseEnChargeUnite,
+      montantCents: session.priseEnChargeMontantCents,
+      dureeHeures,
+      nbParticipants,
+      ...(session.priseEnChargePlafondFormationCents != null
+        ? { plafondFormationCents: session.priseEnChargePlafondFormationCents }
+        : {}),
+      ...(session.priseEnChargePlafondAnnuelCents != null
+        ? { plafondAnnuelCents: session.priseEnChargePlafondAnnuelCents }
+        : {}),
     });
-    const result = computeVentilationHoraire({ dureeHeures, nbParticipants, tarifHoraireCents });
     lignes = result.lignes;
     totalHtCents = result.totalHtCents;
   } else {

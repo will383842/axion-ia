@@ -1,11 +1,12 @@
 /**
- * Qualiopi — Server Actions Formation (T3 + T17 CLUSTER 3).
+ * Qualiopi — Server Actions Formation (T3 + T17 CLUSTER 3 + T18 CLUSTER B).
  *
  * createFormationAction       : crée une formation intention liée à une offre.
  * updateFormationAction       : met à jour les champs éditoriaux.
  * validateFormationAction     : valide humainement (AI Act art. 50 — bloque la publication).
  * publishFormationAction      : publie (nécessite validation humaine + ratio pratique ≥ plancher).
  * publierIndicateursAction    : publie les indicateurs de résultats (off.1/2 Qualiopi).
+ * setCertificationAction      : pose les champs RS/RNCP + recalcule cpfEligible (T18 CLUSTER B).
  *
  * TVA : exonérée 261-4-4° CGI (pas de TVA sur formations).
  * Montants formation : résolus via offre / pricing.ts (jamais hardcodés ici).
@@ -22,6 +23,7 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { allocateFormationNumero } from "@/server/qualiopi/formations/numbering";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { setCertification } from "@/server/qualiopi/formations/certification-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -295,6 +297,94 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
   });
 
   return { data: { id: idParsed.data } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Schéma certification RS/RNCP (T18 CLUSTER B)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const setCertificationSchema = z.object({
+  formationId: z.string().uuid(),
+  certificationType: z.enum(CERTIFICATION_TYPES).optional(),
+  codeRncp: z.string().max(20).nullable().optional(),
+  codeRs: z.string().max(20).nullable().optional(),
+  numeroEnregistrementFc: z.string().max(40).nullable().optional(),
+  certificateurNom: z.string().max(250).nullable().optional(),
+  estCertificateur: z.boolean().optional(),
+  numeroHabilitation: z.string().max(60).nullable().optional(),
+  dateEnregistrementCertif: z.coerce.date().nullable().optional(),
+  dateEcheanceCertif: z.coerce.date().nullable().optional(),
+  blocsCompetences: z.unknown().optional(),
+});
+
+/**
+ * Met à jour les champs certification RS/RNCP d'une formation et recalcule
+ * automatiquement cpfEligible (T18 CLUSTER B).
+ *
+ * Requiert ADMIN_PUBLISH (publication du référentiel certifiant).
+ * Trace dans ActivityLog pour auditabilité Qualiopi.
+ *
+ * Stub-aware : le service setCertification retourne early si stub.invalid
+ * (aucune mutation au build SSG).
+ */
+export async function setCertificationAction(
+  input: z.infer<typeof setCertificationSchema>,
+): Promise<ActionResult<{ id: string; cpfEligible: boolean }>> {
+  const session = await requireAdminPublish();
+  const parsed = setCertificationSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { formationId, ...certFields } = parsed.data;
+
+  const formation = await prisma.formation.findUnique({
+    where: { id: formationId },
+    select: { id: true },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+
+  // exactOptionalPropertyTypes : construire l'objet SetCertificationInput
+  // explicitement pour éviter le spread de champs undefined.
+  const {
+    certificationType,
+    codeRncp,
+    codeRs,
+    numeroEnregistrementFc,
+    certificateurNom,
+    estCertificateur,
+    numeroHabilitation,
+    dateEnregistrementCertif,
+    dateEcheanceCertif,
+    blocsCompetences,
+  } = certFields;
+
+  const serviceInput: import("@/server/qualiopi/formations/certification-service").SetCertificationInput =
+    { formationId };
+  if (certificationType !== undefined) serviceInput.certificationType = certificationType;
+  if (codeRncp !== undefined) serviceInput.codeRncp = codeRncp;
+  if (codeRs !== undefined) serviceInput.codeRs = codeRs;
+  if (numeroEnregistrementFc !== undefined)
+    serviceInput.numeroEnregistrementFc = numeroEnregistrementFc;
+  if (certificateurNom !== undefined) serviceInput.certificateurNom = certificateurNom;
+  if (estCertificateur !== undefined) serviceInput.estCertificateur = estCertificateur;
+  if (numeroHabilitation !== undefined) serviceInput.numeroHabilitation = numeroHabilitation;
+  if (dateEnregistrementCertif !== undefined)
+    serviceInput.dateEnregistrementCertif = dateEnregistrementCertif;
+  if (dateEcheanceCertif !== undefined) serviceInput.dateEcheanceCertif = dateEcheanceCertif;
+  if (blocsCompetences !== undefined) serviceInput.blocsCompetences = blocsCompetences;
+
+  const result = await setCertification(serviceInput);
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.certification.set",
+    targetType: "Formation",
+    targetId: formationId,
+    changes: {
+      ...certFields,
+      cpfEligible: result.cpfEligible,
+    },
+    session,
+  });
+
+  return { data: result };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

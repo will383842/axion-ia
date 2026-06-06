@@ -27,6 +27,7 @@ import {
   validateCpfEdof,
   validateFranceTravail,
   validateSousTraitant,
+  validateCpfEligibilite,
   getFinancementValidations,
 } from "./validation-service";
 
@@ -317,6 +318,41 @@ describe("validateSousTraitant", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// validateCpfEligibilite (T18 CLUSTER B)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("validateCpfEligibilite", () => {
+  it("retourne ok=true si financementType != cpf", () => {
+    const result = validateCpfEligibilite(makeSession({ financementType: "direct" }), {
+      cpfEligible: false,
+    });
+    expect(result.ok).toBe(true);
+  });
+
+  it("retourne ok=false + gravite=critique si cpf + cpfEligible=false", () => {
+    const result = validateCpfEligibilite(makeSession({ financementType: "cpf" }), {
+      cpfEligible: false,
+    });
+    expect(result.ok).toBe(false);
+    expect(result.gravite).toBe("critique");
+  });
+
+  it("retourne ok=true si cpf + cpfEligible=true", () => {
+    const result = validateCpfEligibilite(makeSession({ financementType: "cpf" }), {
+      cpfEligible: true,
+    });
+    expect(result.ok).toBe(true);
+  });
+
+  it("l'alerte mentionne RS/RNCP ou CPF", () => {
+    const result = validateCpfEligibilite(makeSession({ financementType: "cpf" }), {
+      cpfEligible: false,
+    });
+    expect(result.alerte).toMatch(/CPF|RS\/RNCP|EDOF/i);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // getFinancementValidations (wrapper DB)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -337,7 +373,7 @@ describe("getFinancementValidations", () => {
     }
   });
 
-  it("retourne 3 entrées (opco_accord, cpf_edof, france_travail)", async () => {
+  it("retourne 4 entrées (opco_accord, cpf_edof, cpf_eligibilite, france_travail)", async () => {
     mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue({
       financementType: "direct",
       opcoStatut: "non_demande",
@@ -350,13 +386,14 @@ describe("getFinancementValidations", () => {
       ftPoeiAccordFinancementAt: null,
       ftPoeiEngagementSigneAt: null,
       statut: "planifiee",
-      formation: { edofVerifieAt: null },
+      formation: { edofVerifieAt: null, cpfEligible: false },
     });
     const results = await getFinancementValidations("sess-uuid-1");
-    expect(results).toHaveLength(3);
+    expect(results).toHaveLength(4);
     const codes = results.map((r) => r.code);
     expect(codes).toContain("opco_accord");
     expect(codes).toContain("cpf_edof");
+    expect(codes).toContain("cpf_eligibilite");
     expect(codes).toContain("france_travail");
   });
 
@@ -373,7 +410,7 @@ describe("getFinancementValidations", () => {
       ftPoeiAccordFinancementAt: null,
       ftPoeiEngagementSigneAt: null,
       statut: "planifiee",
-      formation: { edofVerifieAt: null },
+      formation: { edofVerifieAt: null, cpfEligible: false },
     });
     const results = await getFinancementValidations("sess-uuid-2");
     expect(results.every((r) => r.result.ok)).toBe(true);
@@ -392,11 +429,32 @@ describe("getFinancementValidations", () => {
       ftPoeiAccordFinancementAt: null,
       ftPoeiEngagementSigneAt: null,
       statut: "planifiee",
-      formation: { edofVerifieAt: null },
+      formation: { edofVerifieAt: null, cpfEligible: false },
     });
     const results = await getFinancementValidations("sess-uuid-3");
     const opco = results.find((r) => r.code === "opco_accord")!;
     expect(opco.result.ok).toBe(false);
     expect(opco.result.gravite).toBe("critique");
+  });
+
+  it("retourne cpf_eligibilite=false + critique si cpf + cpfEligible=false", async () => {
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue({
+      financementType: "cpf",
+      opcoStatut: "non_demande",
+      opcoSubrogation: false,
+      numeroDossierOpco: null,
+      edofVerifieAt: new Date(),
+      ftDispositif: null,
+      ftAifPrescriptionDate: null,
+      ftPoeiOffreEmploiNumero: null,
+      ftPoeiAccordFinancementAt: null,
+      ftPoeiEngagementSigneAt: null,
+      statut: "planifiee",
+      formation: { edofVerifieAt: new Date(), cpfEligible: false },
+    });
+    const results = await getFinancementValidations("sess-uuid-4");
+    const cpfElig = results.find((r) => r.code === "cpf_eligibilite")!;
+    expect(cpfElig.result.ok).toBe(false);
+    expect(cpfElig.result.gravite).toBe("critique");
   });
 });

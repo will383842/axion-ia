@@ -34,6 +34,8 @@ const createClientSchema = z.object({
   siret: z.string().max(14).optional(),
   nafCode: z.string().max(6).optional(),
   conventionCollective: z.string().max(200).optional(),
+  /** Code IDCC de la branche (précise la convention collective). */
+  idcc: z.string().max(10).optional(),
   secteur: z.string().max(200).optional(),
   taille: z.enum(COMPANY_SIZES).optional(),
   adresse: z.string().optional(),
@@ -56,6 +58,8 @@ const updateClientSchema = z.object({
   siret: z.string().max(14).optional(),
   nafCode: z.string().max(6).optional(),
   conventionCollective: z.string().max(200).optional(),
+  /** Code IDCC de la branche (précise la convention collective). */
+  idcc: z.string().max(10).optional(),
   secteur: z.string().max(200).optional(),
   taille: z.enum(COMPANY_SIZES).optional(),
   adresse: z.string().optional(),
@@ -109,6 +113,7 @@ export async function createClientAction(
       ...(v.conventionCollective !== undefined
         ? { conventionCollective: v.conventionCollective }
         : {}),
+      ...(v.idcc !== undefined ? { idcc: v.idcc } : {}),
       ...(v.secteur !== undefined ? { secteur: v.secteur } : {}),
       ...(v.taille !== undefined ? { taille: v.taille } : {}),
       ...(v.adresse !== undefined ? { adresse: v.adresse } : {}),
@@ -160,6 +165,7 @@ export async function updateClientAction(
       ...(fields.conventionCollective !== undefined
         ? { conventionCollective: fields.conventionCollective }
         : {}),
+      ...(fields.idcc !== undefined ? { idcc: fields.idcc } : {}),
       ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
       ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
       ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),

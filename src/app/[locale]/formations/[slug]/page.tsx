@@ -240,6 +240,19 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
               <span className="border-border text-fg-muted rounded-full border px-3 py-1 text-[12px] font-semibold">
                 {f.dureeHeures} h
               </span>
+              {/* Badge certification RS/RNCP (T18) */}
+              {f.certificationType != null && f.certificationType !== "aucune" && (
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-[12px] font-semibold text-blue-700">
+                  {f.certificationType === "rncp" ? "RNCP" : "RS"}
+                  {f.codeRncp ? ` ${f.codeRncp}` : f.codeRs ? ` ${f.codeRs}` : ""}
+                </span>
+              )}
+              {/* Badge éligibilité CPF (T18) */}
+              {f.cpfEligible === true && (
+                <span className="rounded-full bg-green-50 px-3 py-1 text-[12px] font-semibold text-green-700">
+                  Éligible CPF
+                </span>
+              )}
             </div>
 
             {/* Titre principal (indicateur 1 — intitulé) */}
@@ -430,6 +443,64 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   {LEGAL_MENTIONS.factureExonerationTva}
                 </p>
               </SectionBlock>
+
+              {/* 10b. Certification RS/RNCP (T18 — affiché si certifiante) */}
+              {f.certificationType != null && f.certificationType !== "aucune" && (
+                <SectionBlock title="Certification">
+                  <dl className="space-y-2 text-[15px]">
+                    <div className="flex items-start justify-between gap-2">
+                      <dt className="text-fg-muted shrink-0">Type</dt>
+                      <dd className="text-fg text-right font-medium">
+                        {f.certificationType === "rncp"
+                          ? "RNCP (Répertoire National)"
+                          : "RS (Répertoire Spécifique)"}
+                      </dd>
+                    </div>
+                    {f.codeRncp && (
+                      <div className="flex items-start justify-between gap-2">
+                        <dt className="text-fg-muted shrink-0">Code RNCP</dt>
+                        <dd className="text-fg text-right font-medium">{f.codeRncp}</dd>
+                      </div>
+                    )}
+                    {f.codeRs && (
+                      <div className="flex items-start justify-between gap-2">
+                        <dt className="text-fg-muted shrink-0">Code RS</dt>
+                        <dd className="text-fg text-right font-medium">{f.codeRs}</dd>
+                      </div>
+                    )}
+                    {f.certificateurNom && (
+                      <div className="flex items-start justify-between gap-2">
+                        <dt className="text-fg-muted shrink-0">Certificateur</dt>
+                        <dd className="text-fg text-right font-medium">{f.certificateurNom}</dd>
+                      </div>
+                    )}
+                    {f.numeroEnregistrementFc && (
+                      <div className="flex items-start justify-between gap-2">
+                        <dt className="text-fg-muted shrink-0">N° enregistrement</dt>
+                        <dd className="text-fg text-right font-mono text-[13px]">
+                          {f.numeroEnregistrementFc}
+                        </dd>
+                      </div>
+                    )}
+                    {f.dateEcheanceCertif && (
+                      <div className="flex items-start justify-between gap-2">
+                        <dt className="text-fg-muted shrink-0">Échéance</dt>
+                        <dd className="text-fg text-right text-[13px]">
+                          {new Date(f.dateEcheanceCertif).toLocaleDateString("fr-FR", {
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </dd>
+                      </div>
+                    )}
+                  </dl>
+                  {f.cpfEligible === true && (
+                    <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-[12px] font-semibold text-green-700">
+                      ● Éligible CPF
+                    </div>
+                  )}
+                </SectionBlock>
+              )}
 
               {/* 11. Contact / inscription */}
               <div className="bg-terracotta rounded-2xl p-6">

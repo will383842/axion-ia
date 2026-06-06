@@ -79,6 +79,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     referentHandicapNom,
     ndaNumero,
     typesActionResult,
+    formationsCertifiantesResult,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -119,9 +120,33 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         }
         return Array.from(types);
       }),
+    // off.3/7/16 : formations certifiantes avec code RS ou RNCP renseigné
+    prisma.formation
+      .findMany({
+        where: {
+          certificationType: { not: "aucune" },
+          OR: [{ codeRncp: { not: null } }, { codeRs: { not: null } }],
+        },
+        select: {
+          certificationType: true,
+          codeRncp: true,
+          codeRs: true,
+          blocsCompetences: true,
+        },
+        take: 200,
+      })
+      .then((rows) =>
+        rows.filter((r) => {
+          const rncp = typeof r.codeRncp === "string" ? r.codeRncp.trim() : "";
+          const rs = typeof r.codeRs === "string" ? r.codeRs.trim() : "";
+          return rncp !== "" || rs !== "";
+        }),
+      ),
   ]);
 
   const typesAction = typesActionResult;
+  // off.3/7/16 : formations avec ≥1 code RS ou RNCP renseigné
+  const nbFormationsCertifiantes = formationsCertifiantesResult.length;
   const applicablesNums = indicateursApplicables(
     typesAction.length > 0 ? typesAction : ["classique"],
   );
@@ -137,19 +162,33 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
 
   // Critère 1
   // off.1 : couvert seulement si formations/fiches présentes ET NDA DREETS renseigné
-  set(
-    1,
-    [
-      `${nbFormations} formation(s) créée(s)`,
-      `${nbDocuments} document(s) généré(s)`,
-      ndaNumero.trim().length > 0
-        ? `NDA DREETS : ${ndaNumero}`
-        : "NDA DREETS : non renseigné (requis pour couverture off.1)",
-    ],
-    nbFormations > 0 && ndaNumero.trim().length > 0,
-  );
+  //         + mention des formations certifiantes si présentes (RS/RNCP)
+  const off1Preuves: string[] = [
+    `${nbFormations} formation(s) créée(s)`,
+    `${nbDocuments} document(s) généré(s)`,
+    ndaNumero.trim().length > 0
+      ? `NDA DREETS : ${ndaNumero}`
+      : "NDA DREETS : non renseigné (requis pour couverture off.1)",
+  ];
+  if (nbFormationsCertifiantes > 0) {
+    off1Preuves.push(
+      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP renseigné`,
+    );
+  }
+  set(1, off1Preuves, nbFormations > 0 && ndaNumero.trim().length > 0);
+
   set(2, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
-  set(3, [], false); // certifiant conditionnel — non couvert par défaut (TC seul)
+
+  // off.3 : taux d'obtention certifications — couvert si ≥1 formation certifiante
+  //         (code RS/RNCP) ET évaluations finales présentes
+  set(
+    3,
+    [
+      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP`,
+      `${nbEvaluationsFinales} évaluation(s) finale(s) (taux d'obtention)`,
+    ],
+    nbFormationsCertifiantes > 0 && nbEvaluationsFinales > 0,
+  );
 
   // Critère 2
   set(
@@ -159,7 +198,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
   set(5, [`${nbFormations} formation(s) avec objectifs définis`], nbFormations > 0);
   set(6, [`${nbFormations} formation(s) avec contenus et modalités`], nbFormations > 0);
-  set(7, [], false); // certifiant conditionnel
+  // off.7 : adéquation contenus / exigences certification — couvert si ≥1 formation
+  //         certifiante avec code RS/RNCP ET blocs de compétences définis
+  set(
+    7,
+    [
+      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP`,
+      nbFormationsCertifiantes > 0
+        ? "Blocs de compétences renseignés (adéquation certification vérifiable)"
+        : "Aucune formation certifiante avec code RS/RNCP",
+    ],
+    nbFormationsCertifiantes > 0,
+  );
   set(
     8,
     [`${nbEvaluationsInitiales} évaluation(s) initiale(s) de positionnement`],
@@ -189,7 +239,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(13, [], false); // APP conditionnel
   set(14, [], false); // APP conditionnel
   set(15, [], false); // APP conditionnel
-  set(16, [], false); // CERT conditionnel
+  // off.16 : présentation à la certification — couvert si ≥1 formation certifiante
+  //          avec code RS/RNCP (la présentation implique un code enregistré)
+  set(
+    16,
+    [
+      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP`,
+      nbFormationsCertifiantes > 0
+        ? "Présentation à la certification possible (RS/RNCP identifiée)"
+        : "Aucune formation certifiante avec code RS/RNCP",
+    ],
+    nbFormationsCertifiantes > 0,
+  );
 
   // Critère 4
   set(17, [`${nbTrainers} formateur(s) actif(s)`], nbTrainers > 0);

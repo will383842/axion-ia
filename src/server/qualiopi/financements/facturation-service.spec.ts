@@ -1,10 +1,11 @@
 /**
- * Tests — facturation-service.ts (T11 AGENT A).
+ * Tests — facturation-service.ts (T11 AGENT A, mis à jour T18).
  *
- * Stratégie : mock @/lib/prisma + dépendances I/O (organisme, generateDocument,
- * opco-calcul.tarifHoraireOpco, config).
- * On vérifie : stub-aware, subrogation bloquante, calcul forfait/horaire,
+ * Stratégie : mock @/lib/prisma + dépendances I/O (organisme, generateDocument).
+ * On vérifie : stub-aware, subrogation bloquante, calcul forfait/ventilation dossier,
  * numérotation séquentielle, retry P2002, données créées en DB.
+ * Note T18 : plus de référence à opco-bareme / tarifHoraireForOpco.
+ *   La ventilation horaire utilise computeVentilationDossier (barème sur le dossier).
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -23,10 +24,6 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
     },
   },
-}));
-
-vi.mock("@/server/qualiopi/config/site-settings", () => ({
-  getQualiopiConfig: vi.fn().mockResolvedValue(40),
 }));
 
 vi.mock("@/server/qualiopi/documents/organisme", () => ({
@@ -78,11 +75,15 @@ function makeSession(overrides: Record<string, unknown> = {}) {
     nbParticipantsReels: 5,
     nbParticipantsPrevus: 6,
     modalite: "presentiel" as const,
+    // Barème prise en charge (T18) : barème valide par défaut pour les tests horaire
+    priseEnChargeMontantCents: 4000, // 40 €/h
+    priseEnChargeUnite: "euro_heure" as const,
+    priseEnChargePlafondFormationCents: null,
+    priseEnChargePlafondAnnuelCents: null,
     client: {
       raisonSociale: "ACME SAS",
       siret: "98765432100001",
       adresse: "Lyon 69001",
-      opcoIdentifie: "Atlas",
     },
     formation: {
       dureeHeures: 7,
@@ -251,5 +252,53 @@ describe("genererFactureFormation", () => {
       data: Record<string, unknown>;
     };
     expect(createArg.data["tvaExoneree"]).toBe(true);
+  });
+
+  // ── Ventilation dossier (T18) ─────────────────────────────────────────────
+
+  it("ventilation horaire avec barème dossier euro_heure : crée la facture correctement", async () => {
+    // makeSession a priseEnChargeMontantCents=4000 (40€/h), euro_heure, 7h, 5 participants
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "horaire",
+    });
+
+    expect(mockPrisma.factureFormation.create).toHaveBeenCalledOnce();
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    // 7h × 4000 cts/h = 28000 par participant × 5 = 140 000
+    expect(createArg.data["montantHtCents"]).toBe(140_000);
+    expect(createArg.data["tvaExoneree"]).toBe(true);
+    expect(createArg.data["statut"]).toBe("emise");
+  });
+
+  it("ventilation horaire : lève si priseEnChargeMontantCents=null (barème absent)", async () => {
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(
+      makeSession({ priseEnChargeMontantCents: null, priseEnChargeUnite: null }),
+    );
+
+    await expect(
+      genererFactureFormation({
+        sessionId: "sess-uuid-1",
+        destinataire: "entreprise",
+        ventilation: "horaire",
+      }),
+    ).rejects.toThrow(/barème de prise en charge/i);
+  });
+
+  it("ventilation horaire : lève si priseEnChargeUnite=null même si montant renseigné", async () => {
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(
+      makeSession({ priseEnChargeMontantCents: 3000, priseEnChargeUnite: null }),
+    );
+
+    await expect(
+      genererFactureFormation({
+        sessionId: "sess-uuid-1",
+        destinataire: "entreprise",
+        ventilation: "horaire",
+      }),
+    ).rejects.toThrow(/barème de prise en charge/i);
   });
 });

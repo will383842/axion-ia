@@ -36,6 +36,13 @@ const OPCO_LABELS: Record<string, string> = {
   constructys: "Constructys",
 };
 
+const TAILLE_LABELS: Record<string, string> = {
+  TPE: "TPE",
+  PME: "PME",
+  ETI: "ETI",
+  GRANDE_ENTREPRISE: "Grande entreprise",
+};
+
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
 }
@@ -72,6 +79,9 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
         <AdminStatCard label="Clients actifs" value={actifs} tone="success" />
       </div>
 
+      {/* Note : création/modification d'un client via createClientAction / updateClientAction
+          (src/server/actions/qualiopi/clients.ts). Les champs IDCC et Taille sont saisissables
+          dans ces actions — un formulaire dédié est à intégrer ici (CreateClientForm) si nécessaire. */}
       {clients.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
           Aucun client enregistré. Créez votre premier client depuis l&apos;action CRM.
@@ -85,6 +95,8 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                 <th className={headCls}>Raison sociale</th>
                 <th className={headCls}>SIRET</th>
                 <th className={headCls}>NAF</th>
+                <th className={headCls}>IDCC</th>
+                <th className={headCls}>Taille</th>
                 <th className={headCls}>OPCO inféré</th>
                 <th className={headCls}>Statut</th>
               </tr>
@@ -117,6 +129,22 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {client.nafCode ?? (
+                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
+                    )}
+                  </td>
+                  <td className={cellCls}>
+                    {client.idcc ? (
+                      <span className="font-mono text-[length:var(--text-admin-xs)]">
+                        {client.idcc}
+                      </span>
+                    ) : (
+                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
+                    )}
+                  </td>
+                  <td className={cellCls}>
+                    {client.taille ? (
+                      (TAILLE_LABELS[client.taille] ?? client.taille)
+                    ) : (
                       <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
                     )}
                   </td>

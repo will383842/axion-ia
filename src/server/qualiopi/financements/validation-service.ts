@@ -47,6 +47,8 @@ type SessionFinancementFields = Pick<
 
 type FormationEdofFields = Pick<Formation, "edofVerifieAt">;
 
+type FormationCpfEligibiliteFields = Pick<Formation, "cpfEligible">;
+
 type TrainerSousTraitantFields = Pick<Trainer, "statut" | "sousTraitantVerifieAt">;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -149,6 +151,33 @@ export function validateFranceTravail(session: SessionFinancementFields): Valida
 }
 
 /**
+ * CPF éligibilité (T18 CLUSTER B) : si le financement est CPF et que
+ * cpfEligible=false sur la formation → alerte critique.
+ *
+ * La formation n'est éligible CPF que si certificationType ≠ aucune,
+ * un code RS/RNCP (ou des blocs) est renseigné ET la vérification EDOF
+ * est effectuée (cf. computeCpfEligible dans certification-service).
+ *
+ * Règle : cpfEligible est dérivé automatiquement par setCertification ;
+ * cette validation est un garde-fou avant démarrage de session.
+ */
+export function validateCpfEligibilite(
+  session: SessionFinancementFields,
+  formation: FormationCpfEligibiliteFields,
+): ValidationResult {
+  if (session.financementType !== "cpf") return { ok: true };
+  if (!formation.cpfEligible) {
+    return {
+      ok: false,
+      alerte:
+        "Formation non finançable CPF : RS/RNCP/EDOF requis (certificationType ≠ aucune + code + vérification EDOF).",
+      gravite: "critique",
+    };
+  }
+  return { ok: true };
+}
+
+/**
  * Sous-traitant (off.19/27) : un formateur sous_traitant doit avoir
  * sousTraitantVerifieAt non nul pour être assigné formateur principal.
  */
@@ -190,12 +219,20 @@ export async function getFinancementValidations(
 
   const session = await prisma.trainingSession.findUniqueOrThrow({
     where: { id: sessionId },
-    include: { formation: true },
+    include: {
+      formation: {
+        select: {
+          edofVerifieAt: true,
+          cpfEligible: true,
+        },
+      },
+    },
   });
 
   const results: FinancementValidationEntry[] = [
     { code: "opco_accord", result: validateOpcoAccord(session) },
     { code: "cpf_edof", result: validateCpfEdof(session, session.formation) },
+    { code: "cpf_eligibilite", result: validateCpfEligibilite(session, session.formation) },
     { code: "france_travail", result: validateFranceTravail(session) },
   ];
 

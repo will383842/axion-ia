@@ -24,7 +24,7 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
@@ -34,6 +34,7 @@ import type {
   OpcoStatut,
   FranceTravailDispositif,
   FactureFormationDestinataire,
+  PriseEnChargeUnite,
 } from "../../../../prisma/generated/client";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -68,6 +69,13 @@ const DESTINATAIRES: readonly FactureFormationDestinataire[] = [
 ] as const;
 
 const CPF_PAYEUR_VALEURS = ["stagiaire", "employeur", "opco", "france_travail", "exonere"] as const;
+
+const PRISE_EN_CHARGE_UNITES: readonly PriseEnChargeUnite[] = [
+  "euro_heure",
+  "euro_jour",
+  "euro_formation",
+  "euro_an_salarie",
+] as const;
 
 const setFinancementSessionSchema = z.object({
   sessionId: z.string().uuid(),
@@ -109,6 +117,16 @@ const exportComptaCsvSchema = z.object({
   annee: z.number().int().min(2020).max(2100),
 });
 
+const setPriseEnChargeSchema = z.object({
+  sessionId: z.string().uuid(),
+  montantCents: z.number().int().min(0),
+  unite: z.enum(PRISE_EN_CHARGE_UNITES as [PriseEnChargeUnite, ...PriseEnChargeUnite[]]),
+  plafondFormationCents: z.number().int().min(0).optional(),
+  plafondAnnuelCents: z.number().int().min(0).optional(),
+  sourceUrl: z.string().url().max(2048).optional(),
+  releveLe: z.coerce.date().optional(),
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers internes
 // ─────────────────────────────────────────────────────────────────────────────
@@ -145,32 +163,6 @@ function computeForfait(montantHtCents: number): {
       },
     ],
     totalHtCents: montantHtCents,
-  };
-}
-
-/**
- * Calcule les lignes de ventilation horaire OPCO.
- * tarifHoraireCents issu des plafonds de config (valeur brute passée en paramètre).
- */
-function computeVentilationHoraire(input: {
-  dureeHeures: number;
-  nbParticipants: number;
-  tarifHoraireCents: number;
-}): {
-  lignes: Array<{ designation: string; quantite: number; prixUnitaireHtCents: number }>;
-  totalHtCents: number;
-} {
-  const { dureeHeures, nbParticipants, tarifHoraireCents } = input;
-  const totalHtCents = dureeHeures * nbParticipants * tarifHoraireCents;
-  return {
-    lignes: [
-      {
-        designation: `Formation professionnelle — ${dureeHeures} h × ${nbParticipants} participant(s) @ ${(tarifHoraireCents / 100).toFixed(2)} €/h`,
-        quantite: dureeHeures * nbParticipants,
-        prixUnitaireHtCents: tarifHoraireCents,
-      },
-    ],
-    totalHtCents,
   };
 }
 
@@ -304,6 +296,12 @@ export async function genererFactureFormationAction(input: {
       modalite: true,
       titreSession: true,
       numero: true,
+      // Barème prise en charge (T18)
+      priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      priseEnChargePlafondFormationCents: true,
+      priseEnChargePlafondAnnuelCents: true,
+      client: { select: { raisonSociale: true } },
     },
   });
   if (!trainingSession) return { error: "Session introuvable" };
@@ -347,29 +345,38 @@ export async function genererFactureFormationAction(input: {
     lignes = result.lignes;
     totalHtCents = result.totalHtCents;
   } else {
-    // Ventilation horaire OPCO
+    // Ventilation horaire — barème saisi sur le dossier (T18)
     const dureeHeures = trainingSession.dureeReelleHeures ?? 0;
     const nbParticipants =
       trainingSession.nbParticipantsReels ?? trainingSession.nbParticipantsPrevus;
-    // Si pas de durée réelle, erreur bloquante (ventilation horaire impossible).
+    // Durée réelle obligatoire
     if (dureeHeures === 0) {
       return {
         error:
           "Durée réelle non renseignée — impossible de calculer la ventilation horaire. Renseignez la durée réelle de la session.",
       };
     }
-    // Tarif horaire = plafond OPCO Atlas issu de la config (SSOT, jamais en dur) :
-    // distanciel → inter distanciel, sinon intra horaire.
-    const plafondKey =
-      trainingSession.modalite === "distanciel"
-        ? "opco_atlas_inter_distanciel"
-        : "opco_atlas_intra_horaire";
-    const tarifHoraireEuros = await getQualiopiConfig(plafondKey);
-    const tarifHoraireCents = Math.round(tarifHoraireEuros * 100);
-    const result = computeVentilationHoraire({
+    // Barème de prise en charge obligatoire
+    if (
+      trainingSession.priseEnChargeMontantCents == null ||
+      trainingSession.priseEnChargeUnite == null
+    ) {
+      return {
+        error:
+          "Barème de prise en charge non renseigné sur le dossier — à relever sur le portail OPCO de la branche du client.",
+      };
+    }
+    const result = computeVentilationDossier({
+      unite: trainingSession.priseEnChargeUnite,
+      montantCents: trainingSession.priseEnChargeMontantCents,
       dureeHeures,
       nbParticipants,
-      tarifHoraireCents,
+      ...(trainingSession.priseEnChargePlafondFormationCents != null
+        ? { plafondFormationCents: trainingSession.priseEnChargePlafondFormationCents }
+        : {}),
+      ...(trainingSession.priseEnChargePlafondAnnuelCents != null
+        ? { plafondAnnuelCents: trainingSession.priseEnChargePlafondAnnuelCents }
+        : {}),
     });
     lignes = result.lignes;
     totalHtCents = result.totalHtCents;
@@ -623,6 +630,69 @@ export async function genererFacturePdfAction(input: {
 
   return { data: { factureId, documentId } };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// setPriseEnChargeAction (T18 — barème OPCO par dossier)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Enregistre le barème de prise en charge OPCO relevé sur le portail de la
+ * branche du client, pour ce dossier/session précis.
+ *
+ * Tous les montants sont en centimes (conversion euros → centimes dans le form).
+ */
+export async function setPriseEnChargeAction(input: {
+  sessionId: string;
+  montantCents: number;
+  unite: PriseEnChargeUnite;
+  plafondFormationCents?: number;
+  plafondAnnuelCents?: number;
+  sourceUrl?: string;
+  releveLe?: Date;
+}): Promise<ActionResult<{ id: string }>> {
+  const adminSession = await requireAdminWrite();
+  const parsed = setPriseEnChargeSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const {
+    sessionId,
+    montantCents,
+    unite,
+    plafondFormationCents,
+    plafondAnnuelCents,
+    sourceUrl,
+    releveLe,
+  } = parsed.data;
+
+  await prisma.trainingSession.update({
+    where: { id: sessionId },
+    data: {
+      priseEnChargeMontantCents: montantCents,
+      priseEnChargeUnite: unite,
+      ...(plafondFormationCents !== undefined
+        ? { priseEnChargePlafondFormationCents: plafondFormationCents }
+        : {}),
+      ...(plafondAnnuelCents !== undefined
+        ? { priseEnChargePlafondAnnuelCents: plafondAnnuelCents }
+        : {}),
+      ...(sourceUrl !== undefined ? { priseEnChargeSourceUrl: sourceUrl } : {}),
+      ...(releveLe !== undefined ? { priseEnChargeReleveLe: releveLe } : {}),
+    },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.financement.prise_en_charge.set",
+    targetType: "TrainingSession",
+    targetId: sessionId,
+    changes: { montantCents, unite, plafondFormationCents, plafondAnnuelCents, sourceUrl },
+    session: adminSession,
+  });
+
+  return { data: { id: sessionId } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// exportComptaCsvAction
+// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Exporte les factures de formation d'une année au format CSV comptable.
