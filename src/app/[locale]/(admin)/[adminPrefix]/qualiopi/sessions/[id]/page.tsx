@@ -20,6 +20,8 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
+import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
+import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import {
@@ -123,6 +125,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       nbParticipantsReels: true,
       montantHtCents: true,
       financementType: true,
+      formateurPrincipalId: true,
       sessionParentId: true,
       sessionReporteeId: true,
       formation: {
@@ -148,6 +151,14 @@ export default async function SessionHubPage({ params }: PageProps) {
   });
 
   if (!trainingSession) notFound();
+
+  // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
+  const allTrainers = await listTrainers({ actifOnly: true });
+  const formateurOptions = allTrainers.map((t) => ({
+    id: t.id,
+    label: `${t.prenom} ${t.nom}${t.statut === "sous_traitant" ? " (sous-traitant)" : ""}`,
+    habilite: isTrainerHabilite(t, trainingSession.formation.id).ok,
+  }));
 
   // ── Données des sections (Vague 2) ────────────────────────────────────────
   const [enrollmentsRaw, documentsRaw, traineesRaw] = await Promise.all([
@@ -413,6 +424,16 @@ export default async function SessionHubPage({ params }: PageProps) {
             statut={trainingSession.statut as TrainingSessionStatut}
           />
         </div>
+      </section>
+
+      {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Formateur principal</h2>
+        <AssignFormateurForm
+          sessionId={id}
+          currentTrainerId={trainingSession.formateurPrincipalId}
+          trainers={formateurOptions}
+        />
       </section>
 
       {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
