@@ -2,7 +2,19 @@
 
 Trié par (bloquant audit ✕ effort). Statut : ✅ fait & vérifié · ⏳ à faire · ❓ décision Will.
 
-## ✅ FAIT (PHASE B, vérifié vert — typecheck + 1463 tests)
+## ✅ FAIT (PHASE B, vérifié vert + déployé/commité)
+
+- **R2 — Convention tripartite OPCO bloquante** (subrogation sans tripartite signée → bloque démarrage)
+  + saisie date tripartite en UI. Commit `5ecb55c7`. ✅ typecheck + tests verts.
+- **R3 — 3 preuves POEI saisissables en UI** (`SetFinancementForm` + schéma action). Commit `5ecb55c7`. ✅
+- **R6 — RECLASSÉ NON-ISSUE** : la page `/verifier-attestation/[token]` fait un `findUnique` sur un token
+  256 bits via index unique = pattern standard sûr (comme un token reset-password). Une attaque temporelle
+  n'est pas exploitable sur un token non-devinable trouvé par correspondance exacte ; ajouter `verifyQrToken`
+  par-dessus n'apporte aucun gain et empêcherait l'index. **Aucun changement.**
+- **R11 — REQUALIFIÉ FEATURE** : `Devis` n'a ni `formationId` ni `sessionId` (juste `clientId` + `lignes`
+  JSON) → « devis→convention » ne peut PAS créer mécaniquement une session (besoin formation+dates).
+  Implémentation correcte = flux UX guidé (marquer `transforme_convention` + créer session préremplie
+  clientId/devisId). À faire en passe dédiée.
 
 - **G1 — Seed grille au runtime + engine fail-loud.** 3 fichiers :
   `qualiopi-formation-engine-worker.ts` (throw si grille null),
