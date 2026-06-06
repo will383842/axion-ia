@@ -560,13 +560,20 @@ async function stepEvaluateQuality(
   const grille = await getActiveGrille();
 
   if (!grille) {
-    // Pas de grille active → dégradé : considère valide
-    await advanceStatut(formation.id, "contenu_evalue");
-    return {
-      scoreGlobal: 100,
-      valide: true,
-      commentaire: "Aucune grille qualité active — évaluation dégradée.",
-    };
+    // FAIL-LOUD (audit Qualiopi E2E 2026-06-06) — une grille qualité ACTIVE est
+    // OBLIGATOIRE. L'ancien comportement (scoreGlobal=100, valide=true) contournait
+    // SILENCIEUSEMENT l'exigence RNQ « score ≥ 80/100 » : toute formation IA était
+    // certifiée « qualité OK » sans aucune évaluation. En prod la grille est seedée
+    // au boot via prisma/migrations_fts/20260606300000_qualiopi_grille_seed.sql
+    // (appliqué par scripts/docker-entrypoint.sh, idempotent). Si elle est absente,
+    // on ÉCHOUE le job de façon visible (worker.on("failed")) au lieu de publier une
+    // qualité non vérifiée. Remédiation : `pnpm qualiopi:seed` puis relancer la
+    // génération (statut RELANCABLE).
+    throw new Error(
+      "[qualiopi:engine] Aucune grille qualité active (grille_qualite_v1) : génération " +
+        "bloquée pour ne pas contourner le contrôle qualité ≥80/100. Seed/active la grille " +
+        "(pnpm qualiopi:seed) avant de relancer.",
+    );
   }
 
   const contenu = JSON.stringify({
