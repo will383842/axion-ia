@@ -34,7 +34,7 @@ export function QualiopiAttestationDisponibleEmail({
 }) {
   const p = payload as unknown as Payload;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const ctaHref = p.lienPortail ?? `${baseUrl}/fr/espace-stagiaire`;
+  const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
       preview={`Votre ${p.typeDocument ?? "attestation"} est prête`}

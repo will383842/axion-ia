@@ -1,13 +1,14 @@
 #!/usr/bin/env tsx
 /**
- * Qualiopi — Dossier d'audit de démonstration (T16 · Agent A + T17 · CLUSTER 5).
+ * Qualiopi — Dossier d'audit de démonstration (T16 · Agent A + T17 · CLUSTER 5 + T18 · Certification + OPCO dossier).
  *
  * Crée un cycle complet de preuves Qualiopi réalistes, idempotent et stub-aware.
  * Toutes les données sont clairement identifiées "DEMO" (numéros AXI-*-DEMO-*,
  * emails @demo.axion-ia.invalid) pour ne jamais polluer la production réelle.
  *
- * Cycle : Client → Devis accepté → Formation publiée (indicateurs publiés) →
- * Session réalisée (coFormateur Trainer salarié) →
+ * Cycle : Client (idcc Syntec) → Devis accepté → Formation publiée certifiante RS
+ * (cpfEligible=true, blocsCompétences, edofVerifieAt) → Session réalisée (coFormateur
+ * Trainer salarié, barème OPCO PAR DOSSIER) →
  * 2 Stagiaires inscrits + présences → Évaluations finales acquis →
  * Questionnaire satisfaction_chaud + positionnement → Attestation (DocumentGenere) →
  * FactureFormation émise → Réclamation résolue → 3 Veilles →
@@ -16,6 +17,7 @@
  * SiteSetting référent handicap → 1 BpfDepense.
  *
  * Indicateurs couverts : 1/2, 5, 8, 11⭐, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 30, 31, 32.
+ * T18 — Certification RS/RNCP + prise en charge OPCO par dossier.
  *
  * Usage : `pnpm qualiopi:seed-demo`
  */
@@ -62,6 +64,8 @@ export interface ClientDemo {
   contactFonction: string;
   opcoIdentifie: string;
   statut: "client_actif";
+  /** Code IDCC de la convention collective (T18). Ex. 1486 = Syntec / bureaux d'études. */
+  idcc: string;
 }
 
 export interface DevisDemo {
@@ -113,6 +117,29 @@ export interface FormationDemo {
   indicateursPublies: Array<{ libelle: string; valeur: number; unite: string; annee: number }>;
   methodeCalculIndicateurs: string;
   indicateursPubliesAt: Date;
+  // ── T18 — Certification RS/RNCP ───────────────────────────────────────────
+  /** Type de certification : "rs" pour Répertoire Spécifique France Compétences. */
+  certificationType: "rs";
+  /** Code RS (numéro DEMO — jamais un vrai identifiant FC). */
+  codeRs: string;
+  /** Dénomination du certificateur partenaire (marqué DEMO). */
+  certificateurNom: string;
+  /** Numéro d'enregistrement France Compétences (marqué DEMO). */
+  numeroEnregistrementFc: string;
+  /** L'organisme est-il lui-même certificateur ? Non — il est habilité. */
+  estCertificateur: false;
+  /** Numéro d'habilitation délivré par le certificateur partenaire (DEMO). */
+  numeroHabilitation: string;
+  /** Date d'enregistrement officielle au RS (passée). */
+  dateEnregistrementCertif: Date;
+  /** Date d'échéance de l'enregistrement (future — doit rester valide). */
+  dateEcheanceCertif: Date;
+  /** Blocs de compétences évalués (≥ 1 pour satisfaire computeCpfEligible). */
+  blocsCompetences: Array<{ code: string; libelle: string }>;
+  /** Date de vérification EDOF (non null → cpfEligible = true). */
+  edofVerifieAt: Date;
+  /** Calculé via computeCpfEligible — doit être true pour la démo. */
+  cpfEligible: true;
 }
 
 export interface SessionDemo {
@@ -129,6 +156,19 @@ export interface SessionDemo {
   nbParticipantsPrevus: number;
   nbParticipantsReels: number;
   statut: "realisee";
+  // ── T18 — Barème OPCO PAR DOSSIER ─────────────────────────────────────────
+  /** Montant de prise en charge relevé : 3 500 centimes = 35,00 €/h (barème ATLAS Syntec). */
+  priseEnChargeMontantCents: number;
+  /** Unité du barème : euro_heure = €/heure/stagiaire. */
+  priseEnChargeUnite: "euro_heure";
+  /** Plafond OPCO par formation (centimes). 25 200 = 252,00 € pour 7 h × 2 stag. */
+  priseEnChargePlafondFormationCents: number;
+  /** Plafond OPCO annuel par salarié (centimes). 350 000 = 3 500,00 €/an. */
+  priseEnChargePlafondAnnuelCents: number;
+  /** URL source du barème relevé (portail OPCO DEMO). */
+  priseEnChargeSourceUrl: string;
+  /** Date à laquelle le barème a été relevé sur le portail OPCO. */
+  priseEnChargeReleveLe: Date;
 }
 
 export interface StagiaireDemo {
@@ -340,6 +380,8 @@ export function buildDemoData(): DemoData {
     contactFonction: "Directrice des Ressources Humaines",
     opcoIdentifie: "ATLAS",
     statut: "client_actif",
+    // T18 — IDCC 1486 : Syntec / bureaux d'études (cohérent avec NAF 6201Z + OPCO ATLAS)
+    idcc: "1486",
   };
 
   // --- Devis -------------------------------------------------------------------
@@ -463,6 +505,30 @@ export function buildDemoData(): DemoData {
       "Réussite : proportion de stagiaires ayant obtenu un score ≥ 70 % à l'évaluation finale des acquis. " +
       "Complétion : proportion d'enrollments avec tauxPresencePct ≥ 80 %.",
     indicateursPubliesAt: new Date("2026-01-20T10:00:00.000Z"),
+    // ── T18 — Certification RS (France Compétences) ──────────────────────────
+    // Numéros DEMO : ne correspondent à aucune certification réelle enregistrée.
+    certificationType: "rs",
+    codeRs: "RS6203-DEMO",
+    certificateurNom: "[DEMO] France Compétences — Certificateur partenaire",
+    numeroEnregistrementFc: "FC-DEMO-2026-RS6203",
+    estCertificateur: false,
+    numeroHabilitation: "HAB-DEMO-AXION-IA-RS6203-001",
+    dateEnregistrementCertif: new Date("2024-09-01T00:00:00.000Z"),
+    dateEcheanceCertif: new Date("2028-08-31T23:59:59.000Z"),
+    blocsCompetences: [
+      {
+        code: "BC-DEMO-01",
+        libelle:
+          "[DEMO] Bloc 1 — Identifier et qualifier des cas d'usage IA en contexte professionnel",
+      },
+      {
+        code: "BC-DEMO-02",
+        libelle: "[DEMO] Bloc 2 — Concevoir et évaluer des prompts adaptés à des tâches métier",
+      },
+    ],
+    // edofVerifieAt non null + codeRs renseigné + certificationType=rs → computeCpfEligible = true
+    edofVerifieAt: new Date("2026-01-15T10:00:00.000Z"),
+    cpfEligible: true,
   };
 
   // --- Session -----------------------------------------------------------------
@@ -480,6 +546,17 @@ export function buildDemoData(): DemoData {
     nbParticipantsPrevus: 8,
     nbParticipantsReels: 2,
     statut: "realisee",
+    // ── T18 — Barème OPCO PAR DOSSIER (ATLAS · convention Syntec IDCC 1486) ──
+    // Source DEMO : portail ATLAS « Numérique & Formation » — relevé fictif.
+    priseEnChargeMontantCents: 3500, // 35,00 €/h/stagiaire
+    priseEnChargeUnite: "euro_heure",
+    // 7 h × 2 stagiaires × 35 €/h = 490 € → plafond formation = 49 000 centimes
+    priseEnChargePlafondFormationCents: 49000,
+    // Plafond annuel individuel ATLAS Syntec (DEMO) : 3 500 € = 350 000 centimes
+    priseEnChargePlafondAnnuelCents: 350000,
+    priseEnChargeSourceUrl:
+      "https://demo.axion-ia.invalid/preuves/bareme-opco-atlas-syntec-idcc1486-2026-DEMO.pdf",
+    priseEnChargeReleveLe: new Date("2026-02-01T09:00:00.000Z"),
   };
 
   // --- Stagiaires --------------------------------------------------------------
@@ -1033,10 +1110,10 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     });
   }
 
-  // 2. Client
+  // 2. Client (T18 : idcc ajouté)
   const client = await prisma.client.upsert({
     where: { numero: data.client.numero },
-    update: {},
+    update: { idcc: data.client.idcc },
     create: {
       numero: data.client.numero,
       raisonSociale: data.client.raisonSociale,
@@ -1050,6 +1127,7 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       contactFonction: data.client.contactFonction,
       opcoIdentifie: data.client.opcoIdentifie,
       statut: data.client.statut,
+      idcc: data.client.idcc,
     },
   });
 
@@ -1070,13 +1148,25 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     },
   });
 
-  // 4. Formation (avec indicateurs publiés off.1/2 — T17)
+  // 4. Formation (avec indicateurs publiés off.1/2 — T17 + certification RS — T18)
   const formation = await prisma.formation.upsert({
     where: { numero: data.formation.numero },
     update: {
       indicateursPublies: data.formation.indicateursPublies,
       methodeCalculIndicateurs: data.formation.methodeCalculIndicateurs,
       indicateursPubliesAt: data.formation.indicateursPubliesAt,
+      // T18 — certification RS
+      certificationType: data.formation.certificationType,
+      codeRs: data.formation.codeRs,
+      certificateurNom: data.formation.certificateurNom,
+      numeroEnregistrementFc: data.formation.numeroEnregistrementFc,
+      estCertificateur: data.formation.estCertificateur,
+      numeroHabilitation: data.formation.numeroHabilitation,
+      dateEnregistrementCertif: data.formation.dateEnregistrementCertif,
+      dateEcheanceCertif: data.formation.dateEcheanceCertif,
+      blocsCompetences: data.formation.blocsCompetences,
+      edofVerifieAt: data.formation.edofVerifieAt,
+      cpfEligible: data.formation.cpfEligible,
     },
     create: {
       numero: data.formation.numero,
@@ -1100,6 +1190,18 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       indicateursPublies: data.formation.indicateursPublies,
       methodeCalculIndicateurs: data.formation.methodeCalculIndicateurs,
       indicateursPubliesAt: data.formation.indicateursPubliesAt,
+      // T18 — certification RS (France Compétences — numéros DEMO)
+      certificationType: data.formation.certificationType,
+      codeRs: data.formation.codeRs,
+      certificateurNom: data.formation.certificateurNom,
+      numeroEnregistrementFc: data.formation.numeroEnregistrementFc,
+      estCertificateur: data.formation.estCertificateur,
+      numeroHabilitation: data.formation.numeroHabilitation,
+      dateEnregistrementCertif: data.formation.dateEnregistrementCertif,
+      dateEcheanceCertif: data.formation.dateEcheanceCertif,
+      blocsCompetences: data.formation.blocsCompetences,
+      edofVerifieAt: data.formation.edofVerifieAt,
+      cpfEligible: data.formation.cpfEligible,
     },
   });
 
@@ -1123,11 +1225,18 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     },
   });
 
-  // 5. Session (avec coFormateurs — T17)
+  // 5. Session (avec coFormateurs — T17 + barème OPCO par dossier — T18)
   const session = await prisma.trainingSession.upsert({
     where: { numero: data.session.numero },
     update: {
       coFormateurs: [{ trainerId: trainer.id, role: "co_animateur", heuresAnimees: 3.5 }],
+      // T18 — barème PAR DOSSIER
+      priseEnChargeMontantCents: data.session.priseEnChargeMontantCents,
+      priseEnChargeUnite: data.session.priseEnChargeUnite,
+      priseEnChargePlafondFormationCents: data.session.priseEnChargePlafondFormationCents,
+      priseEnChargePlafondAnnuelCents: data.session.priseEnChargePlafondAnnuelCents,
+      priseEnChargeSourceUrl: data.session.priseEnChargeSourceUrl,
+      priseEnChargeReleveLe: data.session.priseEnChargeReleveLe,
     },
     create: {
       numero: data.session.numero,
@@ -1147,6 +1256,13 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       nbParticipantsReels: data.session.nbParticipantsReels,
       statut: data.session.statut,
       coFormateurs: [{ trainerId: trainer.id, role: "co_animateur", heuresAnimees: 3.5 }],
+      // T18 — barème OPCO PAR DOSSIER (portail ATLAS Syntec IDCC 1486 — DEMO)
+      priseEnChargeMontantCents: data.session.priseEnChargeMontantCents,
+      priseEnChargeUnite: data.session.priseEnChargeUnite,
+      priseEnChargePlafondFormationCents: data.session.priseEnChargePlafondFormationCents,
+      priseEnChargePlafondAnnuelCents: data.session.priseEnChargePlafondAnnuelCents,
+      priseEnChargeSourceUrl: data.session.priseEnChargeSourceUrl,
+      priseEnChargeReleveLe: data.session.priseEnChargeReleveLe,
     },
   });
 
@@ -1467,8 +1583,10 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
 
   console.log(
     "✅ [qualiopi:seed-demo] Cycle complet persité avec succès. " +
-      `Client=${DEMO.CLIENT} | Devis=${DEMO.DEVIS} | Formation=${DEMO.FORMATION} | ` +
-      `Session=${DEMO.SESSION} | Stagiaires=2 | Attestation=${DEMO.ATTESTATION} | ` +
+      `Client=${DEMO.CLIENT} (IDCC=${data.client.idcc}) | Devis=${DEMO.DEVIS} | ` +
+      `Formation=${DEMO.FORMATION} (Certification RS=${data.formation.codeRs} cpfEligible=${data.formation.cpfEligible}) | ` +
+      `Session=${DEMO.SESSION} (Barème dossier=${data.session.priseEnChargeMontantCents / 100}€/${data.session.priseEnChargeUnite}) | ` +
+      `Stagiaires=2 | Attestation=${DEMO.ATTESTATION} | ` +
       `Facture=${DEMO.FACTURE} | Réclamation=${DEMO.RECLAMATION} | ` +
       `Trainer=${DEMO.TRAINER_EMAIL} | SiteSettings=3 | BpfDepense=1 | Appréciations=4`,
   );

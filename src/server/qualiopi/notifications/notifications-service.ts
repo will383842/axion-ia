@@ -20,6 +20,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -45,6 +46,35 @@ function dateKey(d: Date): string {
   return d.toISOString().slice(0, 10).replace(/-/g, "");
 }
 
+/**
+ * Retourne un lien portail tokenisé pour le stagiaire.
+ *
+ * - Réutilise un accès non-révoqué et non-expiré si disponible (idempotent).
+ * - Sinon crée un nouvel accès (90 j) via creerAcces.
+ * - Fail-soft : si la création échoue, retombe sur la route directe /portail/mon-espace.
+ *
+ * Format retourné : `${baseUrl}/fr/portail/acces/${token}`
+ */
+async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promise<string> {
+  const fallback = `${baseUrl}/fr/portail/mon-espace`;
+  try {
+    // Recherche un accès valide existant (non-révoqué, non-expiré)
+    const acces = await prisma.portailAcces.findFirst({
+      where: {
+        traineeId,
+        revoked: false,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { expiresAt: "desc" },
+      select: { token: true },
+    });
+    const token = acces?.token ?? (await creerAcces(traineeId)).token;
+    return `${baseUrl}/fr/portail/acces/${token}`;
+  } catch {
+    return fallback;
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // envoyerConvocation
 // ─────────────────────────────────────────────────────────────────────────────
@@ -60,7 +90,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { email: true, nom: true, prenom: true } },
+      trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
           numero: true,
@@ -77,6 +107,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
 
   await enqueueEmail(
     "qualiopi-convocation",
@@ -90,7 +121,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
       lieu: "Voir convocation",
       modalite: session.modalite,
       numeroSession: session.numero,
-      lienPortail: `${baseUrl}/fr/espace-stagiaire`,
+      lienPortail,
     },
     { jobId: `qualiopi-convocation-${enrollmentId}` },
   );
@@ -120,7 +151,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
         where: { statut: { in: ["planifiee", "presente"] } },
         select: {
           id: true,
-          trainee: { select: { email: true, nom: true, prenom: true } },
+          trainee: { select: { id: true, email: true, nom: true, prenom: true } },
         },
       },
     },
@@ -134,6 +165,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
   for (const enrollment of session.enrollments) {
     const { trainee } = enrollment;
     try {
+      const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
       await enqueueEmail(
         "qualiopi-rappel-j7",
         trainee.email,
@@ -146,7 +178,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
           lieu: "Voir convocation",
           modalite: session.modalite,
           numeroSession: session.numero,
-          lienPortail: `${baseUrl}/fr/espace-stagiaire`,
+          lienPortail,
         },
         { jobId: `qualiopi-rappel-j7-${enrollment.id}-${dk}` },
       );
@@ -175,7 +207,7 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { email: true, nom: true, prenom: true } },
+      trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
           numero: true,
@@ -190,8 +222,8 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  // Lien vers le questionnaire de satisfaction stagiaire (portail)
-  const lienQuestionnaire = `${baseUrl}/fr/espace-stagiaire/satisfaction?session=${enrollment.session.numero}`;
+  // Le stagiaire arrive authentifié dans mon-espace où le questionnaire est listé.
+  const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
   const dk = dateKey(session.dateFin);
 
   await enqueueEmail(
@@ -224,7 +256,7 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
     where: { id: enrollmentId },
     select: {
       id: true,
-      trainee: { select: { email: true, nom: true, prenom: true } },
+      trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
           numero: true,
@@ -240,6 +272,7 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const dk = dateKey(session.dateFin);
+  const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
 
   await enqueueEmail(
     "qualiopi-suivi-j30",
@@ -249,7 +282,7 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
       stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
       titreFormation: session.titreSession,
       dateFinFormation: fmtDate(session.dateFin),
-      lienPortail: `${baseUrl}/fr/espace-stagiaire`,
+      lienPortail,
       numeroSession: session.numero,
     },
     { jobId: `qualiopi-suivi-j30-${enrollmentId}-${dk}` },
@@ -272,7 +305,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     select: {
       id: true,
       attestationResultat: true,
-      trainee: { select: { email: true, nom: true, prenom: true } },
+      trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
           numero: true,
@@ -286,6 +319,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
 
   // Détermine le libellé du document selon le résultat d'attestation
   // Enum AttestationResultat : complete | partielle | aucune
@@ -304,7 +338,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
       stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
       titreFormation: session.titreSession,
       typeDocument,
-      lienPortail: `${baseUrl}/fr/espace-stagiaire`,
+      lienPortail,
       numeroSession: session.numero,
     },
     { jobId: `qualiopi-attestation-disponible-${enrollmentId}` },

@@ -327,4 +327,55 @@ describe("evaluerConformite", () => {
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
   });
+
+  // ── off.3/7/16 : formations certifiantes (branche cert couvert) ──────────
+
+  it("off.3/7/16 couvert si ≥1 formation certifiante avec code RS/RNCP + évaluations finales", async () => {
+    // typesAction inclut "certifiante" → cert applicable ; findMany retourne
+    // d'abord les typesActionQualiopi (1er appel) puis les formations certifiantes
+    // (2e appel) avec code RNCP + blocs de compétences.
+    mockP.formation.count.mockResolvedValue(2);
+    mockP.formation.findMany
+      .mockResolvedValueOnce([{ typesActionQualiopi: ["certifiante"] }])
+      .mockResolvedValueOnce([
+        {
+          certificationType: "rncp",
+          codeRncp: "RNCP37274",
+          codeRs: null,
+          blocsCompetences: [{ code: "BC1", libelle: "x" }],
+        },
+      ]);
+    // évaluations initiales + finales présentes (count appelé pour les deux types)
+    mockP.evaluationAcquis.count.mockResolvedValue(4);
+
+    const result = await evaluerConformite();
+    const ind3 = result.indicateurs.find((i) => i.numero === 3);
+    const ind7 = result.indicateurs.find((i) => i.numero === 7);
+    const ind16 = result.indicateurs.find((i) => i.numero === 16);
+    expect(ind3?.statut, "off.3 doit être couvert").toBe("couvert");
+    expect(ind7?.statut, "off.7 doit être couvert").toBe("couvert");
+    expect(ind16?.statut, "off.16 doit être couvert").toBe("couvert");
+  });
+
+  // ── off.13/14/15/28 (APP/AFEST) : a_completer si applicable, non muet ────
+
+  it("off.13/14/15/28 a_completer avec preuve explicite si alternance_afest déclaré", async () => {
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
+    const result = await evaluerConformite();
+    for (const numero of [13, 14, 15, 28]) {
+      const ind = result.indicateurs.find((i) => i.numero === numero);
+      expect(ind?.statut, `off.${numero} doit être a_completer`).toBe("a_completer");
+      expect(ind?.preuves.join(" "), `off.${numero} doit porter une preuve explicite`).toMatch(
+        /à compléter manuellement/i,
+      );
+    }
+  });
+
+  it("off.28 (AFEST) non_applicable et sans preuve pour une action classique", async () => {
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
+    const result = await evaluerConformite();
+    const ind28 = result.indicateurs.find((i) => i.numero === 28);
+    expect(ind28?.statut).toBe("non_applicable");
+    expect(ind28?.preuves).toHaveLength(0);
+  });
 });

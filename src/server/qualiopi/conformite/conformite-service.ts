@@ -147,9 +147,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const typesAction = typesActionResult;
   // off.3/7/16 : formations avec ≥1 code RS ou RNCP renseigné
   const nbFormationsCertifiantes = formationsCertifiantesResult.length;
-  const applicablesNums = indicateursApplicables(
-    typesAction.length > 0 ? typesAction : ["classique"],
-  );
+  const typesActionEffectifs = typesAction.length > 0 ? typesAction : ["classique"];
+  const applicablesNums = indicateursApplicables(typesActionEffectifs);
+  // off.13/14/15/28 (APP/AFEST) : applicables seulement si l'OF déclare
+  //   l'alternance/AFEST. Quand applicables, on ne peut pas les déduire d'un
+  //   artefact logiciel en V1 → a_completer avec preuve explicite (pas un
+  //   `couvert=false` muet et trompeur). Quand non applicables, l'assemblage
+  //   final les passe en non_applicable via applicablesNums.
+  const appAfestApplicable = typesActionEffectifs.includes("alternance_afest");
 
   // ── Table de preuves par indicateur ────────────────────────────────────────
   // Chaque entrée : { preuves[], couvert }
@@ -236,9 +241,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     nbSessionsRealisees > 0 && nbDocuments > 0,
   );
-  set(13, [], false); // APP conditionnel
-  set(14, [], false); // APP conditionnel
-  set(15, [], false); // APP conditionnel
+  // off.13/14/15 (APP) : conditionnels apprentissage. Si applicables (OF déclare
+  //   alternance_afest), on ne peut pas les automatiser en V1 → a_completer avec
+  //   preuve explicite. Si non applicables, l'assemblage les passe en
+  //   non_applicable (preuves ignorées).
+  const preuveAppAfest = ["Indicateur APP/AFEST à compléter manuellement (hors automatisation V1)"];
+  set(13, appAfestApplicable ? preuveAppAfest : [], false); // APP conditionnel
+  set(14, appAfestApplicable ? preuveAppAfest : [], false); // APP conditionnel
+  set(15, appAfestApplicable ? preuveAppAfest : [], false); // APP conditionnel
   // off.16 : présentation à la certification — couvert si ≥1 formation certifiante
   //          avec code RS/RNCP (la présentation implique un code enregistré)
   set(
@@ -295,7 +305,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbPartenariats > 0 && referentHandicapNom.trim().length > 0,
   );
   set(27, [`${nbSousTraitants} sous-traitant(s) référencé(s)`], nbSousTraitants > 0);
-  set(28, [], false); // AFEST conditionnel
+  set(28, appAfestApplicable ? preuveAppAfest : [], false); // AFEST conditionnel
   set(29, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
 
   // Critère 7

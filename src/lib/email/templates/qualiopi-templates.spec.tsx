@@ -9,6 +9,8 @@ import { describe, it, expect } from "vitest";
 import { renderEmailTemplate } from "./index";
 
 // Payloads minimaux par template
+const FAKE_TOKEN = "a".repeat(64);
+
 const PAYLOADS: Record<string, Record<string, unknown>> = {
   "qualiopi-convocation": {
     stagiairePrenomNom: "Jean Dupont",
@@ -18,7 +20,7 @@ const PAYLOADS: Record<string, Record<string, unknown>> = {
     lieu: "Paris",
     modalite: "presentiel",
     numeroSession: "AXI-SESS-2026-001",
-    lienPortail: "https://axion-ia.com/fr/espace-stagiaire",
+    lienPortail: `https://axion-ia.com/fr/portail/acces/${FAKE_TOKEN}`,
   },
   "qualiopi-rappel-j7": {
     stagiairePrenomNom: "Marie Martin",
@@ -28,27 +30,27 @@ const PAYLOADS: Record<string, Record<string, unknown>> = {
     lieu: "Lyon",
     modalite: "distanciel",
     numeroSession: "AXI-SESS-2026-002",
+    lienPortail: `https://axion-ia.com/fr/portail/acces/${FAKE_TOKEN}`,
   },
   "qualiopi-satisfaction-j1": {
     stagiairePrenomNom: "Paul Durand",
     titreFormation: "Automatisation IA",
     dateFinFormation: "10/09/2026",
-    lienQuestionnaire:
-      "https://axion-ia.com/fr/espace-stagiaire/satisfaction?session=AXI-SESS-2026-003",
+    lienQuestionnaire: `https://axion-ia.com/fr/portail/acces/${FAKE_TOKEN}`,
     numeroSession: "AXI-SESS-2026-003",
   },
   "qualiopi-suivi-j30": {
     stagiairePrenomNom: "Sophie Bernard",
     titreFormation: "IA pour RH",
     dateFinFormation: "05/08/2026",
-    lienPortail: "https://axion-ia.com/fr/espace-stagiaire",
+    lienPortail: `https://axion-ia.com/fr/portail/acces/${FAKE_TOKEN}`,
     numeroSession: "AXI-SESS-2026-004",
   },
   "qualiopi-attestation-disponible": {
     stagiairePrenomNom: "Luc Moreau",
     titreFormation: "IA pour Dirigeants",
     typeDocument: "attestation de formation",
-    lienPortail: "https://axion-ia.com/fr/espace-stagiaire",
+    lienPortail: `https://axion-ia.com/fr/portail/acces/${FAKE_TOKEN}`,
     numeroSession: "AXI-SESS-2026-005",
   },
   "qualiopi-alerte-interne": {
@@ -103,5 +105,40 @@ describe("Qualiopi email templates — subject contient le nom de formation", ()
       PAYLOADS["qualiopi-alerte-interne"] ?? {},
     );
     expect(result.subject).toContain("[CRITIQUE]");
+  });
+});
+
+describe("Qualiopi email templates — liens portail tokenisés", () => {
+  const PORTAIL_TEMPLATES = [
+    "qualiopi-convocation",
+    "qualiopi-rappel-j7",
+    "qualiopi-suivi-j30",
+    "qualiopi-attestation-disponible",
+  ] as const;
+
+  for (const name of PORTAIL_TEMPLATES) {
+    it(`${name} : lien contient /portail/acces/ (pas /espace-stagiaire)`, async () => {
+      const result = await renderEmailTemplate(name, "fr", PAYLOADS[name] ?? {});
+      expect(result.html).toContain("/portail/acces/");
+      expect(result.html).not.toContain("/espace-stagiaire");
+    });
+  }
+
+  it("qualiopi-satisfaction-j1 : lienQuestionnaire contient /portail/acces/ (pas /espace-stagiaire)", async () => {
+    const result = await renderEmailTemplate(
+      "qualiopi-satisfaction-j1",
+      "fr",
+      PAYLOADS["qualiopi-satisfaction-j1"] ?? {},
+    );
+    expect(result.html).toContain("/portail/acces/");
+    expect(result.html).not.toContain("/espace-stagiaire");
+  });
+
+  it("fallback qualiopi-convocation sans lienPortail → /portail/mon-espace (pas /espace-stagiaire)", async () => {
+    const payloadSansLien = { ...PAYLOADS["qualiopi-convocation"] };
+    delete payloadSansLien["lienPortail"];
+    const result = await renderEmailTemplate("qualiopi-convocation", "fr", payloadSansLien);
+    expect(result.html).toContain("/portail/mon-espace");
+    expect(result.html).not.toContain("/espace-stagiaire");
   });
 });

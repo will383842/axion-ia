@@ -311,4 +311,96 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
     expect(data.siteSettings).toHaveLength(3);
     expect(data.bpfDepense).toBeTruthy();
   });
+
+  // ── T18 — Client IDCC (convention collective Syntec) ─────────────────────
+
+  it("T18 : client démo possède un idcc cohérent avec NAF 6201Z (Syntec 1486)", () => {
+    expect(data.client.idcc).toBeTruthy();
+    expect(data.client.idcc).toBe("1486");
+  });
+
+  // ── T18 — Formation certifiante RS + cpfEligible ─────────────────────────
+
+  it("T18 : formation certifiante de type RS avec codeRs marqué DEMO", () => {
+    expect(data.formation.certificationType).toBe("rs");
+    expect(data.formation.codeRs).toBeTruthy();
+    expect(data.formation.codeRs).toMatch(/DEMO/);
+  });
+
+  it("T18 : certificateur renseigné, numéros DEMO, estCertificateur=false", () => {
+    expect(data.formation.certificateurNom).toContain("[DEMO]");
+    expect(data.formation.numeroEnregistrementFc).toMatch(/DEMO/);
+    expect(data.formation.estCertificateur).toBe(false);
+    expect(data.formation.numeroHabilitation).toMatch(/DEMO/);
+  });
+
+  it("T18 : dates certification cohérentes (enregistrement passé, échéance future)", () => {
+    expect(data.formation.dateEnregistrementCertif).toBeInstanceOf(Date);
+    expect(data.formation.dateEcheanceCertif).toBeInstanceOf(Date);
+    expect(data.formation.dateEcheanceCertif.getTime()).toBeGreaterThan(Date.now());
+    expect(data.formation.dateEnregistrementCertif.getTime()).toBeLessThan(Date.now());
+  });
+
+  it("T18 : blocsCompetences ≥ 2 avec code et libelle [DEMO]", () => {
+    const blocs = data.formation.blocsCompetences;
+    expect(blocs.length).toBeGreaterThanOrEqual(2);
+    for (const b of blocs) {
+      expect(b.code).toBeTruthy();
+      expect(b.libelle).toContain("[DEMO]");
+    }
+  });
+
+  it("T18 : edofVerifieAt non null → computeCpfEligible = true → cpfEligible = true", () => {
+    // Vérifie les 3 conditions cumulatives de computeCpfEligible
+    // (certification-service.ts — logique pure inline, sans importer le module
+    //  pour ne pas déclencher l'import @/lib/prisma dans ce test pur).
+    const f = {
+      certificationType: data.formation.certificationType,
+      codeRncp: null as string | null,
+      codeRs: data.formation.codeRs,
+      blocsCompetences: data.formation.blocsCompetences,
+      edofVerifieAt: data.formation.edofVerifieAt,
+    };
+
+    // Condition 1 : certificationType !== "aucune"
+    expect(f.certificationType).not.toBe("aucune");
+    // Condition 2 : codeRs non vide
+    expect(f.codeRs.trim()).not.toBe("");
+    // Condition 3 : edofVerifieAt non null
+    expect(f.edofVerifieAt).toBeInstanceOf(Date);
+
+    // Champ calculé persisté
+    expect(data.formation.cpfEligible).toBe(true);
+  });
+
+  // ── T18 — Session barème OPCO PAR DOSSIER ────────────────────────────────
+
+  it("T18 : session avec barème OPCO par dossier (priseEnChargeMontantCents > 0)", () => {
+    expect(data.session.priseEnChargeMontantCents).toBeGreaterThan(0);
+    expect(data.session.priseEnChargeUnite).toBe("euro_heure");
+  });
+
+  it("T18 : plafonds formation et annuel renseignés (centimes > 0)", () => {
+    expect(data.session.priseEnChargePlafondFormationCents).toBeGreaterThan(0);
+    expect(data.session.priseEnChargePlafondAnnuelCents).toBeGreaterThan(0);
+    // Plafond annuel doit être >= plafond formation
+    expect(data.session.priseEnChargePlafondAnnuelCents).toBeGreaterThanOrEqual(
+      data.session.priseEnChargePlafondFormationCents,
+    );
+  });
+
+  it("T18 : source URL et date de relevé barème renseignées (traçabilité dossier OPCO)", () => {
+    expect(data.session.priseEnChargeSourceUrl).toBeTruthy();
+    expect(data.session.priseEnChargeSourceUrl).toMatch(/demo\.axion-ia\.invalid/);
+    expect(data.session.priseEnChargeReleveLe).toBeInstanceOf(Date);
+  });
+
+  it("T18 : cohérence barème — montant × duree × participants ≤ plafond formation", () => {
+    // 35 €/h × 7 h × 2 stagiaires = 490 € = 49 000 centimes ≤ plafondFormation
+    const calcul =
+      data.session.priseEnChargeMontantCents *
+      data.session.dureeReelleHeures *
+      data.session.nbParticipantsReels;
+    expect(calcul).toBeLessThanOrEqual(data.session.priseEnChargePlafondFormationCents);
+  });
 });

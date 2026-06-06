@@ -27,6 +27,7 @@ import {
   writeSessionTransition,
   type WriteSessionTransitionInput,
 } from "@/server/qualiopi/formations/transition-helper";
+import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 
 // Ré-export pour la rétrocompatibilité des éventuels callers externes.
 export type { WriteSessionTransitionInput };
@@ -211,6 +212,25 @@ export async function transitionSessionAction(input: {
 
   const fromStatus = currentSession.statut;
   const toStatus = v.toStatus as TrainingSessionStatut;
+
+  // Garde financement : si la cible est en_cours, vérifier les validations bloquantes.
+  if (toStatus === "en_cours") {
+    let financementEntries: Awaited<ReturnType<typeof getFinancementValidations>>;
+    try {
+      financementEntries = await getFinancementValidations(v.id);
+    } catch {
+      financementEntries = [];
+    }
+    const critiques = financementEntries.filter(
+      (e) => e.result.ok === false && e.result.gravite === "critique",
+    );
+    if (critiques.length > 0) {
+      const messages = critiques.map((e) => e.result.alerte ?? e.code).join(" | ");
+      return {
+        error: `Démarrage bloqué : ${messages} (accord OPCO/EDOF/France Travail requis).`,
+      };
+    }
+  }
 
   // Valider la transition (lève si interdite)
   try {

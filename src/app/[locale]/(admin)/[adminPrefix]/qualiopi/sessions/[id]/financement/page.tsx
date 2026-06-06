@@ -23,6 +23,7 @@ import { SetFinancementForm } from "@/components/admin/qualiopi/SetFinancementFo
 import { PriseEnChargeForm } from "@/components/admin/qualiopi/PriseEnChargeForm";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { prisma } from "@/lib/prisma";
+import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -77,86 +78,6 @@ const DESTINATAIRE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers de validation (affichage côté serveur, champs bruts)
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface Alerte {
-  gravite: "critique" | "warning";
-  message: string;
-}
-
-function detecterAlertes(session: {
-  financementType: string | null;
-  opcoStatut: string;
-  opcoSubrogation: boolean;
-  numeroDossierOpco: string | null;
-  edofVerifieAt: Date | null;
-  ftDispositif: string | null;
-  ftAifPrescriptionDate: Date | null;
-  ftPoeiAccordFinancementAt: Date | null;
-  ftPoeiEngagementSigneAt: Date | null;
-  statut: string;
-}): Alerte[] {
-  const alertes: Alerte[] = [];
-  const ft = session.financementType;
-
-  // OPCO accord BLOQUANT
-  if (
-    (ft === "opco" || ft === "mixte") &&
-    session.opcoStatut !== "accord_recu" &&
-    session.opcoStatut !== "paiement_recu" &&
-    session.statut !== "realisee" &&
-    session.statut !== "annulee"
-  ) {
-    alertes.push({
-      gravite: "critique",
-      message:
-        "Accord OPCO non reçu — ne démarrez pas la session avant l'accord écrit (facturation bloquée).",
-    });
-  }
-
-  // Subrogation sans numéro de dossier
-  if (session.opcoSubrogation && !session.numeroDossierOpco) {
-    alertes.push({
-      gravite: "critique",
-      message:
-        "Subrogation OPCO activée sans numéro de dossier OPCO — mention obligatoire sur la facture.",
-    });
-  }
-
-  // CPF sans EDOF
-  if (ft === "cpf" && !session.edofVerifieAt) {
-    alertes.push({
-      gravite: "critique",
-      message:
-        "Financement CPF sans vérification EDOF — vérifiez le dossier EDOF avant de facturer.",
-    });
-  }
-
-  // France Travail AIF sans date de prescription
-  if (ft === "france_travail" && session.ftDispositif === "aif" && !session.ftAifPrescriptionDate) {
-    alertes.push({
-      gravite: "warning",
-      message: "Dispositif AIF : date de prescription France Travail non renseignée.",
-    });
-  }
-
-  // POEI sans accord financement
-  if (
-    ft === "france_travail" &&
-    session.ftDispositif === "poei" &&
-    (!session.ftPoeiAccordFinancementAt || !session.ftPoeiEngagementSigneAt)
-  ) {
-    alertes.push({
-      gravite: "warning",
-      message: "Dispositif POEI : accord de financement ou engagement signé manquant.",
-    });
-  }
-
-  return alertes;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -235,18 +156,15 @@ export default async function FinancementSessionPage({ params }: PageProps) {
 
   if (!trainingSession) notFound();
 
-  const alertes = detecterAlertes({
-    financementType: trainingSession.financementType,
-    opcoStatut: trainingSession.opcoStatut,
-    opcoSubrogation: trainingSession.opcoSubrogation,
-    numeroDossierOpco: trainingSession.numeroDossierOpco,
-    edofVerifieAt: trainingSession.edofVerifieAt,
-    ftDispositif: trainingSession.ftDispositif,
-    ftAifPrescriptionDate: trainingSession.ftAifPrescriptionDate,
-    ftPoeiAccordFinancementAt: trainingSession.ftPoeiAccordFinancementAt,
-    ftPoeiEngagementSigneAt: trainingSession.ftPoeiEngagementSigneAt,
-    statut: trainingSession.statut,
-  });
+  // Source unique de vérité : couvre OPCO, CPF/EDOF, CPF éligibilité, POEI 3 preuves.
+  const financementValidations = await getFinancementValidations(trainingSession.id);
+  // Ne garder que les entrées en échec pour l'affichage des alertes.
+  const alertes = financementValidations
+    .filter((e) => e.result.ok === false)
+    .map((e) => ({
+      gravite: e.result.gravite ?? ("warning" as const),
+      message: e.result.alerte ?? e.code,
+    }));
 
   const defaultDestinataire = defaultDestinataireForType(
     trainingSession.financementType,

@@ -24,7 +24,19 @@ vi.mock("@/lib/prisma", () => ({
     alerteSysteme: {
       findUnique: vi.fn(),
     },
+    portailAcces: {
+      findFirst: vi.fn(),
+    },
   },
+}));
+
+// Mock portail-service.creerAcces (fall-through quand portailAcces.findFirst retourne null)
+vi.mock("@/server/qualiopi/portail/portail-service", () => ({
+  creerAcces: vi.fn().mockResolvedValue({
+    id: "acces-uuid-1",
+    token: "b".repeat(64),
+    expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+  }),
 }));
 
 vi.mock("@/server/queue/queues", () => ({
@@ -37,6 +49,7 @@ vi.mock("@/server/queue/queues", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import {
   envoyerConvocation,
   envoyerRappelJ7,
@@ -53,8 +66,10 @@ const mockPrisma = prisma as unknown as {
     findMany: ReturnType<typeof vi.fn>;
   };
   alerteSysteme: { findUnique: ReturnType<typeof vi.fn> };
+  portailAcces: { findFirst: ReturnType<typeof vi.fn> };
 };
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
+const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Fixtures
@@ -64,9 +79,12 @@ const ENROLLMENT_ID = "enr-uuid-1";
 const SESSION_ID = "sess-uuid-1";
 const ALERTE_ID = "alerte-uuid-1";
 
+const TRAINEE_ID = "trainee-uuid-1";
+const FAKE_TOKEN = "a".repeat(64);
+
 const fakeEnrollmentBase = {
   id: ENROLLMENT_ID,
-  trainee: { email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
+  trainee: { id: TRAINEE_ID, email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
   session: {
     numero: "AXI-SESS-2026-001",
     titreSession: "Formation IA",
@@ -86,11 +104,11 @@ const fakeSessionWithEnrollments = {
   enrollments: [
     {
       id: ENROLLMENT_ID,
-      trainee: { email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
+      trainee: { id: TRAINEE_ID, email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
     },
     {
       id: "enr-uuid-2",
-      trainee: { email: "marie@example.com", nom: "Martin", prenom: "Marie" },
+      trainee: { id: "trainee-uuid-2", email: "marie@example.com", nom: "Martin", prenom: "Marie" },
     },
   ],
 };
@@ -111,7 +129,11 @@ const fakeAlerte = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("envoyerConvocation", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // Par défaut : accès portail existant (idempotent)
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+  });
 
   it("enqueue le bon template avec jobId stable", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
@@ -123,6 +145,25 @@ describe("envoyerConvocation", () => {
     expect(call[2]).toBe("fr");
     expect((call[3] as Record<string, unknown>)["stagiairePrenomNom"]).toBe("Jean Dupont");
     expect((call[4] as { jobId?: string }).jobId).toBe(`qualiopi-convocation-${ENROLLMENT_ID}`);
+  });
+
+  it("lienPortail contient /portail/acces/ (pas /espace-stagiaire)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerConvocation(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lienPortail = (call[3] as Record<string, unknown>)["lienPortail"] as string;
+    expect(lienPortail).toContain("/portail/acces/");
+    expect(lienPortail).not.toContain("/espace-stagiaire");
+  });
+
+  it("lienPortail utilise creerAcces en fail-soft si findFirst retourne null", async () => {
+    mockPrisma.portailAcces.findFirst.mockResolvedValue(null);
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerConvocation(ENROLLMENT_ID);
+    expect(mockCreerAcces).toHaveBeenCalledWith(TRAINEE_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lienPortail = (call[3] as Record<string, unknown>)["lienPortail"] as string;
+    expect(lienPortail).toContain("/portail/acces/");
   });
 
   it("early-exit si enrollment introuvable", async () => {
@@ -137,7 +178,10 @@ describe("envoyerConvocation", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("envoyerRappelJ7", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+  });
 
   it("enqueue 1 email par enrollment (2 au total)", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
@@ -146,6 +190,15 @@ describe("envoyerRappelJ7", () => {
     const firstCall = mockEnqueueEmail.mock.calls[0] as unknown[];
     expect(firstCall[0]).toBe("qualiopi-rappel-j7");
     expect(firstCall[2]).toBe("fr");
+  });
+
+  it("lienPortail contient /portail/acces/ (pas /espace-stagiaire)", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lienPortail = (call[3] as Record<string, unknown>)["lienPortail"] as string;
+    expect(lienPortail).toContain("/portail/acces/");
+    expect(lienPortail).not.toContain("/espace-stagiaire");
   });
 
   it("early-exit si session introuvable", async () => {
@@ -169,15 +222,20 @@ describe("envoyerRappelJ7", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("envoyerSatisfactionJ1", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+  });
 
-  it("enqueue qualiopi-satisfaction-j1 avec lienQuestionnaire", async () => {
+  it("enqueue qualiopi-satisfaction-j1 avec lienQuestionnaire tokenisé", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
     await envoyerSatisfactionJ1(ENROLLMENT_ID);
     expect(mockEnqueueEmail).toHaveBeenCalledOnce();
     const call = mockEnqueueEmail.mock.calls[0] as unknown[];
     expect(call[0]).toBe("qualiopi-satisfaction-j1");
-    expect((call[3] as { lienQuestionnaire?: string }).lienQuestionnaire).toContain("satisfaction");
+    const lienQuestionnaire = (call[3] as { lienQuestionnaire?: string }).lienQuestionnaire;
+    expect(lienQuestionnaire).toContain("/portail/acces/");
+    expect(lienQuestionnaire).not.toContain("/espace-stagiaire");
   });
 
   it("early-exit si enrollment introuvable", async () => {
@@ -192,7 +250,10 @@ describe("envoyerSatisfactionJ1", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("envoyerSuiviJ30", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+  });
 
   it("enqueue qualiopi-suivi-j30", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
@@ -201,6 +262,15 @@ describe("envoyerSuiviJ30", () => {
     const call = mockEnqueueEmail.mock.calls[0] as unknown[];
     expect(call[0]).toBe("qualiopi-suivi-j30");
   });
+
+  it("lienPortail contient /portail/acces/ (pas /espace-stagiaire)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerSuiviJ30(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lienPortail = (call[3] as Record<string, unknown>)["lienPortail"] as string;
+    expect(lienPortail).toContain("/portail/acces/");
+    expect(lienPortail).not.toContain("/espace-stagiaire");
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -208,7 +278,10 @@ describe("envoyerSuiviJ30", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("envoyerAttestationDisponible", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+  });
 
   it("libellé 'attestation de formation' quand attestationResultat = 'complete'", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue({
@@ -239,6 +312,18 @@ describe("envoyerAttestationDisponible", () => {
     const call = mockEnqueueEmail.mock.calls[0] as unknown[];
     const options = call[4] as { jobId?: string };
     expect(options.jobId).toBe(`qualiopi-attestation-disponible-${ENROLLMENT_ID}`);
+  });
+
+  it("lienPortail contient /portail/acces/ (pas /espace-stagiaire)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      attestationResultat: "complete",
+    });
+    await envoyerAttestationDisponible(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lienPortail = (call[3] as Record<string, unknown>)["lienPortail"] as string;
+    expect(lienPortail).toContain("/portail/acces/");
+    expect(lienPortail).not.toContain("/espace-stagiaire");
   });
 });
 

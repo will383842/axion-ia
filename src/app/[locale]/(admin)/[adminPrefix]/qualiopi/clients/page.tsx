@@ -12,6 +12,7 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
 
 export const dynamic = "force-dynamic";
@@ -79,9 +80,9 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
         <AdminStatCard label="Clients actifs" value={actifs} tone="success" />
       </div>
 
-      {/* Note : création/modification d'un client via createClientAction / updateClientAction
-          (src/server/actions/qualiopi/clients.ts). Les champs IDCC et Taille sont saisissables
-          dans ces actions — un formulaire dédié est à intégrer ici (CreateClientForm) si nécessaire. */}
+      {/* Note : création d'un client via createClientAction (src/server/actions/qualiopi/clients.ts).
+          L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
+          via ClientBrancheForm → updateClientAction. */}
       {clients.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
           Aucun client enregistré. Créez votre premier client depuis l&apos;action CRM.
@@ -99,6 +100,7 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                 <th className={headCls}>Taille</th>
                 <th className={headCls}>OPCO inféré</th>
                 <th className={headCls}>Statut</th>
+                <th className={headCls}>Édition branche</th>
               </tr>
             </thead>
             <tbody>
@@ -175,6 +177,9 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                         {STATUT_LABELS[client.statut] ?? client.statut}
                       </span>
                     )}
+                  </td>
+                  <td className={cellCls}>
+                    <ClientBrancheForm id={client.id} idcc={client.idcc} taille={client.taille} />
                   </td>
                 </tr>
               ))}

@@ -30,6 +30,7 @@ import {
   decideSessionTransitions,
   type SessionCronSnapshot,
 } from "@/server/qualiopi/formations/crons";
+import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
@@ -127,6 +128,29 @@ async function handleDateDebut(): Promise<void> {
   let applied = 0;
   for (const decision of decisions) {
     try {
+      // Garde financement : ne pas passer en_cours si des validations critiques existent.
+      // Fail-soft : en cas d'erreur de lecture, on skippe (pas de transition silencieuse).
+      let financementEntries: Awaited<ReturnType<typeof getFinancementValidations>> = [];
+      try {
+        financementEntries = await getFinancementValidations(decision.sessionId);
+      } catch (fetchErr) {
+        console.error(
+          `[formation-crons] date-debut: impossible de vérifier le financement session ${decision.sessionId}, skip:`,
+          fetchErr instanceof Error ? fetchErr.message : String(fetchErr),
+        );
+        continue;
+      }
+      const critiques = financementEntries.filter(
+        (e) => e.result.ok === false && e.result.gravite === "critique",
+      );
+      if (critiques.length > 0) {
+        const messages = critiques.map((e) => e.result.alerte ?? e.code).join(" | ");
+        console.warn(
+          `[formation-crons] date-debut: session ${decision.sessionId} maintenue planifiee — alerte(s) financement critique(s) : ${messages}`,
+        );
+        continue;
+      }
+
       // assertSessionTransition lève si la machine d'états l'interdit.
       assertSessionTransition(decision.from, decision.to);
 
