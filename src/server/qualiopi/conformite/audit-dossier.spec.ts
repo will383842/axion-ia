@@ -1,9 +1,10 @@
 /**
  * Tests — audit-dossier.ts (T12 — AGENT B, T17 — CLUSTER 2).
  *
- * Stratégie : mock @/lib/prisma + ./conformite-service + site-settings.
+ * Stratégie : mock @/lib/prisma + ./conformite-service + site-settings + r2-storage.
  * Vérifie la structure du manifeste JSON, le contenu Markdown,
  * le comportement stub.invalid, et les preuves enrichies off.21/26/30.
+ * Vérifie également genererDossierAuditZip (ZIP manifeste + PDFs).
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -16,11 +17,16 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: {
       groupBy: vi.fn(),
+      findMany: vi.fn(),
     },
     veille: { count: vi.fn() },
     appreciation: { count: vi.fn() },
     trainer: { findMany: vi.fn() },
   },
+}));
+
+vi.mock("@/lib/r2-storage", () => ({
+  getObjectBufferR2: vi.fn(),
 }));
 
 vi.mock("./conformite-service", () => ({
@@ -34,17 +40,20 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
-import { genererManifesteAudit } from "./audit-dossier";
+import { getObjectBufferR2 } from "@/lib/r2-storage";
+import { genererManifesteAudit, genererDossierAuditZip } from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
+import JSZip from "jszip";
 
 const mockPrisma = prisma as unknown as {
-  documentGenere: { groupBy: ReturnType<typeof vi.fn> };
+  documentGenere: { groupBy: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   veille: { count: ReturnType<typeof vi.fn> };
   appreciation: { count: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
 };
 const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+const mockGetObjectBufferR2 = getObjectBufferR2 as ReturnType<typeof vi.fn>;
 
 // Résultat de conformité simulé avec 32 indicateurs
 function makeConformiteResult(
@@ -75,10 +84,12 @@ describe("genererManifesteAudit", () => {
     vi.clearAllMocks();
     mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
     mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
     mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
   });
 
   it("retourne un objet { json, markdown }", async () => {
@@ -252,5 +263,125 @@ describe("genererManifesteAudit", () => {
     expect(ind23?.preuves.join(" ")).toContain("3");
     expect(ind24?.preuves.join(" ")).toContain("2");
     expect(ind25?.preuves.join(" ")).toContain("1");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// genererDossierAuditZip
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("genererDossierAuditZip", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+  });
+
+  it("retourne { base64, filename } avec filename horodaté", async () => {
+    const result = await genererDossierAuditZip();
+    expect(result).toHaveProperty("base64");
+    expect(result).toHaveProperty("filename");
+    expect(result.filename).toMatch(/^dossier-audit-qualiopi-\d{4}-\d{2}-\d{2}$/);
+    expect(typeof result.base64).toBe("string");
+    expect(result.base64.length).toBeGreaterThan(0);
+  });
+
+  it("le ZIP contient manifeste.json et manifeste.md", async () => {
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.files["manifeste.json"]).toBeDefined();
+    expect(zip.files["manifeste.md"]).toBeDefined();
+  });
+
+  it("manifeste.json dans le ZIP est un JSON valide avec meta.version = 'RNQ-V9'", async () => {
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const jsonStr = await zip.files["manifeste.json"]!.async("string");
+    const parsed = JSON.parse(jsonStr) as { meta?: { version?: string } };
+    expect(parsed?.meta?.version).toBe("RNQ-V9");
+  });
+
+  it("manifeste.md dans le ZIP contient le titre du manifeste", async () => {
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const md = await zip.files["manifeste.md"]!.async("string");
+    expect(md).toMatch(/# Manifeste d'audit Qualiopi/);
+  });
+
+  it("un PDF disponible dans R2 est inclus sous preuves/<type>/<numero>.pdf", async () => {
+    const fakePdf = Buffer.from("%PDF-1.4 fake content");
+    mockGetObjectBufferR2.mockResolvedValue(fakePdf);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "doc-1",
+        type: "attestation",
+        numero: "AXI-ATT-2026-001",
+        createdAt: new Date("2026-03-15T10:00:00Z"),
+      },
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.files["preuves/attestation/AXI-ATT-2026-001.pdf"]).toBeDefined();
+  });
+
+  it("un PDF absent dans R2 est omis (fail-soft) — le ZIP reste valide", async () => {
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "doc-2",
+        type: "convention",
+        numero: "AXI-CONV-2026-001",
+        createdAt: new Date("2026-04-01T08:00:00Z"),
+      },
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    // Le PDF manquant ne doit PAS être dans le ZIP
+    expect(zip.files["preuves/convention/AXI-CONV-2026-001.pdf"]).toBeUndefined();
+    // Mais le manifeste et l'index doivent être présents
+    expect(zip.files["manifeste.json"]).toBeDefined();
+    expect(zip.files["index.txt"]).toBeDefined();
+  });
+
+  it("index.txt mentionne les PDF omis", async () => {
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "doc-3",
+        type: "emargement",
+        numero: "AXI-EMAR-2026-007",
+        createdAt: new Date("2026-05-10T09:00:00Z"),
+      },
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toContain("[OMIS]");
+    expect(index).toContain("AXI-EMAR-2026-007");
+  });
+
+  it("en mode stub.invalid retourne un ZIP minimal avec manifeste.json + manifeste.md", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const result = await genererDossierAuditZip();
+      const zip = await JSZip.loadAsync(result.base64, { base64: true });
+      expect(zip.files["manifeste.json"]).toBeDefined();
+      expect(zip.files["manifeste.md"]).toBeDefined();
+      // Pas d'appel Prisma ni R2 en mode stub
+      expect(mockPrisma.documentGenere.findMany).not.toHaveBeenCalled();
+      expect(mockGetObjectBufferR2).not.toHaveBeenCalled();
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
   });
 });

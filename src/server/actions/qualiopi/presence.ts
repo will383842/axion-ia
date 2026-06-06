@@ -623,24 +623,24 @@ export async function genererReleveConnexionDocumentAction(input: {
     presenceValidee: p.present,
   }));
 
-  const element = React.createElement(ReleveConnexionPdf, {
-    data: {
-      numero: "—",
-      intituleFormation: releveImport.session.formation.titre,
-      plateforme: plateformeLabel,
-      idReunion,
-      date: dateCivile,
-      horairesSession: horaires,
-      nomFormateur,
-      dureeMinimaleRequisePercent: seuilPct,
-      participants,
-    },
-    identite,
-  });
-
+  // buildElement reçoit le numéro alloué → l'en-tête PDF affiche le vrai N°.
   const doc = await generateDocument({
     type: "releve_connexion",
-    element,
+    buildElement: (numero) =>
+      React.createElement(ReleveConnexionPdf, {
+        data: {
+          numero,
+          intituleFormation: releveImport.session!.formation.titre,
+          plateforme: plateformeLabel,
+          idReunion,
+          date: dateCivile,
+          horairesSession: horaires,
+          nomFormateur,
+          dureeMinimaleRequisePercent: seuilPct,
+          participants,
+        },
+        identite,
+      }),
     refs: { sessionId: releveImport.session.id },
     ...(releveImport.fichierOriginalPath
       ? { fichierOriginalPath: releveImport.fichierOriginalPath }

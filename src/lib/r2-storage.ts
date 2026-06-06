@@ -168,3 +168,35 @@ export function invoicePdfKey(invoiceNumber: string, issuedAt: Date): string {
   const year = issuedAt.getUTCFullYear();
   return `invoices/${year}/${invoiceNumber}.pdf`;
 }
+
+/**
+ * Télécharge un objet R2 et retourne son contenu sous forme de Buffer.
+ *
+ * Fail-soft : retourne `null` si R2 n'est pas configuré, si l'objet est
+ * absent (404) ou si une erreur survient (réseau, permissions…).
+ * Ne throw jamais — utilisé dans des pipelines de génération de ZIP où un
+ * PDF manquant ne doit pas bloquer l'ensemble du dossier.
+ *
+ * @param key — clé d'objet R2 (ex: `documents/2026/attestation/AXI-ATT-2026-0042.pdf`)
+ */
+export async function getObjectBufferR2(key: string): Promise<Buffer | null> {
+  if (!isR2Configured()) return null;
+  try {
+    const client = getClient();
+    const response = await client.send(new GetObjectCommand({ Bucket: getBucketName(), Key: key }));
+    const body = response.Body;
+    if (!body) return null;
+
+    // Le SDK AWS retourne un ReadableStream (Node.js Readable) — on le consomme
+    // en accumulant les chunks dans un Buffer.
+    const chunks: Uint8Array[] = [];
+    // `body` implémente AsyncIterable<Uint8Array> dans le SDK v3 Node.js
+    for await (const chunk of body as AsyncIterable<Uint8Array>) {
+      chunks.push(chunk);
+    }
+    return Buffer.concat(chunks);
+  } catch {
+    // Absorbe les erreurs (404, réseau, permissions) — fail-soft intentionnel.
+    return null;
+  }
+}

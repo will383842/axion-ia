@@ -2,8 +2,10 @@
  * Qualiopi — Service central de génération des documents officiels.
  *
  * `generateDocument` : workflow complet :
- *   1. renderPdfToBuffer (React element → Buffer + hash)
- *   2. Allocation numéro séquentiel (AXI-<TYPE>-YYYY-NNN, retry P2002)
+ *   1. Allocation numéro séquentiel (AXI-<TYPE>-YYYY-NNN, retry P2002)
+ *   2. renderPdfToBuffer — si `buildElement` fourni, le numéro alloué est
+ *      injecté dans le template avant le rendu (correction bug en-tête) ;
+ *      sinon `element` legacy est utilisé (backward-compat).
  *   3. Upload R2 + URL signée 900s (fail-soft si R2 absent)
  *   4. Création `DocumentGenere` en DB (suppressionPrevueAt = +5 ans)
  *   5. Audit logQualiopiActivity (best-effort)
@@ -44,7 +46,18 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
 
 export interface GenerateDocumentInput {
   type: DocumentType;
-  element: React.ReactElement;
+  /**
+   * Élément React pré-construit (legacy — le numéro séquentiel NE sera PAS
+   * injecté dans le rendu, utiliser `buildElement` pour corriger l'en-tête).
+   * Obligatoire si `buildElement` est absent.
+   */
+  element?: React.ReactElement;
+  /**
+   * Factory qui reçoit le numéro séquentiel alloué juste avant le rendu.
+   * Utiliser cette forme pour que l'en-tête du PDF affiche le vrai numéro.
+   * Prioritaire sur `element` quand les deux sont fournis.
+   */
+  buildElement?: (numero: string) => React.ReactElement;
   refs?: {
     formationId?: string;
     sessionId?: string;
@@ -73,6 +86,13 @@ export interface GenerateDocumentResult {
  *
  * Stub-aware : si DATABASE_URL contient "stub.invalid", retourne un objet
  * minimal sans toucher la DB ni R2 (le build SSG ne doit pas muter).
+ *
+ * Ordre des opérations (correction bug numéro en-tête) :
+ *   1. Allocation du numéro séquentiel.
+ *   2. Rendu PDF — si `buildElement` fourni, le numéro alloué est passé au
+ *      template ; sinon `element` legacy est utilisé (backward-compat).
+ *   3. Upload R2 + création DB.
+ *   Sur collision P2002 : ré-alloue un nouveau numéro ET re-rend le PDF.
  */
 export async function generateDocument(
   input: GenerateDocumentInput,
@@ -87,14 +107,10 @@ export async function generateDocument(
     };
   }
 
-  // 1. Rendu PDF.
-  const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(input.element);
-
-  // 2. Allocation numéro séquentiel (retry sur P2002 contrainte unique).
+  // 1. Allocation numéro séquentiel + rendu PDF (retry sur P2002 contrainte unique).
   const year = new Date().getFullYear();
   const numberingType = DOC_TYPE_TO_NUMBERING[input.type] ?? "formation";
 
-  let numero = "";
   let created: { id: string; numero: string; pdfUrl: string | null; hashSha256: string } | null =
     null;
   let attempt = 0;
@@ -103,7 +119,7 @@ export async function generateDocument(
   while (attempt < MAX_ATTEMPTS) {
     attempt++;
 
-    // Compte les documents existants avec le même préfixe/année pour le séq.
+    // 1a. Compte les documents existants avec le même préfixe/année pour le séq.
     const prefixPattern = `AXI-${getNumberingPrefixSegment(numberingType)}-${year}-`;
     const count = await prisma.documentGenere.count({
       where: {
@@ -112,13 +128,26 @@ export async function generateDocument(
     });
 
     const seq = count + 1;
-    numero = formatDocumentNumber(numberingType, year, seq);
+    const numero = formatDocumentNumber(numberingType, year, seq);
 
-    // 3. Upload R2 (fail-soft).
+    // 1b. Rendu PDF — le numéro alloué est injecté via buildElement si fourni.
+    let elementToRender: React.ReactElement;
+    if (input.buildElement !== undefined) {
+      elementToRender = input.buildElement(numero);
+    } else if (input.element !== undefined) {
+      elementToRender = input.element;
+    } else {
+      throw new Error(
+        "[generateDocument] L'un des champs `element` ou `buildElement` est obligatoire.",
+      );
+    }
+    const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
+
+    // 2. Upload R2 (fail-soft).
     const key = `documents/${year}/${input.type}/${numero}.pdf`;
     const pdfUrl = await storeAndSignPdf(buffer, key);
 
-    // 4. Création DB.
+    // 3. Création DB.
     const now = new Date();
     const suppressionPrevueAt = new Date(now);
     suppressionPrevueAt.setFullYear(suppressionPrevueAt.getFullYear() + DOCUMENT_RETENTION_YEARS);
@@ -156,7 +185,7 @@ export async function generateDocument(
         (err as { code: string }).code === "P2002";
 
       if (isPrismaUniqueError && attempt < MAX_ATTEMPTS) {
-        // Retry avec le prochain séquence.
+        // Retry : ré-alloue un nouveau numéro + re-rend le PDF au prochain tour.
         continue;
       }
       throw err;

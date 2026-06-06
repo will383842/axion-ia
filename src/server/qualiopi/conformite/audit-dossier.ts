@@ -5,17 +5,29 @@
  *   preuves disponibles (types DocumentGenere présents, comptes) + état de
  *   couverture. Retourne JSON + Markdown. PAS de binaire ZIP.
  *
+ * genererDossierAuditZip() : construit un ZIP contenant le manifeste + les
+ *   PDFs de preuve téléchargés depuis R2. Fail-soft sur chaque PDF manquant.
+ *
  * Stub-aware : early-exit si DATABASE_URL contient "stub.invalid".
  */
 
+import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
+import { getObjectBufferR2 } from "@/lib/r2-storage";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
 // ─────────────────────────────────────────────────────────────────────────────
+
+export interface DossierAuditZipResult {
+  /** Contenu du ZIP encodé en base64 (envoyable via Server Action). */
+  readonly base64: string;
+  /** Nom de fichier suggéré pour le téléchargement (sans extension). */
+  readonly filename: string;
+}
 
 export interface PreuveDocument {
   /** Type Prisma du document (DocumentType enum). */
@@ -244,6 +256,85 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   const markdown = buildMarkdown(json);
 
   return { json, markdown };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// genererDossierAuditZip
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Génère un dossier d'audit complet au format ZIP.
+ *
+ * Contenu du ZIP :
+ *   - `manifeste.json`  — manifeste structuré (32 indicateurs RNQ V9)
+ *   - `manifeste.md`    — rendu Markdown lisible par l'auditeur
+ *   - `preuves/<type>/<numero>.pdf` — PDF de chaque DocumentGenere ayant une
+ *     clé R2 reconstructible. Les PDFs manquants (R2 absent ou 404) sont omis
+ *     et consignés dans `index.txt` (fail-soft).
+ *
+ * Stub-aware : retourne un ZIP minimal (manifeste seulement) si la magic
+ * string "stub.invalid" est détectée dans DATABASE_URL.
+ */
+export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
+  const now = new Date();
+  const horodatage = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const filename = `dossier-audit-qualiopi-${horodatage}`;
+
+  // ── Mode stub : ZIP minimal manifeste-only ──────────────────────────────
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    const manifeste = buildEmptyManifeste();
+    const zip = new JSZip();
+    zip.file("manifeste.json", JSON.stringify(manifeste.json, null, 2));
+    zip.file("manifeste.md", manifeste.markdown);
+    zip.file("index.txt", "Mode build (stub) — données indisponibles. Aucun PDF inclus.\n");
+    const base64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
+    return { base64, filename };
+  }
+
+  // ── Génération normale ──────────────────────────────────────────────────
+  const manifeste = await genererManifesteAudit();
+
+  // Récupération de tous les DocumentGenere (id + type + numero + createdAt)
+  // pour reconstruire les clés R2. On limite aux types qui ont des preuves
+  // documentaires pour éviter de requêter des milliers de lignes inutiles.
+  const allDocuments = await prisma.documentGenere.findMany({
+    select: { id: true, type: true, numero: true, createdAt: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  const zip = new JSZip();
+  zip.file("manifeste.json", JSON.stringify(manifeste.json, null, 2));
+  zip.file("manifeste.md", manifeste.markdown);
+
+  const indexLines: string[] = [`Dossier d'audit Qualiopi — ${horodatage}`, ""];
+  indexLines.push(`Manifeste : ${allDocuments.length} document(s) en base.`);
+  indexLines.push("");
+
+  let nbInclus = 0;
+  let nbOmis = 0;
+
+  for (const doc of allDocuments) {
+    const year = doc.createdAt.getUTCFullYear();
+    const r2Key = `documents/${year}/${doc.type}/${doc.numero}.pdf`;
+    const buffer = await getObjectBufferR2(r2Key);
+
+    if (buffer !== null) {
+      // Chemin dans le ZIP : preuves/<type>/<numero>.pdf
+      zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
+      indexLines.push(`[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`);
+      nbInclus++;
+    } else {
+      indexLines.push(`[OMIS] ${r2Key} — non disponible (R2 absent ou clé introuvable)`);
+      nbOmis++;
+    }
+  }
+
+  indexLines.push("");
+  indexLines.push(`Résumé : ${nbInclus} PDF inclus, ${nbOmis} omis.`);
+  zip.file("index.txt", indexLines.join("\n") + "\n");
+
+  const base64 = await zip.generateAsync({ type: "base64", compression: "DEFLATE" });
+  return { base64, filename };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

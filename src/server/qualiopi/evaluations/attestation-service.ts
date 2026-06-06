@@ -253,51 +253,52 @@ export async function genererAttestationPourEnrollment(
     formateur: formateurNom,
   };
 
-  let element: React.ReactElement;
+  const dateEmission = formatDate(new Date());
 
-  if (resultat === "complete") {
-    element = React.createElement(AttestationPdf, {
-      data: {
-        numero: "",
-        dateEmission: formatDate(new Date()),
-        identite,
-        beneficiaire,
-        formation: formationData,
-        resultats: {
-          heuresSuivies,
-          heuresTotales: dureeHeures,
-          ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-          competencesAcquises: objectifsStr,
-        },
-        qrToken: token,
-        qrDataUrl: qrUrl,
-      },
-    });
-  } else {
-    element = React.createElement(AttestationPartiellePdf, {
-      data: {
-        numero: "",
-        dateEmission: formatDate(new Date()),
-        identite,
-        beneficiaire,
-        formation: formationData,
-        resultats: {
-          heuresSuivies,
-          heuresTotales: dureeHeures,
-          ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-          competencesPartiellesValidees: objectifsStr,
-        },
-        qrToken: token,
-        qrDataUrl: qrUrl,
-      },
-    });
-  }
-
-  // 6. Génère le document (numérotation + R2 + DB)
+  // 6. Génère le document (numérotation + R2 + DB).
+  //    buildElement reçoit le numéro alloué → l'en-tête PDF affiche le vrai N°.
   const docType = resultat === "complete" ? "attestation" : "attestation_partielle";
   const generated = await generateDocument({
     type: docType,
-    element,
+    buildElement: (numero) => {
+      if (resultat === "complete") {
+        return React.createElement(AttestationPdf, {
+          data: {
+            numero,
+            dateEmission,
+            identite,
+            beneficiaire,
+            formation: formationData,
+            resultats: {
+              heuresSuivies,
+              heuresTotales: dureeHeures,
+              ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
+              competencesAcquises: objectifsStr,
+            },
+            qrToken: token,
+            qrDataUrl: qrUrl,
+          },
+        });
+      } else {
+        return React.createElement(AttestationPartiellePdf, {
+          data: {
+            numero,
+            dateEmission,
+            identite,
+            beneficiaire,
+            formation: formationData,
+            resultats: {
+              heuresSuivies,
+              heuresTotales: dureeHeures,
+              ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
+              competencesPartiellesValidees: objectifsStr,
+            },
+            qrToken: token,
+            qrDataUrl: qrUrl,
+          },
+        });
+      }
+    },
     refs: { sessionId: session.id, traineeId: trainee.id },
     qrToken: token,
   });

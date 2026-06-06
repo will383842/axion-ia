@@ -588,13 +588,17 @@ export async function genererFacturePdfAction(input: {
       : {}),
   };
 
-  // Génération PDF via le service central
+  // Génération PDF via le service central.
+  // buildElement injecte le numéro DocumentGenere alloué dans l'en-tête.
+  // Note : facture.numero (FactureFormation) et DocumentGenere.numero sont
+  // deux séquences distinctes ; l'en-tête affiche le numéro du document
+  // officiel (DocumentGenere) pour la traçabilité registre.
   let documentId: string;
   try {
-    const element = React.createElement(FacturePdf, { data: factureData });
     const docResult = await generateDocument({
       type: "facture",
-      element,
+      buildElement: (numero) =>
+        React.createElement(FacturePdf, { data: { ...factureData, numero } }),
       refs: { sessionId: facture.sessionId },
     });
     documentId = docResult.id;

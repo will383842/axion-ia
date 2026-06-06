@@ -1,22 +1,55 @@
 "use client";
-// use-client: déclenchement du téléchargement JSON + MD côté navigateur via Blob + URL.createObjectURL après appel Server Action.
+// use-client: déclenchement des téléchargements (JSON + MD, et ZIP) côté navigateur
+// via Blob + URL.createObjectURL après appel Server Action.
 
 /**
- * ExportManifesteButton — Bouton d'export du manifeste audit (JSON + Markdown).
+ * ExportManifesteButton — Boutons d'export du dossier audit Qualiopi.
  *
- * Appelle `exporterManifesteAuditAction()` (AGENT C), reçoit { json, markdown, filename },
- * puis déclenche deux téléchargements successifs via Blob côté navigateur.
- * Zéro appel DB côté client.
+ * Bouton 1 : "Exporter le manifeste (JSON + MD)"
+ *   Appelle `exporterManifesteAuditAction()` → deux téléchargements Blob côté navigateur.
+ *
+ * Bouton 2 : "Télécharger le dossier ZIP"
+ *   Appelle `exporterDossierZipAction()` → reçoit { base64, filename },
+ *   décode en Blob application/zip et déclenche le téléchargement.
+ *
+ * Zéro appel DB côté client. Zéro hex dans les tokens admin.
  */
 
 import { useTransition } from "react";
-import { exporterManifesteAuditAction } from "@/server/actions/qualiopi/conformite";
+import {
+  exporterManifesteAuditAction,
+  exporterDossierZipAction,
+} from "@/server/actions/qualiopi/conformite";
+
+/** Déclenche un téléchargement de fichier côté navigateur depuis un Blob. */
+function triggerBlobDownload(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/** Décode une chaîne base64 en Uint8Array (compatible tous navigateurs modernes). */
+function base64ToUint8Array(base64: string): Uint8Array {
+  const binaryString = atob(base64);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+}
 
 export function ExportManifesteButton(): React.ReactElement {
-  const [isPending, startTransition] = useTransition();
+  const [isPendingManifeste, startManifeste] = useTransition();
+  const [isPendingZip, startZip] = useTransition();
 
-  function handleExport() {
-    startTransition(async () => {
+  function handleExportManifeste() {
+    startManifeste(async () => {
       const result = await exporterManifesteAuditAction();
       if ("error" in result) {
         window.alert(`Erreur export manifeste : ${result.error}`);
@@ -26,42 +59,59 @@ export function ExportManifesteButton(): React.ReactElement {
       const { json, markdown, filename } = result.data;
 
       // Téléchargement JSON
-      const jsonBlob = new Blob([JSON.stringify(json, null, 2)], {
-        type: "application/json;charset=utf-8;",
-      });
-      const jsonUrl = URL.createObjectURL(jsonBlob);
-      const linkJson = document.createElement("a");
-      linkJson.href = jsonUrl;
-      linkJson.download = `${filename}.json`;
-      linkJson.style.display = "none";
-      document.body.appendChild(linkJson);
-      linkJson.click();
-      document.body.removeChild(linkJson);
-      URL.revokeObjectURL(jsonUrl);
+      triggerBlobDownload(
+        new Blob([JSON.stringify(json, null, 2)], { type: "application/json;charset=utf-8;" }),
+        `${filename}.json`,
+      );
 
       // Téléchargement Markdown
-      const mdBlob = new Blob([markdown], { type: "text/markdown;charset=utf-8;" });
-      const mdUrl = URL.createObjectURL(mdBlob);
-      const linkMd = document.createElement("a");
-      linkMd.href = mdUrl;
-      linkMd.download = `${filename}.md`;
-      linkMd.style.display = "none";
-      document.body.appendChild(linkMd);
-      linkMd.click();
-      document.body.removeChild(linkMd);
-      URL.revokeObjectURL(mdUrl);
+      triggerBlobDownload(
+        new Blob([markdown], { type: "text/markdown;charset=utf-8;" }),
+        `${filename}.md`,
+      );
+    });
+  }
+
+  function handleExportZip() {
+    startZip(async () => {
+      const result = await exporterDossierZipAction();
+      if ("error" in result) {
+        window.alert(`Erreur export dossier ZIP : ${result.error}`);
+        return;
+      }
+
+      const { base64, filename } = result.data;
+      const bytes = base64ToUint8Array(base64);
+      // On passe l'ArrayBuffer explicitement casté — Blob accepte ArrayBuffer en runtime,
+      // mais le typage lib.dom strict requiert le cast.
+      triggerBlobDownload(
+        new Blob([bytes.buffer as ArrayBuffer], { type: "application/zip" }),
+        `${filename}.zip`,
+      );
     });
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleExport}
-      disabled={isPending}
-      className="admin-button"
-      aria-label="Exporter le manifeste d'audit au format JSON et Markdown"
-    >
-      {isPending ? "Export en cours…" : "Exporter le manifeste (JSON + MD)"}
-    </button>
+    <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+      <button
+        type="button"
+        onClick={handleExportManifeste}
+        disabled={isPendingManifeste || isPendingZip}
+        className="admin-button"
+        aria-label="Exporter le manifeste d'audit au format JSON et Markdown"
+      >
+        {isPendingManifeste ? "Export en cours…" : "Exporter le manifeste (JSON + MD)"}
+      </button>
+
+      <button
+        type="button"
+        onClick={handleExportZip}
+        disabled={isPendingManifeste || isPendingZip}
+        className="admin-button-secondary"
+        aria-label="Télécharger le dossier d'audit complet au format ZIP (manifeste + PDFs)"
+      >
+        {isPendingZip ? "Génération ZIP…" : "Télécharger le dossier ZIP"}
+      </button>
+    </div>
   );
 }

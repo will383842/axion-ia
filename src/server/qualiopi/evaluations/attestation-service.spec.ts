@@ -254,6 +254,26 @@ describe("genererAttestationPourEnrollment", () => {
     );
   });
 
+  // ── buildElement — numéro injecté dans le PDF ──────────────────────────────
+
+  it("passe buildElement (pas element) à generateDocument", async () => {
+    await genererAttestationPourEnrollment("enroll-1");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as Record<string, unknown>;
+    expect(typeof docCall["buildElement"]).toBe("function");
+    expect("element" in docCall).toBe(false);
+  });
+
+  it("buildElement injecte le numéro alloué dans les props du template", async () => {
+    await genererAttestationPourEnrollment("enroll-1");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const rendered = docCall.buildElement("AXI-ATT-2026-042");
+    expect(rendered.props.data["numero"]).toBe("AXI-ATT-2026-042");
+  });
+
   // ── QR token ────────────────────────────────────────────────────────────────
 
   it("passe le qrToken à generateDocument", async () => {
@@ -304,10 +324,12 @@ describe("genererAttestationPourEnrollment", () => {
 
     await genererAttestationPourEnrollment("enroll-1");
 
+    // buildElement reçoit le numéro alloué → on l'appelle pour inspecter les props.
     const docCall = mockGenDoc.mock.calls[0]![0] as {
-      element: { props: { data: Record<string, unknown> } };
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
     };
-    const resultats = docCall.element.props.data["resultats"] as Record<string, unknown>;
+    const rendered = docCall.buildElement("AXI-ATT-2026-001");
+    const resultats = rendered.props.data["resultats"] as Record<string, unknown>;
     expect(resultats["evaluationObtenue"]).toBe("Évaluation finale : Réussite");
   });
 
@@ -316,10 +338,12 @@ describe("genererAttestationPourEnrollment", () => {
 
     await genererAttestationPourEnrollment("enroll-1");
 
+    // buildElement reçoit le numéro alloué → on l'appelle pour inspecter les props.
     const docCall = mockGenDoc.mock.calls[0]![0] as {
-      element: { props: { data: Record<string, unknown> } };
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
     };
-    const resultats = docCall.element.props.data["resultats"] as Record<string, unknown>;
+    const rendered = docCall.buildElement("AXI-ATT-2026-001");
+    const resultats = rendered.props.data["resultats"] as Record<string, unknown>;
     expect("evaluationObtenue" in resultats).toBe(false);
   });
 

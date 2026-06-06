@@ -122,19 +122,24 @@ describe("genererReleveConnexionDocumentAction", () => {
     expect(genCall.refs).toEqual({ sessionId: "sess-1" });
     expect(genCall.fichierOriginalPath).toBe("presence/2026/sess/abc-zoom.csv");
 
-    // Données passées au template (via les props de l'élément React construit).
-    const pdfProps = genCall.element.props;
-    expect(pdfProps.data.intituleFormation).toBe("Maîtriser l'IA générative");
-    expect(pdfProps.data.idReunion).toBe("987 6543 2100");
-    expect(pdfProps.data.nomFormateur).toBe("Luc Bernard");
-    expect(pdfProps.data.dureeMinimaleRequisePercent).toBe(80);
-    expect(pdfProps.data.participants).toHaveLength(2);
-    expect(pdfProps.data.participants[0]).toMatchObject({
+    // buildElement reçoit le numéro alloué → on l'appelle pour inspecter les props.
+    expect(typeof genCall.buildElement).toBe("function");
+    const pdfProps = (
+      genCall.buildElement("AXI-SESS-2026-001") as { props: Record<string, unknown> }
+    ).props;
+    const pdfData = pdfProps["data"] as Record<string, unknown>;
+    expect(pdfData["numero"]).toBe("AXI-SESS-2026-001");
+    expect(pdfData["intituleFormation"]).toBe("Maîtriser l'IA générative");
+    expect(pdfData["idReunion"]).toBe("987 6543 2100");
+    expect(pdfData["nomFormateur"]).toBe("Luc Bernard");
+    expect(pdfData["dureeMinimaleRequisePercent"]).toBe(80);
+    expect(pdfData["participants"]).toHaveLength(2);
+    expect((pdfData["participants"] as unknown[])[0]).toMatchObject({
       nomPrenom: "Marie Dupont",
       dureeEffective: "7h03",
       presenceValidee: true,
     });
-    expect(pdfProps.data.participants[1]).toMatchObject({
+    expect((pdfData["participants"] as unknown[])[1]).toMatchObject({
       nomPrenom: "Paul Martin",
       heureConnexion: "—",
       presenceValidee: false,
@@ -162,9 +167,13 @@ describe("genererReleveConnexionDocumentAction", () => {
     const res = await genererReleveConnexionDocumentAction({ importId: UUID });
     expect("data" in res).toBe(true);
     const genCall = (generateDocument as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
-    const pdfProps = genCall.element.props;
-    expect(pdfProps.data.nomFormateur).toBe("—");
-    expect(pdfProps.data.idReunion).toBe("—");
+    // buildElement reçoit le numéro alloué → on l'appelle pour inspecter les props.
+    expect(typeof genCall.buildElement).toBe("function");
+    const pdfData = (
+      genCall.buildElement("AXI-SESS-2026-002") as { props: Record<string, unknown> }
+    ).props["data"] as Record<string, unknown>;
+    expect(pdfData["nomFormateur"]).toBe("—");
+    expect(pdfData["idReunion"]).toBe("—");
     // Pas de fichierOriginalPath transmis quand null.
     expect(genCall.fichierOriginalPath).toBeUndefined();
   });

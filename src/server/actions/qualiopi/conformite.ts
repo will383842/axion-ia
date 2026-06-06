@@ -11,7 +11,10 @@
 "use server";
 
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossier";
+import {
+  genererManifesteAudit,
+  genererDossierAuditZip,
+} from "@/server/qualiopi/conformite/audit-dossier";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -66,6 +69,44 @@ export async function exporterManifesteAuditAction(): Promise<ActionResult<Manif
       json: manifeste.json,
       markdown: manifeste.markdown,
       filename,
+    },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// exporterDossierZipAction
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Génère le dossier d'audit complet (manifeste JSON + Markdown + PDFs R2)
+ * et le retourne encodé en base64 pour téléchargement côté navigateur.
+ *
+ * Le dossier ZIP contient :
+ *   - `manifeste.json` / `manifeste.md`
+ *   - `preuves/<type>/<numero>.pdf` pour chaque document disponible dans R2
+ *   - `index.txt` récapitulant les inclusions / omissions
+ *
+ * Fail-soft : les PDFs R2 manquants sont omis sans faire échouer l'action.
+ */
+export async function exporterDossierZipAction(): Promise<
+  ActionResult<{ base64: string; filename: string }>
+> {
+  const session = await requireAdminWrite();
+
+  const dossier = await genererDossierAuditZip();
+
+  await logQualiopiActivity({
+    action: "qualiopi.dossier_audit.export_zip",
+    targetType: "DossierAuditZip",
+    targetId: null,
+    changes: { filename: dossier.filename },
+    session,
+  });
+
+  return {
+    data: {
+      base64: dossier.base64,
+      filename: dossier.filename,
     },
   };
 }

@@ -170,13 +170,15 @@ export async function genererFactureFormation(
         : {}),
     };
 
-    // Génération PDF (stub-aware internellement)
-    const element = React.createElement(FacturePdf, { data: factureData });
+    // Génération PDF (stub-aware internellement).
+    // buildElement injecte le numéro DocumentGenere alloué dans l'en-tête.
+    // La FacturePdf affiche le numéro passé par buildElement (registre doc).
     let docResult: { id: string } | null = null;
     try {
       docResult = await generateDocument({
         type: "facture",
-        element,
+        buildElement: (docNumero) =>
+          React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
         refs: { sessionId: input.sessionId },
       });
     } catch {
