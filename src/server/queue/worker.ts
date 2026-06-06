@@ -48,6 +48,8 @@ import { startGscHcuMonitorWorker } from "./workers/gsc-hcu-monitor-worker";
 import { startContentRefreshWorker } from "./workers/content-refresh-worker";
 // Qualiopi — Formation Engine T4 (génération IA pédagogique).
 import { startFormationEngineWorker } from "./workers/qualiopi-formation-engine-worker";
+// Qualiopi — Formation Crons T6 (auto-transitions session : planifiee→en_cours, en_cours→realisee).
+import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 import { bootRepeatableJobs } from "./queues";
@@ -118,6 +120,8 @@ async function main() {
     ...(process.env.CONTENT_REFRESH_ENABLED === "true" ? [startContentRefreshWorker()] : []),
     // Qualiopi Formation Engine T4 — génération IA pédagogique (toujours actif).
     startFormationEngineWorker(),
+    // Qualiopi Formation Crons T6 — auto-transitions session (daily 08:00 UTC).
+    startFormationCronsWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
   ];

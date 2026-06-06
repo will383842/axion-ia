@@ -28,6 +28,10 @@ import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 import type { FormationEngineJobData } from "./workers/qualiopi-formation-engine-worker";
+import type {
+  FormationCronJobData,
+  FormationCronJobType,
+} from "./workers/qualiopi-formation-crons-worker";
 
 const connection = getBullConnection();
 
@@ -427,6 +431,19 @@ export const imageBankCronsQueue: Queue<ImageBankCronJobData, void, ImageBankCro
 // Qualiopi — Formation Engine T4 (génération IA pédagogique).
 // Env-gated côté worker ; queue toujours présente pour les Server Actions.
 // ============================================================
+
+// ============================================================
+// Qualiopi — Formation Crons T6 (auto-transitions session : date_debut, cloture_auto).
+// Queue séparée de formation-engine pour isolation des responsabilités.
+// ============================================================
+
+export const formationCronsQueue: Queue<FormationCronJobData, void, FormationCronJobType> | null =
+  connection
+    ? new Queue<FormationCronJobData, void, FormationCronJobType>("formation-crons", {
+        connection,
+        defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
+      })
+    : null;
 
 export const formationEngineQueue: Queue<FormationEngineJobData> | null = connection
   ? new Queue<FormationEngineJobData>("formation-engine", {
@@ -967,5 +984,39 @@ export async function bootRepeatableJobs(): Promise<void> {
       { tick: new Date().toISOString() },
       { repeat: { pattern: "0 3 * * *" }, jobId: "site-route-anomaly-detector-cron" },
     );
+  }
+
+  // ============================================================
+  // Qualiopi T6 — Formation crons (auto-transitions : date_debut + cloture_auto).
+  // 2 jobs quotidiens 08:00 UTC (aligné sur le cron booking pour mutualiser
+  // les périodes de faible charge). Séparés en 2 jobs distincts pour isolation
+  // des erreurs (un job planifie→en_cours ne bloque pas le job en_cours→realisee).
+  // ============================================================
+  if (formationCronsQueue) {
+    const formationCronSchedule: Array<{
+      type: FormationCronJobType;
+      pattern: string;
+      jobId: string;
+    }> = [
+      {
+        type: "formation-crons.date-debut",
+        pattern: "0 8 * * *",
+        jobId: "formation-crons-date-debut-cron",
+      },
+      {
+        type: "formation-crons.cloture-auto",
+        pattern: "0 8 * * *",
+        jobId: "formation-crons-cloture-auto-cron",
+      },
+    ];
+
+    for (const { type, pattern, jobId } of formationCronSchedule) {
+      await formationCronsQueue.removeRepeatable(type, { pattern }, jobId);
+      await formationCronsQueue.add(
+        type,
+        { type, tick: new Date().toISOString() },
+        { repeat: { pattern }, jobId },
+      );
+    }
   }
 }

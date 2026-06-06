@@ -6,6 +6,9 @@
  *
  * Chaque création/transition écrit une FormationTransition (event sourcing).
  * Idempotence via @@unique [sessionId, toStatus, trigger] — P2002 = déjà fait → ok.
+ *
+ * T6 — writeSessionTransition déplacé dans formations/transition-helper.ts
+ * (module sans "use server", importable par workers BullMQ et tests sans conflit).
  */
 
 "use server";
@@ -13,14 +16,20 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type {
-  Prisma,
   TrainingSessionStatut,
   TransitionTriggeredBy,
-} from "../../../../prisma/generated/client";
+} from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
+import {
+  writeSessionTransition,
+  type WriteSessionTransitionInput,
+} from "@/server/qualiopi/formations/transition-helper";
+
+// Ré-export pour la rétrocompatibilité des éventuels callers externes.
+export type { WriteSessionTransitionInput };
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -58,43 +67,6 @@ const transitionSessionSchema = z.object({
   reason: z.string().max(500).optional(),
   triggeredBy: z.enum(TRANSITION_TRIGGERED_BY).optional(),
 });
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helper interne : écriture d'une FormationTransition
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface WriteSessionTransitionInput {
-  sessionId: string;
-  from: TrainingSessionStatut | null;
-  to: TrainingSessionStatut;
-  trigger: string;
-  triggeredBy: TransitionTriggeredBy;
-  triggeredById?: string | null;
-  reason?: string | null;
-  snapshotBefore?: Prisma.NullableJsonNullValueInput | Prisma.InputJsonValue;
-  snapshotAfter?: Prisma.NullableJsonNullValueInput | Prisma.InputJsonValue;
-}
-
-async function writeSessionTransition(
-  tx: Prisma.TransactionClient,
-  input: WriteSessionTransitionInput,
-): Promise<void> {
-  await tx.formationTransition.create({
-    data: {
-      sessionId: input.sessionId,
-      // fromStatus est nullable (null = création initiale). Spread conditionnel
-      // pour respecter exactOptionalPropertyTypes : on ne passe pas undefined.
-      ...(input.from !== null ? { fromStatus: input.from } : {}),
-      toStatus: input.to,
-      trigger: input.trigger.slice(0, 80),
-      triggeredBy: input.triggeredBy,
-      ...(input.triggeredById !== undefined ? { triggeredById: input.triggeredById } : {}),
-      ...(input.reason !== undefined && input.reason !== null ? { reason: input.reason } : {}),
-      ...(input.snapshotBefore !== undefined ? { snapshotBefore: input.snapshotBefore } : {}),
-      ...(input.snapshotAfter !== undefined ? { snapshotAfter: input.snapshotAfter } : {}),
-    },
-  });
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
