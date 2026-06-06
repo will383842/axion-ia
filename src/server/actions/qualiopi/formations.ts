@@ -22,6 +22,7 @@ import {
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
 import { allocateFormationNumero } from "@/server/qualiopi/formations/numbering";
+import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { setCertification } from "@/server/qualiopi/formations/certification-service";
 
@@ -115,36 +116,37 @@ export async function createFormationAction(
     };
   }
 
-  // Allouer le numéro séquentiel
-  const numero = await allocateFormationNumero();
-
-  const created = await prisma.formation.create({
-    data: {
-      numero,
-      titre: v.titre,
-      slug: v.slug,
-      offreSiteId: v.offreSiteId,
-      dureeHeures: v.dureeHeures,
-      modalite: v.modalite,
-      statutGeneration: "intention",
-      statut: "actif",
-      ...(v.objectifsPedagogiques !== undefined
-        ? { objectifsPedagogiques: v.objectifsPedagogiques as never }
-        : {}),
-      ...(v.typesActionQualiopi !== undefined
-        ? { typesActionQualiopi: v.typesActionQualiopi }
-        : {}),
-      ...(v.estSurMesure !== undefined ? { estSurMesure: v.estSurMesure } : {}),
-      ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
-    },
-    select: { id: true, numero: true },
+  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
+  const created = await withNumberRetry(async () => {
+    const numero = await allocateFormationNumero();
+    return prisma.formation.create({
+      data: {
+        numero,
+        titre: v.titre,
+        slug: v.slug,
+        offreSiteId: v.offreSiteId,
+        dureeHeures: v.dureeHeures,
+        modalite: v.modalite,
+        statutGeneration: "intention",
+        statut: "actif",
+        ...(v.objectifsPedagogiques !== undefined
+          ? { objectifsPedagogiques: v.objectifsPedagogiques as never }
+          : {}),
+        ...(v.typesActionQualiopi !== undefined
+          ? { typesActionQualiopi: v.typesActionQualiopi }
+          : {}),
+        ...(v.estSurMesure !== undefined ? { estSurMesure: v.estSurMesure } : {}),
+        ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
+      },
+      select: { id: true, numero: true },
+    });
   });
 
   await logQualiopiActivity({
     action: "qualiopi.formation.create",
     targetType: "Formation",
     targetId: created.id,
-    changes: { numero, titre: v.titre, slug: v.slug, offreSiteId: v.offreSiteId },
+    changes: { numero: created.numero, titre: v.titre, slug: v.slug, offreSiteId: v.offreSiteId },
     session,
   });
 

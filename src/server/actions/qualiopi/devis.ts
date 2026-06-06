@@ -16,6 +16,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
 
@@ -76,10 +77,7 @@ export async function createDevisAction(
     0,
   );
 
-  // Allouer le numéro séquentiel
   const year = new Date().getFullYear();
-  const count = await prisma.devis.count();
-  const numero = formatDocumentNumber("devis", year, count + 1);
 
   // Date de validité : +30 jours
   const dateValidite = new Date();
@@ -108,20 +106,25 @@ export async function createDevisAction(
     resteAChargeCents = coverage.resteAChargeCents;
   }
 
-  const created = await prisma.devis.create({
-    data: {
-      numero,
-      clientId: v.clientId,
-      lignes: v.lignes as never,
-      montantTotalHtCents,
-      mentionTva: LEGAL_MENTIONS.factureExonerationTva,
-      statut: "brouillon",
-      dateValidite,
-      ...(v.financementSuggere !== undefined ? { financementSuggere: v.financementSuggere } : {}),
-      ...(montantOpcoEstimeCents !== undefined ? { montantOpcoEstimeCents } : {}),
-      ...(resteAChargeCents !== undefined ? { resteAChargeCents } : {}),
-    },
-    select: { id: true, numero: true },
+  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
+  const created = await withNumberRetry(async () => {
+    const count = await prisma.devis.count();
+    const numero = formatDocumentNumber("devis", year, count + 1);
+    return prisma.devis.create({
+      data: {
+        numero,
+        clientId: v.clientId,
+        lignes: v.lignes as never,
+        montantTotalHtCents,
+        mentionTva: LEGAL_MENTIONS.factureExonerationTva,
+        statut: "brouillon",
+        dateValidite,
+        ...(v.financementSuggere !== undefined ? { financementSuggere: v.financementSuggere } : {}),
+        ...(montantOpcoEstimeCents !== undefined ? { montantOpcoEstimeCents } : {}),
+        ...(resteAChargeCents !== undefined ? { resteAChargeCents } : {}),
+      },
+      select: { id: true, numero: true },
+    });
   });
 
   await logQualiopiActivity({
@@ -129,7 +132,7 @@ export async function createDevisAction(
     targetType: "Devis",
     targetId: created.id,
     changes: {
-      numero,
+      numero: created.numero,
       clientId: v.clientId,
       montantTotalHtCents,
       financementSuggere: v.financementSuggere,

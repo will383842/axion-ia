@@ -21,6 +21,7 @@ import type {
 } from "@/server/qualiopi/formations/types";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { allocateSessionNumero } from "@/server/qualiopi/formations/numbering";
+import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { canCreateSessionFor } from "@/server/qualiopi/formations/formations";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import {
@@ -120,48 +121,49 @@ export async function createSessionAction(
     };
   }
 
-  // Allouer le numéro (spread conditionnel pour exactOptionalPropertyTypes)
-  const numero = await allocateSessionNumero(
-    v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
-  );
-
   // Titre par défaut si non fourni
   const titreSession = v.titreSession ?? formation.titre;
 
-  // Créer la session + FormationTransition initiale dans une transaction
+  // Créer la session + FormationTransition initiale dans une transaction,
+  // avec retry sur collision de numéro (R7 : numéro ré-alloué à chaque tentative).
   let created: { id: string; numero: string };
   try {
-    created = await prisma.$transaction(async (tx) => {
-      const newSession = await tx.trainingSession.create({
-        data: {
-          numero,
-          titreSession,
-          formationId: v.formationId,
-          dateDebut: v.dateDebut,
-          dateFin: v.dateFin,
-          modalite: v.modalite,
-          nbParticipantsPrevus: v.nbParticipantsPrevus,
-          montantHtCents: v.montantHtCents,
-          statut: "planifiee",
-          ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
-          ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
-          ...(v.financementType !== undefined ? { financementType: v.financementType } : {}),
-        },
-        select: { id: true, numero: true },
-      });
+    created = await withNumberRetry(() =>
+      prisma.$transaction(async (tx) => {
+        const numero = await allocateSessionNumero(
+          v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
+        );
+        const newSession = await tx.trainingSession.create({
+          data: {
+            numero,
+            titreSession,
+            formationId: v.formationId,
+            dateDebut: v.dateDebut,
+            dateFin: v.dateFin,
+            modalite: v.modalite,
+            nbParticipantsPrevus: v.nbParticipantsPrevus,
+            montantHtCents: v.montantHtCents,
+            statut: "planifiee",
+            ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
+            ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
+            ...(v.financementType !== undefined ? { financementType: v.financementType } : {}),
+          },
+          select: { id: true, numero: true },
+        });
 
-      // Transition initiale null → planifiee
-      await writeSessionTransition(tx, {
-        sessionId: newSession.id,
-        from: null,
-        to: "planifiee",
-        trigger: "admin.create",
-        triggeredBy: "admin",
-        triggeredById: session.userId,
-      });
+        // Transition initiale null → planifiee
+        await writeSessionTransition(tx, {
+          sessionId: newSession.id,
+          from: null,
+          to: "planifiee",
+          trigger: "admin.create",
+          triggeredBy: "admin",
+          triggeredById: session.userId,
+        });
 
-      return newSession;
-    });
+        return newSession;
+      }),
+    );
   } catch (err) {
     const code = (err as { code?: string })?.code;
     if (code === "P2002")
@@ -173,7 +175,12 @@ export async function createSessionAction(
     action: "qualiopi.session.create",
     targetType: "TrainingSession",
     targetId: created.id,
-    changes: { numero, formationId: v.formationId, dateDebut: v.dateDebut, dateFin: v.dateFin },
+    changes: {
+      numero: created.numero,
+      formationId: v.formationId,
+      dateDebut: v.dateDebut,
+      dateFin: v.dateFin,
+    },
     session,
   });
 

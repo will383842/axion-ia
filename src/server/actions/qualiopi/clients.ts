@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpcoFromNaf } from "@/server/qualiopi/crm/naf-opco";
 import { NUMBERING_PREFIX, SEQ_PAD_WIDTH } from "@/server/qualiopi/numbering/formats";
+import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -99,50 +100,50 @@ export async function createClientAction(
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
 
-  // Allouer le numéro séquentiel
-  const count = await prisma.client.count();
-  const seq = count + 1;
-  const numero = `${NUMBERING_PREFIX.client}-${String(seq).padStart(SEQ_PAD_WIDTH, "0")}`;
-
   // Inférer l'OPCO si non fourni manuellement
   const opcoIdentifie = v.opcoIdentifie ?? inferOpcoFromNaf(v.nafCode ?? null);
 
-  const created = await prisma.client.create({
-    data: {
-      numero,
-      raisonSociale: v.raisonSociale,
-      statut: "prospect",
-      ...(v.type !== undefined ? { type: v.type } : {}),
-      ...(v.siret !== undefined ? { siret: v.siret } : {}),
-      ...(v.nafCode !== undefined ? { nafCode: v.nafCode } : {}),
-      ...(v.conventionCollective !== undefined
-        ? { conventionCollective: v.conventionCollective }
-        : {}),
-      ...(v.idcc !== undefined ? { idcc: v.idcc } : {}),
-      ...(v.secteur !== undefined ? { secteur: v.secteur } : {}),
-      ...(v.taille !== undefined ? { taille: v.taille } : {}),
-      ...(v.adresse !== undefined ? { adresse: v.adresse } : {}),
-      ...(v.contactNom !== undefined ? { contactNom: v.contactNom } : {}),
-      ...(v.contactEmail !== undefined ? { contactEmail: v.contactEmail } : {}),
-      ...(v.contactTelephone !== undefined ? { contactTelephone: v.contactTelephone } : {}),
-      ...(v.contactFonction !== undefined ? { contactFonction: v.contactFonction } : {}),
-      ...(opcoIdentifie !== null ? { opcoIdentifie } : {}),
-      ...(v.opcoNumeroAdherent !== undefined ? { opcoNumeroAdherent: v.opcoNumeroAdherent } : {}),
-      ...(v.opcoEnveloppeAnnuelleCents !== undefined
-        ? { opcoEnveloppeAnnuelleCents: v.opcoEnveloppeAnnuelleCents }
-        : {}),
-      ...(v.source !== undefined ? { source: v.source } : {}),
-      ...(v.contexteIa !== undefined ? { contexteIa: v.contexteIa } : {}),
-      ...(v.notes !== undefined ? { notes: v.notes } : {}),
-    },
-    select: { id: true, numero: true },
+  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
+  const created = await withNumberRetry(async () => {
+    const count = await prisma.client.count();
+    const numero = `${NUMBERING_PREFIX.client}-${String(count + 1).padStart(SEQ_PAD_WIDTH, "0")}`;
+    return prisma.client.create({
+      data: {
+        numero,
+        raisonSociale: v.raisonSociale,
+        statut: "prospect",
+        ...(v.type !== undefined ? { type: v.type } : {}),
+        ...(v.siret !== undefined ? { siret: v.siret } : {}),
+        ...(v.nafCode !== undefined ? { nafCode: v.nafCode } : {}),
+        ...(v.conventionCollective !== undefined
+          ? { conventionCollective: v.conventionCollective }
+          : {}),
+        ...(v.idcc !== undefined ? { idcc: v.idcc } : {}),
+        ...(v.secteur !== undefined ? { secteur: v.secteur } : {}),
+        ...(v.taille !== undefined ? { taille: v.taille } : {}),
+        ...(v.adresse !== undefined ? { adresse: v.adresse } : {}),
+        ...(v.contactNom !== undefined ? { contactNom: v.contactNom } : {}),
+        ...(v.contactEmail !== undefined ? { contactEmail: v.contactEmail } : {}),
+        ...(v.contactTelephone !== undefined ? { contactTelephone: v.contactTelephone } : {}),
+        ...(v.contactFonction !== undefined ? { contactFonction: v.contactFonction } : {}),
+        ...(opcoIdentifie !== null ? { opcoIdentifie } : {}),
+        ...(v.opcoNumeroAdherent !== undefined ? { opcoNumeroAdherent: v.opcoNumeroAdherent } : {}),
+        ...(v.opcoEnveloppeAnnuelleCents !== undefined
+          ? { opcoEnveloppeAnnuelleCents: v.opcoEnveloppeAnnuelleCents }
+          : {}),
+        ...(v.source !== undefined ? { source: v.source } : {}),
+        ...(v.contexteIa !== undefined ? { contexteIa: v.contexteIa } : {}),
+        ...(v.notes !== undefined ? { notes: v.notes } : {}),
+      },
+      select: { id: true, numero: true },
+    });
   });
 
   await logQualiopiActivity({
     action: "qualiopi.client.create",
     targetType: "Client",
     targetId: created.id,
-    changes: { numero, raisonSociale: v.raisonSociale, opcoIdentifie },
+    changes: { numero: created.numero, raisonSociale: v.raisonSociale, opcoIdentifie },
     session,
   });
 

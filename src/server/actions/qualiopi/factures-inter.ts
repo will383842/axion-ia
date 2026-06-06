@@ -13,6 +13,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import {
   resolveEnrollmentFinancement,
   destinataireFacture,
@@ -110,7 +111,6 @@ export async function genererFactureParInscriptionAction(
   }
 
   const annee = new Date().getFullYear();
-  const numero = await genererNumeroFacture(annee);
   const lignes = [
     {
       designation: `Formation « ${enrollment.session.titreSession} » — participant ${traineeNom}`,
@@ -121,24 +121,27 @@ export async function genererFactureParInscriptionAction(
 
   let created: { id: string; numero: string };
   try {
-    created = await prisma.factureFormation.create({
-      data: {
-        numero,
-        sessionId: enrollment.session.id,
-        enrollmentId: enrollment.id,
-        destinataire,
-        destinataireNom,
-        ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
-        ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-        montantHtCents: resolved.montantHtCents,
-        tvaExoneree: true,
-        lignes: lignes as never,
-        subrogation: resolved.financementType === "opco" && enrollment.session.opcoSubrogation,
-        ...(resolved.numeroDossierOpco !== null
-          ? { numeroDossierOpco: resolved.numeroDossierOpco }
-          : {}),
-      },
-      select: { id: true, numero: true },
+    created = await withNumberRetry(async () => {
+      const numero = await genererNumeroFacture(annee);
+      return prisma.factureFormation.create({
+        data: {
+          numero,
+          sessionId: enrollment.session.id,
+          enrollmentId: enrollment.id,
+          destinataire,
+          destinataireNom,
+          ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
+          ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
+          montantHtCents: resolved.montantHtCents,
+          tvaExoneree: true,
+          lignes: lignes as never,
+          subrogation: resolved.financementType === "opco" && enrollment.session.opcoSubrogation,
+          ...(resolved.numeroDossierOpco !== null
+            ? { numeroDossierOpco: resolved.numeroDossierOpco }
+            : {}),
+        },
+        select: { id: true, numero: true },
+      });
     });
   } catch {
     return { error: "Erreur lors de la création de la facture." };
@@ -149,7 +152,7 @@ export async function genererFactureParInscriptionAction(
     targetType: "FactureFormation",
     targetId: created.id,
     changes: {
-      numero,
+      numero: created.numero,
       enrollmentId: enrollment.id,
       destinataire,
       montantHtCents: resolved.montantHtCents,
