@@ -15,6 +15,10 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  isTrainerHabilite,
+  type TrainerHabilitationFields,
+} from "@/server/qualiopi/trainers/trainers";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -248,4 +252,79 @@ export async function setTrainerActifAction(
   });
 
   return { data: { id } };
+}
+
+const assignTrainerSchema = z.object({
+  sessionId: z.string().uuid(),
+  /** null = retirer le formateur principal de la session. */
+  trainerId: z.string().uuid().nullable(),
+});
+
+/**
+ * Assigne (ou retire) le formateur principal d'une session — R9.
+ *
+ * BLOCAGE D'HABILITATION (off.6/19) : refuse si le formateur n'est pas habilité
+ * sur la formation de la session, inactif, ou sous-traitant non vérifié.
+ * `trainerId = null` retire l'assignation (toujours autorisé).
+ */
+export async function assignTrainerToSessionAction(
+  input: z.infer<typeof assignTrainerSchema>,
+): Promise<ActionResult<{ sessionId: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = assignTrainerSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId, trainerId } = parsed.data;
+
+  let trainingSession: { formationId: string } | null;
+  try {
+    trainingSession = await prisma.trainingSession.findUnique({
+      where: { id: sessionId },
+      select: { formationId: true },
+    });
+  } catch {
+    return { error: "Erreur lors de la lecture de la session" };
+  }
+  if (!trainingSession) return { error: "Session introuvable" };
+
+  if (trainerId !== null) {
+    let trainer: TrainerHabilitationFields | null;
+    try {
+      trainer = await prisma.trainer.findUnique({
+        where: { id: trainerId },
+        select: {
+          actif: true,
+          statut: true,
+          formationsHabilitees: true,
+          sousTraitantVerifieAt: true,
+        },
+      });
+    } catch {
+      return { error: "Erreur lors de la lecture du formateur" };
+    }
+    if (!trainer) return { error: "Formateur introuvable" };
+
+    const check = isTrainerHabilite(trainer, trainingSession.formationId);
+    if (!check.ok) {
+      return { error: `Assignation refusée : ${check.raison}` };
+    }
+  }
+
+  try {
+    await prisma.trainingSession.update({
+      where: { id: sessionId },
+      data: { formateurPrincipalId: trainerId },
+    });
+  } catch {
+    return { error: "Erreur lors de l'assignation du formateur" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.session.assign_formateur",
+    targetType: "TrainingSession",
+    targetId: sessionId,
+    changes: { formateurPrincipalId: trainerId },
+    session,
+  });
+
+  return { data: { sessionId } };
 }

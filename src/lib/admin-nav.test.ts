@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { buildAdminNav, ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 70 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19)", () => {
+  it("returns 71 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9)", () => {
     const items = buildAdminNav("admin-test-prefix");
-    expect(items.length).toBe(70);
+    expect(items.length).toBe(71);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

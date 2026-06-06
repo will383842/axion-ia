@@ -4991,6 +4991,10 @@ model TrainingSession {
   nbParticipantsReels          Int?                  @map("nb_participants_reels")
   /// [{ trainerId, role, heuresAnimees }] — 1 principal obligatoire.
   coFormateurs                 Json                  @default("[]") @map("co_formateurs")
+  /// Formateur principal assigné (R9) — la garde isTrainerHabilite empêche
+  /// d'assigner un formateur non habilité / sous-traitant non vérifié.
+  formateurPrincipalId         String?               @map("formateur_principal_id") @db.Uuid
+  formateurPrincipal           Trainer?              @relation("SessionFormateurPrincipal", fields: [formateurPrincipalId], references: [id], onDelete: SetNull)
   /// Récurrence (self-relation, max 52 occurrences).
   sessionParentId              String?               @map("session_parent_id") @db.Uuid
   sessionParent                TrainingSession?      @relation("SessionRecurrences", fields: [sessionParentId], references: [id], onDelete: SetNull)
@@ -5016,6 +5020,7 @@ model TrainingSession {
   @@index([dateDebut])
   @@index([sessionParentId])
   @@index([sessionReporteeId])
+  @@index([formateurPrincipalId])
   @@map("training_sessions")
 }
 
@@ -5041,6 +5046,8 @@ model Trainer {
   actif                Boolean       @default(true)
   createdAt            DateTime      @default(now()) @map("created_at")
   updatedAt            DateTime      @updatedAt @map("updated_at")
+
+  sessionsAnimees TrainingSession[] @relation("SessionFormateurPrincipal")
 
   @@index([statut])
   @@index([actif])

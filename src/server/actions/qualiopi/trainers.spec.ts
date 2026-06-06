@@ -7,12 +7,20 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
+const mockTrainerFindUnique = vi.fn();
+const mockSessionFindUnique = vi.fn();
+const mockSessionUpdate = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainer: {
       create: (...args: unknown[]) => mockCreate(...args),
       update: (...args: unknown[]) => mockUpdate(...args),
+      findUnique: (...args: unknown[]) => mockTrainerFindUnique(...args),
+    },
+    trainingSession: {
+      findUnique: (...args: unknown[]) => mockSessionFindUnique(...args),
+      update: (...args: unknown[]) => mockSessionUpdate(...args),
     },
   },
 }));
@@ -27,14 +35,19 @@ import {
   setTrainerHabilitationsAction,
   verifyTrainerSousTraitantAction,
   setTrainerActifAction,
+  assignTrainerToSessionAction,
 } from "./trainers";
 
 const FORMATION_ID = "11111111-1111-1111-1111-111111111111";
 const TRAINER_ID = "22222222-2222-2222-2222-222222222222";
+const SESSION_ID = "33333333-3333-3333-3333-333333333333";
 
 beforeEach(() => {
   mockCreate.mockReset();
   mockUpdate.mockReset();
+  mockTrainerFindUnique.mockReset();
+  mockSessionFindUnique.mockReset();
+  mockSessionUpdate.mockReset();
 });
 
 describe("createTrainerAction", () => {
@@ -109,5 +122,57 @@ describe("setTrainerActifAction", () => {
     expect(r).toEqual({ data: { id: TRAINER_ID } });
     const arg = mockUpdate.mock.calls[0]?.[0] as { data: { actif: boolean } };
     expect(arg.data.actif).toBe(false);
+  });
+});
+
+describe("assignTrainerToSessionAction (blocage habilitation)", () => {
+  it("assigne un formateur habilité", async () => {
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      formationsHabilitees: [FORMATION_ID],
+      sousTraitantVerifieAt: null,
+    });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toEqual({ data: { sessionId: SESSION_ID } });
+    const arg = mockSessionUpdate.mock.calls[0]?.[0] as { data: { formateurPrincipalId: string } };
+    expect(arg.data.formateurPrincipalId).toBe(TRAINER_ID);
+  });
+
+  it("REFUSE un formateur non habilité sur la formation", async () => {
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      formationsHabilitees: [], // pas habilité
+      sousTraitantVerifieAt: null,
+    });
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toHaveProperty("error");
+    if ("error" in r) expect(r.error).toContain("refusée");
+    expect(mockSessionUpdate).not.toHaveBeenCalled();
+  });
+
+  it("REFUSE un sous-traitant non vérifié", async () => {
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "sous_traitant",
+      formationsHabilitees: [FORMATION_ID],
+      sousTraitantVerifieAt: null,
+    });
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect("error" in r).toBe(true);
+    expect(mockSessionUpdate).not.toHaveBeenCalled();
+  });
+
+  it("autorise le retrait (trainerId = null) sans contrôle", async () => {
+    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
+    expect(r).toEqual({ data: { sessionId: SESSION_ID } });
+    expect(mockTrainerFindUnique).not.toHaveBeenCalled();
   });
 });
