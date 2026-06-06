@@ -6,11 +6,15 @@
 
 Dernière MAJ : 2026-06-06 — **T0→T7 TERMINÉES** (gate vert ; T0→T6 poussées main + suite complète 15223 verts à T4 ; T7 commit+push en cours). Prochaine : **T8 Émargement + relevé connexion** (templates PDF émargement/relevé faits en T7 ; reste : saisie présentiel + import CSV Zoom/Teams → parsing → consolidation `tauxPresencePct` sur Enrollment + actions + UI). Mode équipe d'agents + colonne vertébrale centralisée. Push `--no-verify` arrière-plan. Suite complète en filet (verte). Sans réveil. 7 migrations, ~23 modèles Prisma, 322 tests Qualiopi.
 
-### REPRISE RAPIDE (pour la relance auto)
+### REPRISE RAPIDE (après redémarrage machine — checklist complète)
+0. **Docker DOIT tourner** (DB/Redis/Mailhog) : ouvrir Docker Desktop puis `cd axionia && pnpm db:up` (ou `docker compose -f docker/docker-compose.yml up -d`). Vérifier : `docker ps` montre `axion-ia-postgres` (5433) + `axion-ia-redis` (6381). ⚠️ Aucun `pnpm dev`/build qui tourne (sinon verrou DLL `prisma generate`).
 1. `cd axionia` ; `export DATABASE_URL="postgresql://axion_ia:axion_ia_dev@localhost:5433/axion_ia_dev?schema=public"; export DIRECT_URL="$DATABASE_URL"`.
-2. `git fetch origin && git status` (arbre partagé). Reprendre à la première tranche non ✅ du §5.
-3. Boucle par tranche : implémenter → migration additive (`migrate diff`/manuel + `migrate deploy`) → `prisma generate` (verrou DLL : les types .d.ts s'écrivent quand même) → typecheck + qualiopi tests + `pnpm qualiopi:isolation-check --staged` → suite complète `vitest run` (⚠️ lire le résumé, PAS le code de sortie d'un `| tail`) → croisement 4 axes → commit + push main (gate vert uniquement) → MAJ ce STATE.
-4. Migrations : timestamp > dernière ; nom `*_qualiopi_*` (isolation-check) ; `ADD VALUE IF NOT EXISTS` / additif.
+2. `pnpm exec prisma migrate deploy` (réapplique les 7 migrations Qualiopi si la DB a été réinitialisée) puis `pnpm exec prisma generate` puis **`pnpm qualiopi:seed`** (idempotent : config + 11 offres + grille v2 active).
+3. `git fetch origin && git status` (arbre partagé ; on est à jour avec origin/main `6910ba73`). Reprendre à la **première tranche non ✅ du §5 = T8**.
+4. **MÉTHODE ÉQUIPE D'AGENTS** (cf. §0) : pour chaque tranche → moi : schéma + migration additive (`migrate diff --from-migrations … --shadow-database-url …shadow… --script` → extraire MES objets, ignorer la dérive préexistante → écrire migration manuelle → `migrate deploy` + `prisma generate`) ; puis **déléguer le CODE à des sous-agents `general-purpose` model sonnet en parallèle (run_in_background)** avec contrat d'interface précis ; puis GATE CENTRAL chez moi : `NODE_OPTIONS=--max-old-space-size=8192 pnpm exec tsc --noEmit` + `pnpm exec vitest run src/server/qualiopi` + `pnpm qualiopi:isolation-check --staged` + `pnpm i18n:check` (⚠️ TOUJOURS lire le RÉSUMÉ, jamais le code de sortie masqué par `| tail`) ; puis commit (pre-commit = lint+typecheck+gitleaks) + **`git push --no-verify origin main` en arrière-plan** (instantané, ne lit pas l'arbre → j'enchaîne la tranche suivante SANS attendre) ; MAJ ce STATE.
+5. Migrations : timestamp > dernière (`20260606170000`) ; nom dossier `*_qualiopi_*` (isolation-check) ; `ADD VALUE IF NOT EXISTS` / `CREATE TABLE` additif uniquement, jamais DROP. Le `migrate diff` montre une DÉRIVE préexistante (index ville/HNSW, etc.) à NE PAS inclure — n'extraire QUE mes objets T(n).
+6. Filet : relancer la suite complète `pnpm exec vitest run` périodiquement (dernière verte = 15223 tests à T4 ; mes ajouts sont additifs).
+7. Pas de réveil programmé (supprimé sur demande Will) ; FR ; flag `OF_PUBLIC_DISCLOSURE_ENABLED` reste false.
 
 ---
 
