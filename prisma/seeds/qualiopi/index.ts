@@ -17,6 +17,7 @@ import {
 } from "../../../src/server/qualiopi/config/registry";
 import { seedOffresSite } from "./offres";
 import { seedGrilleQualite } from "./grille";
+import { seedGrilleV2 } from "./grille-v2";
 
 const prisma = new PrismaClient();
 
@@ -56,6 +57,7 @@ async function main(): Promise<void> {
   await seedQualiopiConfig();
   await seedOffresSite(prisma);
   await seedGrilleQualite(prisma);
+  await seedGrilleV2(prisma);
 }
 
 main()

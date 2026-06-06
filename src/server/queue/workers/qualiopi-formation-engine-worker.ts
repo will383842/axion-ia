@@ -39,9 +39,16 @@ import {
   buildRefineUserPrompt,
   buildContentSystemPrompt,
   buildContentUserPrompt,
+  buildBackwardDesignSystemPrompt,
+  buildBackwardDesignUserPrompt,
+  buildPersonaSystemPrompt,
+  buildPersonaUserPrompt,
 } from "@/server/qualiopi/engine/prompts";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
 import { hasUnsourcedClaims } from "@/server/qualiopi/engine/anti-hallucination";
+// Modules créés par l'autre agent — importés en avance (erreurs "Cannot find module" transitoires)
+import { runAdversarialCritique } from "@/server/qualiopi/engine/adversarial-critique";
+import { validateExcellence } from "@/server/qualiopi/engine/validation-excellence";
 import type {
   FormationStatutGeneration,
   ModaliteFormation,
@@ -69,6 +76,11 @@ interface FormationForEngine {
   ratioPratiquePct: number | null;
   aiPromptVersion: number | null;
   langueGeneration: string;
+  /**
+   * Public visé — dérivé de offreSite.publicViseFr (optionnel).
+   * Absent si l'offre n'est pas chargée (fail-soft → buildPersonaUserPrompt accepte "").
+   */
+  publicVise?: string | null;
 }
 
 // ── Trace FormationGenerationJob ─────────────────────────────────────────────
@@ -245,6 +257,300 @@ async function stepGenerateStructure(
   });
 }
 
+// ── Étape T5-A : backwardDesign ───────────────────────────────────────────────
+
+/**
+ * Phase -1 : Backward Design.
+ * Idempotent : si programmeDetaille.backwardDesign déjà présent, retourne-le sans appel IA.
+ */
+async function stepBackwardDesign(
+  formation: FormationForEngine,
+  passesCourantes: number,
+): Promise<Record<string, unknown>> {
+  // Idempotence — ne pas refaire si déjà calculé
+  const current =
+    formation.programmeDetaille !== null && formation.programmeDetaille !== undefined
+      ? (formation.programmeDetaille as Record<string, unknown>)
+      : null;
+  if (current?.backwardDesign !== undefined && current.backwardDesign !== null) {
+    console.log(
+      `[qualiopi:engine] formation=${formation.id} backwardDesign — cache hit (idempotent)`,
+    );
+    return current.backwardDesign as Record<string, unknown>;
+  }
+
+  const grille = await getActiveGrille();
+  const promptVersion = grille?.promptVersion ?? formation.aiPromptVersion ?? 1;
+  const langue = formation.langueGeneration;
+
+  const systemPrompt = buildBackwardDesignSystemPrompt();
+  const userPrompt = buildBackwardDesignUserPrompt({
+    titre: formation.titre,
+    dureeHeures: formation.dureeHeures,
+    modalite: formation.modalite as string,
+    objectifsPedagogiques: formation.objectifsPedagogiques,
+    ...(formation.publicVise != null ? { publicVise: formation.publicVise } : {}),
+  });
+
+  const cacheKey = buildCacheKey(userPrompt, promptVersion, langue);
+  const cached = await getCachedIa(cacheKey);
+
+  if (cached) {
+    await traceGenerationJob({
+      formationId: formation.id,
+      etape: "backward_design",
+      tentative: passesCourantes + 1,
+      status: "cache_hit",
+      tokensIn: 0,
+      tokensOut: 0,
+      coutUsd: 0,
+      modele: cached.modele,
+      dureeMs: 0,
+      cacheHit: true,
+    });
+    const val = typeof cached.valeur === "string" ? parseOutputSafe(cached.valeur) : cached.valeur;
+    return (val ?? {}) as Record<string, unknown>;
+  }
+
+  await assertCostCapAvailable("anthropic", 0.05);
+  const startMs = Date.now();
+
+  const resp = await withRetry(() =>
+    anthropicProvider.generate({
+      jobId: formation.id,
+      contentType: "formation_backward_design",
+      role: "text",
+      systemPrompt,
+      userPrompt,
+      maxTokens: 2048,
+      temperature: 0.2,
+    }),
+  );
+
+  const dureeMs = Date.now() - startMs;
+
+  await trackCost({
+    jobId: formation.id,
+    provider: "anthropic",
+    model: resp.model,
+    tokensInput:
+      resp.tokensInput + (resp.cacheReadInputTokens ?? 0) + (resp.cacheCreationInputTokens ?? 0),
+    tokensOutput: resp.tokensOutput,
+    costUsd: resp.costUsd,
+  });
+
+  await setCachedIa({
+    cle: cacheKey,
+    valeur: resp.output,
+    modele: resp.model,
+    tokensIn: resp.tokensInput,
+    tokensOut: resp.tokensOutput,
+    coutUsd: resp.costUsd,
+    promptVersion,
+    ttlSeconds: 7 * 24 * 3600,
+  });
+
+  await traceGenerationJob({
+    formationId: formation.id,
+    etape: "backward_design",
+    tentative: passesCourantes + 1,
+    status: "success",
+    tokensIn: resp.tokensInput,
+    tokensOut: resp.tokensOutput,
+    coutUsd: resp.costUsd,
+    modele: resp.model,
+    dureeMs,
+    cacheHit: false,
+  });
+
+  const parsed = parseOutputSafe(resp.output);
+  return (parsed ?? {}) as Record<string, unknown>;
+}
+
+// ── Étape T5-B : persona ──────────────────────────────────────────────────────
+
+/**
+ * Phase -1 : Persona stagiaire.
+ * Idempotent : si programmeDetaille.persona déjà présent, retourne-le sans appel IA.
+ */
+async function stepPersona(
+  formation: FormationForEngine,
+  passesCourantes: number,
+): Promise<Record<string, unknown>> {
+  // Idempotence — ne pas refaire si déjà calculé
+  const current =
+    formation.programmeDetaille !== null && formation.programmeDetaille !== undefined
+      ? (formation.programmeDetaille as Record<string, unknown>)
+      : null;
+  if (current?.persona !== undefined && current.persona !== null) {
+    console.log(`[qualiopi:engine] formation=${formation.id} persona — cache hit (idempotent)`);
+    return current.persona as Record<string, unknown>;
+  }
+
+  const grille = await getActiveGrille();
+  const promptVersion = grille?.promptVersion ?? formation.aiPromptVersion ?? 1;
+  const langue = formation.langueGeneration;
+
+  const publicVise = formation.publicVise ?? "";
+  // contexteIa : si modalité sur-mesure ou si publicVise mentionne l'IA
+  const contexteIa =
+    typeof formation.modalite === "string" && formation.modalite.includes("sur_mesure")
+      ? "Formation sur mesure — adapter le persona à un contexte spécifique d'entreprise"
+      : undefined;
+
+  const systemPrompt = buildPersonaSystemPrompt();
+  const userPrompt = buildPersonaUserPrompt(publicVise, contexteIa);
+
+  const cacheKey = buildCacheKey(userPrompt, promptVersion, langue);
+  const cached = await getCachedIa(cacheKey);
+
+  if (cached) {
+    await traceGenerationJob({
+      formationId: formation.id,
+      etape: "persona",
+      tentative: passesCourantes + 1,
+      status: "cache_hit",
+      tokensIn: 0,
+      tokensOut: 0,
+      coutUsd: 0,
+      modele: cached.modele,
+      dureeMs: 0,
+      cacheHit: true,
+    });
+    const val = typeof cached.valeur === "string" ? parseOutputSafe(cached.valeur) : cached.valeur;
+    return (val ?? {}) as Record<string, unknown>;
+  }
+
+  await assertCostCapAvailable("anthropic", 0.05);
+  const startMs = Date.now();
+
+  const resp = await withRetry(() =>
+    anthropicProvider.generate({
+      jobId: formation.id,
+      contentType: "formation_persona",
+      role: "text",
+      systemPrompt,
+      userPrompt,
+      maxTokens: 2048,
+      temperature: 0.3,
+    }),
+  );
+
+  const dureeMs = Date.now() - startMs;
+
+  await trackCost({
+    jobId: formation.id,
+    provider: "anthropic",
+    model: resp.model,
+    tokensInput:
+      resp.tokensInput + (resp.cacheReadInputTokens ?? 0) + (resp.cacheCreationInputTokens ?? 0),
+    tokensOutput: resp.tokensOutput,
+    costUsd: resp.costUsd,
+  });
+
+  await setCachedIa({
+    cle: cacheKey,
+    valeur: resp.output,
+    modele: resp.model,
+    tokensIn: resp.tokensInput,
+    tokensOut: resp.tokensOutput,
+    coutUsd: resp.costUsd,
+    promptVersion,
+    ttlSeconds: 7 * 24 * 3600,
+  });
+
+  await traceGenerationJob({
+    formationId: formation.id,
+    etape: "persona",
+    tentative: passesCourantes + 1,
+    status: "success",
+    tokensIn: resp.tokensInput,
+    tokensOut: resp.tokensOutput,
+    coutUsd: resp.costUsd,
+    modele: resp.model,
+    dureeMs,
+    cacheHit: false,
+  });
+
+  const parsed = parseOutputSafe(resp.output);
+  return (parsed ?? {}) as Record<string, unknown>;
+}
+
+// ── Étape T5-C : adversarialCritique ─────────────────────────────────────────
+
+/**
+ * Critique adversariale de la structure générée.
+ * Idempotent : si programmeDetaille.adversarialCritique déjà présent, retourne-le sans appel IA.
+ * Fail-soft : si le module n'est pas encore disponible, retourne null sans bloquer le pipeline.
+ */
+// Type du résultat de critique (aligné sur ce que runAdversarialCritique retourne)
+type AdversarialCritiqueResult = Awaited<ReturnType<typeof runAdversarialCritique>>;
+
+async function stepAdversarialCritique(
+  formation: FormationForEngine,
+  passesCourantes: number,
+): Promise<AdversarialCritiqueResult | null> {
+  // Idempotence — ne pas refaire si déjà calculé
+  const current =
+    formation.programmeDetaille !== null && formation.programmeDetaille !== undefined
+      ? (formation.programmeDetaille as Record<string, unknown>)
+      : null;
+  if (current?.adversarialCritique !== undefined && current.adversarialCritique !== null) {
+    console.log(
+      `[qualiopi:engine] formation=${formation.id} adversarialCritique — cache hit (idempotent)`,
+    );
+    return current.adversarialCritique as AdversarialCritiqueResult;
+  }
+
+  try {
+    const structure = formation.programmeDetaille
+      ? JSON.stringify(formation.programmeDetaille)
+      : "{}";
+    const persona =
+      current?.persona !== undefined && current.persona !== null
+        ? (current.persona as Record<string, unknown>)
+        : undefined;
+    const backwardDesign =
+      current?.backwardDesign !== undefined && current.backwardDesign !== null
+        ? (current.backwardDesign as Record<string, unknown>)
+        : undefined;
+
+    const result = await runAdversarialCritique({
+      formationId: formation.id,
+      structure,
+      persona,
+      backwardDesign,
+    });
+
+    await traceGenerationJob({
+      formationId: formation.id,
+      etape: "adversarial_critique",
+      tentative: passesCourantes + 1,
+      status: "success",
+      tokensIn: result.meta.tokensInput,
+      tokensOut: result.meta.tokensOutput,
+      coutUsd: result.meta.costUsd,
+      modele: result.meta.model,
+      dureeMs: null,
+      cacheHit: false,
+      metadata: {
+        scoreGlobal: result.scoreGlobal,
+        verdict: result.verdict,
+        axesAmelioration: result.axesAmelioration,
+      },
+    });
+
+    return result;
+  } catch (err) {
+    // Fail-soft : module peut ne pas encore exister — ne bloque pas le pipeline
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} adversarialCritique fail-soft:`,
+      err instanceof Error ? err.message : String(err),
+    );
+    return null;
+  }
+}
+
 // ── Étape 2 : evaluateQuality ─────────────────────────────────────────────────
 
 async function stepEvaluateQuality(
@@ -276,6 +582,18 @@ async function stepEvaluateQuality(
     scorePlancher: grille.scorePlancher,
   });
 
+  // T5 — validateExcellence (fail-soft si module absent)
+  let excellenceResult: ReturnType<typeof validateExcellence> | null = null;
+  try {
+    excellenceResult = validateExcellence(formation.programmeDetaille as Record<string, unknown>);
+  } catch (err) {
+    // Fail-soft : module peut ne pas encore exister
+    console.warn(
+      `[qualiopi:engine] formation=${formation.id} validateExcellence fail-soft:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
   await traceGenerationJob({
     formationId: formation.id,
     etape: "evaluation",
@@ -291,6 +609,15 @@ async function stepEvaluateQuality(
       scoreGlobal: result.scoreGlobal,
       valide: result.valide,
       parCritere: result.parCritere,
+      // T5 — excellence metadata
+      ...(excellenceResult !== null
+        ? {
+            excellenceVerdict: excellenceResult.verdict,
+            excellenceAxesCorrection: excellenceResult.axesCorrection,
+            filRougeOk: excellenceResult.filRougeOk,
+            livrablesOk: excellenceResult.livrablesOk,
+          }
+        : {}),
     },
   });
 
@@ -588,6 +915,10 @@ export async function formationEngineWorkerHandler(
       aiPromptVersion: true,
       langueGeneration: true,
       statutGeneration: true,
+      // T5 — Backward Design + Persona : charger publicVise depuis l'offre rattachée
+      offreSite: {
+        select: { publicViseFr: true },
+      },
     },
   });
 
@@ -613,14 +944,38 @@ export async function formationEngineWorkerHandler(
     ratioPratiquePct: row.ratioPratiquePct,
     aiPromptVersion: row.aiPromptVersion,
     langueGeneration: row.langueGeneration,
+    // T5 — Public visé depuis l'offre (fail-soft : null si absent)
+    publicVise: row.offreSite?.publicViseFr ?? null,
   };
 
   switch (statut) {
     case "intention": {
-      // Génération structure
+      // T5 — Phase -1 : Backward Design + Persona (en parallèle, avant la structure)
+      const [backwardDesign, persona] = await Promise.all([
+        stepBackwardDesign(f, passesCourantes),
+        stepPersona(f, passesCourantes),
+      ]);
+
+      // Merger backward design + persona dans programmeDetaille AVANT de générer la structure
+      // (pour que buildStructureUserPrompt injecte le persona)
+      const currentProgramme =
+        f.programmeDetaille !== null && f.programmeDetaille !== undefined
+          ? (f.programmeDetaille as Record<string, unknown>)
+          : {};
+      const mergedPreStructure = { ...currentProgramme, backwardDesign, persona };
+
+      // Persister les résultats T5 pré-structure en DB
+      await advanceStatut(formationId, "intention", {
+        programmeDetaille: mergedPreStructure,
+      });
+
+      // Mettre à jour f en mémoire pour que stepGenerateStructure ait le persona
+      f.programmeDetaille = mergedPreStructure;
+
+      // Génération structure (buildStructureUserPrompt injectera le persona)
       await stepGenerateStructure(f, passesCourantes);
 
-      // Recharger la formation mise à jour (programmeDetaille changé)
+      // Recharger la formation mise à jour (programmeDetaille changé par stepGenerateStructure)
       const updated = await prisma.formation.findUnique({
         where: { id: formationId },
         select: {
@@ -642,6 +997,56 @@ export async function formationEngineWorkerHandler(
     }
 
     case "structure_generee": {
+      // T5 — Critique adversariale AVANT l'évaluation qualité
+      const critique = await stepAdversarialCritique(f, passesCourantes);
+
+      if (critique !== null) {
+        // Persister adversarialCritique dans programmeDetaille
+        const currentProg =
+          f.programmeDetaille !== null && f.programmeDetaille !== undefined
+            ? (f.programmeDetaille as Record<string, unknown>)
+            : {};
+        const mergedWithCritique = { ...currentProg, adversarialCritique: critique };
+
+        // Conserver le statut structure_generee (pas de transition de statut ici — juste update champ)
+        await advanceStatut(formationId, "structure_generee", {
+          programmeDetaille: mergedWithCritique,
+        });
+        f.programmeDetaille = mergedWithCritique;
+
+        // Si verdict CRITIQUE → forcer un refine en injectant les axes d'amélioration
+        if (
+          critique.verdict === "CRITIQUE" &&
+          Array.isArray(critique.axesAmelioration) &&
+          critique.axesAmelioration.length > 0
+        ) {
+          console.log(
+            `[qualiopi:engine] formation=${formationId} adversarialCritique verdict=CRITIQUE → refine forcé`,
+          );
+          const consignesCritique = [
+            "⚠️ Critique adversariale — axes d'amélioration prioritaires :",
+            ...critique.axesAmelioration.map((a) => `- ${String(a)}`),
+          ].join("\n");
+
+          await stepRefine(f, passesCourantes, 0, consignesCritique);
+
+          // Recharger après refine
+          const updatedAfterRefine = await prisma.formation.findUnique({
+            where: { id: formationId },
+            select: {
+              programmeDetaille: true,
+              methodesPedagogiques: true,
+              objectifsPedagogiques: true,
+            },
+          });
+          if (updatedAfterRefine) {
+            f.programmeDetaille = updatedAfterRefine.programmeDetaille;
+            f.methodesPedagogiques = updatedAfterRefine.methodesPedagogiques;
+            f.objectifsPedagogiques = updatedAfterRefine.objectifsPedagogiques;
+          }
+        }
+      }
+
       const evalResult = await stepEvaluateQuality(f, passesCourantes);
       await handleEvalDecision(f, passesCourantes, evalResult);
       break;

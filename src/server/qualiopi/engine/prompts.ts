@@ -42,7 +42,7 @@ export interface FormationLike {
     type: string;
     activites: string[];
   };
-  publicVise?: string;
+  publicVise?: string | null;
   niveauExpertise?: string;
   objectifGeneral?: string;
   nbModulesMin?: number;
@@ -105,17 +105,37 @@ export function buildStructureUserPrompt(formation: FormationLike): string {
       : JSON.stringify(formation.objectifsPedagogiques)
     : (formation.objectifGeneral ?? "À définir selon le niveau des apprenants");
 
-  return `Génère un plan de formation structuré en JSON pour :
+  // Injection du persona si disponible dans programmeDetaille
+  const programmeDetaille =
+    formation.programmeDetaille !== null && formation.programmeDetaille !== undefined
+      ? typeof formation.programmeDetaille === "object"
+        ? (formation.programmeDetaille as Record<string, unknown>)
+        : null
+      : null;
+
+  const personaSection =
+    programmeDetaille?.persona !== undefined && programmeDetaille.persona !== null
+      ? `PERSONA STAGIAIRE (à intégrer dans la conception) :
+${typeof programmeDetaille.persona === "string" ? programmeDetaille.persona : JSON.stringify(programmeDetaille.persona, null, 2)}
+
+`
+      : "";
+
+  return `${personaSection}Génère un plan de formation structuré en JSON pour :
 
 Titre : ${titre}
 Durée totale : ${duree} heure(s)
 Modalité : ${modalite}
 Objectifs pédagogiques : ${objectifsStr}
 
-Format JSON attendu :
+Format JSON attendu (champs additifs obligatoires : fil_rouge, livrables_j0, livrables_j1, livrables_j30) :
 {
   "titre": "...",
   "objectifs": ["verbe + résultat mesurable", ...],
+  "fil_rouge": "description du projet fil rouge ou mise en situation traversante sur toute la formation",
+  "livrables_j0": ["livrable ou action que le stagiaire peut faire dès le premier jour", ...],
+  "livrables_j1": ["livrable ou action que le stagiaire peut faire après 1 semaine", ...],
+  "livrables_j30": ["résultat ou impact mesurable attendu à 30 jours post-formation", ...],
   "modules": [
     {
       "ordre": 1,
@@ -263,6 +283,170 @@ Règles de rédaction :
 ${AI_ACT_NOTICE}
 
 Réponds en markdown structuré (titres ## et ###, listes -).`;
+}
+
+// ── Backward Design (phase −1) ────────────────────────────────────────────────
+
+/**
+ * System prompt Backward Design — phase -1 du pipeline.
+ * Génère les 3 phases (résultats, preuves, activités) AVANT la structure.
+ */
+export function buildBackwardDesignSystemPrompt(): string {
+  return `Tu es un expert en ingénierie pédagogique appliquant la méthode Backward Design (Wiggins & McTighe, 2005).
+Tu travailles pour un organisme de formation certifié Qualiopi (RNQ 2022).
+
+Méthode en 3 phases (à respecter dans l'ordre) :
+1. PHASE RÉSULTATS : Quels résultats durables les stagiaires doivent-ils obtenir à 30 jours post-formation ?
+   - Résultats formulés en termes de comportements observables et mesurables
+   - Liés aux objectifs métier réels (pas seulement aux connaissances)
+   - Minimum 3 résultats, maximum 7
+
+2. PHASE PREUVES : Quelles preuves tangibles valideront l'atteinte de ces résultats ?
+   - Évaluations formatives et sommatives
+   - Livrables concrets (outil, document, action en situation réelle)
+   - Critères de réussite mesurables
+
+3. PHASE ACTIVITÉS : Quelles activités d'apprentissage produiront ces preuves ?
+   - Séquence pédagogique progressive (du simple au complexe)
+   - Ratio pratique minimum 60 % (Qualiopi indicateur 9)
+   - Lien explicite entre activité → preuve → résultat
+
+Règles absolues :
+- Aucune allégation chiffrée sans source vérifiable
+- Contenu 100 % en français professionnel
+- Verbes d'action (taxonomie de Bloom niveaux 3-6 pour les résultats)
+
+${AI_ACT_NOTICE}
+
+Réponds UNIQUEMENT en JSON valide (pas de markdown autour).`;
+}
+
+/**
+ * User prompt Backward Design — construit depuis une formation.
+ * Sortie JSON : { phase_resultats, phase_preuves, phase_activites }
+ */
+export function buildBackwardDesignUserPrompt(formation: FormationLike): string {
+  const titre = formation.titre ?? formation.titreFr ?? "Formation";
+  const duree = formation.dureeHeures ?? 8;
+  const modalite = formation.modalite ?? "presentiel";
+  const publicVise = formation.publicVise ?? "professionnels en activité";
+  const objectifGeneral = formation.objectifGeneral ?? "À préciser";
+
+  const objectifsStr = formation.objectifsPedagogiques
+    ? typeof formation.objectifsPedagogiques === "string"
+      ? formation.objectifsPedagogiques
+      : JSON.stringify(formation.objectifsPedagogiques)
+    : objectifGeneral;
+
+  return `Applique la méthode Backward Design pour la formation suivante :
+
+Titre : ${titre}
+Durée : ${duree} heure(s)
+Modalité : ${modalite}
+Public visé : ${publicVise}
+Objectifs pédagogiques : ${objectifsStr}
+
+Retourne un JSON de la forme :
+{
+  "phase_resultats": [
+    {
+      "libelle": "Résultat observable et mesurable à 30j",
+      "indicateur_mesure": "Comment mesurer ce résultat concrètement"
+    }
+  ],
+  "phase_preuves": [
+    {
+      "type": "livrable|evaluation_formative|evaluation_sommative|mise_en_situation",
+      "description": "Description de la preuve",
+      "criteres_reussite": ["critère 1 mesurable", ...],
+      "resultats_associes": [0]
+    }
+  ],
+  "phase_activites": [
+    {
+      "ordre": 1,
+      "type": "decouverte|approfondissement|pratique|evaluation|synthese",
+      "description": "Description de l'activité",
+      "duree_estimee_minutes": 60,
+      "preuves_produites": [0],
+      "ratio_pratique": 0.7
+    }
+  ]
+}`;
+}
+
+// ── Persona stagiaire ─────────────────────────────────────────────────────────
+
+/**
+ * System prompt Persona — construit un profil psycho-pédagogique du stagiaire type.
+ */
+export function buildPersonaSystemPrompt(): string {
+  return `Tu es un expert en psychologie de l'apprentissage et en ingénierie de formation adulte.
+Tu construis des personas pédagogiques précis pour permettre la personnalisation des formations professionnelles.
+
+Un persona pédagogique doit permettre au formateur de :
+- Adapter le registre de langage et les exemples concrets
+- Anticiper les résistances et les freins à l'apprentissage
+- Choisir les méthodes pédagogiques les plus efficaces
+- Calibrer le rythme et la difficulté
+
+Règles de construction :
+- Persona basé sur des patterns réels (pas des stéréotypes)
+- Motivations INTRINSÈQUES (pas seulement extrinsèques)
+- Freins réalistes et non condescendants
+- Recommandations pédagogiques directement actionnables
+- Aucune donnée personnelle ou discriminante
+
+${AI_ACT_NOTICE}
+
+Réponds UNIQUEMENT en JSON valide (pas de markdown autour).`;
+}
+
+/**
+ * User prompt Persona — construit depuis le public visé et le contexte IA optionnel.
+ * Sortie JSON : { profil, motivations, freins, style_apprentissage, recommandations_pedago }
+ */
+export function buildPersonaUserPrompt(
+  publicVise: string | null | undefined,
+  contexteIa?: string,
+): string {
+  const contexteSection = contexteIa ? `\nContexte IA spécifique : ${contexteIa}\n` : "";
+
+  return `Construis le persona pédagogique détaillé pour le public suivant :
+
+Public visé : ${publicVise || "professionnels en activité souhaitant monter en compétences"}${contexteSection}
+
+Retourne un JSON de la forme :
+{
+  "profil": {
+    "description": "Portrait synthétique du stagiaire type (3-5 phrases)",
+    "experience_professionnelle": "Niveau et domaine d'expérience typique",
+    "rapport_a_la_formation": "Comment il vit généralement les formations professionnelles",
+    "rapport_au_numerique": "Niveau d'aisance numérique et outils habituels"
+  },
+  "motivations": {
+    "intrinseques": ["motivation profonde 1", ...],
+    "extrinseques": ["motivation externe 1 (obligation, contrainte, opportunité)", ...],
+    "declencheur_inscription": "Ce qui a déclenché l'inscription à cette formation"
+  },
+  "freins": {
+    "apprentissage": ["frein cognitif ou pédagogique", ...],
+    "organisationnels": ["contrainte de temps, hiérarchie, budget", ...],
+    "psychologiques": ["syndrome de l'imposteur, peur de l'échec, etc.", ...]
+  },
+  "style_apprentissage": {
+    "dominant": "visuel|auditif|kinesthesique|lecture_ecriture",
+    "preferences": ["apprend mieux par...", ...],
+    "rythme": "rapide|moderé|lent — avec justification",
+    "autonomie": "haut|moyen|faible — avec justification"
+  },
+  "recommandations_pedago": [
+    {
+      "aspect": "Ex: exemples concrets",
+      "action": "Action concrète pour le formateur"
+    }
+  ]
+}`;
 }
 
 /** User prompt contenu — depuis un objet Formation ou un contentInput du worker. */
