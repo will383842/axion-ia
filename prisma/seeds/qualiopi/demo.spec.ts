@@ -177,12 +177,15 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
     expect(data.revueDirection.indicateursSnapshot).toBeTruthy();
   });
 
-  // ── Indicateur 30 — Appréciations multi-parties ──────────────────────────
+  // ── Indicateur 30 — Appréciations multi-parties (T17 : 4 sources) ───────
 
-  it("indicateur 30 : appréciations stagiaire ET entreprise, notes ≥ 4", () => {
+  it("indicateur 30 : appréciations stagiaire, entreprise, financeur ET formateur, notes ≥ 4", () => {
     const sources = data.appreciations.map((a) => a.source);
     expect(sources).toContain("stagiaire");
     expect(sources).toContain("entreprise");
+    expect(sources).toContain("financeur");
+    expect(sources).toContain("formateur");
+    expect(data.appreciations).toHaveLength(4);
     for (const a of data.appreciations) {
       expect(a.note).toBeGreaterThanOrEqual(4);
       expect(a.commentaire).toBeTruthy();
@@ -225,17 +228,73 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
     expect(data.attestation.qrToken.length).toBeGreaterThan(20);
   });
 
+  // ── Indicateur 21 — Formateur salarié avec CV (T17) ──────────────────────
+
+  it("indicateur 21 : trainer salarié avec cvUrl, cvUploadedAt et email DEMO", () => {
+    expect(data.trainer.statut).toBe("salarie");
+    expect(data.trainer.cvUrl).toBeTruthy();
+    expect(data.trainer.cvUploadedAt).toBeInstanceOf(Date);
+    expect(data.trainer.email).toMatch(/@demo\.axion-ia\.invalid$/);
+  });
+
+  // ── Indicateur 26 — Référent handicap SiteSettings (T17) ─────────────────
+
+  it("indicateur 26 : 3 SiteSettings référent handicap (nom, email, téléphone) catégorie qualiopi", () => {
+    expect(data.siteSettings).toHaveLength(3);
+    const keys = data.siteSettings.map((s) => s.key);
+    expect(keys).toContain("referent_handicap_nom");
+    expect(keys).toContain("referent_handicap_email");
+    expect(keys).toContain("referent_handicap_telephone");
+    for (const s of data.siteSettings) {
+      expect(s.category).toBe("qualiopi");
+      expect(s.value).toBeTruthy();
+      expect(s.description).toBeTruthy();
+    }
+  });
+
+  // ── Indicateurs 1/2 — Indicateurs publiés sur la formation (T17) ─────────
+
+  it("indicateurs 1/2 : formation démo avec indicateursPublies ≥ 3 + methodeCalculIndicateurs", () => {
+    expect(data.formation.indicateursPublies.length).toBeGreaterThanOrEqual(3);
+    for (const ind of data.formation.indicateursPublies) {
+      expect(ind.libelle).toBeTruthy();
+      expect(ind.valeur).toBeGreaterThan(0);
+      expect(ind.unite).toBeTruthy();
+      expect(ind.annee).toBeGreaterThanOrEqual(2025);
+    }
+    expect(data.formation.methodeCalculIndicateurs.length).toBeGreaterThan(50);
+    expect(data.formation.indicateursPubliesAt).toBeInstanceOf(Date);
+  });
+
+  // ── Indicateur 27 — Sous-traitant avec screenshot (T17) ──────────────────
+
+  it("indicateur 27 : sousTraitant avec screenshotUrl et screenshotDate renseignés", () => {
+    expect(data.sousTraitant.screenshotUrl).toBeTruthy();
+    expect(data.sousTraitant.screenshotDate).toBeInstanceOf(Date);
+  });
+
+  // ── BPF Dépense (T17 · CLUSTER 5) ────────────────────────────────────────
+
+  it("BPF : dépense démo renseignée (annee, catégorie, libellé, montant > 0)", () => {
+    expect(data.bpfDepense.annee).toBeGreaterThanOrEqual(2026);
+    expect(data.bpfDepense.categorie).toBeTruthy();
+    expect(data.bpfDepense.libelle).toContain("[DEMO]");
+    expect(data.bpfDepense.montantHtCents).toBeGreaterThan(0);
+  });
+
   // ── Couverture complète du cycle ──────────────────────────────────────────
 
-  it("le jeu de données couvre les 17 entités du cycle complet", () => {
-    // Client, Devis, Formation, Session, Stagiaires (2), Enrollments (2),
-    // Présences (4), Évaluations (4), Questionnaires (4),
-    // Attestation, Facture, Réclamation, Veilles (3),
-    // Partenariat, SousTraitant, RevueDirection, Appréciations (2)
+  it("le jeu de données couvre les 21 entités du cycle complet (T17)", () => {
+    // Client, Devis, Formation (avec indicateurs), Session (avec coFormateur),
+    // Trainer, Stagiaires (2), Enrollments (2), Présences (4), Évaluations (4),
+    // Questionnaires (4), Attestation, Facture, Réclamation, Veilles (3),
+    // Partenariat, SousTraitant (avec screenshot), RevueDirection,
+    // Appréciations (4), SiteSettings (3), BpfDepense
     expect(data.client).toBeTruthy();
     expect(data.devis).toBeTruthy();
     expect(data.formation).toBeTruthy();
     expect(data.session).toBeTruthy();
+    expect(data.trainer).toBeTruthy();
     expect(data.stagiaires).toHaveLength(2);
     expect(data.enrollments).toHaveLength(2);
     expect(data.presences).toHaveLength(4);
@@ -248,6 +307,8 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
     expect(data.partenariat).toBeTruthy();
     expect(data.sousTraitant).toBeTruthy();
     expect(data.revueDirection).toBeTruthy();
-    expect(data.appreciations).toHaveLength(2);
+    expect(data.appreciations).toHaveLength(4);
+    expect(data.siteSettings).toHaveLength(3);
+    expect(data.bpfDepense).toBeTruthy();
   });
 });

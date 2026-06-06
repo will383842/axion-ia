@@ -1,9 +1,10 @@
 /**
- * Tests — conformite-service.ts (T12 — AGENT B).
+ * Tests — conformite-service.ts (T12 — AGENT B, T17 — CLUSTER 2).
  *
- * Stratégie : mock @/lib/prisma.
+ * Stratégie : mock @/lib/prisma + @/server/qualiopi/config/site-settings.
  * Vérifie la structure du résultat, le calcul du score (couverts/applicables),
  * le comportement stub.invalid, et que les 32 indicateurs sont présents.
+ * Couvre aussi off.21 (cvUrl), off.26 (referent_handicap_nom), off.30 (appreciation.count).
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -17,7 +18,7 @@ vi.mock("@/lib/prisma", () => ({
     formation: { count: vi.fn(), findMany: vi.fn() },
     trainingSession: { count: vi.fn() },
     evaluationAcquis: { count: vi.fn() },
-    questionnaire: { count: vi.fn() },
+    appreciation: { count: vi.fn() },
     reclamation: { count: vi.fn() },
     veille: { count: vi.fn() },
     partenariat: { count: vi.fn() },
@@ -30,14 +31,19 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn().mockResolvedValue(""),
+}));
+
 import { prisma } from "@/lib/prisma";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 
 type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   trainingSession: { count: ReturnType<typeof vi.fn> };
   evaluationAcquis: { count: ReturnType<typeof vi.fn> };
-  questionnaire: { count: ReturnType<typeof vi.fn> };
+  appreciation: { count: ReturnType<typeof vi.fn> };
   reclamation: { count: ReturnType<typeof vi.fn> };
   veille: { count: ReturnType<typeof vi.fn> };
   partenariat: { count: ReturnType<typeof vi.fn> };
@@ -50,6 +56,7 @@ type MockPrisma = {
 };
 
 const mockP = prisma as unknown as MockPrisma;
+const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Setup de base : toutes les tables vides
@@ -61,7 +68,7 @@ function setupEmpty() {
   mockP.formation.findMany.mockResolvedValue([]);
   mockP.trainingSession.count.mockResolvedValue(0);
   mockP.evaluationAcquis.count.mockResolvedValue(0);
-  mockP.questionnaire.count.mockResolvedValue(0);
+  mockP.appreciation.count.mockResolvedValue(0);
   mockP.reclamation.count.mockResolvedValue(0);
   mockP.veille.count.mockResolvedValue(0);
   mockP.partenariat.count.mockResolvedValue(0);
@@ -71,6 +78,8 @@ function setupEmpty() {
   mockP.enrollment.count.mockResolvedValue(0);
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
+  // Par défaut : référent handicap vide
+  mockGetConfig.mockResolvedValue("");
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -104,6 +113,7 @@ describe("evaluerConformite", () => {
     mockP.formation.count.mockResolvedValue(3);
     mockP.formation.findMany.mockResolvedValue([]);
     mockP.trainingSession.count.mockResolvedValue(2);
+    // trainer.count est appelé deux fois : total actif, puis avec cvUrl filter
     mockP.trainer.count.mockResolvedValue(2);
     mockP.documentGenere.count.mockResolvedValue(5);
 
@@ -192,5 +202,78 @@ describe("evaluerConformite", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+
+  // ── off.30 : appréciation multi-parties (T17 — CLUSTER 2) ─────────────────
+
+  it("off.30 couvert si ≥1 appréciation (appreciation.count > 0)", async () => {
+    mockP.appreciation.count.mockResolvedValue(3);
+    const result = await evaluerConformite();
+    const ind30 = result.indicateurs.find((i) => i.numero === 30);
+    expect(ind30?.statut).toBe("couvert");
+  });
+
+  it("off.30 a_completer si 0 appréciation", async () => {
+    mockP.appreciation.count.mockResolvedValue(0);
+    const result = await evaluerConformite();
+    const ind30 = result.indicateurs.find((i) => i.numero === 30);
+    expect(ind30?.statut).toBe("a_completer");
+  });
+
+  it("off.30 preuve mentionne 'appréciation' (pas 'questionnaire')", async () => {
+    mockP.appreciation.count.mockResolvedValue(2);
+    const result = await evaluerConformite();
+    const ind30 = result.indicateurs.find((i) => i.numero === 30);
+    expect(ind30?.preuves.join(" ")).toMatch(/appr[eé]ciation/i);
+  });
+
+  // ── off.26 : référent handicap désigné (T17 — CLUSTER 2) ─────────────────
+
+  it("off.26 couvert si partenariats > 0 ET referent_handicap_nom non vide", async () => {
+    mockP.partenariat.count.mockResolvedValue(1);
+    mockGetConfig.mockResolvedValue("Williams Jullin");
+    const result = await evaluerConformite();
+    const ind26 = result.indicateurs.find((i) => i.numero === 26);
+    expect(ind26?.statut).toBe("couvert");
+  });
+
+  it("off.26 a_completer si partenariats > 0 MAIS referent_handicap_nom vide", async () => {
+    mockP.partenariat.count.mockResolvedValue(1);
+    mockGetConfig.mockResolvedValue("");
+    const result = await evaluerConformite();
+    const ind26 = result.indicateurs.find((i) => i.numero === 26);
+    expect(ind26?.statut).toBe("a_completer");
+  });
+
+  it("off.26 a_completer si partenariats = 0 même si référent nommé", async () => {
+    mockP.partenariat.count.mockResolvedValue(0);
+    mockGetConfig.mockResolvedValue("Williams Jullin");
+    const result = await evaluerConformite();
+    const ind26 = result.indicateurs.find((i) => i.numero === 26);
+    expect(ind26?.statut).toBe("a_completer");
+  });
+
+  // ── off.21 : formateurs avec CV réel (T17 — CLUSTER 2) ───────────────────
+
+  it("off.21 couvert si ≥1 formateur actif avec cvUrl non null", async () => {
+    // trainer.count : 1er appel = total actif, 2e appel = actif+cvUrl non null
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("couvert");
+  });
+
+  it("off.21 a_completer si formateurs actifs mais 0 avec cvUrl", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(0);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+  });
+
+  it("off.21 a_completer si 0 formateur actif", async () => {
+    mockP.trainer.count.mockResolvedValue(0);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
   });
 });

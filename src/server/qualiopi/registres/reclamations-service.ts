@@ -211,17 +211,14 @@ export async function reclamationsEnRetard(): Promise<Reclamation[]> {
 
   let seuilJours = 15;
   try {
-    // La clé `seuil_reclamation_jours` peut être absente du registre courant ;
-    // getQualiopiConfig lève dans ce cas → on conserve le défaut 15.
-    // Utilisation via cast générique pour rester extensible sans modifier le registre.
-    const val = await (getQualiopiConfig as (k: string) => Promise<unknown>)(
-      "seuil_reclamation_jours",
-    );
-    if (typeof val === "number" && val > 0) {
+    // La clé `seuil_reclamation_jours` est définie dans le registre (J+15 par défaut).
+    // getQualiopiConfig retourne toujours un number ; fail-soft si erreur DB.
+    const val = await getQualiopiConfig("seuil_reclamation_jours");
+    if (val > 0) {
       seuilJours = val;
     }
   } catch {
-    // fail-soft : clé absente du registre → défaut 15
+    // fail-soft : erreur DB → défaut 15
   }
 
   const seuilDate = new Date();

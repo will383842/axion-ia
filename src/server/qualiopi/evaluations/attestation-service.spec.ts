@@ -67,11 +67,16 @@ vi.mock("./evaluations-service", () => ({
   getFinaleReussite: vi.fn().mockResolvedValue(null),
 }));
 
+vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
+  envoyerAttestationDisponible: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getFinaleReussite } from "./evaluations-service";
+import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
 import { genererAttestationPourEnrollment } from "./attestation-service";
 
 const mockPrisma = prisma as unknown as {
@@ -91,6 +96,7 @@ const mockClassifier = classifierPresence as ReturnType<typeof vi.fn>;
 const mockGenDoc = generateDocument as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockGetFinale = getFinaleReussite as ReturnType<typeof vi.fn>;
+const mockEnvoyerAttestation = envoyerAttestationDisponible as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Fixture enrollment de base
@@ -146,6 +152,7 @@ describe("genererAttestationPourEnrollment", () => {
       hashSha256: "a".repeat(64),
     });
     mockGetFinale.mockResolvedValue(null);
+    mockEnvoyerAttestation.mockResolvedValue(undefined);
   });
 
   // ── Stub-aware ──────────────────────────────────────────────────────────��───
@@ -334,5 +341,43 @@ describe("genererAttestationPourEnrollment", () => {
     await expect(genererAttestationPourEnrollment("unknown-id")).rejects.toThrow(
       "Enrollment introuvable",
     );
+  });
+
+  // ── Notification attestation disponible ────────────────────────────────────
+
+  it("appelle envoyerAttestationDisponible après génération complète", async () => {
+    mockClassifier.mockReturnValue("complete");
+
+    await genererAttestationPourEnrollment("enroll-1");
+
+    expect(mockEnvoyerAttestation).toHaveBeenCalledOnce();
+    expect(mockEnvoyerAttestation).toHaveBeenCalledWith("enroll-1");
+  });
+
+  it("appelle envoyerAttestationDisponible après génération partielle", async () => {
+    mockClassifier.mockReturnValue("partielle");
+
+    await genererAttestationPourEnrollment("enroll-1");
+
+    expect(mockEnvoyerAttestation).toHaveBeenCalledOnce();
+    expect(mockEnvoyerAttestation).toHaveBeenCalledWith("enroll-1");
+  });
+
+  it("ne appelle PAS envoyerAttestationDisponible si résultat=aucune", async () => {
+    mockClassifier.mockReturnValue("aucune");
+
+    await genererAttestationPourEnrollment("enroll-1");
+
+    expect(mockEnvoyerAttestation).not.toHaveBeenCalled();
+  });
+
+  it("continue malgré erreur de envoyerAttestationDisponible (fail-soft)", async () => {
+    mockClassifier.mockReturnValue("complete");
+    mockEnvoyerAttestation.mockRejectedValue(new Error("SMTP down"));
+
+    // Ne doit pas lever, et retourne le documentId
+    const result = await genererAttestationPourEnrollment("enroll-1");
+
+    expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
   });
 });

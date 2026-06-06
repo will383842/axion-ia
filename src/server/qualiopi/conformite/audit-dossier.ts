@@ -9,6 +9,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
@@ -134,6 +135,61 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     _count: { _all: true },
   });
 
+  // ── Preuves enrichies pour le manifeste ──────────────────────────────────
+  // off.23/24/25 : veille par type
+  const [nbVeilleLegale, nbVeilleMetiers, nbVeillePedagogique] = await Promise.all([
+    prisma.veille.count({ where: { type: "legale" } }),
+    prisma.veille.count({ where: { type: "metiers" } }),
+    prisma.veille.count({ where: { type: "pedagogique" } }),
+  ]);
+
+  // off.26 : nom du référent handicap
+  const referentHandicapNom = await getQualiopiConfig("referent_handicap_nom").catch(() => "");
+
+  // off.30 : appréciations multi-parties
+  const nbAppreciations = await prisma.appreciation.count();
+
+  // off.21 : formateurs actifs avec CV
+  const trainersAvecCV = await prisma.trainer.findMany({
+    where: { actif: true, cvUrl: { not: null } },
+    select: { id: true, nom: true, prenom: true, cvUrl: true },
+  });
+
+  // Preuves supplémentaires par indicateur (complètent celles de conformite-service)
+  const preuvesSuppMap = new Map<number, string[]>([
+    [23, nbVeilleLegale > 0 ? [`${nbVeilleLegale} entrée(s) de veille légale/réglementaire`] : []],
+    [24, nbVeilleMetiers > 0 ? [`${nbVeilleMetiers} entrée(s) de veille emplois/métiers`] : []],
+    [
+      25,
+      nbVeillePedagogique > 0
+        ? [`${nbVeillePedagogique} entrée(s) de veille pédagogique/technologique`]
+        : [],
+    ],
+    [
+      26,
+      [
+        ...(referentHandicapNom.trim().length > 0
+          ? [`Référent handicap désigné : ${referentHandicapNom}`]
+          : ["Référent handicap : non renseigné en config"]),
+      ],
+    ],
+    [
+      30,
+      [
+        `${nbAppreciations} appréciation(s) multi-parties (stagiaire/entreprise/financeur/formateur)`,
+      ],
+    ],
+    [
+      21,
+      trainersAvecCV.length > 0
+        ? [
+            `${trainersAvecCV.length} formateur(s) avec CV téléversé`,
+            ...trainersAvecCV.map((t) => `- ${t.prenom ?? ""} ${t.nom} (CV : ${t.cvUrl ?? "—"})`),
+          ]
+        : ["Aucun formateur avec CV téléversé"],
+    ],
+  ]);
+
   const countByType = new Map<DocumentType, number>(docCounts.map((d) => [d.type, d._count._all]));
 
   // Construction des entrées du manifeste
@@ -143,13 +199,21 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       .map((type) => ({ type, count: countByType.get(type) ?? 0 }))
       .filter((d) => d.count > 0);
 
+    // Fusionner les preuves de conformite-service avec les preuves enrichies du manifeste
+    const preuvesSupplémentaires = preuvesSuppMap.get(ind.numero) ?? [];
+    const toutesPreuves = [
+      ...ind.preuves,
+      // Ajouter seulement les preuves supplémentaires non déjà présentes
+      ...preuvesSupplémentaires.filter((p) => !ind.preuves.includes(p)),
+    ];
+
     return {
       numero: ind.numero,
       critere: ind.critere,
       libelle: ind.libelle,
       super: ind.super,
       statut: ind.statut,
-      preuves: ind.preuves,
+      preuves: toutesPreuves,
       documents,
     };
   });

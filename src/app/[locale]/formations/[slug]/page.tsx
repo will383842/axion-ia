@@ -94,9 +94,18 @@ function iso8601Duration(heures: number): string {
   return `PT${heures}H`;
 }
 
-// ── Type défensif pour objectifsPedagogiques ─────────────────────────────────
-// Le champ est Json Prisma — peut être string[] ou { verbe?; description? }[]
+// ── Types défensifs pour champs Json Prisma ──────────────────────────────────
+
+// objectifsPedagogiques — peut être string[] ou { verbe?; description? }[]
 type ObjectifItem = string | { verbe?: string; description?: string };
+
+// indicateursPublies — tableau d'indicateurs de résultats publiés (off.1/2)
+type IndicateurPublie = {
+  libelle: string;
+  valeur: number;
+  unite: string;
+  annee: number;
+};
 
 function renderObjectif(item: ObjectifItem, idx: number): React.ReactNode {
   if (typeof item === "string") {
@@ -168,6 +177,11 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
     ? (f.objectifsPedagogiques as ObjectifItem[])
     : [];
 
+  // Indicateurs de résultats publiés (off.1/2 Qualiopi — Json → tableau défensif).
+  const indicateursPublies: IndicateurPublie[] = Array.isArray(f.indicateursPublies)
+    ? (f.indicateursPublies as IndicateurPublie[])
+    : [];
+
   // JSON-LD Course (indicateur 1 + AEO Google AI Overviews).
   const courseJsonLd = buildCourseJsonLd({
     locale,
@@ -193,23 +207,12 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
       <section className="bg-paper border-border border-b py-14 sm:py-18">
         <Container>
           <div className="max-w-3xl">
-            {/* Breadcrumb léger */}
+            {/* Breadcrumb léger — A4 : /formations n'existe pas → niveau retiré */}
             <nav aria-label="Fil d'Ariane" className="mb-6">
               <ol className="text-fg-muted flex items-center gap-1.5 text-sm">
                 <li>
                   <a href={`/${locale}`} className="hover:text-terracotta transition-colors">
                     Accueil
-                  </a>
-                </li>
-                <li aria-hidden="true" className="text-fg-muted">
-                  /
-                </li>
-                <li>
-                  <a
-                    href={`/${locale}/formations`}
-                    className="hover:text-terracotta transition-colors"
-                  >
-                    Formations
                   </a>
                 </li>
                 <li aria-hidden="true" className="text-fg-muted">
@@ -326,17 +329,53 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                 ) : null}
               </SectionBlock>
 
-              {/* 4. Indicateurs de résultats */}
+              {/* 4. Indicateurs de résultats (off.1/2 Qualiopi) */}
               <SectionBlock title="Indicateurs de résultats">
-                <p className="text-fg-soft text-[15px] leading-relaxed">
-                  Les indicateurs de résultats (taux de satisfaction, taux de réalisation, taux
-                  d&apos;insertion professionnelle) sont en cours de constitution sur la base des
-                  premières sessions réalisées.
-                </p>
-                <p className="text-fg-muted mt-2 text-[12px]">
-                  Mise à jour prévue au fil des sessions — affichage automatique dès que les données
-                  sont disponibles.
-                </p>
+                {indicateursPublies.length > 0 ? (
+                  <>
+                    <ul className="divide-border divide-y">
+                      {indicateursPublies.map((ind, idx) => (
+                        <li key={idx} className="flex items-center justify-between py-2.5">
+                          <span className="text-fg-soft text-[15px]">{ind.libelle}</span>
+                          <span className="text-fg font-semibold tabular-nums">
+                            {ind.valeur}
+                            {ind.unite ? <>&nbsp;{ind.unite}</> : null}
+                            <span className="text-fg-muted ml-1 text-[11px] font-normal">
+                              ({ind.annee})
+                            </span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {f.methodeCalculIndicateurs ? (
+                      <p className="text-fg-muted mt-3 text-[12px] leading-snug">
+                        Méthode de calcul : {f.methodeCalculIndicateurs}
+                      </p>
+                    ) : null}
+                    {f.indicateursPubliesAt ? (
+                      <p className="text-fg-muted mt-1 text-[11px]">
+                        Dernière mise à jour :{" "}
+                        {new Date(f.indicateursPubliesAt).toLocaleDateString("fr-FR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </p>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-fg-soft text-[15px] leading-relaxed">
+                      Les indicateurs de résultats (taux de satisfaction, taux de réalisation, taux
+                      d&apos;insertion professionnelle) sont en cours de constitution sur la base
+                      des premières sessions réalisées.
+                    </p>
+                    <p className="text-fg-muted mt-2 text-[12px]">
+                      Mise à jour prévue au fil des sessions — affichage automatique dès que les
+                      données sont disponibles.
+                    </p>
+                  </>
+                )}
               </SectionBlock>
             </div>
 

@@ -50,9 +50,7 @@ const DOC_TYPE_LABELS: Record<string, string> = {
 
 const ENROLLMENT_STATUT_LABELS: Record<string, string> = {
   planifiee: "Inscrit",
-  confirmee: "Confirmé",
-  en_cours: "En cours",
-  terminee: "Terminée",
+  presente: "En cours",
   abandon: "Abandon",
   exclu: "Exclu",
 };

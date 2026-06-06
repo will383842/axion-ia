@@ -13,7 +13,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { genererFactureFormationAction } from "@/server/actions/qualiopi/financements";
+import {
+  genererFactureFormationAction,
+  genererFacturePdfAction,
+} from "@/server/actions/qualiopi/financements";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -62,6 +65,7 @@ export function GenererFactureButton({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [pdfDocumentId, setPdfDocumentId] = useState<string | null>(null);
 
   const [destinataire, setDestinataire] =
     useState<FactureFormationDestinataire>(defaultDestinataire);
@@ -70,6 +74,7 @@ export function GenererFactureButton({
   function handleGenerer() {
     setError(null);
     setSuccessMsg(null);
+    setPdfDocumentId(null);
 
     startTransition(async () => {
       const result = await genererFactureFormationAction({
@@ -80,9 +85,20 @@ export function GenererFactureButton({
 
       if ("error" in result) {
         setError(result.error);
-      } else {
-        setSuccessMsg(`Facture ${result.data.numero} générée avec succès (statut : Émise).`);
-        router.refresh();
+        return;
+      }
+
+      setSuccessMsg(`Facture ${result.data.numero} générée avec succès (statut : Émise).`);
+      router.refresh();
+
+      // Génération du PDF — fail-soft : une erreur n'annule pas la facture créée
+      try {
+        const pdfResult = await genererFacturePdfAction({ factureId: result.data.factureId });
+        if (!("error" in pdfResult)) {
+          setPdfDocumentId(pdfResult.data.documentId);
+        }
+      } catch {
+        // fail-soft : PDF non bloquant
       }
     });
   }
@@ -169,6 +185,18 @@ export function GenererFactureButton({
           className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
           {successMsg}
+        </p>
+      )}
+      {pdfDocumentId && (
+        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+          <a
+            href={`/api/qualiopi/documents/${pdfDocumentId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[color:var(--color-admin-accent)] underline"
+          >
+            Télécharger le PDF de la facture
+          </a>
         </p>
       )}
 

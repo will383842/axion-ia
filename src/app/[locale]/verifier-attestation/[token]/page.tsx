@@ -14,11 +14,16 @@
  * Aucune mention Qualiopi/financement marketing — uniquement validité doc.
  */
 
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Container } from "@/components/layout/Container";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 interface Props {
   params: Promise<{ locale: string; token: string }>;

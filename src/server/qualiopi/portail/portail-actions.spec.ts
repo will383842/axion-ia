@@ -19,6 +19,7 @@ import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainee: { update: vi.fn() },
+    questionnaire: { findUnique: vi.fn() },
   },
 }));
 
@@ -105,6 +106,7 @@ const mockSoumettreReponses = soumettreReponses as ReturnType<typeof vi.fn>;
 const mockEncryptPii = encryptPii as ReturnType<typeof vi.fn>;
 const mockPrisma = prisma as unknown as {
   trainee: { update: ReturnType<typeof vi.fn> };
+  questionnaire: { findUnique: ReturnType<typeof vi.fn> };
 };
 
 const TRAINEE_UUID = "550e8400-e29b-41d4-a716-446655440001";
@@ -192,6 +194,10 @@ describe("soumettreSatisfactionPortailAction", () => {
     mockGetPortailToken.mockResolvedValue(VALID_TOKEN);
     mockVerifierToken.mockResolvedValue({ traineeId: TRAINEE_UUID });
     mockSoumettreReponses.mockResolvedValue({ id: "quest-repondu-1" });
+    // A-01 : questionnaire appartient au stagiaire connecté par défaut
+    mockPrisma.questionnaire.findUnique.mockResolvedValue({
+      enrollment: { traineeId: TRAINEE_UUID },
+    });
   });
 
   it("retourne { data: { id } } pour des reponses valides", async () => {
@@ -271,6 +277,46 @@ describe("soumettreSatisfactionPortailAction", () => {
     expect("error" in result).toBe(true);
     if (!("error" in result)) return;
     expect(result.error).toBe("Données invalides");
+  });
+
+  // A-01 (IDOR) — vérification propriété questionnaire
+  it("A-01 : retourne { error } si le questionnaire appartient a un autre stagiaire (IDOR)", async () => {
+    const autreTraineeId = "550e8400-e29b-41d4-a716-000000000099";
+    mockPrisma.questionnaire.findUnique.mockResolvedValue({
+      enrollment: { traineeId: autreTraineeId },
+    });
+
+    const result = await soumettreSatisfactionPortailAction({
+      token: QUEST_TOKEN,
+      reponses: { q1: "oui" },
+    });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toMatch(/non autorisé|introuvable/i);
+    expect(mockSoumettreReponses).not.toHaveBeenCalled();
+  });
+
+  it("A-01 : retourne { error } si le questionnaire est introuvable en DB", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(null);
+
+    const result = await soumettreSatisfactionPortailAction({
+      token: QUEST_TOKEN,
+      reponses: { q1: "oui" },
+    });
+
+    expect("error" in result).toBe(true);
+    expect(mockSoumettreReponses).not.toHaveBeenCalled();
+  });
+
+  it("A-01 : appelle soumettreReponses si le questionnaire appartient bien au stagiaire connecté", async () => {
+    // Le beforeEach configure questionnaire.traineeId === TRAINEE_UUID
+    await soumettreSatisfactionPortailAction({
+      token: QUEST_TOKEN,
+      reponses: { q1: "ok" },
+    });
+
+    expect(mockSoumettreReponses).toHaveBeenCalledOnce();
   });
 });
 

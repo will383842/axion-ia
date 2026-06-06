@@ -29,6 +29,7 @@ import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { getFinaleReussite } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
+import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -288,6 +289,16 @@ export async function genererAttestationPourEnrollment(
       attestationGenereeAt: new Date(),
     },
   });
+
+  // 7b. Notification stagiaire — fail-soft (ne bloque pas la génération)
+  try {
+    await envoyerAttestationDisponible(enrollmentId);
+  } catch (err) {
+    console.error(
+      `[attestation-service] envoyerAttestationDisponible: erreur enrollment ${enrollmentId}:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 
   // 8. Log activité best-effort (direct Prisma — pas de next/headers ici)
   try {

@@ -2,7 +2,7 @@
 // On exerce les fonctions runtime que les server actions encapsulent (les actions
 // elles-mêmes exigent une session admin via requireAdminWrite — testées au niveau
 // guard). Ici : effet PERSISTÉ et RÉPERCUTÉ sur le comportement du bot.
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { getDefaultTenant } from "@/server/chatbot/tenant";

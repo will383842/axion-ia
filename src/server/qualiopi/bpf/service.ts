@@ -1,8 +1,10 @@
 /**
- * Qualiopi — Service BPF (Bilan Pédagogique et Financier) (AGENT A — T10).
+ * Qualiopi — Service BPF (Bilan Pédagogique et Financier) (AGENT A — T10 + T17).
  *
- * computeBpf  : agrégats annuels via Prisma (sessions réalisées).
- * bpfToCsv    : export CSV `;`-séparé (pur).
+ * computeBpf      : agrégats annuels via Prisma (sessions réalisées).
+ * bpfToCsv        : export CSV `;`-séparé (pur).
+ * listDepenses    : dépenses BPF par année.
+ * ajouterDepense  : création d'une dépense BPF.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -14,6 +16,21 @@ export interface BpfFinanceurDetail {
   france_travail: number;
   direct: number;
   mixte: number;
+}
+
+export interface BpfDepenseItem {
+  id: string;
+  annee: number;
+  categorie: string;
+  libelle: string;
+  montantHtCents: number;
+  createdAt: Date;
+}
+
+export interface BpfDepensesResult {
+  totalHtCents: number;
+  parCategorie: Record<string, number>;
+  items: BpfDepenseItem[];
 }
 
 export interface BpfResult {
@@ -30,6 +47,7 @@ export interface BpfResult {
   caParFinanceur: BpfFinanceurDetail;
   nbFormateursInternes: number;
   nbFormateursExternes: number;
+  depenses: BpfDepensesResult;
   calculeAt: Date;
 }
 
@@ -95,9 +113,10 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     }
   }
 
-  const [nbFormateursInternes, nbFormateursExternes] = await Promise.all([
+  const [nbFormateursInternes, nbFormateursExternes, depenses] = await Promise.all([
     prisma.trainer.count({ where: { statut: "salarie", actif: true } }),
     prisma.trainer.count({ where: { statut: "sous_traitant", actif: true } }),
+    listDepenses(annee),
   ]);
 
   return {
@@ -114,6 +133,7 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     caParFinanceur,
     nbFormateursInternes,
     nbFormateursExternes,
+    depenses,
     calculeAt: new Date(),
   };
 }
@@ -144,6 +164,23 @@ export function bpfToCsv(bpf: BpfResult): string {
   lignes.push(`Formateurs internes (salariés);${bpf.nbFormateursInternes}`);
   lignes.push(`Formateurs externes (sous-traitants);${bpf.nbFormateursExternes}`);
 
+  // Section dépenses
+  if (bpf.depenses.items.length > 0) {
+    lignes.push("");
+    lignes.push("Dépenses BPF;Montant HT (€)");
+    lignes.push(`Total dépenses;${centimesEnEuros(bpf.depenses.totalHtCents)}`);
+    lignes.push("");
+    lignes.push("Catégorie;Montant HT (€)");
+    for (const [categorie, montant] of Object.entries(bpf.depenses.parCategorie)) {
+      lignes.push(`${categorie};${centimesEnEuros(montant)}`);
+    }
+    lignes.push("");
+    lignes.push("Libellé;Catégorie;Montant HT (€)");
+    for (const d of bpf.depenses.items) {
+      lignes.push(`${d.libelle};${d.categorie};${centimesEnEuros(d.montantHtCents)}`);
+    }
+  }
+
   return lignes.join("\n");
 }
 
@@ -169,6 +206,94 @@ function buildEmptyBpf(
     caParFinanceur: { opco: 0, cpf: 0, france_travail: 0, direct: 0, mixte: 0 },
     nbFormateursInternes: 0,
     nbFormateursExternes: 0,
+    depenses: { totalHtCents: 0, parCategorie: {}, items: [] },
     calculeAt: new Date(),
   };
+}
+
+// ─── Helpers dépenses BPF ────────────────────────────────────────────────────
+
+/**
+ * Liste les dépenses BPF d'une année, agrégées (total + par catégorie).
+ * Stub-aware : retourne un résultat vide si DATABASE_URL contient "stub.invalid".
+ */
+export async function listDepenses(annee: number): Promise<BpfDepensesResult> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { totalHtCents: 0, parCategorie: {}, items: [] };
+  }
+
+  const rows = await prisma.bpfDepense.findMany({
+    where: { annee },
+    orderBy: [{ categorie: "asc" }, { createdAt: "asc" }],
+  });
+
+  const parCategorie: Record<string, number> = {};
+  let totalHtCents = 0;
+
+  for (const row of rows) {
+    totalHtCents += row.montantHtCents;
+    parCategorie[row.categorie] = (parCategorie[row.categorie] ?? 0) + row.montantHtCents;
+  }
+
+  return {
+    totalHtCents,
+    parCategorie,
+    items: rows.map((r) => ({
+      id: r.id,
+      annee: r.annee,
+      categorie: r.categorie,
+      libelle: r.libelle,
+      montantHtCents: r.montantHtCents,
+      createdAt: r.createdAt,
+    })),
+  };
+}
+
+/**
+ * Crée une nouvelle dépense BPF.
+ * Stub-aware : no-op si DATABASE_URL contient "stub.invalid".
+ */
+export async function ajouterDepense(input: {
+  annee: number;
+  categorie: string;
+  libelle: string;
+  montantHtCents: number;
+}): Promise<BpfDepenseItem> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return {
+      id: "stub-id",
+      annee: input.annee,
+      categorie: input.categorie,
+      libelle: input.libelle,
+      montantHtCents: input.montantHtCents,
+      createdAt: new Date(),
+    };
+  }
+
+  const row = await prisma.bpfDepense.create({
+    data: {
+      annee: input.annee,
+      categorie: input.categorie.slice(0, 80),
+      libelle: input.libelle.slice(0, 250),
+      montantHtCents: input.montantHtCents,
+    },
+  });
+
+  return {
+    id: row.id,
+    annee: row.annee,
+    categorie: row.categorie,
+    libelle: row.libelle,
+    montantHtCents: row.montantHtCents,
+    createdAt: row.createdAt,
+  };
+}
+
+/**
+ * Supprime une dépense BPF par id.
+ * Stub-aware : no-op si DATABASE_URL contient "stub.invalid".
+ */
+export async function supprimerDepense(id: string): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  await prisma.bpfDepense.delete({ where: { id } });
 }

@@ -1043,6 +1043,12 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 7 * * *",
         jobId: "formation-crons-alertes-cron",
       },
+      // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9 Qualiopi), daily 08:00 UTC
+      {
+        type: "formation-crons.convocation-j5",
+        pattern: "0 8 * * *",
+        jobId: "formation-crons-convocation-j5-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

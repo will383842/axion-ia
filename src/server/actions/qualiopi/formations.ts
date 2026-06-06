@@ -1,10 +1,11 @@
 /**
- * Qualiopi — Server Actions Formation (T3).
+ * Qualiopi — Server Actions Formation (T3 + T17 CLUSTER 3).
  *
- * createFormationAction  : crée une formation intention liée à une offre.
- * updateFormationAction  : met à jour les champs éditoriaux.
- * validateFormationAction: valide humainement (AI Act art. 50 — bloque la publication).
- * publishFormationAction : publie (nécessite validation humaine + ratio pratique ≥ plancher).
+ * createFormationAction       : crée une formation intention liée à une offre.
+ * updateFormationAction       : met à jour les champs éditoriaux.
+ * validateFormationAction     : valide humainement (AI Act art. 50 — bloque la publication).
+ * publishFormationAction      : publie (nécessite validation humaine + ratio pratique ≥ plancher).
+ * publierIndicateursAction    : publie les indicateurs de résultats (off.1/2 Qualiopi).
  *
  * TVA : exonérée 261-4-4° CGI (pas de TVA sur formations).
  * Montants formation : résolus via offre / pricing.ts (jamais hardcodés ici).
@@ -294,4 +295,72 @@ export async function publishFormationAction(id: string): Promise<ActionResult<{
   });
 
   return { data: { id: idParsed.data } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Schéma publication indicateurs (off.1/2 Qualiopi)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const indicateurItemSchema = z.object({
+  libelle: z.string().min(1).max(200),
+  valeur: z.number(),
+  unite: z.string().min(1).max(50),
+  annee: z.number().int().min(2020).max(2100),
+});
+
+const publierIndicateursSchema = z.object({
+  formationId: z.string().uuid(),
+  indicateurs: z.array(indicateurItemSchema).min(1).max(20),
+  methodeCalcul: z.string().min(1).max(2000),
+});
+
+/**
+ * Publie les indicateurs de résultats d'une formation (off.1/2 Qualiopi).
+ *
+ * Enregistre `indicateursPublies` (Json), `methodeCalculIndicateurs` (String)
+ * et `indicateursPubliesAt` (DateHeure de publication) sur la Formation.
+ * Requiert ADMIN_PUBLISH (rôle publish).
+ *
+ * Stub-aware : le proxy Prisma stub short-circuit l'update au build sans
+ * muter de données (les mutations throw côté stub — normal, aucun appel mutant
+ * n'est fait au build puisqu'on nécessite une session admin authentifiée).
+ */
+export async function publierIndicateursAction(
+  input: z.infer<typeof publierIndicateursSchema>,
+): Promise<ActionResult<{ id: string; indicateursPubliesAt: Date }>> {
+  const session = await requireAdminPublish();
+  const parsed = publierIndicateursSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { formationId, indicateurs, methodeCalcul } = parsed.data;
+
+  const formation = await prisma.formation.findUnique({
+    where: { id: formationId },
+    select: { id: true, titre: true },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+
+  const now = new Date();
+
+  await prisma.formation.update({
+    where: { id: formationId },
+    data: {
+      indicateursPublies: indicateurs as never,
+      methodeCalculIndicateurs: methodeCalcul,
+      indicateursPubliesAt: now,
+    },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.indicateurs.publier",
+    targetType: "Formation",
+    targetId: formationId,
+    changes: {
+      indicateursCount: indicateurs.length,
+      methodeCalcul,
+      indicateursPubliesAt: now.toISOString(),
+    },
+    session,
+  });
+
+  return { data: { id: formationId, indicateursPubliesAt: now } };
 }

@@ -14,6 +14,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { BpfExportButton } from "@/components/admin/qualiopi/BpfExportButton";
+import { BpfDepenseForm } from "@/components/admin/qualiopi/BpfDepenseForm";
 import { RecomputeIndicateursButton } from "@/components/admin/qualiopi/RecomputeIndicateursButton";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { computeBpf } from "@/server/qualiopi/bpf/service";
@@ -287,7 +288,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
       <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
         Intervenants
       </h3>
-      <div className="grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2">
+      <div className="mb-[var(--space-admin-8)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2">
         <AdminStatCard
           label="Formateurs internes (salariés)"
           value={bpf.nbFormateursInternes}
@@ -299,6 +300,22 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
           tone="default"
         />
       </div>
+
+      {/* Dépenses BPF */}
+      <div className="mb-[var(--space-admin-4)] flex items-center justify-between gap-[var(--space-admin-5)]">
+        <h3 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+          Dépenses BPF
+        </h3>
+        {bpf.depenses.totalHtCents > 0 && (
+          <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Total :{" "}
+            <strong className="text-[color:var(--color-admin-fg)]">
+              {formatEuros(bpf.depenses.totalHtCents)}
+            </strong>
+          </span>
+        )}
+      </div>
+      <BpfDepenseForm annee={anneeFinale} depenses={bpf.depenses.items} />
     </AdminPageShell>
   );
 }

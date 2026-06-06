@@ -14,6 +14,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findMany: vi.fn() },
     trainer: { count: vi.fn() },
+    bpfDepense: { findMany: vi.fn(), create: vi.fn(), delete: vi.fn() },
   },
 }));
 
@@ -32,11 +33,16 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
-import { computeBpf, bpfToCsv, type BpfResult } from "./service";
+import { computeBpf, bpfToCsv, listDepenses, ajouterDepense, type BpfResult } from "./service";
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { count: ReturnType<typeof vi.fn> };
+  bpfDepense: {
+    findMany: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,6 +77,7 @@ describe("computeBpf", () => {
     vi.clearAllMocks();
     mockPrisma.trainingSession.findMany.mockResolvedValue([]);
     mockPrisma.trainer.count.mockResolvedValue(0);
+    mockPrisma.bpfDepense.findMany.mockResolvedValue([]);
   });
 
   it("retourne des zéros si aucune session réalisée", async () => {
@@ -204,6 +211,51 @@ describe("computeBpf", () => {
     const result = await computeBpf(2026);
     expect(result.calculeAt).toBeInstanceOf(Date);
   });
+
+  it("inclut depenses avec total = 0 quand aucune dépense", async () => {
+    const result = await computeBpf(2026);
+    expect(result.depenses.totalHtCents).toBe(0);
+    expect(result.depenses.items).toHaveLength(0);
+    expect(result.depenses.parCategorie).toEqual({});
+  });
+
+  it("inclut depenses avec total et parCategorie agrégés", async () => {
+    mockPrisma.bpfDepense.findMany.mockResolvedValue([
+      {
+        id: "dep-1",
+        annee: 2026,
+        categorie: "Locations de salles",
+        libelle: "Salle A",
+        montantHtCents: 35000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "dep-2",
+        annee: 2026,
+        categorie: "Matériel pédagogique",
+        libelle: "Tablettes",
+        montantHtCents: 15000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "dep-3",
+        annee: 2026,
+        categorie: "Locations de salles",
+        libelle: "Salle B",
+        montantHtCents: 20000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    const result = await computeBpf(2026);
+    expect(result.depenses.totalHtCents).toBe(70000);
+    expect(result.depenses.parCategorie["Locations de salles"]).toBe(55000);
+    expect(result.depenses.parCategorie["Matériel pédagogique"]).toBe(15000);
+    expect(result.depenses.items).toHaveLength(3);
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -231,6 +283,7 @@ describe("bpfToCsv", () => {
     },
     nbFormateursInternes: 3,
     nbFormateursExternes: 2,
+    depenses: { totalHtCents: 0, parCategorie: {}, items: [] },
     calculeAt: new Date("2026-06-06T10:00:00.000Z"),
   };
 
@@ -294,5 +347,165 @@ describe("bpfToCsv", () => {
     const csv = bpfToCsv(bpfFixture);
     expect(typeof csv).toBe("string");
     expect(csv.length).toBeGreaterThan(0);
+  });
+
+  it("n'inclut pas de section Dépenses BPF si items vide", () => {
+    const csv = bpfToCsv(bpfFixture);
+    expect(csv).not.toContain("Dépenses BPF");
+  });
+
+  it("inclut la section Dépenses BPF si items non vide", () => {
+    const withDepenses: BpfResult = {
+      ...bpfFixture,
+      depenses: {
+        totalHtCents: 50000,
+        parCategorie: { "Locations de salles": 35000, "Matériel pédagogique": 15000 },
+        items: [
+          {
+            id: "dep-1",
+            annee: 2026,
+            categorie: "Locations de salles",
+            libelle: "Salle Lyon Part-Dieu",
+            montantHtCents: 35000,
+            createdAt: new Date(),
+          },
+          {
+            id: "dep-2",
+            annee: 2026,
+            categorie: "Matériel pédagogique",
+            libelle: "Tablettes stagiaires",
+            montantHtCents: 15000,
+            createdAt: new Date(),
+          },
+        ],
+      },
+    };
+    const csv = bpfToCsv(withDepenses);
+    expect(csv).toContain("Dépenses BPF");
+    expect(csv).toContain("Total dépenses");
+    expect(csv).toContain("500.00"); // total 50000 centimes
+    expect(csv).toContain("Locations de salles");
+    expect(csv).toContain("Salle Lyon Part-Dieu");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// listDepenses
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("listDepenses", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.bpfDepense.findMany.mockResolvedValue([]);
+  });
+
+  it("retourne vide si aucune dépense", async () => {
+    const result = await listDepenses(2026);
+    expect(result.totalHtCents).toBe(0);
+    expect(result.items).toHaveLength(0);
+    expect(result.parCategorie).toEqual({});
+  });
+
+  it("agrège par catégorie correctement", async () => {
+    mockPrisma.bpfDepense.findMany.mockResolvedValue([
+      {
+        id: "d1",
+        annee: 2026,
+        categorie: "Cat A",
+        libelle: "Libellé 1",
+        montantHtCents: 10000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "d2",
+        annee: 2026,
+        categorie: "Cat A",
+        libelle: "Libellé 2",
+        montantHtCents: 5000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "d3",
+        annee: 2026,
+        categorie: "Cat B",
+        libelle: "Libellé 3",
+        montantHtCents: 8000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    const result = await listDepenses(2026);
+    expect(result.totalHtCents).toBe(23000);
+    expect(result.parCategorie["Cat A"]).toBe(15000);
+    expect(result.parCategorie["Cat B"]).toBe(8000);
+    expect(result.items).toHaveLength(3);
+  });
+
+  it("retourne vide en mode stub.invalid", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const result = await listDepenses(2026);
+      expect(result.totalHtCents).toBe(0);
+      expect(result.items).toHaveLength(0);
+      expect(mockPrisma.bpfDepense.findMany).not.toHaveBeenCalled();
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ajouterDepense
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("ajouterDepense", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("crée une dépense et retourne un BpfDepenseItem", async () => {
+    const now = new Date();
+    mockPrisma.bpfDepense.create.mockResolvedValue({
+      id: "new-id",
+      annee: 2026,
+      categorie: "Matériel pédagogique",
+      libelle: "Tablettes",
+      montantHtCents: 20000,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    const result = await ajouterDepense({
+      annee: 2026,
+      categorie: "Matériel pédagogique",
+      libelle: "Tablettes",
+      montantHtCents: 20000,
+    });
+
+    expect(result.id).toBe("new-id");
+    expect(result.montantHtCents).toBe(20000);
+    expect(result.categorie).toBe("Matériel pédagogique");
+    expect(mockPrisma.bpfDepense.create).toHaveBeenCalledOnce();
+  });
+
+  it("retourne un stub en mode stub.invalid sans appel DB", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const result = await ajouterDepense({
+        annee: 2026,
+        categorie: "Test",
+        libelle: "Test",
+        montantHtCents: 100,
+      });
+      expect(result.id).toBe("stub-id");
+      expect(mockPrisma.bpfDepense.create).not.toHaveBeenCalled();
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
   });
 });

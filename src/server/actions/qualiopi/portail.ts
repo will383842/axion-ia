@@ -141,6 +141,15 @@ export async function soumettreSatisfactionPortailAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
 
+  // A-01 (IDOR) : vérifier que le questionnaire appartient bien au stagiaire authentifié.
+  const questionnaire = await prisma.questionnaire.findUnique({
+    where: { token: v.token },
+    select: { enrollment: { select: { traineeId: true } } },
+  });
+  if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
+    return { error: "Questionnaire introuvable ou non autorisé" };
+  }
+
   const result = await soumettreReponses({
     token: v.token,
     reponses: v.reponses,

@@ -55,7 +55,7 @@ export function SitesWebCtaBlock({ isFr, villeContext }: SitesWebCtaBlockProps):
             </>
           ) : (
             <>
-              Let's talk <span className="italic">about your project.</span>
+              Let&apos;s talk <span className="italic">about your project.</span>
             </>
           )}
         </h2>

@@ -1,19 +1,21 @@
 #!/usr/bin/env tsx
 /**
- * Qualiopi — Dossier d'audit de démonstration (T16 · Agent A).
+ * Qualiopi — Dossier d'audit de démonstration (T16 · Agent A + T17 · CLUSTER 5).
  *
  * Crée un cycle complet de preuves Qualiopi réalistes, idempotent et stub-aware.
  * Toutes les données sont clairement identifiées "DEMO" (numéros AXI-*-DEMO-*,
  * emails @demo.axion-ia.invalid) pour ne jamais polluer la production réelle.
  *
- * Cycle : Client → Devis accepté → Formation publiée → Session réalisée →
+ * Cycle : Client → Devis accepté → Formation publiée (indicateurs publiés) →
+ * Session réalisée (coFormateur Trainer salarié) →
  * 2 Stagiaires inscrits + présences → Évaluations finales acquis →
  * Questionnaire satisfaction_chaud + positionnement → Attestation (DocumentGenere) →
  * FactureFormation émise → Réclamation résolue → 3 Veilles →
- * Partenariat actif → Sous-traitant vérifié → Revue direction validée →
- * Appréciations (stagiaire + entreprise).
+ * Partenariat actif → Sous-traitant vérifié (screenshotUrl) → Revue direction validée →
+ * Appréciations (stagiaire + entreprise + financeur + formateur) →
+ * SiteSetting référent handicap → 1 BpfDepense.
  *
- * Indicateurs couverts : 5, 8, 11⭐, 12, 17, 19, 21, 22, 23, 24, 25, 27, 30, 31, 32.
+ * Indicateurs couverts : 1/2, 5, 8, 11⭐, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 30, 31, 32.
  *
  * Usage : `pnpm qualiopi:seed-demo`
  */
@@ -28,6 +30,7 @@ export interface DemoData {
   devis: DevisDemo;
   formation: FormationDemo;
   session: SessionDemo;
+  trainer: TrainerDemo;
   stagiaires: [StagiaireDemo, StagiaireDemo];
   enrollments: [EnrollmentDemo, EnrollmentDemo];
   presences: PresenceDemo[];
@@ -40,7 +43,9 @@ export interface DemoData {
   partenariat: PartenariatDemo;
   sousTraitant: SousTraitantDemo;
   revueDirection: RevueDirectionDemo;
-  appreciations: [AppreciationDemo, AppreciationDemo];
+  appreciations: [AppreciationDemo, AppreciationDemo, AppreciationDemo, AppreciationDemo];
+  siteSettings: SiteSettingDemo[];
+  bpfDepense: BpfDepenseDemo;
 }
 
 export interface ClientDemo {
@@ -102,6 +107,10 @@ export interface FormationDemo {
   statutGeneration: "publie";
   statut: "publie";
   typesActionQualiopi: Array<"classique" | "opco">;
+  /** Indicateurs publiés off.1/2 (T17). */
+  indicateursPublies: Array<{ libelle: string; valeur: number; unite: string; annee: number }>;
+  methodeCalculIndicateurs: string;
+  indicateursPubliesAt: Date;
 }
 
 export interface SessionDemo {
@@ -227,6 +236,9 @@ export interface SousTraitantDemo {
   nda: string;
   objetPrestation: string;
   verifieDataGouvAt: Date;
+  /** Capture data.gouv.fr archivée (preuve off.27 — T17). */
+  screenshotUrl: string;
+  screenshotDate: Date;
   contratSigneAt: Date;
   actif: boolean;
 }
@@ -242,10 +254,34 @@ export interface RevueDirectionDemo {
 }
 
 export interface AppreciationDemo {
-  source: "stagiaire" | "entreprise";
+  source: "stagiaire" | "entreprise" | "financeur" | "formateur";
   note: number;
   commentaire: string;
   dateAppreciation: Date;
+}
+
+export interface TrainerDemo {
+  nom: string;
+  prenom: string;
+  email: string;
+  statut: "salarie";
+  cvUrl: string;
+  cvUploadedAt: Date;
+  actif: boolean;
+}
+
+export interface SiteSettingDemo {
+  key: string;
+  value: string;
+  description: string;
+  category: "qualiopi";
+}
+
+export interface BpfDepenseDemo {
+  annee: number;
+  categorie: string;
+  libelle: string;
+  montantHtCents: number;
 }
 
 // ─── Numéros stables (idempotence) ───────────────────────────────────────────
@@ -267,6 +303,12 @@ const DEMO = {
   QUESTIONNAIRE_POS_2: "DEMO-QST-POS-002-TOKEN-STABLE-AXION",
   /** tierId de l'offre « Essentielle » à laquelle se rattache la formation démo */
   OFFRE_TIER_ID: "intervention-essentielle",
+  /** Formateur salarié co-animateur (T17 · off.21) */
+  TRAINER_EMAIL: "formateur.demo@demo.axion-ia.invalid",
+  /** Clés SiteSetting référent handicap (T17 · off.26) */
+  SETTING_REFERENT_NOM: "referent_handicap_nom",
+  SETTING_REFERENT_EMAIL: "referent_handicap_email",
+  SETTING_REFERENT_TEL: "referent_handicap_telephone",
 } as const;
 
 // ─── Dates passées stables ────────────────────────────────────────────────────
@@ -408,6 +450,17 @@ export function buildDemoData(): DemoData {
     statutGeneration: "publie",
     statut: "publie",
     typesActionQualiopi: ["classique", "opco"],
+    indicateursPublies: [
+      { libelle: "Taux de satisfaction stagiaires", valeur: 92, unite: "%", annee: 2025 },
+      { libelle: "Taux de réussite (score ≥ 70 %)", valeur: 87, unite: "%", annee: 2025 },
+      { libelle: "Taux de complétion (présence ≥ 80 %)", valeur: 96, unite: "%", annee: 2025 },
+    ],
+    methodeCalculIndicateurs:
+      "[DEMO] Indicateurs calculés sur l'ensemble des sessions réalisées en 2025. " +
+      "Satisfaction : moyenne des notes /5 des questionnaires satisfaction_chaud (réponses ≥ 4/5 = satisfait). " +
+      "Réussite : proportion de stagiaires ayant obtenu un score ≥ 70 % à l'évaluation finale des acquis. " +
+      "Complétion : proportion d'enrollments avec tauxPresencePct ≥ 80 %.",
+    indicateursPubliesAt: new Date("2026-01-20T10:00:00.000Z"),
   };
 
   // --- Session -----------------------------------------------------------------
@@ -757,6 +810,9 @@ export function buildDemoData(): DemoData {
       "[DEMO] Prestation d'animation ponctuelle pour les formations IA avancées " +
       "(spécialité Data Science et MLOps). Contrat de sous-traitance cadre signé 15/01/2026.",
     verifieDataGouvAt: new Date("2026-01-16T10:00:00.000Z"),
+    screenshotUrl:
+      "https://demo.axion-ia.invalid/preuves/data-gouv-screenshot-expertia-20260116.png",
+    screenshotDate: new Date("2026-01-16T10:00:00.000Z"),
     contratSigneAt: new Date("2026-01-15T14:00:00.000Z"),
     actif: true,
   };
@@ -820,8 +876,8 @@ export function buildDemoData(): DemoData {
     statut: "valide",
   };
 
-  // --- Appréciations -----------------------------------------------------------
-  const appreciations: [AppreciationDemo, AppreciationDemo] = [
+  // --- Appréciations (off.30 : multi-parties) ----------------------------------
+  const appreciations: [AppreciationDemo, AppreciationDemo, AppreciationDemo, AppreciationDemo] = [
     {
       source: "stagiaire",
       note: 5,
@@ -836,13 +892,73 @@ export function buildDemoData(): DemoData {
         "[DEMO] Excellent retour de nos collaborateurs. Le formateur Axion-IA a su adapter le contenu à nos enjeux métier spécifiques.",
       dateAppreciation: new Date("2026-03-17T10:00:00.000Z"),
     },
+    {
+      source: "financeur",
+      note: 5,
+      commentaire:
+        "[DEMO] L'OPCO ATLAS confirme la qualité de la prestation financée. " +
+        "Le dossier de subrogation était complet et la facture conforme. " +
+        "Partenaire de confiance pour les financements collectifs 2026.",
+      dateAppreciation: new Date("2026-03-25T09:00:00.000Z"),
+    },
+    {
+      source: "formateur",
+      note: 4,
+      commentaire:
+        "[DEMO] Animation fluide, groupe très réactif. " +
+        "Les supports pédagogiques sont bien adaptés au niveau débutant. " +
+        "Suggestion : ajouter 15 min sur l'évaluation des risques IA en module 3.",
+      dateAppreciation: new Date("2026-03-11T08:30:00.000Z"),
+    },
   ];
+
+  // --- Formateur salarié co-animateur (off.21) ---------------------------------
+  const trainer: TrainerDemo = {
+    nom: "Durand",
+    prenom: "Sophie",
+    email: DEMO.TRAINER_EMAIL,
+    statut: "salarie",
+    cvUrl: "https://demo.axion-ia.invalid/preuves/cv-sophie-durand-formateur-ia-demo.pdf",
+    cvUploadedAt: new Date("2026-01-10T09:00:00.000Z"),
+    actif: true,
+  };
+
+  // --- SiteSettings référent handicap (off.26) ---------------------------------
+  const siteSettings: SiteSettingDemo[] = [
+    {
+      key: DEMO.SETTING_REFERENT_NOM,
+      value: "[DEMO] Marie Lambert",
+      description: "Nom du référent handicap de l'organisme de formation (off.26 Qualiopi).",
+      category: "qualiopi",
+    },
+    {
+      key: DEMO.SETTING_REFERENT_EMAIL,
+      value: "referent.handicap@demo.axion-ia.invalid",
+      description: "Email du référent handicap (off.26 Qualiopi).",
+      category: "qualiopi",
+    },
+    {
+      key: DEMO.SETTING_REFERENT_TEL,
+      value: "0600000002",
+      description: "Téléphone du référent handicap (off.26 Qualiopi).",
+      category: "qualiopi",
+    },
+  ];
+
+  // --- Dépense BPF (T17 · CLUSTER 5) ------------------------------------------
+  const bpfDepense: BpfDepenseDemo = {
+    annee: 2026,
+    categorie: "Locations de salles",
+    libelle: "[DEMO] Location salle de formation — Centre d'affaires Lyon Part-Dieu — 10/03/2026",
+    montantHtCents: 35000, // 350,00 €
+  };
 
   return {
     client,
     devis,
     formation,
     session,
+    trainer,
     stagiaires,
     enrollments,
     presences,
@@ -856,6 +972,8 @@ export function buildDemoData(): DemoData {
     sousTraitant,
     revueDirection,
     appreciations,
+    siteSettings,
+    bpfDepense,
   };
 }
 
@@ -941,10 +1059,14 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     },
   });
 
-  // 4. Formation
+  // 4. Formation (avec indicateurs publiés off.1/2 — T17)
   const formation = await prisma.formation.upsert({
     where: { numero: data.formation.numero },
-    update: {},
+    update: {
+      indicateursPublies: data.formation.indicateursPublies,
+      methodeCalculIndicateurs: data.formation.methodeCalculIndicateurs,
+      indicateursPubliesAt: data.formation.indicateursPubliesAt,
+    },
     create: {
       numero: data.formation.numero,
       titre: data.formation.titre,
@@ -964,13 +1086,38 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       statutGeneration: data.formation.statutGeneration,
       statut: data.formation.statut,
       typesActionQualiopi: data.formation.typesActionQualiopi,
+      indicateursPublies: data.formation.indicateursPublies,
+      methodeCalculIndicateurs: data.formation.methodeCalculIndicateurs,
+      indicateursPubliesAt: data.formation.indicateursPubliesAt,
     },
   });
 
-  // 5. Session
+  // 4b. Trainer salarié co-animateur (off.21 — T17)
+  const trainer = await prisma.trainer.upsert({
+    where: { email: data.trainer.email },
+    update: {
+      cvUrl: data.trainer.cvUrl,
+      cvUploadedAt: data.trainer.cvUploadedAt,
+      formationsHabilitees: [formation.id],
+    },
+    create: {
+      nom: data.trainer.nom,
+      prenom: data.trainer.prenom,
+      email: data.trainer.email,
+      statut: data.trainer.statut,
+      cvUrl: data.trainer.cvUrl,
+      cvUploadedAt: data.trainer.cvUploadedAt,
+      formationsHabilitees: [formation.id],
+      actif: data.trainer.actif,
+    },
+  });
+
+  // 5. Session (avec coFormateurs — T17)
   const session = await prisma.trainingSession.upsert({
     where: { numero: data.session.numero },
-    update: {},
+    update: {
+      coFormateurs: [{ trainerId: trainer.id, role: "co_animateur", heuresAnimees: 3.5 }],
+    },
     create: {
       numero: data.session.numero,
       titreSession: data.session.titreSession,
@@ -988,6 +1135,7 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       nbParticipantsPrevus: data.session.nbParticipantsPrevus,
       nbParticipantsReels: data.session.nbParticipantsReels,
       statut: data.session.statut,
+      coFormateurs: [{ trainerId: trainer.id, role: "co_animateur", heuresAnimees: 3.5 }],
     },
   });
 
@@ -1203,7 +1351,7 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     });
   }
 
-  // 15. Sous-traitant
+  // 15. Sous-traitant (avec screenshotUrl/screenshotDate — T17)
   const existingST = await prisma.sousTraitant.findFirst({
     where: { nom: data.sousTraitant.nom },
   });
@@ -1215,10 +1363,23 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
         nda: data.sousTraitant.nda,
         objetPrestation: data.sousTraitant.objetPrestation,
         verifieDataGouvAt: data.sousTraitant.verifieDataGouvAt,
+        screenshotUrl: data.sousTraitant.screenshotUrl,
+        screenshotDate: data.sousTraitant.screenshotDate,
         contratSigneAt: data.sousTraitant.contratSigneAt,
         actif: data.sousTraitant.actif,
       },
     });
+  } else {
+    // Mettre à jour les champs screenshot si absents (idempotent)
+    if (!existingST.screenshotUrl) {
+      await prisma.sousTraitant.update({
+        where: { id: existingST.id },
+        data: {
+          screenshotUrl: data.sousTraitant.screenshotUrl,
+          screenshotDate: data.sousTraitant.screenshotDate,
+        },
+      });
+    }
   }
 
   // 16. Revue de direction
@@ -1236,7 +1397,7 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     },
   });
 
-  // 17. Appréciations
+  // 17. Appréciations (off.30 multi-parties : stagiaire, entreprise, financeur, formateur — T17)
   for (const a of data.appreciations) {
     const traineeId = a.source === "stagiaire" ? traineeIds[0] : undefined;
     const existing = await prisma.appreciation.findFirst({
@@ -1261,11 +1422,44 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     }
   }
 
+  // 18. SiteSettings référent handicap (off.26 — T17)
+  for (const s of data.siteSettings) {
+    await prisma.siteSetting.upsert({
+      where: { key: s.key },
+      update: { value: s.value, description: s.description, category: s.category },
+      create: {
+        key: s.key,
+        value: s.value,
+        description: s.description,
+        category: s.category,
+      },
+    });
+  }
+
+  // 19. Dépense BPF (T17 · CLUSTER 5) — idempotent par libellé + annee
+  const existingDepense = await prisma.bpfDepense.findFirst({
+    where: {
+      annee: data.bpfDepense.annee,
+      libelle: data.bpfDepense.libelle,
+    },
+  });
+  if (!existingDepense) {
+    await prisma.bpfDepense.create({
+      data: {
+        annee: data.bpfDepense.annee,
+        categorie: data.bpfDepense.categorie,
+        libelle: data.bpfDepense.libelle,
+        montantHtCents: data.bpfDepense.montantHtCents,
+      },
+    });
+  }
+
   console.log(
     "✅ [qualiopi:seed-demo] Cycle complet persité avec succès. " +
       `Client=${DEMO.CLIENT} | Devis=${DEMO.DEVIS} | Formation=${DEMO.FORMATION} | ` +
       `Session=${DEMO.SESSION} | Stagiaires=2 | Attestation=${DEMO.ATTESTATION} | ` +
-      `Facture=${DEMO.FACTURE} | Réclamation=${DEMO.RECLAMATION}`,
+      `Facture=${DEMO.FACTURE} | Réclamation=${DEMO.RECLAMATION} | ` +
+      `Trainer=${DEMO.TRAINER_EMAIL} | SiteSettings=3 | BpfDepense=1 | Appréciations=4`,
   );
 }
 

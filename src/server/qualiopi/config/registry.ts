@@ -56,6 +56,9 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(12.31),
     description: "SMIC horaire brut (€) — plancher rémunération formateurs.",
   },
+  // Référence légale — consommée à l'affichage kit CPF (pas de builder actif v1).
+  // Quand un builder de kit CPF calculera le reste à charge, appeler
+  // getQualiopiConfig("cpf_reste_a_charge") pour lire cette valeur.
   cpf_reste_a_charge: { ...num(103.2), description: "Reste à charge CPF 2026 (€) — PLF 2026." },
   opco_atlas_intra_horaire: { ...num(40), description: "Plafond Atlas intra (€/h/participant)." },
   opco_atlas_inter_presentiel: {
@@ -69,6 +72,12 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   opco_atlas_plafond_annuel: {
     ...num(8000),
     description: "Plafond annuel Atlas par entreprise (€ HT).",
+  },
+
+  // ── Seuils réclamations ──
+  seuil_reclamation_jours: {
+    ...num(15),
+    description: "Seuil J+15 alerte réclamation sans réponse.",
   },
 
   // ── Seuils pédagogiques / qualité ──

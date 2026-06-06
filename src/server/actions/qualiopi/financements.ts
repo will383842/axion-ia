@@ -627,7 +627,7 @@ export async function genererFacturePdfAction(input: {
 export async function exportComptaCsvAction(input: {
   annee: number;
 }): Promise<ActionResult<{ csv: string; filename: string }>> {
-  await requireAdminWrite();
+  const adminSession = await requireAdminWrite();
   const parsed = exportComptaCsvSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { annee } = parsed.data;
@@ -695,6 +695,13 @@ export async function exportComptaCsvAction(input: {
 
   const csv = [header, ...rows].join("\n");
   const filename = `axion-ia-factures-formation-${annee}.csv`;
+
+  await logQualiopiActivity({
+    action: "qualiopi.compta.csv.export",
+    targetType: "FactureFormation",
+    changes: { annee, nbFactures: factures.length },
+    session: adminSession,
+  });
 
   return { data: { csv, filename } };
 }

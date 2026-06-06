@@ -898,6 +898,19 @@ describe("exportComptaCsvAction", () => {
     const lines = result.data.csv.split("\n").filter(Boolean);
     expect(lines).toHaveLength(1); // header uniquement
   });
+
+  it("logge l'activité qualiopi.compta.csv.export après l'export", async () => {
+    const result = await exportComptaCsvAction({ annee: 2026 });
+
+    expect("data" in result).toBe(true);
+    expect(mockLogActivity).toHaveBeenCalledOnce();
+    const logCall = mockCall<{ action: string; changes: { annee: number; nbFactures: number } }>(
+      mockLogActivity,
+    );
+    expect(logCall.action).toBe("qualiopi.compta.csv.export");
+    expect(logCall.changes.annee).toBe(2026);
+    expect(typeof logCall.changes.nbFactures).toBe("number");
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

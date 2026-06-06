@@ -4882,6 +4882,12 @@ model Formation {
   moyensTechniques     String                    @default("") @map("moyens_techniques") @db.Text
   /// Ressources pédagogiques fournies (off.17/22) : [{ type, libelle }]. [T11]
   ressourcesPedagogiques Json                    @default("[]") @map("ressources_pedagogiques")
+  /// Indicateurs de résultats publiés (off.2) : [{ libelle, valeur, unite, annee }]. [T17]
+  indicateursPublies   Json                      @default("[]") @map("indicateurs_publies")
+  /// Méthode de calcul affichée des indicateurs publiés (off.2). [T17]
+  methodeCalculIndicateurs String                @default("") @map("methode_calcul_indicateurs") @db.Text
+  /// Date de publication/mise à jour des indicateurs (off.2). [T17]
+  indicateursPubliesAt DateTime?                 @map("indicateurs_publies_at")
   seuilReussitePct     Int                       @default(70) @map("seuil_reussite_pct")
   ratioPratiquePct     Int?                      @map("ratio_pratique_pct")
   accessibleHandicap   Boolean                   @default(false) @map("accessible_handicap")
@@ -5597,6 +5603,9 @@ model SousTraitant {
   nda               String?   @db.VarChar(20)
   objetPrestation   String    @map("objet_prestation") @db.Text
   verifieDataGouvAt DateTime? @map("verifie_data_gouv_at")
+  /// Capture datée data.gouv.fr (preuve off.27, archivée AVANT mission). [T17]
+  screenshotUrl     String?   @map("screenshot_url") @db.Text
+  screenshotDate    DateTime? @map("screenshot_date")
   contratSigneAt    DateTime? @map("contrat_signe_at")
   actif             Boolean   @default(true)
   createdAt         DateTime  @default(now()) @map("created_at")
@@ -5796,6 +5805,27 @@ model AlerteSysteme {
   @@index([niveau])
   @@index([cibleType, cibleId])
   @@map("alertes_systeme")
+}
+
+// ============================================================
+// QUALIOPI — T17 : Durcissement conformité (audit end-to-end).
+// Dépenses BPF (champ DREETS manquant) — saisie par année + catégorie.
+// Migration ADDITIVE.
+// ============================================================
+
+/// Dépense BPF d'une année (location salle, matériel, honoraires sous-traitants…).
+/// Complète les agrégats de recettes du BPF pour le dépôt maf.fr.
+model BpfDepense {
+  id             String   @id @default(uuid()) @db.Uuid
+  annee          Int
+  categorie      String   @db.VarChar(80)
+  libelle        String   @db.VarChar(250)
+  montantHtCents Int      @map("montant_ht_cents")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([annee])
+  @@map("bpf_depenses")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

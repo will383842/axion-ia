@@ -34,7 +34,7 @@ function loadKey() {
 }
 
 const API = "https://api.unsplash.com";
-const UTM = "utm_source=axion-ia&utm_medium=referral";
+const _UTM = "utm_source=axion-ia&utm_medium=referral";
 const KEY = loadKey();
 
 // Slots = sections visuelles de la page hub sites-web. query = recherche Unsplash,
@@ -45,7 +45,11 @@ const SLOTS = [
   { slot: "ecommerce", query: "ecommerce online shopping laptop", label: "E-commerce multi-CMS" },
   { slot: "mobile", query: "mobile app design smartphone", label: "Applications mobiles" },
   { slot: "data", query: "data dashboard analytics screen", label: "Plateformes data & SaaS" },
-  { slot: "team", query: "creative tech team collaboration office", label: "Une équipe à vos côtés" },
+  {
+    slot: "team",
+    query: "creative tech team collaboration office",
+    label: "Une équipe à vos côtés",
+  },
 ];
 
 function filterFreeOnly(photos) {
@@ -69,7 +73,8 @@ async function search(query) {
   const res = await fetch(url, {
     headers: { Authorization: `Client-ID ${KEY}`, "Accept-Version": "v1" },
   });
-  if (!res.ok) throw new Error(`Unsplash search ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  if (!res.ok)
+    throw new Error(`Unsplash search ${res.status}: ${(await res.text()).slice(0, 200)}`);
   return (await res.json()).results;
 }
 
@@ -113,7 +118,9 @@ for (const s of SLOTS) {
     photographerUrl: photo.user.links.html,
     photoUrl: `https://unsplash.com/photos/${photo.id}`,
   });
-  console.log(`  → ${photo.id} by ${photographer} (${photo.likes} likes, ${photo.width}x${photo.height})`);
+  console.log(
+    `  → ${photo.id} by ${photographer} (${photo.likes} likes, ${photo.width}x${photo.height})`,
+  );
 }
 
 const header = `// AUTO-GÉNÉRÉ par scripts/curate-sites-web-unsplash.mjs — NE PAS éditer à la main.

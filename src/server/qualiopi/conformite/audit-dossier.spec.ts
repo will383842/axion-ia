@@ -1,9 +1,9 @@
 /**
- * Tests — audit-dossier.ts (T12 — AGENT B).
+ * Tests — audit-dossier.ts (T12 — AGENT B, T17 — CLUSTER 2).
  *
- * Stratégie : mock @/lib/prisma + ./conformite-service.
+ * Stratégie : mock @/lib/prisma + ./conformite-service + site-settings.
  * Vérifie la structure du manifeste JSON, le contenu Markdown,
- * le comportement stub.invalid.
+ * le comportement stub.invalid, et les preuves enrichies off.21/26/30.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -17,6 +17,9 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: {
       groupBy: vi.fn(),
     },
+    veille: { count: vi.fn() },
+    appreciation: { count: vi.fn() },
+    trainer: { findMany: vi.fn() },
   },
 }));
 
@@ -24,15 +27,24 @@ vi.mock("./conformite-service", () => ({
   evaluerConformite: vi.fn(),
 }));
 
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn().mockResolvedValue(""),
+}));
+
 import { prisma } from "@/lib/prisma";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 import { genererManifesteAudit } from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 
 const mockPrisma = prisma as unknown as {
   documentGenere: { groupBy: ReturnType<typeof vi.fn> };
+  veille: { count: ReturnType<typeof vi.fn> };
+  appreciation: { count: ReturnType<typeof vi.fn> };
+  trainer: { findMany: ReturnType<typeof vi.fn> };
 };
 const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
+const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 
 // Résultat de conformité simulé avec 32 indicateurs
 function makeConformiteResult(
@@ -63,6 +75,10 @@ describe("genererManifesteAudit", () => {
     vi.clearAllMocks();
     mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
     mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
   });
 
   it("retourne un objet { json, markdown }", async () => {
@@ -154,5 +170,65 @@ describe("genererManifesteAudit", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+
+  // ── Preuves enrichies (T17 — CLUSTER 2) ───────────────────────────────────
+
+  it("off.30 : manifeste affiche le compte d'appréciations multi-parties", async () => {
+    mockPrisma.appreciation.count.mockResolvedValue(4);
+    const result = await genererManifesteAudit();
+    const ind30 = result.json.indicateurs.find((i) => i.numero === 30);
+    const preuvesText = ind30?.preuves.join(" ") ?? "";
+    expect(preuvesText).toMatch(/4/);
+    expect(preuvesText).toMatch(/appr[eé]ciation/i);
+  });
+
+  it("off.26 : manifeste expose le nom du référent handicap si renseigné", async () => {
+    mockGetConfig.mockResolvedValue("Williams Jullin");
+    const result = await genererManifesteAudit();
+    const ind26 = result.json.indicateurs.find((i) => i.numero === 26);
+    const preuvesText = ind26?.preuves.join(" ") ?? "";
+    expect(preuvesText).toContain("Williams Jullin");
+  });
+
+  it("off.26 : manifeste signale référent non renseigné si config vide", async () => {
+    mockGetConfig.mockResolvedValue("");
+    const result = await genererManifesteAudit();
+    const ind26 = result.json.indicateurs.find((i) => i.numero === 26);
+    const preuvesText = ind26?.preuves.join(" ") ?? "";
+    expect(preuvesText).toMatch(/non renseigné/i);
+  });
+
+  it("off.21 : manifeste liste les formateurs avec CV", async () => {
+    mockPrisma.trainer.findMany.mockResolvedValue([
+      { id: "t-1", nom: "Jullin", prenom: "Williams", cvUrl: "https://example.com/cv.pdf" },
+    ]);
+    const result = await genererManifesteAudit();
+    const ind21 = result.json.indicateurs.find((i) => i.numero === 21);
+    const preuvesText = ind21?.preuves.join(" ") ?? "";
+    expect(preuvesText).toContain("Jullin");
+    expect(preuvesText).toMatch(/1 formateur/i);
+  });
+
+  it("off.21 : manifeste signale 0 formateur avec CV si aucun", async () => {
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    const result = await genererManifesteAudit();
+    const ind21 = result.json.indicateurs.find((i) => i.numero === 21);
+    const preuvesText = ind21?.preuves.join(" ") ?? "";
+    expect(preuvesText).toMatch(/aucun formateur/i);
+  });
+
+  it("off.23/24/25 : manifeste affiche le compte de veille par type", async () => {
+    mockPrisma.veille.count
+      .mockResolvedValueOnce(3) // legale
+      .mockResolvedValueOnce(2) // metiers
+      .mockResolvedValueOnce(1); // pedagogique
+    const result = await genererManifesteAudit();
+    const ind23 = result.json.indicateurs.find((i) => i.numero === 23);
+    const ind24 = result.json.indicateurs.find((i) => i.numero === 24);
+    const ind25 = result.json.indicateurs.find((i) => i.numero === 25);
+    expect(ind23?.preuves.join(" ")).toContain("3");
+    expect(ind24?.preuves.join(" ")).toContain("2");
+    expect(ind25?.preuves.join(" ")).toContain("1");
   });
 });

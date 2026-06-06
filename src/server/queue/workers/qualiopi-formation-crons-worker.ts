@@ -36,6 +36,7 @@ import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 import {
+  envoyerConvocation,
   envoyerRappelJ7,
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
@@ -55,7 +56,9 @@ export type FormationCronJobType =
   | "formation-crons.satisfaction-j1"
   | "formation-crons.suivi-j30"
   // T15 AGENT A — moteur d'alertes système (daily 07:00)
-  | "formation-crons.alertes";
+  | "formation-crons.alertes"
+  // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
+  | "formation-crons.convocation-j5";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -456,6 +459,72 @@ async function handleAlertes(): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// T17 CLUSTER 3 — Convocation réglementaire J-5 (off.9)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Daily 08:00 UTC — Sessions `planifiee` dont dateDebut = J-5 (fenêtre ±12h).
+ *
+ * Scan les sessions planifiées dont dateDebut est dans [now+4j12h, now+5j12h].
+ * Pour chaque enrollment actif (statut planifiee ou presente), envoie la
+ * convocation réglementaire via envoyerConvocation(enrollmentId).
+ * Idempotent : jobId BullMQ = `qualiopi-convocation-{enrollmentId}` (déjà géré
+ * par envoyerConvocation — un second envoi est ignoré si le premier est pending).
+ * Fail-soft par enrollment : une erreur ne bloque pas les autres stagiaires.
+ *
+ * Distinction J-7 vs J-5 :
+ *   - J-7 (handleRappelJ7) : rappel/information avant la session.
+ *   - J-5 (handleConvocationJ5) : convocation réglementaire obligatoire (off.9).
+ */
+async function handleConvocationJ5(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] convocation-j5: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const windowStart = new Date(now.getTime() + 4.5 * 24 * 60 * 60 * 1000);
+  const windowEnd = new Date(now.getTime() + 5.5 * 24 * 60 * 60 * 1000);
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      dateDebut: { gte: windowStart, lte: windowEnd },
+    },
+    select: {
+      id: true,
+      enrollments: {
+        where: { statut: { in: ["planifiee", "presente"] } },
+        select: { id: true },
+      },
+    },
+  });
+
+  let ok = 0;
+  let ko = 0;
+
+  for (const session of sessions) {
+    for (const enrollment of session.enrollments) {
+      try {
+        await envoyerConvocation(enrollment.id);
+        ok++;
+      } catch (err) {
+        ko++;
+        console.error(
+          `[formation-crons] convocation-j5: erreur enrollment ${enrollment.id}:`,
+          err instanceof Error ? err.message : String(err),
+        );
+      }
+    }
+  }
+
+  const totalEnrollments = sessions.reduce((acc, s) => acc + s.enrollments.length, 0);
+  console.log(
+    `[formation-crons] convocation-j5: ${ok} convocations envoyées, ${ko} erreurs (${sessions.length} sessions scannées, ${totalEnrollments} enrollments)`,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Worker dispatcher (exporté pour test d'intégration)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -467,6 +536,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.satisfaction-j1": handleSatisfactionJ1,
   "formation-crons.suivi-j30": handleSuiviJ30,
   "formation-crons.alertes": handleAlertes,
+  "formation-crons.convocation-j5": handleConvocationJ5,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

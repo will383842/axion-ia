@@ -10,6 +10,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -62,7 +63,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbSessionsRealisees,
     nbEvaluationsInitiales,
     nbEvaluationsFinales,
-    nbQuestionnaires,
+    nbAppreciations,
     nbReclamations,
     nbVeilleLegale,
     nbVeilleMetiers,
@@ -70,17 +71,20 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbPartenariats,
     nbSousTraitants,
     nbTrainers,
+    nbTrainersAvecCV,
     nbTraineesHandicap,
     nbEnrollmentsAdaptations,
     nbDocuments,
     nbRevues,
+    referentHandicapNom,
     typesActionResult,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
     prisma.evaluationAcquis.count({ where: { type: "initiale" } }),
     prisma.evaluationAcquis.count({ where: { type: "finale" } }),
-    prisma.questionnaire.count(),
+    // off.30 : compter les appréciations multi-parties (≠ questionnaires stagiaire seul)
+    prisma.appreciation.count(),
     prisma.reclamation.count(),
     prisma.veille.count({ where: { type: "legale" } }),
     prisma.veille.count({ where: { type: "metiers" } }),
@@ -88,10 +92,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.partenariat.count(),
     prisma.sousTraitant.count(),
     prisma.trainer.count({ where: { actif: true } }),
+    // off.21 : formateurs avec CV téléversé (cvUrl non null)
+    prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
     prisma.trainee.count({ where: { situationHandicap: true } }),
     prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
     prisma.documentGenere.count(),
     prisma.revueDirection.count(),
+    // off.26 : nom du référent handicap (config Qualiopi)
+    getQualiopiConfig("referent_handicap_nom").catch(() => ""),
     // Types d'action déclarés : liste des modalités présentes sur les formations
     prisma.formation
       .findMany({
@@ -130,11 +138,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     [`${nbFormations} formation(s) créée(s)`, `${nbDocuments} document(s) généré(s)`],
     nbFormations > 0,
   );
-  set(
-    2,
-    [`${nbSessionsRealisees} session(s) réalisée(s)`, `${nbQuestionnaires} questionnaire(s)`],
-    nbSessionsRealisees > 0,
-  );
+  set(2, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
   set(3, [], false); // certifiant conditionnel — non couvert par défaut (TC seul)
 
   // Critère 2
@@ -168,9 +172,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     12,
     [
       `${nbSessionsRealisees} session(s) réalisée(s)`,
-      `${nbQuestionnaires} questionnaire(s) satisfaction`,
+      `${nbDocuments} document(s) de suivi (émargements, relevés de connexion)`,
     ],
-    nbSessionsRealisees > 0 && nbQuestionnaires > 0,
+    nbSessionsRealisees > 0 && nbDocuments > 0,
   );
   set(13, [], false); // APP conditionnel
   set(14, [], false); // APP conditionnel
@@ -188,7 +192,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 5
-  set(21, [`${nbTrainers} formateur(s) actif(s) avec compétences mobilisées`], nbTrainers > 0);
+  // off.21 : couvert SEULEMENT si ≥1 formateur actif avec cvUrl non null (CV réel uploadé)
+  set(
+    21,
+    [
+      `${nbTrainersAvecCV} formateur(s) actif(s) avec CV téléversé`,
+      `${nbTrainers} formateur(s) actif(s) au total`,
+    ],
+    nbTrainersAvecCV > 0,
+  );
   set(22, [`${nbTrainers} formateur(s) actif(s)`], nbTrainers > 0);
 
   // Critère 6
@@ -199,24 +211,25 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     [`${nbVeillePedagogique} entrée(s) de veille pédagogique/technologique`],
     nbVeillePedagogique > 0,
   );
+  // off.26 : couvert si partenariats existent ET référent handicap nommé (config non vide)
   set(
     26,
     [
       `${nbPartenariats} partenariat(s) (dont réseau handicap)`,
       `${nbTraineesHandicap} stagiaire(s) handicap suivi(s)`,
+      referentHandicapNom
+        ? `Référent handicap : ${referentHandicapNom}`
+        : "Référent handicap : non renseigné",
     ],
-    nbPartenariats > 0,
+    nbPartenariats > 0 && referentHandicapNom.trim().length > 0,
   );
   set(27, [`${nbSousTraitants} sous-traitant(s) référencé(s)`], nbSousTraitants > 0);
   set(28, [], false); // AFEST conditionnel
   set(29, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
 
   // Critère 7
-  set(
-    30,
-    [`${nbQuestionnaires} questionnaire(s) de satisfaction (parties prenantes)`],
-    nbQuestionnaires > 0,
-  );
+  // off.30 : couvert si ≥1 appréciation multi-parties (stagiaire/entreprise/financeur/formateur)
+  set(30, [`${nbAppreciations} appréciation(s) multi-parties (off.30)`], nbAppreciations > 0);
   set(31, [`${nbReclamations} réclamation(s) enregistrée(s)`], nbReclamations > 0);
   set(
     32,

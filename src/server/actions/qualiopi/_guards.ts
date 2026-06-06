@@ -15,6 +15,7 @@
 
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { hashIp } from "@/lib/security/ip-hash";
 import {
   requireAdminRead,
   requireAdminWrite,
@@ -46,11 +47,13 @@ export interface QualiopiActivityInput {
 export async function logQualiopiActivity(input: QualiopiActivityInput): Promise<void> {
   try {
     const h = await headers();
-    const ipAddress =
+    const rawIp =
       h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       h.get("x-real-ip") ||
       h.get("cf-connecting-ip") ||
       null;
+    // A-02 (RGPD) : hachage de l'IP avant stockage (aligné sur le reste du repo).
+    const ipAddress = hashIp(rawIp);
     const userAgent = h.get("user-agent") || null;
     await prisma.activityLog.create({
       data: {

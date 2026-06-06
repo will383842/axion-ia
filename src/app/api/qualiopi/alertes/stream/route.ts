@@ -39,7 +39,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     return new Response("unauthorized", { status: 401 });
   }
   const role = (session.user as { role?: string }).role ?? "reader";
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  if (role !== "super_admin" && role !== "admin") {
     return new Response("forbidden", { status: 401 });
   }
 

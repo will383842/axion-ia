@@ -47,6 +47,7 @@ function makeSession(overrides: Record<string, unknown> = {}) {
     edofVerifieAt: null,
     ftDispositif: null,
     ftAifPrescriptionDate: null,
+    ftPoeiOffreEmploiNumero: null,
     ftPoeiAccordFinancementAt: null,
     ftPoeiEngagementSigneAt: null,
     statut: "planifiee" as const,
@@ -191,42 +192,81 @@ describe("validateFranceTravail", () => {
     expect(result.ok).toBe(true);
   });
 
-  it("retourne ok=false si POEI + ftPoeiAccordFinancementAt null", () => {
+  it("retourne ok=false si POEI + ftPoeiAccordFinancementAt null + session planifiee → critique", () => {
     const result = validateFranceTravail(
       makeSession({
         financementType: "france_travail",
         ftDispositif: "poei",
+        ftPoeiOffreEmploiNumero: "2024-123456",
         ftPoeiAccordFinancementAt: null,
         ftPoeiEngagementSigneAt: new Date(),
+        statut: "planifiee",
       }),
     );
     expect(result.ok).toBe(false);
+    expect(result.gravite).toBe("critique");
     expect(result.alerte).toContain("POEI");
   });
 
-  it("retourne ok=false si POEI + ftPoeiEngagementSigneAt null", () => {
+  it("retourne ok=false si POEI + ftPoeiEngagementSigneAt null + session planifiee → critique", () => {
     const result = validateFranceTravail(
       makeSession({
         financementType: "france_travail",
         ftDispositif: "poei",
+        ftPoeiOffreEmploiNumero: "2024-123456",
         ftPoeiAccordFinancementAt: new Date(),
         ftPoeiEngagementSigneAt: null,
+        statut: "planifiee",
       }),
     );
     expect(result.ok).toBe(false);
+    expect(result.gravite).toBe("critique");
     expect(result.alerte).toContain("POEI");
   });
 
-  it("retourne ok=true si POEI + les deux dates renseignées", () => {
+  it("retourne ok=false + critique si POEI + ftPoeiOffreEmploiNumero null + session planifiee (T17)", () => {
     const result = validateFranceTravail(
       makeSession({
         financementType: "france_travail",
         ftDispositif: "poei",
+        ftPoeiOffreEmploiNumero: null,
         ftPoeiAccordFinancementAt: new Date(),
         ftPoeiEngagementSigneAt: new Date(),
+        statut: "planifiee",
+      }),
+    );
+    expect(result.ok).toBe(false);
+    expect(result.gravite).toBe("critique");
+    expect(result.alerte).toMatch(/offre.*emploi|POEI/i);
+  });
+
+  it("retourne ok=true si POEI + les 3 preuves renseignées + session planifiee", () => {
+    const result = validateFranceTravail(
+      makeSession({
+        financementType: "france_travail",
+        ftDispositif: "poei",
+        ftPoeiOffreEmploiNumero: "2024-123456",
+        ftPoeiAccordFinancementAt: new Date(),
+        ftPoeiEngagementSigneAt: new Date(),
+        statut: "planifiee",
       }),
     );
     expect(result.ok).toBe(true);
+  });
+
+  it("retourne ok=false + warning si POEI + accord manquant + session en_cours (T17 — non bloquant)", () => {
+    const result = validateFranceTravail(
+      makeSession({
+        financementType: "france_travail",
+        ftDispositif: "poei",
+        ftPoeiOffreEmploiNumero: "2024-123456",
+        ftPoeiAccordFinancementAt: null,
+        ftPoeiEngagementSigneAt: new Date(),
+        statut: "en_cours",
+      }),
+    );
+    expect(result.ok).toBe(false);
+    expect(result.gravite).toBe("warning");
   });
 
   it("retourne ok=true si CSP (pas de conditions supplémentaires)", () => {
@@ -306,6 +346,7 @@ describe("getFinancementValidations", () => {
       edofVerifieAt: null,
       ftDispositif: null,
       ftAifPrescriptionDate: null,
+      ftPoeiOffreEmploiNumero: null,
       ftPoeiAccordFinancementAt: null,
       ftPoeiEngagementSigneAt: null,
       statut: "planifiee",
@@ -328,6 +369,7 @@ describe("getFinancementValidations", () => {
       edofVerifieAt: null,
       ftDispositif: null,
       ftAifPrescriptionDate: null,
+      ftPoeiOffreEmploiNumero: null,
       ftPoeiAccordFinancementAt: null,
       ftPoeiEngagementSigneAt: null,
       statut: "planifiee",
@@ -346,6 +388,7 @@ describe("getFinancementValidations", () => {
       edofVerifieAt: null,
       ftDispositif: null,
       ftAifPrescriptionDate: null,
+      ftPoeiOffreEmploiNumero: null,
       ftPoeiAccordFinancementAt: null,
       ftPoeiEngagementSigneAt: null,
       statut: "planifiee",

@@ -41,6 +41,7 @@ type SessionFinancementFields = Pick<
   | "ftAifPrescriptionDate"
   | "ftPoeiAccordFinancementAt"
   | "ftPoeiEngagementSigneAt"
+  | "ftPoeiOffreEmploiNumero"
   | "statut"
 >;
 
@@ -93,8 +94,13 @@ export function validateCpfEdof(
 }
 
 /**
- * France Travail : AIF requiert prescription ; POEI requiert accord financement
- * ET engagement signé.
+ * France Travail : AIF requiert prescription ; POEI requiert les 3 preuves
+ * (offre d'emploi, accord de financement, engagement signé).
+ *
+ * T17 CLUSTER 3 — POEI bloquant (off.9) :
+ *   Si dispositif POEI ET session non démarrée (statut = `planifiee`) ET
+ *   une des 3 preuves manque → gravité `critique` (bloquant).
+ *   Preuves POEI : ftPoeiOffreEmploiNumero + ftPoeiAccordFinancementAt + ftPoeiEngagementSigneAt.
  */
 export function validateFranceTravail(session: SessionFinancementFields): ValidationResult {
   if (session.financementType !== "france_travail") return { ok: true };
@@ -114,18 +120,28 @@ export function validateFranceTravail(session: SessionFinancementFields): Valida
     };
   }
   if (dispositif === "poei") {
+    const sessionNonDemarree = session.statut === "planifiee";
+    // Vérification des 3 preuves POEI (bloquant si session non démarrée)
+    if (!session.ftPoeiOffreEmploiNumero && sessionNonDemarree) {
+      return {
+        ok: false,
+        alerte:
+          "POEI : numéro d'offre d'emploi France Travail obligatoire avant démarrage de la session.",
+        gravite: "critique",
+      };
+    }
     if (!session.ftPoeiAccordFinancementAt) {
       return {
         ok: false,
         alerte: "POEI : accord de financement France Travail obligatoire.",
-        gravite: "critique",
+        gravite: sessionNonDemarree ? "critique" : "warning",
       };
     }
     if (!session.ftPoeiEngagementSigneAt) {
       return {
         ok: false,
         alerte: "POEI : engagement signé France Travail obligatoire.",
-        gravite: "critique",
+        gravite: sessionNonDemarree ? "critique" : "warning",
       };
     }
   }

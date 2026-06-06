@@ -37,7 +37,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/verifier-attestation\//,
   /^src\/app\/api\/qualiopi\//,
   /^src\/components\/admin\/qualiopi\//,
-  /^src\/server\/queue\/workers\/qualiopi-.*-worker\.ts$/,
+  /^src\/server\/queue\/workers\/qualiopi-.*-worker(\.spec)?\.ts$/,
   /^prisma\/seeds\/qualiopi\//,
   /^prisma\/migrations\/\d+_(add_)?qualiopi_/,
   /^scripts\/qualiopi\//,
