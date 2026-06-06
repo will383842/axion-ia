@@ -4877,6 +4877,10 @@ model Formation {
   /// [{ moduleId, titre, dureeMin, sequences:[...] }].
   programmeDetaille    Json                      @default("[]") @map("programme_detaille")
   methodesPedagogiques String                    @default("") @map("methodes_pedagogiques") @db.Text
+  /// Moyens techniques mis à disposition (off.17/21 : salle, plateforme, matériel). [T11]
+  moyensTechniques     String                    @default("") @map("moyens_techniques") @db.Text
+  /// Ressources pédagogiques fournies (off.17/22) : [{ type, libelle }]. [T11]
+  ressourcesPedagogiques Json                    @default("[]") @map("ressources_pedagogiques")
   seuilReussitePct     Int                       @default(70) @map("seuil_reussite_pct")
   ratioPratiquePct     Int?                      @map("ratio_pratique_pct")
   accessibleHandicap   Boolean                   @default(false) @map("accessible_handicap")
@@ -4940,6 +4944,12 @@ model TrainingSession {
   ftPoeiAccordFinancementAt    DateTime?             @map("ft_poei_accord_financement_at")
   ftPoeiEngagementSigneAt      DateTime?             @map("ft_poei_engagement_signe_at")
   ftAifPrescriptionDate        DateTime?             @map("ft_aif_prescription_date")
+  /// Dispositif France Travail (AIF / POEI / CSP). [T11]
+  ftDispositif                 FranceTravailDispositif? @map("ft_dispositif")
+  /// Numéro de dossier OPCO (mention obligatoire sur la facture en subrogation). [T11]
+  numeroDossierOpco            String?               @map("numero_dossier_opco") @db.VarChar(60)
+  /// Payeur du reste à charge CPF (stagiaire/employeur/opco/france_travail/exonere). [T11]
+  cpfPayeurResteCharge         String?               @map("cpf_payeur_reste_charge") @db.VarChar(40)
   nbParticipantsPrevus         Int                   @map("nb_participants_prevus")
   nbParticipantsReels          Int?                  @map("nb_participants_reels")
   /// [{ trainerId, role, heuresAnimees }] — 1 principal obligatoire.
@@ -4956,10 +4966,11 @@ model TrainingSession {
   createdAt                    DateTime              @default(now()) @map("created_at")
   updatedAt                    DateTime              @updatedAt @map("updated_at")
 
-  enrollments      Enrollment[]
-  transitions      FormationTransition[]
-  documents        DocumentGenere[]
-  relevesConnexion ReleveConnexionImport[]
+  enrollments       Enrollment[]
+  transitions       FormationTransition[]
+  documents         DocumentGenere[]
+  relevesConnexion  ReleveConnexionImport[]
+  facturesFormation FactureFormation[]
 
   @@index([formationId])
   @@index([clientId])
@@ -4987,6 +4998,9 @@ model Trainer {
   formationsHabilitees String[]      @default([]) @map("formations_habilitees")
   dateEmbauche         DateTime?     @map("date_embauche")
   tarifJourneeHtCents  Int?          @map("tarif_journee_ht_cents")
+  /// Sous-traitant (off.19/27) : NDA propre + vérification data.gouv.fr. [T11]
+  sousTraitantNda      String?       @map("sous_traitant_nda") @db.VarChar(20)
+  sousTraitantVerifieAt DateTime?    @map("sous_traitant_verifie_at")
   actif                Boolean       @default(true)
   createdAt            DateTime      @default(now()) @map("created_at")
   updatedAt            DateTime      @updatedAt @map("updated_at")
@@ -5411,6 +5425,69 @@ model Questionnaire {
   @@index([enrollmentId])
   @@index([type])
   @@map("questionnaires")
+}
+
+// ============================================================
+// QUALIOPI — T11 : Financements (OPCO/CPF/France Travail) + facturation duale
+// off.17/19/21/22. Subrogation OPCO bloquante, alerte accord OPCO, reste à
+// charge CPF/EDOF, dispositifs France Travail. Facturation duale forfait public
+// (pricing.ts) ↔ ventilation horaire OPCO. Facture exonérée TVA (261-4-4° CGI).
+// Migration ADDITIVE (la plupart des champs financement existent déjà en T3).
+// ============================================================
+
+/// Dispositif de financement France Travail.
+enum FranceTravailDispositif {
+  aif
+  poei
+  csp
+}
+
+/// Destinataire d'une facture de formation (pilote l'adressage + subrogation).
+enum FactureFormationDestinataire {
+  entreprise
+  opco
+  stagiaire
+  france_travail
+}
+
+/// Statut d'une facture de formation.
+enum FactureFormationStatut {
+  brouillon
+  emise
+  payee
+  annulee
+}
+
+/// Facture de formation (OF). Distincte de `Invoice` (booking générique). TVA
+/// exonérée (261-4-4° CGI). Lignes = ventilation (forfait OU horaire OPCO).
+/// Libellée à l'OPCO si subrogation, sinon à l'entreprise/stagiaire/FT.
+model FactureFormation {
+  id                  String                       @id @default(uuid()) @db.Uuid
+  numero              String                       @unique @db.VarChar(40)
+  sessionId           String                       @map("session_id") @db.Uuid
+  session             TrainingSession              @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  destinataire        FactureFormationDestinataire
+  destinataireNom     String                       @map("destinataire_nom") @db.VarChar(250)
+  destinataireSiret   String?                      @map("destinataire_siret") @db.VarChar(20)
+  destinataireAdresse String?                      @map("destinataire_adresse") @db.Text
+  montantHtCents      Int                          @map("montant_ht_cents")
+  /// Exonération TVA art. 261-4-4° CGI (true par défaut pour la formation pro).
+  tvaExoneree         Boolean                      @default(true) @map("tva_exoneree")
+  /// Lignes : [{ designation, quantite, prixUnitaireHtCents }].
+  lignes              Json                         @default("[]")
+  subrogation         Boolean                      @default(false)
+  numeroDossierOpco   String?                      @map("numero_dossier_opco") @db.VarChar(60)
+  statut              FactureFormationStatut       @default(brouillon)
+  /// DocumentGenere (PDF) associé.
+  documentId          String?                      @map("document_id") @db.Uuid
+  emiseAt             DateTime?                    @map("emise_at")
+  echeanceAt          DateTime?                    @map("echeance_at")
+  createdAt           DateTime                     @default(now()) @map("created_at")
+  updatedAt           DateTime                     @updatedAt @map("updated_at")
+
+  @@index([sessionId])
+  @@index([statut])
+  @@map("factures_formation")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

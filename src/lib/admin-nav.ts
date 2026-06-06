@@ -159,6 +159,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📊",
       group: "qualiopi",
     },
+    {
+      href: `${base}/qualiopi/financements`,
+      label: "Financements / Facturation",
+      icon: "💳",
+      group: "qualiopi",
+    },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
     { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
     { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },

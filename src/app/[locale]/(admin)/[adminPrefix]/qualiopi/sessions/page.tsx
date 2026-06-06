@@ -197,6 +197,12 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
                       >
                         Évaluations
                       </Link>
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      >
+                        Financement
+                      </Link>
                     </div>
                   </td>
                 </tr>
