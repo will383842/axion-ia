@@ -4739,6 +4739,7 @@ model Client {
   formations Formation[]
   sessions   TrainingSession[]
   documents  DocumentGenere[]
+  enrollmentsFinances Enrollment[] @relation("EnrollmentClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -4997,6 +4998,10 @@ model TrainingSession {
   cpfPayeurResteCharge         String?               @map("cpf_payeur_reste_charge") @db.VarChar(40)
   nbParticipantsPrevus         Int                   @map("nb_participants_prevus")
   nbParticipantsReels          Int?                  @map("nb_participants_reels")
+  /// Session INTER-entreprises (R-INTER) : ouverte au catalogue, participants de
+  /// sociétés différentes → financement + facture PAR inscription (cf. Enrollment).
+  /// false (défaut) = intra : 1 commanditaire/financement au niveau session.
+  interEntreprises             Boolean               @default(false) @map("inter_entreprises")
   /// [{ trainerId, role, heuresAnimees }] — 1 principal obligatoire.
   coFormateurs                 Json                  @default("[]") @map("co_formateurs")
   /// Formateur principal assigné (R9) — la garde isTrainerHabilite empêche
@@ -5113,17 +5118,33 @@ model Enrollment {
   attestationDocumentId String?         @map("attestation_document_id") @db.Uuid
   attestationDocument  DocumentGenere?  @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
   attestationGenereeAt DateTime?        @map("attestation_generee_at")
+  // ── Inter-entreprises (R-INTER) : financement PAR PARTICIPANT ──────────────
+  // Utilisés uniquement quand la session est `interEntreprises` (participants de
+  // sociétés différentes, chacun son financeur/sa facture). En intra : null
+  // (le financement reste au niveau session, inchangé).
+  /// Financeur de CE participant (override du financement session si renseigné).
+  financementType      FinancementType?         @map("financement_type")
+  /// Employeur/payeur de CE participant (pour la facture inter).
+  clientId             String?                  @map("client_id") @db.Uuid
+  client               Client?                  @relation("EnrollmentClient", fields: [clientId], references: [id], onDelete: SetNull)
+  numeroDossierOpco    String?                  @map("numero_dossier_opco") @db.VarChar(60)
+  edofVerifieAt        DateTime?                @map("edof_verifie_at")
+  ftDispositif         FranceTravailDispositif? @map("ft_dispositif")
+  /// Prix HT du siège pour ce participant (inter). Null = utilise le prix session.
+  montantHtCents       Int?                     @map("montant_ht_cents")
   createdAt            DateTime         @default(now()) @map("created_at")
   updatedAt            DateTime         @updatedAt @map("updated_at")
 
   presences      PresenceCreneau[]
   evaluations    EvaluationAcquis[]
   questionnaires Questionnaire[]
+  facturesFormation FactureFormation[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
   @@index([traineeId])
   @@index([statut])
+  @@index([clientId])
   @@map("enrollments")
 }
 
@@ -5521,6 +5542,10 @@ model FactureFormation {
   numero              String                       @unique @db.VarChar(40)
   sessionId           String                       @map("session_id") @db.Uuid
   session             TrainingSession              @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  /// Inscription ciblée (R-INTER) : facture PAR participant en inter-entreprises.
+  /// Null = facture au niveau session (intra, inchangé).
+  enrollmentId        String?                      @map("enrollment_id") @db.Uuid
+  enrollment          Enrollment?                  @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
   destinataire        FactureFormationDestinataire
   destinataireNom     String                       @map("destinataire_nom") @db.VarChar(250)
   destinataireSiret   String?                      @map("destinataire_siret") @db.VarChar(20)
@@ -5541,6 +5566,7 @@ model FactureFormation {
   updatedAt           DateTime                     @updatedAt @map("updated_at")
 
   @@index([sessionId])
+  @@index([enrollmentId])
   @@index([statut])
   @@map("factures_formation")
 }
