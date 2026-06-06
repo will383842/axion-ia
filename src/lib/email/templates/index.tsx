@@ -56,6 +56,22 @@ import {
 } from "./cancellation-confirmed-by-user";
 import { RefundIssuedEmail, refundIssuedSubject } from "./refund-issued";
 import { SubmissionReplyEmail, submissionReplySubject } from "./submission-reply";
+// T15 — emails auto Qualiopi lifecycle
+import { QualiopiConvocationEmail, qualiopiConvocationSubject } from "./qualiopi-convocation";
+import { QualiopiRappelJ7Email, qualiopiRappelJ7Subject } from "./qualiopi-rappel-j7";
+import {
+  QualiopiSatisfactionJ1Email,
+  qualiopiSatisfactionJ1Subject,
+} from "./qualiopi-satisfaction-j1";
+import { QualiopiSuiviJ30Email, qualiopiSuiviJ30Subject } from "./qualiopi-suivi-j30";
+import {
+  QualiopiAttestationDisponibleEmail,
+  qualiopiAttestationDisponibleSubject,
+} from "./qualiopi-attestation-disponible";
+import {
+  QualiopiAlerteInterneEmail,
+  qualiopiAlerteInterneSubject,
+} from "./qualiopi-alerte-interne";
 // Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
 import {
   contractVersionUpdated,
@@ -198,6 +214,31 @@ const TEMPLATES: TemplateMap = {
   "submission-reply": {
     subject: submissionReplySubject,
     component: SubmissionReplyEmail,
+  },
+  // T15 — emails auto Qualiopi lifecycle
+  "qualiopi-convocation": {
+    subject: qualiopiConvocationSubject,
+    component: QualiopiConvocationEmail,
+  },
+  "qualiopi-rappel-j7": {
+    subject: qualiopiRappelJ7Subject,
+    component: QualiopiRappelJ7Email,
+  },
+  "qualiopi-satisfaction-j1": {
+    subject: qualiopiSatisfactionJ1Subject,
+    component: QualiopiSatisfactionJ1Email,
+  },
+  "qualiopi-suivi-j30": {
+    subject: qualiopiSuiviJ30Subject,
+    component: QualiopiSuiviJ30Email,
+  },
+  "qualiopi-attestation-disponible": {
+    subject: qualiopiAttestationDisponibleSubject,
+    component: QualiopiAttestationDisponibleEmail,
+  },
+  "qualiopi-alerte-interne": {
+    subject: qualiopiAlerteInterneSubject,
+    component: QualiopiAlerteInterneEmail,
   },
   // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
   "contract-version-updated": contractVersionUpdated,

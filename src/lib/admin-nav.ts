@@ -220,6 +220,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "⭐",
       group: "qualiopi",
     },
+    // ── Qualiopi · Alertes système T15 ────────────────────────────────────
+    {
+      href: `${base}/qualiopi/alertes`,
+      label: "Alertes",
+      icon: "🔔",
+      group: "qualiopi",
+    },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
     { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
     { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },

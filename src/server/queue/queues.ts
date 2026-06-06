@@ -561,7 +561,7 @@ export async function enqueueEmail(
   to: string,
   locale: "fr" | "en",
   payload: Record<string, unknown>,
-  options?: { delayMs?: number; marketing?: boolean },
+  options?: { delayMs?: number; marketing?: boolean; jobId?: string },
 ): Promise<void> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
@@ -572,8 +572,14 @@ export async function enqueueEmail(
   const data: EmailJobData = options?.marketing
     ? { template, to, locale, payload, marketing: true }
     : { template, to, locale, payload };
-  const addOptions = options?.delayMs ? { delay: options.delayMs } : undefined;
-  await emailsQueue.add(template, data, addOptions);
+  const addOptions: Record<string, unknown> = {};
+  if (options?.delayMs) addOptions["delay"] = options.delayMs;
+  if (options?.jobId) addOptions["jobId"] = options.jobId;
+  await emailsQueue.add(
+    template,
+    data,
+    Object.keys(addOptions).length > 0 ? addOptions : undefined,
+  );
 }
 
 /**
@@ -1014,6 +1020,28 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.attestations-auto",
         pattern: "0 9 * * *",
         jobId: "formation-crons-attestations-auto-cron",
+      },
+      // T15 — rappels lifecycle email (daily 08:00 UTC)
+      {
+        type: "formation-crons.rappel-j7",
+        pattern: "0 8 * * *",
+        jobId: "formation-crons-rappel-j7-cron",
+      },
+      {
+        type: "formation-crons.satisfaction-j1",
+        pattern: "0 8 * * *",
+        jobId: "formation-crons-satisfaction-j1-cron",
+      },
+      {
+        type: "formation-crons.suivi-j30",
+        pattern: "0 8 * * *",
+        jobId: "formation-crons-suivi-j30-cron",
+      },
+      // T15 AGENT A — moteur d'alertes système (daily 07:00 UTC, avant les autres jobs)
+      {
+        type: "formation-crons.alertes",
+        pattern: "0 7 * * *",
+        jobId: "formation-crons-alertes-cron",
       },
     ];
 

@@ -11,6 +11,7 @@
  *  - src/app/[locale]/(admin)/[adminPrefix]/formations/**
  *  - src/app/[locale]/formations/**          (fiches publiques, flag-gated)
  *  - src/app/[locale]/portail/**             (portail stagiaire)
+ *  - src/app/api/qualiopi/**                 (route SSE alertes T15)
  *  - src/components/admin/qualiopi/**
  *  - src/server/queue/workers/qualiopi-*-worker.ts
  *  - prisma/seeds/qualiopi/**  ·  prisma/migrations/*_qualiopi_*
@@ -34,6 +35,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/formations\//,
   /^src\/app\/\[locale\]\/portail\//,
   /^src\/app\/\[locale\]\/verifier-attestation\//,
+  /^src\/app\/api\/qualiopi\//,
   /^src\/components\/admin\/qualiopi\//,
   /^src\/server\/queue\/workers\/qualiopi-.*-worker\.ts$/,
   /^prisma\/seeds\/qualiopi\//,

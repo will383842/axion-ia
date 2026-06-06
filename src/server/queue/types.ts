@@ -72,7 +72,14 @@ export type EmailJobName =
   | "quote-reminder"
   | "quote-expired"
   // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply admin
-  | "submission-reply";
+  | "submission-reply"
+  // T15 — emails auto Qualiopi lifecycle stagiaires + alertes internes
+  | "qualiopi-convocation"
+  | "qualiopi-rappel-j7"
+  | "qualiopi-satisfaction-j1"
+  | "qualiopi-suivi-j30"
+  | "qualiopi-attestation-disponible"
+  | "qualiopi-alerte-interne";
 
 export interface EmailJobData {
   template: EmailJobName;

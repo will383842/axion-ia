@@ -35,6 +35,12 @@ import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
+import {
+  envoyerRappelJ7,
+  envoyerSatisfactionJ1,
+  envoyerSuiviJ30,
+} from "@/server/qualiopi/notifications/notifications-service";
+import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -43,7 +49,13 @@ import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/servic
 export type FormationCronJobType =
   | "formation-crons.date-debut"
   | "formation-crons.cloture-auto"
-  | "formation-crons.attestations-auto";
+  | "formation-crons.attestations-auto"
+  // T15 — rappels lifecycle email
+  | "formation-crons.rappel-j7"
+  | "formation-crons.satisfaction-j1"
+  | "formation-crons.suivi-j30"
+  // T15 AGENT A — moteur d'alertes système (daily 07:00)
+  | "formation-crons.alertes";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -273,6 +285,177 @@ async function handleAttestationsAuto(): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// T15 — Handlers emails lifecycle (rappel J-7, satisfaction J+1, suivi J+30)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Daily 08:00 UTC — Sessions `planifiee` dont dateDebut = now + 7j (fenêtre ±12h).
+ *
+ * Scan les sessions planifiées dont dateDebut est dans [now+6j12h, now+7j12h].
+ * Pour chacune, appelle envoyerRappelJ7(sessionId) qui enqueue un email par
+ * enrollment inscrit. Fail-soft par session.
+ */
+async function handleRappelJ7(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] rappel-j7: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const windowStart = new Date(now.getTime() + 6.5 * 24 * 60 * 60 * 1000);
+  const windowEnd = new Date(now.getTime() + 7.5 * 24 * 60 * 60 * 1000);
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      dateDebut: { gte: windowStart, lte: windowEnd },
+    },
+    select: { id: true },
+  });
+
+  let ok = 0;
+  let ko = 0;
+
+  for (const session of sessions) {
+    try {
+      await envoyerRappelJ7(session.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] rappel-j7: erreur session ${session.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] rappel-j7: ${ok} sessions traitées, ${ko} erreurs (${sessions.length} candidats scannés)`,
+  );
+}
+
+/**
+ * Daily 08:00 UTC — Sessions `realisee` dont dateFin = yesterday (fenêtre J+1).
+ *
+ * Scan les sessions realisées dont dateFin est dans [now-36h, now-12h].
+ * Pour chaque enrollment présent/planifié, enqueue satisfaction J+1.
+ * Fail-soft par enrollment.
+ */
+async function handleSatisfactionJ1(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] satisfaction-j1: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const windowStart = new Date(now.getTime() - 36 * 60 * 60 * 1000);
+  const windowEnd = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      statut: { in: ["planifiee", "presente"] },
+      session: {
+        statut: "realisee",
+        dateFin: { gte: windowStart, lte: windowEnd },
+      },
+    },
+    select: { id: true },
+  });
+
+  let ok = 0;
+  let ko = 0;
+
+  for (const enrollment of enrollments) {
+    try {
+      await envoyerSatisfactionJ1(enrollment.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] satisfaction-j1: erreur enrollment ${enrollment.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] satisfaction-j1: ${ok} emails enqueués, ${ko} erreurs (${enrollments.length} candidats scannés)`,
+  );
+}
+
+/**
+ * Daily 08:00 UTC — Sessions `realisee` dont dateFin = 30 jours ago (fenêtre J+30).
+ *
+ * Scan les sessions realisées dont dateFin est dans [now-30j-12h, now-30j+12h].
+ * Pour chaque enrollment présent/planifié, enqueue suivi J+30.
+ * Fail-soft par enrollment.
+ */
+async function handleSuiviJ30(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] suivi-j30: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const windowStart = new Date(now.getTime() - (30 * 24 + 12) * 60 * 60 * 1000);
+  const windowEnd = new Date(now.getTime() - (30 * 24 - 12) * 60 * 60 * 1000);
+
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      statut: { in: ["planifiee", "presente"] },
+      session: {
+        statut: "realisee",
+        dateFin: { gte: windowStart, lte: windowEnd },
+      },
+    },
+    select: { id: true },
+  });
+
+  let ok = 0;
+  let ko = 0;
+
+  for (const enrollment of enrollments) {
+    try {
+      await envoyerSuiviJ30(enrollment.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] suivi-j30: erreur enrollment ${enrollment.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] suivi-j30: ${ok} emails enqueués, ${ko} erreurs (${enrollments.length} candidats scannés)`,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// T15 AGENT A — Handler alertes système (synchronisation cron 07:00)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Daily 07:00 UTC — Synchronise les alertes système (évalue toutes les règles,
+ * crée les nouvelles, résout automatiquement celles dont la condition a disparu).
+ *
+ * Fail-soft : toute erreur est loggée mais n'interrompt pas le cron.
+ * Stub-aware : synchroniserAlertes retourne {0,0} si DATABASE_URL = stub.invalid.
+ */
+async function handleAlertes(): Promise<void> {
+  try {
+    const { crees, resolues } = await synchroniserAlertes();
+    console.log(`[formation-crons] alertes: ${crees} créées, ${resolues} résolues automatiquement`);
+  } catch (err) {
+    console.error(
+      "[formation-crons] alertes: erreur synchronisation:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Worker dispatcher (exporté pour test d'intégration)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -280,6 +463,10 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
   "formation-crons.attestations-auto": handleAttestationsAuto,
+  "formation-crons.rappel-j7": handleRappelJ7,
+  "formation-crons.satisfaction-j1": handleSatisfactionJ1,
+  "formation-crons.suivi-j30": handleSuiviJ30,
+  "formation-crons.alertes": handleAlertes,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

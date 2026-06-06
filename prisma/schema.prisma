@@ -5758,6 +5758,46 @@ model RgpdDemande {
   @@map("rgpd_demandes")
 }
 
+// ============================================================
+// QUALIOPI — T15 : Alertes système (catalogue §6.5) + emails auto + SSE.
+// ~28 codes d'alerte (référent handicap, émargement/satisfaction/éval manquants,
+// Qualiopi expire, BPF, OPCO, factures impayées, RGPD…). Dé-duplication par
+// (code, cibleId) non résolue. Migration ADDITIVE.
+// ============================================================
+
+/// Niveau de gravité d'une alerte système.
+enum AlerteNiveau {
+  info
+  important
+  critique
+}
+
+/// Alerte système (catalogue §6.5). Générée par le moteur de règles (cron),
+/// dé-dupliquée tant que non résolue. Résolution auto pour certains codes.
+model AlerteSysteme {
+  id        String       @id @default(uuid()) @db.Uuid
+  /// Code du catalogue (ex. "opco_sans_accord", "qualiopi_expire_j30").
+  code      String       @db.VarChar(80)
+  niveau    AlerteNiveau
+  titre     String       @db.VarChar(300)
+  message   String       @db.Text
+  /// Entité ciblée (TrainingSession, Trainee, Reclamation, FactureFormation…).
+  cibleType String?      @map("cible_type") @db.VarChar(80)
+  cibleId   String?      @map("cible_id") @db.Uuid
+  lu        Boolean      @default(false)
+  resolue   Boolean      @default(false)
+  resolueAt DateTime?    @map("resolue_at")
+  metadata  Json         @default("{}")
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  @@index([code])
+  @@index([resolue])
+  @@index([niveau])
+  @@index([cibleType, cibleId])
+  @@map("alertes_systeme")
+}
+
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le
 /// fichier ORIGINAL (obligation CDC) et trace le rapprochement participants↔
 /// stagiaires (matched/unmatched). Génère les `PresenceCreneau` distanciels.
