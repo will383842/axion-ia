@@ -27,11 +27,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockFindUnique = vi.fn();
 const mockTransaction = vi.fn();
+const mockEnrollmentCount = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: {
       findUnique: (...args: unknown[]) => mockFindUnique(...args),
+    },
+    enrollment: {
+      count: (...args: unknown[]) => mockEnrollmentCount(...args),
     },
     $transaction: (...args: unknown[]) => mockTransaction(...args),
   },
@@ -198,5 +202,44 @@ describe("transitionSessionAction — garde financement", () => {
     if ("error" in result) {
       expect(result.error).not.toMatch(/Démarrage bloqué/);
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// transitionSessionAction — garde émargement à la clôture (R1 audit)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("transitionSessionAction — garde émargement (realisee)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockFindUnique.mockResolvedValue({ id: SESSION_ID, statut: "en_cours" });
+    mockTransaction.mockImplementation(async (fn: (tx: unknown) => Promise<void>) => {
+      await fn({
+        trainingSession: { update: vi.fn().mockResolvedValue(undefined) },
+        formationTransition: { create: vi.fn().mockResolvedValue(undefined) },
+      });
+    });
+  });
+
+  it("bloque la clôture s'il y a des inscrits mais aucun émargement", async () => {
+    mockEnrollmentCount.mockResolvedValueOnce(2).mockResolvedValueOnce(0);
+    const result = await transitionSessionAction({ id: SESSION_ID, toStatus: "realisee" });
+    expect("error" in result).toBe(true);
+    if ("error" in result) expect(result.error).toMatch(/Clôture bloquée/);
+    expect(mockTransaction).not.toHaveBeenCalled();
+  });
+
+  it("laisse clôturer si au moins un émargement est saisi", async () => {
+    mockEnrollmentCount.mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    const result = await transitionSessionAction({ id: SESSION_ID, toStatus: "realisee" });
+    expect(mockTransaction).toHaveBeenCalled();
+    if ("error" in result) expect(result.error).not.toMatch(/Clôture bloquée/);
+  });
+
+  it("laisse clôturer une session sans aucun inscrit", async () => {
+    mockEnrollmentCount.mockResolvedValueOnce(0);
+    const result = await transitionSessionAction({ id: SESSION_ID, toStatus: "realisee" });
+    expect(mockTransaction).toHaveBeenCalled();
+    if ("error" in result) expect(result.error).not.toMatch(/Clôture bloquée/);
   });
 });

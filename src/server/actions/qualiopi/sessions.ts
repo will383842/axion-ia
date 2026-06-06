@@ -232,6 +232,32 @@ export async function transitionSessionAction(input: {
     }
   }
 
+  // Garde émargement (R1 audit) : on ne marque pas une session « réalisée »
+  // manuellement sans aucune trace de présence/émargement (ind. 12). S'il existe
+  // des inscrits mais aucun émargement/taux saisi → bloquer. (L'auto-clôture cron
+  // J+1 reste un filet de sécurité signalé par l'alerte R03 a posteriori.)
+  if (toStatus === "realisee") {
+    try {
+      const totalInscrits = await prisma.enrollment.count({ where: { sessionId: v.id } });
+      if (totalInscrits > 0) {
+        const avecEmargement = await prisma.enrollment.count({
+          where: {
+            sessionId: v.id,
+            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
+          },
+        });
+        if (avecEmargement === 0) {
+          return {
+            error:
+              "Clôture bloquée : aucun émargement/relevé de présence saisi. Renseigner la présence avant de marquer la session réalisée.",
+          };
+        }
+      }
+    } catch {
+      // En cas d'erreur de lecture, ne pas bloquer la transition (fail-soft).
+    }
+  }
+
   // Valider la transition (lève si interdite)
   try {
     assertSessionTransition(fromStatus, toStatus);

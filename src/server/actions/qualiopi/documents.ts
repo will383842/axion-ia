@@ -946,7 +946,14 @@ export async function genererKitCpfAction(input: {
   const codeCpf = session.formation.codeCpf ?? "—";
   const coutTotal = session.montantHtCents;
   const montantCpf = session.priseEnChargeMontantCents ?? 0;
-  const resteACharge = Math.max(0, coutTotal - montantCpf);
+  // R4 (audit) : participation forfaitaire CPF (réforme 2024) câblée au SiteSetting
+  // `cpf_reste_a_charge` (€). Reste à charge = le résiduel s'il existe, sinon la
+  // participation obligatoire minimale (sauf exemptions demandeur d'emploi /
+  // co-financement employeur — à arbitrer par Will). Évite un RAC à 0 illégal.
+  const racFloorEuros = await getQualiopiConfig("cpf_reste_a_charge");
+  const racFloorCents = Math.round((typeof racFloorEuros === "number" ? racFloorEuros : 0) * 100);
+  const residuel = Math.max(0, coutTotal - montantCpf);
+  const resteACharge = residuel > 0 ? residuel : racFloorCents;
 
   const doc = await generateDocument({
     type: "kit_cpf",

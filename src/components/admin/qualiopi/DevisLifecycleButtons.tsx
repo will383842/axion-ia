@@ -20,6 +20,7 @@ import {
   sendDevisAction,
   acceptDevisAction,
   declineDevisAction,
+  transformDevisToConventionAction,
 } from "@/server/actions/qualiopi/devis";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -94,8 +95,22 @@ export function DevisLifecycleButtons({
     });
   }
 
-  // Statuts terminaux : aucune action disponible
-  if (statut !== "brouillon" && statut !== "envoye") {
+  function handleTransform() {
+    setError(null);
+    setSuccessMsg(null);
+    startTransition(async () => {
+      const result = await transformDevisToConventionAction(devisId);
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setSuccessMsg("Devis transformé en convention — créez la session liée.");
+        router.refresh();
+      }
+    });
+  }
+
+  // Statuts terminaux : aucune action disponible (sauf accepté → transformer)
+  if (statut !== "brouillon" && statut !== "envoye" && statut !== "accepte") {
     return (
       <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Aucune action disponible pour ce statut.
@@ -139,6 +154,18 @@ export function DevisLifecycleButtons({
               {isPending ? "…" : "Marquer refusé"}
             </button>
           </>
+        )}
+
+        {statut === "accepte" && (
+          <button
+            type="button"
+            onClick={handleTransform}
+            disabled={isPending}
+            className="admin-button"
+            aria-label="Transformer le devis accepté en convention"
+          >
+            {isPending ? "…" : "Transformer en convention"}
+          </button>
         )}
       </div>
 

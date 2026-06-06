@@ -99,7 +99,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.trainee.count({ where: { situationHandicap: true } }),
     prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
     prisma.documentGenere.count(),
-    prisma.revueDirection.count(),
+    // R5 (audit) : off.32 n'est couvert QUE par une revue de direction VALIDÉE
+    // (un brouillon ne prouve pas la revue annuelle pour un auditeur).
+    prisma.revueDirection.count({ where: { statut: "validee" } }),
     // off.26 : nom du référent handicap (config Qualiopi)
     getQualiopiConfig("referent_handicap_nom").catch(() => ""),
     // off.1 : numéro NDA DREETS (condition supplémentaire pour couverture off.1)

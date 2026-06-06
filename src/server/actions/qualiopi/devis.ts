@@ -204,6 +204,47 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
 }
 
 /**
+ * Transforme un devis ACCEPTÉ en convention (statut → transforme_convention) — R11.
+ *
+ * Marque la fin du cycle commercial : le devis est transformé. La session de
+ * formation se crée ensuite via createSessionAction en liant `devisId` (le Devis
+ * ne porte pas de formationId → la formation/les dates sont choisies à la création
+ * de session). Idempotent : un devis déjà transformé est laissé tel quel.
+ */
+export async function transformDevisToConventionAction(
+  id: string,
+): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const devis = await prisma.devis.findUnique({
+    where: { id: idParsed.data },
+    select: { id: true, statut: true },
+  });
+  if (!devis) return { error: "Devis introuvable" };
+  if (devis.statut === "transforme_convention") return { data: { id: devis.id } };
+  if (devis.statut !== "accepte") {
+    return { error: "Seul un devis accepté peut être transformé en convention." };
+  }
+
+  await prisma.devis.update({
+    where: { id: idParsed.data },
+    data: { statut: "transforme_convention" },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.devis.transform_convention",
+    targetType: "Devis",
+    targetId: idParsed.data,
+    changes: { statut: "transforme_convention" },
+    session,
+  });
+
+  return { data: { id: idParsed.data } };
+}
+
+/**
  * Marque le devis comme refusé (statut → refuse, declinedAt = now).
  */
 export async function declineDevisAction(id: string): Promise<ActionResult<{ id: string }>> {
