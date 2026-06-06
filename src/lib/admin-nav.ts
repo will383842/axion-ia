@@ -25,6 +25,7 @@
 export type AdminNavGroup =
   | "main"
   | "content"
+  | "qualiopi"
   | "image-bank"
   | "chatbot"
   | "engagement"
@@ -45,6 +46,7 @@ export interface AdminNavItem {
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   content: "Contenu",
+  qualiopi: "Formation / Qualiopi",
   "image-bank": "Banque d'images",
   chatbot: "Chatbot",
   engagement: "Engagement",
@@ -55,6 +57,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "content",
+  "qualiopi",
   "image-bank",
   "chatbot",
   "engagement",
@@ -131,6 +134,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/testimonials`, label: "Témoignages", icon: "💬", group: "content" },
     { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
     { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
+    // ── Formation / Qualiopi (back-office OF — items ajoutés par tranche) ──
+    { href: `${base}/qualiopi`, label: "Vue d'ensemble", icon: "🎓", group: "qualiopi" },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
     { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
     { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },

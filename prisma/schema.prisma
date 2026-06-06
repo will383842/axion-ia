@@ -470,6 +470,9 @@ enum SiteSettingCategory {
   general
   pricing
   legal
+  /// Formation Engine + Qualiopi Manager (paramètres métier OF). Ajout additif
+  /// T0 — remplace la table `config_systeme` des specs (réutilisation SiteSetting).
+  qualiopi
 }
 
 /// Sprint X.1 — classification INSEE 4 tailles (snapshot Booking + filtres).
