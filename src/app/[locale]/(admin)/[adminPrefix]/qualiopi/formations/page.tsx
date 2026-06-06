@@ -69,6 +69,14 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
       <AdminPageHeader
         title="Formations"
         description="Catalogue des formations issues du Formation Engine. Chaque formation est rattachée à une offre du référentiel offres_site."
+        actions={
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/formations/new`}
+            className="admin-button shrink-0"
+          >
+            + Nouvelle formation
+          </Link>
+        }
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
@@ -174,6 +182,12 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
                   {/* Actions */}
                   <td className={cellCls}>
                     <div className="flex flex-col gap-[var(--space-admin-1)]">
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}`}
+                        className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        Éditer
+                      </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/supports`}
                         className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"

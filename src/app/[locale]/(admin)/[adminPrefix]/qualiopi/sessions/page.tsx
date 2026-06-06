@@ -72,7 +72,12 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Sessions"
-        description="Toutes les sessions de formation. Cliquez sur « Émargement » pour saisir ou importer les présences."
+        description="Toutes les sessions de formation. Cliquez sur « Ouvrir » pour accéder au hub de la session."
+        actions={
+          <Link href={`/${locale}/${adminPrefix}/qualiopi/sessions/new`} className="admin-button">
+            + Nouvelle session
+          </Link>
+        }
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
@@ -185,6 +190,12 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
                   {/* Actions */}
                   <td className={cellCls}>
                     <div className="flex flex-col gap-[var(--space-admin-1)]">
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}`}
+                        className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      >
+                        Ouvrir
+                      </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/emargement`}
                         className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
