@@ -165,6 +165,55 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "💳",
       group: "qualiopi",
     },
+    // ── Qualiopi · Conformité & registres T12 ──────────────────────────────
+    {
+      href: `${base}/qualiopi/conformite`,
+      label: "Conformité",
+      icon: "✅",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/pilotage`,
+      label: "Pilotage",
+      icon: "📊",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/reclamations`,
+      label: "Réclamations",
+      icon: "📬",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/veille`,
+      label: "Veille",
+      icon: "🔎",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/partenariats`,
+      label: "Partenariats",
+      icon: "🤝",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/sous-traitants`,
+      label: "Sous-traitants",
+      icon: "🏭",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/revue-direction`,
+      label: "Revue de direction",
+      icon: "📋",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/mode-auditeur`,
+      label: "Mode auditeur",
+      icon: "🔍",
+      group: "qualiopi",
+    },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
     { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
     { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },

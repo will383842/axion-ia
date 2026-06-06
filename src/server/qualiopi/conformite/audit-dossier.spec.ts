@@ -1,0 +1,158 @@
+/**
+ * Tests — audit-dossier.ts (T12 — AGENT B).
+ *
+ * Stratégie : mock @/lib/prisma + ./conformite-service.
+ * Vérifie la structure du manifeste JSON, le contenu Markdown,
+ * le comportement stub.invalid.
+ */
+
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Mocks
+// ─────────────────────────────────────────────────────────────────────────────
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    documentGenere: {
+      groupBy: vi.fn(),
+    },
+  },
+}));
+
+vi.mock("./conformite-service", () => ({
+  evaluerConformite: vi.fn(),
+}));
+
+import { prisma } from "@/lib/prisma";
+import { evaluerConformite } from "./conformite-service";
+import { genererManifesteAudit } from "./audit-dossier";
+import { INDICATEURS_RNQ } from "./indicateurs-registre";
+
+const mockPrisma = prisma as unknown as {
+  documentGenere: { groupBy: ReturnType<typeof vi.fn> };
+};
+const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
+
+// Résultat de conformité simulé avec 32 indicateurs
+function makeConformiteResult(
+  overrides: { nbCouverts?: number; nbApplicables?: number; scorePct?: number } = {},
+) {
+  const indicateurs = INDICATEURS_RNQ.map((ind) => ({
+    numero: ind.numero,
+    libelle: ind.libelleOfficiel,
+    critere: ind.critere,
+    super: ind.super,
+    statut: "a_completer" as const,
+    preuves: [],
+  }));
+  return {
+    indicateurs,
+    nbCouverts: overrides.nbCouverts ?? 0,
+    nbApplicables: overrides.nbApplicables ?? 25,
+    scorePct: overrides.scorePct ?? 0,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("genererManifesteAudit", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+  });
+
+  it("retourne un objet { json, markdown }", async () => {
+    const result = await genererManifesteAudit();
+    expect(result).toHaveProperty("json");
+    expect(result).toHaveProperty("markdown");
+  });
+
+  it("json.meta contient genereAt (ISO string)", async () => {
+    const result = await genererManifesteAudit();
+    expect(result.json.meta.genereAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+  });
+
+  it("json.meta.version est 'RNQ-V9'", async () => {
+    const result = await genererManifesteAudit();
+    expect(result.json.meta.version).toBe("RNQ-V9");
+  });
+
+  it("json.indicateurs contient exactement 32 entrées", async () => {
+    const result = await genererManifesteAudit();
+    expect(result.json.indicateurs).toHaveLength(32);
+  });
+
+  it("tous les numéros de 1 à 32 sont présents dans le manifeste", async () => {
+    const result = await genererManifesteAudit();
+    const nums = result.json.indicateurs.map((i) => i.numero).sort((a, b) => a - b);
+    for (let n = 1; n <= 32; n++) {
+      expect(nums[n - 1]).toBe(n);
+    }
+  });
+
+  it("json.meta.scorePct reflète le score de conformité", async () => {
+    mockEvaluerConformite.mockResolvedValue(
+      makeConformiteResult({ nbCouverts: 10, nbApplicables: 25, scorePct: 40 }),
+    );
+    const result = await genererManifesteAudit();
+    expect(result.json.meta.scorePct).toBe(40);
+    expect(result.json.meta.nbCouverts).toBe(10);
+    expect(result.json.meta.nbApplicables).toBe(25);
+  });
+
+  it("documents sont comptabilisés depuis groupBy", async () => {
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([
+      { type: "emargement", _count: { _all: 7 } },
+      { type: "convention", _count: { _all: 3 } },
+    ]);
+    const result = await genererManifesteAudit();
+    // off.12 utilise "emargement" — doit avoir count=7
+    const ind12 = result.json.indicateurs.find((i) => i.numero === 12);
+    expect(ind12?.documents.some((d) => d.type === "emargement" && d.count === 7)).toBe(true);
+  });
+
+  it("documents avec count=0 sont filtrés (non affichés)", async () => {
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    const result = await genererManifesteAudit();
+    for (const ind of result.json.indicateurs) {
+      expect(ind.documents).toHaveLength(0);
+    }
+  });
+
+  it("markdown contient '# Manifeste d'audit Qualiopi'", async () => {
+    const result = await genererManifesteAudit();
+    expect(result.markdown).toMatch(/# Manifeste d'audit Qualiopi/);
+  });
+
+  it("markdown contient 'Critère 1' et 'Critère 7'", async () => {
+    const result = await genererManifesteAudit();
+    expect(result.markdown).toContain("Critère 1");
+    expect(result.markdown).toContain("Critère 7");
+  });
+
+  it("markdown contient le score", async () => {
+    mockEvaluerConformite.mockResolvedValue(
+      makeConformiteResult({ nbCouverts: 15, nbApplicables: 25, scorePct: 60 }),
+    );
+    const result = await genererManifesteAudit();
+    expect(result.markdown).toContain("60");
+  });
+
+  it("retourne un manifeste vide en mode stub.invalid (PAS d'appel Prisma)", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const result = await genererManifesteAudit();
+      expect(result.json.meta.nbIndicateurs).toBe(0);
+      expect(result.markdown).toContain("indisponibles");
+      expect(mockPrisma.documentGenere.groupBy).not.toHaveBeenCalled();
+      expect(mockEvaluerConformite).not.toHaveBeenCalled();
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
+  });
+});

@@ -5490,6 +5490,135 @@ model FactureFormation {
   @@map("factures_formation")
 }
 
+// ============================================================
+// QUALIOPI — T12 : Conformité (registres + pilotage + revue direction)
+// off.23/24/25 (veille), off.25 (partenariats), off.26 (handicap via config +
+// Trainee), off.27 (sous-traitants OF), off.31 (réclamations), off.32 (revue
+// direction). Indicateurs/pilotage/mode auditeur = calculés (pas de table).
+// Migration ADDITIVE.
+// ============================================================
+
+/// Origine d'une réclamation.
+enum ReclamationSource {
+  stagiaire
+  client
+  financeur
+  autre
+}
+
+/// Statut d'une réclamation (workflow off.31).
+enum ReclamationStatut {
+  nouvelle
+  en_cours
+  resolue
+  cloturee
+}
+
+/// Type de veille (off.23 légale/réglementaire, off.24 emplois/métiers, off.25
+/// pédagogique/technologique, handicap).
+enum VeilleType {
+  legale
+  metiers
+  pedagogique
+  handicap
+}
+
+/// Registre des réclamations (off.31). Alerte si sans réponse > J+15.
+model Reclamation {
+  id                 String            @id @default(uuid()) @db.Uuid
+  numero             String            @unique @db.VarChar(40)
+  source             ReclamationSource
+  reclamantNom       String            @map("reclamant_nom") @db.VarChar(200)
+  reclamantEmail     String?           @map("reclamant_email") @db.VarChar(255)
+  objet              String            @db.VarChar(300)
+  description        String            @db.Text
+  gravite            String?           @db.VarChar(20)
+  statut             ReclamationStatut @default(nouvelle)
+  dateReception      DateTime          @map("date_reception")
+  dateReponse        DateTime?         @map("date_reponse")
+  reponse            String?           @db.Text
+  actionsCorrectives String?           @map("actions_correctives") @db.Text
+  enrollmentId       String?           @map("enrollment_id") @db.Uuid
+  traiteeParId       String?           @map("traitee_par_id") @db.Uuid
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+
+  @@index([statut])
+  @@index([dateReception])
+  @@map("reclamations")
+}
+
+/// Registre de veille (off.23/24/25). Preuve d'exploitation : `actionDecidee`.
+model Veille {
+  id            String     @id @default(uuid()) @db.Uuid
+  type          VeilleType
+  source        String     @db.VarChar(300)
+  titre         String     @db.VarChar(300)
+  contenu       String     @db.Text
+  dateVeille    DateTime   @map("date_veille")
+  impact        String?    @db.Text
+  /// Action décidée suite à la veille (preuve d'exploitation, pas juste collecte).
+  actionDecidee String?    @map("action_decidee") @db.Text
+  creeParId     String?    @map("cree_par_id") @db.Uuid
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  @@index([type])
+  @@index([dateVeille])
+  @@map("veilles")
+}
+
+/// Partenariats / réseau (off.25 réseau de partenaires, dont réseau handicap).
+model Partenariat {
+  id        String    @id @default(uuid()) @db.Uuid
+  nom       String    @db.VarChar(250)
+  type      String    @db.VarChar(100)
+  objet     String    @db.Text
+  dateDebut DateTime  @map("date_debut")
+  dateFin   DateTime? @map("date_fin")
+  actif     Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@index([actif])
+  @@map("partenariats")
+}
+
+/// Sous-traitants de l'OF (off.27) : organismes/prestataires (≠ Trainer
+/// sous-traitant individuel). Vérification data.gouv.fr + contrat.
+model SousTraitant {
+  id                String    @id @default(uuid()) @db.Uuid
+  nom               String    @db.VarChar(250)
+  siret             String?   @db.VarChar(20)
+  nda               String?   @db.VarChar(20)
+  objetPrestation   String    @map("objet_prestation") @db.Text
+  verifieDataGouvAt DateTime? @map("verifie_data_gouv_at")
+  contratSigneAt    DateTime? @map("contrat_signe_at")
+  actif             Boolean   @default(true)
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@index([actif])
+  @@map("sous_traitants_of")
+}
+
+/// Revue de direction annuelle (off.32 — GATÉE ind.32). Snapshot indicateurs +
+/// décisions + plan d'actions. Trimestrielle non bloquante (cf. décision B4).
+model RevueDirection {
+  id                  String   @id @default(uuid()) @db.Uuid
+  annee               Int      @unique
+  dateRevue           DateTime @map("date_revue")
+  participants        Json     @default("[]")
+  indicateursSnapshot Json     @default("{}") @map("indicateurs_snapshot")
+  decisions           Json     @default("[]")
+  planActions         Json     @default("[]") @map("plan_actions")
+  statut              String   @default("brouillon") @db.VarChar(20)
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@map("revues_direction")
+}
+
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le
 /// fichier ORIGINAL (obligation CDC) et trace le rapprochement participants↔
 /// stagiaires (matched/unmatched). Génère les `PresenceCreneau` distanciels.
