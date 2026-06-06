@@ -4662,3 +4662,101 @@ model OffreSite {
   @@index([actif])
   @@map("offres_site")
 }
+
+// ============================================================
+// QUALIOPI — T2 : CRM clients + devis (stade prospect)
+// Modèles dédiés (avant Booking). Le pont vers Quote/ContractDocument/Booking
+// se fait à l'acceptation du devis (T7 convention). Prix devis = montants
+// snapshot (négociés) ; les tarifs catalogue restent dans pricing.ts.
+// ============================================================
+
+/// Cycle de vie commercial d'un client.
+enum ClientStatut {
+  prospect
+  devis_envoye
+  client_actif
+  client_inactif
+  perdu
+}
+
+/// Statut d'un devis (CRM, distinct de QuoteStatus lié au Booking).
+enum DevisStatut {
+  brouillon
+  envoye
+  accepte
+  refuse
+  expire
+  transforme_convention
+}
+
+/// Client / prospect CRM. NAF → OPCO inféré (cf. crm/naf-opco.ts).
+model Client {
+  id                          String        @id @default(uuid()) @db.Uuid
+  /// Numérotation séquentielle AXI-CLI-NNN.
+  numero                      String        @unique @db.VarChar(40)
+  raisonSociale               String        @map("raison_sociale") @db.VarChar(250)
+  siret                       String?       @db.VarChar(14)
+  nafCode                     String?       @map("naf_code") @db.VarChar(6)
+  conventionCollective        String?       @map("convention_collective") @db.VarChar(200)
+  secteur                     String?       @db.VarChar(200)
+  taille                      CompanySize?
+  adresse                     String?       @db.Text
+  contactNom                  String?       @map("contact_nom") @db.VarChar(200)
+  contactEmail                String?       @map("contact_email") @db.Citext
+  contactTelephone            String?       @map("contact_telephone") @db.VarChar(40)
+  contactFonction             String?       @map("contact_fonction") @db.VarChar(150)
+  /// OPCO inféré depuis le code NAF (ou saisi manuellement).
+  opcoIdentifie               String?       @map("opco_identifie") @db.VarChar(60)
+  opcoNumeroAdherent          String?       @map("opco_numero_adherent") @db.VarChar(80)
+  opcoEnveloppeAnnuelleCents  Int?          @map("opco_enveloppe_annuelle_cents")
+  statut                      ClientStatut  @default(prospect)
+  source                      String?       @db.VarChar(120)
+  /// Contexte injecté au Formation Engine pour la génération sur-mesure.
+  contexteIa                  String?       @map("contexte_ia") @db.Text
+  besoinsIdentifies           Json?         @map("besoins_identifies")
+  notes                       String?       @db.Text
+  /// Agrégats commerciaux (mis à jour à la clôture des sessions).
+  nbSessions                  Int           @default(0) @map("nb_sessions")
+  nbStagiaires                Int           @default(0) @map("nb_stagiaires")
+  caCents                     Int           @default(0) @map("ca_cents")
+  createdAt                   DateTime      @default(now()) @map("created_at")
+  updatedAt                   DateTime      @updatedAt @map("updated_at")
+
+  devis Devis[]
+
+  @@index([statut])
+  @@index([nafCode])
+  @@index([opcoIdentifie])
+  @@map("clients")
+}
+
+/// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
+model Devis {
+  id                    String      @id @default(uuid()) @db.Uuid
+  /// Numérotation séquentielle AXI-DEV-YYYY-NNN.
+  numero                String      @unique @db.VarChar(40)
+  clientId              String      @map("client_id") @db.Uuid
+  client                Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].
+  lignes                Json
+  montantTotalHtCents   Int         @map("montant_total_ht_cents")
+  /// Mention TVA (exonération 261-4-4° CGI par défaut).
+  mentionTva            String      @map("mention_tva") @db.Text
+  /// direct | opco | cpf | france_travail.
+  financementSuggere    String?     @map("financement_suggere") @db.VarChar(40)
+  montantOpcoEstimeCents Int?       @map("montant_opco_estime_cents")
+  resteAChargeCents     Int?        @map("reste_a_charge_cents")
+  statut                DevisStatut @default(brouillon)
+  /// = createdAt + 30 j par défaut.
+  dateValidite          DateTime    @map("date_validite")
+  fichierPdfUrl         String?     @map("fichier_pdf_url") @db.Text
+  sentAt                DateTime?   @map("sent_at")
+  acceptedAt            DateTime?   @map("accepted_at")
+  declinedAt            DateTime?   @map("declined_at")
+  createdAt             DateTime    @default(now()) @map("created_at")
+  updatedAt             DateTime    @updatedAt @map("updated_at")
+
+  @@index([clientId])
+  @@index([statut])
+  @@map("devis")
+}
