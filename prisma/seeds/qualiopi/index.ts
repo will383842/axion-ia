@@ -16,6 +16,7 @@ import {
   QUALIOPI_CONFIG_KEY_PREFIX,
 } from "../../../src/server/qualiopi/config/registry";
 import { seedOffresSite } from "./offres";
+import { seedGrilleQualite } from "./grille";
 
 const prisma = new PrismaClient();
 
@@ -54,6 +55,7 @@ async function seedQualiopiConfig(): Promise<void> {
 async function main(): Promise<void> {
   await seedQualiopiConfig();
   await seedOffresSite(prisma);
+  await seedGrilleQualite(prisma);
 }
 
 main()

@@ -27,6 +27,7 @@ import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-w
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
+import type { FormationEngineJobData } from "./workers/qualiopi-formation-engine-worker";
 
 const connection = getBullConnection();
 
@@ -421,6 +422,37 @@ export const imageBankCronsQueue: Queue<ImageBankCronJobData, void, ImageBankCro
         defaultJobOptions: { ...IMAGE_BANK_JOB_OPTIONS, attempts: 1 },
       })
     : null;
+
+// ============================================================
+// Qualiopi — Formation Engine T4 (génération IA pédagogique).
+// Env-gated côté worker ; queue toujours présente pour les Server Actions.
+// ============================================================
+
+export const formationEngineQueue: Queue<FormationEngineJobData> | null = connection
+  ? new Queue<FormationEngineJobData>("formation-engine", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
+    })
+  : null;
+
+/**
+ * Enfile un job Formation Engine. No-op si BullMQ désactivé.
+ * Utilisé par startGenerationAction + approveFileValidationAction.
+ */
+export async function enqueueFormationGeneration(data: FormationEngineJobData): Promise<void> {
+  if (!formationEngineQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(
+        `[bullmq] no connection, skipping enqueueFormationGeneration(${data.formationId})`,
+      );
+    }
+    return;
+  }
+  // jobId unique par formationId pour éviter les doublons de jobs en attente
+  await formationEngineQueue.add(`formation-engine-${data.formationId}`, data, {
+    jobId: `fme-${data.formationId}-${Date.now()}`,
+  });
+}
 
 // ============================================================
 // Chatbot (T-05) — ingestion RAG chat_kb_chunks (env-gated CHATBOT_ENABLED côté worker).

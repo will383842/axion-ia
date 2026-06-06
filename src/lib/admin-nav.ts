@@ -137,6 +137,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── Formation / Qualiopi (back-office OF — items ajoutés par tranche) ──
     { href: `${base}/qualiopi`, label: "Vue d'ensemble", icon: "🎓", group: "qualiopi" },
     { href: `${base}/qualiopi/formations`, label: "Formations", icon: "📘", group: "qualiopi" },
+    {
+      href: `${base}/qualiopi/formation-engine`,
+      label: "Formation Engine",
+      icon: "⚙️",
+      group: "qualiopi",
+    },
+    {
+      href: `${base}/qualiopi/formation-engine/validations`,
+      label: "Validations IA",
+      icon: "✅",
+      group: "qualiopi",
+    },
     { href: `${base}/qualiopi/offres`, label: "Offres", icon: "🏷️", group: "qualiopi" },
     { href: `${base}/qualiopi/clients`, label: "Clients (CRM)", icon: "🏢", group: "qualiopi" },
     { href: `${base}/qualiopi/devis`, label: "Devis", icon: "📄", group: "qualiopi" },

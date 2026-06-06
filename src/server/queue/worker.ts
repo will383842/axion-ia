@@ -46,6 +46,8 @@ import { startSiteRouteAnomalyDetectorWorker } from "./workers/site-route-anomal
 // Démarrent uniquement si l'opérateur active explicitement le flag Coolify.
 import { startGscHcuMonitorWorker } from "./workers/gsc-hcu-monitor-worker";
 import { startContentRefreshWorker } from "./workers/content-refresh-worker";
+// Qualiopi — Formation Engine T4 (génération IA pédagogique).
+import { startFormationEngineWorker } from "./workers/qualiopi-formation-engine-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 import { bootRepeatableJobs } from "./queues";
@@ -114,6 +116,8 @@ async function main() {
     // le throw en n'appelant le constructeur que si le flag est true.
     ...(process.env.GSC_HCU_MONITOR_ENABLED === "true" ? [startGscHcuMonitorWorker()] : []),
     ...(process.env.CONTENT_REFRESH_ENABLED === "true" ? [startContentRefreshWorker()] : []),
+    // Qualiopi Formation Engine T4 — génération IA pédagogique (toujours actif).
+    startFormationEngineWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
   ];
