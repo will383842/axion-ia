@@ -13,8 +13,12 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listRevues } from "@/server/qualiopi/registres/revue-direction-service";
-import { creerRevueDirectionAction } from "@/server/actions/qualiopi/revue-direction";
+import {
+  creerRevueDirectionAction,
+  updateRevueDirectionAction,
+} from "@/server/actions/qualiopi/revue-direction";
 import { RevueDirectionForm } from "@/components/admin/qualiopi/RevueDirectionForm";
+import { RevueDirectionRowActions } from "@/components/admin/qualiopi/RevueDirectionRowActions";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -105,6 +109,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                 <th className={headCls}>Plan d&apos;actions</th>
                 <th className={headCls}>Snapshot indicateurs</th>
                 <th className={headCls}>Statut</th>
+                <th className={headCls}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -172,6 +177,12 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                       >
                         {STATUT_LABELS[r.statut] ?? r.statut}
                       </span>
+                    </td>
+                    <td className={cellCls}>
+                      <RevueDirectionRowActions
+                        revue={{ id: r.id, dateRevue: r.dateRevue, statut: r.statut }}
+                        updateAction={updateRevueDirectionAction}
+                      />
                     </td>
                   </tr>
                 );

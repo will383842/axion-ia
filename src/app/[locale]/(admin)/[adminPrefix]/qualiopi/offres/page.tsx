@@ -14,6 +14,11 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listOffres } from "@/server/qualiopi/offres/offres";
+import { OffreRowActions } from "@/components/admin/qualiopi/OffreRowActions";
+import {
+  toggleOffreActifAction,
+  verifyAllOffresCoherenceAction,
+} from "@/server/actions/qualiopi/offres";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -55,6 +60,7 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
       <AdminPageHeader
         title="Offres (référentiel)"
         description="Catalogue des offres rattachables au Formation Engine. Le prix est dérivé de pricing.ts (source unique) — il n'est jamais saisi ici."
+        actions={<OffreRowActions mode="verify" verifyAction={verifyAllOffresCoherenceAction} />}
       />
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
@@ -82,6 +88,7 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
                 <th className={headCls}>Durée (h)</th>
                 <th className={headCls}>Prix (pricing.ts)</th>
                 <th className={headCls}>Statut</th>
+                <th className={headCls}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -113,6 +120,14 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
                     ) : (
                       <span className="text-[color:var(--color-admin-fg-muted)]">○ Inactive</span>
                     )}
+                  </td>
+                  <td className={cellCls}>
+                    <OffreRowActions
+                      mode="toggle"
+                      offreId={offre.id}
+                      actif={offre.actif}
+                      toggleAction={toggleOffreActifAction}
+                    />
                   </td>
                 </tr>
               ))}

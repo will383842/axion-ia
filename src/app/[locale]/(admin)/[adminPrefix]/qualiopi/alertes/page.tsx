@@ -21,6 +21,7 @@ import { AlertesLiveBadge } from "@/components/admin/qualiopi/AlertesLiveBadge";
 import {
   resoudreAlerteAction,
   marquerLuAction,
+  marquerToutLuAction,
   synchroniserAlertesAction,
 } from "@/server/actions/qualiopi/alertes";
 
@@ -157,6 +158,10 @@ export default async function QualiopiAlertesPage({ params }: PageProps) {
           <AlertesLiveBadge initialCount={nonLues} />
           {/* Bouton synchroniser */}
           <AlerteActions mode="synchroniser" synchroniserAction={synchroniserAlertesAction} />
+          {/* Bouton tout marquer comme lu */}
+          {nonLues > 0 && (
+            <AlerteActions mode="tout-lu" marquerToutLuAction={marquerToutLuAction} />
+          )}
         </div>
       </div>
 

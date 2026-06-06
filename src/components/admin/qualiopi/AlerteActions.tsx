@@ -24,6 +24,7 @@ type ActionResult<T> = { data: T } | { error: string };
 type ResoudreAction = (input: { id: string }) => Promise<ActionResult<{ id: string }>>;
 type MarquerLuAction = (input: { id: string }) => Promise<ActionResult<{ id: string }>>;
 type SynchroniserAction = () => Promise<ActionResult<{ crees: number; resolues: number }>>;
+type MarquerToutLuAction = () => Promise<ActionResult<{ count: number }>>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Props
@@ -42,6 +43,10 @@ export type AlerteActionsProps =
   | {
       mode: "synchroniser";
       synchroniserAction: SynchroniserAction;
+    }
+  | {
+      mode: "tout-lu";
+      marquerToutLuAction: MarquerToutLuAction;
     };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -92,11 +97,34 @@ export function AlerteActions(props: AlerteActionsProps): React.ReactElement {
     });
   }
 
-  function handleSynchroniser() {
+  function handleMarquerToutLu() {
+    if (props.mode !== "tout-lu") return;
+    const marquerToutLuAction = props.marquerToutLuAction;
     setError(null);
     setSuccessMsg(null);
     startTransition(async () => {
-      const result = await props.synchroniserAction();
+      const result = await marquerToutLuAction();
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        const { count } = result.data;
+        setSuccessMsg(
+          count === 0
+            ? "Aucune alerte non lue."
+            : `${count} alerte${count !== 1 ? "s" : ""} marquée${count !== 1 ? "s" : ""} comme lue${count !== 1 ? "s" : ""}.`,
+        );
+        router.refresh();
+      }
+    });
+  }
+
+  function handleSynchroniser() {
+    if (props.mode !== "synchroniser" && props.mode !== "item") return;
+    const synchroniserAction = props.synchroniserAction;
+    setError(null);
+    setSuccessMsg(null);
+    startTransition(async () => {
+      const result = await synchroniserAction();
       if ("error" in result) {
         setError(result.error);
       } else {
@@ -136,6 +164,39 @@ export function AlerteActions(props: AlerteActionsProps): React.ReactElement {
             </button>
           )}
         </div>
+        {error && (
+          <p
+            role="alert"
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+          >
+            {error}
+          </p>
+        )}
+        {successMsg && (
+          <p
+            role="status"
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]"
+          >
+            {successMsg}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  // ── Rendu mode "tout-lu" ──────────────────────────────────────────────────
+
+  if (props.mode === "tout-lu") {
+    return (
+      <div className="flex flex-col items-end gap-[var(--space-admin-2)]">
+        <button
+          type="button"
+          onClick={handleMarquerToutLu}
+          disabled={isPending}
+          className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)] transition-opacity hover:opacity-80 disabled:opacity-50"
+        >
+          {isPending ? "En cours…" : "Tout marquer comme lu"}
+        </button>
         {error && (
           <p
             role="alert"

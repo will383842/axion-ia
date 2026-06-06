@@ -13,8 +13,13 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listVeille } from "@/server/qualiopi/registres/veille-service";
-import { creerVeilleAction } from "@/server/actions/qualiopi/veille";
+import {
+  creerVeilleAction,
+  updateVeilleAction,
+  supprimerVeilleAction,
+} from "@/server/actions/qualiopi/veille";
 import { VeilleForm } from "@/components/admin/qualiopi/VeilleForm";
+import { VeilleRowActions } from "@/components/admin/qualiopi/VeilleRowActions";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -91,6 +96,7 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
                 <th className={headCls}>Source</th>
                 <th className={headCls}>Impact</th>
                 <th className={headCls}>Action décidée</th>
+                <th className={headCls}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -133,6 +139,22 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
                         À définir
                       </span>
                     )}
+                  </td>
+                  <td className={cellCls}>
+                    <VeilleRowActions
+                      veille={{
+                        id: v.id,
+                        type: v.type,
+                        source: v.source,
+                        titre: v.titre,
+                        contenu: v.contenu,
+                        dateVeille: v.dateVeille,
+                        impact: v.impact ?? null,
+                        actionDecidee: v.actionDecidee ?? null,
+                      }}
+                      updateAction={updateVeilleAction}
+                      supprimerAction={supprimerVeilleAction}
+                    />
                   </td>
                 </tr>
               ))}

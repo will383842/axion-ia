@@ -13,8 +13,12 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listPartenariats } from "@/server/qualiopi/registres/partenariats-service";
-import { creerPartenariatAction } from "@/server/actions/qualiopi/partenariats";
+import {
+  creerPartenariatAction,
+  updatePartenariatAction,
+} from "@/server/actions/qualiopi/partenariats";
 import { PartenariatForm } from "@/components/admin/qualiopi/PartenariatForm";
+import { PartenariatRowActions } from "@/components/admin/qualiopi/PartenariatRowActions";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -83,6 +87,7 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
                 <th className={headCls}>Début</th>
                 <th className={headCls}>Fin</th>
                 <th className={headCls}>Statut</th>
+                <th className={headCls}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -116,6 +121,20 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
                     ) : (
                       <span className="text-[color:var(--color-admin-fg-muted)]">Inactif</span>
                     )}
+                  </td>
+                  <td className={cellCls}>
+                    <PartenariatRowActions
+                      partenariat={{
+                        id: p.id,
+                        nom: p.nom,
+                        type: p.type,
+                        objet: p.objet,
+                        dateDebut: p.dateDebut,
+                        dateFin: p.dateFin ?? null,
+                        actif: p.actif,
+                      }}
+                      updateAction={updatePartenariatAction}
+                    />
                   </td>
                 </tr>
               ))}

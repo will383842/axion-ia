@@ -7,6 +7,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -67,6 +68,7 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
+  const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   const [devisList, clients] = await Promise.all([listDevis(), listClients()]);
 
   // Index clients par id pour affichage rapide
@@ -87,6 +89,12 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
         description="Devis commerciaux formation — montants HT, financement OPCO estimé, statut."
       />
 
+      <div className="mb-[var(--space-admin-6)]">
+        <Link href={`${devisBase}/new`} className="admin-button inline-block">
+          + Nouveau devis
+        </Link>
+      </div>
+
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard label="Total" value={devisList.length} />
         <AdminStatCard label="Brouillons" value={brouillons} />
@@ -96,7 +104,8 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
 
       {devisList.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucun devis. Créez votre premier devis depuis l&apos;action CRM.
+          Aucun devis. Créez votre premier devis en cliquant sur &laquo;&nbsp;+ Nouveau
+          devis&nbsp;&raquo;.
         </p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
@@ -109,6 +118,7 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
                 <th className={headCls}>Financement</th>
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Validité</th>
+                <th className={headCls}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -185,6 +195,14 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
                           </span>
                         )}
                       </span>
+                    </td>
+                    <td className={cellCls}>
+                      <Link
+                        href={`${devisBase}/${devis.id}`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      >
+                        Ouvrir →
+                      </Link>
                     </td>
                   </tr>
                 );

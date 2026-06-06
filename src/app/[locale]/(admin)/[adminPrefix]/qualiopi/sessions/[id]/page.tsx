@@ -19,6 +19,21 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
+import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
+import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
+import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
+import {
+  enrollTraineeAction,
+  setEnrollmentStatutAction,
+} from "@/server/actions/qualiopi/enrollments";
+import {
+  genererPortailAccesAction,
+  revoquerPortailAccesAction,
+} from "@/server/actions/qualiopi/portail";
+import {
+  genererQuestionnairesSessionAction,
+  saisirReponsesQuestionnaireAction,
+} from "@/server/actions/qualiopi/satisfaction";
 import { prisma } from "@/lib/prisma";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 
@@ -133,6 +148,88 @@ export default async function SessionHubPage({ params }: PageProps) {
   });
 
   if (!trainingSession) notFound();
+
+  // ── Données des sections (Vague 2) ────────────────────────────────────────
+  const [enrollmentsRaw, documentsRaw, traineesRaw] = await Promise.all([
+    prisma.enrollment.findMany({
+      where: { sessionId: id },
+      orderBy: { createdAt: "asc" },
+      select: {
+        id: true,
+        statut: true,
+        tauxPresencePct: true,
+        trainee: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+            email: true,
+            portailAcces: {
+              where: { revoked: false },
+              orderBy: { expiresAt: "desc" },
+              take: 1,
+              select: { id: true, expiresAt: true, revoked: true },
+            },
+          },
+        },
+        questionnaires: {
+          select: { id: true, token: true, type: true, reponduAt: true, noteGlobale: true },
+        },
+      },
+    }),
+    prisma.documentGenere.findMany({
+      where: { sessionId: id },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, type: true, numero: true, pdfUrl: true, createdAt: true },
+    }),
+    prisma.trainee.findMany({
+      where: { deletedAt: null },
+      orderBy: [{ nom: "asc" }, { prenom: "asc" }],
+      select: { id: true, nom: true, prenom: true, email: true },
+    }),
+  ]);
+
+  const enrollmentsSerialized = enrollmentsRaw.map((e) => {
+    const acces = e.trainee.portailAcces[0];
+    return {
+      id: e.id,
+      statut: e.statut,
+      tauxPresencePct: e.tauxPresencePct,
+      trainee: {
+        id: e.trainee.id,
+        nom: e.trainee.nom,
+        prenom: e.trainee.prenom,
+        email: e.trainee.email,
+      },
+      portailAcces: acces
+        ? { id: acces.id, expiresAt: acces.expiresAt.toISOString(), revoked: acces.revoked }
+        : null,
+    };
+  });
+
+  const documentsSerialized = documentsRaw.map((d) => ({
+    id: d.id,
+    type: d.type,
+    numero: d.numero,
+    pdfUrl: d.pdfUrl,
+    createdAt: d.createdAt.toISOString(),
+  }));
+
+  const enrollmentsLight = enrollmentsRaw.map((e) => ({
+    id: e.id,
+    nomStagiaire: `${e.trainee.prenom} ${e.trainee.nom}`,
+  }));
+
+  const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
+    e.questionnaires.map((q) => ({
+      id: q.id,
+      token: q.token,
+      traineeNom: `${e.trainee.prenom} ${e.trainee.nom}`,
+      type: q.type,
+      reponduAt: q.reponduAt ? q.reponduAt.toISOString() : null,
+      noteGlobale: q.noteGlobale,
+    })),
+  );
 
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
   const sessionBase = `${base}/${id}`;
@@ -349,11 +446,15 @@ export default async function SessionHubPage({ params }: PageProps) {
        */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Stagiaires</h2>
-        <div className="rounded-[var(--radius-admin-md)] border border-dashed border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-5)]">
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Section Vague 2 — Cluster E1 : gestion des inscriptions + accès portail stagiaires.
-          </p>
-        </div>
+        <EnrollmentsSection
+          sessionId={id}
+          enrollments={enrollmentsSerialized}
+          availableTrainees={traineesRaw}
+          enrollAction={enrollTraineeAction}
+          setStatutAction={setEnrollmentStatutAction}
+          genererPortailAction={genererPortailAccesAction}
+          revoquerPortailAction={revoquerPortailAccesAction}
+        />
       </section>
 
       {/* SECTION: documents */}
@@ -368,12 +469,11 @@ export default async function SessionHubPage({ params }: PageProps) {
        */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Documents</h2>
-        <div className="rounded-[var(--radius-admin-md)] border border-dashed border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-5)]">
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Section Vague 2 — Cluster E2 : génération des 14 types de documents Qualiopi
-            (convention, convocation, certificat de réalisation, etc.).
-          </p>
-        </div>
+        <DocumentsSection
+          sessionId={id}
+          enrollments={enrollmentsLight}
+          documentsExistants={documentsSerialized}
+        />
       </section>
 
       {/* SECTION: questionnaires */}
@@ -387,12 +487,12 @@ export default async function SessionHubPage({ params }: PageProps) {
        */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Questionnaires de satisfaction</h2>
-        <div className="rounded-[var(--radius-admin-md)] border border-dashed border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-5)]">
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Section Vague 2 — Cluster E3 : génération et saisie des questionnaires de satisfaction
-            (indicateur Qualiopi 13).
-          </p>
-        </div>
+        <QuestionnairesSection
+          sessionId={id}
+          questionnaires={questionnairesSerialized}
+          genererAction={genererQuestionnairesSessionAction}
+          saisirReponsesAction={saisirReponsesQuestionnaireAction}
+        />
       </section>
     </AdminPageShell>
   );

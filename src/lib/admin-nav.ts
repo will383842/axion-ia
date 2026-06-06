@@ -220,6 +220,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "⭐",
       group: "qualiopi",
     },
+    {
+      href: `${base}/qualiopi/rgpd`,
+      label: "Demandes RGPD",
+      icon: "🔐",
+      group: "qualiopi",
+    },
     // ── Qualiopi · Alertes système T15 ────────────────────────────────────
     {
       href: `${base}/qualiopi/alertes`,
