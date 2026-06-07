@@ -43,6 +43,7 @@ const ratioToWidthHeight: Record<
   { width: number; height: number }
 > = {
   "16:9": { width: 1600, height: 900 },
+  "3:2": { width: 1500, height: 1000 },
   "4:5": { width: 1000, height: 1250 },
   "1:1": { width: 1200, height: 1200 },
   "1200x630": { width: 1200, height: 630 },
@@ -50,6 +51,7 @@ const ratioToWidthHeight: Record<
 
 const defaultSizes: Record<IllustrationPlaceholderProps["aspectRatio"], string> = {
   "16:9": "(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1200px",
+  "3:2": "(max-width: 1024px) 100vw, 600px",
   "4:5": "(max-width: 768px) 100vw, 600px",
   "1:1": "(max-width: 768px) 100vw, 600px",
   "1200x630": "1200px",

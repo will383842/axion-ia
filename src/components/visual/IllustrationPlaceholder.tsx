@@ -15,7 +15,7 @@ export interface IllustrationPlaceholderProps {
   /** ID du prompt GPT-image (ex "METHO-01-hero"). Affiché dans le placeholder. */
   slot: string;
   /** Aspect ratio souhaité — détermine la hauteur calculée du placeholder. */
-  aspectRatio: "16:9" | "4:5" | "1:1" | "1200x630";
+  aspectRatio: "16:9" | "3:2" | "4:5" | "1:1" | "1200x630";
   /** Filename cible (ex `public/illustrations/methodologie-hero.avif`). */
   filenameTarget: string;
   /** Description courte du sujet (ex "Schéma éditorial cabinet IA"). */
@@ -27,6 +27,7 @@ export interface IllustrationPlaceholderProps {
 
 const ratioToPaddingTop: Record<IllustrationPlaceholderProps["aspectRatio"], string> = {
   "16:9": "56.25%",
+  "3:2": "66.6667%",
   "4:5": "125%",
   "1:1": "100%",
   "1200x630": "52.5%",

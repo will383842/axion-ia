@@ -311,8 +311,8 @@ export default async function Home({ params }: HomeProps) {
         alt: isFr
           ? "Photo de l'équipe Axion-IA en pulls terracotta sous le logo Axion-IA.com — L'intelligence artificielle au service de l'humain. Cabinet IA pour TPE, PME, ETI et grandes entreprises françaises."
           : "Photo of the Axion-IA team wearing terracotta sweaters under the Axion-IA.com sign — Artificial intelligence at the service of humans. AI consultancy for French SMEs, mid-caps and large enterprises.",
-        width: 1200,
-        height: 1200,
+        width: 1536,
+        height: 1024,
         encodingFormat: "image/avif",
       },
       {
@@ -409,13 +409,14 @@ export default async function Home({ params }: HomeProps) {
 
             {/* Colonne droite : photo hero placeholder. Will drop l'image
                 réelle (dashboard / livrable Axion-IA / capture produit) dans
-                `public/illustrations/home-hero-dashboard.avif`. En attendant,
-                placeholder on-brand respectant aspect ratio 1:1 → 0 CLS. */}
+                `public/illustrations/home-hero-dashboard.avif`. Ratio 3:2 calé
+                sur le fichier source (1536×1024) → 0 CLS + 0 distorsion
+                (Lighthouse image-aspect-ratio). */}
             <div className="hidden lg:block">
               <Illustration
                 slot="HOME-01-hero"
                 src="/illustrations/home-hero-equipe.avif"
-                aspectRatio="1:1"
+                aspectRatio="3:2"
                 filenameTarget="public/illustrations/home-hero-equipe.avif"
                 caption={
                   isFr

@@ -1195,23 +1195,12 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                     type="button"
                     onClick={() => onCellClick(iso)}
                     disabled={!isAvailable}
-                    aria-label={
-                      isBooked
-                        ? isFr
-                          ? `${cell.day} — réservé`
-                          : `${cell.day} — booked`
-                        : isPast
-                          ? isFr
-                            ? `${cell.day} — passé`
-                            : `${cell.day} — past`
-                          : isAvailable
-                            ? isFr
-                              ? `${cell.day} — disponible`
-                              : `${cell.day} — available`
-                            : isFr
-                              ? `${cell.day} — non disponible (chevauchement)`
-                              : `${cell.day} — unavailable (overlap)`
-                    }
+                    // Pas d'aria-label custom : le nom accessible est dérivé du
+                    // contenu visible (numéro du jour + infos) + un suffixe
+                    // sr-only d'état ci-dessous. Garantit que le texte visible
+                    // est toujours un préfixe du nom accessible → satisfait
+                    // WCAG 2.5.3 / Lighthouse `label-content-name-mismatch`
+                    // (un aria-label figé omettait « Réserver » / la ville).
                     title={
                       isBooked && booked
                         ? `${isFr ? "Réservé" : "Booked"} · ${booked.city}${booked.country ? ` (${booked.country})` : ""} · ${booked.sector} · ${booked.companySize}`
@@ -1279,9 +1268,30 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                       </div>
                     ) : isAvailable ? (
                       <span className="text-terracotta-deep mt-auto text-[13px] font-bold opacity-0 transition-opacity group-hover:opacity-100 sm:text-sm">
-                        {isFr ? "Réserver →" : "Book →"}
+                        {isFr ? "Réserver " : "Book "}
+                        <span aria-hidden="true">→</span>
                       </span>
                     ) : null}
+
+                    {/* Suffixe d'état réservé aux lecteurs d'écran (le texte
+                        visible reste le préfixe du nom accessible). */}
+                    <span className="sr-only">
+                      {isBooked
+                        ? isFr
+                          ? " — réservé"
+                          : " — booked"
+                        : isPast
+                          ? isFr
+                            ? " — passé"
+                            : " — past"
+                          : isAvailable
+                            ? isFr
+                              ? " — disponible"
+                              : " — available"
+                            : isFr
+                              ? " — non disponible (chevauchement)"
+                              : " — unavailable (overlap)"}
+                    </span>
                   </button>
                 </li>
               );
