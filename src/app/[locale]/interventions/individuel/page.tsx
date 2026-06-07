@@ -10,7 +10,6 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { QualiopiPublicFormationInfo } from "@/components/qualiopi/QualiopiPublicFormationInfo";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -438,7 +437,6 @@ export default async function IndividuelFamilyPage({ params }: Props) {
 
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={imagesJsonLd} />
-      <QualiopiPublicFormationInfo tier="intervention-membre-equipe" />
     </>
   );
 }

@@ -4,7 +4,6 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { InterventionDetailPage } from "@/components/sections/InterventionDetailPage";
-import { QualiopiPublicFormationInfo } from "@/components/qualiopi/QualiopiPublicFormationInfo";
 import { INTERVENTION_DETAIL_CONFIGS } from "@/content/intervention-detail-configs";
 import { buildProductMetadata } from "@/lib/seo";
 
@@ -41,10 +40,5 @@ export default async function DirigeantVisionStrategiquePage({ params }: Props) 
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  return (
-    <>
-      <InterventionDetailPage slug={SLUG} locale={locale as Locale} />
-      <QualiopiPublicFormationInfo tier="intervention-dirigeant-vision" />
-    </>
-  );
+  return <InterventionDetailPage slug={SLUG} locale={locale as Locale} />;
 }
