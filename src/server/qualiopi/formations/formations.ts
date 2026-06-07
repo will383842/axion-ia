@@ -90,31 +90,6 @@ export async function getPublicFormationBySlug(
   }
 }
 
-/**
- * Formation publique RATTACHÉE À UNE OFFRE (par tierId), pour alimenter la fiche
- * marketing /interventions/* correspondante (harmonisation Option A). Retourne la
- * formation publiée+active la plus récente de cette offre, ou null (Phase A, aucune
- * formation publiée, ou build stub). Stub-safe → null au build.
- */
-export async function getPublicFormationByOffreTier(
-  tierId: string,
-): Promise<FormationWithOffreSite | null> {
-  try {
-    const row = await prisma.formation.findFirst({
-      where: {
-        statutGeneration: "publie",
-        statut: "actif",
-        offreSite: { is: { tierId } },
-      },
-      include: { offreSite: true },
-      orderBy: { updatedAt: "desc" },
-    });
-    return (row as FormationWithOffreSite | null) ?? null;
-  } catch {
-    return null;
-  }
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Guards métier purs
 // ─────────────────────────────────────────────────────────────────────────────
