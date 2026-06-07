@@ -1,0 +1,157 @@
+name: Qualiopi · Seed (offres_site + grille qualité + config)
+
+# Seed Qualiopi en prod via docker exec (mirror content-gen-seed.yml).
+#   1. Trouve le container axion-ia (Coolify)
+#   2. Poll DB prête
+#   3. Run `pnpm qualiopi:seed` via docker exec
+#      → crée offres_site (depuis pricing.ts), grille qualité v1 (scorePlancher 80),
+#        et les clés SiteSetting cat. `qualiopi` MANQUANTES (défauts du registre).
+#
+# IDEMPOTENT + NON DESTRUCTIF : ne réécrit JAMAIS une valeur SiteSetting existante
+# (préserve les identifiants légaux saisis par Will) ; ne clobbe pas une grille
+# présente. Re-run safe.
+#
+# MANUEL UNIQUEMENT (workflow_dispatch) : à lancer une fois après le 1er deploy du
+# module, puis ad hoc si besoin. (Pas de workflow_run : pas d'exécution à chaque
+# deploy — inutile car one-time setup.)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (liste le contenu du dossier seed, pas d'écriture DB)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed Qualiopi (offres + grille + config)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY manquant."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia container
+        id: container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" \
+            '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container $COOLIFY_APP_UUID introuvable."
+            echo "$ROWS"; exit 1
+          fi
+          echo "✓ Container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Pre-check counts (offres / grille / config qualiopi)
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "── Counts AVANT seed ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
+            const p=new PrismaClient();
+            Promise.all([p.offreSite.count(),
+              p.grilleQualiteConfig.count({where:{actif:true}}),
+              p.siteSetting.count({where:{category:'qualiopi'}})
+            ]).then(([o,g,s])=>{
+              console.log('OffreSite:',o,'| GrilleActive:',g,'| ConfigQualiopi:',s);
+              process.exit(0);
+            }).catch((e)=>{console.log('pre-check skip:',e.message.slice(0,80));process.exit(0);});}
+            catch(e){console.log('pre-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true
+
+      - name: Attendre que la DB soit prête
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "⏳ Poll DB (max 3 min)…"
+          for i in $(seq 1 18); do
+            READY=$(ssh -o BatchMode=yes root@178.105.55.15 \
+              "docker exec '$CONTAINER' node -e \
+              \"const {PrismaClient}=require('/app/prisma/generated/client');
+              const p=new PrismaClient();
+              p.siteSetting.count()
+                .then(()=>{console.log('READY');process.exit(0)})
+                .catch(()=>process.exit(1))\"" 2>/dev/null || true)
+            if [ "$READY" = "READY" ]; then
+              echo "✓ DB prête (tentative $i)"
+              break
+            fi
+            echo "  [$i/18] DB pas encore prête, attente 10s…"
+            sleep 10
+          done
+
+      - name: "[DRY RUN] Afficher le plan"
+        if: inputs.dry_run == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "::notice::DRY_RUN — pnpm qualiopi:seed (idempotent, non destructif)"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' ls /app/prisma/seeds/qualiopi/ 2>/dev/null" 2>&1 || true
+
+      - name: Exécuter pnpm qualiopi:seed
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          echo "── Seed Qualiopi (offres + grille + config) ──"
+          # corepack pnpm + tsx présents dans l'image ; fallback Node strip-types.
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && (corepack pnpm qualiopi:seed 2>&1 || \
+              node --experimental-strip-types prisma/seeds/qualiopi/index.ts 2>&1 || \
+              echo SEED_FAILED)'" 2>&1
+          echo "── Seed terminé ──"
+
+      - name: Post-check counts
+        if: always()
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "── Counts APRÈS seed ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
+            const p=new PrismaClient();
+            Promise.all([p.offreSite.count(),
+              p.grilleQualiteConfig.count({where:{actif:true}}),
+              p.siteSetting.count({where:{category:'qualiopi'}})
+            ]).then(([o,g,s])=>{
+              console.log('OffreSite:',o,'| GrilleActive:',g,'| ConfigQualiopi:',s);
+              if (o < 1) console.log('WARNING: aucune offre seedée');
+              if (g < 1) console.log('WARNING: aucune grille qualité active');
+              else console.log('OK: offres + grille active présentes');
+              process.exit(0);
+            }).catch((e)=>{console.log('post-check skip:',e.message.slice(0,80));process.exit(0);});}
+            catch(e){console.log('post-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true

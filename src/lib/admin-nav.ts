@@ -136,6 +136,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
     // ── Formation / Qualiopi (back-office OF — items ajoutés par tranche) ──
     { href: `${base}/qualiopi`, label: "Vue d'ensemble", icon: "🎓", group: "qualiopi" },
+    { href: `${base}/qualiopi/config`, label: "Configuration", icon: "⚙️", group: "qualiopi" },
     { href: `${base}/qualiopi/formations`, label: "Formations", icon: "📘", group: "qualiopi" },
     {
       href: `${base}/qualiopi/formation-engine`,
