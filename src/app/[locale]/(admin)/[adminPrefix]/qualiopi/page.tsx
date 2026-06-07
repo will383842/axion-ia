@@ -225,14 +225,14 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
           tone: "neutral",
         },
         {
-          href: `${base}/formations`,
+          href: `${base}/formateurs`,
           icon: "🎓",
           label: "Formateurs",
           count: counts.trainers,
           tone: "neutral",
         },
         {
-          href: `${base}/sessions`,
+          href: `${base}/stagiaires`,
           icon: "👤",
           label: "Stagiaires",
           count: counts.trainees,

@@ -213,7 +213,7 @@ export default async function FinancementSessionPage({ params }: PageProps) {
       </div>
 
       <AdminPageHeader
-        title={`Financement — ${trainingSession.titreSession}`}
+        title={`Financement — ${trainingSession.titreSession ?? trainingSession.numero}`}
         description={`Session ${trainingSession.numero} · ${dateDebut} → ${dateFin}`}
       />
 

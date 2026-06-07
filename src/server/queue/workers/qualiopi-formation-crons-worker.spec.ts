@@ -24,6 +24,7 @@ vi.mock("@/lib/prisma", () => ({
     },
     enrollment: {
       findMany: vi.fn(),
+      count: vi.fn(),
     },
     $transaction: vi.fn(),
   },
@@ -62,15 +63,17 @@ vi.mock("@/server/qualiopi/formations/transition-helper", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { envoyerConvocation } from "@/server/qualiopi/notifications/notifications-service";
+import { decideSessionTransitions } from "@/server/qualiopi/formations/crons";
 import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
-  enrollment: { findMany: ReturnType<typeof vi.fn> };
+  enrollment: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
 
 const mockEnvoyerConvocation = envoyerConvocation as ReturnType<typeof vi.fn>;
+const mockDecide = decideSessionTransitions as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tests formationCronsHandler — dispatch
@@ -218,5 +221,68 @@ describe("handleConvocationJ5 (via formationCronsHandler)", () => {
       expectedEnd.getTime() - tolerance,
     );
     expect(callArgs.where.dateDebut.lte.getTime()).toBeLessThan(expectedEnd.getTime() + tolerance);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests handleClotureAuto — garde émargement (conformité ind.12 / R.6313-3)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handleClotureAuto — garde émargement (audit E2E 2026-06)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+  });
+
+  const decision = { sessionId: "sess-1", from: "en_cours", to: "realisee" };
+
+  it("IGNORE la clôture auto d'une session avec inscrits mais SANS émargement", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      { id: "sess-1", statut: "en_cours", dateDebut: new Date(), dateFin: new Date() },
+    ]);
+    mockDecide.mockReturnValue([decision]);
+    // 1er count = total inscrits (2), 2e count = avec émargement (0) → skip
+    mockPrisma.enrollment.count.mockResolvedValueOnce(2).mockResolvedValueOnce(0);
+
+    await formationCronsHandler({
+      type: "formation-crons.cloture-auto",
+      tick: "2026-06-06T08:00:00Z",
+    });
+
+    // La transition NE doit PAS être appliquée → $transaction jamais appelé.
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled();
+  });
+
+  it("APPLIQUE la clôture auto si au moins un émargement est présent", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      { id: "sess-1", statut: "en_cours", dateDebut: new Date(), dateFin: new Date() },
+    ]);
+    mockDecide.mockReturnValue([decision]);
+    // total = 2, avec émargement = 1 → applique
+    mockPrisma.enrollment.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1);
+    mockPrisma.$transaction.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.cloture-auto",
+      tick: "2026-06-06T08:00:00Z",
+    });
+
+    expect(mockPrisma.$transaction).toHaveBeenCalledOnce();
+  });
+
+  it("APPLIQUE la clôture auto d'une session SANS aucun inscrit (0 inscrit = pas de garde)", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      { id: "sess-1", statut: "en_cours", dateDebut: new Date(), dateFin: new Date() },
+    ]);
+    mockDecide.mockReturnValue([decision]);
+    mockPrisma.enrollment.count.mockResolvedValueOnce(0);
+    mockPrisma.$transaction.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.cloture-auto",
+      tick: "2026-06-06T08:00:00Z",
+    });
+
+    expect(mockPrisma.$transaction).toHaveBeenCalledOnce();
   });
 });

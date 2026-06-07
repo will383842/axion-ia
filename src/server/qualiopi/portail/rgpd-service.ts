@@ -137,22 +137,31 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
   const anonymEmail = `supprime-${traineeId}@anonymise.invalid`;
   const now = new Date();
 
-  await prisma.trainee.update({
-    where: { id: traineeId },
-    data: {
-      nom: anonymNom,
-      prenom: anonymPrenom,
-      email: anonymEmail,
-      telephone: null,
-      entreprise: null,
-      fonction: null,
-      situationHandicap: false,
-      handicapDetailsChiffre: null,
-      consentementFormation: false,
-      consentementEmail: false,
-      deletedAt: now,
-    },
-  });
+  await prisma.$transaction([
+    prisma.trainee.update({
+      where: { id: traineeId },
+      data: {
+        nom: anonymNom,
+        prenom: anonymPrenom,
+        email: anonymEmail,
+        telephone: null,
+        entreprise: null,
+        fonction: null,
+        situationHandicap: false,
+        handicapDetailsChiffre: null,
+        consentementFormation: false,
+        consentementEmail: false,
+        deletedAt: now,
+      },
+    }),
+    // RGPD : révoquer TOUS les accès portail du stagiaire anonymisé. Sans cela un
+    // lien portail encore valide (token 90 j) resterait exploitable et donnerait
+    // accès à l'espace d'un stagiaire pourtant « supprimé ». (Audit E2E 2026-06.)
+    prisma.portailAcces.updateMany({
+      where: { traineeId, revoked: false },
+      data: { revoked: true },
+    }),
+  ]);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

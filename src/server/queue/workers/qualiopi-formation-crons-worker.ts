@@ -212,9 +212,31 @@ async function handleClotureAuto(): Promise<void> {
   const decisions = decideSessionTransitions(snapshots, now).filter((d) => d.to === "realisee");
 
   let applied = 0;
+  let skippedSansEmargement = 0;
   for (const decision of decisions) {
     try {
       assertSessionTransition(decision.from, decision.to);
+
+      // Garde émargement (conformité ind.12 / R.6313-3) : ne JAMAIS clôturer
+      // automatiquement une session « réalisée » sans aucune trace de présence.
+      // Une session sans émargement reste `en_cours` et sera signalée par l'alerte
+      // R03 pour traitement manuel — au lieu d'alimenter BPF/certificats/attestations
+      // avec une session non prouvée. (Symétrie avec la garde manuelle sessions.ts.)
+      const totalInscrits = await prisma.enrollment.count({
+        where: { sessionId: decision.sessionId },
+      });
+      if (totalInscrits > 0) {
+        const avecEmargement = await prisma.enrollment.count({
+          where: {
+            sessionId: decision.sessionId,
+            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
+          },
+        });
+        if (avecEmargement === 0) {
+          skippedSansEmargement++;
+          continue;
+        }
+      }
 
       await prisma.$transaction(async (tx) => {
         await applyTransitionInTx(tx, {
@@ -239,7 +261,7 @@ async function handleClotureAuto(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] cloture-auto: ${applied}/${decisions.length} transition(s) en_cours→realisee (${candidates.length} candidats scannés)`,
+    `[formation-crons] cloture-auto: ${applied}/${decisions.length} transition(s) en_cours→realisee (${candidates.length} candidats scannés, ${skippedSansEmargement} ignorée(s) sans émargement)`,
   );
 
   // Invalide le cache indicateurs pour chaque année touchée (best-effort, fail-soft).

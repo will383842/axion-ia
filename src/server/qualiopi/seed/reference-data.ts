@@ -116,8 +116,12 @@ export async function seedQualiopiReferenceData(
     };
   }
 
+  // ⚠️ Postgres n'expose `pg_try_advisory_lock` qu'en deux signatures :
+  // `(bigint)` ou `(int4, int4)`. Prisma binde les nombres JS en `bigint`, donc
+  // la forme deux-arguments DOIT caster explicitement en `int4`, sinon Postgres
+  // throw `42883 function pg_try_advisory_lock(bigint, bigint) does not exist`.
   const [lock] = await client.$queryRaw<{ locked: boolean }[]>`
-    SELECT pg_try_advisory_lock(${ADVISORY_LOCK_KEY[0]}, ${ADVISORY_LOCK_KEY[1]}) AS locked
+    SELECT pg_try_advisory_lock(${ADVISORY_LOCK_KEY[0]}::int4, ${ADVISORY_LOCK_KEY[1]}::int4) AS locked
   `;
   if (!lock?.locked) {
     const status = await getQualiopiReferenceDataStatus(client);
@@ -133,7 +137,7 @@ export async function seedQualiopiReferenceData(
     return { ran: true, ...status };
   } finally {
     await client.$queryRaw`
-      SELECT pg_advisory_unlock(${ADVISORY_LOCK_KEY[0]}, ${ADVISORY_LOCK_KEY[1]})
+      SELECT pg_advisory_unlock(${ADVISORY_LOCK_KEY[0]}::int4, ${ADVISORY_LOCK_KEY[1]}::int4)
     `;
   }
 }

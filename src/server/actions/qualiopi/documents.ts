@@ -699,6 +699,7 @@ export async function genererCertificatRealisationAction(input: {
     where: { id: enrollmentId },
     select: {
       id: true,
+      statut: true,
       tauxPresencePct: true,
       trainee: {
         select: {
@@ -732,6 +733,16 @@ export async function genererCertificatRealisationAction(input: {
     },
   });
   if (!enrollment) return { error: "Inscription introuvable" };
+
+  // Conformité R.6313-3 : un certificat de réalisation atteste d'heures réellement
+  // suivies. Un stagiaire en abandon ou exclu ne peut PAS recevoir de certificat
+  // (cohérent avec l'attestation, cf. attestation-service.ts). Garde bloquante.
+  if (enrollment.statut === "abandon" || enrollment.statut === "exclu") {
+    return {
+      error:
+        "Certificat refusé : le stagiaire est en abandon/exclu. Aucun certificat de réalisation ne peut être émis (R.6313-3).",
+    };
+  }
 
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;

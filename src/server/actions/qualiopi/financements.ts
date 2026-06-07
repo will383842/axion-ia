@@ -25,6 +25,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
+import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
@@ -400,35 +401,45 @@ export async function genererFactureFormationAction(input: {
     ? "opco"
     : destinataire;
 
-  // ── Numéro séquentiel ─────────────────────────────────────────────────────
+  // ── Numéro séquentiel + création atomique ─────────────────────────────────
+  // R7 : `genererNumeroFacture` est un `count+1` ; sous création concurrente deux
+  // factures peuvent lire le même count → même numéro. La contrainte @unique sur
+  // `numero` rejette le doublon (P2002) ; `withNumberRetry` ré-alloue et réessaie.
+  // L'allocation DOIT être DANS la closure pour être recalculée à chaque tentative.
   const annee = new Date().getFullYear();
-  const numero = await genererNumeroFacture(annee);
-
-  // ── Création en base ──────────────────────────────────────────────────────
-  const facture = await prisma.factureFormation.create({
-    data: {
-      numero,
-      sessionId,
-      destinataire: destinataireEffectif,
-      destinataireNom: trainingSession.titreSession,
-      montantHtCents: totalHtCents,
-      tvaExoneree: true,
-      lignes: lignes as never,
-      subrogation: trainingSession.opcoSubrogation,
-      numeroDossierOpco: trainingSession.opcoSubrogation
-        ? (trainingSession.numeroDossierOpco ?? null)
-        : null,
-      statut: "emise",
-      emiseAt: new Date(),
-    },
-    select: { id: true, numero: true, documentId: true },
+  const facture = await withNumberRetry(async () => {
+    const numero = await genererNumeroFacture(annee);
+    return prisma.factureFormation.create({
+      data: {
+        numero,
+        sessionId,
+        destinataire: destinataireEffectif,
+        destinataireNom: trainingSession.titreSession,
+        montantHtCents: totalHtCents,
+        tvaExoneree: true,
+        lignes: lignes as never,
+        subrogation: trainingSession.opcoSubrogation,
+        numeroDossierOpco: trainingSession.opcoSubrogation
+          ? (trainingSession.numeroDossierOpco ?? null)
+          : null,
+        statut: "emise",
+        emiseAt: new Date(),
+      },
+      select: { id: true, numero: true, documentId: true },
+    });
   });
 
   await logQualiopiActivity({
     action: "qualiopi.facture.generer",
     targetType: "FactureFormation",
     targetId: facture.id,
-    changes: { sessionId, numero, destinataire: destinataireEffectif, ventilation, totalHtCents },
+    changes: {
+      sessionId,
+      numero: facture.numero,
+      destinataire: destinataireEffectif,
+      ventilation,
+      totalHtCents,
+    },
     session: adminSession,
   });
 

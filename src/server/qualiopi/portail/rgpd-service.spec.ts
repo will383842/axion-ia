@@ -16,9 +16,14 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
+    portailAcces: {
+      updateMany: vi.fn(),
+    },
     rgpdDemande: {
       create: vi.fn(),
     },
+    // Forme tableau : exécute les opérations passées (update + updateMany).
+    $transaction: vi.fn((ops: unknown[]) => Promise.all(ops)),
   },
 }));
 
@@ -33,6 +38,9 @@ const mockPrisma = prisma as unknown as {
   trainee: {
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
+  };
+  portailAcces: {
+    updateMany: ReturnType<typeof vi.fn>;
   };
   rgpdDemande: {
     create: ReturnType<typeof vi.fn>;
@@ -162,6 +170,22 @@ describe("supprimerStagiaire", () => {
     await supprimerStagiaire("t-del-2");
 
     expect(mockPrisma.trainee.update).toHaveBeenCalledOnce();
+  });
+
+  it("revoque les acces portail actifs du stagiaire anonymise (RGPD)", async () => {
+    mockPrisma.trainee.update.mockResolvedValue({});
+    mockPrisma.portailAcces.updateMany.mockResolvedValue({ count: 2 });
+
+    await supprimerStagiaire("t-del-rgpd");
+
+    expect(mockPrisma.portailAcces.updateMany).toHaveBeenCalledOnce();
+    const call = mockPrisma.portailAcces.updateMany.mock.calls[0]![0] as {
+      where: { traineeId: string; revoked: boolean };
+      data: { revoked: boolean };
+    };
+    expect(call.where.traineeId).toBe("t-del-rgpd");
+    expect(call.where.revoked).toBe(false);
+    expect(call.data.revoked).toBe(true);
   });
 
   it("leve si stub.invalid", async () => {

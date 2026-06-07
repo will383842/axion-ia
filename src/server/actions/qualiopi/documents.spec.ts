@@ -260,6 +260,21 @@ describe("genererCertificatRealisationAction", () => {
     const result = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
     expect(result).toEqual({ error: "Inscription introuvable" });
   });
+
+  it("REFUSE le certificat pour un stagiaire en abandon (R.6313-3)", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment({ statut: "abandon" }));
+    const result = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect(result).toHaveProperty("error");
+    expect((result as { error: string }).error).toContain("abandon/exclu");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("REFUSE le certificat pour un stagiaire exclu (R.6313-3)", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment({ statut: "exclu" }));
+    const result = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect(result).toHaveProperty("error");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
