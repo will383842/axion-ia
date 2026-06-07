@@ -61,6 +61,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/queue\/worker\.ts$/,
   // Seed principal — peut importer le seed qualiopi.
   /^prisma\/seed\.ts$/,
+  // Instrumentation Next — hook de boot qui déclenche le seed auto du référentiel qualiopi.
+  /^src\/instrumentation\.ts$/,
   // Routing i18n — pathnames /formations (Phase B).
   /^src\/i18n\/routing\.ts$/,
 ];

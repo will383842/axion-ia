@@ -16,11 +16,14 @@ import {
   QualiopiConfigForm,
   type ConfigField,
 } from "@/components/admin/qualiopi/QualiopiConfigForm";
+import { SeedReferenceDataButton } from "@/components/admin/qualiopi/SeedReferenceDataButton";
 import {
   getAllQualiopiConfig,
   QUALIOPI_CONFIG_REGISTRY,
   type QualiopiConfigKey,
 } from "@/server/qualiopi/config/site-settings";
+import { getQualiopiReferenceDataStatus } from "@/server/qualiopi/seed/reference-data";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -41,6 +44,7 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
   }
 
   const current = await getAllQualiopiConfig();
+  const referenceStatus = await getQualiopiReferenceDataStatus(prisma);
   const keys = Object.keys(QUALIOPI_CONFIG_REGISTRY) as QualiopiConfigKey[];
   const fields: ConfigField[] = keys.map((k) => {
     const entry = QUALIOPI_CONFIG_REGISTRY[k];
@@ -64,6 +68,19 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
         <code>OF_PUBLIC_DISCLOSURE_ENABLED=true</code>). Le n° Qualiopi reste vide jusqu&apos;à
         obtention de la certification.
       </p>
+      <section className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-5)]">
+        <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-lg)] font-[var(--font-weight-admin-semibold)]">
+          Données de référence
+        </h2>
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Le référentiel (offres, configuration, grilles qualité) est seedé{" "}
+          <strong>automatiquement à chaque démarrage</strong>. Ce bouton permet de le
+          (re)synchroniser manuellement après un déploiement ou un ajout d&apos;offres. Idempotent
+          et non destructif : aucune valeur saisie n&apos;est écrasée.
+        </p>
+        <SeedReferenceDataButton initial={referenceStatus} />
+      </section>
+
       <QualiopiConfigForm fields={fields} />
     </AdminPageShell>
   );
