@@ -18,6 +18,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import { QualiopiPublicFormationInfo } from "@/components/qualiopi/QualiopiPublicFormationInfo";
 import { buildHowToJsonLd, buildCourseJsonLd } from "@/lib/seo";
 import { getIntervention } from "@/content/interventions";
 import {
@@ -26,6 +27,17 @@ import {
   FORMATION_DURATION_ISO,
   type FormationDetailSlug,
 } from "@/content/interventions-subpages";
+
+/**
+ * slug fiche formation collective → tierId de l'offre Qualiopi (cf. intervention-path-map).
+ * Partial : seules les fiches rattachées à une offre affichent le bloc conformité.
+ */
+const FORMATION_SLUG_TO_OFFRE_TIER: Partial<Record<FormationDetailSlug, string>> = {
+  essentielle: "intervention-essentielle",
+  approfondie: "intervention-approfondie",
+  "gagner-du-temps": "intervention-temps",
+  "intervention-claude": "intervention-claude",
+};
 
 /** Construit un libellé propre depuis le titre éclaté (title + titleEm + tail). */
 function fullTitle(copy: { title: string; titleEm?: string; titleTail?: string }): string {
@@ -44,6 +56,7 @@ export function FormationSubPageExtras({
   slug: FormationDetailSlug;
 }): ReactNode {
   const geo = FORMATION_GEO_LABEL[slug];
+  const offreTier = FORMATION_SLUG_TO_OFFRE_TIER[slug];
 
   // HowTo JSON-LD — signal AEO « comment se déroule cette formation » dérivé du
   // programme de la journée (daySchedule, distinct par formation → pas de
@@ -153,6 +166,10 @@ export function FormationSubPageExtras({
 
       {/* Connaissances liées — KB Service Binding (masqué si vide / stub build) */}
       <RelatedKnowledge service="interventions-formations" />
+
+      {/* Infos réglementaires Qualiopi (indicateur 1) — alimenté par la formation
+          publiée rattachée à l'offre ; rendu null en Phase A / sans formation. */}
+      {offreTier ? <QualiopiPublicFormationInfo tier={offreTier} /> : null}
     </>
   );
 }

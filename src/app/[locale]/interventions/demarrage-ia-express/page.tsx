@@ -4,6 +4,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { CollectiveTrainingPage } from "@/components/sections/CollectiveTrainingPage";
+import { QualiopiPublicFormationInfo } from "@/components/qualiopi/QualiopiPublicFormationInfo";
 import { buildProductMetadata } from "@/lib/seo";
 import { INTERVENTION_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
@@ -39,5 +40,10 @@ export default async function DemarrageIaExpressPage({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  return <CollectiveTrainingPage slug="demarrage-ia-express" locale={locale as Locale} />;
+  return (
+    <>
+      <CollectiveTrainingPage slug="demarrage-ia-express" locale={locale as Locale} />
+      <QualiopiPublicFormationInfo tier="intervention-4h" />
+    </>
+  );
 }
