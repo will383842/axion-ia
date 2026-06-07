@@ -3,9 +3,13 @@ name: Qualiopi · Seed (offres_site + grille qualité + config)
 # Seed Qualiopi en prod via docker exec (mirror content-gen-seed.yml).
 #   1. Trouve le container axion-ia (Coolify)
 #   2. Poll DB prête
-#   3. Run `pnpm qualiopi:seed` via docker exec
-#      → crée offres_site (depuis pricing.ts), grille qualité v1 (scorePlancher 80),
-#        et les clés SiteSetting cat. `qualiopi` MANQUANTES (défauts du registre).
+#   3. Applique les SQL idempotents (grille + offres) via `prisma db execute`
+#      → les MÊMES fichiers que ceux appliqués au boot par docker-entrypoint.sh.
+#      (Le seed tsx `pnpm qualiopi:seed` ne tourne pas dans le runtime standalone :
+#       pas de tsx + imports src/ absents → on passe par le SQL boot prouvé.)
+#      Les clés SiteSetting `qualiopi` ne sont PAS pré-créées ici : getQualiopiConfig
+#      retombe sur les défauts du registre, et la page admin /qualiopi/config les
+#      crée à la 1ʳᵉ sauvegarde.
 #
 # IDEMPOTENT + NON DESTRUCTIF : ne réécrit JAMAIS une valeur SiteSetting existante
 # (préserve les identifiants légaux saisis par Will) ; ne clobbe pas une grille
@@ -114,24 +118,27 @@ jobs:
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
-          echo "::notice::DRY_RUN — pnpm qualiopi:seed (idempotent, non destructif)"
+          echo "::notice::DRY_RUN — applique prisma/migrations_fts/*qualiopi* (idempotent)"
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec '$CONTAINER' ls /app/prisma/seeds/qualiopi/ 2>/dev/null" 2>&1 || true
+            "docker exec '$CONTAINER' ls /app/prisma/migrations_fts/ 2>/dev/null" 2>&1 || true
 
-      - name: Exécuter pnpm qualiopi:seed
+      - name: Appliquer le seed SQL (grille + offres) via prisma db execute
         if: inputs.dry_run != 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         timeout-minutes: 10
         run: |
           set -euo pipefail
-          echo "── Seed Qualiopi (offres + grille + config) ──"
-          # corepack pnpm + tsx présents dans l'image ; fallback Node strip-types.
+          # Le seed tsx (`pnpm qualiopi:seed`) ne tourne PAS dans le runtime standalone
+          # (pas de tsx + imports src/ absents) → on applique les SQL idempotents
+          # (les MÊMES que ceux appliqués au boot par docker-entrypoint.sh). FAIL-LOUD :
+          # plus de masquage — si prisma db execute échoue, le job échoue (rouge honnête).
+          echo "── grille_qualite_v1 ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec '$CONTAINER' sh -c \
-            'cd /app && (corepack pnpm qualiopi:seed 2>&1 || \
-              node --experimental-strip-types prisma/seeds/qualiopi/index.ts 2>&1 || \
-              echo SEED_FAILED)'" 2>&1
+            "docker exec '$CONTAINER' sh -lc 'cd /app && npx --yes prisma@5.22.0 db execute --file prisma/migrations_fts/20260606300000_qualiopi_grille_seed.sql --schema=prisma/schema.prisma'"
+          echo "── offres_site ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -lc 'cd /app && npx --yes prisma@5.22.0 db execute --file prisma/migrations_fts/20260607000000_qualiopi_offres_seed.sql --schema=prisma/schema.prisma'"
           echo "── Seed terminé ──"
 
       - name: Post-check counts

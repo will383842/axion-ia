@@ -51,6 +51,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/admin-nav\.ts$/,
   // package.json — scripts qualiopi:seed / qualiopi:isolation-check.
   /^package\.json$/,
+  // Workflow de seed prod Qualiopi (docker exec → prisma db execute des SQL boot).
+  /^\.github\/workflows\/qualiopi-seed\.yml$/,
   // Layout admin + ⌘K — référencent les routes admin qualiopi.
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/layout\.tsx$/,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
