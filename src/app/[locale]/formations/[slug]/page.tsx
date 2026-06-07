@@ -10,7 +10,7 @@
  */
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
@@ -22,6 +22,7 @@ import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
+import { interventionPathForTier } from "@/server/qualiopi/offres/intervention-path-map";
 
 // ── Dynamisme & ISR ──────────────────────────────────────────────────────────
 // ISR `revalidate=3600` (budget Web Vitals Phase B : éviter un appel DB par requête
@@ -164,6 +165,16 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
 
   const f = await getPublicFormationBySlug(slug);
   if (!f) notFound();
+
+  // Harmonisation Option A (Will 2026-06-07) : la fiche publique CANONIQUE d'une
+  // formation est sa page marketing /interventions/* (actif SEO). On dé-doublonne
+  // en redirigeant (308) vers cette fiche si l'offre y est rattachée ; le bloc
+  // « infos réglementaires » Qualiopi est affiché là-bas. Fallback : si l'offre
+  // n'a pas de fiche marketing, on rend la fiche /formations autonome (ci-dessous).
+  const canonicalPath = interventionPathForTier(f.offreSite.tierId);
+  if (canonicalPath) {
+    permanentRedirect(`/${locale}${canonicalPath}`);
+  }
 
   const prixLabel = resolveOffrePriceLabel(f.offreSite.tierId, locale === "en" ? "en" : "fr");
 
