@@ -101,6 +101,19 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   // P-302 — build artifact léger pour Docker Hetzner standalone.
   output: "standalone",
+  // Recovery build OOM 2026-06-08 — désactive le cache webpack en build de
+  // PROD. Le cache (mémoire + disque) retient tous les modules compilés pour
+  // accélérer les builds incrémentaux ; en CI on repart TOUJOURS d'un cache
+  // vide (build Docker propre), donc on ne perd aucune vitesse, mais on évite
+  // de garder ~17,6k routes de modules en mémoire pendant la compilation →
+  // réduit le pic heap. Recommandé par le guide mémoire Next (« Disable
+  // Webpack cache »). Build only (`!dev`), dev inchangé.
+  webpack: (config, { dev }) => {
+    if (!dev && config.cache) {
+      config.cache = false;
+    }
+    return config;
+  },
   // P-400 — verrouille les deps Server-only contre tout leak vers le client.
   // Si un import client utilise par erreur l'un de ces paquets, le build fail
   // explicitement au lieu d'embarquer ~200-500 KB de code Node.js dans le
@@ -137,6 +150,13 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 31536000,
   },
   experimental: {
+    // Recovery build OOM 2026-06-08 — la compilation webpack (`next build
+    // --webpack`) de ~17,6k routes SSG plafonnait le heap JS (6144 Mo) et
+    // OOM'ait AVANT même la génération des pages (phase « Creating an optimized
+    // production build »). Flag officiel Next ≥15 (low-risk) : réduit le pic
+    // mémoire webpack au prix d'un build légèrement plus long. Cf. guide
+    // node_modules/next/dist/docs/01-app/02-guides/memory-usage.md.
+    webpackMemoryOptimizations: true,
     // ViewTransition disabled until we actually wrap route transitions in
     // <ViewTransition>. The flag alone changes Next's navigation behavior
     // (waits for render before swap) and adds perceived latency without
