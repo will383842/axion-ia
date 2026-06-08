@@ -44,6 +44,7 @@ import { BESANCON_ECONOMIC_DATA } from "./besancon";
 import { ORLEANS_ECONOMIC_DATA } from "./orleans";
 import { ROUEN_ECONOMIC_DATA } from "./rouen";
 import { MONTREUIL_ECONOMIC_DATA } from "./montreuil";
+import { SAINT_DENIS_ECONOMIC_DATA } from "./saint-denis";
 import { CAEN_ECONOMIC_DATA } from "./caen";
 import { ARGENTEUIL_ECONOMIC_DATA } from "./argenteuil";
 import { MULHOUSE_ECONOMIC_DATA } from "./mulhouse";
@@ -89,6 +90,7 @@ export const ECONOMIC_DATA_BY_SLUG: Record<string, VilleEconomicData> = {
   orleans: ORLEANS_ECONOMIC_DATA,
   rouen: ROUEN_ECONOMIC_DATA,
   montreuil: MONTREUIL_ECONOMIC_DATA,
+  "saint-denis": SAINT_DENIS_ECONOMIC_DATA,
   caen: CAEN_ECONOMIC_DATA,
   argenteuil: ARGENTEUIL_ECONOMIC_DATA,
   mulhouse: MULHOUSE_ECONOMIC_DATA,

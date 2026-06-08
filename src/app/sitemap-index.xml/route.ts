@@ -51,6 +51,9 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-images-villes-t1.xml",
   "/sitemap-images-villes-t2.xml",
   "/sitemap-images-villes-t3-t4.xml",
+  // Module recrutement commercial (devenir-commercial-ia) — hubs T1+T2 indexables
+  // + France + candidature. Route Handler isolé (ne touche pas sitemap.ts).
+  "/sitemap-recrutement.xml",
 ];
 
 export const dynamic = "force-static";

@@ -78,6 +78,13 @@ export function GET() {
 - Tier 3 (< 15 000 hab) : ~1 800 communes (couverture longue traîne, indexation progressive anti-doorway HCU 2024)
 - Sitemap dédié : ${SITE_URL}/sitemap/implantations-villes-verticales.xml (~500 routes SSG top-100 villes × 5 verticales)
 
+## Recrutement — réseau commercial indépendant
+
+- [Devenir commercial IA](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA recrute 200+ commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut indépendant, rémunération à la commission (fixe par formation, % de la facture sur audits/intégrations), démarrage sans coût, formation aux bases de l'IA + à la prospection, équipe d'accompagnement. Débutants acceptés.
+- [Candidature commercial](${SITE_URL}/fr/devenir-commercial-ia/candidature) — formulaire de candidature (réponse email sous quelques jours puis appel visio).
+- Pages par ville (40 hubs T1+T2, ex. ${SITE_URL}/fr/devenir-commercial-ia/grenoble) — territoire de vente local réel (secteurs, grands comptes, bassin). Les villes plus petites (T3/T4) redirigent en 301 vers leur hub le plus proche (« et alentours »).
+- Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
+
 ## Galerie & ressources
 
 - [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml

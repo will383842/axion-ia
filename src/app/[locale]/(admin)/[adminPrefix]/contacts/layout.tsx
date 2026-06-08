@@ -34,14 +34,17 @@ export default async function ContactsLayout({
   // sur referer pour les rares cas où Next ne l'expose pas.
   const path = hdrs.get("x-invoke-path") ?? hdrs.get("x-pathname") ?? hdrs.get("referer") ?? "";
 
-  let activeTabId: "messages" | "calendly" = "messages";
+  let activeTabId: "messages" | "calendly" | "commercial" = "messages";
   if (path.includes("/contacts/calendly")) {
     activeTabId = "calendly";
+  } else if (path.includes("/contacts/commercial")) {
+    activeTabId = "commercial";
   }
 
   const base = `/fr/${adminPrefix}/contacts`;
   const tabs: AdminTabItem[] = [
     { id: "messages", label: "Messages", href: `${base}/messages` },
+    { id: "commercial", label: "Commercial", href: `${base}/commercial` },
     { id: "calendly", label: "RDV Calendly", href: `${base}/calendly` },
   ];
 

@@ -68,6 +68,18 @@ export default auth((req) => {
     }
   }
 
+  // 0ter. Recrutement commercial — une seule page indexée (page France). Toute
+  //       URL /devenir-commercial-ia/<ville> (héritage des anciennes pages ville,
+  //       ou liens de pubs) fait un 301 vers la page France. Seule exception :
+  //       /candidature (formulaire). Évite tout 404 et concentre l'autorité.
+  {
+    const m = req.nextUrl.pathname.match(/^\/(fr|en)\/devenir-commercial-ia\/([^/]+)\/?$/);
+    if (m && m[2] !== "candidature") {
+      const dest = new URL(`/${m[1]}/devenir-commercial-ia${req.nextUrl.search}`, req.url);
+      return NextResponse.redirect(dest, 301);
+    }
+  }
+
   // 1. Génère un nonce et l'expose à la requête via `x-nonce` AVANT que
   //    next-intl process la requête, pour que les Server Components qui
   //    appellent `cspNonce()` voient le bon header.
