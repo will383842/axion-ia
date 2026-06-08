@@ -87,7 +87,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const built = buildVilleContext(ville);
   if (!built) return {};
   const isFr = locale === "fr";
-  const { ctx, indexable } = built;
+  const { ctx } = built;
   const place = ctx.departementLabel ? `${ctx.name} (${ctx.departementLabel})` : ctx.name;
   const title = isFr
     ? `Devenir commercial IA à ${ctx.name} et alentours · revenus déplafonnés · Axion-IA`
@@ -111,7 +111,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...satKeywords,
     ],
   };
-  return indexable ? base : { ...base, robots: { index: false, follow: true } };
+  // Toujours noindex : les 40 pages ville partagent la même offre (≈ 89 % de
+  // contenu commun) → risque doorway/duplicate. La visibilité PAR VILLE passe
+  // par le JobPosting multi-lieux de la page France (Google for Jobs). Ces pages
+  // restent d'excellentes destinations de campagnes pubs + trafic direct.
+  return { ...base, robots: { index: false, follow: true } };
 }
 
 export default async function DevenirCommercialVillePage({ params }: Props) {

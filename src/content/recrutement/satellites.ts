@@ -112,6 +112,15 @@ export function getHubSlugs(): ReadonlyArray<string> {
 }
 
 /**
+ * Lieux des 40 hubs pour un JobPosting MULTI-LIEUX sur la page France indexée :
+ * Google for Jobs fait remonter l'offre pour chaque ville (et alentours par
+ * proximité) SANS exposer 40 landing pages quasi-dupliquées (anti-doorway).
+ */
+export function getHubLocations(): ReadonlyArray<{ nameFr: string; regionSlug: string }> {
+  return HUB_VILLES.map((v) => ({ nameFr: v.nameFr, regionSlug: v.region }));
+}
+
+/**
  * Hubs « sœurs » pour le maillage interne : autres hubs de la même région
  * (priorité), complétés par les hubs les plus proches si la région en compte
  * peu. Plafonné à `limit`. Sert à relier les 40 pages entre elles (SEO).

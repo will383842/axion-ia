@@ -16,6 +16,8 @@ import {
   buildCommercialFaqItems,
 } from "@/components/services/devenir-commercial/CommercialPageBody";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import { getHubLocations } from "@/content/recrutement/satellites";
+import { getRegion } from "@/content/regions";
 import { buildProductMetadata, buildFaqJsonLd, SITE_URL, BUILD_DATE } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -60,7 +62,22 @@ export default async function DevenirCommercialHub({ params }: Props) {
     })),
   });
 
-  // JobPosting national (Google for Jobs / AEO « emploi commercial IA »).
+  // JobPosting MULTI-LIEUX (40 hubs) → Google for Jobs fait remonter l'offre
+  // pour chaque ville et ses alentours (par proximité), depuis CETTE page France
+  // indexée — sans exposer 40 landing pages quasi-dupliquées (anti-doorway).
+  const hubPlaces = getHubLocations().map((h) => {
+    const regionLabel = getRegion(h.regionSlug)?.nameFr;
+    return {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: h.nameFr,
+        ...(regionLabel ? { addressRegion: regionLabel } : {}),
+        addressCountry: "FR",
+      },
+    };
+  });
+
   const jobJsonLd = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
@@ -93,11 +110,12 @@ export default async function DevenirCommercialHub({ params }: Props) {
     incentiveCompensation: isFr
       ? "Rémunération 100 % à la commission : montant fixe par formation vendue, pourcentage de la facture sur les audits et intégrations. Revenus non plafonnés."
       : "100% commission-based pay: flat amount per training sold, percentage of the invoice on audits and integrations. Uncapped income.",
-    hiringOrganization: { "@type": "Organization", name: "Axion-IA", sameAs: SITE_URL },
-    jobLocation: {
-      "@type": "Place",
-      address: { "@type": "PostalAddress", addressCountry: "FR" },
+    hiringOrganization: {
+      "@type": "Organization",
+      name: "Axion-IA (axion-ia.com)",
+      sameAs: SITE_URL,
     },
+    jobLocation: hubPlaces,
     applicantLocationRequirements: { "@type": "Country", name: "France" },
     directApply: true,
     url: `${SITE_URL}/${loc}/devenir-commercial-ia/candidature`,
