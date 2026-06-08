@@ -78,6 +78,17 @@ export default async function DevenirCommercialHub({ params }: Props) {
     };
   });
 
+  // validThrough : date d'expiration de l'offre (recommandée par Google for Jobs,
+  // sinon l'offre est retirée ~30 j après datePosted). Ancrée de façon
+  // DÉTERMINISTE sur la date éditoriale (+1 an) — pas de `Date.now()` glissant :
+  // évite la dérive ISR et reste cohérent avec l'infra anti-date-gaming du repo.
+  // Pour prolonger l'offre evergreen, il suffit de bumper SITE_EDITORIAL_DATE.
+  const jobValidThrough = (() => {
+    const d = new Date(SITE_EDITORIAL_DATE);
+    d.setUTCFullYear(d.getUTCFullYear() + 1);
+    return d.toISOString();
+  })();
+
   const jobJsonLd = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
@@ -88,6 +99,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
       ? "Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut indépendant, produits souvent finançables, rémunération à la commission déplafonnée, emploi du temps libre."
       : "Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to companies of all sizes. Self-employed status, often-fundable products, uncapped commission-based pay.",
     datePosted: SITE_EDITORIAL_DATE,
+    validThrough: jobValidThrough,
     employmentType: "CONTRACTOR",
     occupationalCategory: isFr
       ? "Commercial · Agent commercial · VRP · Apporteur d'affaires"
@@ -113,6 +125,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
     hiringOrganization: {
       "@type": "Organization",
       name: "Axion-IA (axion-ia.com)",
+      url: SITE_URL,
       sameAs: SITE_URL,
     },
     jobLocation: hubPlaces,
