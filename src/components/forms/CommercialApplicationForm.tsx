@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaire interactif (état React multi-champs, Turnstile, honeypot, soumission async).
 // Formulaire de candidature commercial (page /devenir-commercial-ia/candidature).
 //
 // Réutilise l'infrastructure existante SANS nouvelle Server Action : soumet via
