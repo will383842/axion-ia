@@ -105,11 +105,11 @@ export function CommercialPageBody({ isFr, ville }: CommercialPageBodyProps): Re
     <>
       <DevenirCommercialHero isFr={isFr} villeName={ville?.name} />
       <CommercialOpportunity isFr={isFr} />
+      <CommercialHowItWorks isFr={isFr} />
       <CommercialContactBand isFr={isFr} trackSuffix="-mid" />
       <CommercialReassurance isFr={isFr} />
       <CommercialProductsEarnings isFr={isFr} />
       <CommercialProcess isFr={isFr} />
-      <CommercialHowItWorks isFr={isFr} />
 
       {/* ⭐ VARIABLE — uniquement sur les pages ville (anti-doorway) */}
       {ville ? (

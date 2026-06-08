@@ -1,10 +1,10 @@
 // Server Component — ⭐ « Votre territoire de vente ». SECTION VARIABLE =
-// cœur anti-doorway. Données INSEE/economic-data RÉELLES. Refonte visuelle
-// 2026-06-08 (Will : « trop textuel ») : gros chiffre repère, labels secteurs
-// nettoyés (sans jargon NAF), barres de proportion, blocs aérés.
+// cœur anti-doorway, données INSEE/economic-data RÉELLES. Refonte 2026-06-08
+// (Will) : 3 blocs aérés (marché / périmètre / secteur exclusif), labels
+// nettoyés, SANS les « grands comptes » (trompeur : ce ne sont pas nos clients).
 
 import type { ReactNode } from "react";
-import { Building2, Map, Globe2, Briefcase, MapPin, Sparkles, Factory } from "lucide-react";
+import { Factory, Map as MapIcon, ShieldCheck } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { fmtNumber } from "@/lib/intl";
 
@@ -43,15 +43,6 @@ function cleanSector(label: string): string {
     .trim();
 }
 
-/** Tronque la spécificité locale à la 1re phrase (éviter le pavé technique). */
-function shortSpecificite(s: string): string {
-  const firstSentence = s.split(/(?<=[.!?])\s/)[0] ?? s;
-  return firstSentence.length > 180 ? firstSentence.slice(0, 177).trimEnd() + "…" : firstSentence;
-}
-
-const AUDIENCE_FR = ["TPE & artisans", "Commerçants", "PME", "ETI", "Grandes entreprises"];
-const AUDIENCE_EN = ["Micro & artisans", "Retailers", "SMEs", "Mid-caps", "Large enterprises"];
-
 export function CommercialTerritory(props: CommercialTerritoryProps): ReactNode {
   const {
     isFr,
@@ -62,26 +53,22 @@ export function CommercialTerritory(props: CommercialTerritoryProps): ReactNode 
     creationsEntreprises,
     anneeReference,
     topSectors,
-    grandsGroupes,
     communesBassin,
-    specificite,
   } = props;
   const loc = isFr ? "fr" : "en";
 
-  const perimeter = [
-    { icon: Building2, label: isFr ? "Ville & agglo" : "City & metro", value: villeName },
+  // Bloc 2 — lignes du périmètre.
+  const perimeter: ReadonlyArray<{ label: string; value: string }> = [
+    { label: isFr ? "Ville & agglomération" : "City & metro", value: villeName },
     ...(departementLabel
-      ? [{ icon: Map, label: isFr ? "Département" : "Department", value: departementLabel }]
+      ? [{ label: isFr ? "Département" : "Department", value: departementLabel }]
       : []),
-    ...(region ? [{ icon: Globe2, label: isFr ? "Région" : "Region", value: region }] : []),
+    ...(region ? [{ label: isFr ? "Région" : "Region", value: region }] : []),
     {
-      icon: Briefcase,
       label: isFr ? "Votre portefeuille" : "Your portfolio",
       value: isFr ? "Conservé" : "Kept",
     },
   ];
-
-  const maxCount = Math.max(...topSectors.map((s) => s.count ?? 0), 1);
 
   return (
     <Section
@@ -91,177 +78,110 @@ export function CommercialTerritory(props: CommercialTerritoryProps): ReactNode 
       titleEm={isFr ? "à vous de le couvrir" : "yours to cover"}
       description={
         isFr
-          ? `Votre secteur n'est pas qu'une ville : vous couvrez ${villeName}, son agglomération et tout le département${departementLabel ? ` (${departementLabel})` : ""}${region ? `, jusqu'à la région ${region}` : ""} — plus votre propre portefeuille, que vous gardez.`
-          : `Your sector isn't just a city: you cover ${villeName}, its metro area and the whole department${region ? `, up to the ${region} region` : ""} — plus your own portfolio, which you keep.`
+          ? `Votre secteur n'est pas qu'une ville : ${villeName}, son agglomération et tout le département${departementLabel ? ` (${departementLabel})` : ""}${region ? `, jusqu'à la région ${region}` : ""} — plus votre propre portefeuille, que vous gardez.`
+          : `Your sector isn't just a city: ${villeName}, its metro area and the whole department${region ? `, up to the ${region} region` : ""} — plus your own portfolio, which you keep.`
       }
     >
-      <div className="space-y-8">
-        {/* Gros chiffre repère */}
-        {etablissementsActifs != null ? (
-          <div className="border-terracotta/15 bg-halo-warm flex flex-wrap items-center gap-x-12 gap-y-4 rounded-3xl border-2 p-8">
-            <div>
-              <p className="text-terracotta-deep font-mono text-5xl font-semibold tabular-nums sm:text-6xl">
-                {fmtNumber(etablissementsActifs, loc)}
-              </p>
-              <p className="text-fg-soft mt-1 text-lg">
-                {isFr
-                  ? `entreprises à prospecter à ${villeName}`
-                  : `companies to prospect in ${villeName}`}
-              </p>
-            </div>
-            {creationsEntreprises != null && anneeReference != null ? (
-              <div className="border-terracotta/20 sm:border-l sm:pl-12">
-                <p className="text-fg font-mono text-3xl font-semibold tabular-nums">
-                  +{fmtNumber(creationsEntreprises, loc)}
-                </p>
-                <p className="text-fg-soft mt-1 text-sm">
-                  {isFr
-                    ? `nouvelles entreprises en ${anneeReference}`
-                    : `new businesses in ${anneeReference}`}
-                </p>
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-
-        {/* Secteur exclusif — défini ensemble, un secteur = un commercial */}
-        <div className="border-primary/20 bg-primary-soft rounded-2xl border-2 p-6">
-          <p className="text-primary text-[12px] font-semibold tracking-[0.14em] uppercase">
-            {isFr ? "Votre secteur, rien qu'à vous" : "Your sector, yours alone"}
-          </p>
-          <p className="text-fg mt-2 leading-relaxed">
-            {isFr
-              ? "Votre secteur est défini ensemble — selon vos souhaits, votre portefeuille d'entreprises existant et les besoins d'Axion-IA. Un secteur = un seul commercial : aucune concurrence entre vous, un chiffre d'affaires assuré."
-              : "Your sector is defined together — based on your wishes, your existing client portfolio and Axion-IA's needs. One sector = one rep: no internal competition, guaranteed revenue."}
-          </p>
-        </div>
-
-        {/* Périmètre — strip à icônes */}
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {perimeter.map((p, i) => {
-            const Icon = p.icon;
-            return (
-              <div
-                key={i}
-                className="border-border bg-bg flex items-center gap-3 rounded-xl border p-4"
-              >
-                <span className="bg-terracotta-soft text-terracotta-deep flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                  <Icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-fg-muted text-[10px] font-semibold tracking-[0.12em] uppercase">
-                    {p.label}
-                  </p>
-                  <p className="text-fg truncate text-sm font-semibold">{p.value}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Audience — chips compactes */}
-        <div className="flex flex-wrap gap-2">
-          <span className="text-fg-muted mr-1 self-center text-sm">
-            {isFr ? "Vous vendez à :" : "You sell to:"}
+      <div className="grid gap-5 lg:grid-cols-3">
+        {/* BLOC 1 — Le marché à prendre */}
+        <div className="border-terracotta/20 bg-halo-warm flex flex-col rounded-3xl border-2 p-7">
+          <span className="bg-paper text-terracotta mb-4 flex h-11 w-11 items-center justify-center rounded-xl">
+            <Factory aria-hidden="true" className="h-6 w-6" />
           </span>
-          {(isFr ? AUDIENCE_FR : AUDIENCE_EN).map((a, i) => (
-            <span
-              key={i}
-              className="border-border bg-bg text-fg rounded-full border px-3.5 py-1.5 text-sm font-medium"
-            >
-              {a}
-            </span>
-          ))}
-        </div>
-
-        {/* 2 colonnes — secteurs (barres) + grands comptes */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {topSectors.length > 0 ? (
-            <div className="border-border bg-bg rounded-2xl border p-6">
-              <h3 className="text-fg flex items-center gap-2 text-base font-semibold tracking-tight">
-                <Factory aria-hidden="true" className="text-terracotta h-5 w-5" />
-                {isFr ? "Les secteurs forts du territoire" : "The territory's strongest sectors"}
-              </h3>
-              <ul className="mt-5 space-y-4">
-                {topSectors.map((s, i) => (
-                  <li key={i}>
-                    <div className="mb-1.5 flex items-baseline justify-between gap-3">
-                      <span className="text-fg text-sm font-medium">{cleanSector(s.label)}</span>
-                      {s.count != null ? (
-                        <span className="text-terracotta-deep shrink-0 font-mono text-sm font-semibold tabular-nums">
-                          {fmtNumber(s.count, loc)}
-                        </span>
-                      ) : null}
-                    </div>
-                    {s.count != null ? (
-                      <div className="bg-sand h-2.5 overflow-hidden rounded-full">
-                        <div
-                          className="from-terracotta to-terracotta-deep h-2.5 rounded-full bg-gradient-to-r"
-                          style={{
-                            width: `${Math.max(10, Math.round((s.count / maxCount) * 100))}%`,
-                          }}
-                        />
-                      </div>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {grandsGroupes.length > 0 ? (
-            <div className="border-border bg-bg rounded-2xl border p-6">
-              <h3 className="text-fg text-base font-semibold tracking-tight">
-                {isFr ? "Des grands comptes déjà sur place" : "Major accounts already here"}
-              </h3>
-              <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+          <h3 className="text-fg text-lg font-semibold tracking-tight">
+            {isFr ? "Un marché à prendre" : "A market to win"}
+          </h3>
+          {etablissementsActifs != null ? (
+            <p className="mt-3">
+              <span className="text-terracotta-deep font-mono text-4xl font-semibold tabular-nums">
+                {fmtNumber(etablissementsActifs, loc)}
+              </span>
+              <span className="text-fg-soft block text-sm">
                 {isFr
-                  ? "Un écosystème mûr pour l'IA — ça crédibilise votre démarche auprès des PME."
-                  : "An AI-ready ecosystem — it lends credibility to your pitch with SMEs."}
+                  ? `entreprises à prospecter${creationsEntreprises != null && anneeReference != null ? ` (+${fmtNumber(creationsEntreprises, loc)} créées en ${anneeReference})` : ""}`
+                  : `companies to prospect${creationsEntreprises != null && anneeReference != null ? ` (+${fmtNumber(creationsEntreprises, loc)} created in ${anneeReference})` : ""}`}
+              </span>
+            </p>
+          ) : (
+            <p className="text-fg-soft mt-3 text-sm leading-relaxed">
+              {isFr
+                ? "Un large tissu d'entreprises à démarcher."
+                : "A wide business fabric to prospect."}
+            </p>
+          )}
+          {topSectors.length > 0 ? (
+            <>
+              <p className="text-fg-muted mt-5 text-[11px] font-semibold tracking-[0.12em] uppercase">
+                {isFr ? "Secteurs forts" : "Strong sectors"}
               </p>
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {grandsGroupes.map((g, i) => (
+              <ul className="mt-2 flex flex-wrap gap-1.5">
+                {topSectors.slice(0, 4).map((s, i) => (
                   <li
                     key={i}
-                    className="border-terracotta/20 bg-halo-warm text-fg rounded-full border px-3 py-1.5 text-sm font-medium"
-                    title={g.secteur}
+                    className="border-terracotta/20 bg-paper text-fg rounded-full border px-2.5 py-1 text-xs font-medium"
                   >
-                    {g.nom.replace(/\s*\([^)]*\)/g, "")}
+                    {cleanSector(s.label)}
                   </li>
                 ))}
               </ul>
-            </div>
+            </>
+          ) : null}
+          <p className="text-fg-soft mt-auto pt-5 text-sm">
+            {isFr
+              ? "De la TPE à la grande entreprise."
+              : "From micro-business to large enterprise."}
+          </p>
+        </div>
+
+        {/* BLOC 2 — Votre périmètre */}
+        <div className="border-border bg-bg flex flex-col rounded-3xl border p-7">
+          <span className="bg-sand text-terracotta mb-4 flex h-11 w-11 items-center justify-center rounded-xl">
+            <MapIcon aria-hidden="true" className="h-6 w-6" />
+          </span>
+          <h3 className="text-fg text-lg font-semibold tracking-tight">
+            {isFr ? "Votre périmètre" : "Your area"}
+          </h3>
+          <dl className="mt-4 space-y-3">
+            {perimeter.map((p, i) => (
+              <div
+                key={i}
+                className="border-border/70 flex items-baseline justify-between gap-3 border-b border-dashed pb-2 last:border-0"
+              >
+                <dt className="text-fg-muted text-xs">{p.label}</dt>
+                <dd className="text-fg text-right text-sm font-semibold">{p.value}</dd>
+              </div>
+            ))}
+          </dl>
+          {communesBassin.length > 0 ? (
+            <p className="text-fg-soft mt-auto pt-4 text-sm leading-relaxed">
+              {isFr ? "Communes voisines : " : "Nearby towns: "}
+              {communesBassin
+                .slice(0, 6)
+                .map((c) => c.nameFr)
+                .join(", ")}
+              {communesBassin.length > 6 ? "…" : "."}
+            </p>
           ) : null}
         </div>
 
-        {/* Bassin + spécificité — ligne compacte */}
-        <div className="grid gap-4 md:grid-cols-2">
-          {communesBassin.length > 0 ? (
-            <div className="border-border bg-sand flex gap-3 rounded-2xl border p-5">
-              <MapPin aria-hidden="true" className="text-terracotta mt-0.5 h-5 w-5 shrink-0" />
-              <div>
-                <p className="text-fg text-sm font-semibold">
-                  {isFr ? "Communes voisines dans votre zone" : "Neighbouring towns in your zone"}
-                </p>
-                <p className="text-fg-soft mt-1 text-sm leading-relaxed">
-                  {communesBassin
-                    .slice(0, 8)
-                    .map((c) => c.nameFr)
-                    .join(", ")}
-                  {communesBassin.length > 8 ? "…" : "."}
-                </p>
-              </div>
-            </div>
-          ) : null}
-
-          {specificite ? (
-            <div className="border-primary/20 bg-primary-soft flex gap-3 rounded-2xl border p-5">
-              <Sparkles aria-hidden="true" className="text-primary mt-0.5 h-5 w-5 shrink-0" />
-              <p className="text-fg-soft self-center text-sm leading-relaxed">
-                {shortSpecificite(specificite)}
-              </p>
-            </div>
-          ) : null}
+        {/* BLOC 3 — Votre secteur, rien qu'à vous */}
+        <div className="border-primary/25 bg-primary-soft flex flex-col rounded-3xl border-2 p-7">
+          <span className="bg-paper text-primary mb-4 flex h-11 w-11 items-center justify-center rounded-xl">
+            <ShieldCheck aria-hidden="true" className="h-6 w-6" />
+          </span>
+          <h3 className="text-fg text-lg font-semibold tracking-tight">
+            {isFr ? "Votre secteur, rien qu'à vous" : "Your sector, yours alone"}
+          </h3>
+          <p className="text-fg-soft mt-3 leading-relaxed">
+            {isFr
+              ? "Votre secteur est défini ensemble — selon vos souhaits, votre portefeuille existant et les besoins d'Axion-IA."
+              : "Your sector is defined together — based on your wishes, your existing portfolio and Axion-IA's needs."}
+          </p>
+          <p className="text-primary mt-4 text-base leading-snug font-semibold">
+            {isFr
+              ? "Un secteur = un seul commercial. Aucune concurrence entre vous, un chiffre d'affaires assuré."
+              : "One sector = one rep. No internal competition, guaranteed revenue."}
+          </p>
         </div>
       </div>
     </Section>
