@@ -314,3 +314,49 @@ Correctifs appliqués et **vérifiés visuellement (dev server + Playwright)**.
 > ⚠️ Même pattern probable (logo en cellule de grille sans `w-full`) sur `ClientLogosMarqueeBand.tsx` (`max-w-[132px]`, page /audit) et `SitesWebStackAdaptee.tsx` (`max-w-[112px]`) — **non testés** (autres pages) ; à vérifier/corriger si besoin.
 
 **Reste recommandé** : `pnpm lhci` (autorité Web Vitals) pour valider CLS=0 et First Load JS sur les pages stratégiques.
+
+---
+
+## Révision (2026-06-08) — Header/Footer EN PLEINE PAGE + libellés nav
+
+> Décision Will (2026-06-08), après vérif sur son écran (`window.innerWidth = 1482`).
+> **Révise l'Option A du 2026-06-03** : on NE garde PLUS l'alignement strict header=contenu=footer.
+> Vérifs : `pnpm typecheck` ✅ (0 erreur) · `pnpm eslint` (3 fichiers) ✅ (0) · `pnpm vitest run Container.test.tsx` ✅ (3/3). Pas de commit/push (en attente OK Will).
+
+### Pourquoi (clarification du symptôme ressenti)
+Sur le 17″ de Will (largeur CSS ≥ 1482, selon zoom Windows), **tout** était plafonné à 1366 et centré — y compris le header et le footer (Option A) → logo/nav/CTA et colonnes footer « ramassés » au centre, **rien ne touchait les bords**. Will veut au contraire un header/footer **pleine page**, tout en **gardant les marges premium sur le corps**. C'est exactement l'inverse de l'alignement strict de l'Option A pour les zones nav.
+
+### Décision de largeur (révisée)
+| Zone | 2026-06-03 (Option A) | **2026-06-08 (révision)** |
+|---|---|---|
+| Corps (`Container`) | `max-w-[1366px]` | **`max-w-[1366px]` (inchangé)** — marges premium conservées |
+| Header (contenu interne) | `max-w-[1366px]` (aligné corps) | **`max-w-[1920px]`** — pleine page, cap actif seulement en ultra-large |
+| Footer (contenu interne) | `max-w-[1366px]` (aligné corps) | **`max-w-[1920px]`** — pleine page, idem |
+
+Rampe de gouttières inchangée (`px-4 sm:px-6 lg:px-10 xl:px-16`) → « gouttière de respiration » sur le header/footer pleine page. Fond terracotta (header) / mocha-rich (footer) toujours bord-à-bord. Le cap 1920 ne sert qu'à éviter l'étirement du logo/CTA sur moniteur 2560 px+. **Conséquence assumée** : sur grand écran, header/footer sont volontairement PLUS larges que le corps (logo/colonnes dépassent les bords du contenu) — c'est le rendu « pleine page » voulu.
+
+| Fichier:ligne | Avant | Après |
+|---|---|---|
+| `Header.tsx` (wrapper interne) | `max-w-[1366px]` | `max-w-[1920px]` |
+| `Footer.tsx` (wrapper interne) | `max-w-[1366px]` | `max-w-[1920px]` |
+| `Container.tsx` | inchangé (1366) — commentaire mis à jour (header/footer ne partagent plus le cap) | — |
+
+> Skeletons `loading.tsx` = **inchangés** (1366) : ils mockent le CORPS, pas le header/footer (toujours rendus réels via `layout.tsx`). Toujours alignés sur `Container`. ✅
+> Symptôme C (header coupé) **non régressé** : drawer toujours à `xl`=1280 ; au-delà, la largeur intérieure du header est désormais PLUS grande (jusqu'à 1920−128) → la nav tient encore plus facilement.
+
+### Libellés nav header ajustés (Will 2026-06-08)
+Transformations faites dans `Header.tsx` via `.replace()` (valeurs i18n `messages/*.json` **intactes** → aucun effet de bord sur les autres usages ; en drawer mobile le `\n` collapse en espace → libellé sur une ligne).
+
+| Lien | Avant | Après (desktop, 2 lignes si `/`) |
+|---|---|---|
+| `/interventions/collectives` | Formations IA | **Formations / IA** |
+| `/un-a-un` | Coaching 1 to 1 | **1 to 1** (retrait « Coaching ») |
+| `/audit` | Audit IA | **Audit / IA** |
+| `/implementation` | Intégration IA | **Intégration / IA** |
+| `/sites-web-augmentes` | Sites web & SaaS Native IA | **Sites web / Native IA** (retrait « SaaS ») |
+
+Effet de bord positif : 4 libellés sur 2 lignes = plus étroits horizontalement → header encore plus à l'aise dans la barre.
+
+### Reste / à valider visuellement (non bloquant)
+- Vérif visuelle dev server / Playwright recommandée sur 390 / 768 / 1280 / 1482 (écran Will) / 1920 / 2560 : header/footer bien pleine page, corps avec marges, alignement vertical des libellés 1-ligne vs 2-lignes dans la barre `h-20`, 0 scroll-H.
+- `pnpm lhci` post-deploy (CLS=0 / First Load JS) — changements = CSS pur (max-w) + libellés, aucun JS ajouté → risque budget quasi nul.

@@ -21,36 +21,44 @@ export async function Header() {
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // 6 items nav — labels 1-2 mots, single-row, cluster gauche.
-  // `multiline: true` + `\n` injecté force le label sur 2 lignes (visuel
-  // compact pour les intitulés qui ont une qualification distinctive :
-  // « 1 to 1 » et « Native IA »).
+  // 6 items nav — cluster gauche, tous sur UNE seule ligne (Will 2026-06-08 :
+  // l'empilement « IA » en 2e ligne faisait bizarre → revenu en single-line).
+  // Libellés ajustés via `.replace()` (valeurs i18n intactes pour les autres
+  // usages) : « Coaching » retiré de « 1 to 1 » ; « SaaS » retiré de
+  // « Sites web … Native IA ». « Formations IA », « Audit IA », « Intégration
+  // IA » gardent « IA » sur la même ligne.
   const navItems = [
     {
       href: "/interventions/collectives",
-      label: t("nav.formationsEntreprise"),
+      label: t("nav.formationsEntreprise"), // « Formations IA »
       multiline: false,
     },
     {
+      // « Coaching 1 to 1 » → « 1 to 1 » seul (retrait de « Coaching »).
       href: "/un-a-un",
-      label: t("nav.coachingOneToOne").replace(" 1 to 1", "\n1 to 1"),
-      multiline: true,
+      label: t("nav.coachingOneToOne").replace("Coaching ", ""),
+      multiline: false,
     },
-    { href: "/audit", label: t("nav.companyAudit"), multiline: false },
+    {
+      href: "/audit",
+      label: t("nav.companyAudit"), // « Audit IA »
+      multiline: false,
+    },
     {
       // Label court dédié au header (`implementationNav` = « Intégration IA »)
       // — 2026-06-03 (audit responsive C). L'ancien « Intégration d'agents IA
-      // sur-mesure » (~190 px) faisait déborder la barre dans le cap 1366 et
-      // empêchait le dual-CTA de tenir. La clé longue `implementationShort`
-      // reste utilisée ailleurs (titre /tarifs).
+      // sur-mesure » (~190 px) faisait déborder la barre. La clé longue
+      // `implementationShort` reste utilisée ailleurs (titre /tarifs).
       href: "/implementation",
-      label: t("nav.implementationNav"),
+      label: t("nav.implementationNav"), // « Intégration IA »
       multiline: false,
     },
     {
+      // « Sites web & SaaS Native IA » → « Sites web Native IA » (retrait de
+      // « & SaaS »), sur une ligne.
       href: "/sites-web-augmentes",
-      label: t("nav.sitesWebSaas").replace(" Native", "\nNative"),
-      multiline: true,
+      label: t("nav.sitesWebSaas").replace(" & SaaS", ""),
+      multiline: false,
     },
     { href: "/tarifs", label: t("nav.pricing"), multiline: false },
   ] as const;
@@ -82,13 +90,17 @@ export async function Header() {
       {/* Layout 2026 : Logo + tagline + Nav clusterisés à GAUCHE | dual-CTA à
           DROITE (Contact ghost + Appel primary), pattern Linear/Stripe.
 
-          Largeur — 2026-06-03 (audit responsive, Option A) : le contenu interne
-          est wrappé sur le MÊME cap (`max-w-[1366px] mx-auto`) et la MÊME rampe
-          de gouttières (`px-4 sm:px-6 lg:px-10 xl:px-16`) que `Container`. Le
-          fond terracotta reste bord-à-bord (header full-width), mais les bords
-          gauche/droit du contenu s'alignent désormais parfaitement avec le body
-          et le footer (corrige le désalignement >1366 px). */}
-      <div className="relative mx-auto flex h-20 w-full max-w-[1366px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
+          Largeur — 2026-06-08 (Will, révise l'Option A du 2026-06-03) : le
+          header est désormais EN PLEINE PAGE. Le contenu interne s'étend jusqu'aux
+          gouttières (rampe `px-4 sm:px-6 lg:px-10 xl:px-16`) avec un cap large
+          `max-w-[1920px] mx-auto` qui ne sert QU'en ultra-large (≥1920 px) pour
+          éviter d'étirer le logo/CTA sur un moniteur 2560 px+. Le fond terracotta
+          reste bord-à-bord. ⚠️ Volontairement PLUS large que `Container` (corps
+          plafonné à 1366) : sur grand écran, logo/nav/CTA dépassent les bords du
+          contenu — c'est le rendu « header pleine page » voulu (≠ alignement
+          strict header=contenu de l'ancienne Option A). Footer suit la même
+          logique (`Footer.tsx`). */}
+      <div className="relative mx-auto flex h-20 w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
         {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
             Layout colonne → libère l'espace horizontal pour la nav (vs ancien
             layout row qui occupait ~200px de plus). Visibilité de la tagline :
@@ -131,16 +143,19 @@ export async function Header() {
 
         {/* Nav principale clusterisée à GAUCHE (collée au logo) — pattern 2026.
             Breakpoint — 2026-06-03 (audit responsive C) : la nav desktop
-            apparaît désormais à `xl` (1280) et non plus `lg` (992). Entre 992 et
-            1280, le contenu (logo + 6 items + dual-CTA) débordait et le CTA
-            primaire « Réserver un appel » était rogné/poussé hors écran avant la
-            bascule mobile. < 1280 = drawer mobile (cf. trigger `xl:hidden`).
-            Gap fixe gap-6 (24 px, ex-48/64) : au-delà du cap, la largeur
-            intérieure du header est CONSTANTE ≈1238 px, donc on ne fait PAS
-            croître le gap (ça volerait la place du dual-CTA révélé à 1400). Avec
-            le label court « Intégration IA », nav + dual-CTA + tagline tiennent
-            dans 1238 px. */}
-        <nav aria-label={t("nav.primaryLabel")} className="hidden items-center gap-6 xl:flex">
+            apparaît à `xl` (1280) et non plus `lg` (992). < 1280 = drawer mobile
+            (cf. trigger `xl:hidden`).
+            Espacement — 2026-06-08 (Will : « onglets trop serrés ») : depuis le
+            passage du header en pleine page (`max-w-[1920px]`, cf. wrapper), la
+            largeur intérieure n'est plus bornée à ~1238 px → on peut aérer.
+            gap-8 (32 px) dès xl, gap-12 (48 px) à 2xl (≥1536). Budget vérifié à
+            1280 (drawer→nav) : logo + 6 items single-line + CTA primaire tiennent
+            dans l'intérieur (~1152 px) avec gap-8 ; « Nous écrire » + tagline
+            n'apparaissent qu'à ≥1400 où l'espace le permet. */}
+        <nav
+          aria-label={t("nav.primaryLabel")}
+          className="hidden items-center gap-8 xl:flex 2xl:gap-12"
+        >
           {navItems.map((item) => (
             <NavLink
               key={item.href}

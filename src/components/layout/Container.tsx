@@ -16,11 +16,15 @@ interface ContainerProps<T extends ElementType = "div"> {
 // (1512 px CSS) → rendu peu premium + bascule visuelle « plein écran 14″ /
 // marges 16″ » (le seuil 1520 tombait pile entre 1512 et 1728). À 1366, le
 // 14″ ET le 16″ ont des marges latérales élégantes et cohérentes (fin de la
-// bascule). Header (`Header.tsx`) et Footer (`Footer.tsx`) wrappent leur
-// contenu interne sur CE MÊME cap + cette MÊME rampe de gouttières → bords
-// gauche/droit parfaitement alignés header/contenu/footer à tous les
-// breakpoints. Toute divergence de largeur (skeletons `loading.tsx`, etc.)
-// doit s'aligner ici.
+// bascule). Ce cap 1366 s'applique au CORPS (contenu) uniquement — c'est lui
+// qui donne les marges « premium » sur grand écran.
+//
+// ⚠️ 2026-06-08 (Will) : Header (`Header.tsx`) et Footer (`Footer.tsx`) ne
+// partagent PLUS ce cap. Ils sont passés EN PLEINE PAGE (`max-w-[1920px]`, cap
+// actif seulement en ultra-large) pour s'étendre jusqu'aux bords. Donc sur
+// grand écran le header/footer sont volontairement plus larges que le contenu
+// (rendu « pleine page »). Les skeletons `loading.tsx` (qui mockent le CORPS)
+// restent, eux, alignés sur CE cap 1366.
 export function Container<T extends ElementType = "div">({
   as,
   className,
