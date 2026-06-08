@@ -12,6 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { buildImageDetailGraph } from "@/server/image-bank/services/image-jsonld-graph.service";
 import { imageBankService } from "@/server/image-bank/services/image-bank.service";
 import { GalleryGrid } from "@/components/galerie/GalleryGrid";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 
 export const revalidate = 3600;
 
@@ -43,6 +44,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const otherLocale: "fr" | "en" = locale === "fr" ? "en" : "fr";
   const otherTr = tr.image.translations.find((t) => t.languageCode === otherLocale);
   const otherSlug = otherTr?.slug ?? tr.slug;
+  // Canonical FR (toujours) — EN désactivé, FR seul indexable.
+  const frHreflang = `${siteUrl}/fr/galerie/${locale === "fr" ? tr.slug : otherSlug}`;
 
   // OG image: slug-based → public image, UUID-based → CDN og variant
   const isSlugBased = tr.image.filePath && !tr.image.filePath.startsWith("/image-bank");
@@ -69,10 +72,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ...(tr.image.module ? { category: tr.image.module } : {}),
     alternates: {
       canonical: `${siteUrl}/${locale}/${segment}/${tr.slug}`,
+      // EN désactivé (301→FR) : ne PAS émettre l'alternate `en-US` — sinon on
+      // signale à Google ~133 URLs /en/gallery/* qui ne font que 301, gaspillant
+      // du crawl-budget (audit GSC A-04). Aligné sur le hub + le sitemap images.
+      // Togglable : si EN_LOCALE_ENABLED=true, l'alternate EN est ré-émis.
       languages: {
-        "fr-FR": `${siteUrl}/fr/galerie/${locale === "fr" ? tr.slug : otherSlug}`,
-        "en-US": `${siteUrl}/en/gallery/${locale === "en" ? tr.slug : otherSlug}`,
-        "x-default": `${siteUrl}/fr/galerie/${locale === "fr" ? tr.slug : otherSlug}`,
+        "fr-FR": frHreflang,
+        ...(isEnLocaleDisabled()
+          ? {}
+          : { "en-US": `${siteUrl}/en/gallery/${locale === "en" ? tr.slug : otherSlug}` }),
+        "x-default": frHreflang,
       },
     },
     openGraph: {
@@ -103,7 +112,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // l'enrichissement ne l'a pas remplie — évite que Google classe la galerie en
     // pages dupliquées / doorway. Après enrichissement, la page repasse `index`.
     robots: {
-      index: hasSubstantiveContent(tr),
+      // RÈGLE STRICTE : seul le FR est indexable. EN est désactivé (301→FR) ; on
+      // force `noindex` sur toute locale ≠ fr en filet de sécurité (au cas où un
+      // /en/* échapperait au 301 proxy). + garde anti-thin/doorway côté FR.
+      index: locale === "fr" && hasSubstantiveContent(tr),
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
