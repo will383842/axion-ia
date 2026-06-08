@@ -43,6 +43,8 @@ async function requireAdminReadSession() {
 
 const listSubmissionsSchema = z.object({
   type: z.enum(["audit", "implementation", "intervention", "contact", "all"]).default("all"),
+  /** Filtre fin sur details.unifiedType (ex « recrutement » → onglet Commercial). */
+  unifiedType: z.string().optional(),
   status: z.enum(["new", "in_progress", "processed", "archived", "all"]).default("all"),
   locale: z.enum(["fr", "en", "all"]).default("all"),
   search: z.string().optional(),
@@ -111,6 +113,13 @@ export async function listSubmissionsAction(
     : never = {};
 
   if (parsed.type !== "all") where.type = parsed.type;
+  // Filtre fin recrutement/commercial (details.unifiedType en JSON Postgres).
+  if (parsed.unifiedType) {
+    (where as { details?: unknown }).details = {
+      path: ["unifiedType"],
+      equals: parsed.unifiedType,
+    };
+  }
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.locale !== "all") where.locale = parsed.locale;
 

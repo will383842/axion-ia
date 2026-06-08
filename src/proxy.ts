@@ -20,10 +20,6 @@ import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
-import {
-  HUB_SLUGS as COMMERCIAL_HUB_SLUGS,
-  SATELLITE_TO_HUB as COMMERCIAL_SATELLITE_TO_HUB,
-} from "./content/recrutement/satellite-redirects.generated";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
@@ -72,25 +68,15 @@ export default auth((req) => {
     }
   }
 
-  // 0ter. Recrutement commercial — 301 villes satellites (T3/T4) → leur hub.
-  //       Modèle hub-and-spoke (Will 2026-06-08) : seules ~40 villes T1+T2 ont
-  //       une page ; les autres redirigent (zéro 404). Map légère générée
-  //       (Edge-safe, `satellite-redirects.generated.ts`). Le redirect au niveau
-  //       page ne marche pas (route prérendue/ISR absorbe le throw) → ici.
+  // 0ter. Recrutement commercial — une seule page indexée (page France). Toute
+  //       URL /devenir-commercial-ia/<ville> (héritage des anciennes pages ville,
+  //       ou liens de pubs) fait un 301 vers la page France. Seule exception :
+  //       /candidature (formulaire). Évite tout 404 et concentre l'autorité.
   {
     const m = req.nextUrl.pathname.match(/^\/(fr|en)\/devenir-commercial-ia\/([^/]+)\/?$/);
-    if (m) {
-      const slug = m[2]!;
-      if (!COMMERCIAL_HUB_SLUGS.has(slug)) {
-        const hub = COMMERCIAL_SATELLITE_TO_HUB[slug];
-        if (hub) {
-          const dest = new URL(
-            `/${m[1]}/devenir-commercial-ia/${hub}${req.nextUrl.search}`,
-            req.url,
-          );
-          return NextResponse.redirect(dest, 301);
-        }
-      }
+    if (m && m[2] !== "candidature") {
+      const dest = new URL(`/${m[1]}/devenir-commercial-ia${req.nextUrl.search}`, req.url);
+      return NextResponse.redirect(dest, 301);
     }
   }
 
