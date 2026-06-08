@@ -24,7 +24,12 @@ import {
 import { getVille } from "@/content/villes";
 import { getRegion } from "@/content/regions";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
-import { getHubSlugs, getDisplayedSatellites } from "@/content/recrutement/satellites";
+import {
+  getHubSlugs,
+  getDisplayedSatellites,
+  getSiblingHubs,
+} from "@/content/recrutement/satellites";
+import { CommercialOtherHubs } from "@/components/services/devenir-commercial/CommercialOtherHubs";
 import { buildProductMetadata, buildFaqJsonLd, SITE_URL, BUILD_DATE } from "@/lib/seo";
 
 export const revalidate = 86400;
@@ -120,6 +125,7 @@ export default async function DevenirCommercialVillePage({ params }: Props) {
   if (!built) notFound();
   const { ctx } = built;
   const satellites = getDisplayedSatellites(ville);
+  const siblingHubs = getSiblingHubs(ville);
 
   const faqItems = buildCommercialFaqItems(ctx);
   const faqJsonLd = buildFaqJsonLd({
@@ -203,6 +209,8 @@ export default async function DevenirCommercialVillePage({ params }: Props) {
       </Container>
 
       <CommercialPageBody isFr={isFr} ville={ctx} />
+
+      <CommercialOtherHubs isFr={isFr} hubs={siblingHubs} />
 
       <JsonLd data={jobJsonLd} />
       <JsonLd

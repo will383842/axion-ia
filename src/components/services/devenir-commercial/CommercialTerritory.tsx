@@ -91,8 +91,8 @@ export function CommercialTerritory(props: CommercialTerritoryProps): ReactNode 
       titleEm={isFr ? "à vous de le couvrir" : "yours to cover"}
       description={
         isFr
-          ? `Vous couvrez ${villeName}, son agglomération, le département${departementLabel ? ` (${departementLabel})` : ""}${region ? ` et la région ${region}` : ""} — plus votre propre portefeuille, que vous gardez.`
-          : `You cover ${villeName}, its metro area, the department${region ? ` and the ${region} region` : ""} — plus your own portfolio, which you keep.`
+          ? `Votre secteur n'est pas qu'une ville : vous couvrez ${villeName}, son agglomération et tout le département${departementLabel ? ` (${departementLabel})` : ""}${region ? `, jusqu'à la région ${region}` : ""} — plus votre propre portefeuille, que vous gardez.`
+          : `Your sector isn't just a city: you cover ${villeName}, its metro area and the whole department${region ? `, up to the ${region} region` : ""} — plus your own portfolio, which you keep.`
       }
     >
       <div className="space-y-8">
@@ -123,6 +123,18 @@ export function CommercialTerritory(props: CommercialTerritoryProps): ReactNode 
             ) : null}
           </div>
         ) : null}
+
+        {/* Secteur exclusif — défini ensemble, un secteur = un commercial */}
+        <div className="border-primary/20 bg-primary-soft rounded-2xl border-2 p-6">
+          <p className="text-primary text-[12px] font-semibold tracking-[0.14em] uppercase">
+            {isFr ? "Votre secteur, rien qu'à vous" : "Your sector, yours alone"}
+          </p>
+          <p className="text-fg mt-2 leading-relaxed">
+            {isFr
+              ? "Votre secteur est défini ensemble — selon vos souhaits, votre portefeuille d'entreprises existant et les besoins d'Axion-IA. Un secteur = un seul commercial : aucune concurrence entre vous, un chiffre d'affaires assuré."
+              : "Your sector is defined together — based on your wishes, your existing client portfolio and Axion-IA's needs. One sector = one rep: no internal competition, guaranteed revenue."}
+          </p>
+        </div>
 
         {/* Périmètre — strip à icônes */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">

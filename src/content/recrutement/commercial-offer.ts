@@ -93,30 +93,30 @@ export const COMMERCIAL_HERO = {
 export const COMMERCIAL_OPPORTUNITY = {
   eyebrow: { fr: "Un marché énorme, encore à prendre", en: "A huge market, still up for grabs" },
   title: {
-    fr: "Vous vendez ce que toutes les entreprises veulent,",
-    en: "You sell what every company wants,",
+    fr: "Vous ouvrez les portes,",
+    en: "You open the doors,",
   },
-  titleEm: { fr: "sans leur coûter cher", en: "without costing them much" },
+  titleEm: { fr: "on conclut avec vous", en: "we close with you" },
   paragraphs: {
     fr: [
-      "Chaque dirigeant veut l'IA, peu savent par où commencer. Demande immense, offre sérieuse rare : le terrain rêvé d'un bon commercial.",
-      "Et beaucoup de nos prestations sont finançables : nous montons le dossier avec l'entreprise, qui n'a parfois même pas à avancer les fonds. Un argument que peu de secteurs offrent.",
+      "Chaque dirigeant veut l'IA, peu savent par où commencer. Votre rôle : faire connaître nos solutions aux entreprises de votre secteur — pas de pression de closing.",
+      "Et beaucoup de nos prestations sont finançables : nous montons le dossier avec l'entreprise, qui n'a parfois même pas à avancer les fonds. Un argument qui ouvre grand les portes.",
     ],
     en: [
-      "Every executive wants AI, few know where to start. Huge demand, rare serious supply: a great sales rep's dream.",
-      "And many of our services are fundable: we build the application with the company, which sometimes doesn't even advance the money. A selling point few sectors offer.",
+      "Every executive wants AI, few know where to start. Your role: introduce our solutions to companies in your area — no closing pressure.",
+      "And many of our services are fundable: we build the application with the company, which sometimes doesn't even advance the money. An argument that opens doors wide.",
     ],
   },
-  /** Encart noir à droite — l'argument que LE COMMERCIAL utilisera en rendez-vous. */
+  /** Encart sombre à droite — le modèle de paiement (tracé, sans pression de closing). */
   darkCard: {
-    label: { fr: "Votre meilleur argument", en: "Your strongest pitch" },
+    label: { fr: "Comment vous êtes payé", en: "How you get paid" },
     headline: {
-      fr: "« On vous aide à financer le projet — souvent sans avance à faire. »",
-      en: '"We help you fund the project — often with no upfront payment."',
+      fr: "« Vous présentez. C'est tracé. Vous touchez. »",
+      en: '"You introduce. It\'s tracked. You get paid."',
     },
     sub: {
-      fr: "C'est la phrase qui ouvre les portes. Beaucoup de prestations sont finançables, nous montons le dossier avec l'entreprise, et parfois elle n'a même pas à avancer les fonds. Besoin universel, cycle de vente court — et pour vous, démarrer ne coûte rien.",
-      en: "That's the line that opens doors. Many services are fundable, we handle the application with the company, and sometimes it doesn't even advance the money. Universal need, short sales cycle — and for you, getting started costs nothing.",
+      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom sur votre dashboard. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient sur chaque vente.",
+      en: "No need to be a closer. Every company you introduce is logged under your name on your dashboard. Whether it signs with you or contacts us directly, the commission is yours on every sale.",
     },
   },
 } as const;

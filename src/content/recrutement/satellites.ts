@@ -110,3 +110,33 @@ export function getDisplayedSatellites(
 export function getHubSlugs(): ReadonlyArray<string> {
   return HUB_VILLES.map((v) => v.slug);
 }
+
+/**
+ * Hubs « sœurs » pour le maillage interne : autres hubs de la même région
+ * (priorité), complétés par les hubs les plus proches si la région en compte
+ * peu. Plafonné à `limit`. Sert à relier les 40 pages entre elles (SEO).
+ */
+export function getSiblingHubs(
+  currentSlug: string,
+  limit = 8,
+): ReadonlyArray<{ slug: string; nameFr: string }> {
+  const current = HUB_VILLES.find((v) => v.slug === currentSlug);
+  if (!current) return [];
+
+  const sameRegion = HUB_VILLES.filter(
+    (v) => v.slug !== currentSlug && v.region === current.region,
+  );
+
+  // Complète avec les hubs les plus proches (hors région) si besoin.
+  const nearest = HUB_VILLES.filter((v) => v.slug !== currentSlug && v.region !== current.region)
+    .map((v) => ({
+      v,
+      d: haversineKm(current.geo.lat, current.geo.lon, v.geo.lat, v.geo.lon),
+    }))
+    .sort((a, b) => a.d - b.d)
+    .map((x) => x.v);
+
+  return [...sameRegion, ...nearest]
+    .slice(0, limit)
+    .map((v) => ({ slug: v.slug, nameFr: v.nameFr }));
+}

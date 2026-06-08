@@ -65,13 +65,13 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
   return (
     <Section
       tone="canvas"
-      eyebrow={isFr ? "Ce que vous vendez & ce que vous gagnez" : "What you sell & what you earn"}
-      title={isFr ? "Vous vendez simple," : "You sell simple,"}
-      titleEm={isFr ? "vous gagnez vite" : "you earn fast"}
+      eyebrow={isFr ? "Combien vous gagnez" : "How much you earn"}
+      title={isFr ? "Vous gagnez vite," : "You earn fast,"}
+      titleEm={isFr ? "et sans plafond" : "and uncapped"}
       description={
         isFr
-          ? "Une dizaine de produits clairs. Pour chacun, vous savez exactement ce que vous touchez."
-          : "About ten clear products. For each, you know exactly what you earn."
+          ? "Pour chaque produit que vous faites connaître, vous savez exactement ce que vous touchez. Plus vous en présentez, plus vous gagnez — sans aucune limite."
+          : "For each product you introduce, you know exactly what you earn. The more you present, the more you earn — with no limit."
       }
     >
       {/* FORMATIONS — commission fixe par vente (cartes phares) */}
@@ -147,8 +147,8 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
         </div>
         <p className="text-fg-muted mt-4 text-xs">
           {isFr
-            ? "Estimation indicative, basée sur la commission formation 1 jour. Revenus non plafonnés et cumulables avec les audits et intégrations."
-            : "Indicative estimate based on the 1-day training commission. Uncapped income, on top of audits and integrations."}
+            ? "Et ce ne sont que les formations 1 jour : en y ajoutant les formats longs, les audits (30 %) et les intégrations (15 %), vos revenus n'ont aucune limite."
+            : "And that's just 1-day trainings: add longer formats, audits (30%) and integrations (15%) and your income has no limit."}
         </p>
       </div>
 
