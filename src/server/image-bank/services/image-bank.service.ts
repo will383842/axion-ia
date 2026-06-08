@@ -230,6 +230,57 @@ export class ImageBankService {
     });
   }
 
+  /**
+   * Images liées pour la page détail `/galerie/[slug]`.
+   *
+   * Objectif SEO : casser le clustering « Page en double » de Google en
+   * (1) différenciant chaque page détail par un set d'images voisines unique
+   * et (2) créant du maillage interne entre pages galerie (chemins de crawl).
+   * Priorité au même module métier ; complète avec les plus récentes/populaires
+   * si le module ne fournit pas assez d'images. Exclut toujours l'image courante.
+   */
+  async findRelatedImages(opts: {
+    imageId: string;
+    lang: ImageBankLocale;
+    module?: string | null;
+    limit?: number;
+  }): Promise<(ImageAsset & { translations: ImageAssetTranslation[] })[]> {
+    const { imageId, lang, module, limit = 10 } = opts;
+
+    const base: Prisma.ImageAssetWhereInput = {
+      isActive: true,
+      deletedAt: null,
+      publishedAt: { not: null },
+      translations: { some: { languageCode: lang, isPublished: true } },
+    };
+    const orderBy: Prisma.ImageAssetOrderByWithRelationInput[] = [
+      { isFeatured: "desc" },
+      { embedCount: "desc" },
+      { publishedAt: "desc" },
+    ];
+
+    const sameModule = module
+      ? await prisma.imageAsset.findMany({
+          where: { ...base, module, id: { not: imageId } },
+          include: { translations: { where: { languageCode: lang }, take: 1 } },
+          orderBy,
+          take: limit,
+        })
+      : [];
+
+    if (sameModule.length >= limit) return sameModule;
+
+    const excludeIds = [imageId, ...sameModule.map((i) => i.id)];
+    const filler = await prisma.imageAsset.findMany({
+      where: { ...base, id: { notIn: excludeIds } },
+      include: { translations: { where: { languageCode: lang }, take: 1 } },
+      orderBy,
+      take: limit - sameModule.length,
+    });
+
+    return [...sameModule, ...filler];
+  }
+
   async listGallery(opts: {
     lang: ImageBankLocale;
     page?: number;

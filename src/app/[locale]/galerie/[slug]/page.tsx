@@ -10,6 +10,8 @@ import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 import { buildImageDetailGraph } from "@/server/image-bank/services/image-jsonld-graph.service";
+import { imageBankService } from "@/server/image-bank/services/image-bank.service";
+import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 
 export const revalidate = 3600;
 
@@ -80,13 +82,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: tr.ogDescription ?? tr.caption ?? tr.alt,
       images: [ogImageUrl],
     },
+    // Garde-fou anti-doorway / anti-thin : on n'expose à l'index Google QUE les
+    // pages qui portent un contenu unique et substantiel (description OU résumé
+    // IA enrichi par Claude Vision). Une image au stade « seed » (alt = caption =
+    // titre, sans description ni aiSummary) reste `follow` mais `noindex` tant que
+    // l'enrichissement ne l'a pas remplie — évite que Google classe la galerie en
+    // pages dupliquées / doorway. Après enrichissement, la page repasse `index`.
     robots: {
-      index: true,
+      index: hasSubstantiveContent(tr),
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
   };
+}
+
+/**
+ * Vrai si la traduction porte assez de contenu unique pour mériter l'indexation
+ * (anti-doorway). Bar volontairement basse : toute image correctement enrichie
+ * la franchit ; seules les images encore au stade placeholder sont exclues.
+ */
+function hasSubstantiveContent(tr: {
+  description?: string | null;
+  aiSummary?: string | null;
+}): boolean {
+  return (tr.description?.trim().length ?? 0) >= 100 || (tr.aiSummary?.trim().length ?? 0) >= 100;
 }
 
 export default async function ImageDetailPublicPage({ params }: PageProps) {
@@ -159,6 +179,21 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
 
   const isFr = locale === "fr";
 
+  // Images liées (même module en priorité) — maillage interne + différenciation
+  // anti-duplicate. Lecture best-effort : au build stub.invalid → [] (ISR runtime).
+  const related = await imageBankService.findRelatedImages({
+    imageId: image.id,
+    lang: locale,
+    module: image.module,
+    limit: 10,
+  });
+
+  const moduleCtx = getModuleContext(image.module, locale);
+  const secondaryKeywords = Array.isArray(image.keywordsSecondary)
+    ? (image.keywordsSecondary.filter((k) => typeof k === "string" && k.length > 0) as string[])
+    : [];
+  const attribution = `© ${image.copyrightHolder ?? "Axion-IA"} — « ${tr.title} ». Licence CC BY 4.0. Source : ${pageUrl}`;
+
   return (
     <main className="container mx-auto max-w-6xl px-4 py-10">
       <script
@@ -166,50 +201,125 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
 
-      {/* Breadcrumb */}
-      <nav className="mb-6 text-sm text-gray-500">
-        <Link href={`/${locale}/${segment}`} className="hover:text-terracotta transition-colors">
-          ← {isFr ? "Banque d'images" : "Image bank"}
-        </Link>
+      {/* Breadcrumb visible — complète le BreadcrumbList JSON-LD + maillage. */}
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
+        <ol className="flex flex-wrap items-center gap-1.5">
+          <li>
+            <Link href={`/${locale}`} className="hover:text-terracotta transition-colors">
+              {isFr ? "Accueil" : "Home"}
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <Link
+              href={`/${locale}/${segment}`}
+              className="hover:text-terracotta transition-colors"
+            >
+              {isFr ? "Banque d'images" : "Image bank"}
+            </Link>
+          </li>
+          {moduleCtx && (
+            <>
+              <li aria-hidden="true">/</li>
+              <li>
+                <Link
+                  href={`/${locale}/${segment}?module=${image.module}`}
+                  className="hover:text-terracotta transition-colors"
+                >
+                  {moduleCtx.label}
+                </Link>
+              </li>
+            </>
+          )}
+          <li aria-hidden="true">/</li>
+          <li className="text-gray-700" aria-current="page">
+            {tr.title}
+          </li>
+        </ol>
       </nav>
 
       <article className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr]">
-        {/* Image principale */}
-        <figure className="relative">
-          <div className="bg-bg relative overflow-hidden rounded-xl border border-gray-100">
-            <Image
-              src={imgSrc}
-              alt={tr.alt ?? tr.title ?? ""}
-              width={image.width ?? 1280}
-              height={image.height ?? 720}
-              sizes="(min-width: 1024px) 66vw, 100vw"
-              priority
-              fetchPriority="high"
-              {...(image.lqipDataUri
-                ? { placeholder: "blur" as const, blurDataURL: image.lqipDataUri }
-                : {})}
-              className="h-auto w-full"
-            />
-            {/* Badge CC BY 4.0 */}
-            <span className="absolute right-3 bottom-3 rounded bg-black/60 px-2 py-1 text-[11px] font-semibold text-white">
-              CC BY 4.0
-            </span>
-          </div>
-          {tr.caption && (
-            <figcaption className="mt-3 text-sm text-gray-500 italic">{tr.caption}</figcaption>
-          )}
-        </figure>
+        {/* Colonne principale — visuel + contenu unique (anti-thin) */}
+        <div className="flex flex-col gap-8">
+          <figure className="relative">
+            <div className="bg-bg relative overflow-hidden rounded-xl border border-gray-100">
+              <Image
+                src={imgSrc}
+                alt={tr.alt ?? tr.title ?? ""}
+                width={image.width ?? 1280}
+                height={image.height ?? 720}
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                priority
+                fetchPriority="high"
+                {...(image.lqipDataUri
+                  ? { placeholder: "blur" as const, blurDataURL: image.lqipDataUri }
+                  : {})}
+                className="h-auto w-full"
+              />
+              {/* Badge CC BY 4.0 */}
+              <span className="absolute right-3 bottom-3 rounded bg-black/60 px-2 py-1 text-[11px] font-semibold text-white">
+                CC BY 4.0
+              </span>
+            </div>
+            {tr.caption && (
+              <figcaption className="mt-3 text-sm text-gray-500 italic">{tr.caption}</figcaption>
+            )}
+          </figure>
 
-        {/* Sidebar */}
-        <aside className="flex flex-col gap-6">
-          {/* Titre + description */}
           <header>
-            <h1 className="text-2xl leading-snug font-bold text-gray-900">{tr.title}</h1>
+            <h1 className="text-2xl leading-snug font-bold text-gray-900 lg:text-3xl">
+              {tr.title}
+            </h1>
             {tr.description && (
-              <p className="mt-2 text-sm leading-relaxed text-gray-600">{tr.description}</p>
+              <p className="mt-3 text-base leading-relaxed text-gray-700">{tr.description}</p>
             )}
           </header>
 
+          {/* Résumé IA — promu en section à part entière (citabilité AEO/GEO). */}
+          {tr.aiSummary && (
+            <section>
+              <h2 className="mb-2 text-lg font-semibold text-gray-900">
+                {isFr ? "À propos de cette image" : "About this image"}
+              </h2>
+              <p className="text-sm leading-relaxed text-gray-600">{tr.aiSummary}</p>
+            </section>
+          )}
+
+          {/* Contexte métier + lien interne vers la page service correspondante. */}
+          {moduleCtx && (
+            <section className="bg-bg rounded-xl border border-gray-100 p-5">
+              <h2 className="mb-2 text-sm font-semibold text-gray-900">
+                {isFr ? "En lien avec ce visuel" : "Related to this visual"}
+              </h2>
+              <p className="text-sm leading-relaxed text-gray-600">{moduleCtx.blurb}</p>
+              <Link
+                href={moduleCtx.href}
+                className="text-terracotta mt-3 inline-flex items-center gap-1 text-sm font-semibold hover:underline"
+              >
+                {moduleCtx.cta} <span aria-hidden="true">→</span>
+              </Link>
+            </section>
+          )}
+
+          {/* Sujets (keywords secondaires enrichis) — densité sémantique. */}
+          {secondaryKeywords.length > 0 && (
+            <section>
+              <h2 className="mb-2 text-[11px] font-semibold tracking-widest text-gray-400 uppercase">
+                {isFr ? "Sujets" : "Topics"}
+              </h2>
+              <ul className="flex flex-wrap gap-2">
+                {secondaryKeywords.map((k) => (
+                  <li key={k} className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
+                    {k}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+
+        {/* Sidebar métadonnées */}
+        <aside className="flex flex-col gap-6">
           {/* Boutons téléchargement */}
           <div className="flex flex-col gap-2.5">
             <a
@@ -319,16 +429,116 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
             </section>
           )}
 
-          {/* AI Summary */}
-          {tr.aiSummary && (
-            <section className="bg-bg rounded-lg border border-gray-100 p-4">
-              <p className="text-xs leading-relaxed text-gray-500 italic">{tr.aiSummary}</p>
-            </section>
-          )}
+          {/* Attribution CC BY 4.0 — utilité réelle pour la réutilisation. */}
+          <section>
+            <h2 className="mb-2 text-[11px] font-semibold tracking-widest text-gray-400 uppercase">
+              {isFr ? "Attribution (CC BY 4.0)" : "Attribution (CC BY 4.0)"}
+            </h2>
+            <p className="mb-2 text-xs text-gray-500">
+              {isFr
+                ? "Réutilisez cette image librement en créditant :"
+                : "Reuse this image freely with credit:"}
+            </p>
+            <code className="bg-bg block rounded-lg border border-gray-100 p-3 text-[11px] leading-relaxed text-gray-700 select-all">
+              {attribution}
+            </code>
+          </section>
         </aside>
       </article>
+
+      {/* Images similaires — maillage interne + différenciation anti-duplicate. */}
+      {related.length > 0 && (
+        <section className="mt-16">
+          <h2 className="mb-5 text-xl font-bold text-gray-900">
+            {isFr ? "Images similaires" : "Related images"}
+          </h2>
+          <GalleryGrid
+            images={related}
+            locale={locale}
+            cdnUrl={cdnUrl}
+            firstImagePriority={false}
+          />
+          <div className="mt-6">
+            <Link
+              href={`/${locale}/${segment}`}
+              className="text-terracotta inline-flex items-center gap-1 text-sm font-semibold hover:underline"
+            >
+              {isFr ? "Voir toute la banque d'images" : "Browse the full image bank"}{" "}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </section>
+      )}
     </main>
   );
+}
+
+/**
+ * Contexte métier d'une image selon son `module` → bloc informatif + lien interne
+ * vers la page service correspondante. Renvoie `null` pour les modules sans page
+ * service dédiée (logo, graphique, proposition…) afin d'éviter tout bloc générique
+ * « doorway ». Le texte décrit ce que le visuel illustre — pas du remplissage SEO.
+ */
+function getModuleContext(
+  module: string | null,
+  locale: "fr" | "en",
+): { label: string; blurb: string; href: string; cta: string } | null {
+  if (!module) return null;
+  const isFr = locale === "fr";
+  const map: Record<
+    string,
+    {
+      href: string;
+      label: { fr: string; en: string };
+      blurb: { fr: string; en: string };
+      cta: { fr: string; en: string };
+    }
+  > = {
+    audits: {
+      href: `/${locale}/audit`,
+      label: { fr: "Audits IA", en: "AI Audits" },
+      blurb: {
+        fr: "Ce visuel illustre la démarche d'audit IA d'Axion-IA : cartographier vos processus, repérer les tâches automatisables et chiffrer le ROI avant tout déploiement.",
+        en: "This visual illustrates Axion-IA's AI audit approach: mapping your processes, spotting automatable tasks and quantifying ROI before any deployment.",
+      },
+      cta: { fr: "Découvrir l'audit IA", en: "Explore AI audit" },
+    },
+    implementations: {
+      href: `/${locale}/implementation`,
+      label: { fr: "Implémentations IA", en: "AI Implementations" },
+      blurb: {
+        fr: "Ce visuel illustre une implémentation IA opérationnelle : des automatisations concrètes greffées sur vos outils, mesurées en heures et en euros gagnés.",
+        en: "This visual illustrates an operational AI implementation: concrete automations grafted onto your tools, measured in hours and euros saved.",
+      },
+      cta: { fr: "Voir les implémentations", en: "See implementations" },
+    },
+    interventions: {
+      href: `/${locale}/interventions`,
+      label: { fr: "Interventions & formations", en: "Interventions & training" },
+      blurb: {
+        fr: "Ce visuel illustre les interventions et formations IA d'Axion-IA : monter vos équipes en compétence sur Claude et l'IA opérationnelle, en présentiel ou à distance.",
+        en: "This visual illustrates Axion-IA's AI interventions and training: upskilling your teams on Claude and operational AI, on-site or remote.",
+      },
+      cta: { fr: "Voir les interventions", en: "See interventions" },
+    },
+    "un-a-un": {
+      href: `/${locale}/interventions/individuel`,
+      label: { fr: "Accompagnement un-à-un", en: "One-to-one coaching" },
+      blurb: {
+        fr: "Ce visuel illustre l'accompagnement individuel : un expert Axion-IA à vos côtés pour intégrer l'IA dans votre métier, à votre rythme.",
+        en: "This visual illustrates one-to-one coaching: an Axion-IA expert by your side to embed AI into your work, at your pace.",
+      },
+      cta: { fr: "Accompagnement individuel", en: "One-to-one coaching" },
+    },
+  };
+  const entry = map[module];
+  if (!entry) return null;
+  return {
+    label: isFr ? entry.label.fr : entry.label.en,
+    blurb: isFr ? entry.blurb.fr : entry.blurb.en,
+    href: entry.href,
+    cta: isFr ? entry.cta.fr : entry.cta.en,
+  };
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────

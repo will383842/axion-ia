@@ -18,6 +18,13 @@ type Props = {
   images: ImageWithTranslation[];
   locale: "fr" | "en";
   cdnUrl?: string;
+  /**
+   * Précharge (priority + fetchPriority high) la 1ʳᵉ image. `true` sur la grille
+   * hub (above-fold = candidate LCP). À passer `false` quand la grille est rendue
+   * sous la ligne de flottaison (ex. « Images similaires » de la page détail) pour
+   * ne pas concurrencer le LCP de l'image principale — budget Web Vitals strict.
+   */
+  firstImagePriority?: boolean;
 };
 
 /** Résout l'URL d'affichage en fonction du type de stockage.
@@ -35,7 +42,7 @@ function resolveImgSrc(img: ImageWithTranslation, baseUrl: string): string {
   return `${baseUrl}/image-bank/${img.id}/image-md.webp`;
 }
 
-export function GalleryGrid({ images, locale, cdnUrl }: Props) {
+export function GalleryGrid({ images, locale, cdnUrl, firstImagePriority = true }: Props) {
   const baseUrl = cdnUrl ?? process.env.IMAGE_BANK_CDN_URL ?? "";
   const segment = locale === "fr" ? "galerie" : "gallery";
 
@@ -80,8 +87,8 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     placeholder={lqipDataUrl ? "blur" : "empty"}
                     {...(lqipDataUrl ? { blurDataURL: lqipDataUrl } : {})}
-                    priority={idx === 0}
-                    {...(idx === 0 ? { fetchPriority: "high" as const } : {})}
+                    priority={idx === 0 && firstImagePriority}
+                    {...(idx === 0 && firstImagePriority ? { fetchPriority: "high" as const } : {})}
                     className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                   />
                   {/* Badge CC BY 4.0 */}
