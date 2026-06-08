@@ -1,7 +1,7 @@
-// Server Component — ⭐ section ville de clôture (VARIABLE). Réponse directe
-// AEO/GEO « devenir commercial IA à [ville] » + périmètre département/région +
-// maillage des communes du bassin. Pensée pour la citabilité (paragraphe direct,
-// data-speakable). Contenu généré depuis la donnée réelle, donc unique par ville.
+// Server Component — ⭐ clôture ville (VARIABLE). Réponse directe AEO/GEO
+// « devenir commercial IA à [ville] » + maillage communes voisines (chips) + CTA.
+// Refonte 2026-06-08 (Will) : moins verbeux, « promouvoir » plutôt que « vendre »,
+// communes en chips, mention axion-ia.com (désambiguïsation de marque).
 
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
@@ -13,7 +13,6 @@ export interface CommercialVilleClosingProps {
   readonly villeName: string;
   readonly departementLabel?: string | undefined;
   readonly region?: string | undefined;
-  /** Noms des communes voisines (maillage / périmètre). */
   readonly communesBassin: ReadonlyArray<string>;
 }
 
@@ -24,15 +23,14 @@ export function CommercialVilleClosing({
   region,
   communesBassin,
 }: CommercialVilleClosingProps): ReactNode {
-  // Réponse directe (citable) — assemblée depuis la donnée réelle.
   const zone = [departementLabel, region].filter(Boolean).join(", ");
   const directAnswer = isFr
-    ? `Axion-IA recrute des commerciaux indépendants à ${villeName}${
-        zone ? ` et dans toute la zone (${zone})` : ""
-      } pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux entreprises locales. Statut indépendant, produits souvent finançables, revenus à la commission déplafonnés — et démarrer ne coûte rien.`
-    : `Axion-IA is hiring independent sales reps in ${villeName}${
-        zone ? ` and across the area (${zone})` : ""
-      } to sell its AI trainings, audits, 1-on-1 support and integrations to local companies. Self-employed status, often-fundable products, uncapped commission income — and getting started costs nothing.`;
+    ? `Axion-IA (axion-ia.com) recrute des commerciaux indépendants à ${villeName}${
+        zone ? ` et alentours (${zone})` : ""
+      } pour promouvoir ses formations, audits et intégrations IA auprès des entreprises locales. Statut indépendant, commissions déplafonnées, démarrage gratuit.`
+    : `Axion-IA (axion-ia.com) is hiring independent sales reps in ${villeName}${
+        zone ? ` and nearby (${zone})` : ""
+      } to promote its AI trainings, audits and integrations to local companies. Self-employed, uncapped commissions, free to start.`;
 
   return (
     <section className="bg-mocha-rich text-mocha-fg py-16 sm:py-20">
@@ -42,19 +40,28 @@ export function CommercialVilleClosing({
         </p>
         <p
           data-speakable
-          className="mt-4 max-w-3xl text-[clamp(1.25rem,2.4vw,1.85rem)] leading-snug font-semibold"
+          className="mt-4 max-w-3xl text-[clamp(1.3rem,2.4vw,1.9rem)] leading-snug font-semibold"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           {directAnswer}
         </p>
 
         {communesBassin.length > 0 ? (
-          <p className="text-mocha-fg/75 mt-6 max-w-3xl text-sm leading-relaxed">
-            {isFr
-              ? "Également ouvert aux communes voisines : "
-              : "Also open to neighbouring towns: "}
-            {communesBassin.join(", ")}.
-          </p>
+          <div className="mt-7">
+            <p className="text-mocha-fg/60 text-[11px] font-semibold tracking-[0.14em] uppercase">
+              {isFr ? "Aussi dans votre zone" : "Also in your zone"}
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {communesBassin.slice(0, 8).map((c) => (
+                <li
+                  key={c}
+                  className="border-mocha-fg/20 text-mocha-fg/85 rounded-full border px-3 py-1 text-sm"
+                >
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : null}
 
         <div className="mt-8">

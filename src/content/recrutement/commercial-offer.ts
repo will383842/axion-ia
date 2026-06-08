@@ -219,34 +219,26 @@ export const COMMERCIAL_PROFILES = {
     {
       titleFr: "Commerciaux indépendants",
       titleEn: "Independent sales reps",
-      descFr:
-        "Agents commerciaux et indépendants qui veulent ajouter une offre IA porteuse à leur portefeuille — qu'ils conservent intégralement.",
-      descEn:
-        "Sales agents and freelancers who want to add a high-demand AI offer to their portfolio — which they keep entirely.",
+      descFr: "Vous ajoutez une offre IA porteuse à votre portefeuille — que vous gardez.",
+      descEn: "Add a high-demand AI offer to your portfolio — which you keep.",
     },
     {
       titleFr: "Commerciaux en reconversion",
       titleEn: "Sales reps in transition",
-      descFr:
-        "Anciens commerciaux B2B qui cherchent un secteur d'avenir, des produits faciles à défendre et des revenus déplafonnés.",
-      descEn:
-        "Former B2B reps looking for a future-proof sector, easy-to-pitch products and uncapped income.",
+      descFr: "Un secteur d'avenir, des produits faciles à défendre, des revenus déplafonnés.",
+      descEn: "A future-proof sector, easy-to-pitch products, uncapped income.",
     },
     {
       titleFr: "Apporteurs d'affaires & réseaux",
       titleEn: "Business introducers & networks",
-      descFr:
-        "Consultants, formateurs, indépendants bien implantés localement avec un bon carnet d'adresses entreprises.",
-      descEn:
-        "Consultants, trainers, locally well-connected freelancers with a strong business address book.",
+      descFr: "Un bon carnet d'adresses entreprises ? Mettez-le à profit.",
+      descEn: "A strong business address book? Put it to work.",
     },
     {
       titleFr: "Débutants très motivés",
       titleEn: "Highly motivated beginners",
-      descFr:
-        "Pas (encore) d'expérience commerciale mais une vraie fibre et l'envie d'apprendre l'IA : on vous forme à l'offre.",
-      descEn:
-        "No sales experience (yet) but real instinct and eagerness to learn AI: we train you on the offer.",
+      descFr: "Pas d'expérience ? La fibre et l'envie suffisent : on vous forme.",
+      descEn: "No experience? Instinct and drive are enough: we train you.",
     },
   ] satisfies ReadonlyArray<ProfileItem>,
 } as const;
@@ -348,6 +340,37 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "financement formation",
   "OPCO",
   "CPF",
+  // Intentions de recherche élargies (promotion, revenus, carrière, business)
+  "promouvoir l'IA",
+  "promoteur IA",
+  "distributeur IA",
+  "vendeur IA",
+  "travailler dans l'IA",
+  "métier d'avenir",
+  "job d'avenir",
+  "se reconvertir dans l'IA",
+  "carrière dans l'IA",
+  "complément de revenu",
+  "revenu complémentaire",
+  "second revenu",
+  "gagner sa vie avec l'IA",
+  "business dans l'IA",
+  "se lancer dans l'IA",
+  "opportunité IA",
+  "rejoindre un réseau commercial",
+  "réseau de vente IA",
+  "vente à la commission",
+  "commission sur vente",
+  "freelance commercial",
+  "auto-entrepreneur commercial",
+  "commercial terrain",
+  "commercial B2B",
+  "recrutement agent commercial",
+  "recrutement VRP",
+  "offre d'emploi commercial IA",
+  "emploi indépendant",
+  "travailler à domicile",
+  "temps partiel rémunérateur",
 ];
 
 /** Construit la liste de mots-clés, enrichie des variantes locales (ville/dpt/région). */

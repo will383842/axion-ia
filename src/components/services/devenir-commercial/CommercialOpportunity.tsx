@@ -26,7 +26,7 @@ export function CommercialOpportunity({ isFr }: CommercialOpportunityProps): Rea
             />
             {isFr ? o.eyebrow.fr : o.eyebrow.en}
           </p>
-          <h2 className="text-fg mt-5 text-[clamp(2rem,4vw,3.25rem)] leading-[1.06] font-semibold tracking-tight">
+          <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
             {isFr ? o.title.fr : o.title.en}
             <span
               className="text-terracotta mx-2 italic"

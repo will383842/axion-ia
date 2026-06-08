@@ -65,9 +65,9 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
   return (
     <Section
       tone="canvas"
-      eyebrow={isFr ? "Combien vous gagnez" : "How much you earn"}
-      title={isFr ? "Vous gagnez vite," : "You earn fast,"}
-      titleEm={isFr ? "et sans plafond" : "and uncapped"}
+      eyebrow={isFr ? "Vos commissions, sans plafond" : "Your commissions, uncapped"}
+      title={isFr ? "Combien" : "How much"}
+      titleEm={isFr ? "vous gagnez ?" : "you earn?"}
       description={
         isFr
           ? "Pour chaque produit que vous faites connaître, vous savez exactement ce que vous touchez. Plus vous en présentez, plus vous gagnez — sans aucune limite."

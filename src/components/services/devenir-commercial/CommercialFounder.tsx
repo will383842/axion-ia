@@ -40,7 +40,9 @@ export function CommercialFounder({ isFr }: CommercialFounderProps): ReactNode {
             <p className="text-fg mt-4 font-semibold">
               William
               <span className="text-fg-muted font-normal">
-                {isFr ? " · Fondateur & CEO, Axion-IA" : " · Founder & CEO, Axion-IA"}
+                {isFr
+                  ? " · Fondateur & CEO, Axion-IA (axion-ia.com)"
+                  : " · Founder & CEO, Axion-IA (axion-ia.com)"}
               </span>
             </p>
           </div>
