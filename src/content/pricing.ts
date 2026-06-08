@@ -696,6 +696,121 @@ export const CODAGE_TIERS: ReadonlyArray<PricingTier> = [
   },
 ];
 
+// ============================================================================
+// COMMISSIONS COMMERCIAUX — rémunération du réseau de vente indépendant
+// (pages /devenir-commercial-ia). SSOT : aucun montant de commission hardcodé
+// dans les pages ou la copy ville. La commission ≠ le prix de la prestation :
+// `basisTierId` pointe vers le PricingTier vendu (join avec OFFERS) pour
+// afficher « vends X (prix SSOT) → tu touches Y ». Quand un barème change,
+// on le modifie ICI et il se propage sur les ~400 pages ville.
+// ============================================================================
+
+export interface CommercialCommission {
+  /** id stable. */
+  readonly id: string;
+  /** Libellé FR (produit vendu, ex « Formation 1 jour »). */
+  readonly labelFr: string;
+  /** Libellé EN. */
+  readonly labelEn: string;
+  /**
+   * Type de rémunération :
+   * - `flat`    : montant fixe HT en € par vente (`flatEur`).
+   * - `percent` : pourcentage de la facture (`percent`).
+   * - `scale`   : sur barème, pas de montant public (détaillé après candidature).
+   */
+  readonly kind: "flat" | "percent" | "scale";
+  /** Commission fixe HT en € par vente (requis si `kind === "flat"`). */
+  readonly flatEur?: number;
+  /** Pourcentage de la facture (requis si `kind === "percent"`). */
+  readonly percent?: number;
+  /**
+   * id du PricingTier vendu — join avec `OFFERS` (offers-catalog.ts) pour
+   * afficher un exemple chiffré « sur une prestation à {prix SSOT} ». Optionnel
+   * (certains produits, ex « 3 jours+ », n'ont pas de tier fixe publié).
+   */
+  readonly basisTierId?: string;
+  /** Description courte FR (1 phrase). */
+  readonly descriptionFr: string;
+  /** Description courte EN. */
+  readonly descriptionEn: string;
+}
+
+/**
+ * Barème de commissions du réseau commercial Axion-IA. Décision Will 2026-06-08 :
+ * formations = commission fixe par vente ; audit/implémentation = % de la
+ * facture ; 1-to-1 = sur barème (montant non public). Affiché en clair sur les
+ * pages publiques /devenir-commercial-ia (transparence = conversion candidats).
+ */
+export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
+  {
+    id: "com-formation-1j",
+    labelFr: "Formation 1 jour",
+    labelEn: "1-day training",
+    kind: "flat",
+    flatEur: 350,
+    basisTierId: "intervention-essentielle",
+    descriptionFr: "Commission fixe pour chaque formation collective d'une journée vendue.",
+    descriptionEn: "Flat commission for each one-day group training sold.",
+  },
+  {
+    id: "com-formation-2j",
+    labelFr: "Formation 2 jours",
+    labelEn: "2-day training",
+    kind: "flat",
+    flatEur: 800,
+    basisTierId: "intervention-approfondie",
+    descriptionFr: "Commission fixe pour chaque formation approfondie de deux jours vendue.",
+    descriptionEn: "Flat commission for each two-day deep-dive training sold.",
+  },
+  {
+    id: "com-formation-3j",
+    labelFr: "Formation 3 jours et +",
+    labelEn: "3-day+ training",
+    kind: "flat",
+    flatEur: 1350,
+    descriptionFr: "Commission fixe pour chaque format long (3 jours ou plus) vendu.",
+    descriptionEn: "Flat commission for each long format (3 days or more) sold.",
+  },
+  {
+    id: "com-un-a-un",
+    labelFr: "Intervention 1-to-1 (dirigeant ou collaborateur)",
+    labelEn: "1-on-1 session (executive or team member)",
+    kind: "scale",
+    basisTierId: "intervention-dirigeants",
+    descriptionFr: "Commission sur barème, détaillée après candidature.",
+    descriptionEn: "Commission on scale, detailed after application.",
+  },
+  {
+    id: "com-audit",
+    labelFr: "Audit en entreprise",
+    labelEn: "Company audit",
+    kind: "percent",
+    percent: 30,
+    basisTierId: "audit-cible",
+    descriptionFr: "30 % de la facture pour chaque mission d'audit signée.",
+    descriptionEn: "30% of the invoice for each signed audit engagement.",
+  },
+  {
+    id: "com-integration",
+    labelFr: "Intégration & automatisation IA",
+    labelEn: "AI integration & automation",
+    kind: "percent",
+    percent: 15,
+    basisTierId: "impl-poc",
+    descriptionFr: "15 % de la facture pour chaque projet d'intégration ou d'automatisation.",
+    descriptionEn: "15% of the invoice for each integration or automation project.",
+  },
+] as const;
+
+/** Lookup type-safe d'une commission par id. Throw si introuvable (erreur de migration). */
+export function getCommissionById(id: string): CommercialCommission {
+  const found = COMMERCIAL_COMMISSIONS.find((c) => c.id === id);
+  if (!found) {
+    throw new Error(`[pricing] commission introuvable : "${id}"`);
+  }
+  return found;
+}
+
 /** Catalogue complet des prestations Axion-IA — facilite la dérivation et la
  *  recherche par id depuis n'importe quel consommateur. */
 export const PRICING_CATEGORIES = {

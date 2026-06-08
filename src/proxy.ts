@@ -20,6 +20,10 @@ import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
+import {
+  HUB_SLUGS as COMMERCIAL_HUB_SLUGS,
+  SATELLITE_TO_HUB as COMMERCIAL_SATELLITE_TO_HUB,
+} from "./content/recrutement/satellite-redirects.generated";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
@@ -65,6 +69,28 @@ export default auth((req) => {
     if (!isLocalePrefixed && !isRoot) {
       const dest = new URL(`/fr${path}${req.nextUrl.search}`, req.url);
       return NextResponse.redirect(dest, 301);
+    }
+  }
+
+  // 0ter. Recrutement commercial — 301 villes satellites (T3/T4) → leur hub.
+  //       Modèle hub-and-spoke (Will 2026-06-08) : seules ~40 villes T1+T2 ont
+  //       une page ; les autres redirigent (zéro 404). Map légère générée
+  //       (Edge-safe, `satellite-redirects.generated.ts`). Le redirect au niveau
+  //       page ne marche pas (route prérendue/ISR absorbe le throw) → ici.
+  {
+    const m = req.nextUrl.pathname.match(/^\/(fr|en)\/devenir-commercial-ia\/([^/]+)\/?$/);
+    if (m) {
+      const slug = m[2]!;
+      if (!COMMERCIAL_HUB_SLUGS.has(slug)) {
+        const hub = COMMERCIAL_SATELLITE_TO_HUB[slug];
+        if (hub) {
+          const dest = new URL(
+            `/${m[1]}/devenir-commercial-ia/${hub}${req.nextUrl.search}`,
+            req.url,
+          );
+          return NextResponse.redirect(dest, 301);
+        }
+      }
     }
   }
 
