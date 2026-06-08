@@ -63,7 +63,6 @@ import {
   buildBreadcrumbJsonLd,
   buildServiceJsonLd,
   SITE_URL,
-  BUILD_DATE,
 } from "@/lib/seo";
 
 import type { City } from "@/lib/cities";
@@ -822,9 +821,12 @@ export default async function VilleHubPage({ params }: Props) {
               cssSelector: ["[data-speakable-hero]", "#axion-direct-answer"],
             },
             datePublished: "2026-05-26",
-            // VIS-16 — date stable (BUILD_DATE) au lieu de new Date() runtime qui
-            // mentait sur la fraîcheur à chaque ISR/cold-start.
-            dateModified: BUILD_DATE,
+            // Audit fraîcheur 2026-06-08 : dateModified figé sur la date de refonte
+            // (= datePublished). Le contenu d'une page ville ne change pas entre deux
+            // deploys ; auparavant `BUILD_DATE` faisait glisser dateModified à chaque
+            // build, en contradiction avec datePublished figé = empreinte pSEO de masse.
+            // Bumper À LA MAIN cette date si le contenu des villes est réellement refondu.
+            dateModified: "2026-05-26",
           } as const,
           serviceJsonLd,
           placeJsonLd,

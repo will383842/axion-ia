@@ -68,24 +68,24 @@ export const revalidate = 3600;
  * Maintenant : on lit la `MAX(updatedAt)` réelle par source DB. Fail-soft :
  * si la query échoue (P2021 / DB down), on retombe sur un fallback déterministe.
  *
- * Audit indexation 2026-05-18 P0-2 — le fallback était `const FALLBACK_LASTMOD =
- * new Date().toISOString()` figé au module-load → tous les sub-sitemaps non-DB
- * partageaient le `worker boot time`, identique pendant toute la durée de vie
- * du worker Node (live confirmé : 13/15 sub-sitemaps avec lastmod identique
- * `2026-05-17T18:03:57.644Z`). Google détecte le pattern uniforme → désactive
- * le signal lastmod pour ce site → crawl prioritization aléatoire.
+ * Audit indexation 2026-05-18 P0-2 — le fallback était `new Date()` (worker boot
+ * time, uniforme sur 13/15 sub-sitemaps → Google désactive le signal lastmod).
+ * Corrigé alors en `BUILD_TIME`.
  *
- * Fix : utiliser `BUILD_TIME` (signal honnête « contenu reconstruit le X »,
- * pattern cohérent avec `sitemap.ts buildTimeOrNow()`), fallback `new Date()`
- * recalculé à chaque ISR cycle (revalidate=3600s) si BUILD_TIME absent.
+ * Audit fraîcheur 2026-06-08 — `BUILD_TIME` restait du date-gaming : les sub-
+ * sitemaps statiques/pSEO (pages, faq, help, villes, services-villes) se
+ * déclaraient « modifiés » à CHAQUE deploy sans changement de contenu. Sur un
+ * site jeune à faible crawl-budget, Google re-crawle alors de l'inchangé.
+ * Fix : fallback figé sur une date éditoriale STABLE (= `EDITORIAL_BASELINE` de
+ * `sitemap.ts`, gardée en sync manuellement). Les sources DB (news/knowledge/blog)
+ * conservent leur `MAX(updatedAt)` réel (signal honnête, gold-standard intact).
+ * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
+// ⚠️ Garder en sync avec `EDITORIAL_BASELINE` dans `src/app/sitemap.ts`.
+const EDITORIAL_BASELINE_ISO = "2026-06-08T00:00:00.000Z";
+
 function getFallbackLastmod(): string {
-  const iso = process.env.BUILD_TIME;
-  if (iso) {
-    const parsed = new Date(iso);
-    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString();
-  }
-  return new Date().toISOString();
+  return EDITORIAL_BASELINE_ISO;
 }
 
 async function getDifferentiatedLastmod(): Promise<{
@@ -141,7 +141,8 @@ function lastmodForGeneratedId(
   if (id === "blog") return lastmods.blog;
   if (id.startsWith("knowledge-")) return lastmods.knowledge;
   // pages / faq / help / cas-concrets / villes-* / interventions / services-villes-*
-  // → BUILD_TIME (les routes pSEO/statiques bougent au déploiement, pas en runtime).
+  // → date éditoriale figée (audit fraîcheur 2026-06-08) : ces routes pSEO/statiques
+  // ne changent pas à chaque deploy, donc leur lastmod ne doit pas bouger non plus.
   return lastmods.fallback;
 }
 

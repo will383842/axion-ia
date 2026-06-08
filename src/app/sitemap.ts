@@ -334,16 +334,17 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
 }
 
 /**
- * `now` stable au build via `process.env.BUILD_TIME` (injecté par `next.config.ts`).
+ * Référence temporelle « aujourd'hui » utilisée UNIQUEMENT pour calculer la
+ * cohorte de drip d'indexation des villes (`isVilleIndexable(slug, now)` →
+ * `cohortSize(now)`, +VILLES_PER_DAY/jour). Stable au build via `BUILD_TIME`.
  *
- * Pourquoi : un `lastModified` qui change à chaque build (cf. `new Date()` runtime)
- * est rapidement disqualifié par Google — il considère que le signal n'est pas
- * fiable et arrête d'en tenir compte pour prioriser le crawl. Un timestamp figé
- * au build (BUILD_TIME ISO) reflète honnêtement la dernière mise en prod, ce
- * qui est la signification utile : « ce contenu a été reconstruit le X ».
+ * ⚠️ NE sert PLUS aux `<lastmod>` depuis l'audit fraîcheur 2026-06-08 : les
+ * lastmod statiques sont désormais figés sur des dates éditoriales (cf.
+ * `EDITORIAL_BASELINE` / `VILLES_EDITORIAL` ci-dessous). Voir
+ * `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  *
- * Fallback `new Date()` en dev local (BUILD_TIME absent) — pas d'impact car les
- * sitemaps de dev ne sont pas crawlés.
+ * Fallback `new Date()` en dev local (BUILD_TIME absent) — pas d'impact, la
+ * cohorte de dev n'est pas servie en prod.
  */
 function buildTimeOrNow(): Date {
   const iso = process.env.BUILD_TIME;
@@ -353,6 +354,29 @@ function buildTimeOrNow(): Date {
   }
   return new Date();
 }
+
+/**
+ * Date éditoriale FIGÉE des `<lastmod>` statiques (audit fraîcheur 2026-06-08).
+ *
+ * AVANT : tous les lastmod statiques = `BUILD_TIME` → avançaient à CHAQUE deploy
+ * sans changement de contenu = date-gaming involontaire. Sur un site JEUNE à
+ * faible crawl-budget, Google re-crawle alors des pages inchangées (au lieu des
+ * pages jamais crawlées) et finit par déclasser le `lastmod` de tout le domaine.
+ *
+ * MAINTENANT : une date STABLE qui ne bouge JAMAIS au build. À bumper À LA MAIN
+ * uniquement lors d'une refonte de contenu large → le bump redevient un signal
+ * de fraîcheur honnête. Les dates par-entrée réelles (blog `publishedAt`, presse,
+ * knowledge DB) continuent d'avoir priorité via `lastModFor`.
+ * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
+ */
+const EDITORIAL_BASELINE = new Date("2026-06-08T00:00:00.000Z");
+
+/**
+ * Date de refonte des pages villes (2026-05-26). Utilisée pour les `<lastmod>`
+ * des sub-sitemaps villes + services×villes, alignée sur le `datePublished` du
+ * JSON-LD des pages villes (cohérence inter-surfaces). Bump manuel si refonte.
+ */
+const VILLES_EDITORIAL = new Date("2026-05-26T00:00:00.000Z");
 
 /**
  * Filtre les entries EN si locale EN désactivé (env EN_LOCALE_ENABLED!=true).
@@ -378,47 +402,55 @@ export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
   const id = await props.id;
-  const now = buildTimeOrNow();
+  // Drip cohort « aujourd'hui » = build time (cohorte villes calculée au build,
+  // +VILLES_PER_DAY/jour). NE sert PLUS aux lastmod (figés, cf. EDITORIAL_BASELINE).
+  const dripNow = buildTimeOrNow();
 
   // Static IDs
   switch (id) {
     case "pages":
-      return filterEnIfDisabled(buildPagesSitemap(now));
+      return filterEnIfDisabled(buildPagesSitemap(EDITORIAL_BASELINE));
     case "blog":
-      return filterEnIfDisabled(await buildBlogSitemap(now));
+      return filterEnIfDisabled(await buildBlogSitemap(EDITORIAL_BASELINE));
     case "faq":
-      return filterEnIfDisabled(await buildFaqSitemap(now));
+      return filterEnIfDisabled(await buildFaqSitemap(EDITORIAL_BASELINE));
     case "help":
-      return filterEnIfDisabled(buildHelpSitemap(now));
+      return filterEnIfDisabled(buildHelpSitemap(EDITORIAL_BASELINE));
     case "cas-concrets":
-      return filterEnIfDisabled(buildCasConcretsSitemap(now));
+      return filterEnIfDisabled(buildCasConcretsSitemap(EDITORIAL_BASELINE));
     case "comparaisons":
-      return filterEnIfDisabled(buildComparaisonsSitemap(now));
+      return filterEnIfDisabled(buildComparaisonsSitemap(EDITORIAL_BASELINE));
     case "guides":
-      return filterEnIfDisabled(buildGuidesHubSitemap(now));
+      return filterEnIfDisabled(buildGuidesHubSitemap(EDITORIAL_BASELINE));
     case "glossaire":
-      return filterEnIfDisabled(buildGlossarySitemap(now));
+      return filterEnIfDisabled(buildGlossarySitemap(EDITORIAL_BASELINE));
     case "presse":
-      return filterEnIfDisabled(buildPresseSitemap(now));
+      return filterEnIfDisabled(buildPresseSitemap(EDITORIAL_BASELINE));
     case "implementation":
-      return filterEnIfDisabled(buildImplementationSitemap(now));
+      return filterEnIfDisabled(buildImplementationSitemap(EDITORIAL_BASELINE));
     case "implantations":
-      return filterEnIfDisabled(buildImplantationsHubSitemap(now));
+      return filterEnIfDisabled(buildImplantationsHubSitemap(VILLES_EDITORIAL));
     case "services-villes-audit":
-      return filterEnIfDisabled(buildServicesVillesSitemap(now, "audit"));
+      return filterEnIfDisabled(buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "audit"));
     case "services-villes-interventions":
-      return filterEnIfDisabled(buildServicesVillesSitemap(now, "interventions"));
+      return filterEnIfDisabled(
+        buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "interventions"),
+      );
     case "services-villes-implementation":
-      return filterEnIfDisabled(buildServicesVillesSitemap(now, "implementation"));
+      return filterEnIfDisabled(
+        buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "implementation"),
+      );
     // Sprint S+2 City Domination — 4e verticale un-a-un sitemap dédié.
     case "services-villes-un-a-un":
-      return filterEnIfDisabled(buildServicesVillesSitemap(now, "un-a-un"));
+      return filterEnIfDisabled(buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "un-a-un"));
     // 2026-06-04 — 5e verticale sites-web-augmentes sitemap dédié.
     case "services-villes-sites-web-augmentes":
-      return filterEnIfDisabled(buildServicesVillesSitemap(now, "sites-web-augmentes"));
+      return filterEnIfDisabled(
+        buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "sites-web-augmentes"),
+      );
     // Sprint S+4-B City Domination 2026-05-18 — pages détail outils stack-ia.
     case "stack-ia-tools":
-      return filterEnIfDisabled(buildStackIaToolsSitemap(now));
+      return filterEnIfDisabled(buildStackIaToolsSitemap(EDITORIAL_BASELINE));
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -429,10 +461,15 @@ export default async function sitemap(props: {
     const trailMatch = rest.match(/^(.+)-(\d+)$/);
     if (trailMatch) {
       return filterEnIfDisabled(
-        buildVillesByRegionSitemap(trailMatch[1]!, parseInt(trailMatch[2]!, 10), now),
+        buildVillesByRegionSitemap(
+          trailMatch[1]!,
+          parseInt(trailMatch[2]!, 10),
+          VILLES_EDITORIAL,
+          dripNow,
+        ),
       );
     }
-    return filterEnIfDisabled(buildVillesByRegionSitemap(rest, 1, now));
+    return filterEnIfDisabled(buildVillesByRegionSitemap(rest, 1, VILLES_EDITORIAL, dripNow));
   }
 
   // KB DB-aware (Sprint SEO 2026-05-14) : `knowledge-<chunkIdx>`.
@@ -743,10 +780,10 @@ function buildComparaisonsSitemap(now: Date): MetadataRoute.Sitemap {
  * (continuité éditoriale Articles : un guide pilier est un Article avec
  * `templateVariant="guide-pilier"`, indexé tier-1 via `buildBlogSitemap`).
  *
- * `lastModified` = max(`publishedAt`) des guides DB ou `BUILD_TIME` fallback —
- * permet à Google de comprendre que le hub change quand un nouveau guide est
- * publié (signal de fraîcheur). Best-effort : si DB down ou stub.invalid au
- * build, fallback `now` propre.
+ * `lastModified` = `EDITORIAL_BASELINE` (date éditoriale figée, audit fraîcheur
+ * 2026-06-08). Avant : `BUILD_TIME` → le hub se prétendait modifié à chaque deploy.
+ * TODO Vague 2 : passer à `max(publishedAt)` DB des guides (signal de fraîcheur
+ * réel quand un nouveau guide est publié) — nécessite de rendre ce builder async.
  */
 function buildGuidesHubSitemap(now: Date): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
@@ -978,14 +1015,16 @@ function buildVillesByRegionSitemap(
   regionSlug: string,
   chunkIdx: number,
   now: Date,
+  dripNow: Date,
 ): MetadataRoute.Sitemap {
   // Drip indexation (Will 2026-05-28) : on part de TOUTES les villes de la région
   // avec copy (structure stable, tri slug), mais on n'émet l'URL que si la ville
-  // est dans la cohorte indexable du jour (`isVilleIndexable`). Les villes pas
-  // encore dans la cohorte sont absentes du sitemap ET `noindex` côté page → elles
-  // basculeront automatiquement quand la cohorte les atteindra (+50/jour).
+  // est dans la cohorte indexable du jour (`isVilleIndexable`, basée sur `dripNow`
+  // = build time). Les villes pas encore dans la cohorte sont absentes du sitemap
+  // ET `noindex` côté page → elles basculeront quand la cohorte les atteindra.
+  // `now` = date éditoriale figée (lastmod), découplée du drip depuis l'audit 2026-06-08.
   const villesInRegion = [...VILLES]
-    .filter((v) => v.region === regionSlug && !!v.copy && isVilleIndexable(v.slug, now))
+    .filter((v) => v.region === regionSlug && !!v.copy && isVilleIndexable(v.slug, dripNow))
     .sort((a, b) => a.slug.localeCompare(b.slug));
 
   // Build all URL pairs (FR + EN) for the region, paire par paire pour qu'un
@@ -1044,7 +1083,11 @@ const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: s
   },
 };
 
-function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): MetadataRoute.Sitemap {
+function buildServicesVillesSitemap(
+  now: Date,
+  dripNow: Date,
+  service: ServiceVillesKey,
+): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   const { pathFr, pathEn } = SERVICE_VILLES_PATHS[service];
 
@@ -1058,8 +1101,9 @@ function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): Metad
           ? !!ville.copy?.services?.sitesWeb
           : !!ville.copy?.services?.[service];
     if (!hasCopy) continue;
-    // Drip indexation — n'émettre que si la ville est dans la cohorte du jour.
-    if (!isVilleIndexable(ville.slug, now)) continue;
+    // Drip indexation — n'émettre que si la ville est dans la cohorte du jour
+    // (`dripNow` = build time). `now` = lastmod éditorial figé (découplé 2026-06-08).
+    if (!isVilleIndexable(ville.slug, dripNow)) continue;
     const frUrl = `${SITE_URL}/fr${pathFr}/${ville.slug}`;
     const enUrl = `${SITE_URL}/en${pathEn}/${ville.slug}`;
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };

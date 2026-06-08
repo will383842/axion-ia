@@ -3,7 +3,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { SITE_URL } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
 interface LegalPageTemplateProps {
@@ -65,7 +65,11 @@ export function LegalPageTemplate({
           inLanguage: locale,
           isPartOf: { "@id": `${SITE_URL}/#website` },
           publisher: { "@id": `${SITE_URL}/#organization` },
-          dateModified: BUILD_DATE,
+          // Audit fraîcheur 2026-06-08 : la date de révision éditoriale réelle
+          // (`lastUpdatedIso`, déjà affichée dans le <time>) au lieu de BUILD_DATE
+          // (qui avançait à chaque deploy sans changement). Omis si non fournie
+          // — on n'invente pas de date de modification.
+          ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
         }
       : null;
   return (
