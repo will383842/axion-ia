@@ -89,6 +89,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "📥",
       group: "main",
     },
+    {
+      href: `${base}/candidatures`,
+      label: "Candidatures emploi",
+      icon: "📨",
+      group: "main",
+    },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
     { href: `${base}/content-gen`, label: "Générateur contenus", icon: "🧠", group: "content" },
@@ -132,6 +138,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },
     { href: `${base}/testimonials`, label: "Témoignages", icon: "💬", group: "content" },
+    { href: `${base}/offres-emploi`, label: "Offres d'emploi", icon: "💼", group: "content" },
     { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
     { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
     // ── Formation / Qualiopi (back-office OF — items ajoutés par tranche) ──
