@@ -46,6 +46,10 @@ export async function Footer() {
     { href: "/a-propos", label: t("nav.about") },
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
     { href: "/contact", label: t("nav.contact") },
+    {
+      href: "/devenir-commercial-ia" as const,
+      label: isFr ? "Recrutement commerciaux" : "Sales rep recruitment",
+    },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
