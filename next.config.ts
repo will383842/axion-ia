@@ -203,6 +203,9 @@ const nextConfig: NextConfig = {
     // En dev, Next ajoute automatiquement `localhost:PORT` — pas besoin de l'ajouter ici.
     serverActions: {
       allowedOrigins: ["axion-ia.com", "www.axion-ia.com"],
+      // Candidature emploi : upload CV (≤ 8 Mo) en multipart Server Action.
+      // Défaut Next = 1 Mo → relevé à 10 Mo (marge headers/champs au-delà du fichier).
+      bodySizeLimit: "10mb",
     },
   },
   // React Compiler deferred (PERF-004) — requires `babel-plugin-react-compiler`

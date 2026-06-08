@@ -69,3 +69,6 @@ Thumbs.db
 
 # Runtime data (RUM Web Vitals ndjson rotatif — P-303)
 /data/
+
+# CV de candidature (dev) — jamais committés
+.cv-storage/

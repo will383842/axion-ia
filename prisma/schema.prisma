@@ -5945,3 +5945,161 @@ model ReleveConnexionImport {
   @@index([sessionId])
   @@map("releves_connexion_imports")
 }
+
+// ============================================================================
+// OFFRES D'EMPLOI — système carrières DB-piloté (hub /carrieres + page/offre +
+// candidature). Voir _AUDIT/PLAN-OFFRES-EMPLOI-2026-06-08. Clone archi FAQ.
+// ============================================================================
+
+enum JobCategory {
+  tech
+  commercial
+  marketing
+  operations
+  design
+  support
+  autre
+}
+
+enum JobWorkMode {
+  on_site
+  hybrid
+  remote
+}
+
+enum JobApplicationStatus {
+  new
+  reviewing
+  shortlisted
+  rejected
+  hired
+  archived
+}
+
+/// Une offre d'emploi pilotée depuis la console admin (publiée en dynamique).
+model JobOffer {
+  id       String        @id @default(uuid()) @db.Uuid
+  slug     String        @unique @db.VarChar(180)
+  status   PublishStatus @default(draft)
+  category JobCategory   @default(autre)
+
+  // Bilingue (colonnes séparées, comme FAQ)
+  titleFr   String @map("title_fr") @db.VarChar(160)
+  titleEn   String @map("title_en") @db.VarChar(160)
+  summaryFr String @map("summary_fr") @db.VarChar(320)
+  summaryEn String @map("summary_en") @db.VarChar(320)
+
+  // Corps riche Tiptap — 3 sources par locale (html rendu / json canon / texte FTS)
+  bodyFr     String @map("body_fr") @db.Text
+  bodyJsonFr Json?  @map("body_json_fr")
+  bodyTextFr String @map("body_text_fr") @db.Text
+  bodyEn     String @map("body_en") @db.Text
+  bodyJsonEn Json?  @map("body_json_en")
+  bodyTextEn String @map("body_text_en") @db.Text
+
+  // JobPosting / Google for Jobs
+  employmentType String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
+  workMode       JobWorkMode @default(on_site) @map("work_mode")
+  city           String?     @db.VarChar(120)
+  region         String?     @db.VarChar(120)
+  country        String      @default("FR") @db.VarChar(2)
+  salaryMin      Int?        @map("salary_min")
+  salaryMax      Int?        @map("salary_max")
+  salaryPeriod   String      @default("YEAR") @map("salary_period") @db.VarChar(10)
+  salaryCurrency String      @default("EUR") @map("salary_currency") @db.VarChar(3)
+  salaryVisible  Boolean     @default(true) @map("salary_visible")
+  isCommission   Boolean     @default(false) @map("is_commission")
+
+  // Mobilité — n'affiche permis/véhicule sur le formulaire que si true
+  requiresDriverLicense Boolean @default(false) @map("requires_driver_license")
+  requiresVehicle       Boolean @default(false) @map("requires_vehicle")
+
+  // Questions par offre : [{ id, labelFr, labelEn, required }]
+  screeningQuestions Json? @map("screening_questions")
+
+  // Éditorial pilotable (rendu hub + détail)
+  contractLabel       String?   @map("contract_label") @db.VarChar(60)
+  startDate           DateTime? @map("start_date")
+  applicationDeadline DateTime? @map("application_deadline")
+  remoteDaysPerWeek   Int?      @map("remote_days_per_week")
+  perks               Json?
+  teamName            String?   @map("team_name") @db.VarChar(120)
+  managerName         String?   @map("manager_name") @db.VarChar(120)
+  heroImagePath       String?   @map("hero_image_path") @db.VarChar(255)
+
+  // SEO / indexation (anti-doorway)
+  metaTitle       String?        @map("meta_title") @db.VarChar(70)
+  metaDescription String?        @map("meta_description") @db.VarChar(160)
+  indexationTier  IndexationTier @default(tier_1_indexable) @map("indexation_tier")
+  ogImagePath     String?        @map("og_image_path") @db.VarChar(255)
+
+  // Cycle de vie
+  datePosted   DateTime  @default(now()) @map("date_posted")
+  validThrough DateTime? @map("valid_through")
+  publishedAt  DateTime? @map("published_at")
+  filledAt     DateTime? @map("filled_at")
+  displayOrder Int       @default(0) @map("display_order")
+  viewCount    Int       @default(0) @map("view_count")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  applications JobApplication[]
+
+  @@index([status])
+  @@index([category, status])
+  @@index([indexationTier, status])
+  @@index([status, displayOrder])
+  @@map("job_offers")
+}
+
+/// Une candidature reçue pour une offre (PII chiffrées, CV optionnel sur disque).
+model JobApplication {
+  id             String   @id @default(uuid()) @db.Uuid
+  offerId        String   @map("offer_id") @db.Uuid
+  offer          JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerTitleSnap String   @map("offer_title_snap") @db.VarChar(160)
+
+  // PII — chiffrées at-rest (encryptPii). PAS de sexe/âge (anti-discrimination).
+  civility   String? @db.VarChar(20)
+  firstName  String  @map("first_name") @db.Text
+  lastName   String  @map("last_name") @db.Text
+  email      String  @db.Text
+  phone      String  @db.Text
+  city       String? @db.VarChar(120)
+  motivation String? @db.Text
+
+  // Profil structuré (questions, CV pas obligatoire)
+  currentRole      String?  @map("current_role") @db.VarChar(200)
+  experienceBand   String?  @map("experience_band") @db.VarChar(40)
+  availability     String?  @db.VarChar(120)
+  linkedinUrl      String?  @map("linkedin_url") @db.VarChar(255)
+  hasDriverLicense Boolean? @map("has_driver_license")
+  hasVehicle       Boolean? @map("has_vehicle")
+  answers          Json?
+
+  // CV optionnel (volume disque /var/data/cv)
+  cvStoragePath  String? @map("cv_storage_path") @db.VarChar(255)
+  cvOriginalName String? @map("cv_original_name") @db.VarChar(255)
+  cvMimeType     String? @map("cv_mime_type") @db.VarChar(100)
+  cvSizeBytes    Int?    @map("cv_size_bytes")
+
+  // RGPD / sécurité
+  ipHash         String? @map("ip_hash") @db.VarChar(64)
+  userAgent      String? @map("user_agent") @db.Text
+  consentVersion String  @map("consent_version") @db.VarChar(40)
+  locale         Locale  @default(fr)
+
+  // Workflow admin
+  status         JobApplicationStatus @default(new)
+  internalNotes  String?              @map("internal_notes") @db.Text
+  assignedTo     String?              @map("assigned_to") @db.VarChar(100)
+  needsAttention Boolean              @default(true) @map("needs_attention")
+  submittedAt    DateTime             @default(now()) @map("submitted_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+
+  @@index([offerId])
+  @@index([status, needsAttention])
+  @@index([submittedAt])
+  @@map("job_applications")
+}
