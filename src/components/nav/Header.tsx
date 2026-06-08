@@ -154,7 +154,11 @@ export async function Header() {
             n'apparaissent qu'à ≥1400 où l'espace le permet. */}
         <nav
           aria-label={t("nav.primaryLabel")}
-          className="hidden items-center gap-8 xl:flex 2xl:gap-12"
+          // `xl:ml-4 2xl:ml-6` (Will 2026-06-08) : un peu plus d'air entre le
+          // logo et le 1er onglet (« Formations IA ») UNIQUEMENT — s'ajoute au
+          // gap-8 du flex parent (→ ~48/56 px logo↔nav) sans toucher
+          // l'espacement entre onglets ni la position du dual-CTA (ml-auto).
+          className="hidden items-center gap-8 xl:ml-4 xl:flex 2xl:ml-6 2xl:gap-12"
         >
           {navItems.map((item) => (
             <NavLink
