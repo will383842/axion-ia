@@ -50,9 +50,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ? `${siteUrl}/${tr.image.filePath.replace(/^\//, "")}`
     : `${cdnUrl}/image-bank/${tr.image.id}/og.webp`;
 
+  // Keywords (E-E-A-T / pertinence) — primary + secondary enrichis.
+  const metaKeywords: string[] = [];
+  if (tr.image.keywordsPrimary) metaKeywords.push(tr.image.keywordsPrimary);
+  if (Array.isArray(tr.image.keywordsSecondary)) {
+    metaKeywords.push(
+      ...tr.image.keywordsSecondary.filter((k): k is string => typeof k === "string"),
+    );
+  }
+
   return {
     title: tr.metaTitle ?? `${tr.title} | Axion-IA`,
     description: tr.metaDescription ?? tr.caption ?? tr.alt,
+    authors: [{ name: "Axion-IA", url: siteUrl }],
+    creator: "Axion-IA",
+    publisher: "Axion-IA",
+    ...(metaKeywords.length > 0 ? { keywords: metaKeywords } : {}),
+    ...(tr.image.module ? { category: tr.image.module } : {}),
     alternates: {
       canonical: `${siteUrl}/${locale}/${segment}/${tr.slug}`,
       languages: {
@@ -179,6 +193,17 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
 
   const isFr = locale === "fr";
 
+  // Dates lisibles (E-E-A-T fraîcheur) — formatées côté serveur (Server Component,
+  // pas de risque d'hydration mismatch).
+  const dateFmt: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
+  const dateLocale = isFr ? "fr-FR" : "en-US";
+  const publishedLabel = image.publishedAt
+    ? image.publishedAt.toLocaleDateString(dateLocale, dateFmt)
+    : null;
+  const updatedLabel = image.updatedAt
+    ? image.updatedAt.toLocaleDateString(dateLocale, dateFmt)
+    : null;
+
   // Images liées (même module en priorité) — maillage interne + différenciation
   // anti-duplicate. Lecture best-effort : au build stub.invalid → [] (ISR runtime).
   const related = await imageBankService.findRelatedImages({
@@ -270,8 +295,37 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
             <h1 className="text-2xl leading-snug font-bold text-gray-900 lg:text-3xl">
               {tr.title}
             </h1>
+            {/* Byline E-E-A-T : autorité (qui ?) + fraîcheur (quand ?) visibles. */}
+            <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
+              <Link
+                href={`/${locale}/a-propos`}
+                className="hover:text-terracotta font-medium text-gray-600"
+              >
+                {isFr ? "Par Axion-IA" : "By Axion-IA"}
+              </Link>
+              {publishedLabel && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {isFr ? "Publié le " : "Published "}
+                    <time dateTime={image.publishedAt?.toISOString()}>{publishedLabel}</time>
+                  </span>
+                </>
+              )}
+              {updatedLabel && updatedLabel !== publishedLabel && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {isFr ? "Mis à jour le " : "Updated "}
+                    <time dateTime={image.updatedAt?.toISOString()}>{updatedLabel}</time>
+                  </span>
+                </>
+              )}
+            </p>
             {tr.description && (
-              <p className="mt-3 text-base leading-relaxed text-gray-700">{tr.description}</p>
+              <p className="image-description mt-3 text-base leading-relaxed text-gray-700">
+                {tr.description}
+              </p>
             )}
           </header>
 
@@ -281,7 +335,7 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
               <h2 className="mb-2 text-lg font-semibold text-gray-900">
                 {isFr ? "À propos de cette image" : "About this image"}
               </h2>
-              <p className="text-sm leading-relaxed text-gray-600">{tr.aiSummary}</p>
+              <p className="image-about text-sm leading-relaxed text-gray-600">{tr.aiSummary}</p>
             </section>
           )}
 

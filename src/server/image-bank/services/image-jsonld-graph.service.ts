@@ -17,6 +17,7 @@
 
 import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/generated/client";
 import { buildImageObjectJsonLd } from "./image-seo.service";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 const SITE_NAME = "Axion-IA";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -145,6 +146,15 @@ function buildWebPage(args: {
     inLanguage: args.inLanguage,
     breadcrumb: { "@id": args.breadcrumbId },
     mainEntity: { "@id": args.imageId },
+    // E-E-A-T : autorité + éditeur rattachés à l'entité Organization canonique
+    // (`/#organization`) → consolide le graphe et la confiance (qui publie ?).
+    author: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    // Speakable au niveau WebPage (cible privilégiée de Google pour la voix /
+    // AEO) — selectors alignés sur le DOM réel de la page détail.
+    speakable: buildSpeakableSpecification({
+      selectors: ["h1", "figcaption", ".image-description", ".image-about"],
+    }),
     ...(args.datePublished ? { datePublished: args.datePublished.toISOString() } : {}),
     ...(args.dateModified ? { dateModified: args.dateModified.toISOString() } : {}),
   };

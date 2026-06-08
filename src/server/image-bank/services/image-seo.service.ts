@@ -101,8 +101,12 @@ export class ImageSeoService {
       license: image.licenseUrl || DEFAULT_LICENSE_URL,
       acquireLicensePage: pageUrl,
       creditText: image.copyrightHolder || DEFAULT_CREDIT_TEXT,
+      // Selectors alignés sur le DOM réel de `/galerie/[slug]/page.tsx` :
+      // h1 (titre) + figcaption (légende) + .image-description (paragraphe
+      // principal) + .image-about (résumé IA). Doivent matcher des éléments
+      // existants, sinon le Speakable ne résout rien.
       speakable: buildSpeakableSpecification({
-        selectors: ["h1", "figcaption", ".image-caption", ".image-description"],
+        selectors: ["h1", "figcaption", ".image-description", ".image-about"],
       }),
     };
 
