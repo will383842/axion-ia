@@ -23,7 +23,12 @@ import {
 } from "@/content/stack-ia";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
-import { buildProductMetadata, buildFaqSpeakableJsonLd, BUILD_DATE, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildFaqSpeakableJsonLd,
+  SITE_EDITORIAL_DATE,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -177,7 +182,7 @@ export default async function StackIaPage({ params }: Props) {
     })),
   } as const;
 
-  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = BUILD_DATE),
+  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = SITE_EDITORIAL_DATE),
   // distinct de l'ItemList (catalogue) déjà émis. Décrit la page-collection
   // elle-même pour l'AEO/GEO.
   const collectionPageJsonLd = {
@@ -188,7 +193,7 @@ export default async function StackIaPage({ params }: Props) {
       : "Operational AI stack 2026 · Axion-IA consultancy",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/${isFr ? "stack-ia" : "ai-stack"}`,
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     isPartOf: { "@type": "WebSite", url: SITE_URL, name: "Axion-IA" },
   } as const;
 

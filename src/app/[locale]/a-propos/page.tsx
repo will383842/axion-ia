@@ -22,7 +22,7 @@ import {
   buildPersonJsonLd,
   buildLocalBusinessJsonLd,
   SITE_URL,
-  BUILD_DATE,
+  SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
 
 interface Props {
@@ -110,7 +110,7 @@ export default async function About({ params }: Props) {
     description: isFr
       ? "Axion-IA, cabinet IA opérationnel basé à Paris : mission, équipe, valeurs E-E-A-T et parcours depuis 2024."
       : "Axion-IA, an operational AI consultancy based in Paris: mission, team, E-E-A-T values and journey since 2024.",
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     mainEntity: { "@id": `${SITE_URL}/#organization` },
     about: { "@id": `${SITE_URL}/#organization` },

@@ -18,7 +18,7 @@
  *   9. FAQ AEO (citabilité IA — écrit par IA ?, signaler erreur, indépendance)
  *
  * Server component, ISR 1j. JSON-LD WebPage + Article (EEAT, author Person +
- * publisher Organization, dateModified=BUILD_DATE) + FAQPage (via FaqAccordion).
+ * publisher Organization, dateModified=SITE_EDITORIAL_DATE) + FAQPage (via FaqAccordion).
  * Cohérent avec /transparence (hub IA Act) + /sous-processeurs (DPA).
  */
 
@@ -36,7 +36,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { buildProductMetadata, buildArticleJsonLd, BUILD_DATE, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd, SITE_EDITORIAL_DATE, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
@@ -87,9 +87,9 @@ export default async function CharteEditorialePage({ params }: Props) {
     isPartOf: { "@id": `${SITE_URL}/#website` },
     publisher: { "@id": `${SITE_URL}/#organization` },
     datePublished: "2026-05-18",
-    // BUILD_DATE = signal de fraîcheur AEO (re-render ISR quotidien). LAST_REVIEWED
+    // SITE_EDITORIAL_DATE = signal de fraîcheur AEO (re-render ISR quotidien). LAST_REVIEWED
     // reste la date éditoriale affichée en UX (révision substantielle manuelle).
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
     speakable: buildSpeakableSpecification({
       selectors: [".tldr-answer", '[data-aeo="tldr"]'],
@@ -97,7 +97,7 @@ export default async function CharteEditorialePage({ params }: Props) {
   } as const;
 
   // Article JSON-LD (EEAT) — la charte EST un document éditorial signé : author
-  // Person (Will) + publisher Organization + dateModified BUILD_DATE. Renforce la
+  // Person (Will) + publisher Organization + dateModified SITE_EDITORIAL_DATE. Renforce la
   // citabilité IA (« quelle est la politique éditoriale d'Axion-IA ? »).
   const articleJsonLd = buildArticleJsonLd({
     locale: isFr ? "fr" : "en",
@@ -107,7 +107,7 @@ export default async function CharteEditorialePage({ params }: Props) {
       ? "Mission, process de revue, sources, transparence IA (AI Act art. 50), corrections et indépendance éditoriale d'Axion-IA."
       : "Axion-IA editorial mission, review process, sources, AI transparency (EU AI Act art. 50), corrections and editorial independence.",
     datePublished: "2026-05-18",
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     articleSection: isFr ? "Transparence éditoriale" : "Editorial transparency",
     keywords: isFr
       ? ["charte éditoriale", "transparence IA", "AI Act art. 50", "EEAT", "corrections"]

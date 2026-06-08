@@ -39,7 +39,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { PressImageBank } from "@/components/sections/PressImageBank";
-import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   PRESS_RELEASES,
@@ -236,8 +236,10 @@ export default async function PressReleaseDetailPage({ params }: Props) {
   } as const;
 
   // WebPage JSON-LD additionnel — datePublished/dateModified au niveau page
-  // (NewsArticle est le contenu, WebPage est le contenant). BUILD_DATE pour
-  // dateModified (signal "site activement maintenu" cohérent sitewide).
+  // (NewsArticle est le contenu, WebPage est le contenant).
+  // Audit fraîcheur 2026-06-08 : dateModified = `release.publishedAt` (un
+  // communiqué n'est pas modifié après publication) au lieu de BUILD_DATE, qui
+  // glissait à chaque deploy ET contredisait le datePublished figé du même nœud.
   const webPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -251,7 +253,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
       "@id": `${SITE_URL}/#website`,
     },
     datePublished: release.publishedAt,
-    dateModified: BUILD_DATE,
+    dateModified: release.publishedAt,
     primaryImageOfPage: {
       "@type": "ImageObject",
       url: ogImage,

@@ -13,7 +13,12 @@ import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSche
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildHowToJsonLd, buildArticleJsonLd, BUILD_DATE } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildHowToJsonLd,
+  buildArticleJsonLd,
+  SITE_EDITORIAL_DATE,
+} from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -58,7 +63,7 @@ export default async function MethodologyPage({ params }: Props) {
       ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
       : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
     datePublished: "2025-12-01",
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     articleSection: isFr ? "Méthodologie" : "Methodology",
     keywords: isFr
       ? ["méthodologie IA", "audit IA", "implémentation IA", "ROI IA"]

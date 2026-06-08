@@ -116,6 +116,13 @@ export interface ClaimReviewInput {
   readonly itemReviewedAuthor?: string;
   readonly itemReviewedDatePublished?: string;
   readonly reviewBody: string;
+  /**
+   * Date de publication du fact-check (ISO YYYY-MM-DD). Audit fraîcheur
+   * 2026-06-08 : on n'utilise PLUS `new Date()` au render (datePublished qui
+   * changeait à chaque requête/build = date-gaming + non déterministe SSG).
+   * Passer une vraie date stable ; omise si absente.
+   */
+  readonly datePublished?: string;
 }
 
 export function buildClaimReviewJsonLd(input: ClaimReviewInput) {
@@ -124,7 +131,7 @@ export function buildClaimReviewJsonLd(input: ClaimReviewInput) {
     "@type": "ClaimReview",
     "@id": `${input.url}#claimreview`,
     url: input.url,
-    datePublished: new Date().toISOString().slice(0, 10),
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
     claimReviewed: input.claimReviewed,
     author: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
     reviewRating: {

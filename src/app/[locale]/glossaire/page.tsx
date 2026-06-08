@@ -10,7 +10,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getGlossaryTerms } from "@/lib/knowledge/readers";
 
@@ -61,7 +61,7 @@ export default async function GlossaryPage({ params }: Props) {
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/glossaire`,
     // DefinedTermSet ⊂ CreativeWork → dateModified valide (signal de fraîcheur AEO/GEO).
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     speakable: buildSpeakableSpecification({
       selectors: ["[data-aeo='glossary-intro']"],
     }),

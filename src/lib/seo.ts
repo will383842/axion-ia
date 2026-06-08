@@ -47,6 +47,19 @@ export const SITE_URL =
 // la build-date est suffisante — elle marque que le site est actif et maintenu.
 export const BUILD_DATE = process.env.BUILD_TIME ?? new Date().toISOString();
 
+/**
+ * Date éditoriale FIGÉE pour les `dateModified` des pages statiques/hubs
+ * (audit fraîcheur 2026-06-08). Remplace `BUILD_DATE` partout où une page
+ * evergreen affichait une « dernière modification » qui glissait à CHAQUE
+ * deploy sans changement de contenu (date-gaming → gaspillage de crawl-budget
+ * sur un site jeune). À bumper À LA MAIN lors d'une refonte de contenu large.
+ *
+ * ⚠️ Garder en sync avec `EDITORIAL_BASELINE` de `src/app/sitemap.ts` et
+ * `EDITORIAL_BASELINE_ISO` de `src/app/sitemap-index.xml/route.ts`.
+ * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
+ */
+export const SITE_EDITORIAL_DATE = "2026-06-08T00:00:00.000Z";
+
 interface ProductSeoInput {
   locale: Locale;
   /** Localized pathname WITHOUT locale prefix, e.g. /interventions/essentielle. */
@@ -270,11 +283,13 @@ export function buildServiceJsonLd({
     name,
     description,
     url,
-    // dateModified : signal de fraîcheur AI Overviews 2026. Auto-injecté à
-    // la BUILD_DATE si la page n'a rien passé explicitement (audit perfection
-    // 2026-05-12). Pour bypass (rare), passer `dateModified: ""` ne suffit
-    // pas — il faudrait étendre l'interface. Le default couvre 100 % des cas.
-    dateModified: dateModified ?? BUILD_DATE,
+    // dateModified : émis UNIQUEMENT si l'appelant fournit une vraie date.
+    // Audit fraîcheur 2026-06-08 : on a retiré le défaut `?? BUILD_DATE` qui
+    // faisait avancer la date de ~29 pages services à CHAQUE deploy sans
+    // changement de contenu (date-gaming, mauvais pour un faible crawl-budget).
+    // Mieux vaut OMETTRE le champ que mentir : Google tolère l'absence.
+    // Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
+    ...(dateModified ? { dateModified } : {}),
     provider: {
       "@type": "Organization",
       name: "Axion-IA",
@@ -329,9 +344,15 @@ interface FaqJsonLdInput {
    * (rare : ex. FAQ confidentielle technique).
    */
   speakable?: boolean | string;
+  /**
+   * Date de dernière révision éditoriale ISO. Émise seulement si fournie
+   * (audit fraîcheur 2026-06-08 : plus de défaut `BUILD_DATE` qui glissait à
+   * chaque deploy). Passer une vraie date stable, jamais un timestamp de build.
+   */
+  dateModified?: string;
 }
 
-export function buildFaqJsonLd({ items, speakable = true }: FaqJsonLdInput) {
+export function buildFaqJsonLd({ items, speakable = true, dateModified }: FaqJsonLdInput) {
   // Auto-injection Speakable (audit perfection 2026-05-12) — chaque FAQ est
   // désormais éligible Google Assistant / Alexa quand un utilisateur demande
   // "Axion-IA, comment ça se passe une formation IA ?" via vocal. Sans
@@ -341,9 +362,10 @@ export function buildFaqJsonLd({ items, speakable = true }: FaqJsonLdInput) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    // Signal de fraîcheur AEO 2026 (AI Overviews / Perplexity privilégient le
-    // contenu daté récent). FAQPage ⊂ WebPage ⊂ CreativeWork → dateModified valide.
-    dateModified: BUILD_DATE,
+    // dateModified émis seulement si fourni (audit fraîcheur 2026-06-08 : retrait
+    // du défaut BUILD_DATE qui avançait à chaque deploy). FAQPage ⊂ WebPage ⊂
+    // CreativeWork → dateModified valide quand on a une vraie date stable.
+    ...(dateModified ? { dateModified } : {}),
     mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
@@ -766,6 +788,11 @@ interface FaqSpeakableInput {
    * Cf. audit Speakable 2026-05-24 (P1-1).
    */
   additionalSelectors?: ReadonlyArray<string>;
+  /**
+   * Date de dernière révision éditoriale ISO. Émise seulement si fournie
+   * (audit fraîcheur 2026-06-08 : plus de défaut `BUILD_DATE`). Date stable réelle.
+   */
+  dateModified?: string;
 }
 
 // FAQPage JSON-LD enriched with `speakable` — Google Assistant + Alexa + Bixby
@@ -779,6 +806,7 @@ export function buildFaqSpeakableJsonLd({
   items,
   speakableSelector,
   additionalSelectors,
+  dateModified,
 }: FaqSpeakableInput) {
   // Speakable v2.6 best practice : couvrir question (itemprop=name) ET réponse (itemprop=text)
   // pour que voice search lise le Q+R complet. `additionalSelectors` permet
@@ -792,8 +820,9 @@ export function buildFaqSpeakableJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    // Signal de fraîcheur AEO 2026 (cohérent avec buildFaqJsonLd).
-    dateModified: BUILD_DATE,
+    // dateModified émis seulement si fourni (audit fraîcheur 2026-06-08, cohérent
+    // avec buildFaqJsonLd — retrait du défaut BUILD_DATE).
+    ...(dateModified ? { dateModified } : {}),
     // `numberOfItems` : recommandé Google Search Console (rich results validator
     // émet warning sans). Aligne avec audit AEO 2026-05-24 (P1-4).
     numberOfItems: items.length,
@@ -1501,7 +1530,7 @@ interface ImageGraphImageInput {
   height?: number;
   /** Format encoding (ex. "image/png", "image/avif"). Default : "image/png". */
   encodingFormat?: string;
-  /** Date de publication ISO. Default : BUILD_DATE. */
+  /** Date de publication ISO. Omise si non fournie (plus de défaut BUILD_DATE). */
   datePublished?: string;
 }
 
@@ -1561,7 +1590,11 @@ export function buildImageGraphJsonLd({
       // `acquireLicensePage` (rapport « Métadonnées d'image » GSC). Sans lui,
       // warning « Champ creditText manquant ». Texte d'attribution lisible.
       creditText: organizationName,
-      datePublished: img.datePublished ?? BUILD_DATE,
+      // datePublished émis seulement si fourni (audit fraîcheur 2026-06-08 :
+      // retrait du défaut BUILD_DATE qui datait les images de ~28 hubs statiques
+      // au timestamp du build). Les pages galerie DB passent leur vraie date via
+      // un autre builder (image-seo.service.ts) — non affectées.
+      ...(img.datePublished ? { datePublished: img.datePublished } : {}),
       inLanguage: locale,
     })),
   } as const;

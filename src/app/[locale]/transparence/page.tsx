@@ -16,7 +16,7 @@
  * Pas de DB, full server component, ISR statique 1j. Cf. ADR 0024.
  *
  * JSON-LD : WebPage (publisher Organization + datePublished + dateModified
- * BUILD_DATE + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
+ * SITE_EDITORIAL_DATE + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
  * symétrique vers /charte-editoriale.
  */
 
@@ -34,7 +34,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { buildProductMetadata, BUILD_DATE, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_EDITORIAL_DATE, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
@@ -214,10 +214,10 @@ export default async function TransparencePage({ params }: Props) {
     inLanguage: isFr ? "fr-FR" : "en-US",
     isPartOf: { "@id": `${SITE_URL}/#website` },
     // Aligné sur /charte-editoriale : publisher Organization + dates (freshness
-    // AEO). datePublished = création du hub (ADR 0024) ; dateModified = BUILD_DATE.
+    // AEO). datePublished = création du hub (ADR 0024) ; dateModified = SITE_EDITORIAL_DATE.
     publisher: { "@id": `${SITE_URL}/#organization` },
     datePublished: "2026-05-18",
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
     about: {
       "@type": "Thing",
       name: "EU AI Act 2024/1689 transparency",

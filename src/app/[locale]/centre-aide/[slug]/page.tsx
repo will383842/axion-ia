@@ -18,7 +18,7 @@ import {
   listHelpArticleSlugs,
   listHelpArticles,
 } from "@/lib/help-articles/reader";
-import { buildProductMetadata, BUILD_DATE, buildQAPageJsonLd } from "@/lib/seo";
+import { buildProductMetadata, SITE_EDITORIAL_DATE, buildQAPageJsonLd } from "@/lib/seo";
 import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { splitTitleEm } from "@/lib/title";
@@ -81,7 +81,7 @@ export default async function HelpArticlePage({ params }: Props) {
 
   // Article Schema — generic help article (HowTo would be possible if step-based).
   // datePublished + dateModified ajoutés (audit AEO/GEO 2026-05-15 §3.4) :
-  // signal fraîcheur AEO Google + Perplexity. `BUILD_DATE` est stable par build
+  // signal fraîcheur AEO Google + Perplexity. `SITE_EDITORIAL_DATE` est stable par build
   // (vs new Date() runtime qui mentirait sur chaque cold-start worker).
   //
   // Méta-cert 2026-05-15 AGENT 20 P0 — passage par `buildArticleJsonLd` factory
@@ -92,8 +92,8 @@ export default async function HelpArticlePage({ params }: Props) {
     description: copy.excerpt,
     slug,
     locale: loc,
-    publishedAt: BUILD_DATE,
-    updatedAt: BUILD_DATE,
+    publishedAt: SITE_EDITORIAL_DATE,
+    updatedAt: SITE_EDITORIAL_DATE,
     urlSegment: "centre-aide",
     section: article.category,
   });

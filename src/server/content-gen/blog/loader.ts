@@ -84,7 +84,10 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
 }
 
 function isoDate(d: Date | null | undefined): string {
-  if (!d) return new Date().toISOString().slice(0, 10);
+  // Audit fraîcheur 2026-06-08 : fallback DÉTERMINISTE (date éditoriale figée,
+  // sync avec SITE_EDITORIAL_DATE de @/lib/seo) au lieu de `new Date()`, qui
+  // datait un article DB sans publishedAt/updatedAt au timestamp du build.
+  if (!d) return "2026-06-08";
   return d.toISOString().slice(0, 10);
 }
 

@@ -8,7 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -115,7 +115,7 @@ export default async function AccessibilityPage({ params }: Props) {
     inLanguage: loc,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     publisher: { "@id": `${SITE_URL}/#organization` },
-    dateModified: BUILD_DATE,
+    dateModified: SITE_EDITORIAL_DATE,
   };
 
   return (

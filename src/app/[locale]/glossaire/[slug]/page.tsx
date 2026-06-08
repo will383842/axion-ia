@@ -35,7 +35,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   ALL_GLOSSARY_TERMS_EXTENDED,
@@ -163,8 +163,8 @@ export default async function GlossaryTermPage({ params }: Props) {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
       },
-      datePublished: BUILD_DATE,
-      dateModified: BUILD_DATE,
+      datePublished: SITE_EDITORIAL_DATE,
+      dateModified: SITE_EDITORIAL_DATE,
       // Speakable cssSelector pour Google Assistant + Alexa.
       speakable: buildSpeakableSpecification({
         selectors: ['[data-aeo="glossary-definition"]'],
