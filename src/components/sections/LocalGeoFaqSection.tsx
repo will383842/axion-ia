@@ -2,10 +2,13 @@
 // Sprint 14.9 levier 4 (cf. mémoire `axionia_pseo_villes_pilote_paris_plan.md`).
 //
 // 4 questions par service pointant vers les pages /implantations.
-// Émet une FAQPage Speakable JSON-LD distincte de la FAQ principale du
-// service (Google merge plusieurs FAQPages OK, c'est documenté côté
-// Search Central). Émet aussi des liens ancrés `/implantations/{region}`
-// pour booster le maillage interne services ↔ régions.
+// ⚠️ Google n'accepte QU'UNE seule FAQPage par URL — deux blocs FAQPage sur la
+// même page = erreur « Champ FAQPage en double » (GSC 2026-06). L'ancienne
+// croyance « Google merge plusieurs FAQPages » est fausse depuis la validation
+// stricte 2026. Sur une page qui émet DÉJÀ une FAQPage (ex. `SitesWebFaq` via
+// `FaqAccordion`), passer `emitJsonLd={false}` ici — la FAQ géo reste rendue
+// visuellement, sans second JSON-LD. Émet aussi des liens ancrés
+// `/implantations/{region}` pour le maillage interne services ↔ régions.
 
 import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
@@ -267,12 +270,19 @@ export interface LocalGeoFaqSectionProps {
   service: "audit" | "interventions" | "implementation" | "sites-web-augmentes" | "un-a-un";
   /** Tone éditorial — `sand` par défaut (ivoire chaud). */
   tone?: "canvas" | "paper" | "sand";
+  /**
+   * Émettre la FAQPage Speakable JSON-LD. Mettre `false` sur une page qui émet
+   * déjà sa propre FAQPage (sinon « Champ FAQPage en double » dans GSC).
+   * Default : true.
+   */
+  emitJsonLd?: boolean;
 }
 
 export function LocalGeoFaqSection({
   isFr,
   service,
   tone = "sand",
+  emitJsonLd = true,
 }: LocalGeoFaqSectionProps): ReactNode {
   const entries = FAQS_BY_SERVICE[service];
   const items = entries.map((e) => ({
@@ -294,7 +304,7 @@ export function LocalGeoFaqSection({
 
   return (
     <>
-      <JsonLd data={speakableJsonLd} />
+      {emitJsonLd ? <JsonLd data={speakableJsonLd} /> : null}
       <FaqBlock
         eyebrow={isFr ? "FAQ géolocalisée" : "Geolocalized FAQ"}
         title={

@@ -1437,6 +1437,12 @@ interface ImageObjectJsonLdInput {
   uploadDate?: string;
   /** Content licence URL. */
   license?: string;
+  /**
+   * Texte d'attribution (Schema.org `creditText`). Requis par Google dès
+   * qu'une `license` est déclarée, sinon warning « Champ creditText manquant »
+   * dans le rapport GSC « Métadonnées d'image ». Default : "Axion-IA".
+   */
+  creditText?: string;
 }
 
 // ImageObject JSON-LD — pour les images riches (cas-concrets photo, hero
@@ -1450,6 +1456,7 @@ export function buildImageObjectJsonLd({
   height,
   uploadDate,
   license,
+  creditText = "Axion-IA",
 }: ImageObjectJsonLdInput) {
   return {
     "@context": "https://schema.org",
@@ -1460,7 +1467,8 @@ export function buildImageObjectJsonLd({
     ...(typeof width === "number" ? { width } : {}),
     ...(typeof height === "number" ? { height } : {}),
     ...(uploadDate ? { uploadDate } : {}),
-    ...(license ? { license } : {}),
+    // creditText accompagne toujours `license` (exigence Google Image metadata).
+    ...(license ? { license, creditText } : {}),
   } as const;
 }
 
@@ -1549,6 +1557,10 @@ export function buildImageGraphJsonLd({
         name: organizationName,
       },
       copyrightNotice: `© ${organizationName} 2026 — CC BY 4.0`,
+      // creditText : exigé par Google dès qu'on déclare `license` +
+      // `acquireLicensePage` (rapport « Métadonnées d'image » GSC). Sans lui,
+      // warning « Champ creditText manquant ». Texte d'attribution lisible.
+      creditText: organizationName,
       datePublished: img.datePublished ?? BUILD_DATE,
       inLanguage: locale,
     })),

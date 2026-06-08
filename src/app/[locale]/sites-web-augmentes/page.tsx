@@ -268,7 +268,12 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       />
 
       {/* FAQ GÉOLOCALISÉE (GEO) */}
-      <LocalGeoFaqSection isFr={isFr} service="sites-web-augmentes" tone="paper" />
+      <LocalGeoFaqSection
+        isFr={isFr}
+        service="sites-web-augmentes"
+        tone="paper"
+        emitJsonLd={false}
+      />
 
       {/* FAQ (unique, fusionnée) + FAQPage JSON-LD */}
       <SitesWebFaq isFr={isFr} />
