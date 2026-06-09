@@ -20,6 +20,7 @@ import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/seo";
 
 import { VILLES, getIndexableVilles } from "@/content/villes";
+import { REGIONS } from "@/content/regions";
 import {
   getIndexableBlogPosts,
   getAllBlogSectorSlugs,
@@ -310,6 +311,19 @@ const SERVICE_VILLE_PATHS = [
 
 function enumVilles(): EnumeratedRoute[] {
   const out: EnumeratedRoute[] = [];
+  // Pages région `/fr/implantations/<region>` (métropole) — l'indexabilité
+  // (Corse noindex, etc.) est décidée par computeIndexability.
+  for (const region of REGIONS) {
+    if (region.type !== "metropole") continue;
+    out.push({
+      pathPattern: `/fr/implantations/[region]`,
+      pathRendered: `/fr/implantations/${region.slug}`,
+      pathSlug: region.slug,
+      type: "dynamic_filesystem",
+      section: "implantations",
+      source: "content:regions",
+    });
+  }
   // Hub ville `/fr/implantations/<region>/<slug>` — toutes les villes AVEC copy
   // (indexables à terme ; le drip décide si index|noindex aujourd'hui).
   for (const ville of getIndexableVilles()) {
