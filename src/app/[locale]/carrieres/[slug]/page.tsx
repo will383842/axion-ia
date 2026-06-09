@@ -269,9 +269,10 @@ export default async function JobOfferDetailPage({
                 // H3 : sous-titres serif noir.
                 "[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-fg",
                 // Listes : puces terracotta, aérées.
-                "[&_ul]:my-5 [&_ul]:space-y-2 [&_li]:marker:text-terracotta",
-                // Paragraphes : lisibles, gris doux ; gras en noir franc.
-                "[&_p]:leading-relaxed [&_p]:text-fg-soft [&_strong]:text-fg [&_strong]:font-semibold",
+                // Listes : puces terracotta, à puces explicites + aérées (sans dépendre de prose).
+                "[&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_li]:marker:text-terracotta",
+                // Paragraphes : espacés (mb-5), lisibles, gris doux ; gras en noir franc.
+                "[&_p]:mb-5 [&_p]:leading-relaxed [&_p]:text-fg-soft [&_strong]:text-fg [&_strong]:font-semibold",
               ].join(" ")}
               // Corps riche déjà sanitizé (whitelist) — anti VIS-01 (jamais affiché en texte).
               dangerouslySetInnerHTML={{ __html: bodyHtml }}
