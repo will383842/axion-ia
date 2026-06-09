@@ -15,8 +15,11 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 //    mode soft pour le SSG public). Voir `src/lib/csp.ts`.
 //  - Cross-Origin-Embedder-Policy `require-corp` est posée par proxy.ts pour
 //    pouvoir varier (`credentialless` fallback si Plausible CORP bug).
+// Note : `X-Frame-Options: DENY` n'est PAS dans cette liste universelle — il est
+// posé via une source à exclusion (cf. `headers()` plus bas) pour laisser la
+// route d'embed widget `/[locale]/carrieres/widget` framable. proxy.ts applique
+// la même exclusion côté Edge (cf. `isEmbedPath`).
 const securityHeaders = [
-  { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
@@ -396,6 +399,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: [...securityHeaders, ...cdnHeaders] },
+      // X-Frame-Options: DENY partout SAUF la route d'embed widget
+      // `/[locale]/carrieres/widget` (qui doit être framable sur sites tiers).
+      // Le lookahead négatif `(?:/|$)` après `widget` n'exclut PAS
+      // `/carrieres/widget-builder` (suivi de `-builder`). Aligné avec
+      // `isEmbedPath` (src/lib/csp.ts) + proxy.ts.
+      {
+        source: "/((?!.*\\/carrieres\\/widget(?:\\/|$)).*)",
+        headers: [{ key: "X-Frame-Options", value: "DENY" }],
+      },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
       // revalide à chaque hit (sitemap-index 9 fichiers + OG images statiques).
       //

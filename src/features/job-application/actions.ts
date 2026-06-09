@@ -35,10 +35,7 @@ export type JobApplicationState =
   | { ok: false; error: string };
 
 const opt = (max: number) =>
-  z.preprocess(
-    (v) => (v === "" || v == null ? undefined : v),
-    z.string().max(max).optional(),
-  );
+  z.preprocess((v) => (v === "" || v == null ? undefined : v), z.string().max(max).optional());
 
 const appSchema = z.object({
   offerId: z.string().uuid(),
@@ -66,8 +63,7 @@ function validatePhoto(file: File, buf: Buffer): string | null {
   if (file.size > PHOTO_MAX_BYTES) return "Photo trop volumineuse (5 Mo max).";
   const s = buf.subarray(0, 12);
   const isJpg = s[0] === 0xff && s[1] === 0xd8 && s[2] === 0xff;
-  const isPng =
-    s[0] === 0x89 && s[1] === 0x50 && s[2] === 0x4e && s[3] === 0x47;
+  const isPng = s[0] === 0x89 && s[1] === 0x50 && s[2] === 0x4e && s[3] === 0x47;
   const isWebp =
     s[0] === 0x52 &&
     s[1] === 0x49 &&
@@ -78,8 +74,7 @@ function validatePhoto(file: File, buf: Buffer): string | null {
     s[10] === 0x42 &&
     s[11] === 0x50;
   // HEIC/HEIF (photos iPhone prises en direct) : conteneur ISO-BMFF → "ftyp" à l'offset 4.
-  const isHeif =
-    s[4] === 0x66 && s[5] === 0x74 && s[6] === 0x79 && s[7] === 0x70;
+  const isHeif = s[4] === 0x66 && s[5] === 0x74 && s[6] === 0x79 && s[7] === 0x70;
   if (!isJpg && !isPng && !isWebp && !isHeif)
     return "Photo non supportée (JPG, PNG, WebP ou HEIC).";
   return null;
@@ -99,16 +94,13 @@ function validateCv(file: File, buf: Buffer): string | null {
   const extOk = CV_ALLOWED_EXTENSIONS.some((e) => lower.endsWith(e));
   if (!extOk) return "Format de CV non supporté (PDF, DOC ou DOCX).";
   const mimeOk =
-    !file.type ||
-    CV_ALLOWED_MIME.includes(file.type as (typeof CV_ALLOWED_MIME)[number]);
+    !file.type || CV_ALLOWED_MIME.includes(file.type as (typeof CV_ALLOWED_MIME)[number]);
   if (!mimeOk) return "Type de fichier CV non supporté.";
   // Magic-bytes : %PDF / PK(zip→docx) / D0CF11E0(ole→doc).
   const sig = buf.subarray(0, 4);
-  const isPdf =
-    sig[0] === 0x25 && sig[1] === 0x50 && sig[2] === 0x44 && sig[3] === 0x46;
+  const isPdf = sig[0] === 0x25 && sig[1] === 0x50 && sig[2] === 0x44 && sig[3] === 0x46;
   const isZip = sig[0] === 0x50 && sig[1] === 0x4b;
-  const isOle =
-    sig[0] === 0xd0 && sig[1] === 0xcf && sig[2] === 0x11 && sig[3] === 0xe0;
+  const isOle = sig[0] === 0xd0 && sig[1] === 0xcf && sig[2] === 0x11 && sig[3] === 0xe0;
   if (!isPdf && !isZip && !isOle) return "Fichier CV illisible ou corrompu.";
   return null;
 }
@@ -124,8 +116,7 @@ export async function submitJobApplicationAction(
     limit: 3,
     windowSec: 600,
   });
-  if (!rl.allowed)
-    return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
+  if (!rl.allowed) return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
 
   // 2. Honeypot
   if (formData.get("website")) return { ok: true, applicationId: "" };
@@ -137,8 +128,7 @@ export async function submitJobApplicationAction(
   }
 
   // 4. Consentement RGPD obligatoire
-  const consent =
-    formData.get("consent") === "true" || formData.get("consent") === "on";
+  const consent = formData.get("consent") === "true" || formData.get("consent") === "on";
   if (!consent) return { ok: false, error: "Le consentement RGPD est requis." };
 
   // 5. Zod
@@ -177,8 +167,7 @@ export async function submitJobApplicationAction(
       validThrough: true,
     },
   });
-  const expired =
-    offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
+  const expired = offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
   if (!offer || offer.status !== "published" || offer.filledAt || expired) {
     return {
       ok: false,
@@ -194,8 +183,7 @@ export async function submitJobApplicationAction(
   const cv = formData.get("cv");
   if (cv instanceof File && cv.size > 0) {
     // Vérifier la taille AVANT de charger le buffer en mémoire (anti-DoS RAM).
-    if (cv.size > CV_MAX_BYTES)
-      return { ok: false, error: "CV trop volumineux (8 Mo max)." };
+    if (cv.size > CV_MAX_BYTES) return { ok: false, error: "CV trop volumineux (8 Mo max)." };
     const buf = Buffer.from(await cv.arrayBuffer());
     const cvError = validateCv(cv, buf);
     if (cvError) return { ok: false, error: cvError };
@@ -224,11 +212,7 @@ export async function submitJobApplicationAction(
   // 8. Réponses aux questions de l'offre (champs answer_<id>)
   const answers: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
-    if (
-      key.startsWith("answer_") &&
-      typeof value === "string" &&
-      value.trim()
-    ) {
+    if (key.startsWith("answer_") && typeof value === "string" && value.trim()) {
       answers[key.slice("answer_".length)] = value.slice(0, 2000);
     }
   }
@@ -267,9 +251,7 @@ export async function submitJobApplicationAction(
         userAgent,
         consentVersion: CONSENT_VERSION,
         locale,
-        ...(Object.keys(answers).length > 0
-          ? { answers: answers as Prisma.InputJsonValue }
-          : {}),
+        ...(Object.keys(answers).length > 0 ? { answers: answers as Prisma.InputJsonValue } : {}),
       },
     });
 
@@ -284,9 +266,7 @@ export async function submitJobApplicationAction(
         offerTitle: offer.titleFr,
         offerCategory: offer.category,
         ...(d.city ? { city: d.city } : {}),
-        ...(d.salaryExpectation
-          ? { salaryExpectation: d.salaryExpectation }
-          : {}),
+        ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
         hasCv: Boolean(cvStoragePath),
         hasPhoto: Boolean(photoStoragePath),
         locale,

@@ -34,8 +34,7 @@ export const EMPLOYER_BRAND = {
       icon: "🚀",
       titleFr: "Du code en prod, pas des slides",
       titleEn: "Real code, not slides",
-      textFr:
-        "Tes projets servent vraiment, tu vois le résultat tourner chez de vrais clients.",
+      textFr: "Tes projets servent vraiment, tu vois le résultat tourner chez de vrais clients.",
       textEn: "Your work actually ships — you see it running at real clients.",
     },
     {
@@ -51,10 +50,8 @@ export const EMPLOYER_BRAND = {
       icon: "🧠",
       titleFr: "Tu montes vite en compétence",
       titleEn: "You level up fast",
-      textFr:
-        "IA de pointe au quotidien, et on te forme sur ce que tu ne connais pas encore.",
-      textEn:
-        "Cutting-edge AI every day, and we train you on what you don't know yet.",
+      textFr: "IA de pointe au quotidien, et on te forme sur ce que tu ne connais pas encore.",
+      textEn: "Cutting-edge AI every day, and we train you on what you don't know yet.",
     },
     {
       icon: "🤝",
@@ -62,8 +59,7 @@ export const EMPLOYER_BRAND = {
       titleEn: "Autonomy + straight talk",
       textFr:
         "Peu de réunions, beaucoup de confiance. On dit ce qui marche, ce qui ne marchera pas, et on livre.",
-      textEn:
-        "Few meetings, lots of trust. We say what works, what won't, and we ship.",
+      textEn: "Few meetings, lots of trust. We say what works, what won't, and we ship.",
     },
   ] as ReadonlyArray<WhyJoinCard>,
 

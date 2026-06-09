@@ -309,6 +309,15 @@ export const routing = defineRouting({
     // déclarées dans pathnames (slug `[adminPrefix]` random + accès role-gated).
     // Carrières — système d'offres d'emploi DB-piloté (FR canonique, EN miroir).
     "/carrieres": { fr: "/carrieres", en: "/careers" },
+    // Widget embarquable des offres : routes STATIQUES déclarées AVANT
+    // `/carrieres/[slug]` — sinon next-intl les résout via le template `[slug]`
+    // (« Insufficient params provided for localized pathname » → 500). Plus
+    // spécifique d'abord = match correct.
+    "/carrieres/widget": { fr: "/carrieres/widget", en: "/careers/widget" },
+    "/carrieres/widget-builder": {
+      fr: "/carrieres/widget-builder",
+      en: "/careers/widget-builder",
+    },
     "/carrieres/[slug]": { fr: "/carrieres/[slug]", en: "/careers/[slug]" },
     "/carrieres/[slug]/postuler": {
       fr: "/carrieres/[slug]/postuler",

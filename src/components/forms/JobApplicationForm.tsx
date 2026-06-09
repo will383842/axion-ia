@@ -14,8 +14,7 @@ import { HoneypotField } from "@/components/forms/HoneypotField";
 const FIELD =
   "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
-const SECTION =
-  "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
+const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
 
 export interface ScreeningQuestion {
   id: string;
@@ -62,28 +61,18 @@ export function JobApplicationForm({
     e.preventDefault();
     setError(null);
     if (!consent) {
-      setError(
-        isFr
-          ? "Merci d'accepter le traitement RGPD."
-          : "Please accept the GDPR terms.",
-      );
+      setError(isFr ? "Merci d'accepter le traitement RGPD." : "Please accept the GDPR terms.");
       return;
     }
     const form = e.currentTarget;
     const cvFile = cvRef.current?.files?.[0];
     if (cvFile && cvFile.size > 8 * 1024 * 1024) {
-      setError(
-        isFr ? "CV trop volumineux (8 Mo max)." : "CV too large (8 MB max).",
-      );
+      setError(isFr ? "CV trop volumineux (8 Mo max)." : "CV too large (8 MB max).");
       return;
     }
     const photoFile = photoRef.current?.files?.[0];
     if (photoFile && photoFile.size > 5 * 1024 * 1024) {
-      setError(
-        isFr
-          ? "Photo trop volumineuse (5 Mo max)."
-          : "Photo too large (5 MB max).",
-      );
+      setError(isFr ? "Photo trop volumineuse (5 Mo max)." : "Photo too large (5 MB max).");
       return;
     }
     setSubmitting(true);
@@ -94,24 +83,16 @@ export function JobApplicationForm({
       fd.set("consent", "true");
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
-      const result = await submitJobApplicationAction(
-        { ok: false, error: "" },
-        fd,
-      );
+      const result = await submitJobApplicationAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
         resetTurnstile();
-        setError(
-          result.error ||
-            (isFr ? "Une erreur est survenue." : "Something went wrong."),
-        );
+        setError(result.error || (isFr ? "Une erreur est survenue." : "Something went wrong."));
         return;
       }
       setDone(result.applicationId || "");
     } catch {
       setError(
-        isFr
-          ? "Une erreur est survenue. Réessayez."
-          : "Something went wrong. Please retry.",
+        isFr ? "Une erreur est survenue. Réessayez." : "Something went wrong. Please retry.",
       );
     } finally {
       setSubmitting(false);
@@ -125,11 +106,7 @@ export function JobApplicationForm({
         role="status"
       >
         <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-          <Check
-            aria-hidden="true"
-            strokeWidth={3}
-            className="text-terracotta-deep h-4 w-4"
-          />
+          <Check aria-hidden="true" strokeWidth={3} className="text-terracotta-deep h-4 w-4" />
           <span className="text-terracotta-deep text-sm font-semibold">
             {isFr ? "Candidature envoyée 🎉" : "Application sent 🎉"}
           </span>
@@ -139,38 +116,25 @@ export function JobApplicationForm({
             ? "Merci ! On a bien reçu ta candidature et on revient vers toi rapidement."
             : "Thanks! We've received your application and will get back to you shortly."}
         </p>
-        {done ? (
-          <p className="text-fg-muted mt-2 font-mono text-xs">Réf. {done}</p>
-        ) : null}
+        {done ? <p className="text-fg-muted mt-2 font-mono text-xs">Réf. {done}</p> : null}
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="space-y-8"
-      encType="multipart/form-data"
-    >
+    <form onSubmit={onSubmit} className="space-y-8" encType="multipart/form-data">
       <HoneypotField />
       <input type="hidden" name="offerId" value={offerId} />
 
       {/* 1. Toi & contact */}
       <fieldset className="space-y-4">
-        <legend className={SECTION}>
-          {isFr ? "👋 Toi & contact" : "👋 You & contact"}
-        </legend>
+        <legend className={SECTION}>{isFr ? "👋 Toi & contact" : "👋 You & contact"}</legend>
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <label htmlFor="civility" className={LABEL}>
               {isFr ? "Civilité" : "Title"}
             </label>
-            <select
-              id="civility"
-              name="civility"
-              className={FIELD}
-              disabled={submitting}
-            >
+            <select id="civility" name="civility" className={FIELD} disabled={submitting}>
               <option value="">—</option>
               <option value="Mme">{isFr ? "Mme" : "Ms"}</option>
               <option value="M.">{isFr ? "M." : "Mr"}</option>
@@ -252,9 +216,7 @@ export function JobApplicationForm({
       {/* 2. Mobilité (conditionnel) */}
       {showMobility ? (
         <fieldset className="space-y-4">
-          <legend className={SECTION}>
-            {isFr ? "🚗 Mobilité" : "🚗 Mobility"}
-          </legend>
+          <legend className={SECTION}>{isFr ? "🚗 Mobilité" : "🚗 Mobility"}</legend>
           <div className="grid gap-4 sm:grid-cols-2">
             {requiresDriverLicense ? (
               <div>
@@ -278,12 +240,7 @@ export function JobApplicationForm({
                 <label htmlFor="hasVehicle" className={LABEL}>
                   {isFr ? "Véhicule personnel" : "Personal vehicle"}
                 </label>
-                <select
-                  id="hasVehicle"
-                  name="hasVehicle"
-                  className={FIELD}
-                  disabled={submitting}
-                >
+                <select id="hasVehicle" name="hasVehicle" className={FIELD} disabled={submitting}>
                   <option value="">—</option>
                   <option value="true">{isFr ? "Oui" : "Yes"}</option>
                   <option value="false">{isFr ? "Non" : "No"}</option>
@@ -296,15 +253,11 @@ export function JobApplicationForm({
 
       {/* 3. Profil + questions de l'offre */}
       <fieldset className="space-y-4">
-        <legend className={SECTION}>
-          {isFr ? "💼 Ton profil" : "💼 Your profile"}
-        </legend>
+        <legend className={SECTION}>{isFr ? "💼 Ton profil" : "💼 Your profile"}</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="currentRole" className={LABEL}>
-              {isFr
-                ? "Poste / expérience actuelle"
-                : "Current role / experience"}
+              {isFr ? "Poste / expérience actuelle" : "Current role / experience"}
             </label>
             <input
               id="currentRole"
@@ -359,9 +312,7 @@ export function JobApplicationForm({
           </div>
           <div>
             <label htmlFor="salaryExpectation" className={LABEL}>
-              {isFr
-                ? "Prétention de revenus — optionnel"
-                : "Salary expectation — optional"}
+              {isFr ? "Prétention de revenus — optionnel" : "Salary expectation — optional"}
             </label>
             <input
               id="salaryExpectation"
@@ -370,7 +321,9 @@ export function JobApplicationForm({
               className={FIELD}
               disabled={submitting}
               placeholder={
-                isFr ? "ex. 35–42 k€ brut/an" : "e.g. 35–42 k€ gross/yr"
+                isFr
+                  ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
+                  : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
               }
             />
           </div>
@@ -391,9 +344,7 @@ export function JobApplicationForm({
               className={FIELD}
               disabled={submitting}
               value={answers[q.id] ?? ""}
-              onChange={(ev) =>
-                setAnswers((p) => ({ ...p, [q.id]: ev.target.value }))
-              }
+              onChange={(ev) => setAnswers((p) => ({ ...p, [q.id]: ev.target.value }))}
             />
           </div>
         ))}
@@ -401,14 +352,10 @@ export function JobApplicationForm({
 
       {/* 4. Pour finir */}
       <fieldset className="space-y-4">
-        <legend className={SECTION}>
-          {isFr ? "🚀 Pour finir" : "🚀 Finishing up"}
-        </legend>
+        <legend className={SECTION}>{isFr ? "🚀 Pour finir" : "🚀 Finishing up"}</legend>
         <div>
           <label htmlFor="cv" className={LABEL}>
-            {isFr
-              ? "CV (PDF, DOC, DOCX) — optionnel"
-              : "CV (PDF, DOC, DOCX) — optional"}
+            {isFr ? "CV (PDF, DOC, DOCX) — optionnel" : "CV (PDF, DOC, DOCX) — optional"}
           </label>
           <input
             id="cv"
@@ -428,9 +375,7 @@ export function JobApplicationForm({
         </div>
         <div>
           <label htmlFor="photo" className={LABEL}>
-            {isFr
-              ? "Photo (JPG, PNG) — optionnel"
-              : "Photo (JPG, PNG) — optional"}
+            {isFr ? "Photo (JPG, PNG) — optionnel" : "Photo (JPG, PNG) — optional"}
           </label>
           <input
             id="photo"
@@ -455,9 +400,7 @@ export function JobApplicationForm({
         </div>
         <div>
           <label htmlFor="motivation" className={LABEL}>
-            {isFr
-              ? "Dis-nous un petit mot sur toi 👋"
-              : "Tell us a bit about you 👋"}
+            {isFr ? "Dis-nous un petit mot sur toi 👋" : "Tell us a bit about you 👋"}
           </label>
           <textarea
             id="motivation"

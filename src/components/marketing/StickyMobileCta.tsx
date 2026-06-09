@@ -25,12 +25,7 @@ interface StickyMobileCtaProps {
   threshold?: number;
 }
 
-export function StickyMobileCta({
-  href,
-  label,
-  track,
-  threshold = 600,
-}: StickyMobileCtaProps) {
+export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyMobileCtaProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -44,8 +39,7 @@ export function StickyMobileCta({
     const compute = () => {
       const past = window.scrollY > threshold;
       const nearBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 320;
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 320;
       const next = past && !nearBottom;
       if (next !== lastVisible) {
         lastVisible = next;
@@ -97,9 +91,7 @@ export function StickyMobileCta({
       <div
         aria-hidden={!visible}
         className={`pointer-events-none fixed right-6 bottom-6 z-40 hidden transition-all duration-300 ease-out motion-reduce:transition-none lg:block ${
-          visible
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-3 opacity-0"
+          visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
         }`}
       >
         <Link

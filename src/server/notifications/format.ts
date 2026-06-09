@@ -4,11 +4,7 @@
 // renvoie `Bad Request: can't parse entities`. Cf.
 // https://core.telegram.org/bots/api#markdownv2-style
 
-import type {
-  NotificationCategory,
-  NotificationEvent,
-  NotificationSeverity,
-} from "./types";
+import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/seo";
@@ -75,10 +71,7 @@ export function formatParisDateTime(input: string | Date | undefined): string {
   }).format(d);
 }
 
-function formatKV(
-  label: string,
-  value: string | number | null | undefined,
-): string | null {
+function formatKV(label: string, value: string | number | null | undefined): string | null {
   if (value === null || value === undefined || value === "") return null;
   return `• *${escapeMarkdownV2(label)}* : ${escapeMarkdownV2(String(value))}`;
 }
@@ -129,13 +122,9 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Email", p.contactEmail),
         p.contactPhone ? formatKV("Téléphone", p.contactPhone) : null,
         formatKV("Offre", p.offerTitle),
-        p.offerCategory
-          ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true))
-          : null,
+        p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
         p.city ? formatKV("Ville", p.city) : null,
-        p.salaryExpectation
-          ? formatKV("Prétention", p.salaryExpectation)
-          : null,
+        p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
         formatKV(
@@ -280,9 +269,7 @@ function formatBody(event: NotificationEvent): string {
     }
     case "STRIPE_WEBHOOK_SIGNATURE_FAIL": {
       const p = event.payload;
-      return [formatKV("IP", p.ip)]
-        .filter((v): v is string => v !== null)
-        .join("\n");
+      return [formatKV("IP", p.ip)].filter((v): v is string => v !== null).join("\n");
     }
     case "MONITORING_ALERT": {
       const p = event.payload;
