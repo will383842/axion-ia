@@ -6061,7 +6061,7 @@ model JobOffer {
   salaryMax      Int?        @map("salary_max")
   salaryPeriod   String      @default("YEAR") @map("salary_period") @db.VarChar(10)
   salaryCurrency String      @default("EUR") @map("salary_currency") @db.VarChar(3)
-  salaryVisible  Boolean     @default(false) @map("salary_visible")
+  salaryVisible  Boolean     @default(true) @map("salary_visible")
   isCommission   Boolean     @default(false) @map("is_commission")
 
   // Mobilité — n'affiche permis/véhicule sur le formulaire que si true

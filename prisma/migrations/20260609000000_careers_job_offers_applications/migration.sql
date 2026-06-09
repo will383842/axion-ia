@@ -32,7 +32,7 @@ CREATE TABLE "job_offers" (
     "salary_max" INTEGER,
     "salary_period" VARCHAR(10) NOT NULL DEFAULT 'YEAR',
     "salary_currency" VARCHAR(3) NOT NULL DEFAULT 'EUR',
-    "salary_visible" BOOLEAN NOT NULL DEFAULT false,
+    "salary_visible" BOOLEAN NOT NULL DEFAULT true,
     "is_commission" BOOLEAN NOT NULL DEFAULT false,
     "requires_driver_license" BOOLEAN NOT NULL DEFAULT false,
     "requires_vehicle" BOOLEAN NOT NULL DEFAULT false,

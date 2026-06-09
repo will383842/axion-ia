@@ -41,7 +41,7 @@ function isNew(datePosted: Date): boolean {
 
 function salaryLabel(o: JobOffer, isFr: boolean): string | null {
   if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
-  if (!o.salaryVisible) return isFr ? "Rémunération selon profil" : "Salary based on profile";
+  if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
   if (o.salaryMin == null && o.salaryMax == null) return null;
   const k = (n: number) => `${Math.round(n / 1000)}k`;
   const per =
@@ -216,6 +216,11 @@ export default async function CarrieresHubPage({
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr ? EMPLOYER_BRAND.hqTextFr : EMPLOYER_BRAND.hqTextEn}
+          </p>
+          <p className="text-fg-muted mt-3 max-w-3xl text-sm">
+            {isFr
+              ? "Chez Axion-IA, le recrutement est ouvert à toutes et tous — sans discrimination. Nos intitulés de poste sont neutres et nos process inclusifs."
+              : "At Axion-IA, hiring is open to everyone — without discrimination. Our job titles are neutral and our process inclusive."}
           </p>
         </Container>
       </Section>

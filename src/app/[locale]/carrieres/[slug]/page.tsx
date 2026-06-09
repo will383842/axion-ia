@@ -51,7 +51,7 @@ function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">
 
 function salaryLabel(o: JobOffer, isFr: boolean): string | null {
   if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
-  if (!o.salaryVisible) return isFr ? "Rémunération selon profil" : "Salary based on profile";
+  if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
   if (o.salaryMin == null && o.salaryMax == null) return null;
   const k = (n: number) => `${Math.round(n / 1000)}k`;
   const per =

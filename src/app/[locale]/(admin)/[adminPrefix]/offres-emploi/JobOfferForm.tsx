@@ -356,6 +356,10 @@ export function JobOfferForm({ initial }: Props) {
       </div>
 
       <h3 className="admin-section-title">Rémunération</h3>
+      <p className="admin-meta-small">
+        ℹ️ Directive UE 2023/970 (transparence salariale) : indique une fourchette dans chaque
+        offre. Évite les mentions vagues type « selon profil ».
+      </p>
       <div className="admin-form-row">
         <label className="admin-checkbox">
           <input
@@ -373,10 +377,10 @@ export function JobOfferForm({ initial }: Props) {
             type="checkbox"
             name="salaryVisible"
             value="true"
-            defaultChecked={initial?.salaryVisible ?? false}
+            defaultChecked={initial?.salaryVisible ?? true}
             disabled={pending}
           />
-          Afficher la fourchette publiquement
+          Afficher la fourchette publiquement (recommandé — conformité UE)
         </label>
       </div>
       <div className="admin-form-row">
