@@ -17,10 +17,12 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import {
   CAREER_CATEGORIES,
   careerCategoryLabel,
+  CAREER_VERTICALS,
 } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
-import { CAREERS_HERO, careerImage } from "@/content/careers/careers-images";
+import { careerImage } from "@/content/careers/careers-images";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
 // 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (siège)
@@ -166,65 +168,89 @@ export default async function CarrieresHubPage({
         }}
       />
 
-      <Section tone="halo-warm">
-        <Container>
-          <Breadcrumbs
-            items={[
-              { href: "/carrieres", label: isFr ? "Carrières" : "Careers" },
-            ]}
-          />
-          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
-              <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
-                {isFr ? EMPLOYER_BRAND.eyebrowFr : EMPLOYER_BRAND.eyebrowEn}
-              </p>
-              <h1 className="mt-3 font-serif text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl">
-                {isFr ? (
-                  <>
-                    Viens construire l&apos;IA qui change{" "}
-                    <em className="text-terracotta italic">vraiment</em> le
-                    quotidien des boîtes
-                  </>
-                ) : (
-                  <>
-                    Come build the AI that{" "}
-                    <em className="text-terracotta italic">actually</em> changes
-                    how companies work
-                  </>
-                )}
-              </h1>
-              <p data-speakable className="text-fg-muted mt-5 max-w-xl text-lg">
-                {isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn}
-              </p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Cta href="#offres" track="careers-hero-see-offers">
-                  {isFr ? "Voir les offres" : "See open roles"}
-                </Cta>
-                <Cta href="/contact" track="careers-hero-spontaneous">
-                  {isFr ? "Candidature spontanée" : "Spontaneous application"}
-                </Cta>
-              </div>
-            </div>
-            <div>
-              <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
-                <Image
-                  src={CAREERS_HERO.url}
-                  alt={CAREERS_HERO.alt}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-              <UnsplashCredit
-                photographerName={CAREERS_HERO.byName}
-                photographerUrl={CAREERS_HERO.byUrl}
-                className="text-right"
-              />
-            </div>
-          </div>
-        </Container>
-      </Section>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs
+          items={[
+            { href: "/carrieres", label: isFr ? "Carrières" : "Careers" },
+          ]}
+        />
+      </Container>
+      <ServiceHero
+        eyebrow={isFr ? "Rejoins l'aventure 🚀" : "Join the adventure 🚀"}
+        title={
+          isFr ? "Viens construire l'IA qui change" : "Come build the AI that"
+        }
+        titleEm={
+          isFr
+            ? "vraiment le quotidien des boîtes"
+            : "actually changes how companies work"
+        }
+        description={
+          isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn
+        }
+        ctas={
+          <>
+            <Cta href="#offres" track="careers-hero-see-offers">
+              {isFr ? "Voir les offres" : "See open roles"}
+            </Cta>
+            <Cta
+              href="/contact"
+              variant="outline"
+              track="careers-hero-spontaneous"
+            >
+              {isFr ? "Candidature spontanée" : "Spontaneous application"}
+            </Cta>
+          </>
+        }
+        schemaCenterLabel={isFr ? "Ton poste" : "Your role"}
+        schemaAriaLabel={
+          isFr
+            ? "Les domaines où Axion-IA.com recrute : développement, IA, data, design, produit, marketing, conseil, support."
+            : "Domains where Axion-IA.com hires: development, AI, data, design, product, marketing, consulting, support."
+        }
+        schemaNodes={[
+          {
+            label: isFr ? "Développement" : "Development",
+            benefit: isFr ? "Du code en prod" : "Code in prod",
+            accent: "terracotta",
+          },
+          {
+            label: "IA & ML",
+            benefit: isFr ? "Modèles & agents" : "Models & agents",
+            accent: "primary",
+          },
+          {
+            label: "Data",
+            benefit: isFr ? "Pipelines & analyse" : "Pipelines & analysis",
+            accent: "sage",
+          },
+          {
+            label: "Design",
+            benefit: isFr ? "UX & produit" : "UX & product",
+            accent: "mocha",
+          },
+          {
+            label: isFr ? "Produit" : "Product",
+            benefit: isFr ? "Vision & roadmap" : "Vision & roadmap",
+            accent: "primary",
+          },
+          {
+            label: "Marketing",
+            benefit: isFr ? "Growth & contenu" : "Growth & content",
+            accent: "terracotta",
+          },
+          {
+            label: isFr ? "Conseil" : "Consulting",
+            benefit: isFr ? "Audit & stratégie" : "Audit & strategy",
+            accent: "sage",
+          },
+          {
+            label: "Support",
+            benefit: isFr ? "Relation client" : "Customer care",
+            accent: "mocha",
+          },
+        ]}
+      />
 
       {/* Pourquoi nous rejoindre */}
       <Section tone="paper">
@@ -448,6 +474,11 @@ export default async function CarrieresHubPage({
                                 </div>
                               </div>
                             </Link>
+                            <UnsplashCredit
+                              photographerName={img.byName}
+                              photographerUrl={img.byUrl}
+                              className="px-1"
+                            />
                           </li>
                         );
                       })}
@@ -570,6 +601,42 @@ export default async function CarrieresHubPage({
               ).map((it, i) => ({ id: `faq-${i + 1}`, ...it }))}
             />
           </div>
+        </Container>
+      </Section>
+
+      {/* Maillage SEO — nos 5 expertises IA (suggestions de pages) */}
+      <Section tone="mocha">
+        <Container>
+          <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
+            {isFr ? (
+              <>
+                Découvrir{" "}
+                <em className="text-terracotta italic">Axion-IA.com</em>
+              </>
+            ) : (
+              <>
+                Discover{" "}
+                <em className="text-terracotta italic">Axion-IA.com</em>
+              </>
+            )}
+          </h2>
+          <p className="mt-3 max-w-2xl opacity-80">
+            {isFr
+              ? "Les expertises sur lesquelles tu travailleras chez nous :"
+              : "The expertise you'll work on with us:"}
+          </p>
+          <ul className="mt-6 flex flex-wrap gap-3" role="list">
+            {CAREER_VERTICALS.map((v) => (
+              <li key={v.href}>
+                <Link
+                  href={v.href}
+                  className="border-mocha-fg/25 hover:border-terracotta inline-block rounded-full border px-4 py-2 text-sm transition-colors"
+                >
+                  {isFr ? v.fr : v.en} →
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Container>
       </Section>
     </>
