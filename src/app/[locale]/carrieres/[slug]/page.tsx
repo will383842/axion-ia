@@ -229,15 +229,6 @@ export default async function JobOfferDetailPage({
                 {summary}
               </p>
 
-              {jobCities.length > 0 ? (
-                <p className="text-fg-muted mt-4 text-sm">
-                  <span className="font-medium">
-                    {isFr ? "Poste ouvert à : " : "Open in: "}
-                  </span>
-                  {jobCities.join(" · ")}
-                </p>
-              ) : null}
-
               {!isClosed ? (
                 <div className="mt-6">
                   <Cta href={applyHref} track="career-apply-hero">
@@ -276,7 +267,7 @@ export default async function JobOfferDetailPage({
               className={[
                 "prose prose-lg prose-neutral max-w-none",
                 // H2 : titres de section terracotta serif, bien détachés (anti gros-bloc).
-                "[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-terracotta-deep sm:[&_h2]:text-3xl",
+                "[&_h2]:mt-14 [&_h2]:mb-5 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-terracotta-deep sm:[&_h2]:text-4xl",
                 // H3 : sous-titres serif noir.
                 "[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-fg",
                 // Listes : puces terracotta, aérées.
@@ -364,20 +355,69 @@ export default async function JobOfferDetailPage({
         </Container>
       </Section>
 
-      {/* Accompagnement — rassurance formation + intégration (tous les postes) */}
+      {/* Où ce poste est ouvert — multi-villes (sous l'offre, plus dans le hero) */}
+      {jobCities.length > 0 ? (
+        <Section tone="sand">
+          <Container>
+            <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
+              {isFr ? "Où ce poste est ouvert" : "Where this role is open"}
+            </h2>
+            <p className="text-fg-muted mt-2 max-w-2xl">
+              {isFr
+                ? "Poste itinérant basé au siège (Saint-Marcellin / Grenoble) : tu interviens chez nos clients dans ces villes et leurs alentours."
+                : "Itinerant role based at HQ (Saint-Marcellin / Grenoble): you work at our clients in these cities and surroundings."}
+            </p>
+            <ul className="mt-5 flex flex-wrap gap-2" role="list">
+              {jobCities.map((c) => (
+                <li
+                  key={c}
+                  className="border-border text-fg-muted bg-paper rounded-full border px-3 py-1 text-sm"
+                >
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
+
+      {/* Accompagnement — formation + intégration en 2 parties (tous les postes) */}
       <Section tone="halo-cool">
         <Container>
-          <div className="border-border bg-paper shadow-subtle mx-auto max-w-3xl rounded-3xl border p-6 sm:p-8">
+          <div className="mx-auto max-w-3xl">
             <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
               {isFr
                 ? EMPLOYER_BRAND.onboardingTitleFr
                 : EMPLOYER_BRAND.onboardingTitleEn}
             </h2>
-            <p className="text-fg-soft mt-4 leading-relaxed">
-              {isFr ? EMPLOYER_BRAND.onboardingFr : EMPLOYER_BRAND.onboardingEn}
-            </p>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+                <h3 className="font-serif text-lg font-semibold">
+                  {isFr
+                    ? EMPLOYER_BRAND.formationLabelFr
+                    : EMPLOYER_BRAND.formationLabelEn}
+                </h3>
+                <p className="text-fg-soft mt-2 leading-relaxed">
+                  {isFr
+                    ? EMPLOYER_BRAND.formationFr
+                    : EMPLOYER_BRAND.formationEn}
+                </p>
+              </div>
+              <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+                <h3 className="font-serif text-lg font-semibold">
+                  {isFr
+                    ? EMPLOYER_BRAND.integrationLabelFr
+                    : EMPLOYER_BRAND.integrationLabelEn}
+                </h3>
+                <p className="text-fg-soft mt-2 leading-relaxed">
+                  {isFr
+                    ? EMPLOYER_BRAND.integrationFr
+                    : EMPLOYER_BRAND.integrationEn}
+                </p>
+              </div>
+            </div>
             {offer.category === "conseil" ? (
-              <p className="border-terracotta text-fg-soft mt-4 border-l-4 pl-4 leading-relaxed">
+              <p className="border-terracotta text-fg-soft mt-5 border-l-4 pl-4 leading-relaxed">
                 {isFr
                   ? EMPLOYER_BRAND.formateurOnboardingFr
                   : EMPLOYER_BRAND.formateurOnboardingEn}

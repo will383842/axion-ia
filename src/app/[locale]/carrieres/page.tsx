@@ -444,7 +444,7 @@ export default async function CarrieresHubPage({
                               href={`/carrieres/${o.slug}`}
                               className="border-border hover:border-terracotta bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
                             >
-                              <div className="relative aspect-[16/10] overflow-hidden">
+                              <div className="relative aspect-[16/7] overflow-hidden">
                                 <Image
                                   src={img.url}
                                   alt={img.alt}

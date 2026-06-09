@@ -18,9 +18,9 @@ export const EMPLOYER_BRAND = {
 
   /** Intro hero (sous le H1) — accroche candidat, énergique. */
   heroIntroFr:
-    "De l'IA qui finit en production — pas dans un slide. Tu codes, tu déploies, tu vois l'impact direct. Équipe à taille humaine, autonomie réelle, IA de pointe au quotidien. 👋",
+    "On recrute dans plein de métiers — dev, IA, data, design, produit, marketing, commercial, ops, support… Des missions concrètes, une équipe à taille humaine et de l'autonomie réelle. Trouve le poste qui te ressemble. 👋",
   heroIntroEn:
-    "AI that ships — not another slide. You code, you deploy, you see the impact. Human-sized team, real autonomy, cutting-edge AI every day. 👋",
+    "We're hiring across many roles — dev, AI, data, design, product, marketing, sales, ops, support… Real-world missions, a human-sized team and real autonomy. Find the role that fits you. 👋",
 
   /** Qui on est (section « Pourquoi nous rejoindre »), angle candidat. */
   aboutFr:
@@ -81,13 +81,21 @@ export const EMPLOYER_BRAND = {
   shortAboutEn:
     "Axion-IA.com, a human-sized tech company in Isère making AI operational. Here you code for real, own your work end to end, and grow fast.",
 
-  /** Bloc « accompagnement » affiché sur chaque offre (rassurance formation + intégration). */
+  /** Bloc « accompagnement » affiché sur chaque offre — 2 parties : formation + intégration. */
   onboardingTitleFr: "Comment on t'accompagne 🤝",
   onboardingTitleEn: "How we support you 🤝",
-  onboardingFr:
-    "On ne te lâche pas dans le grand bain. À ton arrivée, on te forme à nos méthodes et à nos outils, et tu montes en compétence progressivement, accompagné·e par l'équipe. L'intégration est pensée pour que tu sois à l'aise avant d'être autonome.",
-  onboardingEn:
-    "We don't throw you in at the deep end. When you join, we train you on our methods and tools, and you ramp up step by step, supported by the team. Onboarding is designed so you feel confident before going solo.",
+  formationLabelFr: "🎓 Ta formation",
+  formationLabelEn: "🎓 Your training",
+  formationFr:
+    "Dès ton arrivée, on te forme à nos méthodes et à nos outils. Tu montes en compétence progressivement, accompagné·e par l'équipe — on prend le temps qu'il faut pour que tu sois vraiment à l'aise.",
+  formationEn:
+    "From day one, we train you on our methods and tools. You ramp up step by step, supported by the team — we take the time you need to get truly comfortable.",
+  integrationLabelFr: "🤝 Ton intégration",
+  integrationLabelEn: "🤝 Your onboarding",
+  integrationFr:
+    "Ton intégration est pensée pour que tu sois à l'aise avant d'être autonome : tu n'es jamais lâché·e dans le grand bain, et tu as toujours quelqu'un vers qui te tourner.",
+  integrationEn:
+    "Onboarding is designed so you feel confident before going solo: you're never thrown in at the deep end, and there's always someone to turn to.",
   /** Spécifique formateurs (catégorie « conseil ») — doublon au début, solo quand prêt. */
   formateurOnboardingFr:
     "Pour les interventions : au début, tu es systématiquement en doublon avec un formateur expérimenté — jamais lancé·e seul·e. Une fois que tu as pris confiance et que tu assures des prestations de haute qualité, tu animes tes propres formations en solo.",
