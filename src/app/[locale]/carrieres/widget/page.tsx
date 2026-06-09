@@ -15,6 +15,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
+import { resolveWidgetCity } from "@/lib/careers/city-widget";
 import {
   OffersWidget,
   clampOffersCount,
@@ -39,7 +40,7 @@ function parseTheme(raw: string | undefined): OffersWidgetTheme {
 
 interface WidgetPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ variant?: string; count?: string; theme?: string }>;
+  searchParams: Promise<{ variant?: string; count?: string; theme?: string; city?: string }>;
 }
 
 export default async function WidgetEmbedPage({ params, searchParams }: WidgetPageProps) {
@@ -51,6 +52,7 @@ export default async function WidgetEmbedPage({ params, searchParams }: WidgetPa
   const variant = parseVariant(sp.variant);
   const theme = parseTheme(sp.theme);
   const count = clampOffersCount(sp.count);
+  const city = resolveWidgetCity(sp.city);
 
   const offers = await listPublishedJobOffers();
 
@@ -62,6 +64,7 @@ export default async function WidgetEmbedPage({ params, searchParams }: WidgetPa
         variant={variant}
         count={count}
         theme={theme}
+        city={city}
         baseUrl={SITE_URL}
       />
       <EmbedAutoResize />

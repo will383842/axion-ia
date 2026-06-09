@@ -26,15 +26,15 @@ export function OffersEmbedPromo({ locale, tone = "canvas" }: OffersEmbedPromoPr
   const benefits = isFr
     ? [
         "100 % gratuit — pas de compte, pas de clé à demander",
+        "Filtrable par ville (Lyon, Grenoble…) ou France entière",
         "Aux couleurs de votre site (thème clair ou sombre)",
         "Mises à jour automatiques — zéro maintenance",
-        "Cartes ou liste, de 1 à 12 offres",
       ]
     : [
         "100% free — no account, no API key",
+        "Filter by city (Lyon, Grenoble…) or nationwide",
         "Matches your site (light or dark theme)",
         "Auto-updated — zero maintenance",
-        "Cards or list, 1 to 12 roles",
       ];
 
   // « Pour qui ? » — publics susceptibles d'afficher nos offres chez eux.

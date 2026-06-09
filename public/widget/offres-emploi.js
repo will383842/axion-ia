@@ -7,6 +7,7 @@
  *     data-variant="large"      // "large" | "compact"
  *     data-count="5"            // 1 à 12
  *     data-theme="light"        // "light" | "dark"
+ *     data-city="Lyon"          // optionnel : ville + remote (sinon France entière)
  *     data-locale="fr"></script>
  *
  * Le script crée un <iframe> vers /[locale]/carrieres/widget et l'ajuste
@@ -33,6 +34,8 @@
   var count = parseInt(d.count, 10);
   if (isNaN(count) || count < 1) count = 5;
   if (count > 12) count = 12;
+  // Ville optionnelle (data-city) — le serveur la résout contre sa liste connue.
+  var cityQs = d.city ? "&city=" + encodeURIComponent(d.city) : "";
 
   var src =
     origin +
@@ -43,7 +46,8 @@
     "&count=" +
     count +
     "&theme=" +
-    theme;
+    theme +
+    cityQs;
 
   var iframe = document.createElement("iframe");
   iframe.src = src;

@@ -17,6 +17,7 @@
 //   - "large"   : grille de cartes avec visuel — idéal page carrières partenaire.
 
 import { isNew, salaryLabel, workModeLabel } from "@/lib/careers/format";
+import { filterOffersByCity } from "@/lib/careers/city-widget";
 import { careerImage } from "@/content/careers/careers-images";
 import type { JobOffer } from "../../../prisma/generated/client";
 
@@ -31,6 +32,12 @@ export interface OffersWidgetProps {
   /** Nombre d'offres affichées (1–12). */
   count?: number;
   theme?: OffersWidgetTheme;
+  /**
+   * Ville canonique (déjà résolue via `resolveWidgetCity`) → n'affiche que les
+   * offres de cette ville OU multi-villes l'incluant OU remote. `null`/absent =
+   * toutes les offres.
+   */
+  city?: string | null;
   /** Origine absolue du site (ex. https://axion-ia.com) pour les liens. */
   baseUrl: string;
 }
@@ -98,14 +105,26 @@ export function OffersWidget({
   variant = "large",
   count = 5,
   theme = "light",
+  city = null,
   baseUrl,
 }: OffersWidgetProps) {
   const isFr = locale !== "en";
   const t = THEMES[theme];
-  const shown = offers.slice(0, clampOffersCount(count));
+  // Filtre ville (ville OU multi-villes OU remote) avant la troncature au count.
+  const displayed = filterOffersByCity(offers, city);
+  const shown = displayed.slice(0, clampOffersCount(count));
+  // Le lien d'attribution + le hub pointent TOUJOURS vers /carrieres (ancre de
+  // marque, autorité concentrée) — jamais une URL ville (anti link-scheme).
   const hubUrl = `${baseUrl}/${locale}/carrieres`;
   const offerUrl = (slug: string) => `${baseUrl}/${locale}/carrieres/${slug}`;
-  const total = offers.length;
+  const total = displayed.length;
+  const tagline = city
+    ? isFr
+      ? `Recrute à ${city}`
+      : `Hiring in ${city}`
+    : isFr
+      ? "On recrute"
+      : "We're hiring";
 
   return (
     <div
@@ -134,7 +153,7 @@ export function OffersWidget({
               IA
             </span>
           </span>
-          <span className={`text-xs ${t.muted}`}>· {isFr ? "On recrute" : "We're hiring"}</span>
+          <span className={`text-xs ${t.muted}`}>· {tagline}</span>
         </a>
         {total > 0 ? (
           <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${t.badge}`}>
@@ -146,9 +165,13 @@ export function OffersWidget({
       {/* Corps */}
       {shown.length === 0 ? (
         <p className={`py-6 text-center text-sm ${t.muted}`}>
-          {isFr
-            ? "Pas d'offre ouverte en ce moment — revenez bientôt."
-            : "No open role right now — check back soon."}
+          {city
+            ? isFr
+              ? `Pas d'offre à ${city} ni en télétravail pour l'instant — revenez bientôt.`
+              : `No role in ${city} or remote right now — check back soon.`
+            : isFr
+              ? "Pas d'offre ouverte en ce moment — revenez bientôt."
+              : "No open role right now — check back soon."}
         </p>
       ) : variant === "compact" ? (
         <ul className="flex flex-col gap-2" role="list">

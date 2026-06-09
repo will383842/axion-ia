@@ -14,6 +14,7 @@ import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Cta } from "@/components/marketing/Cta";
 import { SITE_URL } from "@/lib/seo";
+import { CAREER_WIDGET_CITIES } from "@/lib/careers/city-widget";
 import { WidgetBuilder } from "@/components/careers/WidgetBuilder";
 
 export const revalidate = 3600;
@@ -131,7 +132,7 @@ export default async function WidgetBuilderPage({
       {/* Configurateur */}
       <Section id="builder">
         <Container>
-          <WidgetBuilder locale={loc} baseUrl={SITE_URL} />
+          <WidgetBuilder locale={loc} baseUrl={SITE_URL} cities={CAREER_WIDGET_CITIES} />
         </Container>
       </Section>
     </>

@@ -87,4 +87,37 @@ describe("<OffersWidget>", () => {
     const { container } = render(<OffersWidget locale="fr" offers={[]} baseUrl={BASE} />);
     expect(container.textContent).toContain("Pas d'offre ouverte");
   });
+
+  it("filtre par ville : ne montre que ville/multi-villes/remote", () => {
+    const cityOffers = [
+      makeOffer(1, { city: "Lyon", workMode: "on_site", jobLocations: null }),
+      makeOffer(2, { city: "Paris", workMode: "on_site", jobLocations: null }),
+      makeOffer(3, { city: null, workMode: "remote", jobLocations: null }),
+    ];
+    const { container } = render(
+      <OffersWidget locale="fr" offers={cityOffers} city="Lyon" count={12} baseUrl={BASE} />,
+    );
+    const hrefs = Array.from(container.querySelectorAll("a"))
+      .map((a) => a.getAttribute("href") ?? "")
+      .filter((h) => /\/carrieres\/offre-\d+$/.test(h));
+    expect(hrefs.some((h) => h.endsWith("offre-1"))).toBe(true); // Lyon
+    expect(hrefs.some((h) => h.endsWith("offre-3"))).toBe(true); // remote
+    expect(hrefs.some((h) => h.endsWith("offre-2"))).toBe(false); // Paris on-site
+    expect(container.textContent).toContain("Recrute à Lyon");
+  });
+
+  it("le lien d'attribution/hub reste sur /carrieres (jamais d'URL ville)", () => {
+    const { container } = render(
+      <OffersWidget locale="fr" offers={offers} city="Lyon" count={2} baseUrl={BASE} />,
+    );
+    const hubLinks = Array.from(container.querySelectorAll("a")).filter((a) =>
+      (a.getAttribute("href") ?? "").endsWith("/fr/carrieres"),
+    );
+    expect(hubLinks.length).toBeGreaterThan(0);
+    // Aucun lien ne doit contenir ?city= (ancre/cible = marque uniquement).
+    const cityLinks = Array.from(container.querySelectorAll("a")).filter((a) =>
+      (a.getAttribute("href") ?? "").includes("city="),
+    );
+    expect(cityLinks).toHaveLength(0);
+  });
 });

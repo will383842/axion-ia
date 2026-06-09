@@ -10,6 +10,8 @@ interface WidgetBuilderProps {
   locale: string;
   /** Origine absolue du site (ex. https://axion-ia.com) pour les snippets. */
   baseUrl: string;
+  /** Villes sélectionnables (canoniques). Vide = sélecteur masqué. */
+  cities: ReadonlyArray<string>;
 }
 
 type CopyKey = "iframe" | "script" | null;
@@ -24,15 +26,19 @@ const THEMES: { value: OffersWidgetTheme; fr: string; en: string }[] = [
   { value: "dark", fr: "Sombre", en: "Dark" },
 ];
 
-export function WidgetBuilder({ locale, baseUrl }: WidgetBuilderProps) {
+export function WidgetBuilder({ locale, baseUrl, cities }: WidgetBuilderProps) {
   const isFr = locale !== "en";
   const countId = useId();
+  const cityId = useId();
   const [variant, setVariant] = useState<OffersWidgetVariant>("large");
   const [theme, setTheme] = useState<OffersWidgetTheme>("light");
   const [count, setCount] = useState(5);
+  const [city, setCity] = useState(""); // "" = toutes les villes (France entière)
   const [copied, setCopied] = useState<CopyKey>(null);
 
-  const qs = `variant=${variant}&count=${count}&theme=${theme}`;
+  // `city` ajouté au query-string uniquement s'il est défini.
+  const cityQs = city ? `&city=${encodeURIComponent(city)}` : "";
+  const qs = `variant=${variant}&count=${count}&theme=${theme}${cityQs}`;
   // Aperçu : URL RELATIVE → fonctionne quelle que soit l'origine (dev/prod).
   const previewSrc = `/${locale}/carrieres/widget?${qs}`;
   // Snippets : URL ABSOLUE de production.
@@ -63,7 +69,7 @@ export function WidgetBuilder({ locale, baseUrl }: WidgetBuilderProps) {
   src="${baseUrl}/widget/offres-emploi.js"
   data-variant="${variant}"
   data-count="${count}"
-  data-theme="${theme}"
+  data-theme="${theme}"${city ? `\n  data-city="${city}"` : ""}
   data-locale="${locale}"></script>`;
 
   const copy = async (key: Exclude<CopyKey, null>, text: string) => {
@@ -129,6 +135,36 @@ export function WidgetBuilder({ locale, baseUrl }: WidgetBuilderProps) {
             ))}
           </div>
         </fieldset>
+
+        {/* Ville */}
+        {cities.length > 0 ? (
+          <fieldset className="mt-5">
+            <legend className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
+              {isFr ? "Ville" : "City"}
+            </legend>
+            <select
+              id={cityId}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="border-border focus:border-terracotta mt-2 w-full rounded-xl border bg-transparent px-3 py-2 text-sm outline-none"
+              aria-label={isFr ? "Filtrer par ville" : "Filter by city"}
+            >
+              <option value="">
+                {isFr ? "Toutes les villes (France entière)" : "All cities (nationwide)"}
+              </option>
+              {cities.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+            <p className="text-fg-muted mt-2 text-xs">
+              {isFr
+                ? "Affiche les offres de cette ville + les postes en télétravail (jamais de widget vide)."
+                : "Shows roles in this city + remote positions (never an empty widget)."}
+            </p>
+          </fieldset>
+        ) : null}
 
         {/* Count */}
         <fieldset className="mt-5">
