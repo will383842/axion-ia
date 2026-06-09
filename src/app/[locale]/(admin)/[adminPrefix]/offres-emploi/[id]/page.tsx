@@ -70,7 +70,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title={`Éditer : ${o.titleFr}`}
-        description={`Statut : ${o.status}${o.filledAt ? " · pourvu" : ""} · ${o.viewCount} vues`}
+        description={`Statut : ${o.status}${o.filledAt ? " · pourvu" : ""}`}
         actions={
           <div className="admin-actions-row">
             <Link

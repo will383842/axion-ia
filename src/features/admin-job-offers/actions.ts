@@ -285,6 +285,14 @@ export async function upsertJobOfferAction(
   const screeningQuestions = parseJsonField(d.screeningQuestions);
   const perks = parseJsonField(d.perks);
 
+  // JSON invalide saisi par l'admin : remonter une erreur plutôt que l'avaler.
+  if (d.screeningQuestions && screeningQuestions === undefined) {
+    return { ok: false, error: "Questions de l'offre : JSON invalide." };
+  }
+  if (d.perks && perks === undefined) {
+    return { ok: false, error: "Avantages : JSON invalide." };
+  }
+
   const data = {
     slug: d.slug,
     status: d.status,
