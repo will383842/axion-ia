@@ -94,14 +94,12 @@ export function JobOfferForm({ initial }: Props) {
         </div>
         <div className="admin-field">
           <label htmlFor="titleEn" className="admin-label">
-            Titre (EN)
+            Titre (EN) — optionnel (site FR, vide = recopie le FR)
           </label>
           <input
             id="titleEn"
             name="titleEn"
             type="text"
-            required
-            minLength={3}
             maxLength={160}
             defaultValue={initial?.titleEn ?? ""}
             className="admin-input"
@@ -200,14 +198,12 @@ export function JobOfferForm({ initial }: Props) {
         </div>
         <div className="admin-field">
           <label htmlFor="summaryEn" className="admin-label">
-            Résumé (EN) — max 320
+            Résumé (EN) — optionnel (vide = recopie le FR)
           </label>
           <textarea
             id="summaryEn"
             name="summaryEn"
-            required
             rows={2}
-            minLength={10}
             maxLength={320}
             defaultValue={initial?.summaryEn ?? ""}
             className="admin-input admin-textarea"
@@ -222,7 +218,9 @@ export function JobOfferForm({ initial }: Props) {
         <TiptapEditor name="bodyFr" initialHtml={initial?.bodyFrHtml ?? ""} />
       </div>
       <div className="admin-field">
-        <label className="admin-label">Corps de l&apos;offre (EN)</label>
+        <label className="admin-label">
+          Corps de l&apos;offre (EN) — optionnel (vide = recopie le FR)
+        </label>
         <TiptapEditor name="bodyEn" initialHtml={initial?.bodyEnHtml ?? ""} />
       </div>
 

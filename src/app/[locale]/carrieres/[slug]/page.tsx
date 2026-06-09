@@ -42,7 +42,9 @@ interface PerkItem {
 }
 
 /** Offre clôturée = non publiée, pourvue OU expirée (Date.now isolé hors render). */
-function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">): boolean {
+function isOfferClosed(
+  o: Pick<JobOffer, "status" | "filledAt" | "validThrough">,
+): boolean {
   if (o.status !== "published") return true;
   if (o.filledAt) return true;
   if (o.validThrough && o.validThrough.getTime() < Date.now()) return true;
@@ -50,7 +52,8 @@ function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">
 }
 
 function salaryLabel(o: JobOffer, isFr: boolean): string | null {
-  if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
+  if (o.isCommission)
+    return isFr ? "Commission déplafonnée" : "Uncapped commission";
   if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
   if (o.salaryMin == null && o.salaryMax == null) return null;
   const k = (n: number) => `${Math.round(n / 1000)}k`;
@@ -73,7 +76,8 @@ function salaryLabel(o: JobOffer, isFr: boolean): string | null {
 
 export async function generateStaticParams() {
   const slugs = await listIndexableJobOfferSlugs();
-  return routing.locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+  // FR-only : on ne pré-rend que le FR (EN désactivé → 301 vers FR au runtime).
+  return slugs.map((slug) => ({ locale: "fr", slug }));
 }
 
 export async function generateMetadata({
@@ -84,17 +88,30 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const offer = await getJobOfferBySlug(slug);
-  if (!offer) return { robots: { index: false, follow: false }, alternates: {} };
+  if (!offer)
+    return { robots: { index: false, follow: false }, alternates: {} };
 
   const isFr = locale === "fr";
+  // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
+  if (!isFr) {
+    return {
+      ...buildProductMetadata({
+        locale: locale as Locale,
+        path: `/carrieres/${slug}`,
+        title: offer.metaTitle ?? `${offer.titleEn} · Axion-IA`,
+        description: (offer.metaDescription ?? offer.summaryEn).slice(0, 160),
+      }),
+      robots: { index: false, follow: true },
+    };
+  }
   const base = buildProductMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}`,
-    title: offer.metaTitle ?? `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA`,
-    description: (offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)).slice(
-      0,
-      160,
-    ),
+    title:
+      offer.metaTitle ?? `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA`,
+    description: (
+      offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)
+    ).slice(0, 160),
     ...(offer.ogImagePath ? { ogImage: offer.ogImagePath } : {}),
   });
   if (!isJobOfferIndexable(offer)) {
@@ -124,7 +141,9 @@ export default async function JobOfferDetailPage({
   const applyHref = `/carrieres/${offer.slug}/postuler`;
   const isClosed = isOfferClosed(offer);
 
-  const perks: PerkItem[] = Array.isArray(offer.perks) ? (offer.perks as PerkItem[]) : [];
+  const perks: PerkItem[] = Array.isArray(offer.perks)
+    ? (offer.perks as PerkItem[])
+    : [];
   const suggested = await listSuggestedOffers(offer, 4);
   const categoryService = careerCategoryService(offer.category);
 
@@ -144,7 +163,9 @@ export default async function JobOfferDetailPage({
 
   return (
     <>
-      {jobPosting ? <JsonLd data={jobPosting} scriptId="jsonld-jobposting" /> : null}
+      {jobPosting ? (
+        <JsonLd data={jobPosting} scriptId="jsonld-jobposting" />
+      ) : null}
       <JsonLd data={webPage} scriptId="jsonld-webpage" />
 
       <Section tone="paper">
@@ -172,7 +193,9 @@ export default async function JobOfferDetailPage({
             {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
             {offer.city ? ` · ${offer.city}` : ""}
           </p>
-          <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">{title}</h1>
+          <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">
+            {title}
+          </h1>
 
           <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
             {offer.contractLabel ? <span>📄 {offer.contractLabel}</span> : null}
@@ -180,7 +203,8 @@ export default async function JobOfferDetailPage({
             {offer.teamName ? <span>👥 {offer.teamName}</span> : null}
             {offer.startDate ? (
               <span>
-                🗓️ {isFr ? "Dès" : "From"} {offer.startDate.toISOString().slice(0, 10)}
+                🗓️ {isFr ? "Dès" : "From"}{" "}
+                {offer.startDate.toISOString().slice(0, 10)}
               </span>
             ) : null}
           </div>
@@ -219,7 +243,11 @@ export default async function JobOfferDetailPage({
                     {perks.map((p, i) => (
                       <li key={i} className="flex gap-2">
                         <span aria-hidden>{p.icon ?? "✅"}</span>
-                        <span>{(isFr ? p.labelFr : p.labelEn) ?? p.labelFr ?? p.labelEn}</span>
+                        <span>
+                          {(isFr ? p.labelFr : p.labelEn) ??
+                            p.labelFr ??
+                            p.labelEn}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -260,7 +288,9 @@ export default async function JobOfferDetailPage({
                   {isFr ? "Qui est Axion-IA ?" : "Who is Axion-IA?"}
                 </h2>
                 <p className="text-fg-muted mt-2 text-sm">
-                  {isFr ? EMPLOYER_BRAND.shortAboutFr : EMPLOYER_BRAND.shortAboutEn}
+                  {isFr
+                    ? EMPLOYER_BRAND.shortAboutFr
+                    : EMPLOYER_BRAND.shortAboutEn}
                 </p>
                 <Link
                   href="/carrieres"
@@ -278,18 +308,26 @@ export default async function JobOfferDetailPage({
         <Section tone="sand">
           <Container>
             <h2 className="font-serif text-2xl font-semibold">
-              {isFr ? "D'autres offres qui pourraient te plaire" : "Other roles you might like"}
+              {isFr
+                ? "D'autres offres qui pourraient te plaire"
+                : "Other roles you might like"}
             </h2>
-            <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+            <ul
+              className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+              role="list"
+            >
               {suggested.map((s) => (
                 <li key={s.id}>
                   <Link
                     href={`/carrieres/${s.slug}`}
                     className="border-border hover:border-terracotta flex h-full flex-col rounded-xl border bg-white p-4 transition-colors"
                   >
-                    <h3 className="font-medium">{isFr ? s.titleFr : s.titleEn}</h3>
+                    <h3 className="font-medium">
+                      {isFr ? s.titleFr : s.titleEn}
+                    </h3>
                     <p className="text-fg-muted mt-1 text-xs">
-                      {s.city ?? WORKMODE_LABELS[s.workMode]?.[isFr ? "fr" : "en"]}
+                      {s.city ??
+                        WORKMODE_LABELS[s.workMode]?.[isFr ? "fr" : "en"]}
                     </p>
                   </Link>
                 </li>

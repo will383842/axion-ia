@@ -13,7 +13,10 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Cta } from "@/components/marketing/Cta";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
+import {
+  CAREER_CATEGORIES,
+  careerCategoryLabel,
+} from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
@@ -40,7 +43,8 @@ function isNew(datePosted: Date): boolean {
 }
 
 function salaryLabel(o: JobOffer, isFr: boolean): string | null {
-  if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
+  if (o.isCommission)
+    return isFr ? "Commission déplafonnée" : "Uncapped commission";
   if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
   if (o.salaryMin == null && o.salaryMax == null) return null;
   const k = (n: number) => `${Math.round(n / 1000)}k`;
@@ -77,8 +81,11 @@ export async function generateMetadata({
       ? "Rejoignez Axion-IA, le cabinet IA opérationnel. Découvrez nos offres d'emploi et postulez en quelques minutes — sur site, hybride ou remote, partout en France."
       : "Join Axion-IA, the operational AI firm. Browse our open positions and apply in minutes — on-site, hybrid or remote across France.",
   });
+  // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
+  if (!isFr) return { ...base, robots: { index: false, follow: true } };
   const offers = await listPublishedJobOffers();
-  if (offers.length === 0) return { ...base, robots: { index: false, follow: true } };
+  if (offers.length === 0)
+    return { ...base, robots: { index: false, follow: true } };
   return base;
 }
 
@@ -135,7 +142,9 @@ export default async function CarrieresHubPage({
 
   return (
     <>
-      {offers.length > 0 ? <JsonLd data={itemList} scriptId="jsonld-carrieres-list" /> : null}
+      {offers.length > 0 ? (
+        <JsonLd data={itemList} scriptId="jsonld-carrieres-list" />
+      ) : null}
       <JsonLd
         scriptId="jsonld-carrieres-webpage"
         data={{
@@ -154,7 +163,11 @@ export default async function CarrieresHubPage({
 
       <Section tone="paper">
         <Container>
-          <Breadcrumbs items={[{ href: "/carrieres", label: isFr ? "Carrières" : "Careers" }]} />
+          <Breadcrumbs
+            items={[
+              { href: "/carrieres", label: isFr ? "Carrières" : "Careers" },
+            ]}
+          />
           <p className="text-terracotta mt-6 text-sm font-semibold tracking-wide uppercase">
             {isFr ? EMPLOYER_BRAND.eyebrowFr : EMPLOYER_BRAND.eyebrowEn}
           </p>
@@ -162,12 +175,14 @@ export default async function CarrieresHubPage({
             {isFr ? (
               <>
                 Viens construire l&apos;IA qui change{" "}
-                <em className="text-terracotta italic">vraiment</em> le quotidien des boîtes
+                <em className="text-terracotta italic">vraiment</em> le
+                quotidien des boîtes
               </>
             ) : (
               <>
-                Come build the AI that <em className="text-terracotta italic">actually</em> changes
-                how companies work
+                Come build the AI that{" "}
+                <em className="text-terracotta italic">actually</em> changes how
+                companies work
               </>
             )}
           </h1>
@@ -194,14 +209,24 @@ export default async function CarrieresHubPage({
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr ? EMPLOYER_BRAND.aboutFr : EMPLOYER_BRAND.aboutEn}
           </p>
-          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          <ul
+            className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+            role="list"
+          >
             {EMPLOYER_BRAND.whyJoin.map((card) => (
-              <li key={card.icon} className="border-border rounded-2xl border p-5">
+              <li
+                key={card.icon}
+                className="border-border rounded-2xl border p-5"
+              >
                 <span className="text-2xl" aria-hidden>
                   {card.icon}
                 </span>
-                <h3 className="mt-2 font-medium">{isFr ? card.titleFr : card.titleEn}</h3>
-                <p className="text-fg-muted mt-1 text-sm">{isFr ? card.textFr : card.textEn}</p>
+                <h3 className="mt-2 font-medium">
+                  {isFr ? card.titleFr : card.titleEn}
+                </h3>
+                <p className="text-fg-muted mt-1 text-sm">
+                  {isFr ? card.textFr : card.textEn}
+                </p>
               </li>
             ))}
           </ul>
@@ -232,8 +257,12 @@ export default async function CarrieresHubPage({
           </h2>
           {/* Recherche — formulaire GET server-side (0 JS, INP préservé) */}
           <form method="get" className="mb-4 flex max-w-md gap-2">
-            {sp.category ? <input type="hidden" name="category" value={sp.category} /> : null}
-            {sp.workMode ? <input type="hidden" name="workMode" value={sp.workMode} /> : null}
+            {sp.category ? (
+              <input type="hidden" name="category" value={sp.category} />
+            ) : null}
+            {sp.workMode ? (
+              <input type="hidden" name="workMode" value={sp.workMode} />
+            ) : null}
             <input
               type="search"
               name="q"
@@ -274,7 +303,9 @@ export default async function CarrieresHubPage({
           ) : null}
           {activeWorkModes.length > 1 ? (
             <nav
-              aria-label={isFr ? "Filtrer par mode de travail" : "Filter by work mode"}
+              aria-label={
+                isFr ? "Filtrer par mode de travail" : "Filter by work mode"
+              }
               className="mb-8 flex flex-wrap gap-2"
             >
               <Link
@@ -310,49 +341,60 @@ export default async function CarrieresHubPage({
             </div>
           ) : (
             <div className="space-y-10">
-              {CAREER_CATEGORIES.filter((cat) => offers.some((o) => o.category === cat.slug)).map(
-                (cat) => (
-                  <div key={cat.slug}>
-                    <h3 className="font-serif text-xl font-semibold">{isFr ? cat.fr : cat.en}</h3>
-                    <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
-                      {offers
-                        .filter((o) => o.category === cat.slug)
-                        .map((o) => {
-                          const sal = salaryLabel(o, isFr);
-                          return (
-                            <li key={o.id}>
-                              <Link
-                                href={`/carrieres/${o.slug}`}
-                                className="border-border hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition-colors"
-                              >
-                                <div className="mb-3 flex flex-wrap items-center gap-2">
-                                  {isNew(o.datePosted) ? (
-                                    <span className="bg-terracotta/15 text-terracotta rounded-full px-2.5 py-0.5 text-xs font-semibold">
-                                      {isFr ? "Nouveau" : "New"}
-                                    </span>
-                                  ) : null}
-                                </div>
-                                <h4 className="font-serif text-xl font-semibold group-hover:underline">
-                                  {isFr ? o.titleFr : o.titleEn}
-                                </h4>
-                                <p className="text-fg-muted mt-2 line-clamp-3 text-sm">
-                                  {isFr ? o.summaryFr : o.summaryEn}
-                                </p>
-                                <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                                  <span>
-                                    📍 {o.city ?? WORKMODE_LABELS[o.workMode]?.[isFr ? "fr" : "en"]}
+              {CAREER_CATEGORIES.filter((cat) =>
+                offers.some((o) => o.category === cat.slug),
+              ).map((cat) => (
+                <div key={cat.slug}>
+                  <h3 className="font-serif text-xl font-semibold">
+                    {isFr ? cat.fr : cat.en}
+                  </h3>
+                  <ul
+                    className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+                    role="list"
+                  >
+                    {offers
+                      .filter((o) => o.category === cat.slug)
+                      .map((o) => {
+                        const sal = salaryLabel(o, isFr);
+                        return (
+                          <li key={o.id}>
+                            <Link
+                              href={`/carrieres/${o.slug}`}
+                              className="border-border hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition-colors"
+                            >
+                              <div className="mb-3 flex flex-wrap items-center gap-2">
+                                {isNew(o.datePosted) ? (
+                                  <span className="bg-terracotta/15 text-terracotta rounded-full px-2.5 py-0.5 text-xs font-semibold">
+                                    {isFr ? "Nouveau" : "New"}
                                   </span>
-                                  {o.contractLabel ? <span>📄 {o.contractLabel}</span> : null}
-                                  {sal ? <span>💶 {sal}</span> : null}
-                                </div>
-                              </Link>
-                            </li>
-                          );
-                        })}
-                    </ul>
-                  </div>
-                ),
-              )}
+                                ) : null}
+                              </div>
+                              <h4 className="font-serif text-xl font-semibold group-hover:underline">
+                                {isFr ? o.titleFr : o.titleEn}
+                              </h4>
+                              <p className="text-fg-muted mt-2 line-clamp-3 text-sm">
+                                {isFr ? o.summaryFr : o.summaryEn}
+                              </p>
+                              <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                                <span>
+                                  📍{" "}
+                                  {o.city ??
+                                    WORKMODE_LABELS[o.workMode]?.[
+                                      isFr ? "fr" : "en"
+                                    ]}
+                                </span>
+                                {o.contractLabel ? (
+                                  <span>📄 {o.contractLabel}</span>
+                                ) : null}
+                                {sal ? <span>💶 {sal}</span> : null}
+                              </div>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </div>
+              ))}
             </div>
           )}
         </Container>
@@ -361,7 +403,9 @@ export default async function CarrieresHubPage({
       <Section>
         <Container>
           <h2 className="font-serif text-2xl font-semibold">
-            {isFr ? "On recrute partout en France 🇫🇷" : "We hire across France 🇫🇷"}
+            {isFr
+              ? "On recrute partout en France 🇫🇷"
+              : "We hire across France 🇫🇷"}
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr
