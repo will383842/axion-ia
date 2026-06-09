@@ -80,4 +80,17 @@ export const EMPLOYER_BRAND = {
     "Axion-IA.com, boîte tech à taille humaine ancrée en Isère, qui rend l'IA opérationnelle. Ici on code pour de vrai, on porte ses sujets de bout en bout, et on monte vite.",
   shortAboutEn:
     "Axion-IA.com, a human-sized tech company in Isère making AI operational. Here you code for real, own your work end to end, and grow fast.",
+
+  /** Bloc « accompagnement » affiché sur chaque offre (rassurance formation + intégration). */
+  onboardingTitleFr: "Comment on t'accompagne 🤝",
+  onboardingTitleEn: "How we support you 🤝",
+  onboardingFr:
+    "On ne te lâche pas dans le grand bain. À ton arrivée, on te forme à nos méthodes et à nos outils, et tu montes en compétence progressivement, accompagné·e par l'équipe. L'intégration est pensée pour que tu sois à l'aise avant d'être autonome.",
+  onboardingEn:
+    "We don't throw you in at the deep end. When you join, we train you on our methods and tools, and you ramp up step by step, supported by the team. Onboarding is designed so you feel confident before going solo.",
+  /** Spécifique formateurs (catégorie « conseil ») — doublon au début, solo quand prêt. */
+  formateurOnboardingFr:
+    "Pour les interventions : au début, tu es systématiquement en doublon avec un formateur expérimenté — jamais lancé·e seul·e. Une fois que tu as pris confiance et que tu assures des prestations de haute qualité, tu animes tes propres formations en solo.",
+  formateurOnboardingEn:
+    "For training sessions: at first you always shadow an experienced trainer — never sent out alone. Once you've built confidence and consistently deliver high-quality sessions, you run your own trainings solo.",
 } as const;

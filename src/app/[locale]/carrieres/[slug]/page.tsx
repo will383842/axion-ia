@@ -187,21 +187,6 @@ export default async function JobOfferDetailPage({
             ]}
           />
 
-          <div className="border-border shadow-card relative mt-6 aspect-[21/9] overflow-hidden rounded-3xl border">
-            <Image
-              src={img.url}
-              alt={img.alt}
-              fill
-              priority
-              sizes="(max-width: 1280px) 100vw, 1200px"
-              className="object-cover"
-            />
-          </div>
-          <UnsplashCredit
-            photographerName={img.byName}
-            photographerUrl={img.byUrl}
-          />
-
           {isClosed ? (
             <p className="bg-sand text-fg-muted mt-6 rounded-lg px-4 py-3 text-sm">
               {offer.filledAt
@@ -214,47 +199,73 @@ export default async function JobOfferDetailPage({
             </p>
           ) : null}
 
-          <p className="text-terracotta mt-6 text-sm font-semibold tracking-wide uppercase">
-            {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
-            {offer.city ? ` · ${offer.city}` : ""}
-          </p>
-          <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">
-            {title}
-          </h1>
+          <div className="mt-6 grid items-start gap-8 lg:grid-cols-[1fr_0.85fr] lg:gap-12">
+            {/* Colonne gauche — texte */}
+            <div>
+              <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
+                {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
+                {offer.city ? ` · ${offer.city}` : ""}
+              </p>
+              <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">
+                {title}
+              </h1>
 
-          <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-            {offer.contractLabel ? <span>📄 {offer.contractLabel}</span> : null}
-            {sal ? <span>💶 {sal}</span> : null}
-            {offer.teamName ? <span>👥 {offer.teamName}</span> : null}
-            {offer.startDate ? (
-              <span>
-                🗓️ {isFr ? "Dès" : "From"}{" "}
-                {offer.startDate.toISOString().slice(0, 10)}
-              </span>
-            ) : null}
-          </div>
+              <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                {offer.contractLabel ? (
+                  <span>📄 {offer.contractLabel}</span>
+                ) : null}
+                {sal ? <span>💶 {sal}</span> : null}
+                {offer.teamName ? <span>👥 {offer.teamName}</span> : null}
+                {offer.startDate ? (
+                  <span>
+                    🗓️ {isFr ? "Dès" : "From"}{" "}
+                    {offer.startDate.toISOString().slice(0, 10)}
+                  </span>
+                ) : null}
+              </div>
 
-          {/* En bref — direct answer AEO / speakable */}
-          <p data-speakable className="mt-6 max-w-2xl text-lg">
-            {summary}
-          </p>
+              {/* En bref — direct answer AEO / speakable */}
+              <p data-speakable className="mt-5 text-lg">
+                {summary}
+              </p>
 
-          {jobCities.length > 0 ? (
-            <p className="text-fg-muted mt-4 max-w-2xl text-sm">
-              <span className="font-medium">
-                {isFr ? "Poste ouvert à : " : "Open in: "}
-              </span>
-              {jobCities.join(" · ")}
-            </p>
-          ) : null}
+              {jobCities.length > 0 ? (
+                <p className="text-fg-muted mt-4 text-sm">
+                  <span className="font-medium">
+                    {isFr ? "Poste ouvert à : " : "Open in: "}
+                  </span>
+                  {jobCities.join(" · ")}
+                </p>
+              ) : null}
 
-          {!isClosed ? (
-            <div className="mt-6">
-              <Cta href={applyHref} track="career-apply-hero">
-                {isFr ? "Postuler" : "Apply"}
-              </Cta>
+              {!isClosed ? (
+                <div className="mt-6">
+                  <Cta href={applyHref} track="career-apply-hero">
+                    {isFr ? "Postuler" : "Apply"}
+                  </Cta>
+                </div>
+              ) : null}
             </div>
-          ) : null}
+
+            {/* Colonne droite — photo */}
+            <div>
+              <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
+                <Image
+                  src={img.url}
+                  alt={img.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={img.byName}
+                photographerUrl={img.byUrl}
+                className="text-right"
+              />
+            </div>
+          </div>
         </Container>
       </Section>
 
@@ -349,6 +360,29 @@ export default async function JobOfferDetailPage({
                 </Link>
               </div>
             </aside>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Accompagnement — rassurance formation + intégration (tous les postes) */}
+      <Section tone="halo-cool">
+        <Container>
+          <div className="border-border bg-paper shadow-subtle mx-auto max-w-3xl rounded-3xl border p-6 sm:p-8">
+            <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
+              {isFr
+                ? EMPLOYER_BRAND.onboardingTitleFr
+                : EMPLOYER_BRAND.onboardingTitleEn}
+            </h2>
+            <p className="text-fg-soft mt-4 leading-relaxed">
+              {isFr ? EMPLOYER_BRAND.onboardingFr : EMPLOYER_BRAND.onboardingEn}
+            </p>
+            {offer.category === "conseil" ? (
+              <p className="border-terracotta text-fg-soft mt-4 border-l-4 pl-4 leading-relaxed">
+                {isFr
+                  ? EMPLOYER_BRAND.formateurOnboardingFr
+                  : EMPLOYER_BRAND.formateurOnboardingEn}
+              </p>
+            ) : null}
           </div>
         </Container>
       </Section>
