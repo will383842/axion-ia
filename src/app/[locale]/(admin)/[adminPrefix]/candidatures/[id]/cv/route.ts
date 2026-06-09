@@ -15,6 +15,10 @@ export async function GET(
 ): Promise<NextResponse> {
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+  const role = (session.user as { role?: string }).role;
+  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+    return new NextResponse("Forbidden", { status: 403 });
+  }
 
   const { id } = await params;
   const a = await prisma.jobApplication.findUnique({
@@ -28,7 +32,10 @@ export async function GET(
     const safeName = (a.cvOriginalName || "cv").replace(/[^a-zA-Z0-9._-]/g, "_");
     return new NextResponse(new Uint8Array(buf), {
       headers: {
-        "Content-Type": a.cvMimeType || "application/octet-stream",
+        // Type forcé neutre + nosniff : on ne fait pas confiance au MIME déclaré
+        // par le client à l'upload (anti rendu HTML/inline).
+        "Content-Type": "application/octet-stream",
+        "X-Content-Type-Options": "nosniff",
         "Content-Disposition": `attachment; filename="${safeName}"`,
         "Cache-Control": "private, no-store",
       },

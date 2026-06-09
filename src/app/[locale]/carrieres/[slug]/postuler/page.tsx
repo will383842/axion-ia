@@ -10,7 +10,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
-import { getJobOfferBySlug } from "@/lib/careers/job-offers";
+import { getJobOfferBySlug, isOfferOpen } from "@/lib/careers/job-offers";
 import {
   JobApplicationForm,
   type ScreeningQuestion,
@@ -50,7 +50,7 @@ export default async function PostulerPage({
   const isFr = locale === "fr";
 
   const offer = await getJobOfferBySlug(slug);
-  if (!offer || offer.status !== "published" || offer.filledAt) notFound();
+  if (!offer || !isOfferOpen(offer)) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;
   const screeningQuestions: ScreeningQuestion[] = Array.isArray(offer.screeningQuestions)

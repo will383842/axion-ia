@@ -124,9 +124,10 @@ export async function submitJobApplicationAction(
   // 6. Offre cible
   const offer = await prisma.jobOffer.findUnique({
     where: { id: d.offerId },
-    select: { id: true, titleFr: true, status: true, filledAt: true },
+    select: { id: true, titleFr: true, status: true, filledAt: true, validThrough: true },
   });
-  if (!offer || offer.status !== "published" || offer.filledAt) {
+  const expired = offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
+  if (!offer || offer.status !== "published" || offer.filledAt || expired) {
     return { ok: false, error: "Cette offre n'est plus ouverte aux candidatures." };
   }
 
@@ -137,6 +138,8 @@ export async function submitJobApplicationAction(
   let cvSizeBytes: number | null = null;
   const cv = formData.get("cv");
   if (cv instanceof File && cv.size > 0) {
+    // Vérifier la taille AVANT de charger le buffer en mémoire (anti-DoS RAM).
+    if (cv.size > CV_MAX_BYTES) return { ok: false, error: "CV trop volumineux (8 Mo max)." };
     const buf = Buffer.from(await cv.arrayBuffer());
     const cvError = validateCv(cv, buf);
     if (cvError) return { ok: false, error: cvError };

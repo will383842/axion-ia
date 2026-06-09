@@ -23,6 +23,15 @@ const STATUSES = [
   "archived",
 ] as const;
 
+/** Déchiffrement tolérant : un ciphertext corrompu ne casse pas la page entière. */
+function safeDecrypt(v: string): string {
+  try {
+    return decryptPii(v);
+  } catch {
+    return "[déchiffrement échoué]";
+  }
+}
+
 async function requireAdminWrite() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
@@ -100,8 +109,8 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
     id: r.id,
     offerId: r.offerId,
     offerTitleSnap: r.offerTitleSnap,
-    contactName: `${decryptPii(r.firstName)} ${decryptPii(r.lastName)}`.trim(),
-    contactEmail: decryptPii(r.email),
+    contactName: `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim(),
+    contactEmail: safeDecrypt(r.email),
     status: r.status,
     hasCv: Boolean(r.cvStoragePath),
     needsAttention: r.needsAttention,
@@ -160,10 +169,10 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     offerTitleSnap: a.offerTitleSnap,
     status: a.status,
     civility: a.civility,
-    firstName: decryptPii(a.firstName),
-    lastName: decryptPii(a.lastName),
-    email: decryptPii(a.email),
-    phone: decryptPii(a.phone),
+    firstName: safeDecrypt(a.firstName),
+    lastName: safeDecrypt(a.lastName),
+    email: safeDecrypt(a.email),
+    phone: safeDecrypt(a.phone),
     city: a.city,
     motivation: a.motivation,
     currentRole: a.currentRole,

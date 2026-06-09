@@ -32,6 +32,17 @@ export function isJobOfferIndexable(
   return true;
 }
 
+/** Ouverte aux candidatures = publiée, non pourvue, non expirée (peut être noindex tier_2). */
+export function isOfferOpen(
+  o: Pick<JobOffer, "status" | "filledAt" | "validThrough">,
+  now: Date = new Date(),
+): boolean {
+  if (o.status !== "published") return false;
+  if (o.filledAt) return false;
+  if (o.validThrough && o.validThrough.getTime() < now.getTime()) return false;
+  return true;
+}
+
 /** Slugs indexables (sitemap-carrieres + generateStaticParams). */
 export async function listIndexableJobOfferSlugs(): Promise<string[]> {
   const rows = await prisma.jobOffer.findMany({

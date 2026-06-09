@@ -4,6 +4,7 @@
 // Gère : remote→TELECOMMUTE vs Place ; baseSalary vs incentiveCompensation ;
 // validThrough déterministe ; garde-fou published & !filled.
 import { SITE_URL } from "@/lib/seo";
+import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import type { JobOffer } from "../../../prisma/generated/client";
 
 const HIRING_ORG = {
@@ -13,10 +14,10 @@ const HIRING_ORG = {
   sameAs: SITE_URL,
 } as const;
 
-/** validThrough : offer.validThrough sinon datePosted + 1 an (déterministe, anti date-gaming). */
-function resolveValidThrough(offer: Pick<JobOffer, "validThrough" | "datePosted">): string {
-  if (offer.validThrough) return offer.validThrough.toISOString();
-  const d = new Date(offer.datePosted);
+/** validThrough : offer.validThrough sinon date de publication + 1 an (déterministe). */
+function resolveValidThrough(validThrough: Date | null, posted: Date): string {
+  if (validThrough) return validThrough.toISOString();
+  const d = new Date(posted);
   d.setUTCFullYear(d.getUTCFullYear() + 1);
   return d.toISOString();
 }
@@ -30,11 +31,18 @@ export function buildJobPostingJsonLd(
   offer: JobOffer,
   locale: "fr" | "en" = "fr",
 ): Record<string, unknown> | null {
+  // Garde-fou cohérent avec l'indexabilité : pas de JobPosting si non-publiée,
+  // pourvue, noindex (tier≠1) ou expirée (sinon Google for Jobs indexe une offre
+  // qu'on a voulu cacher/clôturer).
   if (offer.status !== "published" || offer.filledAt) return null;
+  if (offer.indexationTier !== "tier_1_indexable") return null;
+  if (offer.validThrough && offer.validThrough.getTime() < Date.now()) return null;
 
   const isFr = locale === "fr";
   const title = isFr ? offer.titleFr : offer.titleEn;
-  const description = isFr ? offer.bodyFr : offer.bodyEn; // HTML riche accepté par Google
+  // Description sanitizée (whitelist) — le composant JsonLd n'échappe pas </script>.
+  const description = sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn);
+  const posted = offer.publishedAt ?? offer.datePosted;
   const applyUrl = `${SITE_URL}/${locale}/carrieres/${offer.slug}/postuler`;
 
   const jsonLd: Record<string, unknown> = {
@@ -42,8 +50,8 @@ export function buildJobPostingJsonLd(
     "@type": "JobPosting",
     title,
     description,
-    datePosted: offer.datePosted.toISOString(),
-    validThrough: resolveValidThrough(offer),
+    datePosted: posted.toISOString(),
+    validThrough: resolveValidThrough(offer.validThrough, posted),
     employmentType: offer.employmentType,
     hiringOrganization: HIRING_ORG,
     directApply: true,

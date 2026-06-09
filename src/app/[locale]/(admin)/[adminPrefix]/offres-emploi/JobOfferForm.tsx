@@ -368,6 +368,7 @@ export function JobOfferForm({ initial }: Props) {
           />
           100 % commission (omet baseSalary, JobPosting incentiveCompensation)
         </label>
+        <input type="hidden" name="salaryVisible" value="false" />
         <label className="admin-checkbox">
           <input
             type="checkbox"
