@@ -5,6 +5,7 @@ import { useActionState, useState } from "react";
 import { upsertJobOfferAction, type UpsertJobOfferState } from "@/features/admin-job-offers/actions";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
 import { slugify } from "@/lib/slug";
+import { CAREER_CATEGORIES } from "@/content/careers/categories";
 
 const init: UpsertJobOfferState = { ok: false, error: "" };
 
@@ -135,13 +136,11 @@ export function JobOfferForm({ initial }: Props) {
             className="admin-input"
             disabled={pending}
           >
-            <option value="tech">Tech</option>
-            <option value="commercial">Commercial</option>
-            <option value="marketing">Marketing</option>
-            <option value="operations">Opérations</option>
-            <option value="design">Design</option>
-            <option value="support">Support</option>
-            <option value="autre">Autre</option>
+            {CAREER_CATEGORIES.map((c) => (
+              <option key={c.slug} value={c.slug}>
+                {c.fr}
+              </option>
+            ))}
           </select>
         </div>
         <div className="admin-field">
@@ -374,7 +373,7 @@ export function JobOfferForm({ initial }: Props) {
             type="checkbox"
             name="salaryVisible"
             value="true"
-            defaultChecked={initial?.salaryVisible ?? true}
+            defaultChecked={initial?.salaryVisible ?? false}
             disabled={pending}
           />
           Afficher la fourchette publiquement

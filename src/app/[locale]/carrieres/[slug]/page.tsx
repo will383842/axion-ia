@@ -16,6 +16,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
+import { careerCategoryService } from "@/content/careers/categories";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
   getJobOfferBySlug,
@@ -31,21 +32,6 @@ const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
   on_site: { fr: "Sur site", en: "On-site" },
   hybrid: { fr: "Hybride", en: "Hybrid" },
   remote: { fr: "Remote", en: "Remote" },
-};
-
-// Maillage interne (GEO) : catégorie d'offre → page métier/service liée.
-const CATEGORY_SERVICE: Record<string, { href: string; fr: string; en: string }> = {
-  tech: { href: "/sites-web", fr: "Sites web & SaaS IA", en: "Websites & AI SaaS" },
-  commercial: {
-    href: "/devenir-commercial-ia",
-    fr: "Réseau commercial Axion-IA",
-    en: "Axion-IA sales network",
-  },
-  marketing: { href: "/interventions", fr: "Formations IA", en: "AI trainings" },
-  operations: { href: "/audit", fr: "Audit IA", en: "AI audit" },
-  design: { href: "/sites-web", fr: "Design & sites web", en: "Design & websites" },
-  support: { href: "/contact", fr: "Nous contacter", en: "Contact us" },
-  autre: { href: "/a-propos", fr: "À propos d'Axion-IA", en: "About Axion-IA" },
 };
 
 interface PerkItem {
@@ -128,6 +114,7 @@ export default async function JobOfferDetailPage({
 
   const perks: PerkItem[] = Array.isArray(offer.perks) ? (offer.perks as PerkItem[]) : [];
   const suggested = await listSuggestedOffers(offer, 4);
+  const categoryService = careerCategoryService(offer.category);
 
   const jobPosting = buildJobPostingJsonLd(offer, loc);
   const webPage = {
@@ -242,17 +229,15 @@ export default async function JobOfferDetailPage({
                 </div>
               ) : null}
 
-              {CATEGORY_SERVICE[offer.category] ? (
+              {categoryService ? (
                 <div className="border-border rounded-2xl border p-5">
                   <h2 className="font-serif text-lg font-semibold">
                     {isFr ? "Le métier chez Axion-IA" : "The role at Axion-IA"}
                   </h2>
                   <p className="text-fg-muted mt-2 text-sm">
                     {isFr ? "Découvrir aussi : " : "See also: "}
-                    <Link href={CATEGORY_SERVICE[offer.category]!.href} className="underline">
-                      {isFr
-                        ? CATEGORY_SERVICE[offer.category]!.fr
-                        : CATEGORY_SERVICE[offer.category]!.en}
+                    <Link href={categoryService.href} className="underline">
+                      {isFr ? categoryService.fr : categoryService.en}
                     </Link>
                   </p>
                 </div>

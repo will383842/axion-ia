@@ -13,21 +13,13 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Cta } from "@/components/marketing/Cta";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { careerCategoryLabel } from "@/content/careers/categories";
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
 import type { JobOffer } from "../../../../prisma/generated/client";
 
 export const revalidate = 3600;
 
-const CATEGORY_LABELS: Record<string, { fr: string; en: string }> = {
-  tech: { fr: "Tech", en: "Tech" },
-  commercial: { fr: "Commercial", en: "Sales" },
-  marketing: { fr: "Marketing", en: "Marketing" },
-  operations: { fr: "Opérations", en: "Operations" },
-  design: { fr: "Design", en: "Design" },
-  support: { fr: "Support", en: "Support" },
-  autre: { fr: "Autre", en: "Other" },
-};
 const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
   on_site: { fr: "Sur site", en: "On-site" },
   hybrid: { fr: "Hybride", en: "Hybrid" },
@@ -192,7 +184,7 @@ export default async function CarrieresHubPage({
                   href={filterHref(c, sp.workMode)}
                   className={`rounded-full border px-4 py-1.5 text-sm ${sp.category === c ? "border-terracotta bg-terracotta/10 font-medium" : "border-border"}`}
                 >
-                  {CATEGORY_LABELS[c]?.[isFr ? "fr" : "en"] ?? c}
+                  {careerCategoryLabel(c, isFr)}
                 </Link>
               ))}
             </nav>
@@ -245,7 +237,7 @@ export default async function CarrieresHubPage({
                     >
                       <div className="mb-3 flex flex-wrap items-center gap-2">
                         <span className="bg-sand text-fg-muted rounded-full px-2.5 py-0.5 text-xs font-medium">
-                          {CATEGORY_LABELS[o.category]?.[isFr ? "fr" : "en"] ?? o.category}
+                          {careerCategoryLabel(o.category, isFr)}
                         </span>
                         {isNew(o.datePosted) ? (
                           <span className="bg-terracotta/15 text-terracotta rounded-full px-2.5 py-0.5 text-xs font-semibold">

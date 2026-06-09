@@ -7,7 +7,7 @@ function makeOffer(over: Partial<JobOffer> = {}): JobOffer {
     id: "00000000-0000-0000-0000-000000000001",
     slug: "dev-fullstack-lyon",
     status: "published",
-    category: "tech",
+    category: "developpement",
     titleFr: "Développeur Fullstack",
     titleEn: "Fullstack Developer",
     summaryFr: "Résumé fr",

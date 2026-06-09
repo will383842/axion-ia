@@ -4,16 +4,8 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
+import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  tech: "Tech",
-  commercial: "Commercial",
-  marketing: "Marketing",
-  operations: "Opérations",
-  design: "Design",
-  support: "Support",
-  autre: "Autre",
-};
 const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
   published: "Publié",
@@ -68,9 +60,9 @@ export function JobOffersV2({
                 className="admin-input"
               >
                 <option value="all">Toutes</option>
-                {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
-                  <option key={k} value={k}>
-                    {v}
+                {CAREER_CATEGORIES.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.fr}
                   </option>
                 ))}
               </select>
@@ -143,7 +135,7 @@ export function JobOffersV2({
                 items.map((o) => (
                   <tr key={o.id}>
                     <td>{o.displayOrder}</td>
-                    <td>{CATEGORY_LABELS[o.category] ?? o.category}</td>
+                    <td>{careerCategoryLabel(o.category, true)}</td>
                     <td>
                       {o.titleFr}
                       {o.filledAt ? <span className="admin-meta-small"> · pourvu</span> : null}

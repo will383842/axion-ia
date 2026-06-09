@@ -14,6 +14,7 @@ import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/seo";
 import { pingIndexNow } from "@/lib/indexnow";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
   JobCategory,
   JobWorkMode,
@@ -21,15 +22,7 @@ import type {
   Prisma,
 } from "../../../prisma/generated/client";
 
-const CATEGORIES = [
-  "tech",
-  "commercial",
-  "marketing",
-  "operations",
-  "design",
-  "support",
-  "autre",
-] as const;
+const LIST_CATEGORIES = [...CAREER_CATEGORY_SLUGS, "all"] as const;
 
 /** Ping IndexNow pour une offre (FR seul, EN désactivé). Fire-and-forget. */
 function pingOfferIndexing(slug: string, event: "publish" | "delete"): void {
@@ -63,9 +56,7 @@ async function requireSuperAdmin() {
 // ============================================================
 
 const listSchema = z.object({
-  category: z
-    .enum(["tech", "commercial", "marketing", "operations", "design", "support", "autre", "all"])
-    .default("all"),
+  category: z.enum(LIST_CATEGORIES).default("all"),
   status: z.enum(["draft", "published", "archived", "all"]).default("all"),
   search: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
@@ -182,7 +173,7 @@ const upsertSchema = z.object({
   id: z.string().uuid().optional(),
   slug: slugSchema,
   status: z.enum(["draft", "published", "archived"]).default("draft"),
-  category: z.enum(CATEGORIES),
+  category: z.enum(CAREER_CATEGORY_SLUGS),
   titleFr: z.string().min(3).max(160),
   titleEn: z.string().min(3).max(160),
   summaryFr: z.string().min(10).max(320),
