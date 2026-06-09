@@ -4017,6 +4017,19 @@ enum SiteRouteVisibility {
   public
 }
 
+/// Feu tricolore de revue éditoriale manuelle (décision Will 2026-06-08).
+/// Renseigné à la main dans l'onglet « Toutes les URLs » :
+///   unset  = pas encore revue
+///   green  = page parfaite, rien à faire
+///   orange = nécessite une retouche
+///   red    = cassée / problème bloquant
+enum SiteRouteQuality {
+  unset
+  green
+  orange
+  red
+}
+
 model SiteRoute {
   id           String  @id @default(cuid())
   pathPattern  String  @map("path_pattern") @db.VarChar(1000)
@@ -4062,6 +4075,38 @@ model SiteRoute {
   sourceDbTable String? @map("source_db_table") @db.VarChar(100)
   sourceDbId    String? @map("source_db_id") @db.VarChar(100)
 
+  // ─── Indexabilité LIVE (source de vérité = src/server/site-explorer/indexability.ts) ───
+  // Calculée depuis la logique réelle (drip villes `isVilleIndexable`, tier des
+  // articles, `isNoindexStubRoute`), PAS par scraping HTML. Recalculée chaque
+  // jour par le worker de découverte → bascule noindex→indexable automatique.
+  isIndexable   Boolean? @map("is_indexable")
+  noindexReason String?  @map("noindex_reason") @db.VarChar(200)
+
+  // Catégorie canonique de regroupement UI (cf. src/server/site-explorer/categories.ts).
+  category String? @db.VarChar(60)
+
+  // ─── Revue manuelle (feu tricolore + notes) — onglet « Toutes les URLs » ───
+  qualityStatus SiteRouteQuality @default(unset) @map("quality_status")
+  adminNotes    String?          @map("admin_notes") @db.Text
+  reviewedAt    DateTime?        @map("reviewed_at")
+  reviewedBy    String?          @map("reviewed_by") @db.VarChar(100)
+
+  // ─── Google Search Console ───
+  // Demande d'indexation manuelle (la case que Will coche) + trafic réel (worker GSC).
+  gscIndexationRequested   Boolean   @default(false) @map("gsc_indexation_requested")
+  gscIndexationRequestedAt DateTime? @map("gsc_indexation_requested_at")
+  gscClicks                Int?      @map("gsc_clicks")
+  gscImpressions           Int?      @map("gsc_impressions")
+  gscCtr                   Float?    @map("gsc_ctr")
+  gscPosition              Float?    @map("gsc_position")
+  gscDataAt                DateTime? @map("gsc_data_at")
+
+  // ─── Cycle de vie « vivant » (découverte automatique) ───
+  // lastSeenAt = dernier passage de l'énumérateur ; removedAt = soft-tombstone
+  // quand une URL disparaît de la découverte (jamais de hard-delete).
+  lastSeenAt DateTime? @map("last_seen_at")
+  removedAt  DateTime? @map("removed_at")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -4074,6 +4119,11 @@ model SiteRoute {
   @@index([visibility])
   @@index([depth])
   @@index([editable])
+  @@index([qualityStatus])
+  @@index([isIndexable])
+  @@index([gscIndexationRequested])
+  @@index([category])
+  @@index([removedAt])
   @@map("site_routes")
 }
 

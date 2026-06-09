@@ -42,6 +42,9 @@ import { startExternalLinksMonitorWorker } from "./workers/external-links-monito
 // Sprint Site Explorer Admin 2026-05-22
 import { startSiteRouteInspectorWorker } from "./workers/site-route-inspector-worker";
 import { startSiteRouteAnomalyDetectorWorker } from "./workers/site-route-anomaly-detector-worker";
+// Onglet « Toutes les URLs » 2026-06-08 — découverte « vivante » + trafic GSC
+import { startSiteRouteDiscoveryWorker } from "./workers/site-route-discovery-worker";
+import { startSiteRouteGscWorker } from "./workers/site-route-gsc-worker";
 // Sprint v7 Phase 9 + Phase 13 — workers env-gated (throw si flag !=true).
 // Démarrent uniquement si l'opérateur active explicitement le flag Coolify.
 import { startGscHcuMonitorWorker } from "./workers/gsc-hcu-monitor-worker";
@@ -113,6 +116,9 @@ async function main() {
     // Sprint Site Explorer Admin 2026-05-22
     startSiteRouteInspectorWorker(), // daily 02:00 UTC — inspection URLs publiques
     startSiteRouteAnomalyDetectorWorker(), // daily 03:00 UTC — détection anomalies
+    // Onglet « Toutes les URLs » 2026-06-08
+    startSiteRouteDiscoveryWorker(), // daily 01:00 UTC — découverte « vivante » + indexabilité
+    startSiteRouteGscWorker(), // daily 04:00 UTC — trafic GSC par URL
     // Sprint v7 Phase 9 + Phase 13 — workers env-gated.
     // Conditionnal spread : si flag !=true, le worker throw au start. On évite
     // le throw en n'appelant le constructeur que si le flag est true.

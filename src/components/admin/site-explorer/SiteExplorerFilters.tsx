@@ -56,6 +56,24 @@ export function SiteExplorerFilters() {
       </select>
 
       <select
+        value={sp.get("category") ?? ""}
+        onChange={(e) => update("category", e.target.value)}
+        aria-label="Filtrer par catégorie"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Toutes les catégories</option>
+        <option value="commercial">Commercial &amp; offres</option>
+        <option value="villes">Villes &amp; implantations</option>
+        <option value="contenu">Contenu éditorial</option>
+        <option value="aide">Aide &amp; FAQ</option>
+        <option value="conversion">Formulaires &amp; conversion</option>
+        <option value="transversal">Transversal</option>
+        <option value="galerie">Galerie</option>
+        <option value="legal">Légal &amp; footer</option>
+        <option value="autre">Autre</option>
+      </select>
+
+      <select
         value={sp.get("section") ?? ""}
         onChange={(e) => update("section", e.target.value)}
         aria-label="Filtrer par section"
@@ -65,24 +83,76 @@ export function SiteExplorerFilters() {
         {[
           "blog",
           "guides",
+          "actualites",
+          "connaissances",
           "cas-concrets",
+          "comparaisons",
           "glossaire",
           "galerie",
           "presse",
           "stack-ia",
-          "audits",
-          "interventions-formations",
+          "faq",
+          "centre-aide",
+          "audit",
+          "interventions",
           "un-a-un",
-          "implementations",
+          "implementation",
           "sites-web-augmentes",
           "implantations",
           "equipe",
+          "contact",
+          "demande-devis",
         ].map((s) => (
           <option key={s} value={s}>
             {s}
           </option>
         ))}
       </select>
+
+      <select
+        value={sp.get("indexable") ?? ""}
+        onChange={(e) => update("indexable", e.target.value)}
+        aria-label="Filtrer par indexabilité"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Indexable : tout</option>
+        <option value="true">Indexable</option>
+        <option value="false">Noindex</option>
+      </select>
+
+      <select
+        value={sp.get("quality") ?? ""}
+        onChange={(e) => update("quality", e.target.value)}
+        aria-label="Filtrer par feu tricolore"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Feu : tout</option>
+        <option value="green">🟢 Parfaite</option>
+        <option value="orange">🟠 À retoucher</option>
+        <option value="red">🔴 Cassée</option>
+        <option value="unset">⚪ Non revue</option>
+      </select>
+
+      <select
+        value={sp.get("sort") ?? ""}
+        onChange={(e) => update("sort", e.target.value)}
+        aria-label="Trier"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Tri : par défaut</option>
+        <option value="indexable_first">Indexables d&apos;abord</option>
+        <option value="noindex_first">Noindex d&apos;abord</option>
+      </select>
+
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+        <input
+          type="checkbox"
+          checked={sp.get("gscRequested") === "true"}
+          onChange={(e) => update("gscRequested", e.target.checked ? "true" : "")}
+          className="rounded"
+        />
+        GSC demandé
+      </label>
 
       <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
         <input

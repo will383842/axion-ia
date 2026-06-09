@@ -188,3 +188,21 @@ export interface SiteRouteInspectorJobData {
 export interface SiteRouteAnomalyDetectorJobData {
   tick: string;
 }
+
+// ============================================================
+// Queue: site-route-discovery (Onglet « Toutes les URLs » 2026-06-08 — daily 01:00)
+// Énumération unifiée + recalcul indexabilité live. Rend le catalogue « vivant ».
+// ============================================================
+
+export interface SiteRouteDiscoveryJobData {
+  tick: string;
+}
+
+// ============================================================
+// Queue: site-route-gsc (Onglet « Toutes les URLs » 2026-06-08 — daily 04:00)
+// Tire le trafic réel (clics/impressions/position) par URL depuis Search Console.
+// ============================================================
+
+export interface SiteRouteGscJobData {
+  tick: string;
+}

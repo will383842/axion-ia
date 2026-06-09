@@ -7,7 +7,11 @@ import {
   getSiteRouteDetail,
   triggerInspection,
   resolveAnomaly,
+  setRouteQualityStatus,
+  toggleGscIndexationRequested,
+  setRouteAdminNotes,
 } from "@/server/actions/site-explorer/site-routes";
+import type { SiteRouteQuality } from "../../../../../../../prisma/generated/client";
 import { SiteRouteStatusBadge } from "@/components/admin/site-explorer/SiteRouteStatusBadge";
 import { adminPath } from "@/lib/admin-path";
 
@@ -42,6 +46,33 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
     await triggerInspection(id);
     redirect(adminPath("fr", `site-explorer/${id}`));
   }
+
+  async function handleSetQuality(formData: FormData) {
+    "use server";
+    const q = String(formData.get("quality") ?? "unset") as SiteRouteQuality;
+    await setRouteQualityStatus(id, q);
+    redirect(adminPath("fr", `site-explorer/${id}`));
+  }
+
+  async function handleToggleGsc() {
+    "use server";
+    const current = await getSiteRouteDetail(id);
+    await toggleGscIndexationRequested(id, !current?.gscIndexationRequested);
+    redirect(adminPath("fr", `site-explorer/${id}`));
+  }
+
+  async function handleSetNotes(formData: FormData) {
+    "use server";
+    await setRouteAdminNotes(id, String(formData.get("notes") ?? ""));
+    redirect(adminPath("fr", `site-explorer/${id}`));
+  }
+
+  const QUALITY_BTNS: Array<{ value: SiteRouteQuality; emoji: string; label: string }> = [
+    { value: "green", emoji: "🟢", label: "Parfaite" },
+    { value: "orange", emoji: "🟠", label: "À retoucher" },
+    { value: "red", emoji: "🔴", label: "Cassée" },
+    { value: "unset", emoji: "⚪", label: "Non revue" },
+  ];
 
   return (
     <div className="space-y-6 p-6">
@@ -144,6 +175,104 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               }
             />
           </dl>
+        </section>
+
+        {/* Indexabilité & GSC */}
+        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
+          <h2 className="font-semibold text-gray-900">Indexabilité &amp; GSC</h2>
+          <dl className="space-y-2 text-sm">
+            <Row
+              label="Indexable (live)"
+              value={
+                route.isIndexable === null
+                  ? "— (non calculé)"
+                  : route.isIndexable
+                    ? "✅ Indexable"
+                    : `🚫 Noindex — ${route.noindexReason ?? ""}`
+              }
+            />
+            <Row label="Catégorie" value={route.category ?? "—"} />
+            <Row label="Source" value={route.source} />
+            <Row
+              label="Indexation GSC"
+              value={
+                route.gscIndexationRequested
+                  ? `✅ Demandée${route.gscIndexationRequestedAt ? ` le ${new Date(route.gscIndexationRequestedAt).toLocaleDateString("fr-FR")}` : ""}`
+                  : "Non demandée"
+              }
+            />
+            <Row
+              label="Trafic GSC (28j)"
+              value={
+                route.gscImpressions === null
+                  ? "—"
+                  : `${route.gscClicks ?? 0} clics · ${route.gscImpressions} impressions${
+                      route.gscPosition != null ? ` · pos. ${route.gscPosition.toFixed(1)}` : ""
+                    }`
+              }
+            />
+            <Row
+              label="Vue/découverte"
+              value={
+                route.lastSeenAt ? new Date(route.lastSeenAt).toLocaleString("fr-FR") : "jamais"
+              }
+            />
+            {route.removedAt && (
+              <Row label="Disparue le" value={new Date(route.removedAt).toLocaleString("fr-FR")} />
+            )}
+          </dl>
+          <form action={handleToggleGsc}>
+            <button
+              type="submit"
+              className="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50"
+            >
+              {route.gscIndexationRequested
+                ? "Décocher « indexation GSC demandée »"
+                : "Marquer « indexation GSC demandée »"}
+            </button>
+          </form>
+        </section>
+
+        {/* Revue manuelle : feu tricolore + notes */}
+        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
+          <h2 className="font-semibold text-gray-900">Revue (feu &amp; notes)</h2>
+          <form action={handleSetQuality} className="flex flex-wrap gap-2">
+            {QUALITY_BTNS.map((b) => (
+              <button
+                key={b.value}
+                type="submit"
+                name="quality"
+                value={b.value}
+                className={`rounded border px-2.5 py-1.5 text-sm hover:bg-gray-50 ${
+                  route.qualityStatus === b.value
+                    ? "border-gray-800 font-semibold"
+                    : "border-gray-300 text-gray-600"
+                }`}
+              >
+                {b.emoji} {b.label}
+              </button>
+            ))}
+          </form>
+          {route.reviewedAt && (
+            <p className="text-xs text-gray-400">
+              Dernière revue : {new Date(route.reviewedAt).toLocaleString("fr-FR")}
+            </p>
+          )}
+          <form action={handleSetNotes} className="space-y-2">
+            <textarea
+              name="notes"
+              defaultValue={route.adminNotes ?? ""}
+              rows={3}
+              placeholder="Notes internes sur cette URL…"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            />
+            <button
+              type="submit"
+              className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+            >
+              Enregistrer la note
+            </button>
+          </form>
         </section>
 
         {/* Lighthouse */}

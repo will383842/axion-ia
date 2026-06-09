@@ -7,67 +7,17 @@
 
 import { beforeAll, describe, it, expect } from "vitest";
 import React from "react";
-import { Font } from "@react-pdf/renderer";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
+import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /**
- * En environnement test les fichiers .ttf ne sont pas dans public/fonts/ —
- * fonts.ts log un warn et ne register pas les familles. @react-pdf lance alors
- * "Font family not registered: Manrope".
- *
- * On enregistre chaque famille personnalisée en mappant ses variants sur les
- * polices built-in de @react-pdf (Helvetica / Courier) qui n'ont pas besoin
- * de fichier disque. Les 4 variants (normal+bold+italic+boldItalic) sont
- * nécessaires car base-layout utilise fontStyle: "italic" dans legalNote.
- *
- * Idempotent : Font.register sur une famille déjà enregistrée ne throw pas.
+ * Filet de sécurité polices : enregistre les familles de marque sur les polices
+ * built-in de @react-pdf UNIQUEMENT si elles ne sont pas déjà enregistrées
+ * (vraies polices public/fonts/ ou fallback Geist). Voir register-pdf-test-fonts.
  */
 beforeAll(() => {
-  // Fraunces → Times (serif built-in)
-  try {
-    Font.register({
-      family: "Fraunces",
-      fonts: [
-        { src: "Times-Roman", fontWeight: "normal", fontStyle: "normal" },
-        { src: "Times-Bold", fontWeight: "bold", fontStyle: "normal" },
-        { src: "Times-Roman", fontWeight: "normal", fontStyle: "italic" },
-        { src: "Times-Bold", fontWeight: "bold", fontStyle: "italic" },
-      ],
-    });
-  } catch {
-    /* ignoré */
-  }
-
-  // Manrope → Helvetica (sans-serif built-in)
-  try {
-    Font.register({
-      family: "Manrope",
-      fonts: [
-        { src: "Helvetica", fontWeight: "normal", fontStyle: "normal" },
-        { src: "Helvetica-Bold", fontWeight: "bold", fontStyle: "normal" },
-        { src: "Helvetica-Oblique", fontWeight: "normal", fontStyle: "italic" },
-        { src: "Helvetica-BoldOblique", fontWeight: "bold", fontStyle: "italic" },
-      ],
-    });
-  } catch {
-    /* ignoré */
-  }
-
-  // Inconsolata → Courier (mono built-in)
-  try {
-    Font.register({
-      family: "Inconsolata",
-      fonts: [
-        { src: "Courier", fontWeight: "normal", fontStyle: "normal" },
-        { src: "Courier-Bold", fontWeight: "bold", fontStyle: "normal" },
-        { src: "Courier", fontWeight: "normal", fontStyle: "italic" },
-        { src: "Courier-Bold", fontWeight: "bold", fontStyle: "italic" },
-      ],
-    });
-  } catch {
-    /* ignoré */
-  }
+  registerPdfTestFontsFallback();
 });
 
 // Templates

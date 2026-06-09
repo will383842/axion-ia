@@ -8,8 +8,13 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { siteRouteInspectorQueue } from "@/server/queue/queues";
-import type { SiteRouteType, SiteRouteStatus } from "../../../../prisma/generated/client";
+import { siteRouteInspectorQueue, siteRouteDiscoveryQueue } from "@/server/queue/queues";
+import { requireAdminWrite } from "./_guards";
+import type {
+  SiteRouteType,
+  SiteRouteStatus,
+  SiteRouteQuality,
+} from "../../../../prisma/generated/client";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -17,7 +22,17 @@ export interface SiteRouteFilters {
   type?: SiteRouteType;
   status?: SiteRouteStatus;
   section?: string;
+  category?: string;
   editable?: boolean;
+  /** Filtre indexabilité live : true = indexable, false = noindex. */
+  isIndexable?: boolean;
+  qualityStatus?: SiteRouteQuality;
+  /** true = indexation GSC demandée. */
+  gscRequested?: boolean;
+  /** Inclure les URLs disparues (tombstonées). Défaut : false. */
+  includeRemoved?: boolean;
+  /** Tri optionnel : regroupe par indexabilité avant l'ordre par défaut. */
+  sort?: "indexable_first" | "noindex_first";
   search?: string;
   anomaliesOnly?: boolean;
   page?: number;
@@ -32,6 +47,7 @@ export interface SiteRouteListItem {
   type: SiteRouteType;
   status: SiteRouteStatus;
   section: string | null;
+  category: string | null;
   editable: boolean;
   editorRoute: string | null;
   httpStatus: number | null;
@@ -41,6 +57,17 @@ export interface SiteRouteListItem {
   hasAiDisclaimer: boolean | null;
   lastInspectedAt: Date | null;
   depth: number;
+  // Indexabilité live + revue manuelle + GSC.
+  isIndexable: boolean | null;
+  noindexReason: string | null;
+  qualityStatus: SiteRouteQuality;
+  gscIndexationRequested: boolean;
+  gscIndexationRequestedAt: Date | null;
+  gscClicks: number | null;
+  gscImpressions: number | null;
+  gscCtr: number | null;
+  gscPosition: number | null;
+  removedAt: Date | null;
   _count?: { anomalies: number };
 }
 
@@ -58,6 +85,11 @@ export interface SiteRouteDetail extends SiteRouteListItem {
   lighthouseBP: number | null;
   lighthouseRunAt: Date | null;
   verticales: string[];
+  adminNotes: string | null;
+  reviewedAt: Date | null;
+  gscDataAt: Date | null;
+  source: string;
+  lastSeenAt: Date | null;
   anomalies: Array<{
     id: string;
     type: string;
@@ -72,6 +104,17 @@ export interface SiteRouteStats {
   total: number;
   byType: Record<string, number>;
   byStatus: Record<string, number>;
+  /** Compteur par catégorie canonique (cf. categories.ts). */
+  byCategory: Record<string, number>;
+  /** Répartition du feu tricolore manuel. */
+  byQuality: Record<string, number>;
+  indexableCount: number;
+  noindexCount: number;
+  gscRequestedCount: number;
+  /** Totaux trafic GSC agrégés sur les URLs ayant des données. */
+  gscClicksTotal: number;
+  gscImpressionsTotal: number;
+  removedCount: number;
   anomaliesHigh: number;
   anomaliesTotal: number;
   lastScanAt: Date | null;
@@ -91,6 +134,12 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
 
   const where = buildWhereClause(filters);
 
+  // Tri : option indexabilité (regroupe noindex/indexable) puis ordre hiérarchique.
+  const orderBy: Array<Record<string, "asc" | "desc">> = [];
+  if (filters.sort === "indexable_first") orderBy.push({ isIndexable: "desc" });
+  else if (filters.sort === "noindex_first") orderBy.push({ isIndexable: "asc" });
+  orderBy.push({ depth: "asc" }, { section: "asc" }, { pathPattern: "asc" });
+
   const [routes, total] = await Promise.all([
     prisma.siteRoute.findMany({
       where,
@@ -102,6 +151,7 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
         type: true,
         status: true,
         section: true,
+        category: true,
         editable: true,
         editorRoute: true,
         httpStatus: true,
@@ -111,9 +161,19 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
         hasAiDisclaimer: true,
         lastInspectedAt: true,
         depth: true,
+        isIndexable: true,
+        noindexReason: true,
+        qualityStatus: true,
+        gscIndexationRequested: true,
+        gscIndexationRequestedAt: true,
+        gscClicks: true,
+        gscImpressions: true,
+        gscCtr: true,
+        gscPosition: true,
+        removedAt: true,
         _count: { select: { anomalies: { where: { resolvedAt: null } } } },
       },
-      orderBy: [{ depth: "asc" }, { section: "asc" }, { pathPattern: "asc" }],
+      orderBy,
       skip,
       take: pageSize,
     }),
@@ -146,6 +206,7 @@ export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | 
     type: route.type,
     status: route.status,
     section: route.section,
+    category: route.category,
     editable: route.editable,
     editorRoute: route.editorRoute,
     httpStatus: route.httpStatus,
@@ -168,6 +229,21 @@ export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | 
     lighthouseBP: route.lighthouseBP,
     lighthouseRunAt: route.lighthouseRunAt,
     verticales: route.verticales,
+    isIndexable: route.isIndexable,
+    noindexReason: route.noindexReason,
+    qualityStatus: route.qualityStatus,
+    gscIndexationRequested: route.gscIndexationRequested,
+    gscIndexationRequestedAt: route.gscIndexationRequestedAt,
+    gscClicks: route.gscClicks,
+    gscImpressions: route.gscImpressions,
+    gscCtr: route.gscCtr,
+    gscPosition: route.gscPosition,
+    gscDataAt: route.gscDataAt,
+    adminNotes: route.adminNotes,
+    reviewedAt: route.reviewedAt,
+    source: route.source,
+    lastSeenAt: route.lastSeenAt,
+    removedAt: route.removedAt,
     anomalies: route.anomalies.map((a) => ({
       id: a.id,
       type: a.type,
@@ -182,46 +258,69 @@ export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | 
 // ─── getSiteRouteStats ─────────────────────────────────────────────────────────
 
 export async function getSiteRouteStats(): Promise<SiteRouteStats> {
-  const [total, groupByType, groupByStatus, anomaliesHigh, anomaliesTotal, lastRoute] =
-    await Promise.all([
-      prisma.siteRoute.count({ where: { visibility: "public" } }),
-      prisma.siteRoute.groupBy({
-        by: ["type"],
-        where: { visibility: "public" },
-        _count: { _all: true },
-      }),
-      prisma.siteRoute.groupBy({
-        by: ["status"],
-        where: { visibility: "public" },
-        _count: { _all: true },
-      }),
-      prisma.siteRouteAnomaly.count({
-        where: { severity: "high", resolvedAt: null },
-      }),
-      prisma.siteRouteAnomaly.count({
-        where: { resolvedAt: null },
-      }),
-      prisma.siteRoute.findFirst({
-        where: { visibility: "public", lastInspectedAt: { not: null } },
-        orderBy: { lastInspectedAt: "desc" },
-        select: { lastInspectedAt: true },
-      }),
-    ]);
+  // Toutes les stats portent sur les URLs vivantes (removedAt null).
+  const live = { visibility: "public" as const, removedAt: null };
+  const [
+    total,
+    groupByType,
+    groupByStatus,
+    groupByCategory,
+    groupByQuality,
+    indexableCount,
+    noindexCount,
+    gscRequestedCount,
+    removedCount,
+    gscAgg,
+    anomaliesHigh,
+    anomaliesTotal,
+    lastRoute,
+  ] = await Promise.all([
+    prisma.siteRoute.count({ where: live }),
+    prisma.siteRoute.groupBy({ by: ["type"], where: live, _count: { _all: true } }),
+    prisma.siteRoute.groupBy({ by: ["status"], where: live, _count: { _all: true } }),
+    prisma.siteRoute.groupBy({ by: ["category"], where: live, _count: { _all: true } }),
+    prisma.siteRoute.groupBy({ by: ["qualityStatus"], where: live, _count: { _all: true } }),
+    prisma.siteRoute.count({ where: { ...live, isIndexable: true } }),
+    prisma.siteRoute.count({ where: { ...live, isIndexable: false } }),
+    prisma.siteRoute.count({ where: { ...live, gscIndexationRequested: true } }),
+    prisma.siteRoute.count({ where: { visibility: "public", removedAt: { not: null } } }),
+    prisma.siteRoute.aggregate({
+      where: { ...live, gscDataAt: { not: null } },
+      _sum: { gscClicks: true, gscImpressions: true },
+    }),
+    prisma.siteRouteAnomaly.count({ where: { severity: "high", resolvedAt: null } }),
+    prisma.siteRouteAnomaly.count({ where: { resolvedAt: null } }),
+    prisma.siteRoute.findFirst({
+      where: { visibility: "public", lastInspectedAt: { not: null } },
+      orderBy: { lastInspectedAt: "desc" },
+      select: { lastInspectedAt: true },
+    }),
+  ]);
 
   const byType: Record<string, number> = {};
-  for (const g of groupByType) {
-    byType[g.type] = g._count._all;
-  }
+  for (const g of groupByType) byType[g.type] = g._count._all;
 
   const byStatus: Record<string, number> = {};
-  for (const g of groupByStatus) {
-    byStatus[g.status] = g._count._all;
-  }
+  for (const g of groupByStatus) byStatus[g.status] = g._count._all;
+
+  const byCategory: Record<string, number> = {};
+  for (const g of groupByCategory) byCategory[g.category ?? "autre"] = g._count._all;
+
+  const byQuality: Record<string, number> = {};
+  for (const g of groupByQuality) byQuality[g.qualityStatus] = g._count._all;
 
   return {
     total,
     byType,
     byStatus,
+    byCategory,
+    byQuality,
+    indexableCount,
+    noindexCount,
+    gscRequestedCount,
+    gscClicksTotal: gscAgg._sum.gscClicks ?? 0,
+    gscImpressionsTotal: gscAgg._sum.gscImpressions ?? 0,
+    removedCount,
     anomaliesHigh,
     anomaliesTotal,
     lastScanAt: lastRoute?.lastInspectedAt ?? null,
@@ -276,6 +375,127 @@ export async function triggerScanAll(): Promise<{ success: boolean; error?: stri
 
   revalidatePath(adminPath("fr", "site-explorer"));
   return { success: true };
+}
+
+// ─── triggerDiscovery (re-découverte « vivante » à la demande) ───────────────────
+
+export async function triggerDiscovery(): Promise<{ success: boolean; error?: string }> {
+  await requireAdminWrite();
+  if (!siteRouteDiscoveryQueue) {
+    return { success: false, error: "Queue BullMQ non disponible" };
+  }
+  await siteRouteDiscoveryQueue.add(
+    "tick",
+    { tick: new Date().toISOString() },
+    { jobId: `discovery-manual-${Date.now()}` },
+  );
+  revalidatePath(adminPath("fr", "site-explorer"));
+  return { success: true };
+}
+
+// ─── Revue manuelle : feu tricolore / GSC / notes ────────────────────────────────
+
+const QualitySchema = z.enum(["unset", "green", "orange", "red"]);
+
+/** Définit le feu tricolore (vert/orange/rouge) d'une URL. */
+export async function setRouteQualityStatus(
+  id: string,
+  quality: SiteRouteQuality,
+): Promise<{ success: boolean; error?: string }> {
+  const session = await requireAdminWrite();
+  if (!z.string().cuid().safeParse(id).success) return { success: false, error: "ID invalide" };
+  const parsed = QualitySchema.safeParse(quality);
+  if (!parsed.success) return { success: false, error: "Statut invalide" };
+
+  await prisma.siteRoute.update({
+    where: { id },
+    data: {
+      qualityStatus: parsed.data,
+      reviewedAt: new Date(),
+      reviewedBy: session.userId,
+    },
+  });
+  revalidatePath(adminPath("fr", "site-explorer"));
+  return { success: true };
+}
+
+/** Coche/décoche « indexation demandée dans GSC ». */
+export async function toggleGscIndexationRequested(
+  id: string,
+  value: boolean,
+): Promise<{ success: boolean; error?: string }> {
+  await requireAdminWrite();
+  if (!z.string().cuid().safeParse(id).success) return { success: false, error: "ID invalide" };
+
+  await prisma.siteRoute.update({
+    where: { id },
+    data: {
+      gscIndexationRequested: value,
+      gscIndexationRequestedAt: value ? new Date() : null,
+    },
+  });
+  revalidatePath(adminPath("fr", "site-explorer"));
+  return { success: true };
+}
+
+/** Enregistre une note libre par URL. */
+export async function setRouteAdminNotes(
+  id: string,
+  notes: string,
+): Promise<{ success: boolean; error?: string }> {
+  const session = await requireAdminWrite();
+  if (!z.string().cuid().safeParse(id).success) return { success: false, error: "ID invalide" };
+  const trimmed = notes.slice(0, 5000);
+
+  await prisma.siteRoute.update({
+    where: { id },
+    data: { adminNotes: trimmed || null, reviewedBy: session.userId, reviewedAt: new Date() },
+  });
+  revalidatePath(adminPath("fr", "site-explorer"));
+  return { success: true };
+}
+
+// ─── Actions groupées (multi-sélection) ──────────────────────────────────────────
+
+const IdsSchema = z.array(z.string().cuid()).min(1).max(1000);
+
+/** Applique un feu tricolore à plusieurs URLs d'un coup. */
+export async function bulkSetQualityStatus(
+  ids: string[],
+  quality: SiteRouteQuality,
+): Promise<{ success: boolean; count?: number; error?: string }> {
+  const session = await requireAdminWrite();
+  const parsedIds = IdsSchema.safeParse(ids);
+  const parsedQuality = QualitySchema.safeParse(quality);
+  if (!parsedIds.success) return { success: false, error: "Sélection invalide" };
+  if (!parsedQuality.success) return { success: false, error: "Statut invalide" };
+
+  const res = await prisma.siteRoute.updateMany({
+    where: { id: { in: parsedIds.data }, visibility: "public" },
+    data: { qualityStatus: parsedQuality.data, reviewedAt: new Date(), reviewedBy: session.userId },
+  });
+  revalidatePath(adminPath("fr", "site-explorer"));
+  return { success: true, count: res.count };
+}
+
+/** Coche/décoche « indexation demandée dans GSC » pour plusieurs URLs. */
+export async function bulkToggleGsc(
+  ids: string[],
+  value: boolean,
+): Promise<{ success: boolean; count?: number; error?: string }> {
+  await requireAdminWrite();
+  const parsedIds = IdsSchema.safeParse(ids);
+  if (!parsedIds.success) return { success: false, error: "Sélection invalide" };
+
+  const res = await prisma.siteRoute.updateMany({
+    where: { id: { in: parsedIds.data }, visibility: "public" },
+    data: {
+      gscIndexationRequested: value,
+      gscIndexationRequestedAt: value ? new Date() : null,
+    },
+  });
+  revalidatePath(adminPath("fr", "site-explorer"));
+  return { success: true, count: res.count };
 }
 
 // ─── resolveAnomaly ────────────────────────────────────────────────────────────
@@ -355,10 +575,17 @@ function buildWhereClause(filters: SiteRouteFilters) {
     visibility: "public",
   };
 
+  // Par défaut on masque les URLs disparues (tombstonées).
+  if (!filters.includeRemoved) where["removedAt"] = null;
+
   if (filters.type) where["type"] = filters.type;
   if (filters.status) where["status"] = filters.status;
   if (filters.section) where["section"] = filters.section;
+  if (filters.category) where["category"] = filters.category;
   if (filters.editable !== undefined) where["editable"] = filters.editable;
+  if (filters.isIndexable !== undefined) where["isIndexable"] = filters.isIndexable;
+  if (filters.qualityStatus) where["qualityStatus"] = filters.qualityStatus;
+  if (filters.gscRequested !== undefined) where["gscIndexationRequested"] = filters.gscRequested;
 
   if (filters.search) {
     where["OR"] = [
