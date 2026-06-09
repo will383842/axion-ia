@@ -18,6 +18,7 @@ import { PressReleases } from "@/components/sections/PressReleases";
 import { MediaCoverage } from "@/components/sections/MediaCoverage";
 import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
 import { PressContact } from "@/components/sections/PressContact";
+import { OffersEmbedPromo } from "@/components/careers/OffersEmbedPromo";
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import {
   PRESS_PITCH,
@@ -400,6 +401,9 @@ export default async function PressePage({ params }: Props) {
           }}
         />
       </Section>
+
+      {/* INTÈGRE NOS OFFRES — widget embarquable offres d'emploi pour médias/job boards */}
+      <OffersEmbedPromo locale={loc} tone="sand" />
 
       {/* COMMUNIQUÉS — releases cards */}
       <Section

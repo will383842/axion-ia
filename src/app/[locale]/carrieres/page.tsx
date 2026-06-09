@@ -33,42 +33,10 @@ const CAREER_CITIES: ReadonlyArray<string> = [
 ];
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
-import type { JobOffer } from "../../../../prisma/generated/client";
+import { WORKMODE_LABELS, isNew, salaryLabel } from "@/lib/careers/format";
+import { OffersEmbedPromo } from "@/components/careers/OffersEmbedPromo";
 
 export const revalidate = 3600;
-
-const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
-  on_site: { fr: "Sur site", en: "On-site" },
-  hybrid: { fr: "Hybride", en: "Hybrid" },
-  remote: { fr: "Remote", en: "Remote" },
-};
-
-function isNew(datePosted: Date): boolean {
-  return Date.now() - datePosted.getTime() < 14 * 24 * 3600 * 1000;
-}
-
-function salaryLabel(o: JobOffer, isFr: boolean): string | null {
-  if (o.isCommission)
-    return isFr ? "Commission déplafonnée" : "Uncapped commission";
-  if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
-  if (o.salaryMin == null && o.salaryMax == null) return null;
-  const k = (n: number) => `${Math.round(n / 1000)}k`;
-  const per =
-    o.salaryPeriod === "YEAR"
-      ? isFr
-        ? "/an"
-        : "/yr"
-      : o.salaryPeriod === "MONTH"
-        ? isFr
-          ? "/mois"
-          : "/mo"
-        : "/h";
-  const range =
-    o.salaryMin != null && o.salaryMax != null
-      ? `${k(o.salaryMin)}–${k(o.salaryMax)}`
-      : k((o.salaryMin ?? o.salaryMax) as number);
-  return `${range} ${o.salaryCurrency} ${per}`;
-}
 
 export async function generateMetadata({
   params,
@@ -81,9 +49,7 @@ export async function generateMetadata({
   const base = buildProductMetadata({
     locale: locale as Locale,
     path: "/carrieres",
-    title: isFr
-      ? "Carrières · rejoindre Axion-IA.com"
-      : "Careers · join Axion-IA.com",
+    title: isFr ? "Carrières · rejoindre Axion-IA.com" : "Careers · join Axion-IA.com",
     description: isFr
       ? "Rejoignez Axion-IA.com, le cabinet IA opérationnel. Découvrez nos offres d'emploi et postulez en quelques minutes — sur site, hybride ou remote, partout en France."
       : "Join Axion-IA.com, the operational AI firm. Browse our open positions and apply in minutes — on-site, hybrid or remote across France.",
@@ -91,8 +57,7 @@ export async function generateMetadata({
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
   if (!isFr) return { ...base, robots: { index: false, follow: true } };
   const offers = await listPublishedJobOffers();
-  if (offers.length === 0)
-    return { ...base, robots: { index: false, follow: true } };
+  if (offers.length === 0) return { ...base, robots: { index: false, follow: true } };
   return base;
 }
 
@@ -149,9 +114,7 @@ export default async function CarrieresHubPage({
 
   return (
     <>
-      {offers.length > 0 ? (
-        <JsonLd data={itemList} scriptId="jsonld-carrieres-list" />
-      ) : null}
+      {offers.length > 0 ? <JsonLd data={itemList} scriptId="jsonld-carrieres-list" /> : null}
       <JsonLd
         scriptId="jsonld-carrieres-webpage"
         data={{
@@ -169,11 +132,7 @@ export default async function CarrieresHubPage({
       />
 
       <Container className="border-border border-b py-3">
-        <Breadcrumbs
-          items={[
-            { href: "/carrieres", label: isFr ? "Carrières" : "Careers" },
-          ]}
-        />
+        <Breadcrumbs items={[{ href: "/carrieres", label: isFr ? "Carrières" : "Careers" }]} />
       </Container>
       <ServiceHero
         eyebrow={
@@ -186,24 +145,14 @@ export default async function CarrieresHubPage({
             ? "On recrute — viens construire l'IA qui change"
             : "We're hiring — build the AI that"
         }
-        titleEm={
-          isFr
-            ? "vraiment le quotidien des boîtes"
-            : "actually changes how companies work"
-        }
-        description={
-          isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn
-        }
+        titleEm={isFr ? "vraiment le quotidien des boîtes" : "actually changes how companies work"}
+        description={isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn}
         ctas={
           <>
             <Cta href="#offres" track="careers-hero-see-offers">
               {isFr ? "Voir les offres" : "See open roles"}
             </Cta>
-            <Cta
-              href="/contact"
-              variant="outline"
-              track="careers-hero-spontaneous"
-            >
+            <Cta href="/contact" variant="outline" track="careers-hero-spontaneous">
               {isFr ? "Candidature spontanée" : "Spontaneous application"}
             </Cta>
           </>
@@ -264,8 +213,7 @@ export default async function CarrieresHubPage({
           <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
             {isFr ? (
               <>
-                Pourquoi nous{" "}
-                <em className="text-terracotta italic">rejoindre</em> ?
+                Pourquoi nous <em className="text-terracotta italic">rejoindre</em> ?
               </>
             ) : (
               <>
@@ -276,10 +224,7 @@ export default async function CarrieresHubPage({
           <p className="text-fg-muted mt-3 max-w-3xl text-lg">
             {isFr ? EMPLOYER_BRAND.aboutFr : EMPLOYER_BRAND.aboutEn}
           </p>
-          <ul
-            className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-            role="list"
-          >
+          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
             {EMPLOYER_BRAND.whyJoin.map((card) => (
               <li
                 key={card.icon}
@@ -294,9 +239,7 @@ export default async function CarrieresHubPage({
                 <h3 className="mt-4 font-serif text-lg font-semibold">
                   {isFr ? card.titleFr : card.titleEn}
                 </h3>
-                <p className="text-fg-muted mt-2 text-sm">
-                  {isFr ? card.textFr : card.textEn}
-                </p>
+                <p className="text-fg-muted mt-2 text-sm">{isFr ? card.textFr : card.textEn}</p>
               </li>
             ))}
           </ul>
@@ -338,12 +281,8 @@ export default async function CarrieresHubPage({
           </h2>
           {/* Recherche — formulaire GET server-side (0 JS, INP préservé) */}
           <form method="get" className="mb-4 flex max-w-md gap-2">
-            {sp.category ? (
-              <input type="hidden" name="category" value={sp.category} />
-            ) : null}
-            {sp.workMode ? (
-              <input type="hidden" name="workMode" value={sp.workMode} />
-            ) : null}
+            {sp.category ? <input type="hidden" name="category" value={sp.category} /> : null}
+            {sp.workMode ? <input type="hidden" name="workMode" value={sp.workMode} /> : null}
             <input
               type="search"
               name="q"
@@ -384,9 +323,7 @@ export default async function CarrieresHubPage({
           ) : null}
           {activeWorkModes.length > 1 ? (
             <nav
-              aria-label={
-                isFr ? "Filtrer par mode de travail" : "Filter by work mode"
-              }
+              aria-label={isFr ? "Filtrer par mode de travail" : "Filter by work mode"}
               className="mb-8 flex flex-wrap gap-2"
             >
               <Link
@@ -422,75 +359,65 @@ export default async function CarrieresHubPage({
             </div>
           ) : (
             <div className="space-y-10">
-              {CAREER_CATEGORIES.filter((cat) =>
-                offers.some((o) => o.category === cat.slug),
-              ).map((cat) => (
-                <div key={cat.slug}>
-                  <h3 className="font-serif text-xl font-semibold">
-                    {isFr ? cat.fr : cat.en}
-                  </h3>
-                  <ul
-                    className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-                    role="list"
-                  >
-                    {offers
-                      .filter((o) => o.category === cat.slug)
-                      .map((o) => {
-                        const sal = salaryLabel(o, isFr);
-                        const img = careerImage(o.slug);
-                        return (
-                          <li key={o.id}>
-                            <Link
-                              href={`/carrieres/${o.slug}`}
-                              className="border-border hover:border-terracotta bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
-                            >
-                              <div className="relative aspect-[16/7] overflow-hidden">
-                                <Image
-                                  src={img.url}
-                                  alt={img.alt}
-                                  fill
-                                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                  className="object-cover transition duration-300 group-hover:scale-105"
-                                />
-                                {isNew(o.datePosted) ? (
-                                  <span className="bg-terracotta absolute top-3 left-3 rounded-full px-2.5 py-0.5 text-xs font-semibold text-white shadow">
-                                    {isFr ? "Nouveau" : "New"}
-                                  </span>
-                                ) : null}
-                              </div>
-                              <div className="flex flex-1 flex-col p-5">
-                                <h4 className="group-hover:text-terracotta font-serif text-lg font-semibold transition-colors">
-                                  {isFr ? o.titleFr : o.titleEn}
-                                </h4>
-                                <p className="text-fg-muted mt-2 line-clamp-2 text-sm">
-                                  {isFr ? o.summaryFr : o.summaryEn}
-                                </p>
-                                <div className="text-fg-muted mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                                  <span>
-                                    📍{" "}
-                                    {o.city ??
-                                      WORKMODE_LABELS[o.workMode]?.[
-                                        isFr ? "fr" : "en"
-                                      ]}
-                                  </span>
-                                  {o.contractLabel ? (
-                                    <span>📄 {o.contractLabel}</span>
+              {CAREER_CATEGORIES.filter((cat) => offers.some((o) => o.category === cat.slug)).map(
+                (cat) => (
+                  <div key={cat.slug}>
+                    <h3 className="font-serif text-xl font-semibold">{isFr ? cat.fr : cat.en}</h3>
+                    <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+                      {offers
+                        .filter((o) => o.category === cat.slug)
+                        .map((o) => {
+                          const sal = salaryLabel(o, isFr);
+                          const img = careerImage(o.slug);
+                          return (
+                            <li key={o.id}>
+                              <Link
+                                href={`/carrieres/${o.slug}`}
+                                className="border-border hover:border-terracotta bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
+                              >
+                                <div className="relative aspect-[16/7] overflow-hidden">
+                                  <Image
+                                    src={img.url}
+                                    alt={img.alt}
+                                    fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    className="object-cover transition duration-300 group-hover:scale-105"
+                                  />
+                                  {isNew(o.datePosted) ? (
+                                    <span className="bg-terracotta absolute top-3 left-3 rounded-full px-2.5 py-0.5 text-xs font-semibold text-white shadow">
+                                      {isFr ? "Nouveau" : "New"}
+                                    </span>
                                   ) : null}
-                                  {sal ? <span>💶 {sal}</span> : null}
                                 </div>
-                              </div>
-                            </Link>
-                            <UnsplashCredit
-                              photographerName={img.byName}
-                              photographerUrl={img.byUrl}
-                              className="px-1"
-                            />
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              ))}
+                                <div className="flex flex-1 flex-col p-5">
+                                  <h4 className="group-hover:text-terracotta font-serif text-lg font-semibold transition-colors">
+                                    {isFr ? o.titleFr : o.titleEn}
+                                  </h4>
+                                  <p className="text-fg-muted mt-2 line-clamp-2 text-sm">
+                                    {isFr ? o.summaryFr : o.summaryEn}
+                                  </p>
+                                  <div className="text-fg-muted mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                                    <span>
+                                      📍{" "}
+                                      {o.city ?? WORKMODE_LABELS[o.workMode]?.[isFr ? "fr" : "en"]}
+                                    </span>
+                                    {o.contractLabel ? <span>📄 {o.contractLabel}</span> : null}
+                                    {sal ? <span>💶 {sal}</span> : null}
+                                  </div>
+                                </div>
+                              </Link>
+                              <UnsplashCredit
+                                photographerName={img.byName}
+                                photographerUrl={img.byUrl}
+                                className="px-1"
+                              />
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                ),
+              )}
             </div>
           )}
         </Container>
@@ -501,13 +428,11 @@ export default async function CarrieresHubPage({
           <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
             {isFr ? (
               <>
-                On recrute{" "}
-                <em className="text-terracotta italic">partout en France</em> 🇫🇷
+                On recrute <em className="text-terracotta italic">partout en France</em> 🇫🇷
               </>
             ) : (
               <>
-                We hire{" "}
-                <em className="text-terracotta italic">across France</em> 🇫🇷
+                We hire <em className="text-terracotta italic">across France</em> 🇫🇷
               </>
             )}
           </h2>
@@ -541,8 +466,7 @@ export default async function CarrieresHubPage({
               </>
             ) : (
               <>
-                <em className="text-terracotta italic">Frequently</em> asked
-                questions
+                <em className="text-terracotta italic">Frequently</em> asked questions
               </>
             )}
           </h2>
@@ -610,6 +534,9 @@ export default async function CarrieresHubPage({
         </Container>
       </Section>
 
+      {/* Intègre nos offres — promo du widget embarquable (partenaires/médias) */}
+      <OffersEmbedPromo locale={locale} tone="canvas" />
+
       {/* Maillage SEO (verticales) + réseaux sociaux à droite */}
       <Section tone="mocha">
         <Container>
@@ -619,13 +546,11 @@ export default async function CarrieresHubPage({
               <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
                 {isFr ? (
                   <>
-                    Découvrir{" "}
-                    <em className="text-terracotta italic">Axion-IA.com</em>
+                    Découvrir <em className="text-terracotta italic">Axion-IA.com</em>
                   </>
                 ) : (
                   <>
-                    Discover{" "}
-                    <em className="text-terracotta italic">Axion-IA.com</em>
+                    Discover <em className="text-terracotta italic">Axion-IA.com</em>
                   </>
                 )}
               </h2>
@@ -666,12 +591,7 @@ export default async function CarrieresHubPage({
                   aria-label="LinkedIn Axion-IA.com"
                   className="border-mocha-fg/25 hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-4 w-4"
-                    aria-hidden
-                  >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
                     <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
                   </svg>
                   LinkedIn
@@ -683,12 +603,7 @@ export default async function CarrieresHubPage({
                   aria-label="X (Twitter) Axion-IA.com"
                   className="border-mocha-fg/25 hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-4 w-4"
-                    aria-hidden
-                  >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
                     <path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.6l5.24 6.93 6.06-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3L17.61 20.65z" />
                   </svg>
                   X

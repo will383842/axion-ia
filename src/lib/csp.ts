@@ -50,6 +50,11 @@ export interface BuildCspOptions {
   nonce: string;
   /** Mode strict (admin) → pas de `unsafe-inline` / `unsafe-eval`. */
   strict: boolean;
+  /**
+   * Route d'embed (widget offres d'emploi) → `frame-ancestors *` au lieu de
+   * `'none'` pour autoriser l'iframe depuis n'importe quel domaine tiers.
+   */
+  embed?: boolean;
 }
 
 /**
@@ -72,7 +77,7 @@ export interface BuildCspOptions {
  * sensible. Migration globale vers strict-dynamic = Sprint 16 PERF (cf.
  * commentaire en tête de fichier).
  */
-export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
+export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions): string {
   // Microsoft Clarity (NEXT_PUBLIC_CLARITY_PROJECT_ID + consent CMP gated).
   // Domaines : www.clarity.ms (tag loader) + *.clarity.ms (collecteurs régionaux,
   // c.clarity.ms ingest, b.clarity.ms beacon). Sans whitelist explicite, le script
@@ -141,7 +146,8 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     // sous-domaines (event.calendly.com, calendar.calendly.com) qui doivent
     // être whitelistés sinon l'iframe reste blanche (fix 2026-05-27).
     "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com https://calendly.com https://*.calendly.com",
-    "frame-ancestors 'none'",
+    // Route d'embed widget → framable partout. Sinon `'none'` (anti-clickjacking).
+    embed ? "frame-ancestors *" : "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",
     "object-src 'none'",
@@ -159,4 +165,17 @@ export function isStrictCspPath(pathname: string): boolean {
   // Match `/<locale>/<adminSegment>` (ex: /fr/admin-dev-x7k2n9/...)
   // et `/<adminSegment>` (sans locale → redirect probable, durcir quand même).
   return pathname.includes(`/${adminSegment}`);
+}
+
+// Route d'embed du widget offres d'emploi : `/<locale>/carrieres/widget`
+// (avec ou sans slash final). EXCLUT `/carrieres/widget-builder` (le suffixe
+// `-builder` empêche le match car suivi ni de `/` ni de fin de chaîne).
+const EMBED_PATH_RE = /^\/(?:fr|en)\/carrieres\/widget(?:\/|$)/;
+
+/**
+ * `true` si le chemin est la route d'embed framable (CSP `frame-ancestors *`,
+ * pas de `X-Frame-Options`). Edge-runtime safe (regex pure).
+ */
+export function isEmbedPath(pathname: string): boolean {
+  return EMBED_PATH_RE.test(pathname);
 }
