@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-unused-expressions, no-empty */
 // Seed prod (CommonJS) — exécuté DANS le conteneur app : utilise le client Prisma
 // généré (/app/prisma/generated/client) + le DATABASE_URL interne du conteneur
 // (jamais affiché). Lit careers_seed_input.json + ./<slug>.json (même dossier).

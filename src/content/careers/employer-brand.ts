@@ -1,4 +1,4 @@
-// Marque employeur Axion-IA — texte ORIENTÉ CANDIDAT (page recrutement, pas page
+// Marque employeur Axion-IA.com — texte ORIENTÉ CANDIDAT (page recrutement, pas page
 // client). Ton Welcome to the Jungle : parle de ce que le candidat va faire/vivre
 // en nous rejoignant. Source unique réutilisée sur le hub /carrieres (complet) ET
 // sur chaque page offre (version condensée). FR seul affiché (EN désactivé).
@@ -18,15 +18,15 @@ export const EMPLOYER_BRAND = {
 
   /** Intro hero (sous le H1) — accroche candidat, énergique. */
   heroIntroFr:
-    "Tu veux faire de l'IA qui finit vraiment en production — pas dans un slide ? Chez Axion-IA, tu codes, tu déploies, et tu vois l'impact direct chez de vraies boîtes. Équipe à taille humaine, autonomie réelle, sujets IA de pointe au quotidien. Si tu aimes résoudre des problèmes concrets et livrer, on devrait bien s'entendre. 👋",
+    "Tu veux faire de l'IA qui finit vraiment en production — pas dans un slide ? Chez Axion-IA.com, tu codes, tu déploies, et tu vois l'impact direct chez de vraies boîtes. Équipe à taille humaine, autonomie réelle, sujets IA de pointe au quotidien. Si tu aimes résoudre des problèmes concrets et livrer, on devrait bien s'entendre. 👋",
   heroIntroEn:
-    "Want to build AI that actually ships — not another slide? At Axion-IA, you code, you deploy, and you see the impact straight away at real companies. Human-sized team, real autonomy, cutting-edge AI every day. If you like solving concrete problems and shipping, we'll get along. 👋",
+    "Want to build AI that actually ships — not another slide? At Axion-IA.com, you code, you deploy, and you see the impact straight away at real companies. Human-sized team, real autonomy, cutting-edge AI every day. If you like solving concrete problems and shipping, we'll get along. 👋",
 
   /** Qui on est (section « Pourquoi nous rejoindre »), angle candidat. */
   aboutFr:
-    "Axion-IA, c'est une boîte tech à taille humaine, ancrée en Isère, qui rend l'IA opérationnelle pour les entreprises (audits, implémentation, web/SaaS). On construit comme une vraie équipe produit : du code en prod, pas des promesses. L'objectif : devenir LA référence française de l'IA appliquée — la plus utile, pas la plus grosse.",
+    "Axion-IA.com, c'est une boîte tech à taille humaine, ancrée en Isère, qui rend l'IA opérationnelle pour les entreprises (audits, implémentation, web/SaaS). On construit comme une vraie équipe produit : du code en prod, pas des promesses. L'objectif : devenir LA référence française de l'IA appliquée — la plus utile, pas la plus grosse.",
   aboutEn:
-    "Axion-IA is a human-sized tech company, rooted in Isère, making AI operational for businesses (audits, implementation, web/SaaS). We build like a real product team: code in production, not promises. The goal: become THE French reference in applied AI — the most useful, not the biggest.",
+    "Axion-IA.com is a human-sized tech company, rooted in Isère, making AI operational for businesses (audits, implementation, web/SaaS). We build like a real product team: code in production, not promises. The goal: become THE French reference in applied AI — the most useful, not the biggest.",
 
   /** Pourquoi tu vas kiffer bosser ici — bénéfices candidat concrets. */
   whyJoin: [
@@ -77,7 +77,7 @@ export const EMPLOYER_BRAND = {
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:
-    "Axion-IA, boîte tech à taille humaine ancrée en Isère, qui rend l'IA opérationnelle. Ici on code pour de vrai, on porte ses sujets de bout en bout, et on monte vite.",
+    "Axion-IA.com, boîte tech à taille humaine ancrée en Isère, qui rend l'IA opérationnelle. Ici on code pour de vrai, on porte ses sujets de bout en bout, et on monte vite.",
   shortAboutEn:
-    "Axion-IA, a human-sized tech company in Isère making AI operational. Here you code for real, own your work end to end, and grow fast.",
+    "Axion-IA.com, a human-sized tech company in Isère making AI operational. Here you code for real, own your work end to end, and grow fast.",
 } as const;

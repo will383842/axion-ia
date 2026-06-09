@@ -4,6 +4,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -18,6 +19,7 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { careerCategoryService } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
+import { careerImage } from "@/content/careers/careers-images";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
   getJobOfferBySlug,
@@ -98,7 +100,7 @@ export async function generateMetadata({
       ...buildProductMetadata({
         locale: locale as Locale,
         path: `/carrieres/${slug}`,
-        title: offer.metaTitle ?? `${offer.titleEn} · Axion-IA`,
+        title: offer.metaTitle ?? `${offer.titleEn} · Axion-IA.com`,
         description: (offer.metaDescription ?? offer.summaryEn).slice(0, 160),
       }),
       robots: { index: false, follow: true },
@@ -108,7 +110,8 @@ export async function generateMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}`,
     title:
-      offer.metaTitle ?? `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA`,
+      offer.metaTitle ??
+      `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA.com`,
     description: (
       offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)
     ).slice(0, 160),
@@ -152,6 +155,7 @@ export default async function JobOfferDetailPage({
         .map((l) => l.city)
         .filter((c): c is string => Boolean(c))
     : [];
+  const img = careerImage(offer.slug);
 
   const jobPosting = buildJobPostingJsonLd(offer, loc);
   const webPage = {
@@ -174,7 +178,7 @@ export default async function JobOfferDetailPage({
       ) : null}
       <JsonLd data={webPage} scriptId="jsonld-webpage" />
 
-      <Section tone="paper">
+      <Section tone="halo-warm">
         <Container>
           <Breadcrumbs
             items={[
@@ -182,6 +186,25 @@ export default async function JobOfferDetailPage({
               { href: applyHref.replace("/postuler", ""), label: title },
             ]}
           />
+
+          <div className="border-border shadow-card relative mt-6 aspect-[21/9] overflow-hidden rounded-3xl border">
+            <Image
+              src={img.url}
+              alt={img.alt}
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              className="object-cover"
+            />
+            <a
+              href={`${img.byUrl}?utm_source=axion-ia&utm_medium=referral`}
+              target="_blank"
+              rel="noopener nofollow"
+              className="absolute right-2 bottom-2 rounded bg-black/45 px-2 py-0.5 text-[10px] text-white/90"
+            >
+              {img.byName} / Unsplash
+            </a>
+          </div>
 
           {isClosed ? (
             <p className="bg-sand text-fg-muted mt-6 rounded-lg px-4 py-3 text-sm">
@@ -243,7 +266,7 @@ export default async function JobOfferDetailPage({
         <Container>
           <div className="grid gap-10 lg:grid-cols-[1fr_18rem]">
             <article
-              className="prose prose-neutral max-w-none"
+              className="prose prose-neutral max-w-none [&_h2]:font-serif [&_h2]:text-terracotta-deep [&_h3]:font-serif"
               // Corps riche déjà sanitizé (whitelist) — anti VIS-01 (jamais affiché en texte).
               dangerouslySetInnerHTML={{ __html: bodyHtml }}
             />
@@ -287,7 +310,9 @@ export default async function JobOfferDetailPage({
               {categoryService ? (
                 <div className="border-border rounded-2xl border p-5">
                   <h2 className="font-serif text-lg font-semibold">
-                    {isFr ? "Le métier chez Axion-IA" : "The role at Axion-IA"}
+                    {isFr
+                      ? "Le métier chez Axion-IA.com"
+                      : "The role at Axion-IA.com"}
                   </h2>
                   <p className="text-fg-muted mt-2 text-sm">
                     {isFr ? "Découvrir aussi : " : "See also: "}
@@ -300,7 +325,7 @@ export default async function JobOfferDetailPage({
 
               <div className="border-border rounded-2xl border p-5">
                 <h2 className="font-serif text-lg font-semibold">
-                  {isFr ? "Qui est Axion-IA ?" : "Who is Axion-IA?"}
+                  {isFr ? "Qui est Axion-IA.com ?" : "Who is Axion-IA.com?"}
                 </h2>
                 <p className="text-fg-muted mt-2 text-sm">
                   {isFr

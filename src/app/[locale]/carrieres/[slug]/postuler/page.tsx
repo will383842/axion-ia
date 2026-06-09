@@ -38,8 +38,8 @@ export async function generateMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}/postuler`,
     title: isFr
-      ? `Postuler · ${title} · Axion-IA`
-      : `Apply · ${title} · Axion-IA`,
+      ? `Postuler · ${title} · Axion-IA.com`
+      : `Apply · ${title} · Axion-IA.com`,
     description: isFr
       ? "Postulez en quelques minutes — CV optionnel."
       : "Apply in a few minutes — CV optional.",
@@ -68,7 +68,7 @@ export default async function PostulerPage({
     : [];
 
   return (
-    <Section tone="paper">
+    <Section tone="halo-cool">
       <Container>
         <Breadcrumbs
           items={[
@@ -80,14 +80,54 @@ export default async function PostulerPage({
             },
           ]}
         />
-        <h1 className="mt-6 font-serif text-3xl font-semibold sm:text-4xl">
-          {isFr ? "Postuler" : "Apply"}
-        </h1>
-        <p className="text-fg-muted mt-2">
-          {isFr ? "Tu postules à :" : "You're applying to:"}{" "}
-          <strong>{title}</strong>
-        </p>
-        <div className="mt-8 max-w-2xl">
+
+        <div className="mx-auto mt-8 max-w-2xl text-center">
+          <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
+            {isFr ? "On a hâte de te lire 👀" : "Can't wait to read you 👀"}
+          </p>
+          <h1 className="mt-3 font-serif text-4xl font-semibold sm:text-5xl">
+            {isFr ? (
+              <>
+                Postule en{" "}
+                <em className="text-terracotta italic">quelques minutes</em>
+              </>
+            ) : (
+              <>
+                Apply in{" "}
+                <em className="text-terracotta italic">a few minutes</em>
+              </>
+            )}
+          </h1>
+          <p className="text-fg-muted mt-4 text-lg">
+            {isFr ? "Tu postules à " : "You're applying to "}
+            <strong className="text-fg">{title}</strong>.
+          </p>
+          <ul className="text-fg-muted mt-5 flex flex-wrap justify-center gap-2 text-sm">
+            {(isFr
+              ? [
+                  "📄 CV optionnel",
+                  "⚡ Réponse rapide",
+                  "🙌 Process simple",
+                  "🔒 Données protégées",
+                ]
+              : [
+                  "📄 CV optional",
+                  "⚡ Fast reply",
+                  "🙌 Simple process",
+                  "🔒 Data protected",
+                ]
+            ).map((chip) => (
+              <li
+                key={chip}
+                className="border-border bg-paper rounded-full border px-3 py-1"
+              >
+                {chip}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="border-border bg-paper shadow-card mx-auto mt-8 max-w-2xl rounded-3xl border p-6 sm:p-9">
           <JobApplicationForm
             offerId={offer.id}
             offerTitle={title}

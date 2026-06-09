@@ -9,7 +9,7 @@ import type { JobOffer } from "../../../prisma/generated/client";
 
 const HIRING_ORG = {
   "@type": "Organization",
-  name: "Axion-IA",
+  name: "Axion-IA.com",
   url: SITE_URL,
   sameAs: SITE_URL,
 } as const;
@@ -57,7 +57,7 @@ export function buildJobPostingJsonLd(
     description,
     identifier: {
       "@type": "PropertyValue",
-      name: "Axion-IA",
+      name: "Axion-IA.com",
       value: offer.slug,
     },
     datePosted: posted.toISOString(),

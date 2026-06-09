@@ -3,6 +3,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -18,6 +19,7 @@ import {
   careerCategoryLabel,
 } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
+import { CAREERS_HERO, careerImage } from "@/content/careers/careers-images";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
 // 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (siège)
@@ -76,10 +78,12 @@ export async function generateMetadata({
   const base = buildProductMetadata({
     locale: locale as Locale,
     path: "/carrieres",
-    title: isFr ? "Carrières · rejoindre Axion-IA" : "Careers · join Axion-IA",
+    title: isFr
+      ? "Carrières · rejoindre Axion-IA.com"
+      : "Careers · join Axion-IA.com",
     description: isFr
-      ? "Rejoignez Axion-IA, le cabinet IA opérationnel. Découvrez nos offres d'emploi et postulez en quelques minutes — sur site, hybride ou remote, partout en France."
-      : "Join Axion-IA, the operational AI firm. Browse our open positions and apply in minutes — on-site, hybrid or remote across France.",
+      ? "Rejoignez Axion-IA.com, le cabinet IA opérationnel. Découvrez nos offres d'emploi et postulez en quelques minutes — sur site, hybride ou remote, partout en France."
+      : "Join Axion-IA.com, the operational AI firm. Browse our open positions and apply in minutes — on-site, hybrid or remote across France.",
   });
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
   if (!isFr) return { ...base, robots: { index: false, follow: true } };
@@ -119,7 +123,7 @@ export default async function CarrieresHubPage({
   const itemList = buildItemListJsonLd({
     locale: loc,
     path: "/carrieres",
-    name: isFr ? "Offres d'emploi Axion-IA" : "Axion-IA job openings",
+    name: isFr ? "Offres d'emploi Axion-IA.com" : "Axion-IA.com job openings",
     items: offers.map((o, i) => ({
       url: `${SITE_URL}/${loc}/carrieres/${o.slug}`,
       name: isFr ? o.titleFr : o.titleEn,
@@ -152,7 +156,7 @@ export default async function CarrieresHubPage({
           "@type": "CollectionPage",
           "@id": `${SITE_URL}/${loc}/carrieres#webpage`,
           url: `${SITE_URL}/${loc}/carrieres`,
-          name: isFr ? "Carrières · Axion-IA" : "Careers · Axion-IA",
+          name: isFr ? "Carrières · Axion-IA.com" : "Careers · Axion-IA.com",
           inLanguage: loc,
           speakable: {
             "@type": "SpeakableSpecification",
@@ -161,52 +165,83 @@ export default async function CarrieresHubPage({
         }}
       />
 
-      <Section tone="paper">
+      <Section tone="halo-warm">
         <Container>
           <Breadcrumbs
             items={[
               { href: "/carrieres", label: isFr ? "Carrières" : "Careers" },
             ]}
           />
-          <p className="text-terracotta mt-6 text-sm font-semibold tracking-wide uppercase">
-            {isFr ? EMPLOYER_BRAND.eyebrowFr : EMPLOYER_BRAND.eyebrowEn}
-          </p>
-          <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">
-            {isFr ? (
-              <>
-                Viens construire l&apos;IA qui change{" "}
-                <em className="text-terracotta italic">vraiment</em> le
-                quotidien des boîtes
-              </>
-            ) : (
-              <>
-                Come build the AI that{" "}
-                <em className="text-terracotta italic">actually</em> changes how
-                companies work
-              </>
-            )}
-          </h1>
-          <p data-speakable className="text-fg-muted mt-4 max-w-2xl text-lg">
-            {isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Cta href="#offres" track="careers-hero-see-offers">
-              {isFr ? "Voir les offres" : "See open roles"}
-            </Cta>
-            <Cta href="/contact" track="careers-hero-spontaneous">
-              {isFr ? "Candidature spontanée" : "Spontaneous application"}
-            </Cta>
+          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
+                {isFr ? EMPLOYER_BRAND.eyebrowFr : EMPLOYER_BRAND.eyebrowEn}
+              </p>
+              <h1 className="mt-3 font-serif text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl">
+                {isFr ? (
+                  <>
+                    Viens construire l&apos;IA qui change{" "}
+                    <em className="text-terracotta italic">vraiment</em> le
+                    quotidien des boîtes
+                  </>
+                ) : (
+                  <>
+                    Come build the AI that{" "}
+                    <em className="text-terracotta italic">actually</em> changes
+                    how companies work
+                  </>
+                )}
+              </h1>
+              <p data-speakable className="text-fg-muted mt-5 max-w-xl text-lg">
+                {isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn}
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Cta href="#offres" track="careers-hero-see-offers">
+                  {isFr ? "Voir les offres" : "See open roles"}
+                </Cta>
+                <Cta href="/contact" track="careers-hero-spontaneous">
+                  {isFr ? "Candidature spontanée" : "Spontaneous application"}
+                </Cta>
+              </div>
+            </div>
+            <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
+              <Image
+                src={CAREERS_HERO.url}
+                alt={CAREERS_HERO.alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <a
+                href={`${CAREERS_HERO.byUrl}?utm_source=axion-ia&utm_medium=referral`}
+                target="_blank"
+                rel="noopener nofollow"
+                className="absolute right-2 bottom-2 rounded bg-black/45 px-2 py-0.5 text-[10px] text-white/90"
+              >
+                {CAREERS_HERO.byName} / Unsplash
+              </a>
+            </div>
           </div>
         </Container>
       </Section>
 
       {/* Pourquoi nous rejoindre */}
-      <Section>
+      <Section tone="paper">
         <Container>
-          <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
-            {isFr ? "Pourquoi nous rejoindre ?" : "Why join us?"}
+          <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
+            {isFr ? (
+              <>
+                Pourquoi nous{" "}
+                <em className="text-terracotta italic">rejoindre</em> ?
+              </>
+            ) : (
+              <>
+                Why <em className="text-terracotta italic">join</em> us?
+              </>
+            )}
           </h2>
-          <p className="text-fg-muted mt-3 max-w-3xl">
+          <p className="text-fg-muted mt-3 max-w-3xl text-lg">
             {isFr ? EMPLOYER_BRAND.aboutFr : EMPLOYER_BRAND.aboutEn}
           </p>
           <ul
@@ -216,15 +251,18 @@ export default async function CarrieresHubPage({
             {EMPLOYER_BRAND.whyJoin.map((card) => (
               <li
                 key={card.icon}
-                className="border-border rounded-2xl border p-5"
+                className="border-border bg-bg hover:border-terracotta shadow-subtle rounded-2xl border p-6 transition"
               >
-                <span className="text-2xl" aria-hidden>
+                <span
+                  className="bg-terracotta/10 flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
+                  aria-hidden
+                >
                   {card.icon}
                 </span>
-                <h3 className="mt-2 font-medium">
+                <h3 className="mt-4 font-serif text-lg font-semibold">
                   {isFr ? card.titleFr : card.titleEn}
                 </h3>
-                <p className="text-fg-muted mt-1 text-sm">
+                <p className="text-fg-muted mt-2 text-sm">
                   {isFr ? card.textFr : card.textEn}
                 </p>
               </li>
@@ -236,7 +274,10 @@ export default async function CarrieresHubPage({
       {/* Siège — Saint-Marcellin */}
       <Section tone="sand">
         <Container>
-          <h2 className="font-serif text-2xl font-semibold">
+          <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
+            {isFr ? "Notre ancrage" : "Where we're rooted"}
+          </p>
+          <h2 className="mt-2 font-serif text-3xl font-semibold sm:text-4xl">
             {isFr ? EMPLOYER_BRAND.hqTitleFr : EMPLOYER_BRAND.hqTitleEn}
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
@@ -244,16 +285,24 @@ export default async function CarrieresHubPage({
           </p>
           <p className="text-fg-muted mt-3 max-w-3xl text-sm">
             {isFr
-              ? "Chez Axion-IA, le recrutement est ouvert à toutes et tous — sans discrimination. Nos intitulés de poste sont neutres et nos process inclusifs."
-              : "At Axion-IA, hiring is open to everyone — without discrimination. Our job titles are neutral and our process inclusive."}
+              ? "Chez Axion-IA.com, le recrutement est ouvert à toutes et tous — sans discrimination. Nos intitulés de poste sont neutres et nos process inclusifs."
+              : "At Axion-IA.com, hiring is open to everyone — without discrimination. Our job titles are neutral and our process inclusive."}
           </p>
         </Container>
       </Section>
 
       <Section id="offres">
         <Container>
-          <h2 className="mb-6 font-serif text-2xl font-semibold sm:text-3xl">
-            {isFr ? "Nos offres" : "Open roles"}
+          <h2 className="mb-6 font-serif text-3xl font-semibold sm:text-4xl">
+            {isFr ? (
+              <>
+                Nos <em className="text-terracotta italic">offres</em>
+              </>
+            ) : (
+              <>
+                Open <em className="text-terracotta italic">roles</em>
+              </>
+            )}
           </h2>
           {/* Recherche — formulaire GET server-side (0 JS, INP préservé) */}
           <form method="get" className="mb-4 flex max-w-md gap-2">
@@ -356,37 +405,47 @@ export default async function CarrieresHubPage({
                       .filter((o) => o.category === cat.slug)
                       .map((o) => {
                         const sal = salaryLabel(o, isFr);
+                        const img = careerImage(o.slug);
                         return (
                           <li key={o.id}>
                             <Link
                               href={`/carrieres/${o.slug}`}
-                              className="border-border hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition-colors"
+                              className="border-border hover:border-terracotta bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
                             >
-                              <div className="mb-3 flex flex-wrap items-center gap-2">
+                              <div className="relative aspect-[16/10] overflow-hidden">
+                                <Image
+                                  src={img.url}
+                                  alt={img.alt}
+                                  fill
+                                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                  className="object-cover transition duration-300 group-hover:scale-105"
+                                />
                                 {isNew(o.datePosted) ? (
-                                  <span className="bg-terracotta/15 text-terracotta rounded-full px-2.5 py-0.5 text-xs font-semibold">
+                                  <span className="bg-terracotta absolute top-3 left-3 rounded-full px-2.5 py-0.5 text-xs font-semibold text-white shadow">
                                     {isFr ? "Nouveau" : "New"}
                                   </span>
                                 ) : null}
                               </div>
-                              <h4 className="font-serif text-xl font-semibold group-hover:underline">
-                                {isFr ? o.titleFr : o.titleEn}
-                              </h4>
-                              <p className="text-fg-muted mt-2 line-clamp-3 text-sm">
-                                {isFr ? o.summaryFr : o.summaryEn}
-                              </p>
-                              <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                                <span>
-                                  📍{" "}
-                                  {o.city ??
-                                    WORKMODE_LABELS[o.workMode]?.[
-                                      isFr ? "fr" : "en"
-                                    ]}
-                                </span>
-                                {o.contractLabel ? (
-                                  <span>📄 {o.contractLabel}</span>
-                                ) : null}
-                                {sal ? <span>💶 {sal}</span> : null}
+                              <div className="flex flex-1 flex-col p-5">
+                                <h4 className="group-hover:text-terracotta font-serif text-lg font-semibold transition-colors">
+                                  {isFr ? o.titleFr : o.titleEn}
+                                </h4>
+                                <p className="text-fg-muted mt-2 line-clamp-2 text-sm">
+                                  {isFr ? o.summaryFr : o.summaryEn}
+                                </p>
+                                <div className="text-fg-muted mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                                  <span>
+                                    📍{" "}
+                                    {o.city ??
+                                      WORKMODE_LABELS[o.workMode]?.[
+                                        isFr ? "fr" : "en"
+                                      ]}
+                                  </span>
+                                  {o.contractLabel ? (
+                                    <span>📄 {o.contractLabel}</span>
+                                  ) : null}
+                                  {sal ? <span>💶 {sal}</span> : null}
+                                </div>
                               </div>
                             </Link>
                           </li>
@@ -400,12 +459,20 @@ export default async function CarrieresHubPage({
         </Container>
       </Section>
 
-      <Section>
+      <Section tone="halo-cool">
         <Container>
-          <h2 className="font-serif text-2xl font-semibold">
-            {isFr
-              ? "On recrute partout en France 🇫🇷"
-              : "We hire across France 🇫🇷"}
+          <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
+            {isFr ? (
+              <>
+                On recrute{" "}
+                <em className="text-terracotta italic">partout en France</em> 🇫🇷
+              </>
+            ) : (
+              <>
+                We hire{" "}
+                <em className="text-terracotta italic">across France</em> 🇫🇷
+              </>
+            )}
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr
@@ -427,8 +494,17 @@ export default async function CarrieresHubPage({
 
       <Section tone="sand">
         <Container>
-          <h2 className="font-serif text-2xl font-semibold">
-            {isFr ? "Questions fréquentes" : "Frequently asked questions"}
+          <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
+            {isFr ? (
+              <>
+                <em className="text-terracotta italic">Questions</em> fréquentes
+              </>
+            ) : (
+              <>
+                <em className="text-terracotta italic">Frequently</em> asked
+                questions
+              </>
+            )}
           </h2>
           <div className="mt-6 max-w-3xl">
             <FaqAccordion
