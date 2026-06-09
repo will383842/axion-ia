@@ -40,6 +40,7 @@ export interface JobOfferFormInitial {
   requiresVehicle: boolean;
   screeningQuestions: string;
   perks: string;
+  jobLocations?: string;
   startDate: string;
   applicationDeadline: string;
   validThrough: string;
@@ -533,6 +534,21 @@ export function JobOfferForm({ initial }: Props) {
           name="perks"
           rows={2}
           defaultValue={initial?.perks ?? ""}
+          className="admin-input admin-textarea"
+          disabled={pending}
+        />
+      </div>
+      <div className="admin-field">
+        <label htmlFor="jobLocations" className="admin-label">
+          Zone d&apos;emploi multi-villes (postes itinérants) — JSON : [
+          {`{ "city":"Lyon","region":"Auvergne-Rhône-Alpes" }`}] → visible
+          Google for Jobs dans toutes ces villes, sans pages dupliquées
+        </label>
+        <textarea
+          id="jobLocations"
+          name="jobLocations"
+          rows={2}
+          defaultValue={initial?.jobLocations ?? ""}
           className="admin-input admin-textarea"
           disabled={pending}
         />

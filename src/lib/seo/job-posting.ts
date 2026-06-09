@@ -38,12 +38,15 @@ export function buildJobPostingJsonLd(
   if (offer.indexationTier !== "tier_1_indexable") return null;
   // Expiration effective : validThrough explicite, sinon date limite de candidature.
   const effectiveValidThrough = offer.validThrough ?? offer.applicationDeadline;
-  if (effectiveValidThrough && effectiveValidThrough.getTime() < Date.now()) return null;
+  if (effectiveValidThrough && effectiveValidThrough.getTime() < Date.now())
+    return null;
 
   const isFr = locale === "fr";
   const title = isFr ? offer.titleFr : offer.titleEn;
   // Description sanitizée (whitelist) — le composant JsonLd n'échappe pas </script>.
-  const description = sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn);
+  const description = sanitizeContentGenHtml(
+    isFr ? offer.bodyFr : offer.bodyEn,
+  );
   const posted = offer.publishedAt ?? offer.datePosted;
   const applyUrl = `${SITE_URL}/${locale}/carrieres/${offer.slug}/postuler`;
 
@@ -52,7 +55,11 @@ export function buildJobPostingJsonLd(
     "@type": "JobPosting",
     title,
     description,
-    identifier: { "@type": "PropertyValue", name: "Axion-IA", value: offer.slug },
+    identifier: {
+      "@type": "PropertyValue",
+      name: "Axion-IA",
+      value: offer.slug,
+    },
     datePosted: posted.toISOString(),
     validThrough: resolveValidThrough(effectiveValidThrough, posted),
     employmentType: offer.employmentType,
@@ -66,16 +73,38 @@ export function buildJobPostingJsonLd(
 
   // jobBenefits depuis les perks pilotés en console (si présents).
   if (Array.isArray(offer.perks)) {
-    const benefits = (offer.perks as Array<{ labelFr?: string; labelEn?: string }>)
+    const benefits = (
+      offer.perks as Array<{ labelFr?: string; labelEn?: string }>
+    )
       .map((p) => (isFr ? p.labelFr : p.labelEn) ?? p.labelFr ?? p.labelEn)
       .filter((x): x is string => Boolean(x));
     if (benefits.length > 0) jsonLd.jobBenefits = benefits.join(", ");
   }
 
-  // Lieu : remote → TELECOMMUTE ; sinon Place si ville ; sinon France.
-  if (offer.workMode === "remote") {
+  // Lieu : multi-villes (itinérant/territorial) → tableau de Place (Google for Jobs
+  // affiche l'offre dans toutes ces villes, 1 seule annonce, zéro page dupliquée) ;
+  // sinon remote → TELECOMMUTE ; sinon Place si ville ; sinon France.
+  const multiLocations = Array.isArray(offer.jobLocations)
+    ? (offer.jobLocations as Array<{ city?: string; region?: string }>).filter(
+        (l) => l.city,
+      )
+    : [];
+  if (multiLocations.length > 0) {
+    jsonLd.jobLocation = multiLocations.map((l) => ({
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: l.city,
+        ...(l.region ? { addressRegion: l.region } : {}),
+        addressCountry: offer.country,
+      },
+    }));
+  } else if (offer.workMode === "remote") {
     jsonLd.jobLocationType = "TELECOMMUTE";
-    jsonLd.applicantLocationRequirements = { "@type": "Country", name: "France" };
+    jsonLd.applicantLocationRequirements = {
+      "@type": "Country",
+      name: "France",
+    };
   } else if (offer.city) {
     jsonLd.jobLocation = {
       "@type": "Place",
@@ -87,7 +116,10 @@ export function buildJobPostingJsonLd(
       },
     };
   } else {
-    jsonLd.applicantLocationRequirements = { "@type": "Country", name: "France" };
+    jsonLd.applicantLocationRequirements = {
+      "@type": "Country",
+      name: "France",
+    };
   }
 
   // Rémunération : commission → incentiveCompensation ; sinon baseSalary
@@ -96,7 +128,10 @@ export function buildJobPostingJsonLd(
     jsonLd.incentiveCompensation = isFr
       ? "Rémunération à la commission, déplafonnée."
       : "Uncapped commission-based pay.";
-  } else if (offer.salaryVisible && (offer.salaryMin != null || offer.salaryMax != null)) {
+  } else if (
+    offer.salaryVisible &&
+    (offer.salaryMin != null || offer.salaryMax != null)
+  ) {
     jsonLd.baseSalary = {
       "@type": "MonetaryAmount",
       currency: offer.salaryCurrency,

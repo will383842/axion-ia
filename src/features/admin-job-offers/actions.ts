@@ -210,6 +210,7 @@ const upsertSchema = z.object({
   applicationDeadline: optDate,
   remoteDaysPerWeek: optInt,
   perks: z.preprocess(emptyToUndef, z.string().optional()),
+  jobLocations: z.preprocess(emptyToUndef, z.string().optional()),
   teamName: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   managerName: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   heroImagePath: z.preprocess(emptyToUndef, z.string().max(255).optional()),
@@ -290,6 +291,7 @@ export async function upsertJobOfferAction(
   const bodyJsonEn = parseJsonField(d.bodyJsonEn);
   const screeningQuestions = parseJsonField(d.screeningQuestions);
   const perks = parseJsonField(d.perks);
+  const jobLocations = parseJsonField(d.jobLocations);
 
   // JSON invalide saisi par l'admin : remonter une erreur plutôt que l'avaler.
   if (d.screeningQuestions && screeningQuestions === undefined) {
@@ -297,6 +299,9 @@ export async function upsertJobOfferAction(
   }
   if (d.perks && perks === undefined) {
     return { ok: false, error: "Avantages : JSON invalide." };
+  }
+  if (d.jobLocations && jobLocations === undefined) {
+    return { ok: false, error: "Zone d'emploi multi-villes : JSON invalide." };
   }
 
   const data = {
@@ -343,6 +348,7 @@ export async function upsertJobOfferAction(
     ...(bodyJsonEn !== undefined ? { bodyJsonEn } : {}),
     ...(screeningQuestions !== undefined ? { screeningQuestions } : {}),
     ...(perks !== undefined ? { perks } : {}),
+    ...(jobLocations !== undefined ? { jobLocations } : {}),
   };
 
   try {
@@ -498,6 +504,7 @@ export async function cloneJobOfferAction(
     bodyJsonEn: _bje,
     screeningQuestions: _sq,
     perks: _pk,
+    jobLocations: _jl,
     ...rest
   } = src;
   const clone = await prisma.jobOffer.create({
@@ -523,6 +530,9 @@ export async function cloneJobOfferAction(
         : {}),
       ...(src.perks != null
         ? { perks: src.perks as Prisma.InputJsonValue }
+        : {}),
+      ...(src.jobLocations != null
+        ? { jobLocations: src.jobLocations as Prisma.InputJsonValue }
         : {}),
     },
   });

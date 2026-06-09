@@ -6057,6 +6057,10 @@ model JobOffer {
   city           String?     @db.VarChar(120)
   region         String?     @db.VarChar(120)
   country        String      @default("FR") @db.VarChar(2)
+  // Zone d'emploi multi-villes (postes itinérants/territoriaux) : tableau JSON de
+  // { city, region? } → JobPosting multi-location (visible Google for Jobs dans
+  // toutes ces villes depuis UNE annonce, sans pages dupliquées). FR-only.
+  jobLocations   Json?       @map("job_locations")
   salaryMin      Int?        @map("salary_min")
   salaryMax      Int?        @map("salary_max")
   salaryPeriod   String      @default("YEAR") @map("salary_period") @db.VarChar(10)

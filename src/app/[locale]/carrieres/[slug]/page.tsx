@@ -146,6 +146,12 @@ export default async function JobOfferDetailPage({
     : [];
   const suggested = await listSuggestedOffers(offer, 4);
   const categoryService = careerCategoryService(offer.category);
+  // Zone d'emploi multi-villes (postes itinérants/territoriaux).
+  const jobCities = Array.isArray(offer.jobLocations)
+    ? (offer.jobLocations as Array<{ city?: string }>)
+        .map((l) => l.city)
+        .filter((c): c is string => Boolean(c))
+    : [];
 
   const jobPosting = buildJobPostingJsonLd(offer, loc);
   const webPage = {
@@ -213,6 +219,15 @@ export default async function JobOfferDetailPage({
           <p data-speakable className="mt-6 max-w-2xl text-lg">
             {summary}
           </p>
+
+          {jobCities.length > 0 ? (
+            <p className="text-fg-muted mt-4 max-w-2xl text-sm">
+              <span className="font-medium">
+                {isFr ? "Poste ouvert à : " : "Open in: "}
+              </span>
+              {jobCities.join(" · ")}
+            </p>
+          ) : null}
 
           {!isClosed ? (
             <div className="mt-6">
