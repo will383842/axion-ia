@@ -13,7 +13,8 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Cta } from "@/components/marketing/Cta";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { careerCategoryLabel } from "@/content/careers/categories";
+import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
+import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
 import type { JobOffer } from "../../../../prisma/generated/client";
@@ -78,7 +79,7 @@ export default async function CarrieresHubPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; workMode?: string }>;
+  searchParams: Promise<{ category?: string; workMode?: string; q?: string }>;
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
@@ -88,10 +89,16 @@ export default async function CarrieresHubPage({
   const sp = await searchParams;
 
   const all = await listPublishedJobOffers();
+  const q = (sp.q ?? "").trim().toLowerCase();
   const offers = all.filter(
     (o) =>
       (!sp.category || o.category === sp.category) &&
-      (!sp.workMode || o.workMode === sp.workMode),
+      (!sp.workMode || o.workMode === sp.workMode) &&
+      (!q ||
+        o.titleFr.toLowerCase().includes(q) ||
+        o.titleEn.toLowerCase().includes(q) ||
+        o.summaryFr.toLowerCase().includes(q) ||
+        o.summaryEn.toLowerCase().includes(q)),
   );
 
   const itemList = buildItemListJsonLd({
@@ -110,10 +117,11 @@ export default async function CarrieresHubPage({
   const activeWorkModes = Array.from(new Set(all.map((o) => o.workMode)));
   // Conserve les deux dimensions de filtre dans l'URL (0 JS, INP préservé).
   const filterHref = (cat?: string, wm?: string): string => {
-    const q = new URLSearchParams();
-    if (cat) q.set("category", cat);
-    if (wm) q.set("workMode", wm);
-    const s = q.toString();
+    const query = new URLSearchParams();
+    if (cat) query.set("category", cat);
+    if (wm) query.set("workMode", wm);
+    if (sp.q) query.set("q", sp.q);
+    const s = query.toString();
     return s ? `/carrieres?${s}` : "/carrieres";
   };
 
@@ -140,32 +148,91 @@ export default async function CarrieresHubPage({
         <Container>
           <Breadcrumbs items={[{ href: "/carrieres", label: isFr ? "Carrières" : "Careers" }]} />
           <p className="text-terracotta mt-6 text-sm font-semibold tracking-wide uppercase">
-            {isFr ? "Rejoindre l'aventure" : "Join the adventure"}
+            {isFr ? EMPLOYER_BRAND.eyebrowFr : EMPLOYER_BRAND.eyebrowEn}
           </p>
           <h1 className="font-serif mt-2 text-4xl font-semibold sm:text-5xl">
             {isFr ? (
               <>
-                Construisons l&apos;IA opérationnelle, <em className="text-terracotta italic">ensemble</em>
+                Viens construire l&apos;IA qui change{" "}
+                <em className="text-terracotta italic">vraiment</em> le quotidien des boîtes
               </>
             ) : (
               <>
-                Let&apos;s build operational AI, <em className="text-terracotta italic">together</em>
+                Come build the AI that <em className="text-terracotta italic">actually</em> changes how
+                companies work
               </>
             )}
           </h1>
-          <p
-            data-speakable
-            className="text-fg-muted mt-4 max-w-2xl text-lg"
-          >
-            {isFr
-              ? "Axion-IA recrute partout en France. Des missions concrètes, une équipe qui avance, et un process de candidature simple — quelques minutes suffisent, CV optionnel."
-              : "Axion-IA is hiring across France. Real-world missions, a team that moves fast, and a simple application — a few minutes, CV optional."}
+          <p data-speakable className="text-fg-muted mt-4 max-w-2xl text-lg">
+            {isFr ? EMPLOYER_BRAND.heroIntroFr : EMPLOYER_BRAND.heroIntroEn}
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Cta href="#offres" track="careers-hero-see-offers">
+              {isFr ? "Voir les offres" : "See open roles"}
+            </Cta>
+            <Cta href="/contact" track="careers-hero-spontaneous">
+              {isFr ? "Candidature spontanée" : "Spontaneous application"}
+            </Cta>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Pourquoi nous rejoindre */}
+      <Section>
+        <Container>
+          <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
+            {isFr ? "Pourquoi nous rejoindre ?" : "Why join us?"}
+          </h2>
+          <p className="text-fg-muted mt-3 max-w-3xl">
+            {isFr ? EMPLOYER_BRAND.aboutFr : EMPLOYER_BRAND.aboutEn}
+          </p>
+          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+            {EMPLOYER_BRAND.whyJoin.map((card) => (
+              <li key={card.icon} className="border-border rounded-2xl border p-5">
+                <span className="text-2xl" aria-hidden>
+                  {card.icon}
+                </span>
+                <h3 className="mt-2 font-medium">{isFr ? card.titleFr : card.titleEn}</h3>
+                <p className="text-fg-muted mt-1 text-sm">{isFr ? card.textFr : card.textEn}</p>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+
+      {/* Siège — Saint-Marcellin */}
+      <Section tone="sand">
+        <Container>
+          <h2 className="font-serif text-2xl font-semibold">
+            {isFr ? EMPLOYER_BRAND.hqTitleFr : EMPLOYER_BRAND.hqTitleEn}
+          </h2>
+          <p className="text-fg-muted mt-3 max-w-3xl">
+            {isFr ? EMPLOYER_BRAND.hqTextFr : EMPLOYER_BRAND.hqTextEn}
           </p>
         </Container>
       </Section>
 
-      <Section>
+      <Section id="offres">
         <Container>
+          <h2 className="font-serif mb-6 text-2xl font-semibold sm:text-3xl">
+            {isFr ? "Nos offres" : "Open roles"}
+          </h2>
+          {/* Recherche — formulaire GET server-side (0 JS, INP préservé) */}
+          <form method="get" className="mb-4 flex max-w-md gap-2">
+            {sp.category ? <input type="hidden" name="category" value={sp.category} /> : null}
+            {sp.workMode ? <input type="hidden" name="workMode" value={sp.workMode} /> : null}
+            <input
+              type="search"
+              name="q"
+              defaultValue={sp.q ?? ""}
+              placeholder={isFr ? "Rechercher un poste…" : "Search a role…"}
+              className="border-border focus:border-terracotta w-full rounded-full border px-4 py-2 text-sm outline-none"
+              aria-label={isFr ? "Rechercher une offre" : "Search a role"}
+            />
+            <button type="submit" className="bg-terracotta rounded-full px-4 py-2 text-sm text-white">
+              {isFr ? "Chercher" : "Search"}
+            </button>
+          </form>
           {/* Filtres — liens server-side (0 JS, INP préservé), 2 dimensions */}
           {activeCategories.length > 1 ? (
             <nav
@@ -226,41 +293,51 @@ export default async function CarrieresHubPage({
               </div>
             </div>
           ) : (
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
-              {offers.map((o) => {
-                const sal = salaryLabel(o, isFr);
-                return (
-                  <li key={o.id}>
-                    <Link
-                      href={`/carrieres/${o.slug}`}
-                      className="border-border hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition-colors"
-                    >
-                      <div className="mb-3 flex flex-wrap items-center gap-2">
-                        <span className="bg-sand text-fg-muted rounded-full px-2.5 py-0.5 text-xs font-medium">
-                          {careerCategoryLabel(o.category, isFr)}
-                        </span>
-                        {isNew(o.datePosted) ? (
-                          <span className="bg-terracotta/15 text-terracotta rounded-full px-2.5 py-0.5 text-xs font-semibold">
-                            {isFr ? "Nouveau" : "New"}
-                          </span>
-                        ) : null}
-                      </div>
-                      <h2 className="font-serif text-xl font-semibold group-hover:underline">
-                        {isFr ? o.titleFr : o.titleEn}
-                      </h2>
-                      <p className="text-fg-muted mt-2 line-clamp-3 text-sm">
-                        {isFr ? o.summaryFr : o.summaryEn}
-                      </p>
-                      <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                        <span>📍 {o.city ?? WORKMODE_LABELS[o.workMode]?.[isFr ? "fr" : "en"]}</span>
-                        {o.contractLabel ? <span>📄 {o.contractLabel}</span> : null}
-                        {sal ? <span>💶 {sal}</span> : null}
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="space-y-10">
+              {CAREER_CATEGORIES.filter((cat) => offers.some((o) => o.category === cat.slug)).map(
+                (cat) => (
+                  <div key={cat.slug}>
+                    <h3 className="font-serif text-xl font-semibold">{isFr ? cat.fr : cat.en}</h3>
+                    <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+                      {offers
+                        .filter((o) => o.category === cat.slug)
+                        .map((o) => {
+                          const sal = salaryLabel(o, isFr);
+                          return (
+                            <li key={o.id}>
+                              <Link
+                                href={`/carrieres/${o.slug}`}
+                                className="border-border hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition-colors"
+                              >
+                                <div className="mb-3 flex flex-wrap items-center gap-2">
+                                  {isNew(o.datePosted) ? (
+                                    <span className="bg-terracotta/15 text-terracotta rounded-full px-2.5 py-0.5 text-xs font-semibold">
+                                      {isFr ? "Nouveau" : "New"}
+                                    </span>
+                                  ) : null}
+                                </div>
+                                <h4 className="font-serif text-xl font-semibold group-hover:underline">
+                                  {isFr ? o.titleFr : o.titleEn}
+                                </h4>
+                                <p className="text-fg-muted mt-2 line-clamp-3 text-sm">
+                                  {isFr ? o.summaryFr : o.summaryEn}
+                                </p>
+                                <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                                  <span>
+                                    📍 {o.city ?? WORKMODE_LABELS[o.workMode]?.[isFr ? "fr" : "en"]}
+                                  </span>
+                                  {o.contractLabel ? <span>📄 {o.contractLabel}</span> : null}
+                                  {sal ? <span>💶 {sal}</span> : null}
+                                </div>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                ),
+              )}
+            </div>
           )}
         </Container>
       </Section>
