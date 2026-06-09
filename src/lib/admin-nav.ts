@@ -273,7 +273,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── ops & monitoring ─────────────────────────────────────────────────
     { href: `${base}/analytics`, label: "Analytics & SEO", icon: "📊", group: "ops" },
     { href: `${base}/web-vitals`, label: "Web Vitals", icon: "📈", group: "ops" },
-    { href: `${base}/site-explorer`, label: "Site Explorer", icon: "🗺️", group: "ops" },
+    { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "🗺️", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
     { href: `${base}/infra/backups`, label: "Sauvegardes & DR", icon: "💾", group: "ops" },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },

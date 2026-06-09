@@ -20,6 +20,8 @@ import type {
   BookingCronJobType,
   SiteRouteInspectorJobData,
   SiteRouteAnomalyDetectorJobData,
+  SiteRouteDiscoveryJobData,
+  SiteRouteGscJobData,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -355,6 +357,21 @@ export const siteRouteAnomalyDetectorQueue: Queue<SiteRouteAnomalyDetectorJobDat
         defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
       })
     : null;
+
+// Onglet « Toutes les URLs » 2026-06-08 — découverte « vivante » + trafic GSC.
+export const siteRouteDiscoveryQueue: Queue<SiteRouteDiscoveryJobData> | null = connection
+  ? new Queue<SiteRouteDiscoveryJobData>("site-route-discovery", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+export const siteRouteGscQueue: Queue<SiteRouteGscJobData> | null = connection
+  ? new Queue<SiteRouteGscJobData>("site-route-gsc", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
 
 /**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
@@ -989,6 +1006,36 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { tick: new Date().toISOString() },
       { repeat: { pattern: "0 3 * * *" }, jobId: "site-route-anomaly-detector-cron" },
+    );
+  }
+
+  // Onglet « Toutes les URLs » 2026-06-08 — découverte « vivante » daily 01:00 UTC
+  // (avant l'inspecteur HTTP de 02:00, pour qu'il inspecte les URLs fraîchement
+  // découvertes le jour même). Recalcule l'indexabilité live → bascule auto.
+  if (siteRouteDiscoveryQueue) {
+    await siteRouteDiscoveryQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 1 * * *" },
+      "site-route-discovery-cron",
+    );
+    await siteRouteDiscoveryQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 1 * * *" }, jobId: "site-route-discovery-cron" },
+    );
+  }
+
+  // Onglet « Toutes les URLs » 2026-06-08 — trafic GSC par URL daily 04:00 UTC.
+  if (siteRouteGscQueue) {
+    await siteRouteGscQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 4 * * *" },
+      "site-route-gsc-cron",
+    );
+    await siteRouteGscQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 4 * * *" }, jobId: "site-route-gsc-cron" },
     );
   }
 

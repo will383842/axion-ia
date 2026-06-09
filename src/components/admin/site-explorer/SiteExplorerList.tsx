@@ -1,7 +1,7 @@
 // Liste paginée des routes — Sprint Site Explorer Admin 2026-05-22.
 // Server Component pur.
 
-import { SiteRouteRow } from "./SiteRouteRow";
+import { RoutesReviewList } from "./RoutesReviewList";
 import { adminPath } from "@/lib/admin-path";
 import type { SiteRouteListItem } from "@/server/actions/site-explorer/site-routes";
 
@@ -38,11 +38,7 @@ export function SiteExplorerList({ routes, total, page, pageSize }: Props) {
         )}
       </div>
 
-      <div className="space-y-1">
-        {routes.map((route) => (
-          <SiteRouteRow key={route.id} route={route} />
-        ))}
-      </div>
+      <RoutesReviewList routes={routes} />
 
       {/* Pagination */}
       {totalPages > 1 && (

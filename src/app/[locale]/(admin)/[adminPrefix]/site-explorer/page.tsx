@@ -11,17 +11,22 @@ import {
   listSiteRoutes,
   getSiteRouteStats,
   triggerScanAll,
+  triggerDiscovery,
 } from "@/server/actions/site-explorer/site-routes";
 import { SiteExplorerStats } from "@/components/admin/site-explorer/SiteExplorerStats";
 import { SiteExplorerFilters } from "@/components/admin/site-explorer/SiteExplorerFilters";
 import { SiteExplorerList } from "@/components/admin/site-explorer/SiteExplorerList";
 import { adminPath } from "@/lib/admin-path";
-import type { SiteRouteType, SiteRouteStatus } from "../../../../../../prisma/generated/client";
+import type {
+  SiteRouteType,
+  SiteRouteStatus,
+  SiteRouteQuality,
+} from "../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Site Explorer — Admin Axion-IA",
+  title: "Toutes les URLs — Admin Axion-IA",
   robots: { index: false, follow: false },
 };
 
@@ -43,6 +48,15 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
     ...(sp.type ? { type: sp.type as SiteRouteType } : {}),
     ...(sp.status ? { status: sp.status as SiteRouteStatus } : {}),
     ...(sp.section ? { section: sp.section } : {}),
+    ...(sp.category ? { category: sp.category } : {}),
+    ...(sp.quality ? { qualityStatus: sp.quality as SiteRouteQuality } : {}),
+    ...(sp.indexable === "true"
+      ? { isIndexable: true }
+      : sp.indexable === "false"
+        ? { isIndexable: false }
+        : {}),
+    ...(sp.gscRequested === "true" ? { gscRequested: true } : {}),
+    ...(sp.includeRemoved === "true" ? { includeRemoved: true } : {}),
     ...(sp.search ? { search: sp.search } : {}),
     ...(sp.editable === "true" ? { editable: true } : {}),
   };
@@ -59,9 +73,10 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Site Explorer</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Toutes les URLs</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Catalogue exhaustif des URLs publiques — admin &amp; API exclus
+            Catalogue vivant des URLs publiques — indexabilité live, feu de revue &amp; GSC (admin
+            &amp; API exclus)
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -73,6 +88,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
               ⚠️ {stats.anomaliesHigh} anomalie{stats.anomaliesHigh > 1 ? "s" : ""} high
             </a>
           )}
+          <DiscoverButton />
           <ScanAllButton adminPrefix={adminPrefix} />
           <a
             href={anomaliesUrl}
@@ -103,7 +119,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
   );
 }
 
-// Bouton trigger scan — Server Action directement dans la page
+// Bouton trigger inspection HTTP — Server Action directement dans la page
 function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
   async function handleScanAll() {
     "use server";
@@ -114,9 +130,30 @@ function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
     <form action={handleScanAll}>
       <button
         type="submit"
-        className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+        title="Relance l'inspection HTTP (statut, méta, mots) des URLs cataloguées"
       >
-        🔄 Scanner toutes les URLs
+        🔄 Inspecter (HTTP)
+      </button>
+    </form>
+  );
+}
+
+// Bouton trigger découverte « vivante » — ré-énumère + recalcule l'indexabilité.
+function DiscoverButton() {
+  async function handleDiscover() {
+    "use server";
+    await triggerDiscovery();
+  }
+
+  return (
+    <form action={handleDiscover}>
+      <button
+        type="submit"
+        className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        title="Ré-énumère toutes les URLs et recalcule l'indexabilité live (auto chaque nuit)"
+      >
+        🔎 Découvrir les URLs
       </button>
     </form>
   );
