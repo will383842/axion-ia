@@ -179,6 +179,10 @@ export const config = {
     // emerging), futurs `.well-known/*` doivent rester ROOT (pas de prefix
     // locale). Sans cette exclusion, middleware rewrite `/.well-known/x` →
     // `/fr/.well-known/x` → 404 (pas de route locale variant).
-    "/((?!api/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
+    // `widget/` exclu : le loader public du widget offres d'emploi
+    // (`/public/widget/offres-emploi.js`) est un asset racine SANS préfixe
+    // locale. Sans cette exclusion, le redirect 0bis le 301 vers
+    // `/fr/widget/offres-emploi.js` (404) → le format script de l'embed casse.
+    "/((?!api/|widget/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
   ],
 };
