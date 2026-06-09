@@ -6142,6 +6142,16 @@ model JobApplication {
   cvMimeType     String? @map("cv_mime_type") @db.VarChar(100)
   cvSizeBytes    Int?    @map("cv_size_bytes")
 
+  // Photo candidat — OPTIONNELLE (le candidat choisit). Stockage disque admin-only,
+  // comme le CV. Note : photo non requise (anti-discrimination), purement facultative.
+  photoStoragePath  String? @map("photo_storage_path") @db.VarChar(255)
+  photoOriginalName String? @map("photo_original_name") @db.VarChar(255)
+  photoMimeType     String? @map("photo_mime_type") @db.VarChar(100)
+
+  // Prétention de revenus — OPTIONNELLE (salaire souhaité, PAS l'historique :
+  // conforme directive UE 2023/970 qui interdit l'historique, pas les attentes).
+  salaryExpectation String? @map("salary_expectation") @db.VarChar(80)
+
   // RGPD / sécurité
   ipHash         String? @map("ip_hash") @db.VarChar(64)
   userAgent      String? @map("user_agent") @db.Text

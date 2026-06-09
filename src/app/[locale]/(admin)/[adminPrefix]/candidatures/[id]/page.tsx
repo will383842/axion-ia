@@ -73,6 +73,8 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dd>{a.experienceBand ?? "—"}</dd>
           <dt className="font-medium">Disponibilité</dt>
           <dd>{a.availability ?? "—"}</dd>
+          <dt className="font-medium">Prétention de revenus</dt>
+          <dd>{a.salaryExpectation ?? "—"}</dd>
           <dt className="font-medium">LinkedIn</dt>
           <dd>
             {a.linkedinUrl ? (
@@ -103,6 +105,19 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
               </Link>
             ) : (
               "non fourni"
+            )}
+          </dd>
+          <dt className="font-medium">Photo</dt>
+          <dd>
+            {a.hasPhoto ? (
+              <Link
+                href={`/fr/${adminPrefix}/candidatures/${a.id}/photo`}
+                className="admin-link"
+              >
+                Voir {a.photoOriginalName ?? ""}
+              </Link>
+            ) : (
+              "non fournie"
             )}
           </dd>
         </dl>

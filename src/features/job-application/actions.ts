@@ -35,7 +35,10 @@ export type JobApplicationState =
   | { ok: false; error: string };
 
 const opt = (max: number) =>
-  z.preprocess((v) => (v === "" || v == null ? undefined : v), z.string().max(max).optional());
+  z.preprocess(
+    (v) => (v === "" || v == null ? undefined : v),
+    z.string().max(max).optional(),
+  );
 
 const appSchema = z.object({
   offerId: z.string().uuid(),
@@ -53,7 +56,31 @@ const appSchema = z.object({
   experienceBand: opt(40),
   availability: opt(120),
   linkedinUrl: opt(255),
+  salaryExpectation: opt(80),
 });
+
+const PHOTO_MAX_BYTES = 5 * 1024 * 1024; // 5 Mo
+
+/** Validation photo (optionnelle) : taille + magic-bytes JPEG/PNG/WebP. */
+function validatePhoto(file: File, buf: Buffer): string | null {
+  if (file.size > PHOTO_MAX_BYTES) return "Photo trop volumineuse (5 Mo max).";
+  const s = buf.subarray(0, 12);
+  const isJpg = s[0] === 0xff && s[1] === 0xd8 && s[2] === 0xff;
+  const isPng =
+    s[0] === 0x89 && s[1] === 0x50 && s[2] === 0x4e && s[3] === 0x47;
+  const isWebp =
+    s[0] === 0x52 &&
+    s[1] === 0x49 &&
+    s[2] === 0x46 &&
+    s[3] === 0x46 &&
+    s[8] === 0x57 &&
+    s[9] === 0x45 &&
+    s[10] === 0x42 &&
+    s[11] === 0x50;
+  if (!isJpg && !isPng && !isWebp)
+    return "Photo non supportée (JPG, PNG ou WebP).";
+  return null;
+}
 
 /** Tri-état Oui/Non/(vide) depuis un radio. */
 function triState(v: FormDataEntryValue | null): boolean | null {
@@ -69,13 +96,16 @@ function validateCv(file: File, buf: Buffer): string | null {
   const extOk = CV_ALLOWED_EXTENSIONS.some((e) => lower.endsWith(e));
   if (!extOk) return "Format de CV non supporté (PDF, DOC ou DOCX).";
   const mimeOk =
-    !file.type || CV_ALLOWED_MIME.includes(file.type as (typeof CV_ALLOWED_MIME)[number]);
+    !file.type ||
+    CV_ALLOWED_MIME.includes(file.type as (typeof CV_ALLOWED_MIME)[number]);
   if (!mimeOk) return "Type de fichier CV non supporté.";
   // Magic-bytes : %PDF / PK(zip→docx) / D0CF11E0(ole→doc).
   const sig = buf.subarray(0, 4);
-  const isPdf = sig[0] === 0x25 && sig[1] === 0x50 && sig[2] === 0x44 && sig[3] === 0x46;
+  const isPdf =
+    sig[0] === 0x25 && sig[1] === 0x50 && sig[2] === 0x44 && sig[3] === 0x46;
   const isZip = sig[0] === 0x50 && sig[1] === 0x4b;
-  const isOle = sig[0] === 0xd0 && sig[1] === 0xcf && sig[2] === 0x11 && sig[3] === 0xe0;
+  const isOle =
+    sig[0] === 0xd0 && sig[1] === 0xcf && sig[2] === 0x11 && sig[3] === 0xe0;
   if (!isPdf && !isZip && !isOle) return "Fichier CV illisible ou corrompu.";
   return null;
 }
@@ -87,8 +117,12 @@ export async function submitJobApplicationAction(
   const ip = await getClientIp();
 
   // 1. Rate-limit
-  const rl = await checkRateLimit(`job-application:${ip}`, { limit: 3, windowSec: 600 });
-  if (!rl.allowed) return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
+  const rl = await checkRateLimit(`job-application:${ip}`, {
+    limit: 3,
+    windowSec: 600,
+  });
+  if (!rl.allowed)
+    return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
 
   // 2. Honeypot
   if (formData.get("website")) return { ok: true, applicationId: "" };
@@ -100,7 +134,8 @@ export async function submitJobApplicationAction(
   }
 
   // 4. Consentement RGPD obligatoire
-  const consent = formData.get("consent") === "true" || formData.get("consent") === "on";
+  const consent =
+    formData.get("consent") === "true" || formData.get("consent") === "on";
   if (!consent) return { ok: false, error: "Le consentement RGPD est requis." };
 
   // 5. Zod
@@ -117,19 +152,35 @@ export async function submitJobApplicationAction(
     experienceBand: formData.get("experienceBand"),
     availability: formData.get("availability"),
     linkedinUrl: formData.get("linkedinUrl"),
+    salaryExpectation: formData.get("salaryExpectation"),
   });
-  if (!parsed.success) return { ok: false, error: "Champs invalides — vérifiez vos informations." };
+  if (!parsed.success)
+    return {
+      ok: false,
+      error: "Champs invalides — vérifiez vos informations.",
+    };
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
 
   // 6. Offre cible
   const offer = await prisma.jobOffer.findUnique({
     where: { id: d.offerId },
-    select: { id: true, titleFr: true, status: true, filledAt: true, validThrough: true },
+    select: {
+      id: true,
+      titleFr: true,
+      category: true,
+      status: true,
+      filledAt: true,
+      validThrough: true,
+    },
   });
-  const expired = offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
+  const expired =
+    offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
   if (!offer || offer.status !== "published" || offer.filledAt || expired) {
-    return { ok: false, error: "Cette offre n'est plus ouverte aux candidatures." };
+    return {
+      ok: false,
+      error: "Cette offre n'est plus ouverte aux candidatures.",
+    };
   }
 
   // 7. CV (optionnel)
@@ -140,7 +191,8 @@ export async function submitJobApplicationAction(
   const cv = formData.get("cv");
   if (cv instanceof File && cv.size > 0) {
     // Vérifier la taille AVANT de charger le buffer en mémoire (anti-DoS RAM).
-    if (cv.size > CV_MAX_BYTES) return { ok: false, error: "CV trop volumineux (8 Mo max)." };
+    if (cv.size > CV_MAX_BYTES)
+      return { ok: false, error: "CV trop volumineux (8 Mo max)." };
     const buf = Buffer.from(await cv.arrayBuffer());
     const cvError = validateCv(cv, buf);
     if (cvError) return { ok: false, error: cvError };
@@ -150,10 +202,30 @@ export async function submitJobApplicationAction(
     cvSizeBytes = cv.size;
   }
 
+  // 7bis. Photo (OPTIONNELLE — réutilise le stockage CV, hors web-root, admin-only)
+  let photoStoragePath: string | null = null;
+  let photoOriginalName: string | null = null;
+  let photoMimeType: string | null = null;
+  const photo = formData.get("photo");
+  if (photo instanceof File && photo.size > 0) {
+    if (photo.size > PHOTO_MAX_BYTES)
+      return { ok: false, error: "Photo trop volumineuse (5 Mo max)." };
+    const pbuf = Buffer.from(await photo.arrayBuffer());
+    const photoError = validatePhoto(photo, pbuf);
+    if (photoError) return { ok: false, error: photoError };
+    photoStoragePath = await storeCv(pbuf, photo.name);
+    photoOriginalName = photo.name.slice(0, 255);
+    photoMimeType = photo.type || null;
+  }
+
   // 8. Réponses aux questions de l'offre (champs answer_<id>)
   const answers: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
-    if (key.startsWith("answer_") && typeof value === "string" && value.trim()) {
+    if (
+      key.startsWith("answer_") &&
+      typeof value === "string" &&
+      value.trim()
+    ) {
       answers[key.slice("answer_".length)] = value.slice(0, 2000);
     }
   }
@@ -184,11 +256,17 @@ export async function submitJobApplicationAction(
         cvOriginalName,
         cvMimeType,
         cvSizeBytes,
+        photoStoragePath,
+        photoOriginalName,
+        photoMimeType,
+        salaryExpectation: d.salaryExpectation ?? null,
         ipHash: hashIp(ip),
         userAgent,
         consentVersion: CONSENT_VERSION,
         locale,
-        ...(Object.keys(answers).length > 0 ? { answers: answers as Prisma.InputJsonValue } : {}),
+        ...(Object.keys(answers).length > 0
+          ? { answers: answers as Prisma.InputJsonValue }
+          : {}),
       },
     });
 
@@ -201,7 +279,13 @@ export async function submitJobApplicationAction(
         contactEmail: d.email,
         ...(d.phone ? { contactPhone: d.phone } : {}),
         offerTitle: offer.titleFr,
+        offerCategory: offer.category,
+        ...(d.city ? { city: d.city } : {}),
+        ...(d.salaryExpectation
+          ? { salaryExpectation: d.salaryExpectation }
+          : {}),
         hasCv: Boolean(cvStoragePath),
+        hasPhoto: Boolean(photoStoragePath),
         locale,
       },
       dedupKey: app.id,
@@ -218,7 +302,9 @@ export async function submitJobApplicationAction(
     revalidatePath(adminPath("fr", "candidatures"));
     return { ok: true, applicationId: app.id };
   } catch (err) {
-    Sentry.captureException(err, { tags: { action: "submitJobApplicationAction", locale } });
+    Sentry.captureException(err, {
+      tags: { action: "submitJobApplicationAction", locale },
+    });
     return { ok: false, error: "Une erreur est survenue. Réessayez." };
   }
 }

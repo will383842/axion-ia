@@ -43,6 +43,8 @@ export function JobApplicationForm({
   const isFr = locale === "fr";
   const cvRef = React.useRef<HTMLInputElement>(null);
   const [cvName, setCvName] = React.useState<string>("");
+  const photoRef = React.useRef<HTMLInputElement>(null);
+  const [photoName, setPhotoName] = React.useState<string>("");
   const [answers, setAnswers] = React.useState<Record<string, string>>({});
   const [consent, setConsent] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -72,6 +74,15 @@ export function JobApplicationForm({
     if (cvFile && cvFile.size > 8 * 1024 * 1024) {
       setError(
         isFr ? "CV trop volumineux (8 Mo max)." : "CV too large (8 MB max).",
+      );
+      return;
+    }
+    const photoFile = photoRef.current?.files?.[0];
+    if (photoFile && photoFile.size > 5 * 1024 * 1024) {
+      setError(
+        isFr
+          ? "Photo trop volumineuse (5 Mo max)."
+          : "Photo too large (5 MB max).",
       );
       return;
     }
@@ -346,6 +357,23 @@ export function JobApplicationForm({
               disabled={submitting}
             />
           </div>
+          <div>
+            <label htmlFor="salaryExpectation" className={LABEL}>
+              {isFr
+                ? "Prétention de revenus — optionnel"
+                : "Salary expectation — optional"}
+            </label>
+            <input
+              id="salaryExpectation"
+              name="salaryExpectation"
+              maxLength={80}
+              className={FIELD}
+              disabled={submitting}
+              placeholder={
+                isFr ? "ex. 35–42 k€ brut/an" : "e.g. 35–42 k€ gross/yr"
+              }
+            />
+          </div>
         </div>
 
         {screeningQuestions.map((q) => (
@@ -395,6 +423,33 @@ export function JobApplicationForm({
           {cvName ? (
             <p className="text-fg-muted mt-1 text-xs">
               {isFr ? "Sélectionné :" : "Selected:"} {cvName}
+            </p>
+          ) : null}
+        </div>
+        <div>
+          <label htmlFor="photo" className={LABEL}>
+            {isFr
+              ? "Photo (JPG, PNG) — optionnel"
+              : "Photo (JPG, PNG) — optional"}
+          </label>
+          <input
+            id="photo"
+            name="photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            ref={photoRef}
+            className="text-sm"
+            disabled={submitting}
+            onChange={(ev) => setPhotoName(ev.target.files?.[0]?.name ?? "")}
+          />
+          <p className="text-fg-muted mt-1 text-xs">
+            {isFr
+              ? "Totalement facultative — ne pas en mettre ne te pénalise pas."
+              : "Entirely optional — leaving it out won't penalise you."}
+          </p>
+          {photoName ? (
+            <p className="text-fg-muted mt-1 text-xs">
+              {isFr ? "Sélectionnée :" : "Selected:"} {photoName}
             </p>
           ) : null}
         </div>

@@ -25,7 +25,12 @@ interface StickyMobileCtaProps {
   threshold?: number;
 }
 
-export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyMobileCtaProps) {
+export function StickyMobileCta({
+  href,
+  label,
+  track,
+  threshold = 600,
+}: StickyMobileCtaProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -39,7 +44,8 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
     const compute = () => {
       const past = window.scrollY > threshold;
       const nearBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 320;
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 320;
       const next = past && !nearBottom;
       if (next !== lastVisible) {
         lastVisible = next;
@@ -62,25 +68,49 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
   }, [threshold]);
 
   return (
-    <div
-      aria-hidden={!visible}
-      className={`pointer-events-none fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 ease-out motion-reduce:transition-none lg:hidden ${
-        visible ? "translate-y-0" : "translate-y-full"
-      }`}
-    >
+    <>
+      {/* Mobile — barre pleine largeur en bas */}
       <div
-        className="bg-paper/90 border-border supports-[backdrop-filter]:bg-paper/75 pointer-events-auto border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur"
-        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
+        aria-hidden={!visible}
+        className={`pointer-events-none fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 ease-out motion-reduce:transition-none lg:hidden ${
+          visible ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div
+          className="bg-paper/90 border-border supports-[backdrop-filter]:bg-paper/75 pointer-events-auto border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur"
+          style={{
+            paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)",
+          }}
+        >
+          <Link
+            href={href as never}
+            {...(track ? { "data-cta": track } : {})}
+            className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            {label}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+
+      {/* Desktop — pastille flottante en bas à droite */}
+      <div
+        aria-hidden={!visible}
+        className={`pointer-events-none fixed right-6 bottom-6 z-40 hidden transition-all duration-300 ease-out motion-reduce:transition-none lg:block ${
+          visible
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-3 opacity-0"
+        }`}
       >
         <Link
           href={href as never}
-          {...(track ? { "data-cta": track } : {})}
-          className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          {...(track ? { "data-cta": `${track}-desktop` } : {})}
+          className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary pointer-events-auto inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           {label}
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
         </Link>
       </div>
-    </div>
+    </>
   );
 }

@@ -12,9 +12,19 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { deleteCv } from "@/server/careers/cv-storage";
-import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
+import type {
+  JobApplicationStatus,
+  Locale,
+} from "../../../prisma/generated/client";
 
-const STATUSES = ["new", "reviewing", "shortlisted", "rejected", "hired", "archived"] as const;
+const STATUSES = [
+  "new",
+  "reviewing",
+  "shortlisted",
+  "rejected",
+  "hired",
+  "archived",
+] as const;
 
 /** Déchiffrement tolérant : un ciphertext corrompu ne casse pas la page entière. */
 function safeDecrypt(v: string): string {
@@ -42,7 +52,8 @@ async function requireAdminRead() {
 async function requireSuperAdmin() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
-  if ((session.user as { role?: string }).role !== "super_admin") throw new Error("forbidden");
+  if ((session.user as { role?: string }).role !== "super_admin")
+    throw new Error("forbidden");
   return { userId: session.user.id };
 }
 
@@ -71,7 +82,9 @@ export interface JobApplicationListItem {
   submittedAt: Date;
 }
 
-export async function listApplicationsAction(input: Partial<ListApplicationsInput> = {}) {
+export async function listApplicationsAction(
+  input: Partial<ListApplicationsInput> = {},
+) {
   await requireAdminRead();
   const parsed = listSchema.parse(input);
   const where: Record<string, unknown> = {};
@@ -105,7 +118,8 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
     id: r.id,
     offerId: r.offerId,
     offerTitleSnap: r.offerTitleSnap,
-    contactName: `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim(),
+    contactName:
+      `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim(),
     contactEmail: safeDecrypt(r.email),
     status: r.status,
     hasCv: Boolean(r.cvStoragePath),
@@ -144,6 +158,9 @@ export interface JobApplicationDetail {
   answers: Record<string, string>;
   hasCv: boolean;
   cvOriginalName: string | null;
+  salaryExpectation: string | null;
+  hasPhoto: boolean;
+  photoOriginalName: string | null;
   internalNotes: string | null;
   assignedTo: string | null;
   needsAttention: boolean;
@@ -151,7 +168,9 @@ export interface JobApplicationDetail {
   submittedAt: Date;
 }
 
-export async function getApplicationDetailAction(id: string): Promise<JobApplicationDetail | null> {
+export async function getApplicationDetailAction(
+  id: string,
+): Promise<JobApplicationDetail | null> {
   await requireAdminRead();
   const a = await prisma.jobApplication.findUnique({ where: { id } });
   if (!a) return null;
@@ -180,6 +199,9 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     answers,
     hasCv: Boolean(a.cvStoragePath),
     cvOriginalName: a.cvOriginalName,
+    salaryExpectation: a.salaryExpectation,
+    hasPhoto: Boolean(a.photoStoragePath),
+    photoOriginalName: a.photoOriginalName,
     internalNotes: a.internalNotes,
     assignedTo: a.assignedTo,
     needsAttention: a.needsAttention,
@@ -202,7 +224,9 @@ const updateSchema = z.object({
   ),
   needsAttention: z.preprocess((v) => v === "true" || v === "on", z.boolean()),
 });
-export type UpdateApplicationState = { ok: true } | { ok: false; error: string };
+export type UpdateApplicationState =
+  | { ok: true }
+  | { ok: false; error: string };
 
 export async function updateApplicationStatusAction(
   _prev: UpdateApplicationState,
@@ -261,11 +285,12 @@ export async function deleteApplicationAction(
 
   const a = await prisma.jobApplication.findUnique({
     where: { id },
-    select: { cvStoragePath: true },
+    select: { cvStoragePath: true, photoStoragePath: true },
   });
   if (!a) return { ok: false, error: "Candidature introuvable." };
 
-  await deleteCv(a.cvStoragePath); // purge fichier AVANT le delete
+  await deleteCv(a.cvStoragePath); // purge CV AVANT le delete
+  await deleteCv(a.photoStoragePath); // purge photo AVANT le delete (RGPD)
   await prisma.jobApplication.delete({ where: { id } });
   await prisma.activityLog.create({
     data: {
