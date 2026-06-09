@@ -66,7 +66,7 @@
    "group": "ville",
    "workMode": "on_site",
    "multiCity": true,
-   "city": "Saint-Marcellin"
+   "city": null
   },
   {
    "slug": "redacteur-web-ia",
@@ -326,9 +326,9 @@
     "cas d'usage"
    ],
    "group": "fixe",
-   "workMode": "on_site",
+   "workMode": "remote",
    "multiCity": false,
-   "city": "Saint-Marcellin"
+   "city": null
   },
   {
    "slug": "stagiaire-formation-ia",

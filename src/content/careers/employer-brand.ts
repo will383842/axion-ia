@@ -71,9 +71,9 @@ export const EMPLOYER_BRAND = {
   hqTitleFr: "Où on bosse 🏔️",
   hqTitleEn: "Where we work 🏔️",
   hqTextFr:
-    "Nos bureaux sont à Saint-Marcellin et Grenoble (Isère). Postes en présentiel ici et autour (Valence, Romans, Voiron) ; beaucoup en remote ou hybride, partout en France.",
+    "Notre siège est à Grenoble et nos bureaux à Saint-Marcellin (Isère). Postes en présentiel ici et autour (Valence, Romans, Voiron) ; beaucoup en remote ou hybride, partout en France. Et nos formateurs interviennent par secteur, partout en France.",
   hqTextEn:
-    "Our offices are in Saint-Marcellin and Grenoble (Isère). On-site roles here and nearby (Valence, Romans, Voiron); many remote or hybrid, anywhere in France.",
+    "Our head office is in Grenoble and our offices in Saint-Marcellin (Isère). On-site roles here and nearby (Valence, Romans, Voiron); many remote or hybrid, anywhere in France. And our trainers work by sector, across France.",
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:
