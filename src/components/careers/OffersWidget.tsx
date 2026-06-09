@@ -53,6 +53,8 @@ interface ThemeTokens {
   titleHover: string;
   badge: string;
   cta: string;
+  /** Anneau de focus clavier (a11y) — classe Tailwind littérale. */
+  ring: string;
 }
 
 const THEMES: Record<OffersWidgetTheme, ThemeTokens> = {
@@ -66,6 +68,7 @@ const THEMES: Record<OffersWidgetTheme, ThemeTokens> = {
     titleHover: "group-hover:text-terracotta",
     badge: "bg-terracotta text-white",
     cta: "bg-terracotta text-white hover:bg-terracotta/90",
+    ring: "focus-visible:ring-terracotta",
   },
   dark: {
     root: "bg-mocha-rich text-mocha-fg",
@@ -77,6 +80,7 @@ const THEMES: Record<OffersWidgetTheme, ThemeTokens> = {
     titleHover: "group-hover:text-terracotta-soft",
     badge: "bg-terracotta-soft text-mocha-rich",
     cta: "bg-terracotta-soft text-mocha-rich hover:opacity-90",
+    ring: "focus-visible:ring-terracotta-soft",
   },
 };
 
@@ -181,7 +185,7 @@ export function OffersWidget({
                 href={offerUrl(o.slug)}
                 target="_blank"
                 rel="noopener"
-                className={`group block rounded-xl border ${t.border} ${t.card} ${t.cardHover} px-3 py-2.5 transition-colors`}
+                className={`group block rounded-xl border ${t.border} ${t.card} ${t.cardHover} px-3 py-2.5 transition-colors focus-visible:ring-2 focus-visible:outline-none ${t.ring}`}
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="line-clamp-1 text-sm font-semibold">
@@ -212,7 +216,7 @@ export function OffersWidget({
                   href={offerUrl(o.slug)}
                   target="_blank"
                   rel="noopener"
-                  className={`group flex h-full flex-col overflow-hidden rounded-xl border ${t.border} ${t.card} ${t.cardHover} transition-colors`}
+                  className={`group flex h-full flex-col overflow-hidden rounded-xl border ${t.border} ${t.card} ${t.cardHover} transition-colors focus-visible:ring-2 focus-visible:outline-none ${t.ring}`}
                 >
                   <span className="relative block aspect-[16/7] overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element -- embed autonome, image Unsplash hotlinkée déjà dimensionnée */}
@@ -255,7 +259,7 @@ export function OffersWidget({
           href={hubUrl}
           target="_blank"
           rel="noopener"
-          className={`inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${t.cta}`}
+          className={`inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none ${t.cta} ${t.ring}`}
         >
           {isFr ? "Voir toutes les offres" : "See all roles"}
           <span aria-hidden="true">→</span>

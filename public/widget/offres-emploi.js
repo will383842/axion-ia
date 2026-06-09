@@ -60,6 +60,11 @@
   iframe.style.minHeight = "240px";
   iframe.style.height = "480px";
   iframe.style.colorScheme = "normal";
+  // Lisse le passage à la vraie hauteur (évite le « jump » au chargement),
+  // sauf si l'utilisateur a demandé moins d'animations (a11y).
+  if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    iframe.style.transition = "height 0.25s ease";
+  }
 
   // Insère l'iframe juste avant la balise <script> (emplacement déterministe).
   script.parentNode.insertBefore(iframe, script);
