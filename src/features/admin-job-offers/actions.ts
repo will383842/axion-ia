@@ -251,7 +251,17 @@ export async function upsertJobOfferAction(
   }
 
   const raw = Object.fromEntries(formData.entries());
-  const parsed = upsertSchema.safeParse(raw);
+  // TiptapEditor name="bodyFr" émet bodyFr_html / bodyFr_json / bodyFr_text.
+  const mapped = {
+    ...raw,
+    bodyFr: raw["bodyFr_html"],
+    bodyJsonFr: raw["bodyFr_json"],
+    bodyTextFr: raw["bodyFr_text"],
+    bodyEn: raw["bodyEn_html"],
+    bodyJsonEn: raw["bodyEn_json"],
+    bodyTextEn: raw["bodyEn_text"],
+  };
+  const parsed = upsertSchema.safeParse(mapped);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
     return { ok: false, error: `${issue?.path.join(".")}: ${issue?.message}` };
