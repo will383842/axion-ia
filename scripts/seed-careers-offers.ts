@@ -120,7 +120,7 @@ async function main() {
       where: { slug: p.slug },
       // En update, on ne réécrase pas publishedAt s'il existe déjà.
       create: data,
-      update: (({ publishedAt, ...rest }) => rest)(data),
+      update: (({ publishedAt: _publishedAt, ...rest }) => rest)(data),
     });
     if (existing) updated++;
     else created++;
