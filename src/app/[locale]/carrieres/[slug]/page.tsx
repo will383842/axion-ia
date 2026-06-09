@@ -33,14 +33,30 @@ const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
   remote: { fr: "Remote", en: "Remote" },
 };
 
+// Maillage interne (GEO) : catégorie d'offre → page métier/service liée.
+const CATEGORY_SERVICE: Record<string, { href: string; fr: string; en: string }> = {
+  tech: { href: "/sites-web", fr: "Sites web & SaaS IA", en: "Websites & AI SaaS" },
+  commercial: {
+    href: "/devenir-commercial-ia",
+    fr: "Réseau commercial Axion-IA",
+    en: "Axion-IA sales network",
+  },
+  marketing: { href: "/interventions", fr: "Formations IA", en: "AI trainings" },
+  operations: { href: "/audit", fr: "Audit IA", en: "AI audit" },
+  design: { href: "/sites-web", fr: "Design & sites web", en: "Design & websites" },
+  support: { href: "/contact", fr: "Nous contacter", en: "Contact us" },
+  autre: { href: "/a-propos", fr: "À propos d'Axion-IA", en: "About Axion-IA" },
+};
+
 interface PerkItem {
   labelFr?: string;
   labelEn?: string;
   icon?: string;
 }
 
-/** Offre clôturée = pourvue OU expirée (Date.now isolé hors render, règle purity). */
-function isOfferClosed(o: Pick<JobOffer, "filledAt" | "validThrough">): boolean {
+/** Offre clôturée = non publiée, pourvue OU expirée (Date.now isolé hors render). */
+function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">): boolean {
+  if (o.status !== "published") return true;
   if (o.filledAt) return true;
   if (o.validThrough && o.validThrough.getTime() < Date.now()) return true;
   return false;
@@ -223,6 +239,22 @@ export default async function JobOfferDetailPage({
                       {isFr ? "Postuler maintenant" : "Apply now"}
                     </Cta>
                   </div>
+                </div>
+              ) : null}
+
+              {CATEGORY_SERVICE[offer.category] ? (
+                <div className="border-border rounded-2xl border p-5">
+                  <h2 className="font-serif text-lg font-semibold">
+                    {isFr ? "Le métier chez Axion-IA" : "The role at Axion-IA"}
+                  </h2>
+                  <p className="text-fg-muted mt-2 text-sm">
+                    {isFr ? "Découvrir aussi : " : "See also: "}
+                    <Link href={CATEGORY_SERVICE[offer.category]!.href} className="underline">
+                      {isFr
+                        ? CATEGORY_SERVICE[offer.category]!.fr
+                        : CATEGORY_SERVICE[offer.category]!.en}
+                    </Link>
+                  </p>
                 </div>
               ) : null}
             </aside>

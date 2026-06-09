@@ -36,7 +36,9 @@ export function buildJobPostingJsonLd(
   // qu'on a voulu cacher/clôturer).
   if (offer.status !== "published" || offer.filledAt) return null;
   if (offer.indexationTier !== "tier_1_indexable") return null;
-  if (offer.validThrough && offer.validThrough.getTime() < Date.now()) return null;
+  // Expiration effective : validThrough explicite, sinon date limite de candidature.
+  const effectiveValidThrough = offer.validThrough ?? offer.applicationDeadline;
+  if (effectiveValidThrough && effectiveValidThrough.getTime() < Date.now()) return null;
 
   const isFr = locale === "fr";
   const title = isFr ? offer.titleFr : offer.titleEn;
@@ -50,8 +52,9 @@ export function buildJobPostingJsonLd(
     "@type": "JobPosting",
     title,
     description,
+    identifier: { "@type": "PropertyValue", name: "Axion-IA", value: offer.slug },
     datePosted: posted.toISOString(),
-    validThrough: resolveValidThrough(offer.validThrough, posted),
+    validThrough: resolveValidThrough(effectiveValidThrough, posted),
     employmentType: offer.employmentType,
     hiringOrganization: HIRING_ORG,
     directApply: true,
@@ -60,6 +63,14 @@ export function buildJobPostingJsonLd(
       ? "Intelligence artificielle · Services aux entreprises"
       : "Artificial intelligence · Business services",
   };
+
+  // jobBenefits depuis les perks pilotés en console (si présents).
+  if (Array.isArray(offer.perks)) {
+    const benefits = (offer.perks as Array<{ labelFr?: string; labelEn?: string }>)
+      .map((p) => (isFr ? p.labelFr : p.labelEn) ?? p.labelFr ?? p.labelEn)
+      .filter((x): x is string => Boolean(x));
+    if (benefits.length > 0) jsonLd.jobBenefits = benefits.join(", ");
+  }
 
   // Lieu : remote → TELECOMMUTE ; sinon Place si ville ; sinon France.
   if (offer.workMode === "remote") {
