@@ -435,26 +435,37 @@ export default async function JobOfferDetailPage({
                 ? "D'autres offres qui pourraient te plaire"
                 : "Other roles you might like"}
             </h2>
-            <ul
-              className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-              role="list"
-            >
-              {suggested.map((s) => (
-                <li key={s.id}>
-                  <Link
-                    href={`/carrieres/${s.slug}`}
-                    className="border-border hover:border-terracotta flex h-full flex-col rounded-xl border bg-white p-4 transition-colors"
-                  >
-                    <h3 className="font-medium">
-                      {isFr ? s.titleFr : s.titleEn}
-                    </h3>
-                    <p className="text-fg-muted mt-1 text-xs">
-                      {s.city ??
-                        WORKMODE_LABELS[s.workMode]?.[isFr ? "fr" : "en"]}
-                    </p>
-                  </Link>
-                </li>
-              ))}
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2" role="list">
+              {suggested.map((s) => {
+                const sImg = careerImage(s.slug);
+                return (
+                  <li key={s.id}>
+                    <Link
+                      href={`/carrieres/${s.slug}`}
+                      className="border-border hover:border-terracotta shadow-subtle hover:shadow-card flex items-center gap-4 rounded-xl border bg-white p-3 transition"
+                    >
+                      <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
+                        <Image
+                          src={sImg.url}
+                          alt={sImg.alt}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="truncate font-medium">
+                          {isFr ? s.titleFr : s.titleEn}
+                        </h3>
+                        <p className="text-fg-muted mt-0.5 text-xs">
+                          {s.city ??
+                            WORKMODE_LABELS[s.workMode]?.[isFr ? "fr" : "en"]}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </Container>
         </Section>
