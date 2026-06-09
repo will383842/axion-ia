@@ -6,13 +6,19 @@
  * peut être lent.
  */
 
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import React from "react";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
+import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 import { SupportPdf } from "./support-pdf";
 import { construireSupport, titreSupport } from "../support-builder";
 import type { FormationInput } from "../types";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+
+// Filet de sécurité polices PDF (fallback built-in si vraies polices absentes).
+beforeAll(() => {
+  registerPdfTestFontsFallback();
+});
 
 // ============================================================
 // Fixtures

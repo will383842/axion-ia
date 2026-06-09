@@ -7,11 +7,17 @@
  * ⚠️ Timeout généreux (30 s) car @react-pdf/renderer peut être lent.
  */
 
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import React from "react";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
+import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 import { formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "../organisme";
+
+// Filet de sécurité polices PDF (fallback built-in si vraies polices absentes).
+beforeAll(() => {
+  registerPdfTestFontsFallback();
+});
 
 import { AttestationPdf } from "./attestation";
 import { AttestationPartiellePdf } from "./attestation-partielle";

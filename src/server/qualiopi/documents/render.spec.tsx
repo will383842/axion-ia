@@ -4,10 +4,16 @@
  * et retourne un hash SHA-256 valide (64 hex).
  */
 
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import React from "react";
 import { Document, Page, Text } from "@react-pdf/renderer";
 import { renderPdfToBuffer } from "./render";
+import { registerPdfTestFontsFallback } from "./register-pdf-test-fonts";
+
+// Filet de sécurité polices PDF (fallback built-in si vraies polices absentes).
+beforeAll(() => {
+  registerPdfTestFontsFallback();
+});
 
 /** Document PDF minimal pour les tests. */
 function MinimalDocument(): React.ReactElement {

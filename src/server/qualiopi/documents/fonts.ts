@@ -11,6 +11,7 @@
 import { Font } from "@react-pdf/renderer";
 import path from "node:path";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import { QUALIOPI_BRAND_FONTS } from "@/server/qualiopi/brand/brand-tokens";
 
 /**
@@ -18,16 +19,42 @@ import { QUALIOPI_BRAND_FONTS } from "@/server/qualiopi/brand/brand-tokens";
  * Utilisé uniquement quand les polices de marque sont absentes (dev sans assets,
  * CI, tests Vitest) pour enregistrer les noms de familles sous @react-pdf.
  * En production les vraies polices remplacent ce fallback.
+ *
+ * Résolution robuste (insensible à la version) : on localise d'abord le package
+ * `@vercel/og` réellement installé via `require.resolve`, puis on retombe sur
+ * des chemins connus. ⚠️ Ne JAMAIS coder en dur un chemin pnpm versionné
+ * comme seul candidat : un bump de @vercel/og (ou de Next) le casserait et
+ * referait échouer tout le rendu PDF (« Font family not registered »).
  */
 function resolveFallbackFont(): string | null {
-  const candidates = [
-    // @vercel/og bundle Geist qui est toujours présent dans axionia
-    path.join(
-      process.cwd(),
-      "node_modules/.pnpm/@vercel+og@0.11.1/node_modules/@vercel/og/dist/Geist-Regular.ttf",
-    ),
+  const candidates: string[] = [];
+
+  // 1) Package @vercel/og réellement installé (robuste aux changements de version).
+  try {
+    const req = createRequire(import.meta.url);
+    let pkgDir: string | null = null;
+    try {
+      pkgDir = path.dirname(req.resolve("@vercel/og/package.json"));
+    } catch {
+      try {
+        pkgDir = path.dirname(req.resolve("@vercel/og"));
+      } catch {
+        pkgDir = null;
+      }
+    }
+    if (pkgDir) {
+      candidates.push(path.join(pkgDir, "dist", "Geist-Regular.ttf"));
+      candidates.push(path.join(pkgDir, "Geist-Regular.ttf"));
+    }
+  } catch {
+    // createRequire indisponible (env exotique) — on passe aux chemins connus.
+  }
+
+  // 2) Bundle interne Next.js.
+  candidates.push(
     path.join(process.cwd(), "node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf"),
-  ];
+  );
+
   for (const c of candidates) {
     try {
       if (fs.existsSync(c)) return c;
@@ -76,8 +103,15 @@ export function registerQualiopiPdfFonts(): void {
         family: QUALIOPI_BRAND_FONTS.serif,
         fonts: [
           { src: fraunces, fontWeight: "normal" },
-          ...(frauncesItalic ? [{ src: frauncesItalic, fontStyle: "italic" as const }] : []),
+          // italique : fichier dédié si dispo, sinon synthétique (fichier upright).
+          { src: frauncesItalic ?? fraunces, fontStyle: "italic" as const },
           ...(frauncesBold ? [{ src: frauncesBold, fontWeight: "bold" as const }] : []),
+          // bold-italic synthétique pour couvrir toutes les combinaisons.
+          {
+            src: frauncesBold ?? fraunces,
+            fontWeight: "bold" as const,
+            fontStyle: "italic" as const,
+          },
         ],
       });
     } else {
@@ -117,6 +151,16 @@ export function registerQualiopiPdfFonts(): void {
           { src: manrope, fontWeight: "normal" },
           ...(manropeMedium ? [{ src: manropeMedium, fontWeight: 500 as const }] : []),
           ...(manropeBold ? [{ src: manropeBold, fontWeight: "bold" as const }] : []),
+          // Manrope n'a pas d'italique dédié → italique synthétique (fichier
+          // upright). Les templates appliquent fontStyle:"italic" sur la famille
+          // sans par défaut (legalNote, signatureLu, notes…) : sans ces variantes
+          // @react-pdf throw "Could not resolve font for Manrope … italic".
+          { src: manrope, fontStyle: "italic" as const },
+          {
+            src: manropeBold ?? manrope,
+            fontWeight: "bold" as const,
+            fontStyle: "italic" as const,
+          },
         ],
       });
     } else {
@@ -154,6 +198,13 @@ export function registerQualiopiPdfFonts(): void {
         fonts: [
           { src: inconsolata, fontWeight: "normal" },
           ...(inconsolataBold ? [{ src: inconsolataBold, fontWeight: "bold" as const }] : []),
+          // Inconsolata sans italique dédié → italique synthétique (upright).
+          { src: inconsolata, fontStyle: "italic" as const },
+          {
+            src: inconsolataBold ?? inconsolata,
+            fontWeight: "bold" as const,
+            fontStyle: "italic" as const,
+          },
         ],
       });
     } else {
