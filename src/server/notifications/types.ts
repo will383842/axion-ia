@@ -121,6 +121,18 @@ export type NotificationEvent =
       };
     }
   | {
+      category: "JOB_APPLICATION_RECEIVED";
+      payload: {
+        applicationId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        offerTitle: string;
+        hasCv: boolean;
+        locale: "fr" | "en";
+      };
+    }
+  | {
       category: "SPEAKER_INVITATION_RECEIVED";
       payload: {
         submissionId: string;

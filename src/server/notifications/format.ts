@@ -21,6 +21,7 @@ const TITLES: Record<NotificationCategory, string> = {
   QUOTE_REQUEST_RECEIVED: "Nouvelle demande de devis",
   PRESS_REQUEST_SUBMITTED: "📰 Demande presse / média",
   RECRUITMENT_RECEIVED: "👤 Candidature reçue",
+  JOB_APPLICATION_RECEIVED: "📨 Candidature emploi reçue",
   SPEAKER_INVITATION_RECEIVED: "🎤 Invitation conférence",
   INVESTOR_INQUIRY_RECEIVED: "💼 Demande investisseur / M&A",
   CUSTOMER_SUPPORT_REQUEST: "🛟 Support client",
@@ -110,6 +111,20 @@ function formatBody(event: NotificationEvent): string {
         formatKV("ID", p.submissionId),
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
+    }
+    case "JOB_APPLICATION_RECEIVED": {
+      const p = event.payload;
+      return [
+        formatKV("Candidat", p.contactName),
+        formatKV("Email", p.contactEmail),
+        p.contactPhone ? formatKV("Téléphone", p.contactPhone) : null,
+        formatKV("Offre", p.offerTitle),
+        formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
+        formatKV("Locale", p.locale),
+        formatKV("ID", p.applicationId),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
     }
     case "NEWSLETTER_PENDING":
     case "NEWSLETTER_CONFIRMED":
