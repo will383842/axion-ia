@@ -307,6 +307,13 @@ export const routing = defineRouting({
     // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement
     // ici ; routes admin sont sous `(admin)/[adminPrefix]/image-bank/*` et non
     // déclarées dans pathnames (slug `[adminPrefix]` random + accès role-gated).
+    // Carrières — système d'offres d'emploi DB-piloté (FR canonique, EN miroir).
+    "/carrieres": { fr: "/carrieres", en: "/careers" },
+    "/carrieres/[slug]": { fr: "/carrieres/[slug]", en: "/careers/[slug]" },
+    "/carrieres/[slug]/postuler": {
+      fr: "/carrieres/[slug]/postuler",
+      en: "/careers/[slug]/apply",
+    },
     "/galerie": { fr: "/galerie", en: "/gallery" },
     "/galerie/[slug]": { fr: "/galerie/[slug]", en: "/gallery/[slug]" },
     "/galerie/[slug]/telecharger": {
