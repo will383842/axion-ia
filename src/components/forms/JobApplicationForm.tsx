@@ -436,7 +436,7 @@ export function JobApplicationForm({
             id="photo"
             name="photo"
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/*"
             ref={photoRef}
             className="text-sm"
             disabled={submitting}

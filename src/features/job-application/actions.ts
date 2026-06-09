@@ -77,8 +77,11 @@ function validatePhoto(file: File, buf: Buffer): string | null {
     s[9] === 0x45 &&
     s[10] === 0x42 &&
     s[11] === 0x50;
-  if (!isJpg && !isPng && !isWebp)
-    return "Photo non supportée (JPG, PNG ou WebP).";
+  // HEIC/HEIF (photos iPhone prises en direct) : conteneur ISO-BMFF → "ftyp" à l'offset 4.
+  const isHeif =
+    s[4] === 0x66 && s[5] === 0x74 && s[6] === 0x79 && s[7] === 0x70;
+  if (!isJpg && !isPng && !isWebp && !isHeif)
+    return "Photo non supportée (JPG, PNG, WebP ou HEIC).";
   return null;
 }
 

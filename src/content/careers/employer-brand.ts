@@ -18,9 +18,9 @@ export const EMPLOYER_BRAND = {
 
   /** Intro hero (sous le H1) — accroche candidat, énergique. */
   heroIntroFr:
-    "On recrute dans plein de métiers — dev, IA, data, design, produit, marketing, commercial, ops, support… Des missions concrètes, une équipe à taille humaine et de l'autonomie réelle. Trouve le poste qui te ressemble. 👋",
+    "On recrute dans plein de métiers — tech & IA, data, design, vidéo & contenu, marketing, commercial, RH, administratif, support… Des missions concrètes, une équipe à taille humaine et de l'autonomie réelle. Quel que soit ton métier, il y a une place pour toi. 👋",
   heroIntroEn:
-    "We're hiring across many roles — dev, AI, data, design, product, marketing, sales, ops, support… Real-world missions, a human-sized team and real autonomy. Find the role that fits you. 👋",
+    "We're hiring across many roles — tech & AI, data, design, video & content, marketing, sales, HR, admin, support… Real-world missions, a human-sized team and real autonomy. Whatever your job, there's a place for you. 👋",
 
   /** Qui on est (section « Pourquoi nous rejoindre »), ton startup ambitieux. */
   aboutFr:
