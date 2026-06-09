@@ -133,6 +133,17 @@ export function SiteExplorerFilters() {
         <option value="unset">⚪ Non revue</option>
       </select>
 
+      <select
+        value={sp.get("sort") ?? ""}
+        onChange={(e) => update("sort", e.target.value)}
+        aria-label="Trier"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Tri : par défaut</option>
+        <option value="indexable_first">Indexables d&apos;abord</option>
+        <option value="noindex_first">Noindex d&apos;abord</option>
+      </select>
+
       <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
         <input
           type="checkbox"

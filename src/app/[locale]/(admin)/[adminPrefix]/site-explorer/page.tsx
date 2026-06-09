@@ -57,6 +57,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
         : {}),
     ...(sp.gscRequested === "true" ? { gscRequested: true } : {}),
     ...(sp.includeRemoved === "true" ? { includeRemoved: true } : {}),
+    ...(sp.sort === "indexable_first" || sp.sort === "noindex_first" ? { sort: sp.sort } : {}),
     ...(sp.search ? { search: sp.search } : {}),
     ...(sp.editable === "true" ? { editable: true } : {}),
   };

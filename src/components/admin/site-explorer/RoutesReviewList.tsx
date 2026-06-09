@@ -6,7 +6,7 @@
 // GSC. Appelle les server actions et rafraîchit via router.refresh().
 
 import Link from "next/link";
-import { useState, useTransition, useCallback } from "react";
+import { useState, useTransition, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { SiteRouteStatusBadge } from "./SiteRouteStatusBadge";
 import { adminPath } from "@/lib/admin-path";
@@ -98,6 +98,22 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
     [selected, router],
   );
 
+  const [bulkCopied, setBulkCopied] = useState(false);
+  const bulkCopy = useCallback(async () => {
+    const urls = routes
+      .filter((r) => selected.has(r.id))
+      .map((r) => `${SITE_URL}${r.pathRendered ?? r.pathPattern}`)
+      .join("\n");
+    if (!urls) return;
+    try {
+      await navigator.clipboard.writeText(urls);
+      setBulkCopied(true);
+      setTimeout(() => setBulkCopied(false), 1500);
+    } catch {
+      /* no-op */
+    }
+  }, [routes, selected]);
+
   return (
     <div className="space-y-1">
       {/* Barre d'actions groupées */}
@@ -146,6 +162,15 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               className="rounded border border-gray-300 px-1.5 py-0.5 text-xs text-gray-600 hover:bg-white"
             >
               Décocher
+            </button>
+            <button
+              type="button"
+              onClick={bulkCopy}
+              className={`rounded border px-1.5 py-0.5 text-xs hover:bg-white ${
+                bulkCopied ? "border-green-400 text-green-600" : "border-gray-300 text-gray-600"
+              }`}
+            >
+              {bulkCopied ? "✓ Copiées" : "📋 Copier les URLs"}
             </button>
           </div>
         )}
@@ -276,6 +301,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
 
             {/* Actions */}
             <div className="flex shrink-0 items-center gap-1">
+              <CopyUrlButton url={`${SITE_URL}${displayPath}`} disabled={!isResolvable} />
               {isResolvable && (
                 <a
                   href={`${SITE_URL}${displayPath}`}
@@ -303,5 +329,48 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
         );
       })}
     </div>
+  );
+}
+
+// Bouton « copier l'URL » avec feedback visuel ✓ (clipboard API + fallback).
+function CopyUrlButton({ url, disabled }: { url: string; disabled?: boolean }) {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const copy = useCallback(async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      setCopied(true);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1200);
+    } catch {
+      /* clipboard indisponible — no-op */
+    }
+  }, [url]);
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      disabled={disabled}
+      title={disabled ? "URL template (non copiable)" : `Copier ${url}`}
+      aria-label={`Copier l'URL ${url}`}
+      className={`rounded p-1 ${
+        copied ? "text-green-600" : "text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+      } disabled:cursor-not-allowed disabled:opacity-30`}
+    >
+      {copied ? "✓" : "📋"}
+    </button>
   );
 }

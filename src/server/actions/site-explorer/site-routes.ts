@@ -31,6 +31,8 @@ export interface SiteRouteFilters {
   gscRequested?: boolean;
   /** Inclure les URLs disparues (tombstonées). Défaut : false. */
   includeRemoved?: boolean;
+  /** Tri optionnel : regroupe par indexabilité avant l'ordre par défaut. */
+  sort?: "indexable_first" | "noindex_first";
   search?: string;
   anomaliesOnly?: boolean;
   page?: number;
@@ -132,6 +134,12 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
 
   const where = buildWhereClause(filters);
 
+  // Tri : option indexabilité (regroupe noindex/indexable) puis ordre hiérarchique.
+  const orderBy: Array<Record<string, "asc" | "desc">> = [];
+  if (filters.sort === "indexable_first") orderBy.push({ isIndexable: "desc" });
+  else if (filters.sort === "noindex_first") orderBy.push({ isIndexable: "asc" });
+  orderBy.push({ depth: "asc" }, { section: "asc" }, { pathPattern: "asc" });
+
   const [routes, total] = await Promise.all([
     prisma.siteRoute.findMany({
       where,
@@ -165,7 +173,7 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
         removedAt: true,
         _count: { select: { anomalies: { where: { resolvedAt: null } } } },
       },
-      orderBy: [{ depth: "asc" }, { section: "asc" }, { pathPattern: "asc" }],
+      orderBy,
       skip,
       take: pageSize,
     }),
