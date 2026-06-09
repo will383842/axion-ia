@@ -1,0 +1,1338 @@
+{
+ "postes": [
+  {
+   "slug": "business-developer-ia",
+   "num": 2,
+   "titre": "Business Developer terrain — solutions IA entreprises",
+   "categorie": "commercial",
+   "emploi": "FULL_TIME",
+   "type_loc": "itinerant",
+   "sal_min": 28000,
+   "sal_max": 45000,
+   "sal_note": "fixe + variable",
+   "missions": [
+    "construire et animer un pipeline de prospects sur la zone",
+    "mener des rendez-vous de découverte auprès de dirigeants",
+    "présenter nos audits, optimisations et interventions IA",
+    "travailler en binôme avec nos consultants pour cadrer les missions"
+   ],
+   "profil": [
+    "goût du terrain, sens de l'écoute et ténacité",
+    "à l'aise avec les outils numériques, curiosité pour l'IA",
+    "permis B requis"
+   ],
+   "tech": false,
+   "skills": [
+    "prospection terrain",
+    "démonstration",
+    "qualification",
+    "négociation",
+    "CRM"
+   ],
+   "group": "ville",
+   "workMode": "on_site",
+   "multiCity": true,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "formateur-ia-itinerant",
+   "num": 4,
+   "titre": "Formateur / Intervenant IA en entreprise",
+   "categorie": "conseil",
+   "emploi": "FULL_TIME",
+   "type_loc": "itinerant",
+   "sal_min": 30000,
+   "sal_max": 50000,
+   "sal_note": "fixe + commission par intervention (selon module et durée)",
+   "missions": [
+    "animer des interventions IA en présentiel chez nos clients",
+    "adapter le contenu au niveau et au secteur des participants",
+    "assurer le suivi pédagogique et la satisfaction des entreprises",
+    "contribuer à l'amélioration continue de nos modules"
+   ],
+   "profil": [
+    "aisance à l'oral et goût de la transmission",
+    "intérêt marqué pour l'IA et ses usages métiers",
+    "mobilité sur le secteur et permis B requis"
+   ],
+   "tech": true,
+   "skills": [
+    "IA générative",
+    "ChatGPT & Claude",
+    "prompt engineering",
+    "automatisation",
+    "cas d'usage métiers"
+   ],
+   "group": "ville",
+   "workMode": "on_site",
+   "multiCity": true,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "redacteur-web-ia",
+   "num": 14,
+   "titre": "Rédacteur web / Content Manager spécialisé IA",
+   "categorie": "marketing",
+   "emploi": "CONTRACTOR",
+   "type_loc": "remote",
+   "sal_min": 28000,
+   "sal_max": 42000,
+   "sal_note": "salarié ou freelance (TJM 200–400 €)",
+   "missions": [
+    "rédiger des articles, guides et pages optimisés SEO",
+    "vulgariser les usages de l'IA pour un public d'entreprises",
+    "participer à la ligne éditoriale"
+   ],
+   "profil": [
+    "excellente plume et rigueur",
+    "curiosité pour l'IA",
+    "autonomie et goût du travail en équipe à distance"
+   ],
+   "tech": false,
+   "skills": [
+    "rédaction web",
+    "SEO",
+    "IA générative",
+    "ligne éditoriale",
+    "content marketing"
+   ],
+   "group": "ville",
+   "workMode": "remote",
+   "multiCity": false,
+   "city": null
+  },
+  {
+   "slug": "charge-rd-ia",
+   "num": 17,
+   "titre": "Chargé de Recherche & Développement IA",
+   "categorie": "ia",
+   "emploi": "FULL_TIME",
+   "type_loc": "remote",
+   "sal_min": 40000,
+   "sal_max": 60000,
+   "sal_note": "selon profil",
+   "missions": [
+    "réaliser une veille active sur les modèles, outils et techniques IA",
+    "prototyper et évaluer de nouvelles solutions (agents, automatisations)",
+    "concevoir des cas d'usage applicables aux clients",
+    "documenter et transférer les avancées aux équipes"
+   ],
+   "profil": [
+    "solide curiosité technique et maîtrise des outils d'IA",
+    "capacité à expérimenter vite et à formaliser des résultats",
+    "esprit d'analyse, rigueur et autonomie"
+   ],
+   "tech": true,
+   "skills": [
+    "LLM",
+    "RAG",
+    "agents IA",
+    "prototypage",
+    "veille technologique",
+    "évaluation de modèles"
+   ],
+   "group": "ville",
+   "workMode": "remote",
+   "multiCity": false,
+   "city": null
+  },
+  {
+   "slug": "ingenieur-ia-implementation",
+   "num": 18,
+   "titre": "Consultant / Ingénieur IA — implémentation & développement",
+   "categorie": "ia",
+   "emploi": "FULL_TIME",
+   "type_loc": "itinerant",
+   "sal_min": 40000,
+   "sal_max": 65000,
+   "sal_note": "selon profil",
+   "missions": [
+    "réaliser des audits techniques et identifier les leviers d'IA",
+    "concevoir, développer et déployer des solutions IA chez les clients",
+    "intégrer l'IA dans les outils et systèmes existants",
+    "accompagner les clients dans la prise en main des solutions"
+   ],
+   "profil": [
+    "compétences en développement et/ou intégration d'outils IA",
+    "capacité à comprendre les enjeux métiers",
+    "autonomie, rigueur et permis B"
+   ],
+   "tech": true,
+   "skills": [
+    "Python",
+    "LLM & RAG",
+    "intégration d'API",
+    "automatisation",
+    "prompt engineering",
+    "audit technique"
+   ],
+   "group": "ville",
+   "workMode": "on_site",
+   "multiCity": true,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "customer-success-ia",
+   "num": 24,
+   "titre": "Customer Success Manager — clients IA",
+   "categorie": "support",
+   "emploi": "FULL_TIME",
+   "type_loc": "itinerant",
+   "sal_min": 32000,
+   "sal_max": 45000,
+   "sal_note": "fixe + variable",
+   "missions": [
+    "assurer le suivi post-mission et la satisfaction client",
+    "identifier les besoins complémentaires et les opportunités d'upsell",
+    "être l'interlocuteur privilégié des clients",
+    "remonter les retours terrain pour améliorer l'offre"
+   ],
+   "profil": [
+    "excellent relationnel et sens du service",
+    "goût du résultat et fibre commerciale",
+    "permis B (déplacements ponctuels)"
+   ],
+   "tech": false,
+   "skills": [
+    "onboarding client",
+    "suivi de satisfaction",
+    "upsell",
+    "relation client",
+    "fidélisation"
+   ],
+   "group": "ville",
+   "workMode": "on_site",
+   "multiCity": true,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "developpeur-web",
+   "num": 26,
+   "titre": "Développeur web / Product Engineer",
+   "categorie": "developpement",
+   "emploi": "CONTRACTOR",
+   "type_loc": "remote",
+   "sal_min": 38000,
+   "sal_max": 60000,
+   "sal_note": "salarié ou freelance (TJM 350–600 €)",
+   "missions": [
+    "développer des fonctionnalités web et SaaS de qualité",
+    "intégrer des outils et modèles d'IA dans les produits",
+    "participer aux choix techniques et d'architecture",
+    "garantir la qualité (revues de code, tests, CI/CD)"
+   ],
+   "profil": [
+    "compétences en développement web (front et/ou back)",
+    "intérêt fort pour l'IA et son usage quotidien",
+    "autonomie et rigueur"
+   ],
+   "tech": true,
+   "skills": [
+    "Next.js / React",
+    "TypeScript",
+    "Node.js",
+    "Python",
+    "API REST",
+    "intégration IA"
+   ],
+   "group": "ville",
+   "workMode": "remote",
+   "multiCity": false,
+   "city": null
+  },
+  {
+   "slug": "devops-infra",
+   "num": 27,
+   "titre": "DevOps / Ingénieur infrastructure",
+   "categorie": "developpement",
+   "emploi": "CONTRACTOR",
+   "type_loc": "remote",
+   "sal_min": 45000,
+   "sal_max": 65000,
+   "sal_note": "salarié ou freelance (TJM 400–650 €)",
+   "missions": [
+    "gérer et automatiser les déploiements (CI/CD)",
+    "administrer et superviser l'infrastructure et l'hébergement",
+    "garantir sécurité, disponibilité et scalabilité",
+    "accompagner les équipes de développement"
+   ],
+   "profil": [
+    "compétences en infrastructure, conteneurisation et automatisation",
+    "sens de la sécurité et autonomie",
+    "rigueur et esprit d'équipe à distance"
+   ],
+   "tech": true,
+   "skills": [
+    "Docker",
+    "CI/CD",
+    "Linux",
+    "cloud",
+    "monitoring",
+    "infrastructure as code"
+   ],
+   "group": "ville",
+   "workMode": "remote",
+   "multiCity": false,
+   "city": null
+  },
+  {
+   "slug": "designer-ux-ui",
+   "num": 28,
+   "titre": "Designer UX/UI",
+   "categorie": "design",
+   "emploi": "CONTRACTOR",
+   "type_loc": "remote",
+   "sal_min": 35000,
+   "sal_max": 50000,
+   "sal_note": "salarié ou freelance (TJM 300–500 €)",
+   "missions": [
+    "concevoir les maquettes et parcours utilisateurs (web, SaaS)",
+    "garantir la cohérence et la qualité visuelle",
+    "collaborer avec les développeurs et l'équipe produit"
+   ],
+   "profil": [
+    "maîtrise des outils de design (Figma ou équivalent)",
+    "sens de l'esthétique et de l'expérience utilisateur",
+    "créativité et rigueur"
+   ],
+   "tech": true,
+   "skills": [
+    "Figma",
+    "design system",
+    "prototypage",
+    "parcours utilisateur",
+    "accessibilité"
+   ],
+   "group": "ville",
+   "workMode": "remote",
+   "multiCity": false,
+   "city": null
+  },
+  {
+   "slug": "formateur-ia-sedentaire",
+   "num": 5,
+   "titre": "Formateur / Intervenant IA sédentaire",
+   "categorie": "conseil",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 42000,
+   "sal_note": "",
+   "tech": true,
+   "skills": [
+    "IA générative",
+    "prompt engineering",
+    "pédagogie",
+    "animation de groupe",
+    "cas d'usage"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "stagiaire-formation-ia",
+   "num": 6,
+   "titre": "Stagiaire formation IA — parcours vers formateur",
+   "categorie": "autre",
+   "emploi": "INTERN",
+   "sal_min": 0,
+   "sal_max": 0,
+   "sal_note": "gratification légale de stage",
+   "tech": false,
+   "skills": [
+    "IA générative",
+    "prise en main d'outils",
+    "co-animation",
+    "supports pédagogiques"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "referent-pedagogique-ia",
+   "num": 7,
+   "titre": "Référent / Ingénieur pédagogique IA",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 30000,
+   "sal_max": 45000,
+   "sal_note": "",
+   "tech": true,
+   "skills": [
+    "ingénierie pédagogique",
+    "conception de modules",
+    "LMS",
+    "évaluation",
+    "IA"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "assistant-financements-qualiopi",
+   "num": 8,
+   "titre": "Assistant administratif — financements & Qualiopi",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 24000,
+   "sal_max": 32000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "Qualiopi",
+    "CPF / EDOF",
+    "OPCO",
+    "France Travail",
+    "montage de dossiers"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "charge-subventions",
+   "num": 9,
+   "titre": "Chargé de dossiers subventions & financements",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 35000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "financements publics",
+    "CPF",
+    "OPCO",
+    "France 2030 / BPI",
+    "aides régionales"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "secretaire-direction",
+   "num": 10,
+   "titre": "Secrétaire de direction",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 36000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "gestion d'agenda",
+    "comptes-rendus",
+    "coordination",
+    "pack Office",
+    "confidentialité"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "office-manager",
+   "num": 11,
+   "titre": "Office Manager",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 35000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "gestion des locaux",
+    "achats & fournisseurs",
+    "événements internes",
+    "support administratif"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "charge-recrutement-sourcing",
+   "num": 12,
+   "titre": "Chargé de recrutement & sourcing formateurs",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 36000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "sourcing",
+    "entretiens",
+    "jobboards",
+    "vivier de candidats",
+    "marque employeur"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "charge-communication",
+   "num": 13,
+   "titre": "Chargé de communication & réseaux sociaux",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 38000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "réseaux sociaux",
+    "création de contenu",
+    "community management",
+    "ligne éditoriale"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "responsable-rh",
+   "num": 15,
+   "titre": "Responsable RH — recrutement, formation & intégration",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 38000,
+   "sal_max": 55000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "recrutement",
+    "onboarding",
+    "formation interne",
+    "gestion RH",
+    "marque employeur"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "responsable-reseau-commercial",
+   "num": 16,
+   "titre": "Responsable du réseau commercial (France)",
+   "categorie": "commercial",
+   "emploi": "FULL_TIME",
+   "sal_min": 40000,
+   "sal_max": 60000,
+   "sal_note": "fixe + variable",
+   "tech": false,
+   "skills": [
+    "management commercial",
+    "animation de réseau",
+    "objectifs & KPI",
+    "recrutement"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "chef-projet-ia",
+   "num": 19,
+   "titre": "Chef de projet IA",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 38000,
+   "sal_max": 55000,
+   "sal_note": "",
+   "tech": true,
+   "skills": [
+    "gestion de projet agile",
+    "cadrage",
+    "coordination d'équipe",
+    "suivi & reporting",
+    "IA"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "referent-handicap",
+   "num": 20,
+   "titre": "Référent handicap",
+   "categorie": "autre",
+   "emploi": "PART_TIME",
+   "sal_min": 0,
+   "sal_max": 0,
+   "sal_note": "selon poste support",
+   "tech": false,
+   "skills": [
+    "accessibilité",
+    "inclusion",
+    "Agefiph / Cap emploi",
+    "aménagements"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "responsable-qualite-qualiopi",
+   "num": 21,
+   "titre": "Responsable / Référent qualité Qualiopi",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 30000,
+   "sal_max": 42000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "référentiel Qualiopi",
+    "audits",
+    "indicateurs qualité",
+    "amélioration continue"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "comptable-raf",
+   "num": 22,
+   "titre": "Comptable / Responsable administratif et financier",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 35000,
+   "sal_max": 55000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "comptabilité",
+    "facturation",
+    "trésorerie",
+    "paie",
+    "reporting financier"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "juriste-dpo",
+   "num": 23,
+   "titre": "Juriste / Délégué à la protection des données (DPO)",
+   "categorie": "autre",
+   "emploi": "FULL_TIME",
+   "sal_min": 40000,
+   "sal_max": 60000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "RGPD",
+    "contrats & CGV",
+    "conformité",
+    "veille juridique",
+    "protection des données"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "support-hotline-saas",
+   "num": 25,
+   "titre": "Chargé de support / Hotline (solutions SaaS)",
+   "categorie": "support",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 36000,
+   "sal_note": "",
+   "tech": true,
+   "skills": [
+    "support N1",
+    "ticketing",
+    "diagnostic d'incidents",
+    "relation utilisateur",
+    "SaaS"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "coordinateur-interventions",
+   "num": 29,
+   "titre": "Coordinateur / Planificateur des interventions",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 38000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "planification",
+    "logistique",
+    "coordination des formateurs",
+    "optimisation de tournées"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "responsable-marketing-growth",
+   "num": 30,
+   "titre": "Responsable marketing / Growth — SEO & SEA",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 38000,
+   "sal_max": 55000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "SEO",
+    "SEA / Google Ads",
+    "growth",
+    "analytics",
+    "génération de leads"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "directeur-operations",
+   "num": 31,
+   "titre": "Directeur des opérations (COO)",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "sal_min": 60000,
+   "sal_max": 90000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "pilotage des opérations",
+    "process",
+    "KPI",
+    "management transverse"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "directeur-commercial",
+   "num": 32,
+   "titre": "Directeur commercial",
+   "categorie": "commercial",
+   "emploi": "FULL_TIME",
+   "sal_min": 55000,
+   "sal_max": 85000,
+   "sal_note": "fixe + variable",
+   "tech": false,
+   "skills": [
+    "stratégie commerciale",
+    "management",
+    "grands comptes",
+    "pricing",
+    "partenariats"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "responsable-acquisition-growth",
+   "num": 44,
+   "titre": "Responsable acquisition / Growth",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 38000,
+   "sal_max": 55000,
+   "sal_note": "fixe + variable",
+   "tech": false,
+   "skills": [
+    "funnel d'acquisition",
+    "SEO & SEA",
+    "growth marketing",
+    "analytics & A/B testing",
+    "génération de leads",
+    "CRO"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "traffic-manager-media-buyer",
+   "num": 45,
+   "titre": "Traffic Manager / Media Buyer (Meta, LinkedIn, Google Ads)",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 32000,
+   "sal_max": 48000,
+   "sal_note": "",
+   "tech": false,
+   "skills": [
+    "Meta Ads",
+    "LinkedIn Ads",
+    "Google Ads",
+    "gestion de budget & ROAS",
+    "ciblage & audiences",
+    "tracking & reporting"
+   ],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "social-media-manager",
+   "num": 33,
+   "titre": "Social Media Manager (LinkedIn, Instagram, Facebook)",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 40000,
+   "sal_note": "",
+   "skills": [
+    "stratégie éditoriale",
+    "LinkedIn / Instagram / Facebook",
+    "calendrier de publication",
+    "copywriting",
+    "analytics & reporting"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "définir et piloter la stratégie réseaux (LinkedIn, Instagram, Facebook)",
+    "produire, planifier et publier les contenus",
+    "animer la communauté et analyser les performances",
+    "travailler main dans la main avec les vidéastes et le studio podcast"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "community-manager",
+   "num": 34,
+   "titre": "Community Manager",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 35000,
+   "sal_note": "",
+   "skills": [
+    "animation de communauté",
+    "modération",
+    "engagement",
+    "veille",
+    "interaction quotidienne"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "animer les communautés au quotidien",
+    "répondre aux messages et modérer",
+    "créer des contenus d'engagement",
+    "remonter les retours et tendances à l'équipe"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "videaste-content-creator",
+   "num": 35,
+   "titre": "Vidéaste / Content Creator",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 40000,
+   "sal_note": "",
+   "skills": [
+    "tournage & captation",
+    "idées de formats",
+    "storytelling",
+    "cadrage",
+    "prise de son"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "imaginer et tourner des formats montrant la vie d'Axion-ia.com",
+    "capter interviews, coulisses et événements",
+    "proposer de nouvelles idées de contenus",
+    "collaborer avec le Social Media Manager pour la publication"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "monteur-video-motion",
+   "num": 36,
+   "titre": "Monteur vidéo / Motion designer",
+   "categorie": "design",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 42000,
+   "sal_note": "salarié ou freelance",
+   "skills": [
+    "montage (Premiere / DaVinci)",
+    "motion design (After Effects)",
+    "habillage",
+    "formats courts (Reels, Shorts)",
+    "sous-titrage"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "monter les vidéos (formats courts et longs)",
+    "créer l'habillage et le motion design",
+    "optimiser chaque vidéo pour sa plateforme",
+    "livrer vite et proprement, en lien avec l'équipe contenu"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "createur-ugc-reels",
+   "num": 37,
+   "titre": "Créateur de contenu court-format (Reels / Shorts / TikTok)",
+   "categorie": "marketing",
+   "emploi": "CONTRACTOR",
+   "sal_min": 26000,
+   "sal_max": 38000,
+   "sal_note": "salarié ou freelance",
+   "skills": [
+    "formats courts",
+    "veille tendances",
+    "tournage smartphone",
+    "montage mobile",
+    "hooks & accroches"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "produire des Reels, Shorts et TikTok au ton authentique",
+    "suivre et exploiter les tendances",
+    "tourner et monter en mobile",
+    "itérer vite avec le Social Media Manager"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "producteur-podcast",
+   "num": 38,
+   "titre": "Producteur / Créateur — Podcast Axion-ia.com (création de A à Z)",
+   "categorie": "marketing",
+   "emploi": "CONTRACTOR",
+   "sal_min": 30000,
+   "sal_max": 45000,
+   "sal_note": "freelance (mission)",
+   "skills": [
+    "conception de podcast (de zéro)",
+    "montage du studio fixe & setup mobile/nomade",
+    "captation & enregistrement terrain",
+    "montage et production",
+    "diffusion & promotion multi-plateformes"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "créer le podcast d'Axion-ia.com de A à Z : concept, nom, format, ligne éditoriale",
+    "mettre en place le studio d'enregistrement, y compris une structure mobile/nomade pour capter en déplacement, sur le terrain et chez les invités",
+    "identifier et inviter les intervenants, préparer les épisodes",
+    "enregistrer, monter et produire les épisodes",
+    "piloter la diffusion et la promotion sur toutes les plateformes"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "monteur-son-podcast",
+   "num": 39,
+   "titre": "Monteur son / Sound designer — Podcast",
+   "categorie": "design",
+   "emploi": "FULL_TIME",
+   "sal_min": 26000,
+   "sal_max": 40000,
+   "sal_note": "salarié ou freelance",
+   "skills": [
+    "captation audio",
+    "montage son",
+    "mixage",
+    "sound design",
+    "diffusion multi-plateformes"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "capter et monter le son des épisodes",
+    "mixer et masteriser",
+    "créer l'habillage sonore",
+    "préparer la diffusion multi-plateformes"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "charge-relations-presse",
+   "num": 40,
+   "titre": "Chargé de relations presse (RP)",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 30000,
+   "sal_max": 45000,
+   "sal_note": "",
+   "skills": [
+    "communiqués de presse",
+    "relations médias",
+    "pitch journalistes",
+    "revue de presse",
+    "prise de parole"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "rédiger communiqués et dossiers de presse",
+    "développer les relations avec les journalistes tech & business",
+    "décrocher des retombées médias",
+    "suivre la revue de presse et les prises de parole"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "responsable-partenariats-evenements",
+   "num": 41,
+   "titre": "Responsable partenariats & événements",
+   "categorie": "commercial",
+   "emploi": "FULL_TIME",
+   "sal_min": 35000,
+   "sal_max": 50000,
+   "sal_note": "",
+   "skills": [
+    "partenariats",
+    "salons & conférences",
+    "webinaires",
+    "organisation d'événements",
+    "networking"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "nouer et animer des partenariats",
+    "organiser webinaires, salons et conférences",
+    "représenter Axion-ia.com lors des événements",
+    "générer de la visibilité et des opportunités"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "brand-content-strategist",
+   "num": 42,
+   "titre": "Brand / Content Strategist",
+   "categorie": "marketing",
+   "emploi": "FULL_TIME",
+   "sal_min": 35000,
+   "sal_max": 50000,
+   "sal_note": "",
+   "skills": [
+    "stratégie de marque",
+    "ligne éditoriale",
+    "cohérence multicanal",
+    "planification de contenu",
+    "storytelling de marque"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "définir la stratégie de marque et la ligne éditoriale",
+    "garantir la cohérence sur tous les canaux",
+    "piloter le calendrier de contenu",
+    "mesurer l'impact et ajuster"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "photographe-crea",
+   "num": 43,
+   "titre": "Photographe / Créa visuelle",
+   "categorie": "design",
+   "emploi": "FULL_TIME",
+   "sal_min": 28000,
+   "sal_max": 40000,
+   "sal_note": "salarié ou freelance",
+   "skills": [
+    "photographie",
+    "retouche",
+    "portraits équipe",
+    "supports visuels",
+    "identité visuelle"
+   ],
+   "tech": false,
+   "lieu": "Saint-Marcellin / Grenoble (Isère)",
+   "bassin": "Romans-sur-Isère et Valence",
+   "media": true,
+   "missions": [
+    "réaliser photos et visuels de marque",
+    "photographier portraits d'équipe et coulisses",
+    "produire des supports pour les réseaux et le site",
+    "garantir la cohérence de l'identité visuelle"
+   ],
+   "group": "media",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
+  }
+ ],
+ "cities": [
+  {
+   "city": "Paris",
+   "region": "Île-de-France"
+  },
+  {
+   "city": "Marseille",
+   "region": "Provence-Alpes-Côte d'Azur"
+  },
+  {
+   "city": "Lyon",
+   "region": "Auvergne-Rhône-Alpes"
+  },
+  {
+   "city": "Toulouse",
+   "region": "Occitanie"
+  },
+  {
+   "city": "Nice",
+   "region": "Provence-Alpes-Côte d'Azur"
+  },
+  {
+   "city": "Nantes",
+   "region": "Pays de la Loire"
+  },
+  {
+   "city": "Montpellier",
+   "region": "Occitanie"
+  },
+  {
+   "city": "Strasbourg",
+   "region": "Grand Est"
+  },
+  {
+   "city": "Bordeaux",
+   "region": "Nouvelle-Aquitaine"
+  },
+  {
+   "city": "Lille",
+   "region": "Hauts-de-France"
+  },
+  {
+   "city": "Rennes",
+   "region": "Bretagne"
+  },
+  {
+   "city": "Toulon",
+   "region": "Provence-Alpes-Côte d'Azur"
+  },
+  {
+   "city": "Reims",
+   "region": "Grand Est"
+  },
+  {
+   "city": "Saint-Étienne",
+   "region": "Auvergne-Rhône-Alpes"
+  },
+  {
+   "city": "Le Havre",
+   "region": "Normandie"
+  },
+  {
+   "city": "Villeurbanne",
+   "region": "Auvergne-Rhône-Alpes"
+  },
+  {
+   "city": "Dijon",
+   "region": "Bourgogne-Franche-Comté"
+  },
+  {
+   "city": "Angers",
+   "region": "Pays de la Loire"
+  },
+  {
+   "city": "Grenoble",
+   "region": "Auvergne-Rhône-Alpes"
+  },
+  {
+   "city": "Nîmes",
+   "region": "Occitanie"
+  },
+  {
+   "city": "Aix-en-Provence",
+   "region": "Provence-Alpes-Côte d'Azur"
+  },
+  {
+   "city": "Saint-Denis",
+   "region": "Île-de-France"
+  },
+  {
+   "city": "Clermont-Ferrand",
+   "region": "Auvergne-Rhône-Alpes"
+  },
+  {
+   "city": "Le Mans",
+   "region": "Pays de la Loire"
+  },
+  {
+   "city": "Brest",
+   "region": "Bretagne"
+  },
+  {
+   "city": "Tours",
+   "region": "Centre-Val de Loire"
+  },
+  {
+   "city": "Amiens",
+   "region": "Hauts-de-France"
+  },
+  {
+   "city": "Annecy",
+   "region": "Auvergne-Rhône-Alpes"
+  },
+  {
+   "city": "Limoges",
+   "region": "Nouvelle-Aquitaine"
+  },
+  {
+   "city": "Metz",
+   "region": "Grand Est"
+  },
+  {
+   "city": "Perpignan",
+   "region": "Occitanie"
+  },
+  {
+   "city": "Boulogne-Billancourt",
+   "region": "Île-de-France"
+  },
+  {
+   "city": "Besançon",
+   "region": "Bourgogne-Franche-Comté"
+  },
+  {
+   "city": "Rouen",
+   "region": "Normandie"
+  },
+  {
+   "city": "Orléans",
+   "region": "Centre-Val de Loire"
+  },
+  {
+   "city": "Montreuil",
+   "region": "Île-de-France"
+  },
+  {
+   "city": "Caen",
+   "region": "Normandie"
+  },
+  {
+   "city": "Argenteuil",
+   "region": "Île-de-France"
+  },
+  {
+   "city": "Mulhouse",
+   "region": "Grand Est"
+  },
+  {
+   "city": "Nancy",
+   "region": "Grand Est"
+  }
+ ],
+ "schools_sample": [
+  "l'École Polytechnique",
+  "CentraleSupélec",
+  "l'INSA Lyon",
+  "Grenoble INP (Ensimag)",
+  "l'EPITA",
+  "l'école 42",
+  "l'ISAE-SUPAERO",
+  "IMT Atlantique",
+  "Centrale Nantes",
+  "Télécom Paris"
+ ],
+ "counts": {
+  "retained": 43,
+  "excluded": [
+   "apporteur-affaires",
+   "commercial-independant-ia"
+  ],
+  "multiCity": 4,
+  "remote": 5,
+  "siege": 34
+ }
+}
