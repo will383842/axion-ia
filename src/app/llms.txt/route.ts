@@ -85,6 +85,10 @@ export function GET() {
 - Pages par ville (40 hubs T1+T2, ex. ${SITE_URL}/fr/devenir-commercial-ia/grenoble) — territoire de vente local réel (secteurs, grands comptes, bassin). Les villes plus petites (T3/T4) redirigent en 301 vers leur hub le plus proche (« et alentours »).
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 
+## Carrières — nous rejoindre (salariat)
+- [Carrières / offres d'emploi](${SITE_URL}/fr/carrieres) — offres d'emploi salariées d'Axion-IA (tech, commercial, marketing, opérations, design, support), publiées dynamiquement et pilotées en interne. Sur site, hybride ou remote, partout en France. Candidature en ligne en quelques minutes (CV optionnel, questions par offre).
+- Chaque offre : ${SITE_URL}/fr/carrieres/<slug> (données structurées JobPosting / Google for Jobs). Sitemap dédié : ${SITE_URL}/sitemap-carrieres.xml
+
 ## Galerie & ressources
 
 - [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml

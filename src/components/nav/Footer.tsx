@@ -50,6 +50,7 @@ export async function Footer() {
       href: "/devenir-commercial-ia" as const,
       label: isFr ? "Recrutement commerciaux" : "Sales rep recruitment",
     },
+    { href: "/carrieres" as const, label: isFr ? "Carrières" : "Careers" },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
