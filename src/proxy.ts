@@ -18,7 +18,7 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
-import { buildCspHeader, generateNonce, isStrictCspPath } from "./lib/csp";
+import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 
 const handleI18nRouting = createIntlMiddleware(routing);
@@ -109,7 +109,11 @@ export default auth((req) => {
   // 3. Securite headers (CSP per-path + COEP toujours + X-* OWASP).
   if (response) {
     const strict = isStrictCspPath(req.nextUrl.pathname);
-    response.headers.set("Content-Security-Policy", buildCspHeader({ nonce, strict }));
+    // Route d'embed widget → framable partout (frame-ancestors *) + pas de
+    // X-Frame-Options DENY (sinon le navigateur refuse l'iframe quoi qu'en dise
+    // la CSP). next.config.ts exclut aussi ce chemin de son X-Frame-Options.
+    const embed = isEmbedPath(req.nextUrl.pathname);
+    response.headers.set("Content-Security-Policy", buildCspHeader({ nonce, strict, embed }));
     // COEP credentialless : isolation cross-origin sans exiger CORP sur chaque
     // ressource externe. Ressources cross-origin chargees sans cookies/creds.
     // Bascule depuis `require-corp` 2026-05-09 — ce dernier bloquait Plausible,
@@ -124,7 +128,8 @@ export default auth((req) => {
     // modernes, mais X-Frame-Options: DENY garantit le comportement sur les
     // browsers legacy + scanners de sécurité (OWASP ZAP) qui le checkent.
     response.headers.set("X-Content-Type-Options", "nosniff");
-    response.headers.set("X-Frame-Options", "DENY");
+    // X-Frame-Options DENY partout SAUF la route d'embed (qui doit être framable).
+    if (!embed) response.headers.set("X-Frame-Options", "DENY");
     response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
     // Permissions-Policy minimaliste : on bloque les capabilities qu'on n'utilise
     // pas pour réduire la surface d'attaque + les warnings Lighthouse.

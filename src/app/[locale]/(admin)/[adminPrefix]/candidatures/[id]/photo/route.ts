@@ -17,8 +17,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
-  if (!session?.user?.id)
-    return new NextResponse("Unauthorized", { status: 401 });
+  if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;
   if (role !== "super_admin" && role !== "admin" && role !== "editor") {
     return new NextResponse("Forbidden", { status: 403 });
@@ -29,8 +28,7 @@ export async function GET(
     where: { id },
     select: { photoStoragePath: true, photoMimeType: true },
   });
-  if (!a?.photoStoragePath)
-    return new NextResponse("Not found", { status: 404 });
+  if (!a?.photoStoragePath) return new NextResponse("Not found", { status: 404 });
 
   try {
     const buf = await readCv(a.photoStoragePath);

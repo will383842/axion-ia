@@ -176,10 +176,7 @@ export type NotificationEvent =
     }
   // === Newsletter ===
   | {
-      category:
-        | "NEWSLETTER_PENDING"
-        | "NEWSLETTER_CONFIRMED"
-        | "NEWSLETTER_UNSUBSCRIBED";
+      category: "NEWSLETTER_PENDING" | "NEWSLETTER_CONFIRMED" | "NEWSLETTER_UNSUBSCRIBED";
       payload: { email: string; locale?: "fr" | "en" };
     }
   // === Booking interne (existant) ===
@@ -290,28 +287,28 @@ export type NotificationEvent =
 export type NotificationCategory = NotificationEvent["category"];
 
 /** Argument complet passé à `notify()`. */
-export type NotifyInput<C extends NotificationCategory = NotificationCategory> =
-  Extract<NotificationEvent, { category: C }> & {
-    /** Override severity (sinon utilise la valeur du routing par défaut). */
-    severity?: NotificationSeverity;
-    /** Override channels (sinon utilise le routing par défaut). */
-    channels?: NotificationChannel[];
-    /** Clé de déduplication Redis. Empêche un doublon dans le TTL. */
-    dedupKey?: string;
-    /** TTL dedup en secondes (défaut 300). */
-    dedupTtlSec?: number;
-    /** Bypass le rate-limit par catégorie. */
-    force?: boolean;
-    /** Forcer le mode synchrone (sinon dispatch selon severity). */
-    sync?: boolean;
-  };
+export type NotifyInput<C extends NotificationCategory = NotificationCategory> = Extract<
+  NotificationEvent,
+  { category: C }
+> & {
+  /** Override severity (sinon utilise la valeur du routing par défaut). */
+  severity?: NotificationSeverity;
+  /** Override channels (sinon utilise le routing par défaut). */
+  channels?: NotificationChannel[];
+  /** Clé de déduplication Redis. Empêche un doublon dans le TTL. */
+  dedupKey?: string;
+  /** TTL dedup en secondes (défaut 300). */
+  dedupTtlSec?: number;
+  /** Bypass le rate-limit par catégorie. */
+  force?: boolean;
+  /** Forcer le mode synchrone (sinon dispatch selon severity). */
+  sync?: boolean;
+};
 
 /** Résultat de `notify()` — soft-fail, jamais de throw. */
 export interface NotifyResult {
   ok: boolean;
   deduped?: boolean;
   rateLimited?: boolean;
-  channels: Partial<
-    Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">
-  >;
+  channels: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>;
 }
