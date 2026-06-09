@@ -53,7 +53,32 @@ const appSchema = z.object({
   experienceBand: opt(40),
   availability: opt(120),
   linkedinUrl: opt(255),
+  salaryExpectation: opt(80),
 });
+
+const PHOTO_MAX_BYTES = 5 * 1024 * 1024; // 5 Mo
+
+/** Validation photo (optionnelle) : taille + magic-bytes JPEG/PNG/WebP. */
+function validatePhoto(file: File, buf: Buffer): string | null {
+  if (file.size > PHOTO_MAX_BYTES) return "Photo trop volumineuse (5 Mo max).";
+  const s = buf.subarray(0, 12);
+  const isJpg = s[0] === 0xff && s[1] === 0xd8 && s[2] === 0xff;
+  const isPng = s[0] === 0x89 && s[1] === 0x50 && s[2] === 0x4e && s[3] === 0x47;
+  const isWebp =
+    s[0] === 0x52 &&
+    s[1] === 0x49 &&
+    s[2] === 0x46 &&
+    s[3] === 0x46 &&
+    s[8] === 0x57 &&
+    s[9] === 0x45 &&
+    s[10] === 0x42 &&
+    s[11] === 0x50;
+  // HEIC/HEIF (photos iPhone prises en direct) : conteneur ISO-BMFF → "ftyp" à l'offset 4.
+  const isHeif = s[4] === 0x66 && s[5] === 0x74 && s[6] === 0x79 && s[7] === 0x70;
+  if (!isJpg && !isPng && !isWebp && !isHeif)
+    return "Photo non supportée (JPG, PNG, WebP ou HEIC).";
+  return null;
+}
 
 /** Tri-état Oui/Non/(vide) depuis un radio. */
 function triState(v: FormDataEntryValue | null): boolean | null {
@@ -87,7 +112,10 @@ export async function submitJobApplicationAction(
   const ip = await getClientIp();
 
   // 1. Rate-limit
-  const rl = await checkRateLimit(`job-application:${ip}`, { limit: 3, windowSec: 600 });
+  const rl = await checkRateLimit(`job-application:${ip}`, {
+    limit: 3,
+    windowSec: 600,
+  });
   if (!rl.allowed) return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
 
   // 2. Honeypot
@@ -117,19 +145,34 @@ export async function submitJobApplicationAction(
     experienceBand: formData.get("experienceBand"),
     availability: formData.get("availability"),
     linkedinUrl: formData.get("linkedinUrl"),
+    salaryExpectation: formData.get("salaryExpectation"),
   });
-  if (!parsed.success) return { ok: false, error: "Champs invalides — vérifiez vos informations." };
+  if (!parsed.success)
+    return {
+      ok: false,
+      error: "Champs invalides — vérifiez vos informations.",
+    };
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
 
   // 6. Offre cible
   const offer = await prisma.jobOffer.findUnique({
     where: { id: d.offerId },
-    select: { id: true, titleFr: true, status: true, filledAt: true, validThrough: true },
+    select: {
+      id: true,
+      titleFr: true,
+      category: true,
+      status: true,
+      filledAt: true,
+      validThrough: true,
+    },
   });
   const expired = offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
   if (!offer || offer.status !== "published" || offer.filledAt || expired) {
-    return { ok: false, error: "Cette offre n'est plus ouverte aux candidatures." };
+    return {
+      ok: false,
+      error: "Cette offre n'est plus ouverte aux candidatures.",
+    };
   }
 
   // 7. CV (optionnel)
@@ -148,6 +191,22 @@ export async function submitJobApplicationAction(
     cvOriginalName = cv.name.slice(0, 255);
     cvMimeType = cv.type || null;
     cvSizeBytes = cv.size;
+  }
+
+  // 7bis. Photo (OPTIONNELLE — réutilise le stockage CV, hors web-root, admin-only)
+  let photoStoragePath: string | null = null;
+  let photoOriginalName: string | null = null;
+  let photoMimeType: string | null = null;
+  const photo = formData.get("photo");
+  if (photo instanceof File && photo.size > 0) {
+    if (photo.size > PHOTO_MAX_BYTES)
+      return { ok: false, error: "Photo trop volumineuse (5 Mo max)." };
+    const pbuf = Buffer.from(await photo.arrayBuffer());
+    const photoError = validatePhoto(photo, pbuf);
+    if (photoError) return { ok: false, error: photoError };
+    photoStoragePath = await storeCv(pbuf, photo.name);
+    photoOriginalName = photo.name.slice(0, 255);
+    photoMimeType = photo.type || null;
   }
 
   // 8. Réponses aux questions de l'offre (champs answer_<id>)
@@ -184,6 +243,10 @@ export async function submitJobApplicationAction(
         cvOriginalName,
         cvMimeType,
         cvSizeBytes,
+        photoStoragePath,
+        photoOriginalName,
+        photoMimeType,
+        salaryExpectation: d.salaryExpectation ?? null,
         ipHash: hashIp(ip),
         userAgent,
         consentVersion: CONSENT_VERSION,
@@ -201,7 +264,11 @@ export async function submitJobApplicationAction(
         contactEmail: d.email,
         ...(d.phone ? { contactPhone: d.phone } : {}),
         offerTitle: offer.titleFr,
+        offerCategory: offer.category,
+        ...(d.city ? { city: d.city } : {}),
+        ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
         hasCv: Boolean(cvStoragePath),
+        hasPhoto: Boolean(photoStoragePath),
         locale,
       },
       dedupKey: app.id,
@@ -218,7 +285,9 @@ export async function submitJobApplicationAction(
     revalidatePath(adminPath("fr", "candidatures"));
     return { ok: true, applicationId: app.id };
   } catch (err) {
-    Sentry.captureException(err, { tags: { action: "submitJobApplicationAction", locale } });
+    Sentry.captureException(err, {
+      tags: { action: "submitJobApplicationAction", locale },
+    });
     return { ok: false, error: "Une erreur est survenue. Réessayez." };
   }
 }

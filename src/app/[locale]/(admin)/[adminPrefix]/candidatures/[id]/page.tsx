@@ -5,11 +5,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  AdminPageShell,
-  AdminPageHeader,
-  AdminCard,
-} from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
@@ -50,10 +46,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         title={`${a.civility ? `${a.civility} ` : ""}${a.firstName} ${a.lastName}`}
         description={`Candidature · ${a.offerTitleSnap} · ${a.submittedAt.toISOString().slice(0, 10)}`}
         actions={
-          <Link
-            href={`/fr/${adminPrefix}/candidatures`}
-            className="admin-button-ghost"
-          >
+          <Link href={`/fr/${adminPrefix}/candidatures`} className="admin-button-ghost">
             ← Liste
           </Link>
         }
@@ -73,15 +66,12 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dd>{a.experienceBand ?? "—"}</dd>
           <dt className="font-medium">Disponibilité</dt>
           <dd>{a.availability ?? "—"}</dd>
+          <dt className="font-medium">Prétention de revenus</dt>
+          <dd>{a.salaryExpectation ?? "—"}</dd>
           <dt className="font-medium">LinkedIn</dt>
           <dd>
             {a.linkedinUrl ? (
-              <a
-                href={a.linkedinUrl}
-                target="_blank"
-                rel="noopener"
-                className="admin-link"
-              >
+              <a href={a.linkedinUrl} target="_blank" rel="noopener" className="admin-link">
                 {a.linkedinUrl}
               </a>
             ) : (
@@ -95,14 +85,21 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">CV</dt>
           <dd>
             {a.hasCv ? (
-              <Link
-                href={`/fr/${adminPrefix}/candidatures/${a.id}/cv`}
-                className="admin-link"
-              >
+              <Link href={`/fr/${adminPrefix}/candidatures/${a.id}/cv`} className="admin-link">
                 Télécharger {a.cvOriginalName ?? ""}
               </Link>
             ) : (
               "non fourni"
+            )}
+          </dd>
+          <dt className="font-medium">Photo</dt>
+          <dd>
+            {a.hasPhoto ? (
+              <Link href={`/fr/${adminPrefix}/candidatures/${a.id}/photo`} className="admin-link">
+                Voir {a.photoOriginalName ?? ""}
+              </Link>
+            ) : (
+              "non fournie"
             )}
           </dd>
         </dl>
@@ -111,7 +108,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
       {a.motivation ? (
         <AdminCard>
           <h3 className="admin-section-title">Petit mot du candidat</h3>
-          <p className="whitespace-pre-wrap text-sm">{a.motivation}</p>
+          <p className="text-sm whitespace-pre-wrap">{a.motivation}</p>
         </AdminCard>
       ) : null}
 

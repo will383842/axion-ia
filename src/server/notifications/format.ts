@@ -5,6 +5,9 @@
 // https://core.telegram.org/bots/api#markdownv2-style
 
 import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
+import { careerCategoryLabel } from "@/content/careers/categories";
+import { adminPath } from "@/lib/admin-path";
+import { SITE_URL } from "@/lib/seo";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",
@@ -119,9 +122,15 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Email", p.contactEmail),
         p.contactPhone ? formatKV("Téléphone", p.contactPhone) : null,
         formatKV("Offre", p.offerTitle),
+        p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
+        p.city ? formatKV("Ville", p.city) : null,
+        p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
-        formatKV("Locale", p.locale),
-        formatKV("ID", p.applicationId),
+        p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "candidatures")}/${p.applicationId}`,
+        ),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

@@ -45,9 +45,7 @@ interface PerkItem {
 }
 
 /** Offre clôturée = non publiée, pourvue OU expirée (Date.now isolé hors render). */
-function isOfferClosed(
-  o: Pick<JobOffer, "status" | "filledAt" | "validThrough">,
-): boolean {
+function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">): boolean {
   if (o.status !== "published") return true;
   if (o.filledAt) return true;
   if (o.validThrough && o.validThrough.getTime() < Date.now()) return true;
@@ -55,8 +53,7 @@ function isOfferClosed(
 }
 
 function salaryLabel(o: JobOffer, isFr: boolean): string | null {
-  if (o.isCommission)
-    return isFr ? "Commission déplafonnée" : "Uncapped commission";
+  if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
   if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
   if (o.salaryMin == null && o.salaryMax == null) return null;
   const k = (n: number) => `${Math.round(n / 1000)}k`;
@@ -91,8 +88,7 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const offer = await getJobOfferBySlug(slug);
-  if (!offer)
-    return { robots: { index: false, follow: false }, alternates: {} };
+  if (!offer) return { robots: { index: false, follow: false }, alternates: {} };
 
   const isFr = locale === "fr";
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
@@ -110,12 +106,11 @@ export async function generateMetadata({
   const base = buildProductMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}`,
-    title:
-      offer.metaTitle ??
-      `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA.com`,
-    description: (
-      offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)
-    ).slice(0, 160),
+    title: offer.metaTitle ?? `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA.com`,
+    description: (offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)).slice(
+      0,
+      160,
+    ),
     ...(offer.ogImagePath ? { ogImage: offer.ogImagePath } : {}),
   });
   if (!isJobOfferIndexable(offer)) {
@@ -145,9 +140,7 @@ export default async function JobOfferDetailPage({
   const applyHref = `/carrieres/${offer.slug}/postuler`;
   const isClosed = isOfferClosed(offer);
 
-  const perks: PerkItem[] = Array.isArray(offer.perks)
-    ? (offer.perks as PerkItem[])
-    : [];
+  const perks: PerkItem[] = Array.isArray(offer.perks) ? (offer.perks as PerkItem[]) : [];
   const suggested = await listSuggestedOffers(offer, 4);
   // Zone d'emploi multi-villes (postes itinérants/territoriaux).
   const jobCities = Array.isArray(offer.jobLocations)
@@ -173,9 +166,7 @@ export default async function JobOfferDetailPage({
 
   return (
     <>
-      {jobPosting ? (
-        <JsonLd data={jobPosting} scriptId="jsonld-jobposting" />
-      ) : null}
+      {jobPosting ? <JsonLd data={jobPosting} scriptId="jsonld-jobposting" /> : null}
       <JsonLd data={webPage} scriptId="jsonld-webpage" />
 
       <Section tone="halo-warm">
@@ -206,20 +197,15 @@ export default async function JobOfferDetailPage({
                 {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
                 {offer.city ? ` · ${offer.city}` : ""}
               </p>
-              <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">
-                {title}
-              </h1>
+              <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">{title}</h1>
 
               <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                {offer.contractLabel ? (
-                  <span>📄 {offer.contractLabel}</span>
-                ) : null}
+                {offer.contractLabel ? <span>📄 {offer.contractLabel}</span> : null}
                 {sal ? <span>💶 {sal}</span> : null}
                 {offer.teamName ? <span>👥 {offer.teamName}</span> : null}
                 {offer.startDate ? (
                   <span>
-                    🗓️ {isFr ? "Dès" : "From"}{" "}
-                    {offer.startDate.toISOString().slice(0, 10)}
+                    🗓️ {isFr ? "Dès" : "From"} {offer.startDate.toISOString().slice(0, 10)}
                   </span>
                 ) : null}
               </div>
@@ -267,14 +253,14 @@ export default async function JobOfferDetailPage({
               className={[
                 "prose prose-lg prose-neutral max-w-none",
                 // H2 : titres de section terracotta serif, bien détachés (anti gros-bloc).
-                "[&_h2]:mt-14 [&_h2]:mb-5 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-terracotta-deep sm:[&_h2]:text-4xl",
+                "[&_h2]:text-terracotta-deep [&_h2]:mt-14 [&_h2]:mb-5 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:leading-tight [&_h2]:font-semibold sm:[&_h2]:text-4xl",
                 // H3 : sous-titres serif noir.
-                "[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-fg",
+                "[&_h3]:text-fg [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-semibold",
                 // Listes : puces terracotta, aérées.
                 // Listes : puces terracotta, à puces explicites + aérées (sans dépendre de prose).
-                "[&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_li]:marker:text-terracotta",
+                "[&_li]:marker:text-terracotta [&_ul]:my-5 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5",
                 // Paragraphes : espacés (mb-5), lisibles, gris doux ; gras en noir franc.
-                "[&_p]:mb-5 [&_p]:leading-relaxed [&_p]:text-fg-soft [&_strong]:text-fg [&_strong]:font-semibold",
+                "[&_p]:text-fg-soft [&_strong]:text-fg [&_p]:mb-5 [&_p]:leading-relaxed [&_strong]:font-semibold",
               ].join(" ")}
               // Corps riche déjà sanitizé (whitelist) — anti VIS-01 (jamais affiché en texte).
               dangerouslySetInnerHTML={{ __html: bodyHtml }}
@@ -290,11 +276,7 @@ export default async function JobOfferDetailPage({
                     {perks.map((p, i) => (
                       <li key={i} className="flex gap-2">
                         <span aria-hidden>{p.icon ?? "✅"}</span>
-                        <span>
-                          {(isFr ? p.labelFr : p.labelEn) ??
-                            p.labelFr ??
-                            p.labelEn}
-                        </span>
+                        <span>{(isFr ? p.labelFr : p.labelEn) ?? p.labelFr ?? p.labelEn}</span>
                       </li>
                     ))}
                   </ul>
@@ -339,9 +321,7 @@ export default async function JobOfferDetailPage({
                   {isFr ? "Qui est Axion-IA.com ?" : "Who is Axion-IA.com?"}
                 </h2>
                 <p className="text-fg-muted mt-2 text-sm">
-                  {isFr
-                    ? EMPLOYER_BRAND.shortAboutFr
-                    : EMPLOYER_BRAND.shortAboutEn}
+                  {isFr ? EMPLOYER_BRAND.shortAboutFr : EMPLOYER_BRAND.shortAboutEn}
                 </p>
                 <Link
                   href="/carrieres"
@@ -386,41 +366,29 @@ export default async function JobOfferDetailPage({
         <Container>
           <div className="mx-auto max-w-3xl">
             <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
-              {isFr
-                ? EMPLOYER_BRAND.onboardingTitleFr
-                : EMPLOYER_BRAND.onboardingTitleEn}
+              {isFr ? EMPLOYER_BRAND.onboardingTitleFr : EMPLOYER_BRAND.onboardingTitleEn}
             </h2>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
                 <h3 className="font-serif text-lg font-semibold">
-                  {isFr
-                    ? EMPLOYER_BRAND.formationLabelFr
-                    : EMPLOYER_BRAND.formationLabelEn}
+                  {isFr ? EMPLOYER_BRAND.formationLabelFr : EMPLOYER_BRAND.formationLabelEn}
                 </h3>
                 <p className="text-fg-soft mt-2 leading-relaxed">
-                  {isFr
-                    ? EMPLOYER_BRAND.formationFr
-                    : EMPLOYER_BRAND.formationEn}
+                  {isFr ? EMPLOYER_BRAND.formationFr : EMPLOYER_BRAND.formationEn}
                 </p>
               </div>
               <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
                 <h3 className="font-serif text-lg font-semibold">
-                  {isFr
-                    ? EMPLOYER_BRAND.integrationLabelFr
-                    : EMPLOYER_BRAND.integrationLabelEn}
+                  {isFr ? EMPLOYER_BRAND.integrationLabelFr : EMPLOYER_BRAND.integrationLabelEn}
                 </h3>
                 <p className="text-fg-soft mt-2 leading-relaxed">
-                  {isFr
-                    ? EMPLOYER_BRAND.integrationFr
-                    : EMPLOYER_BRAND.integrationEn}
+                  {isFr ? EMPLOYER_BRAND.integrationFr : EMPLOYER_BRAND.integrationEn}
                 </p>
               </div>
             </div>
             {offer.category === "conseil" ? (
               <p className="border-terracotta text-fg-soft mt-5 border-l-4 pl-4 leading-relaxed">
-                {isFr
-                  ? EMPLOYER_BRAND.formateurOnboardingFr
-                  : EMPLOYER_BRAND.formateurOnboardingEn}
+                {isFr ? EMPLOYER_BRAND.formateurOnboardingFr : EMPLOYER_BRAND.formateurOnboardingEn}
               </p>
             ) : null}
           </div>
@@ -431,30 +399,36 @@ export default async function JobOfferDetailPage({
         <Section tone="sand">
           <Container>
             <h2 className="font-serif text-2xl font-semibold">
-              {isFr
-                ? "D'autres offres qui pourraient te plaire"
-                : "Other roles you might like"}
+              {isFr ? "D'autres offres qui pourraient te plaire" : "Other roles you might like"}
             </h2>
-            <ul
-              className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-              role="list"
-            >
-              {suggested.map((s) => (
-                <li key={s.id}>
-                  <Link
-                    href={`/carrieres/${s.slug}`}
-                    className="border-border hover:border-terracotta flex h-full flex-col rounded-xl border bg-white p-4 transition-colors"
-                  >
-                    <h3 className="font-medium">
-                      {isFr ? s.titleFr : s.titleEn}
-                    </h3>
-                    <p className="text-fg-muted mt-1 text-xs">
-                      {s.city ??
-                        WORKMODE_LABELS[s.workMode]?.[isFr ? "fr" : "en"]}
-                    </p>
-                  </Link>
-                </li>
-              ))}
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2" role="list">
+              {suggested.map((s) => {
+                const sImg = careerImage(s.slug);
+                return (
+                  <li key={s.id}>
+                    <Link
+                      href={`/carrieres/${s.slug}`}
+                      className="border-border hover:border-terracotta shadow-subtle hover:shadow-card flex items-center gap-4 rounded-xl border bg-white p-3 transition"
+                    >
+                      <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
+                        <Image
+                          src={sImg.url}
+                          alt={sImg.alt}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="truncate font-medium">{isFr ? s.titleFr : s.titleEn}</h3>
+                        <p className="text-fg-muted mt-0.5 text-xs">
+                          {s.city ?? WORKMODE_LABELS[s.workMode]?.[isFr ? "fr" : "en"]}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </Container>
         </Section>

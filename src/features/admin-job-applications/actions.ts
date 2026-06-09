@@ -144,6 +144,9 @@ export interface JobApplicationDetail {
   answers: Record<string, string>;
   hasCv: boolean;
   cvOriginalName: string | null;
+  salaryExpectation: string | null;
+  hasPhoto: boolean;
+  photoOriginalName: string | null;
   internalNotes: string | null;
   assignedTo: string | null;
   needsAttention: boolean;
@@ -180,6 +183,9 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     answers,
     hasCv: Boolean(a.cvStoragePath),
     cvOriginalName: a.cvOriginalName,
+    salaryExpectation: a.salaryExpectation,
+    hasPhoto: Boolean(a.photoStoragePath),
+    photoOriginalName: a.photoOriginalName,
     internalNotes: a.internalNotes,
     assignedTo: a.assignedTo,
     needsAttention: a.needsAttention,
@@ -261,11 +267,12 @@ export async function deleteApplicationAction(
 
   const a = await prisma.jobApplication.findUnique({
     where: { id },
-    select: { cvStoragePath: true },
+    select: { cvStoragePath: true, photoStoragePath: true },
   });
   if (!a) return { ok: false, error: "Candidature introuvable." };
 
-  await deleteCv(a.cvStoragePath); // purge fichier AVANT le delete
+  await deleteCv(a.cvStoragePath); // purge CV AVANT le delete
+  await deleteCv(a.photoStoragePath); // purge photo AVANT le delete (RGPD)
   await prisma.jobApplication.delete({ where: { id } });
   await prisma.activityLog.create({
     data: {

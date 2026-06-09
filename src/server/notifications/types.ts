@@ -128,7 +128,11 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         offerTitle: string;
+        offerCategory?: string;
+        city?: string;
+        salaryExpectation?: string;
         hasCv: boolean;
+        hasPhoto?: boolean;
         locale: "fr" | "en";
       };
     }
@@ -226,7 +230,12 @@ export type NotificationEvent =
     }
   | {
       category: "CALENDLY_INVITEE_RESCHEDULED";
-      payload: { eventUri: string; inviteeEmail: string; oldStart: string; newStart: string };
+      payload: {
+        eventUri: string;
+        inviteeEmail: string;
+        oldStart: string;
+        newStart: string;
+      };
     }
   // === Reply admin (Chantier 5) ===
   | {

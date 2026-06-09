@@ -363,7 +363,7 @@ export default async function CarrieresHubPage({
                 (cat) => (
                   <div key={cat.slug}>
                     <h3 className="font-serif text-xl font-semibold">{isFr ? cat.fr : cat.en}</h3>
-                    <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+                    <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
                       {offers
                         .filter((o) => o.category === cat.slug)
                         .map((o) => {
@@ -380,7 +380,7 @@ export default async function CarrieresHubPage({
                                     src={img.url}
                                     alt={img.alt}
                                     fill
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                     className="object-cover transition duration-300 group-hover:scale-105"
                                   />
                                   {isNew(o.datePosted) ? (
