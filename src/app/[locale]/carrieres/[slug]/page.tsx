@@ -344,8 +344,8 @@ export default async function JobOfferDetailPage({
             </h2>
             <p className="text-fg-muted mt-2 max-w-2xl">
               {isFr
-                ? "Poste itinérant basé au siège (Saint-Marcellin / Grenoble) : tu interviens chez nos clients dans ces villes et leurs alentours."
-                : "Itinerant role based at HQ (Saint-Marcellin / Grenoble): you work at our clients in these cities and surroundings."}
+                ? "Poste itinérant, organisé par secteurs : tu interviens chez nos clients partout en France — dans ces villes et leurs alentours."
+                : "Itinerant role, organised by sector: you work at our clients across France — in these cities and surroundings."}
             </p>
             <ul className="mt-5 flex flex-wrap gap-2" role="list">
               {jobCities.map((c) => (

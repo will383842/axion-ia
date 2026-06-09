@@ -18,9 +18,9 @@ export const EMPLOYER_BRAND = {
 
   /** Intro hero (sous le H1) — accroche candidat, énergique. */
   heroIntroFr:
-    "On recrute dans plein de métiers — tech & IA, data, design, vidéo & contenu, marketing, commercial, RH, administratif, support… Des missions concrètes, une équipe à taille humaine et de l'autonomie réelle. Quel que soit ton métier, il y a une place pour toi. 👋",
+    "Startup tech à taille humaine, ancrée en Isère — on intervient dans toute la France et les pays francophones. On recrute dans plein de métiers (tech & IA, data, design, vidéo, marketing, commercial, RH, administratif, support…) : quel que soit le tien, il y a une place pour toi. 👋",
   heroIntroEn:
-    "We're hiring across many roles — tech & AI, data, design, video & content, marketing, sales, HR, admin, support… Real-world missions, a human-sized team and real autonomy. Whatever your job, there's a place for you. 👋",
+    "Human-sized tech startup, rooted in Isère — we work across France and French-speaking countries. We're hiring across many roles (tech & AI, data, design, video, marketing, sales, HR, admin, support…): whatever yours is, there's a place for you. 👋",
 
   /** Qui on est (section « Pourquoi nous rejoindre »), ton startup ambitieux. */
   aboutFr:
@@ -67,9 +67,9 @@ export const EMPLOYER_BRAND = {
   hqTitleFr: "Où on bosse 🏔️",
   hqTitleEn: "Where we work 🏔️",
   hqTextFr:
-    "Nos bureaux sont à Saint-Marcellin et Grenoble (Isère). Postes en présentiel ici et autour (Valence, Romans, Voiron) ; beaucoup en remote ou hybride, partout en France.",
+    "Notre siège est à Grenoble et nos bureaux à Saint-Marcellin (Isère). Postes en présentiel ici et autour (Valence, Romans, Voiron) ; beaucoup en remote ou hybride, partout en France. Et nos formateurs interviennent par secteur, partout en France.",
   hqTextEn:
-    "Our offices are in Saint-Marcellin and Grenoble (Isère). On-site roles here and nearby (Valence, Romans, Voiron); many remote or hybrid, anywhere in France.",
+    "Our head office is in Grenoble and our offices in Saint-Marcellin (Isère). On-site roles here and nearby (Valence, Romans, Voiron); many remote or hybrid, anywhere in France. And our trainers work by sector, across France.",
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:

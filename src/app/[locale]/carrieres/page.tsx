@@ -25,7 +25,7 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
-// 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (siège)
+// 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (bureaux)
 // + les 40 hubs T1+T2 (population ≥ 100 000).
 const CAREER_CITIES: ReadonlyArray<string> = [
   "Saint-Marcellin",
@@ -246,7 +246,7 @@ export default async function CarrieresHubPage({
         </Container>
       </Section>
 
-      {/* Siège — Saint-Marcellin */}
+      {/* Ancrage — siège Grenoble, bureaux Saint-Marcellin */}
       <Section tone="sand">
         <Container>
           <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
@@ -438,8 +438,8 @@ export default async function CarrieresHubPage({
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr
-              ? "Nos bureaux sont à Saint-Marcellin et Grenoble (Isère) ; beaucoup de postes sont en remote ou hybride. On accueille des talents un peu partout :"
-              : "Our offices are in Saint-Marcellin and Grenoble (Isère); many roles are remote or hybrid. We welcome talent all over:"}
+              ? "Notre siège est à Grenoble et nos bureaux à Saint-Marcellin (Isère) ; beaucoup de postes sont en remote ou hybride, et nos formateurs interviennent par secteur partout en France. On accueille des talents un peu partout :"
+              : "Our head office is in Grenoble and our offices in Saint-Marcellin (Isère); many roles are remote or hybrid, and our trainers work by sector across France. We welcome talent all over:"}
           </p>
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
             {CAREER_CITIES.map((city) => {

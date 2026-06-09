@@ -320,7 +320,11 @@ export function JobApplicationForm({
               maxLength={80}
               className={FIELD}
               disabled={submitting}
-              placeholder={isFr ? "ex. 35–42 k€ brut/an" : "e.g. 35–42 k€ gross/yr"}
+              placeholder={
+                isFr
+                  ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
+                  : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
+              }
             />
           </div>
         </div>
