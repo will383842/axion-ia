@@ -22,11 +22,11 @@ export const EMPLOYER_BRAND = {
   heroIntroEn:
     "We're hiring across many roles — dev, AI, data, design, product, marketing, sales, ops, support… Real-world missions, a human-sized team and real autonomy. Find the role that fits you. 👋",
 
-  /** Qui on est (section « Pourquoi nous rejoindre »), angle candidat. */
+  /** Qui on est (section « Pourquoi nous rejoindre »), ton startup ambitieux. */
   aboutFr:
-    "Une boîte tech à taille humaine, ancrée en Isère, qui rend l'IA opérationnelle pour les entreprises. On construit comme une vraie équipe produit : du code en prod, pas des promesses.",
+    "Axion-IA.com est une startup tech qui accompagne les entreprises sur toute la chaîne de l'IA : formations, coaching 1 to 1, audits en entreprise, intégration & implémentation d'IA, et sites web & SaaS augmentés à l'IA. Notre ambition est claire : devenir LA référence française de l'IA appliquée en entreprise. On construit comme une vraie équipe produit — du code en production, pas des promesses — avec l'envie de grandir vite. On voit grand.",
   aboutEn:
-    "A human-sized tech company, rooted in Isère, making AI operational for businesses. We build like a real product team: code in production, not promises.",
+    "Axion-IA.com is a tech startup supporting businesses across the whole AI chain: training, 1-to-1 coaching, on-site audits, AI integration & implementation, and AI-augmented websites & SaaS. Our ambition is clear: become THE French reference for applied AI in companies. We build like a real product team — code in production, not promises — eager to grow fast. We think big.",
 
   /** Pourquoi tu vas kiffer bosser ici — bénéfices candidat concrets. */
   whyJoin: [
@@ -77,7 +77,7 @@ export const EMPLOYER_BRAND = {
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:
-    "Axion-IA.com, boîte tech à taille humaine ancrée en Isère, qui rend l'IA opérationnelle. Ici on code pour de vrai, on porte ses sujets de bout en bout, et on monte vite.",
+    "Axion-IA.com, startup tech qui accompagne les entreprises sur l'IA : formations, 1 to 1, audits, intégration/implémentation d'IA et sites web & SaaS augmentés à l'IA. Ici on code pour de vrai et on voit grand.",
   shortAboutEn:
     "Axion-IA.com, a human-sized tech company in Isère making AI operational. Here you code for real, own your work end to end, and grow fast.",
 

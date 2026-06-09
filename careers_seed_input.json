@@ -1149,6 +1149,25 @@
    "workMode": "on_site",
    "multiCity": false,
    "city": "Saint-Marcellin"
+  },
+  {
+   "slug": "assistant-dossiers-financement-clients",
+   "num": 46,
+   "titre": "Assistant·e — accompagnement dossiers clients (financement & Qualiopi)",
+   "categorie": "operations",
+   "emploi": "FULL_TIME",
+   "type_loc": "siege",
+   "sal_min": 22000,
+   "sal_max": 34000,
+   "sal_note": "",
+   "missions": [],
+   "profil": [],
+   "tech": false,
+   "skills": [],
+   "group": "fixe",
+   "workMode": "on_site",
+   "multiCity": false,
+   "city": "Saint-Marcellin"
   }
  ],
  "cities": [
