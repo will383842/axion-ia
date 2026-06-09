@@ -15,6 +15,14 @@ import { Cta } from "@/components/marketing/Cta";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
+import { HUB_VILLES } from "@/content/recrutement/satellites";
+
+// 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (siège)
+// + les 40 hubs T1+T2 (population ≥ 100 000).
+const CAREER_CITIES: ReadonlyArray<string> = [
+  "Saint-Marcellin",
+  ...HUB_VILLES.map((v) => v.nameFr),
+];
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { listPublishedJobOffers } from "@/lib/careers/job-offers";
 import type { JobOffer } from "../../../../prisma/generated/client";
@@ -339,6 +347,29 @@ export default async function CarrieresHubPage({
               )}
             </div>
           )}
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
+          <h2 className="font-serif text-2xl font-semibold">
+            {isFr ? "On recrute partout en France 🇫🇷" : "We hire across France 🇫🇷"}
+          </h2>
+          <p className="text-fg-muted mt-3 max-w-3xl">
+            {isFr
+              ? "Notre siège est à Saint-Marcellin (Isère), et beaucoup de postes sont ouverts en remote ou hybride. On accueille des talents un peu partout :"
+              : "Our HQ is in Saint-Marcellin (Isère), and many roles are open remote or hybrid. We welcome talent all over the place:"}
+          </p>
+          <ul className="mt-5 flex flex-wrap gap-2" role="list">
+            {CAREER_CITIES.map((city) => (
+              <li
+                key={city}
+                className={`rounded-full border px-3 py-1 text-sm ${city === "Saint-Marcellin" ? "border-terracotta bg-terracotta/10 font-medium" : "border-border text-fg-muted"}`}
+              >
+                {city === "Saint-Marcellin" ? `🏔️ ${city}` : city}
+              </li>
+            ))}
+          </ul>
         </Container>
       </Section>
 
