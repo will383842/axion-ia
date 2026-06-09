@@ -262,7 +262,17 @@ export default async function JobOfferDetailPage({
         <Container>
           <div className="grid gap-10 lg:grid-cols-[1fr_18rem]">
             <article
-              className="prose prose-neutral max-w-none [&_h2]:font-serif [&_h2]:text-terracotta-deep [&_h3]:font-serif"
+              className={[
+                "prose prose-lg prose-neutral max-w-none",
+                // H2 : titres de section terracotta serif, bien détachés (anti gros-bloc).
+                "[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-terracotta-deep sm:[&_h2]:text-3xl",
+                // H3 : sous-titres serif noir.
+                "[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-fg",
+                // Listes : puces terracotta, aérées.
+                "[&_ul]:my-5 [&_ul]:space-y-2 [&_li]:marker:text-terracotta",
+                // Paragraphes : lisibles, gris doux ; gras en noir franc.
+                "[&_p]:leading-relaxed [&_p]:text-fg-soft [&_strong]:text-fg [&_strong]:font-semibold",
+              ].join(" ")}
               // Corps riche déjà sanitizé (whitelist) — anti VIS-01 (jamais affiché en texte).
               dangerouslySetInnerHTML={{ __html: bodyHtml }}
             />
