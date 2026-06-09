@@ -59,10 +59,7 @@ interface Props {
 }
 
 export function JobOfferForm({ initial }: Props) {
-  const [state, formAction, pending] = useActionState(
-    upsertJobOfferAction,
-    init,
-  );
+  const [state, formAction, pending] = useActionState(upsertJobOfferAction, init);
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
@@ -362,9 +359,8 @@ export function JobOfferForm({ initial }: Props) {
 
       <h3 className="admin-section-title">Rémunération</h3>
       <p className="admin-meta-small">
-        ℹ️ Directive UE 2023/970 (transparence salariale) : indique une
-        fourchette dans chaque offre. Évite les mentions vagues type « selon
-        profil ».
+        ℹ️ Directive UE 2023/970 (transparence salariale) : indique une fourchette dans chaque
+        offre. Évite les mentions vagues type « selon profil ».
       </p>
       <div className="admin-form-row">
         <label className="admin-checkbox">
@@ -526,8 +522,7 @@ export function JobOfferForm({ initial }: Props) {
       </div>
       <div className="admin-field">
         <label htmlFor="perks" className="admin-label">
-          Avantages — JSON : [
-          {`{ "labelFr":"Télétravail","labelEn":"Remote","icon":"🏡" }`}]
+          Avantages — JSON : [{`{ "labelFr":"Télétravail","labelEn":"Remote","icon":"🏡" }`}]
         </label>
         <textarea
           id="perks"
@@ -541,8 +536,8 @@ export function JobOfferForm({ initial }: Props) {
       <div className="admin-field">
         <label htmlFor="jobLocations" className="admin-label">
           Zone d&apos;emploi multi-villes (postes itinérants) — JSON : [
-          {`{ "city":"Lyon","region":"Auvergne-Rhône-Alpes" }`}] → visible
-          Google for Jobs dans toutes ces villes, sans pages dupliquées
+          {`{ "city":"Lyon","region":"Auvergne-Rhône-Alpes" }`}] → visible Google for Jobs dans
+          toutes ces villes, sans pages dupliquées
         </label>
         <textarea
           id="jobLocations"
@@ -656,11 +651,7 @@ export function JobOfferForm({ initial }: Props) {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending
-          ? "Enregistrement…"
-          : initial?.id
-            ? "Mettre à jour"
-            : "Créer l'offre"}
+        {pending ? "Enregistrement…" : initial?.id ? "Mettre à jour" : "Créer l'offre"}
       </button>
     </form>
   );

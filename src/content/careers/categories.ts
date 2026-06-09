@@ -136,9 +136,7 @@ export function careerCategoryLabel(slug: string, isFr: boolean): string {
   return c ? (isFr ? c.fr : c.en) : slug;
 }
 
-export function careerCategoryService(
-  slug: string,
-): CareerCategory["service"] | undefined {
+export function careerCategoryService(slug: string): CareerCategory["service"] | undefined {
   return BY_SLUG.get(slug)?.service;
 }
 

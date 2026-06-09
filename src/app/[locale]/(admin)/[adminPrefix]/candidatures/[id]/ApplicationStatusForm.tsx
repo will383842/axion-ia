@@ -34,14 +34,8 @@ export function ApplicationStatusForm({
   assignedTo,
   needsAttention,
 }: Props) {
-  const [state, formAction, pending] = useActionState(
-    updateApplicationStatusAction,
-    init,
-  );
-  const [delState, delAction, delPending] = useActionState(
-    deleteApplicationAction,
-    init,
-  );
+  const [state, formAction, pending] = useActionState(updateApplicationStatusAction, init);
+  const [delState, delAction, delPending] = useActionState(deleteApplicationAction, init);
 
   return (
     <>
@@ -135,11 +129,7 @@ export function ApplicationStatusForm({
         className="admin-inline-form"
       >
         <input type="hidden" name="id" value={id} />
-        <button
-          type="submit"
-          disabled={delPending}
-          className="admin-button-ghost"
-        >
+        <button type="submit" disabled={delPending} className="admin-button-ghost">
           {delPending ? "…" : "Supprimer (droit à l'effacement)"}
         </button>
         {delState.ok === false && delState.error ? (

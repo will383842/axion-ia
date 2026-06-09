@@ -2,16 +2,9 @@
 // (miroir de FaqV2). Colonne « Candidatures » = compteur + lien filtré.
 
 import Link from "next/link";
-import {
-  AdminPageShell,
-  AdminPageHeader,
-  AdminCard,
-} from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
-import {
-  CAREER_CATEGORIES,
-  careerCategoryLabel,
-} from "@/content/careers/categories";
+import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
 
 const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
@@ -47,10 +40,7 @@ export function JobOffersV2({
         title="Offres d'emploi"
         description={`${total} offre${total > 1 ? "s" : ""} · page ${page}/${totalPages}`}
         actions={
-          <Link
-            href={`/fr/${adminPrefix}/offres-emploi/new`}
-            className="admin-button"
-          >
+          <Link href={`/fr/${adminPrefix}/offres-emploi/new`} className="admin-button">
             + Nouvelle offre
           </Link>
         }
@@ -113,10 +103,7 @@ export function JobOffersV2({
             <button type="submit" className="admin-button">
               Appliquer
             </button>
-            <Link
-              href={`/fr/${adminPrefix}/offres-emploi`}
-              className="admin-button-ghost"
-            >
+            <Link href={`/fr/${adminPrefix}/offres-emploi`} className="admin-button-ghost">
               Réinitialiser
             </Link>
           </div>
@@ -151,9 +138,7 @@ export function JobOffersV2({
                     <td>{careerCategoryLabel(o.category, true)}</td>
                     <td>
                       {o.titleFr}
-                      {o.filledAt ? (
-                        <span className="admin-meta-small"> · pourvu</span>
-                      ) : null}
+                      {o.filledAt ? <span className="admin-meta-small"> · pourvu</span> : null}
                     </td>
                     <td>{o.city ?? WORKMODE_LABELS[o.workMode] ?? "—"}</td>
                     <td>

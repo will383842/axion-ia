@@ -129,9 +129,7 @@ async function main() {
 
   console.log(
     `\n=== SEED TERMINÉ : ${created} créées, ${updated} mises à jour${
-      missing.length
-        ? `, ${missing.length} manquantes : ${missing.join(", ")}`
-        : ""
+      missing.length ? `, ${missing.length} manquantes : ${missing.join(", ")}` : ""
     } ===`,
   );
   await prisma.$disconnect();

@@ -80,9 +80,7 @@ export interface JobOfferListItem {
   applicationsCount: number;
 }
 
-export async function listJobOffersAction(
-  input: Partial<ListJobOffersInput> = {},
-) {
+export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {}) {
   await requireAdminRead();
   const parsed = listSchema.parse(input);
   const where: Record<string, unknown> = {};
@@ -99,11 +97,7 @@ export async function listJobOffersAction(
     prisma.jobOffer.count({ where }),
     prisma.jobOffer.findMany({
       where,
-      orderBy: [
-        { status: "asc" },
-        { displayOrder: "asc" },
-        { updatedAt: "desc" },
-      ],
+      orderBy: [{ status: "asc" }, { displayOrder: "asc" }, { updatedAt: "desc" }],
       skip: (parsed.page - 1) * parsed.pageSize,
       take: parsed.pageSize,
       select: {
@@ -217,11 +211,7 @@ const upsertSchema = z.object({
   metaTitle: z.preprocess(emptyToUndef, z.string().max(70).optional()),
   metaDescription: z.preprocess(emptyToUndef, z.string().max(160).optional()),
   indexationTier: z
-    .enum([
-      "tier_1_indexable",
-      "tier_2_noindex_follow",
-      "tier_3_noindex_nofollow",
-    ])
+    .enum(["tier_1_indexable", "tier_2_noindex_follow", "tier_3_noindex_nofollow"])
     .default("tier_1_indexable"),
   ogImagePath: z.preprocess(emptyToUndef, z.string().max(255).optional()),
   validThrough: optDate,
@@ -233,9 +223,7 @@ export type UpsertJobOfferState =
   | { ok: false; error: string };
 
 /** Parse un JSON optionnel ; retourne undefined si vide/invalide (champ optionnel). */
-function parseJsonField(
-  raw: string | undefined,
-): Prisma.InputJsonValue | undefined {
+function parseJsonField(raw: string | undefined): Prisma.InputJsonValue | undefined {
   if (!raw) return undefined;
   try {
     return JSON.parse(raw) as Prisma.InputJsonValue;
@@ -388,9 +376,7 @@ export async function upsertJobOfferAction(
 // ============================================================
 
 const idSchema = z.object({ id: z.string().uuid() });
-export type JobOfferActionState =
-  | { ok: true; id?: string }
-  | { ok: false; error: string };
+export type JobOfferActionState = { ok: true; id?: string } | { ok: false; error: string };
 
 export async function archiveJobOfferAction(
   _prev: JobOfferActionState,
@@ -484,11 +470,7 @@ export async function cloneJobOfferAction(
 
   // slug unique : suffixe -copie, -copie-2, …
   let newSlug = `${src.slug}-copie`.slice(0, 180);
-  for (
-    let i = 2;
-    await prisma.jobOffer.findUnique({ where: { slug: newSlug } });
-    i++
-  ) {
+  for (let i = 2; await prisma.jobOffer.findUnique({ where: { slug: newSlug } }); i++) {
     newSlug = `${src.slug}-copie-${i}`.slice(0, 180);
   }
 
@@ -517,20 +499,14 @@ export async function cloneJobOfferAction(
       publishedAt: null,
       filledAt: null,
       viewCount: 0,
-      ...(src.bodyJsonFr != null
-        ? { bodyJsonFr: src.bodyJsonFr as Prisma.InputJsonValue }
-        : {}),
-      ...(src.bodyJsonEn != null
-        ? { bodyJsonEn: src.bodyJsonEn as Prisma.InputJsonValue }
-        : {}),
+      ...(src.bodyJsonFr != null ? { bodyJsonFr: src.bodyJsonFr as Prisma.InputJsonValue } : {}),
+      ...(src.bodyJsonEn != null ? { bodyJsonEn: src.bodyJsonEn as Prisma.InputJsonValue } : {}),
       ...(src.screeningQuestions != null
         ? {
             screeningQuestions: src.screeningQuestions as Prisma.InputJsonValue,
           }
         : {}),
-      ...(src.perks != null
-        ? { perks: src.perks as Prisma.InputJsonValue }
-        : {}),
+      ...(src.perks != null ? { perks: src.perks as Prisma.InputJsonValue } : {}),
       ...(src.jobLocations != null
         ? { jobLocations: src.jobLocations as Prisma.InputJsonValue }
         : {}),

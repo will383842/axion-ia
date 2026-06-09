@@ -11,10 +11,7 @@ import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { getJobOfferBySlug, isOfferOpen } from "@/lib/careers/job-offers";
-import {
-  JobApplicationForm,
-  type ScreeningQuestion,
-} from "@/components/forms/JobApplicationForm";
+import { JobApplicationForm, type ScreeningQuestion } from "@/components/forms/JobApplicationForm";
 
 export const revalidate = 3600;
 
@@ -27,19 +24,11 @@ export async function generateMetadata({
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const offer = await getJobOfferBySlug(slug);
-  const title = offer
-    ? isFr
-      ? offer.titleFr
-      : offer.titleEn
-    : isFr
-      ? "offre"
-      : "role";
+  const title = offer ? (isFr ? offer.titleFr : offer.titleEn) : isFr ? "offre" : "role";
   const base = buildProductMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}/postuler`,
-    title: isFr
-      ? `Postuler · ${title} · Axion-IA.com`
-      : `Apply · ${title} · Axion-IA.com`,
+    title: isFr ? `Postuler · ${title} · Axion-IA.com` : `Apply · ${title} · Axion-IA.com`,
     description: isFr
       ? "Postulez en quelques minutes — CV optionnel."
       : "Apply in a few minutes — CV optional.",
@@ -61,9 +50,7 @@ export default async function PostulerPage({
   if (!offer || !isOfferOpen(offer)) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;
-  const screeningQuestions: ScreeningQuestion[] = Array.isArray(
-    offer.screeningQuestions,
-  )
+  const screeningQuestions: ScreeningQuestion[] = Array.isArray(offer.screeningQuestions)
     ? (offer.screeningQuestions as unknown as ScreeningQuestion[])
     : [];
 
@@ -88,13 +75,11 @@ export default async function PostulerPage({
           <h1 className="mt-3 font-serif text-4xl font-semibold sm:text-5xl">
             {isFr ? (
               <>
-                Postule en{" "}
-                <em className="text-terracotta italic">quelques minutes</em>
+                Postule en <em className="text-terracotta italic">quelques minutes</em>
               </>
             ) : (
               <>
-                Apply in{" "}
-                <em className="text-terracotta italic">a few minutes</em>
+                Apply in <em className="text-terracotta italic">a few minutes</em>
               </>
             )}
           </h1>
@@ -110,17 +95,9 @@ export default async function PostulerPage({
                   "🙌 Process simple",
                   "🔒 Données protégées",
                 ]
-              : [
-                  "📄 CV optional",
-                  "⚡ Fast reply",
-                  "🙌 Simple process",
-                  "🔒 Data protected",
-                ]
+              : ["📄 CV optional", "⚡ Fast reply", "🙌 Simple process", "🔒 Data protected"]
             ).map((chip) => (
-              <li
-                key={chip}
-                className="border-border bg-paper rounded-full border px-3 py-1"
-              >
+              <li key={chip} className="border-border bg-paper rounded-full border px-3 py-1">
                 {chip}
               </li>
             ))}

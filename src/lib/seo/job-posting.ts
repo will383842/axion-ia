@@ -38,15 +38,12 @@ export function buildJobPostingJsonLd(
   if (offer.indexationTier !== "tier_1_indexable") return null;
   // Expiration effective : validThrough explicite, sinon date limite de candidature.
   const effectiveValidThrough = offer.validThrough ?? offer.applicationDeadline;
-  if (effectiveValidThrough && effectiveValidThrough.getTime() < Date.now())
-    return null;
+  if (effectiveValidThrough && effectiveValidThrough.getTime() < Date.now()) return null;
 
   const isFr = locale === "fr";
   const title = isFr ? offer.titleFr : offer.titleEn;
   // Description sanitizée (whitelist) — le composant JsonLd n'échappe pas </script>.
-  const description = sanitizeContentGenHtml(
-    isFr ? offer.bodyFr : offer.bodyEn,
-  );
+  const description = sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn);
   const posted = offer.publishedAt ?? offer.datePosted;
   const applyUrl = `${SITE_URL}/${locale}/carrieres/${offer.slug}/postuler`;
 
@@ -73,9 +70,7 @@ export function buildJobPostingJsonLd(
 
   // jobBenefits depuis les perks pilotés en console (si présents).
   if (Array.isArray(offer.perks)) {
-    const benefits = (
-      offer.perks as Array<{ labelFr?: string; labelEn?: string }>
-    )
+    const benefits = (offer.perks as Array<{ labelFr?: string; labelEn?: string }>)
       .map((p) => (isFr ? p.labelFr : p.labelEn) ?? p.labelFr ?? p.labelEn)
       .filter((x): x is string => Boolean(x));
     if (benefits.length > 0) jsonLd.jobBenefits = benefits.join(", ");
@@ -85,9 +80,7 @@ export function buildJobPostingJsonLd(
   // affiche l'offre dans toutes ces villes, 1 seule annonce, zéro page dupliquée) ;
   // sinon remote → TELECOMMUTE ; sinon Place si ville ; sinon France.
   const multiLocations = Array.isArray(offer.jobLocations)
-    ? (offer.jobLocations as Array<{ city?: string; region?: string }>).filter(
-        (l) => l.city,
-      )
+    ? (offer.jobLocations as Array<{ city?: string; region?: string }>).filter((l) => l.city)
     : [];
   if (multiLocations.length > 0) {
     jsonLd.jobLocation = multiLocations.map((l) => ({
@@ -128,10 +121,7 @@ export function buildJobPostingJsonLd(
     jsonLd.incentiveCompensation = isFr
       ? "Rémunération à la commission, déplafonnée."
       : "Uncapped commission-based pay.";
-  } else if (
-    offer.salaryVisible &&
-    (offer.salaryMin != null || offer.salaryMax != null)
-  ) {
+  } else if (offer.salaryVisible && (offer.salaryMin != null || offer.salaryMax != null)) {
     jsonLd.baseSalary = {
       "@type": "MonetaryAmount",
       currency: offer.salaryCurrency,

@@ -13,10 +13,7 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function JobOffersListPage({
-  params,
-  searchParams,
-}: PageProps) {
+export default async function JobOffersListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
   const session = await auth();
