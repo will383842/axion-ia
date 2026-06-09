@@ -610,39 +610,92 @@ export default async function CarrieresHubPage({
         </Container>
       </Section>
 
-      {/* Maillage SEO — nos 5 expertises IA (suggestions de pages) */}
+      {/* Maillage SEO (verticales) + réseaux sociaux à droite */}
       <Section tone="mocha">
         <Container>
-          <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
-            {isFr ? (
-              <>
-                Découvrir{" "}
-                <em className="text-terracotta italic">Axion-IA.com</em>
-              </>
-            ) : (
-              <>
-                Discover{" "}
-                <em className="text-terracotta italic">Axion-IA.com</em>
-              </>
-            )}
-          </h2>
-          <p className="mt-3 max-w-2xl opacity-80">
-            {isFr
-              ? "Les expertises sur lesquelles tu travailleras chez nous :"
-              : "The expertise you'll work on with us:"}
-          </p>
-          <ul className="mt-6 flex flex-wrap gap-3" role="list">
-            {CAREER_VERTICALS.map((v) => (
-              <li key={v.href}>
-                <Link
-                  href={v.href}
-                  className="border-mocha-fg/25 hover:border-terracotta inline-block rounded-full border px-4 py-2 text-sm transition-colors"
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-16">
+            {/* Gauche — verticales */}
+            <div>
+              <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
+                {isFr ? (
+                  <>
+                    Découvrir{" "}
+                    <em className="text-terracotta italic">Axion-IA.com</em>
+                  </>
+                ) : (
+                  <>
+                    Discover{" "}
+                    <em className="text-terracotta italic">Axion-IA.com</em>
+                  </>
+                )}
+              </h2>
+              <p className="mt-3 max-w-2xl opacity-80">
+                {isFr
+                  ? "Les expertises sur lesquelles tu travailleras chez nous :"
+                  : "The expertise you'll work on with us:"}
+              </p>
+              <ul className="mt-6 flex flex-wrap gap-3" role="list">
+                {CAREER_VERTICALS.map((v) => (
+                  <li key={v.href}>
+                    <Link
+                      href={v.href}
+                      className="border-mocha-fg/25 hover:border-terracotta inline-block rounded-full border px-4 py-2 text-sm transition-colors"
+                    >
+                      {isFr ? v.fr : v.en} →
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Droite — réseaux sociaux */}
+            <div className="lg:min-w-[16rem] lg:text-right">
+              <h3 className="font-serif text-xl font-semibold">
+                {isFr ? "Suis l'aventure" : "Follow the journey"}
+              </h3>
+              <p className="mt-2 text-sm opacity-80">
+                {isFr
+                  ? "Nos coulisses, nos offres et notre équipe."
+                  : "Behind the scenes, our jobs and our team."}
+              </p>
+              <div className="mt-4 flex gap-3 lg:justify-end">
+                <a
+                  href="https://www.linkedin.com/company/axion-ia-france/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn Axion-IA.com"
+                  className="border-mocha-fg/25 hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
                 >
-                  {isFr ? v.fr : v.en} →
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-4 w-4"
+                    aria-hidden
+                  >
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+                  </svg>
+                  LinkedIn
+                </a>
+                <a
+                  href="https://x.com/AxionIAFrance"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X (Twitter) Axion-IA.com"
+                  className="border-mocha-fg/25 hover:border-terracotta hover:text-terracotta inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-4 w-4"
+                    aria-hidden
+                  >
+                    <path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.6l5.24 6.93 6.06-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3L17.61 20.65z" />
+                  </svg>
+                  X
+                </a>
+              </div>
+            </div>
+          </div>
         </Container>
       </Section>
     </>
