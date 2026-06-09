@@ -60,6 +60,26 @@
   // Insère l'iframe juste avant la balise <script> (emplacement déterministe).
   script.parentNode.insertBefore(iframe, script);
 
+  // Lien d'attribution DOFOLLOW posé dans le DOM de la page hôte (hors iframe)
+  // → vrai backlink vers axion-ia.com. Ancre de marque (pas de mots-clés
+  // sur-optimisés) pour rester conforme aux consignes Google sur les widgets.
+  // data-credit="off" sur le <script> permet au partenaire de le retirer, mais
+  // par défaut il est présent (c'est la contrepartie de la gratuité).
+  if (d.credit !== "off") {
+    var credit = document.createElement("p");
+    credit.style.cssText =
+      "font:13px/1.5 system-ui,-apple-system,sans-serif;text-align:center;margin:8px 0 0";
+    var creditLink = document.createElement("a");
+    creditLink.href = origin + "/" + locale + "/carrieres";
+    creditLink.target = "_blank";
+    creditLink.rel = "noopener"; // PAS de nofollow → lien suivi (dofollow)
+    creditLink.textContent =
+      locale === "en" ? "Job openings by Axion-IA" : "Offres d'emploi par Axion-IA";
+    creditLink.style.cssText = "color:#c24a1b;text-decoration:none"; // terracotta SSOT
+    credit.appendChild(creditLink);
+    script.parentNode.insertBefore(credit, script);
+  }
+
   // Auto-resize : écoute la hauteur émise par la page d'embed.
   window.addEventListener("message", function (event) {
     if (event.origin !== origin) return;

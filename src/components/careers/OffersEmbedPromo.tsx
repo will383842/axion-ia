@@ -25,27 +25,48 @@ export function OffersEmbedPromo({ locale, tone = "canvas" }: OffersEmbedPromoPr
   const isFr = locale !== "en";
   const benefits = isFr
     ? [
+        "100 % gratuit — pas de compte, pas de clé à demander",
         "Aux couleurs de votre site (thème clair ou sombre)",
         "Mises à jour automatiques — zéro maintenance",
         "Cartes ou liste, de 1 à 12 offres",
       ]
     : [
+        "100% free — no account, no API key",
         "Matches your site (light or dark theme)",
         "Auto-updated — zero maintenance",
         "Cards or list, 1 to 12 roles",
+      ];
+
+  // « Pour qui ? » — publics susceptibles d'afficher nos offres chez eux.
+  const audiences = isFr
+    ? [
+        "Écoles & universités",
+        "Job boards",
+        "Blogs & médias",
+        "Partenaires",
+        "Réseaux pro",
+        "Mairies & CCI",
+      ]
+    : [
+        "Schools & universities",
+        "Job boards",
+        "Blogs & media",
+        "Partners",
+        "Pro networks",
+        "Local authorities",
       ];
 
   return (
     <Section
       id="integrer-offres"
       tone={tone}
-      eyebrow={isFr ? "Pour les partenaires & médias" : "For partners & media"}
-      title={isFr ? "Intègre nos" : "Embed our"}
-      titleEm={isFr ? "offres d'emploi" : "job openings"}
+      eyebrow={isFr ? "Gratuit · libre d'intégration" : "Free · open to embed"}
+      title={isFr ? "Affiche nos offres" : "Show our job openings"}
+      titleEm={isFr ? "sur ton site" : "on your site"}
       description={
         isFr
-          ? "Vous animez un site, un job board ou un espace presse ? Affichez nos offres en cours directement chez vous, aux couleurs du site — un copier-coller suffit."
-          : "Running a site, a job board or a press room? Show our open roles right on your page, on brand — a single copy-paste."
+          ? "Vous gérez un site et nos métiers peuvent intéresser votre audience ? Récupérez nos offres en cours et affichez-les chez vous gratuitement, aux couleurs de votre site — un copier-coller suffit, elles se mettent à jour toutes seules."
+          : "Run a site whose audience might care about our roles? Grab our open positions and show them on your page for free, on brand — one copy-paste, auto-updated."
       }
     >
       <Container>
@@ -67,8 +88,25 @@ export function OffersEmbedPromo({ locale, tone = "canvas" }: OffersEmbedPromoPr
             </ul>
             <div className="mt-8 flex flex-wrap gap-4">
               <Cta href="/carrieres/widget-builder" track="offers-embed-promo-builder">
-                {isFr ? "Personnaliser & copier le code" : "Customize & copy the code"}
+                {isFr ? "Récupérer le code (gratuit)" : "Get the code (free)"}
               </Cta>
+            </div>
+
+            {/* Pour qui ? — publics cibles en badges */}
+            <div className="mt-7">
+              <p className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
+                {isFr ? "Parfait pour" : "Great for"}
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-2" role="list">
+                {audiences.map((a) => (
+                  <li
+                    key={a}
+                    className="border-border text-fg-soft rounded-full border px-3 py-1 text-sm"
+                  >
+                    {a}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 

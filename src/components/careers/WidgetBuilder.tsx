@@ -38,15 +38,26 @@ export function WidgetBuilder({ locale, baseUrl }: WidgetBuilderProps) {
   // Snippets : URL ABSOLUE de production.
   const embedAbsolute = `${baseUrl}/${locale}/carrieres/widget?${qs}`;
 
-  const iframeSnippet = `<iframe
-  src="${embedAbsolute}"
-  title="${isFr ? "Offres d'emploi Axion-IA" : "Axion-IA job openings"}"
-  width="100%"
-  height="520"
-  loading="lazy"
-  scrolling="no"
-  style="border:0;overflow:hidden;width:100%"
-></iframe>`;
+  // Lien d'attribution dofollow (ancre de marque, posé dans le HTML hôte HORS
+  // iframe) → vrai backlink. Ancre volontairement « de marque » (pas de mots-clés
+  // sur-optimisés) pour rester conforme aux consignes Google sur les liens de widgets.
+  const creditAnchor = isFr ? "Offres d'emploi par Axion-IA" : "Job openings by Axion-IA";
+  const creditHref = `${baseUrl}/${locale}/carrieres`;
+
+  const iframeSnippet = `<div style="max-width:520px;margin:0 auto">
+  <iframe
+    src="${embedAbsolute}"
+    title="${isFr ? "Offres d'emploi Axion-IA" : "Axion-IA job openings"}"
+    width="100%"
+    height="520"
+    loading="lazy"
+    scrolling="no"
+    style="border:0;overflow:hidden;width:100%"
+  ></iframe>
+  <p style="font:13px/1.5 system-ui,-apple-system,sans-serif;text-align:center;margin:8px 0 0">
+    <a href="${creditHref}" target="_blank" rel="noopener">${creditAnchor}</a>
+  </p>
+</div>`;
 
   const scriptSnippet = `<script async
   src="${baseUrl}/widget/offres-emploi.js"
@@ -144,6 +155,11 @@ export function WidgetBuilder({ locale, baseUrl }: WidgetBuilderProps) {
           {isFr
             ? "Les offres se mettent à jour automatiquement : ce que vous publiez côté console apparaît dans le widget."
             : "Roles update automatically: what you publish in the console shows up in the widget."}
+        </p>
+        <p className="border-border text-fg-muted mt-4 rounded-xl border border-dashed p-3 text-xs">
+          {isFr
+            ? "Le code inclut un petit lien « Offres d'emploi par Axion-IA ». Merci de le conserver — c'est gratuit en échange de ça 🙏."
+            : "The code includes a small “Job openings by Axion-IA” link. Please keep it — that's the only thing we ask in return 🙏."}
         </p>
       </div>
 
