@@ -2,7 +2,10 @@
 // use-client: useActionState bind upsertJobOfferAction + auto-slug + éditeur Tiptap.
 
 import { useActionState, useState } from "react";
-import { upsertJobOfferAction, type UpsertJobOfferState } from "@/features/admin-job-offers/actions";
+import {
+  upsertJobOfferAction,
+  type UpsertJobOfferState,
+} from "@/features/admin-job-offers/actions";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
 import { slugify } from "@/lib/slug";
 import { CAREER_CATEGORIES } from "@/content/careers/categories";
@@ -55,7 +58,10 @@ interface Props {
 }
 
 export function JobOfferForm({ initial }: Props) {
-  const [state, formAction, pending] = useActionState(upsertJobOfferAction, init);
+  const [state, formAction, pending] = useActionState(
+    upsertJobOfferAction,
+    init,
+  );
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
@@ -357,8 +363,9 @@ export function JobOfferForm({ initial }: Props) {
 
       <h3 className="admin-section-title">Rémunération</h3>
       <p className="admin-meta-small">
-        ℹ️ Directive UE 2023/970 (transparence salariale) : indique une fourchette dans chaque
-        offre. Évite les mentions vagues type « selon profil ».
+        ℹ️ Directive UE 2023/970 (transparence salariale) : indique une
+        fourchette dans chaque offre. Évite les mentions vagues type « selon
+        profil ».
       </p>
       <div className="admin-form-row">
         <label className="admin-checkbox">
@@ -505,7 +512,8 @@ export function JobOfferForm({ initial }: Props) {
       <h3 className="admin-section-title">Questions &amp; avantages (JSON)</h3>
       <div className="admin-field">
         <label htmlFor="screeningQuestions" className="admin-label">
-          Questions de l&apos;offre — JSON : [{`{ "id":"q1","labelFr":"…","labelEn":"…","required":true }`}]
+          Questions de l&apos;offre — JSON : [
+          {`{ "id":"q1","labelFr":"…","labelEn":"…","required":true }`}]
         </label>
         <textarea
           id="screeningQuestions"
@@ -519,7 +527,8 @@ export function JobOfferForm({ initial }: Props) {
       </div>
       <div className="admin-field">
         <label htmlFor="perks" className="admin-label">
-          Avantages — JSON : [{`{ "labelFr":"Télétravail","labelEn":"Remote","icon":"🏡" }`}]
+          Avantages — JSON : [
+          {`{ "labelFr":"Télétravail","labelEn":"Remote","icon":"🏡" }`}]
         </label>
         <textarea
           id="perks"
@@ -633,7 +642,11 @@ export function JobOfferForm({ initial }: Props) {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Enregistrement…" : initial?.id ? "Mettre à jour" : "Créer l'offre"}
+        {pending
+          ? "Enregistrement…"
+          : initial?.id
+            ? "Mettre à jour"
+            : "Créer l'offre"}
       </button>
     </form>
   );

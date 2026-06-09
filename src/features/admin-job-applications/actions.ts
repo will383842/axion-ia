@@ -14,14 +14,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { deleteCv } from "@/server/careers/cv-storage";
 import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
 
-const STATUSES = [
-  "new",
-  "reviewing",
-  "shortlisted",
-  "rejected",
-  "hired",
-  "archived",
-] as const;
+const STATUSES = ["new", "reviewing", "shortlisted", "rejected", "hired", "archived"] as const;
 
 /** Déchiffrement tolérant : un ciphertext corrompu ne casse pas la page entière. */
 function safeDecrypt(v: string): string {
@@ -55,7 +48,10 @@ async function requireSuperAdmin() {
 
 // ============================================================ list
 const listSchema = z.object({
-  offerId: z.preprocess((v) => (v === "" || v == null ? undefined : v), z.string().uuid().optional()),
+  offerId: z.preprocess(
+    (v) => (v === "" || v == null ? undefined : v),
+    z.string().uuid().optional(),
+  ),
   status: z.enum([...STATUSES, "all"]).default("all"),
   onlyAttention: z.coerce.boolean().optional(),
   page: z.coerce.number().int().min(1).default(1),

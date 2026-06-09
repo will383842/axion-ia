@@ -267,7 +267,9 @@ export async function upsertJobOfferAction(
       })
     : null;
   const publishedAt =
-    d.status === "published" ? (existing?.publishedAt ?? new Date()) : (existing?.publishedAt ?? null);
+    d.status === "published"
+      ? (existing?.publishedAt ?? new Date())
+      : (existing?.publishedAt ?? null);
 
   // Champs JSON : inclus uniquement si présents (jamais `undefined` explicite,
   // jamais `null` brut — Prisma Json rejette null sans sentinelle).

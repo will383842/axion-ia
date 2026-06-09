@@ -27,9 +27,21 @@ interface Props {
   needsAttention: boolean;
 }
 
-export function ApplicationStatusForm({ id, status, internalNotes, assignedTo, needsAttention }: Props) {
-  const [state, formAction, pending] = useActionState(updateApplicationStatusAction, init);
-  const [delState, delAction, delPending] = useActionState(deleteApplicationAction, init);
+export function ApplicationStatusForm({
+  id,
+  status,
+  internalNotes,
+  assignedTo,
+  needsAttention,
+}: Props) {
+  const [state, formAction, pending] = useActionState(
+    updateApplicationStatusAction,
+    init,
+  );
+  const [delState, delAction, delPending] = useActionState(
+    deleteApplicationAction,
+    init,
+  );
 
   return (
     <>
@@ -40,7 +52,13 @@ export function ApplicationStatusForm({ id, status, internalNotes, assignedTo, n
             <label htmlFor="status" className="admin-label">
               Statut
             </label>
-            <select id="status" name="status" defaultValue={status} className="admin-input" disabled={pending}>
+            <select
+              id="status"
+              name="status"
+              defaultValue={status}
+              className="admin-input"
+              disabled={pending}
+            >
               {STATUSES.map(([k, v]) => (
                 <option key={k} value={k}>
                   {v}
@@ -77,7 +95,13 @@ export function ApplicationStatusForm({ id, status, internalNotes, assignedTo, n
           />
         </div>
         <label className="admin-checkbox">
-          <input type="checkbox" name="needsAttention" value="true" defaultChecked={needsAttention} disabled={pending} />
+          <input
+            type="checkbox"
+            name="needsAttention"
+            value="true"
+            defaultChecked={needsAttention}
+            disabled={pending}
+          />
           À traiter
         </label>
         <div>
@@ -101,13 +125,21 @@ export function ApplicationStatusForm({ id, status, internalNotes, assignedTo, n
       <form
         action={delAction}
         onSubmit={(e) => {
-          if (!window.confirm("Supprimer définitivement cette candidature et son CV ? Irréversible (RGPD)."))
+          if (
+            !window.confirm(
+              "Supprimer définitivement cette candidature et son CV ? Irréversible (RGPD).",
+            )
+          )
             e.preventDefault();
         }}
         className="admin-inline-form"
       >
         <input type="hidden" name="id" value={id} />
-        <button type="submit" disabled={delPending} className="admin-button-ghost">
+        <button
+          type="submit"
+          disabled={delPending}
+          className="admin-button-ghost"
+        >
           {delPending ? "…" : "Supprimer (droit à l'effacement)"}
         </button>
         {delState.ok === false && delState.error ? (

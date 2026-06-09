@@ -14,7 +14,8 @@ interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
 }
 
-const fmtDate = (d: Date | null): string => (d ? d.toISOString().slice(0, 10) : "");
+const fmtDate = (d: Date | null): string =>
+  d ? d.toISOString().slice(0, 10) : "";
 const fmtJson = (v: unknown): string => (v == null ? "" : JSON.stringify(v));
 
 export default async function EditJobOfferPage({ params }: PageProps) {
@@ -81,7 +82,10 @@ export default async function EditJobOfferPage({ params }: PageProps) {
             >
               Prévisualiser ↗
             </Link>
-            <Link href={`/fr/${adminPrefix}/offres-emploi`} className="admin-button-ghost">
+            <Link
+              href={`/fr/${adminPrefix}/offres-emploi`}
+              className="admin-button-ghost"
+            >
               ← Liste
             </Link>
           </div>

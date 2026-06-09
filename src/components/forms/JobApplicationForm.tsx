@@ -84,7 +84,9 @@ export function JobApplicationForm({
       }
       setDone(result.applicationId || "");
     } catch {
-      setError(isFr ? "Une erreur est survenue. Réessayez." : "Something went wrong. Please retry.");
+      setError(
+        isFr ? "Une erreur est survenue. Réessayez." : "Something went wrong. Please retry.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -136,13 +138,27 @@ export function JobApplicationForm({
             <label htmlFor="firstName" className={LABEL}>
               {isFr ? "Prénom *" : "First name *"}
             </label>
-            <input id="firstName" name="firstName" required maxLength={100} className={FIELD} disabled={submitting} />
+            <input
+              id="firstName"
+              name="firstName"
+              required
+              maxLength={100}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
           <div>
             <label htmlFor="lastName" className={LABEL}>
               {isFr ? "Nom *" : "Last name *"}
             </label>
-            <input id="lastName" name="lastName" required maxLength={100} className={FIELD} disabled={submitting} />
+            <input
+              id="lastName"
+              name="lastName"
+              required
+              maxLength={100}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
@@ -150,19 +166,42 @@ export function JobApplicationForm({
             <label htmlFor="email" className={LABEL}>
               {isFr ? "Email *" : "Email *"}
             </label>
-            <input id="email" name="email" type="email" required maxLength={180} className={FIELD} disabled={submitting} />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              maxLength={180}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
           <div>
             <label htmlFor="phone" className={LABEL}>
               {isFr ? "Téléphone *" : "Phone *"}
             </label>
-            <input id="phone" name="phone" type="tel" required maxLength={40} className={FIELD} disabled={submitting} />
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              required
+              maxLength={40}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
           <div>
             <label htmlFor="city" className={LABEL}>
               {isFr ? "Ville / code postal *" : "City / ZIP *"}
             </label>
-            <input id="city" name="city" required maxLength={120} className={FIELD} disabled={submitting} />
+            <input
+              id="city"
+              name="city"
+              required
+              maxLength={120}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
         </div>
       </fieldset>
@@ -177,7 +216,12 @@ export function JobApplicationForm({
                 <label htmlFor="hasDriverLicense" className={LABEL}>
                   {isFr ? "Permis de conduire" : "Driver's license"}
                 </label>
-                <select id="hasDriverLicense" name="hasDriverLicense" className={FIELD} disabled={submitting}>
+                <select
+                  id="hasDriverLicense"
+                  name="hasDriverLicense"
+                  className={FIELD}
+                  disabled={submitting}
+                >
                   <option value="">—</option>
                   <option value="true">{isFr ? "Oui" : "Yes"}</option>
                   <option value="false">{isFr ? "Non" : "No"}</option>
@@ -208,13 +252,24 @@ export function JobApplicationForm({
             <label htmlFor="currentRole" className={LABEL}>
               {isFr ? "Poste / expérience actuelle" : "Current role / experience"}
             </label>
-            <input id="currentRole" name="currentRole" maxLength={200} className={FIELD} disabled={submitting} />
+            <input
+              id="currentRole"
+              name="currentRole"
+              maxLength={200}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
           <div>
             <label htmlFor="experienceBand" className={LABEL}>
               {isFr ? "Années d'expérience" : "Years of experience"}
             </label>
-            <select id="experienceBand" name="experienceBand" className={FIELD} disabled={submitting}>
+            <select
+              id="experienceBand"
+              name="experienceBand"
+              className={FIELD}
+              disabled={submitting}
+            >
               <option value="">—</option>
               <option value="0-2">0–2</option>
               <option value="2-5">2–5</option>
@@ -226,13 +281,27 @@ export function JobApplicationForm({
             <label htmlFor="availability" className={LABEL}>
               {isFr ? "Disponibilité" : "Availability"}
             </label>
-            <input id="availability" name="availability" maxLength={120} className={FIELD} disabled={submitting} placeholder={isFr ? "immédiate, préavis…" : "immediate, notice…"} />
+            <input
+              id="availability"
+              name="availability"
+              maxLength={120}
+              className={FIELD}
+              disabled={submitting}
+              placeholder={isFr ? "immédiate, préavis…" : "immediate, notice…"}
+            />
           </div>
           <div>
             <label htmlFor="linkedinUrl" className={LABEL}>
               {isFr ? "LinkedIn / portfolio" : "LinkedIn / portfolio"}
             </label>
-            <input id="linkedinUrl" name="linkedinUrl" type="url" maxLength={255} className={FIELD} disabled={submitting} />
+            <input
+              id="linkedinUrl"
+              name="linkedinUrl"
+              type="url"
+              maxLength={255}
+              className={FIELD}
+              disabled={submitting}
+            />
           </div>
         </div>
 

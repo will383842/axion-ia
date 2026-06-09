@@ -27,11 +27,19 @@ export async function generateMetadata({
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const offer = await getJobOfferBySlug(slug);
-  const title = offer ? (isFr ? offer.titleFr : offer.titleEn) : isFr ? "offre" : "role";
+  const title = offer
+    ? isFr
+      ? offer.titleFr
+      : offer.titleEn
+    : isFr
+      ? "offre"
+      : "role";
   const base = buildProductMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}/postuler`,
-    title: isFr ? `Postuler · ${title} · Axion-IA` : `Apply · ${title} · Axion-IA`,
+    title: isFr
+      ? `Postuler · ${title} · Axion-IA`
+      : `Apply · ${title} · Axion-IA`,
     description: isFr
       ? "Postulez en quelques minutes — CV optionnel."
       : "Apply in a few minutes — CV optional.",
@@ -53,7 +61,9 @@ export default async function PostulerPage({
   if (!offer || !isOfferOpen(offer)) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;
-  const screeningQuestions: ScreeningQuestion[] = Array.isArray(offer.screeningQuestions)
+  const screeningQuestions: ScreeningQuestion[] = Array.isArray(
+    offer.screeningQuestions,
+  )
     ? (offer.screeningQuestions as unknown as ScreeningQuestion[])
     : [];
 
@@ -70,11 +80,12 @@ export default async function PostulerPage({
             },
           ]}
         />
-        <h1 className="font-serif mt-6 text-3xl font-semibold sm:text-4xl">
+        <h1 className="mt-6 font-serif text-3xl font-semibold sm:text-4xl">
           {isFr ? "Postuler" : "Apply"}
         </h1>
         <p className="text-fg-muted mt-2">
-          {isFr ? "Tu postules à :" : "You're applying to:"} <strong>{title}</strong>
+          {isFr ? "Tu postules à :" : "You're applying to:"}{" "}
+          <strong>{title}</strong>
         </p>
         <div className="mt-8 max-w-2xl">
           <JobApplicationForm

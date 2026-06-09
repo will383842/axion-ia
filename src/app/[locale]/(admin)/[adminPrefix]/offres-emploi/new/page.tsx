@@ -23,7 +23,10 @@ export default async function NewJobOfferPage({ params }: PageProps) {
         title="Nouvelle offre d'emploi"
         description="Créer une offre publiée dynamiquement sur /carrieres."
         actions={
-          <Link href={`/fr/${adminPrefix}/offres-emploi`} className="admin-button-ghost">
+          <Link
+            href={`/fr/${adminPrefix}/offres-emploi`}
+            className="admin-button-ghost"
+          >
             ← Retour à la liste
           </Link>
         }

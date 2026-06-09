@@ -5,7 +5,11 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+} from "@/components/admin/ui";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
@@ -32,7 +36,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   const offer = await getJobOfferDetailAction(a.offerId);
   const qLabels: Record<string, string> = {};
   if (offer && Array.isArray(offer.screeningQuestions)) {
-    for (const q of offer.screeningQuestions as Array<{ id?: string; labelFr?: string }>) {
+    for (const q of offer.screeningQuestions as Array<{
+      id?: string;
+      labelFr?: string;
+    }>) {
       if (q.id) qLabels[q.id] = q.labelFr ?? q.id;
     }
   }
@@ -43,7 +50,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         title={`${a.civility ? `${a.civility} ` : ""}${a.firstName} ${a.lastName}`}
         description={`Candidature · ${a.offerTitleSnap} · ${a.submittedAt.toISOString().slice(0, 10)}`}
         actions={
-          <Link href={`/fr/${adminPrefix}/candidatures`} className="admin-button-ghost">
+          <Link
+            href={`/fr/${adminPrefix}/candidatures`}
+            className="admin-button-ghost"
+          >
             ← Liste
           </Link>
         }
@@ -66,7 +76,12 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">LinkedIn</dt>
           <dd>
             {a.linkedinUrl ? (
-              <a href={a.linkedinUrl} target="_blank" rel="noopener" className="admin-link">
+              <a
+                href={a.linkedinUrl}
+                target="_blank"
+                rel="noopener"
+                className="admin-link"
+              >
                 {a.linkedinUrl}
               </a>
             ) : (
@@ -80,7 +95,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">CV</dt>
           <dd>
             {a.hasCv ? (
-              <Link href={`/fr/${adminPrefix}/candidatures/${a.id}/cv`} className="admin-link">
+              <Link
+                href={`/fr/${adminPrefix}/candidatures/${a.id}/cv`}
+                className="admin-link"
+              >
                 Télécharger {a.cvOriginalName ?? ""}
               </Link>
             ) : (

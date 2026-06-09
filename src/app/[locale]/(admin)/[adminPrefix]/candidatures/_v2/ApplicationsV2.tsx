@@ -1,7 +1,11 @@
 // Liste admin des candidatures emploi — AdminPageShell + AdminCard + table CSS.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+} from "@/components/admin/ui";
 import type { JobApplicationListItem } from "@/features/admin-job-applications/actions";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -40,7 +44,9 @@ export function ApplicationsV2({
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
-          {offerId ? <input type="hidden" name="offerId" value={offerId} /> : null}
+          {offerId ? (
+            <input type="hidden" name="offerId" value={offerId} />
+          ) : null}
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="status" className="admin-label">
@@ -79,7 +85,10 @@ export function ApplicationsV2({
             <button type="submit" className="admin-button">
               Appliquer
             </button>
-            <Link href={`/fr/${adminPrefix}/candidatures`} className="admin-button-ghost">
+            <Link
+              href={`/fr/${adminPrefix}/candidatures`}
+              className="admin-button-ghost"
+            >
               Réinitialiser
             </Link>
           </div>
@@ -121,7 +130,9 @@ export function ApplicationsV2({
                     <td>{a.offerTitleSnap}</td>
                     <td>{a.hasCv ? "📎" : "—"}</td>
                     <td>
-                      <span className="admin-badge">{STATUS_LABELS[a.status] ?? a.status}</span>
+                      <span className="admin-badge">
+                        {STATUS_LABELS[a.status] ?? a.status}
+                      </span>
                     </td>
                     <td>
                       <Link

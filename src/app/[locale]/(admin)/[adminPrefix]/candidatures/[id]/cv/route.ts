@@ -14,7 +14,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
-  if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+  if (!session?.user?.id)
+    return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;
   if (role !== "super_admin" && role !== "admin" && role !== "editor") {
     return new NextResponse("Forbidden", { status: 403 });
@@ -29,7 +30,10 @@ export async function GET(
 
   try {
     const buf = await readCv(a.cvStoragePath);
-    const safeName = (a.cvOriginalName || "cv").replace(/[^a-zA-Z0-9._-]/g, "_");
+    const safeName = (a.cvOriginalName || "cv").replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_",
+    );
     return new NextResponse(new Uint8Array(buf), {
       headers: {
         // Type forcé neutre + nosniff : on ne fait pas confiance au MIME déclaré

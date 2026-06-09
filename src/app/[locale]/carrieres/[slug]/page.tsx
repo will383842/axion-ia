@@ -55,7 +55,15 @@ function salaryLabel(o: JobOffer, isFr: boolean): string | null {
   if (o.salaryMin == null && o.salaryMax == null) return null;
   const k = (n: number) => `${Math.round(n / 1000)}k`;
   const per =
-    o.salaryPeriod === "YEAR" ? (isFr ? "/an" : "/yr") : o.salaryPeriod === "MONTH" ? (isFr ? "/mois" : "/mo") : "/h";
+    o.salaryPeriod === "YEAR"
+      ? isFr
+        ? "/an"
+        : "/yr"
+      : o.salaryPeriod === "MONTH"
+        ? isFr
+          ? "/mois"
+          : "/mo"
+        : "/h";
   const range =
     o.salaryMin != null && o.salaryMax != null
       ? `${k(o.salaryMin)}–${k(o.salaryMax)}`
@@ -83,7 +91,10 @@ export async function generateMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}`,
     title: offer.metaTitle ?? `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA`,
-    description: (offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)).slice(0, 160),
+    description: (offer.metaDescription ?? (isFr ? offer.summaryFr : offer.summaryEn)).slice(
+      0,
+      160,
+    ),
     ...(offer.ogImagePath ? { ogImage: offer.ogImagePath } : {}),
   });
   if (!isJobOfferIndexable(offer)) {
@@ -161,7 +172,7 @@ export default async function JobOfferDetailPage({
             {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
             {offer.city ? ` · ${offer.city}` : ""}
           </p>
-          <h1 className="font-serif mt-2 text-4xl font-semibold sm:text-5xl">{title}</h1>
+          <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">{title}</h1>
 
           <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
             {offer.contractLabel ? <span>📄 {offer.contractLabel}</span> : null}

@@ -33,7 +33,8 @@ function ActionForm({
     <form
       action={formAction}
       onSubmit={(e) => {
-        if (confirmMessage && !window.confirm(confirmMessage)) e.preventDefault();
+        if (confirmMessage && !window.confirm(confirmMessage))
+          e.preventDefault();
       }}
       className="admin-inline-form"
     >
@@ -53,7 +54,11 @@ function ActionForm({
 export function OfferLifecycleActions({ id }: { id: string }) {
   return (
     <div className="admin-actions-row">
-      <ActionForm action={setJobOfferFilledAction} id={id} label="Marquer pourvu" />
+      <ActionForm
+        action={setJobOfferFilledAction}
+        id={id}
+        label="Marquer pourvu"
+      />
       <ActionForm action={cloneJobOfferAction} id={id} label="Dupliquer" />
       <ActionForm
         action={archiveJobOfferAction}

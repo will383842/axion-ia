@@ -68,7 +68,8 @@ function validateCv(file: File, buf: Buffer): string | null {
   const lower = file.name.toLowerCase();
   const extOk = CV_ALLOWED_EXTENSIONS.some((e) => lower.endsWith(e));
   if (!extOk) return "Format de CV non supporté (PDF, DOC ou DOCX).";
-  const mimeOk = !file.type || CV_ALLOWED_MIME.includes(file.type as (typeof CV_ALLOWED_MIME)[number]);
+  const mimeOk =
+    !file.type || CV_ALLOWED_MIME.includes(file.type as (typeof CV_ALLOWED_MIME)[number]);
   if (!mimeOk) return "Type de fichier CV non supporté.";
   // Magic-bytes : %PDF / PK(zip→docx) / D0CF11E0(ole→doc).
   const sig = buf.subarray(0, 4);
@@ -187,9 +188,7 @@ export async function submitJobApplicationAction(
         userAgent,
         consentVersion: CONSENT_VERSION,
         locale,
-        ...(Object.keys(answers).length > 0
-          ? { answers: answers as Prisma.InputJsonValue }
-          : {}),
+        ...(Object.keys(answers).length > 0 ? { answers: answers as Prisma.InputJsonValue } : {}),
       },
     });
 

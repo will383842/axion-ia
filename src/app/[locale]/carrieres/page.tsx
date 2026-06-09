@@ -158,7 +158,7 @@ export default async function CarrieresHubPage({
           <p className="text-terracotta mt-6 text-sm font-semibold tracking-wide uppercase">
             {isFr ? EMPLOYER_BRAND.eyebrowFr : EMPLOYER_BRAND.eyebrowEn}
           </p>
-          <h1 className="font-serif mt-2 text-4xl font-semibold sm:text-5xl">
+          <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">
             {isFr ? (
               <>
                 Viens construire l&apos;IA qui change{" "}
@@ -166,8 +166,8 @@ export default async function CarrieresHubPage({
               </>
             ) : (
               <>
-                Come build the AI that <em className="text-terracotta italic">actually</em> changes how
-                companies work
+                Come build the AI that <em className="text-terracotta italic">actually</em> changes
+                how companies work
               </>
             )}
           </h1>
@@ -227,7 +227,7 @@ export default async function CarrieresHubPage({
 
       <Section id="offres">
         <Container>
-          <h2 className="font-serif mb-6 text-2xl font-semibold sm:text-3xl">
+          <h2 className="mb-6 font-serif text-2xl font-semibold sm:text-3xl">
             {isFr ? "Nos offres" : "Open roles"}
           </h2>
           {/* Recherche — formulaire GET server-side (0 JS, INP préservé) */}
@@ -242,7 +242,10 @@ export default async function CarrieresHubPage({
               className="border-border focus:border-terracotta w-full rounded-full border px-4 py-2 text-sm outline-none"
               aria-label={isFr ? "Rechercher une offre" : "Search a role"}
             />
-            <button type="submit" className="bg-terracotta rounded-full px-4 py-2 text-sm text-white">
+            <button
+              type="submit"
+              className="bg-terracotta rounded-full px-4 py-2 text-sm text-white"
+            >
               {isFr ? "Chercher" : "Search"}
             </button>
           </form>
@@ -386,62 +389,61 @@ export default async function CarrieresHubPage({
           <div className="mt-6 max-w-3xl">
             <FaqAccordion
               emitJsonLd
-              items={(
-                isFr
-                  ? [
-                      {
-                        question: "Faut-il un CV pour postuler ?",
-                        answer:
-                          "Non, le CV est optionnel. Tu réponds à quelques questions et tu peux joindre un CV si tu en as un — l'essentiel pour nous, c'est ta motivation et ce que tu sais faire.",
-                      },
-                      {
-                        question: "Comment se passe le recrutement ?",
-                        answer:
-                          "Tu postules en ligne en quelques minutes. On revient vers toi rapidement, puis on échange (visio ou téléphone) pour faire connaissance et te présenter le poste et l'équipe.",
-                      },
-                      {
-                        question: "Le télétravail est-il possible ?",
-                        answer:
-                          "Ça dépend de l'offre : chaque annonce précise si le poste est sur site, hybride ou 100 % remote. Tu peux filtrer les offres par mode de travail.",
-                      },
-                      {
-                        question: "Sous combien de temps avez-vous une réponse ?",
-                        answer:
-                          "On s'engage à revenir vers chaque candidature sous quelques jours ouvrés, que la réponse soit positive ou non.",
-                      },
-                      {
-                        question: "Puis-je envoyer une candidature spontanée ?",
-                        answer:
-                          "Oui : si aucune offre ne correspond, écris-nous via la page contact en précisant le type de poste qui t'intéresse.",
-                      },
-                    ]
-                  : [
-                      {
-                        question: "Do I need a CV to apply?",
-                        answer:
-                          "No, the CV is optional. You answer a few questions and can attach a CV if you have one — what matters to us is your motivation and skills.",
-                      },
-                      {
-                        question: "What's the hiring process?",
-                        answer:
-                          "You apply online in a few minutes. We get back to you quickly, then we have a call (video or phone) to get to know each other and present the role and team.",
-                      },
-                      {
-                        question: "Is remote work possible?",
-                        answer:
-                          "It depends on the role: each listing states whether it's on-site, hybrid or fully remote. You can filter offers by work mode.",
-                      },
-                      {
-                        question: "How fast do you reply?",
-                        answer:
-                          "We commit to replying to every application within a few business days, whether the answer is positive or not.",
-                      },
-                      {
-                        question: "Can I send a spontaneous application?",
-                        answer:
-                          "Yes: if no offer fits, reach out via the contact page stating the kind of role you're interested in.",
-                      },
-                    ]
+              items={(isFr
+                ? [
+                    {
+                      question: "Faut-il un CV pour postuler ?",
+                      answer:
+                        "Non, le CV est optionnel. Tu réponds à quelques questions et tu peux joindre un CV si tu en as un — l'essentiel pour nous, c'est ta motivation et ce que tu sais faire.",
+                    },
+                    {
+                      question: "Comment se passe le recrutement ?",
+                      answer:
+                        "Tu postules en ligne en quelques minutes. On revient vers toi rapidement, puis on échange (visio ou téléphone) pour faire connaissance et te présenter le poste et l'équipe.",
+                    },
+                    {
+                      question: "Le télétravail est-il possible ?",
+                      answer:
+                        "Ça dépend de l'offre : chaque annonce précise si le poste est sur site, hybride ou 100 % remote. Tu peux filtrer les offres par mode de travail.",
+                    },
+                    {
+                      question: "Sous combien de temps avez-vous une réponse ?",
+                      answer:
+                        "On s'engage à revenir vers chaque candidature sous quelques jours ouvrés, que la réponse soit positive ou non.",
+                    },
+                    {
+                      question: "Puis-je envoyer une candidature spontanée ?",
+                      answer:
+                        "Oui : si aucune offre ne correspond, écris-nous via la page contact en précisant le type de poste qui t'intéresse.",
+                    },
+                  ]
+                : [
+                    {
+                      question: "Do I need a CV to apply?",
+                      answer:
+                        "No, the CV is optional. You answer a few questions and can attach a CV if you have one — what matters to us is your motivation and skills.",
+                    },
+                    {
+                      question: "What's the hiring process?",
+                      answer:
+                        "You apply online in a few minutes. We get back to you quickly, then we have a call (video or phone) to get to know each other and present the role and team.",
+                    },
+                    {
+                      question: "Is remote work possible?",
+                      answer:
+                        "It depends on the role: each listing states whether it's on-site, hybrid or fully remote. You can filter offers by work mode.",
+                    },
+                    {
+                      question: "How fast do you reply?",
+                      answer:
+                        "We commit to replying to every application within a few business days, whether the answer is positive or not.",
+                    },
+                    {
+                      question: "Can I send a spontaneous application?",
+                      answer:
+                        "Yes: if no offer fits, reach out via the contact page stating the kind of role you're interested in.",
+                    },
+                  ]
               ).map((it, i) => ({ id: `faq-${i + 1}`, ...it }))}
             />
           </div>

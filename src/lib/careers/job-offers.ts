@@ -50,9 +50,7 @@ export async function listIndexableJobOfferSlugs(): Promise<string[]> {
     select: { slug: true, validThrough: true },
   });
   const now = Date.now();
-  return rows
-    .filter((r) => !r.validThrough || r.validThrough.getTime() >= now)
-    .map((r) => r.slug);
+  return rows.filter((r) => !r.validThrough || r.validThrough.getTime() >= now).map((r) => r.slug);
 }
 
 /**
