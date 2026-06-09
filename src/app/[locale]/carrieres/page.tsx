@@ -176,9 +176,15 @@ export default async function CarrieresHubPage({
         />
       </Container>
       <ServiceHero
-        eyebrow={isFr ? "Rejoins l'aventure 🚀" : "Join the adventure 🚀"}
+        eyebrow={
+          isFr
+            ? `Offres d'emploi · ${all.length} poste${all.length > 1 ? "s" : ""} ouvert${all.length > 1 ? "s" : ""} 🚀`
+            : `Job openings · ${all.length} open role${all.length > 1 ? "s" : ""} 🚀`
+        }
         title={
-          isFr ? "Viens construire l'IA qui change" : "Come build the AI that"
+          isFr
+            ? "On recrute — viens construire l'IA qui change"
+            : "We're hiring — build the AI that"
         }
         titleEm={
           isFr
