@@ -17,9 +17,10 @@ import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
-import { careerCategoryService } from "@/content/careers/categories";
+import { CAREER_VERTICALS } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
 import { careerImage } from "@/content/careers/careers-images";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
   getJobOfferBySlug,
@@ -148,7 +149,6 @@ export default async function JobOfferDetailPage({
     ? (offer.perks as PerkItem[])
     : [];
   const suggested = await listSuggestedOffers(offer, 4);
-  const categoryService = careerCategoryService(offer.category);
   // Zone d'emploi multi-villes (postes itinérants/territoriaux).
   const jobCities = Array.isArray(offer.jobLocations)
     ? (offer.jobLocations as Array<{ city?: string }>)
@@ -196,15 +196,11 @@ export default async function JobOfferDetailPage({
               sizes="(max-width: 1280px) 100vw, 1200px"
               className="object-cover"
             />
-            <a
-              href={`${img.byUrl}?utm_source=axion-ia&utm_medium=referral`}
-              target="_blank"
-              rel="noopener nofollow"
-              className="absolute right-2 bottom-2 rounded bg-black/45 px-2 py-0.5 text-[10px] text-white/90"
-            >
-              {img.byName} / Unsplash
-            </a>
           </div>
+          <UnsplashCredit
+            photographerName={img.byName}
+            photographerUrl={img.byUrl}
+          />
 
           {isClosed ? (
             <p className="bg-sand text-fg-muted mt-6 rounded-lg px-4 py-3 text-sm">
@@ -307,21 +303,23 @@ export default async function JobOfferDetailPage({
                 </div>
               ) : null}
 
-              {categoryService ? (
-                <div className="border-border rounded-2xl border p-5">
-                  <h2 className="font-serif text-lg font-semibold">
-                    {isFr
-                      ? "Le métier chez Axion-IA.com"
-                      : "The role at Axion-IA.com"}
-                  </h2>
-                  <p className="text-fg-muted mt-2 text-sm">
-                    {isFr ? "Découvrir aussi : " : "See also: "}
-                    <Link href={categoryService.href} className="underline">
-                      {isFr ? categoryService.fr : categoryService.en}
-                    </Link>
-                  </p>
-                </div>
-              ) : null}
+              <div className="border-border rounded-2xl border p-5">
+                <h2 className="font-serif text-lg font-semibold">
+                  {isFr ? "Nos expertises IA" : "Our AI expertise"}
+                </h2>
+                <ul className="mt-3 space-y-1.5 text-sm" role="list">
+                  {CAREER_VERTICALS.map((v) => (
+                    <li key={v.href}>
+                      <Link
+                        href={v.href}
+                        className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 underline underline-offset-2"
+                      >
+                        {isFr ? v.fr : v.en} →
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <div className="border-border rounded-2xl border p-5">
                 <h2 className="font-serif text-lg font-semibold">

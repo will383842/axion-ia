@@ -33,31 +33,51 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     slug: "developpement",
     fr: "Développement",
     en: "Software development",
-    service: { href: "/sites-web", fr: "Sites web & SaaS IA", en: "Websites & AI SaaS" },
+    service: {
+      href: "/sites-web",
+      fr: "Sites web & SaaS IA",
+      en: "Websites & AI SaaS",
+    },
   },
   {
     slug: "ia",
     fr: "IA / Machine Learning",
     en: "AI / Machine Learning",
-    service: { href: "/implementation", fr: "Implémentation IA", en: "AI implementation" },
+    service: {
+      href: "/implementation",
+      fr: "Implémentation IA",
+      en: "AI implementation",
+    },
   },
   {
     slug: "data",
     fr: "Data",
     en: "Data",
-    service: { href: "/implementation", fr: "Implémentation IA & data", en: "AI & data" },
+    service: {
+      href: "/implementation",
+      fr: "Implémentation IA & data",
+      en: "AI & data",
+    },
   },
   {
     slug: "design",
     fr: "Design / UX-UI",
     en: "Design / UX-UI",
-    service: { href: "/sites-web", fr: "Design & sites web", en: "Design & websites" },
+    service: {
+      href: "/sites-web",
+      fr: "Design & sites web",
+      en: "Design & websites",
+    },
   },
   {
     slug: "produit",
     fr: "Produit",
     en: "Product",
-    service: { href: "/audit", fr: "Audit & stratégie IA", en: "AI audit & strategy" },
+    service: {
+      href: "/audit",
+      fr: "Audit & stratégie IA",
+      en: "AI audit & strategy",
+    },
   },
   {
     slug: "conseil",
@@ -69,7 +89,11 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     slug: "commercial",
     fr: "Commercial / Vente",
     en: "Sales",
-    service: { href: "/devenir-commercial-ia", fr: "Réseau commercial", en: "Sales network" },
+    service: {
+      href: "/devenir-commercial-ia",
+      fr: "Réseau commercial",
+      en: "Sales network",
+    },
   },
   {
     slug: "marketing",
@@ -81,7 +105,11 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     slug: "operations",
     fr: "Opérations / Gestion de projet",
     en: "Operations / Project management",
-    service: { href: "/methodologie", fr: "Notre méthodologie", en: "Our methodology" },
+    service: {
+      href: "/methodologie",
+      fr: "Notre méthodologie",
+      en: "Our methodology",
+    },
   },
   {
     slug: "support",
@@ -93,7 +121,11 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     slug: "autre",
     fr: "Autre",
     en: "Other",
-    service: { href: "/a-propos", fr: "À propos d'Axion-IA", en: "About Axion-IA" },
+    service: {
+      href: "/a-propos",
+      fr: "À propos d'Axion-IA",
+      en: "About Axion-IA",
+    },
   },
 ];
 
@@ -104,6 +136,32 @@ export function careerCategoryLabel(slug: string, isFr: boolean): string {
   return c ? (isFr ? c.fr : c.en) : slug;
 }
 
-export function careerCategoryService(slug: string): CareerCategory["service"] | undefined {
+export function careerCategoryService(
+  slug: string,
+): CareerCategory["service"] | undefined {
   return BY_SLUG.get(slug)?.service;
 }
+
+/**
+ * Les 5 verticales Axion-IA.com (maillage interne SEO) — URLs alignées sur la nav
+ * principale (Header.tsx). Affichées sur chaque page offre.
+ */
+export const CAREER_VERTICALS: ReadonlyArray<{
+  href: string;
+  fr: string;
+  en: string;
+}> = [
+  {
+    href: "/interventions/collectives",
+    fr: "Formations IA",
+    en: "AI training",
+  },
+  { href: "/un-a-un", fr: "Coaching 1 to 1", en: "1-to-1 coaching" },
+  { href: "/audit", fr: "Audit IA", en: "AI audit" },
+  { href: "/implementation", fr: "Intégration IA", en: "AI integration" },
+  {
+    href: "/sites-web-augmentes",
+    fr: "Sites web & SaaS IA",
+    en: "AI websites & SaaS",
+  },
+];

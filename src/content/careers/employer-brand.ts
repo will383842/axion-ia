@@ -18,15 +18,15 @@ export const EMPLOYER_BRAND = {
 
   /** Intro hero (sous le H1) — accroche candidat, énergique. */
   heroIntroFr:
-    "Tu veux faire de l'IA qui finit vraiment en production — pas dans un slide ? Chez Axion-IA.com, tu codes, tu déploies, et tu vois l'impact direct chez de vraies boîtes. Équipe à taille humaine, autonomie réelle, sujets IA de pointe au quotidien. Si tu aimes résoudre des problèmes concrets et livrer, on devrait bien s'entendre. 👋",
+    "De l'IA qui finit en production — pas dans un slide. Tu codes, tu déploies, tu vois l'impact direct. Équipe à taille humaine, autonomie réelle, IA de pointe au quotidien. 👋",
   heroIntroEn:
-    "Want to build AI that actually ships — not another slide? At Axion-IA.com, you code, you deploy, and you see the impact straight away at real companies. Human-sized team, real autonomy, cutting-edge AI every day. If you like solving concrete problems and shipping, we'll get along. 👋",
+    "AI that ships — not another slide. You code, you deploy, you see the impact. Human-sized team, real autonomy, cutting-edge AI every day. 👋",
 
   /** Qui on est (section « Pourquoi nous rejoindre »), angle candidat. */
   aboutFr:
-    "Axion-IA.com, c'est une boîte tech à taille humaine, ancrée en Isère, qui rend l'IA opérationnelle pour les entreprises (audits, implémentation, web/SaaS). On construit comme une vraie équipe produit : du code en prod, pas des promesses. L'objectif : devenir LA référence française de l'IA appliquée — la plus utile, pas la plus grosse.",
+    "Une boîte tech à taille humaine, ancrée en Isère, qui rend l'IA opérationnelle pour les entreprises. On construit comme une vraie équipe produit : du code en prod, pas des promesses.",
   aboutEn:
-    "Axion-IA.com is a human-sized tech company, rooted in Isère, making AI operational for businesses (audits, implementation, web/SaaS). We build like a real product team: code in production, not promises. The goal: become THE French reference in applied AI — the most useful, not the biggest.",
+    "A human-sized tech company, rooted in Isère, making AI operational for businesses. We build like a real product team: code in production, not promises.",
 
   /** Pourquoi tu vas kiffer bosser ici — bénéfices candidat concrets. */
   whyJoin: [
@@ -71,9 +71,9 @@ export const EMPLOYER_BRAND = {
   hqTitleFr: "Où on bosse 🏔️",
   hqTitleEn: "Where we work 🏔️",
   hqTextFr:
-    "Notre QG est à Saint-Marcellin, en Isère. Les postes en présentiel sont ici et autour (Grenoble, Valence, Romans, Voiron), et plein de rôles sont ouverts en remote ou hybride, partout en France.",
+    "Nos bureaux sont à Saint-Marcellin et Grenoble (Isère). Postes en présentiel ici et autour (Valence, Romans, Voiron) ; beaucoup en remote ou hybride, partout en France.",
   hqTextEn:
-    "Our HQ is in Saint-Marcellin, Isère. On-site roles are here and nearby (Grenoble, Valence, Romans, Voiron), and many roles are open remote or hybrid, anywhere in France.",
+    "Our offices are in Saint-Marcellin and Grenoble (Isère). On-site roles here and nearby (Valence, Romans, Voiron); many remote or hybrid, anywhere in France.",
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:

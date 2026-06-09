@@ -20,6 +20,7 @@ import {
 } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
 import { CAREERS_HERO, careerImage } from "@/content/careers/careers-images";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
 // 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (siège)
@@ -204,23 +205,22 @@ export default async function CarrieresHubPage({
                 </Cta>
               </div>
             </div>
-            <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
-              <Image
-                src={CAREERS_HERO.url}
-                alt={CAREERS_HERO.alt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+            <div>
+              <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
+                <Image
+                  src={CAREERS_HERO.url}
+                  alt={CAREERS_HERO.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={CAREERS_HERO.byName}
+                photographerUrl={CAREERS_HERO.byUrl}
+                className="text-right"
               />
-              <a
-                href={`${CAREERS_HERO.byUrl}?utm_source=axion-ia&utm_medium=referral`}
-                target="_blank"
-                rel="noopener nofollow"
-                className="absolute right-2 bottom-2 rounded bg-black/45 px-2 py-0.5 text-[10px] text-white/90"
-              >
-                {CAREERS_HERO.byName} / Unsplash
-              </a>
             </div>
           </div>
         </Container>
@@ -476,18 +476,21 @@ export default async function CarrieresHubPage({
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr
-              ? "Notre siège est à Saint-Marcellin (Isère), et beaucoup de postes sont ouverts en remote ou hybride. On accueille des talents un peu partout :"
-              : "Our HQ is in Saint-Marcellin (Isère), and many roles are open remote or hybrid. We welcome talent all over the place:"}
+              ? "Nos bureaux sont à Saint-Marcellin et Grenoble (Isère) ; beaucoup de postes sont en remote ou hybride. On accueille des talents un peu partout :"
+              : "Our offices are in Saint-Marcellin and Grenoble (Isère); many roles are remote or hybrid. We welcome talent all over:"}
           </p>
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
-            {CAREER_CITIES.map((city) => (
-              <li
-                key={city}
-                className={`rounded-full border px-3 py-1 text-sm ${city === "Saint-Marcellin" ? "border-terracotta bg-terracotta/10 font-medium" : "border-border text-fg-muted"}`}
-              >
-                {city === "Saint-Marcellin" ? `🏔️ ${city}` : city}
-              </li>
-            ))}
+            {CAREER_CITIES.map((city) => {
+              const isHq = city === "Saint-Marcellin" || city === "Grenoble";
+              return (
+                <li
+                  key={city}
+                  className={`rounded-full border px-3 py-1 text-sm ${isHq ? "border-terracotta bg-terracotta/10 font-medium" : "border-border text-fg-muted"}`}
+                >
+                  {isHq ? `🏔️ ${city}` : city}
+                </li>
+              );
+            })}
           </ul>
         </Container>
       </Section>
