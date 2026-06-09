@@ -17,6 +17,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { careerCategoryService } from "@/content/careers/categories";
+import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
   getJobOfferBySlug,
@@ -242,6 +243,21 @@ export default async function JobOfferDetailPage({
                   </p>
                 </div>
               ) : null}
+
+              <div className="border-border rounded-2xl border p-5">
+                <h2 className="font-serif text-lg font-semibold">
+                  {isFr ? "Qui est Axion-IA ?" : "Who is Axion-IA?"}
+                </h2>
+                <p className="text-fg-muted mt-2 text-sm">
+                  {isFr ? EMPLOYER_BRAND.shortAboutFr : EMPLOYER_BRAND.shortAboutEn}
+                </p>
+                <Link
+                  href="/carrieres"
+                  className="text-terracotta mt-2 inline-block text-sm underline"
+                >
+                  {isFr ? "Découvrir l'entreprise →" : "Discover the company →"}
+                </Link>
+              </div>
             </aside>
           </div>
         </Container>
