@@ -52,50 +52,55 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
     );
   }, [routes]);
 
-  const setQuality = useCallback(
-    (id: string, value: SiteRouteQuality) => {
+  // Exécute une action serveur en capturant toute erreur (ex. rôle `reader` →
+  // « forbidden ») pour ne pas laisser de rejet de promesse non géré.
+  const run = useCallback(
+    (fn: () => Promise<unknown>, after?: () => void) => {
       startTransition(async () => {
-        await setRouteQualityStatus(id, value);
-        router.refresh();
+        try {
+          await fn();
+          after?.();
+          router.refresh();
+        } catch (e) {
+          console.error("[toutes-les-urls] action échouée:", e);
+        }
       });
     },
     [router],
   );
 
+  const setQuality = useCallback(
+    (id: string, value: SiteRouteQuality) => run(() => setRouteQualityStatus(id, value)),
+    [run],
+  );
+
   const toggleGsc = useCallback(
-    (id: string, value: boolean) => {
-      startTransition(async () => {
-        await toggleGscIndexationRequested(id, value);
-        router.refresh();
-      });
-    },
-    [router],
+    (id: string, value: boolean) => run(() => toggleGscIndexationRequested(id, value)),
+    [run],
   );
 
   const bulkQuality = useCallback(
     (value: SiteRouteQuality) => {
       const ids = [...selected];
       if (ids.length === 0) return;
-      startTransition(async () => {
-        await bulkSetQualityStatus(ids, value);
-        setSelected(new Set());
-        router.refresh();
-      });
+      run(
+        () => bulkSetQualityStatus(ids, value),
+        () => setSelected(new Set()),
+      );
     },
-    [selected, router],
+    [selected, run],
   );
 
   const bulkGsc = useCallback(
     (value: boolean) => {
       const ids = [...selected];
       if (ids.length === 0) return;
-      startTransition(async () => {
-        await bulkToggleGsc(ids, value);
-        setSelected(new Set());
-        router.refresh();
-      });
+      run(
+        () => bulkToggleGsc(ids, value),
+        () => setSelected(new Set()),
+      );
     },
-    [selected, router],
+    [selected, run],
   );
 
   const [bulkCopied, setBulkCopied] = useState(false);
