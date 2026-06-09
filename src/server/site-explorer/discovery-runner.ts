@@ -37,7 +37,11 @@ async function upsertDiscovered(route: EnumeratedRoute, runStartedAt: Date): Pro
   const category = categorizeRoute(route.section, route.pathPattern);
   const verticales = route.section ? (VERTICALE_BY_SECTION[route.section] ?? []) : [];
   const depth = calcDepth(route.pathPattern);
-  const pathSlug = route.pathSlug ?? null;
+  // ⚠️ Clé d'unicité : on stocke "" (jamais null) pour les routes sans slug.
+  // Postgres traite NULL ≠ NULL dans un index unique : avec `null`, le `where`
+  // ne re-matcherait jamais la ligne → doublon créé à chaque run + ancienne
+  // tombstonée (churn). "" rend l'upsert idempotent.
+  const pathSlug = route.pathSlug ?? "";
 
   const shared = {
     pathRendered: route.pathRendered ?? null,
