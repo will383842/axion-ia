@@ -268,6 +268,18 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/seo\/manon-person\.ts$/,
   /^scripts\/docker-entrypoint\.sh$/,
   /^scripts\/curate-sites-web-unsplash\.mjs$/,
+  // Exceptions 2026-06-10 (refonte carrières offres d'emploi + Site Explorer).
+  // CONSOMMATEURS LÉGITIMES des briques content-gen, pas du code content-gen core :
+  // - carrieres/[slug]/page.tsx + seo/job-posting.ts : importent
+  //   `sanitizeContentGenHtml` (content-gen/shared/html-sanitizer) pour assainir
+  //   le HTML DB-driven des annonces — réutilisation de la brique sanitizer.
+  // - site-route-gsc-worker.ts : importe le client GSC (content-gen/seo/gsc-client).
+  // - route-enumerator.ts : Site Explorer énumère les routes du site, y compris
+  //   les publications générées par content-gen (consumer en lecture seule).
+  /^src\/app\/\[locale\]\/carrieres\/\[slug\]\/page\.tsx$/,
+  /^src\/lib\/seo\/job-posting\.ts$/,
+  /^src\/server\/queue\/workers\/site-route-gsc-worker\.ts$/,
+  /^src\/server\/site-explorer\/route-enumerator\.ts$/,
 ];
 
 /**
