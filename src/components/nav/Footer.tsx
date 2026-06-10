@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
+import { SERVICES, serviceOfficial } from "@/content/services";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -11,37 +12,13 @@ export async function Footer() {
   const isFr = locale === "fr";
   const year = new Date().getFullYear();
 
-  // Les 5 verticales (= les 5 services réels d'Axion-IA), dans le même ordre que
-  // le header (cf. `Header.tsx`), + Tarifs en clôture. Libellés footer délibérément
-  // plus explicites que ceux (raccourcis) du header car ici il n'y a pas le
-  // contexte visuel de la barre de nav (Will 2026-06-10). ❌ NE PAS réintroduire
-  // « Essentielle » : c'est un FORMAT de formation (sous-page
-  // `/interventions/essentielle`), pas un service — il mélangeait la colonne.
+  // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
+  // `src/content/services.ts` (nom officiel unique), dans l'ordre canonique +
+  // Tarifs en clôture. ❌ NE PAS réintroduire de libellé de service en dur ici
+  // ni « Essentielle » (un FORMAT de formation, pas un service).
   const services = [
-    {
-      href: "/interventions/collectives" as const,
-      label: isFr ? "Formations IA" : "AI training",
-    },
-    {
-      href: "/un-a-un" as const,
-      label: isFr ? "Accompagnement 1 to 1" : "1-to-1 coaching",
-    },
-    {
-      href: "/audit" as const,
-      label: isFr ? "Audit IA" : "AI audit",
-    },
-    {
-      href: "/implementation" as const,
-      label: isFr ? "Implémentation & automatisation IA" : "AI implementation & automation",
-    },
-    {
-      href: "/sites-web-augmentes" as const,
-      label: isFr ? "Sites web & SaaS IA" : "AI websites & SaaS",
-    },
-    {
-      href: "/tarifs" as const,
-      label: isFr ? "Tarifs" : "Pricing",
-    },
+    ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
+    { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
   // Contenus à lire / outils pour décider. « Simulateur ROI » rapatrié ici depuis

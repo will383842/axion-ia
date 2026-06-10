@@ -98,7 +98,7 @@ export default async function UnAUnHubPage({ params }: Props) {
   const entryPrice = formatAmount(Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE, RECURRING_PRICE), loc);
 
   const breadcrumbItems = [
-    { href: path, label: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching" },
+    { href: path, label: isFr ? "Accompagnement 1 to 1" : "1-to-1 coaching" },
   ];
 
   // ==========================================================================

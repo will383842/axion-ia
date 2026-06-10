@@ -17,6 +17,7 @@
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
@@ -44,10 +45,10 @@ export function GET() {
 
 ## Modules — 4 prestations
 
-- [Interventions entreprise](${SITE_URL}/fr/interventions) — formats opérationnels sur site, page phare ${SITE_URL}/fr/interventions/essentielle (${essentiellePrice}).
-- [Audit & optimisation IA](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
-- [Implémentation IA](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
-- [Coaching IA individuel 1-to-1](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
+- [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/interventions) — formats opérationnels sur site, page phare ${SITE_URL}/fr/interventions/essentielle (${essentiellePrice}).
+- [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
+- [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
+- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
 
 ## Preuve & méthode
 

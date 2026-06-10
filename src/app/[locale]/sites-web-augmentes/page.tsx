@@ -91,7 +91,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/sites-web-augmentes" as const,
-      label: isFr ? "Sites web & SaaS IA" : "AI websites & SaaS",
+      label: isFr ? "Sites web & SaaS Native IA" : "AI websites & SaaS",
     },
   ];
 

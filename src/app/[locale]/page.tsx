@@ -22,6 +22,7 @@ import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
+import { SERVICE_BY_ID, serviceNavShort, serviceOfficial } from "@/content/services";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CLIENT_LOGOS, VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
 import {
@@ -120,11 +121,16 @@ export default async function Home({ params }: HomeProps) {
   // Refonte cartes 2026-05-24 (Will) : charte brand stricte (terracotta dominant,
   // bleu uniquement pointes), titres XL serif impactants, offre claire.
   // Plus de rotation accents — brand-coherence avant tout (ces 5 cartes = CA).
+  // `shortName` = troncature `navShort` du SSOT `src/content/services.ts`
+  // (titre de carte court, cohérent avec le header). `official` = nom officiel
+  // complet, réservé au JSON-LD Service (signal AEO/SEO). Ne PAS réintroduire de
+  // libellé de service en dur ici.
   const valuePropositions = [
     {
       id: "intervene",
       emoji: "🎓",
-      shortName: isFr ? "Formations" : "Training",
+      shortName: serviceNavShort(SERVICE_BY_ID.formations, isFr),
+      official: serviceOfficial(SERVICE_BY_ID.formations, isFr),
       tagline: isFr ? "IA en entreprise" : "AI for companies",
       headline: t("value1Headline"),
       priceLabel: isFr
@@ -136,8 +142,9 @@ export default async function Home({ params }: HomeProps) {
     {
       id: "coach",
       emoji: "🧑‍💼",
-      shortName: isFr ? "1-to-1" : "1-to-1",
-      tagline: isFr ? "Coaching individuel" : "Personal coaching",
+      shortName: serviceNavShort(SERVICE_BY_ID.unAUn, isFr),
+      official: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
+      tagline: isFr ? "Accompagnement individuel" : "Personal support",
       headline: t("value4Headline"),
       priceLabel: isFr ? `À partir de ${unAUnEntryPrice} HT` : `From ${unAUnEntryPrice} excl. tax`,
       gain: t("value4Gain"),
@@ -146,7 +153,8 @@ export default async function Home({ params }: HomeProps) {
     {
       id: "audit",
       emoji: "🔍",
-      shortName: isFr ? "Audits" : "Audits",
+      shortName: serviceNavShort(SERVICE_BY_ID.audit, isFr),
+      official: serviceOfficial(SERVICE_BY_ID.audit, isFr),
       tagline: isFr ? "Diagnostic & roadmap" : "Diagnosis & roadmap",
       headline: t("value2Headline"),
       priceLabel: isFr ? `À partir de ${auditEntryPrice} HT` : `From ${auditEntryPrice} excl. tax`,
@@ -156,7 +164,8 @@ export default async function Home({ params }: HomeProps) {
     {
       id: "implement",
       emoji: "⚙️",
-      shortName: isFr ? "Implémentations" : "Implementation",
+      shortName: serviceNavShort(SERVICE_BY_ID.implementation, isFr),
+      official: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       tagline: isFr ? "Automatisations sur mesure" : "Custom automation",
       headline: t("value3Headline"),
       priceLabel: isFr ? `À partir de ${implEntryPrice} HT` : `From ${implEntryPrice} excl. tax`,
@@ -166,7 +175,8 @@ export default async function Home({ params }: HomeProps) {
     {
       id: "web",
       emoji: "🌐",
-      shortName: isFr ? "Plateforme web & SaaS" : "Web platform & SaaS",
+      shortName: serviceNavShort(SERVICE_BY_ID.sitesWeb, isFr),
+      official: serviceOfficial(SERVICE_BY_ID.sitesWeb, isFr),
       tagline: isFr ? "Sites & apps augmentés IA" : "AI-augmented sites & apps",
       headline: t("value5Headline"),
       priceLabel: isFr ? `À partir de ${webEntryPrice} HT` : `From ${webEntryPrice} excl. tax`,
@@ -271,15 +281,16 @@ export default async function Home({ params }: HomeProps) {
   // Service x5 — provider référence l'Organization émise layout-level via @id
   // (knowledge graph LLM-friendly : Organization → Service → Offer cohérent vs
   // chaque Service îlot avec provider string dupliqué). Cf. audit AEO 2026-05-24.
-  // name : combine shortName + tagline pour signal AEO clair ("Formations · IA en entreprise")
+  // name / serviceType : nom OFFICIEL complet du SSOT (signal AEO/SEO précis),
+  // pas la troncature d'affichage `shortName` des cartes.
   const servicesJsonLd = valuePropositions.map((v) => ({
     "@context": "https://schema.org",
     "@type": "Service" as const,
-    name: `${v.shortName} · ${v.tagline}`,
+    name: `${v.official} · ${v.tagline}`,
     description: v.gain,
     provider: { "@id": `${SITE_URL}/#organization` },
     areaServed: "FR",
-    serviceType: v.shortName,
+    serviceType: v.official,
     url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
   }));
 
@@ -954,8 +965,7 @@ export default async function Home({ params }: HomeProps) {
                       dotColor: "bg-terracotta",
                       badgeBg: "bg-terracotta-soft",
                       badgeFg: "text-terracotta-deep",
-                      nameFr: "Formation IA",
-                      nameEn: "AI Training",
+                      svc: SERVICE_BY_ID.formations,
                       subFr: "Présentiel · À partir d'une demi-journée",
                       subEn: "On-site · From a half-day",
                       categoryFr: "Formation",
@@ -970,8 +980,7 @@ export default async function Home({ params }: HomeProps) {
                       dotColor: "bg-primary",
                       badgeBg: "bg-primary-soft",
                       badgeFg: "text-primary",
-                      nameFr: "Audit IA",
-                      nameEn: "AI Audit",
+                      svc: SERVICE_BY_ID.audit,
                       subFr: "Présentiel ou distanciel",
                       subEn: "On-site or remote",
                       categoryFr: "Audit",
@@ -986,8 +995,7 @@ export default async function Home({ params }: HomeProps) {
                       dotColor: "bg-sage",
                       badgeBg: "bg-sage-soft",
                       badgeFg: "text-sage",
-                      nameFr: "Coaching 1-to-1",
-                      nameEn: "1-to-1 Coaching",
+                      svc: SERVICE_BY_ID.unAUn,
                       subFr: "Par session · Dirigeant ou collaborateur",
                       subEn: "Per session · Executive or staff",
                       categoryFr: "Coaching",
@@ -1002,8 +1010,7 @@ export default async function Home({ params }: HomeProps) {
                       dotColor: "bg-terracotta-deep",
                       badgeBg: "bg-terracotta-soft",
                       badgeFg: "text-terracotta-deep",
-                      nameFr: "Implémentation IA",
-                      nameEn: "AI Implementation",
+                      svc: SERVICE_BY_ID.implementation,
                       subFr: "Sur mesure · Projets clés en main",
                       subEn: "Custom · Turnkey projects",
                       categoryFr: "Implémentation",
@@ -1018,8 +1025,7 @@ export default async function Home({ params }: HomeProps) {
                       dotColor: "bg-primary",
                       badgeBg: "bg-primary-soft",
                       badgeFg: "text-primary",
-                      nameFr: "Plateforme web / SaaS IA",
-                      nameEn: "AI Web Platform / SaaS",
+                      svc: SERVICE_BY_ID.sitesWeb,
                       subFr: "Sur devis · Plateformes IA dédiées",
                       subEn: "Quote · Dedicated AI platforms",
                       categoryFr: "Plateforme",
@@ -1050,7 +1056,7 @@ export default async function Home({ params }: HomeProps) {
                         />
                         <div className="min-w-0">
                           <p className="text-fg text-base leading-tight font-bold sm:text-lg">
-                            {isFr ? s.nameFr : s.nameEn}
+                            {serviceNavShort(s.svc, isFr)}
                           </p>
                           <p className="text-fg-muted mt-1 text-xs leading-snug sm:text-sm">
                             {isFr ? s.subFr : s.subEn}

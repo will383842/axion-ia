@@ -78,7 +78,7 @@ export default async function ImplementationListing({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/implementation",
-      label: isFr ? "Implémentation IA" : "AI implementation",
+      label: isFr ? "Implémentation & automatisation IA" : "AI implementation & automation",
     },
   ];
 

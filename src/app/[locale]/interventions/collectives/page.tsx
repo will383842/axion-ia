@@ -86,12 +86,12 @@ export default async function CollectivesFamilyHub({ params }: Props) {
   const isFr = loc === "fr";
   const family = getFamily("collectives");
 
-  // P1-13 audit E2E NAV+CTA 2026-05-15 — label parent aligné sur SSOT
-  // `nav.interventions` (« Interventions entreprise » / « Corporate AI sessions »).
+  // Label parent = nom officiel du service (SSOT `src/content/services.ts`,
+  // Will 2026-06-10 ; remplace l'ancien « Interventions entreprise »).
   const breadcrumbItems = [
     {
       href: "/interventions",
-      label: isFr ? "Interventions entreprise" : "Corporate AI sessions",
+      label: isFr ? "Formations & interventions IA" : "AI training & sessions",
     },
     {
       href: "/interventions/collectives",

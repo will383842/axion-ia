@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Mail, Phone } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { SERVICES, serviceNavShort } from "@/content/services";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 import { MobileNav } from "./MobileNav";
@@ -21,47 +22,22 @@ export async function Header() {
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // 6 items nav — cluster gauche, tous sur UNE seule ligne (Will 2026-06-08 :
-  // l'empilement « IA » en 2e ligne faisait bizarre → revenu en single-line).
-  // Libellés ajustés via `.replace()` (valeurs i18n intactes pour les autres
-  // usages) : « Coaching » retiré de « 1 to 1 » ; « SaaS » retiré de
-  // « Sites web … Native IA ». « Formations IA », « Audit IA », « Intégration
-  // IA » gardent « IA » sur la même ligne.
+  // 6 items nav — cluster gauche, tous sur UNE seule ligne (Will 2026-06-08).
+  // Libellés = troncatures `navShort` du SSOT `src/content/services.ts` (le nom
+  // OFFICIEL complet, plus long, n'entre pas dans la barre single-line ; il est
+  // affiché en entier dans le footer/les pages). Plus de `.replace()` : la
+  // troncature est désormais explicite et centralisée. Tarifs n'est pas un
+  // service → ajouté à part. ⚠️ navShort « Implémentation IA » remplace l'ancien
+  // « Intégration IA » (cohérence avec le nom officiel « Implémentation &
+  // automatisation IA »).
   const navItems = [
-    {
-      href: "/interventions/collectives",
-      label: t("nav.formationsEntreprise"), // « Formations IA »
+    ...SERVICES.map((s) => ({
+      href: s.href,
+      label: serviceNavShort(s, isFr),
       multiline: false,
-    },
-    {
-      // « Coaching 1 to 1 » → « 1 to 1 » seul (retrait de « Coaching »).
-      href: "/un-a-un",
-      label: t("nav.coachingOneToOne").replace("Coaching ", ""),
-      multiline: false,
-    },
-    {
-      href: "/audit",
-      label: t("nav.companyAudit"), // « Audit IA »
-      multiline: false,
-    },
-    {
-      // Label court dédié au header (`implementationNav` = « Intégration IA »)
-      // — 2026-06-03 (audit responsive C). L'ancien « Intégration d'agents IA
-      // sur-mesure » (~190 px) faisait déborder la barre. La clé longue
-      // `implementationShort` reste utilisée ailleurs (titre /tarifs).
-      href: "/implementation",
-      label: t("nav.implementationNav"), // « Intégration IA »
-      multiline: false,
-    },
-    {
-      // « Sites web & SaaS Native IA » → « Sites web Native IA » (retrait de
-      // « & SaaS »), sur une ligne.
-      href: "/sites-web-augmentes",
-      label: t("nav.sitesWebSaas").replace(" & SaaS", ""),
-      multiline: false,
-    },
+    })),
     { href: "/tarifs", label: t("nav.pricing"), multiline: false },
-  ] as const;
+  ];
 
   // Items supplémentaires uniquement dans le drawer mobile (pages stratégiques
   // accessibles depuis mobile, pas seulement depuis le footer).
