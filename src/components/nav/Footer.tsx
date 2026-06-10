@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
-import { SERVICES, serviceOfficial } from "@/content/services";
+import { SERVICES, serviceFooter } from "@/content/services";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -13,11 +13,12 @@ export async function Footer() {
   const year = new Date().getFullYear();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
-  // `src/content/services.ts` (nom officiel unique), dans l'ordre canonique +
-  // Tarifs en clôture. ❌ NE PAS réintroduire de libellé de service en dur ici
-  // ni « Essentielle » (un FORMAT de formation, pas un service).
+  // `src/content/services.ts` (libellé `footer*` — variante courte voulue par
+  // Will pour la colonne, le nom officiel long restant en JSON-LD/llms/breadcrumbs)
+  // dans l'ordre canonique + Tarifs en clôture. ❌ NE PAS réintroduire de libellé
+  // de service en dur ici ni « Essentielle » (un FORMAT de formation, pas un service).
   const services = [
-    ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
+    ...SERVICES.map((s) => ({ href: s.href, label: serviceFooter(s, isFr) })),
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
@@ -37,20 +38,31 @@ export async function Footer() {
     { href: "/faq", label: "FAQ" },
   ];
 
-  // Ordonné par sens : identité (qui/comment) → presse → nous rejoindre → joindre.
+  // Identité + contact. Le recrutement est sorti dans un sous-groupe « Carrières »
+  // distinct (Will 2026-06-10) pour mettre en avant l'embauche sans créer une 6e
+  // colonne. Ordonné : identité (qui/comment) → presse → joindre.
   const company = [
     { href: "/a-propos", label: t("nav.about") },
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
-    { href: "/carrieres" as const, label: isFr ? "Carrières" : "Careers" },
-    {
-      href: "/devenir-commercial-ia" as const,
-      label: isFr ? "Recrutement commerciaux" : "Sales rep recruitment",
-    },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
     { href: "/reserver", label: isFr ? "Réserver un appel" : "Book a call" },
   ];
+
+  // Sous-groupe « Carrières » de la colonne Entreprise (intertitre + 2 liens).
+  // « Carrières » → /carrieres relabellisé « Nos offres d'emploi » car l'intertitre
+  // porte déjà « Carrières » (évite la redite).
+  const careers = {
+    title: isFr ? "Carrières" : "Careers",
+    items: [
+      { href: "/carrieres", label: isFr ? "Nos offres d'emploi" : "Our job openings" },
+      {
+        href: "/devenir-commercial-ia",
+        label: isFr ? "Recrutement commerciaux" : "Sales rep recruitment",
+      },
+    ],
+  };
 
   const legal = [
     { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
@@ -156,7 +168,7 @@ export async function Footer() {
           >
             <FooterColumn title={t("footer.services")} items={services} />
             <FooterColumn title={t("footer.resources")} items={resources} />
-            <FooterColumn title={t("footer.company")} items={company} />
+            <FooterColumn title={t("footer.company")} items={company} subgroup={careers} />
             <FooterColumn title={t("nav.implantations")} items={implantationsLinks} />
             <FooterColumn title={t("footer.legal")} items={legal} />
           </nav>
@@ -203,26 +215,45 @@ function Dot() {
 interface FooterColumnProps {
   title: string;
   items: ReadonlyArray<{ href: string; label: string }>;
+  // Sous-section optionnelle sous la liste principale (intertitre + liens),
+  // ex. « Carrières » dans la colonne Entreprise.
+  subgroup?: { title: string; items: ReadonlyArray<{ href: string; label: string }> };
 }
-function FooterColumn({ title, items }: FooterColumnProps) {
+function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
   return (
     <div>
-      <h3 className="text-mocha-fg/50 mb-3.5 text-[11px] font-semibold tracking-[0.16em] uppercase">
+      <h3 className="text-mocha-fg/50 mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
         {title}
       </h3>
-      <ul className="space-y-2.5 text-sm">
-        {items.map((item) => (
-          <li key={item.href}>
-            <Link
-              href={item.href as never}
-              className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] items-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <FooterLinkList items={items} />
+      {subgroup ? (
+        <>
+          <h4 className="text-mocha-fg/40 mt-5 mb-2 text-[10px] font-semibold tracking-[0.16em] uppercase">
+            {subgroup.title}
+          </h4>
+          <FooterLinkList items={subgroup.items} />
+        </>
+      ) : null}
     </div>
+  );
+}
+
+// Espacement resserré (Will 2026-06-10) : min-h 44→36px + écart vertical 10→6px.
+// La cible tactile reste ≥ 24px (WCAG 2.5.8 AA), juste moins aérée qu'avant.
+function FooterLinkList({ items }: { items: ReadonlyArray<{ href: string; label: string }> }) {
+  return (
+    <ul className="space-y-1.5 text-sm">
+      {items.map((item) => (
+        <li key={item.href}>
+          <Link
+            href={item.href as never}
+            className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[36px] items-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            {item.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 
