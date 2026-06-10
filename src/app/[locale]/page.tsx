@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -45,7 +46,6 @@ import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
-import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 
 // ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
@@ -1212,115 +1212,144 @@ export default async function Home({ params }: HomeProps) {
               </Link>
             </div>
           </FadeInOnView>
-          {/* 4 cas concrets visuels — 4 cards sur 1 ligne dès md (768px+),
-              photos compactes via aspect-ratio 16/9 forcé + object-cover.
-              (Will 2026-05-24 : "réduire grosseur images, toutes sur 1 ligne desktop") */}
-          <ul className="mb-10 grid gap-3 sm:grid-cols-2 md:grid-cols-4 md:gap-4">
-            {(
-              [
-                {
-                  src: "/images/axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.avif",
-                  industryFr: "Prospection B2B",
-                  industryEn: "B2B prospecting",
-                  metric: "0 min/lead",
-                  titleFr: "Pipeline lead automatisé · 7 étapes",
-                  titleEn: "Automated lead pipeline · 7 steps",
-                  excerptFr:
-                    "Du formulaire entrant au commercial : scoring IA, enrichissement, segmentation chaud/tiède/froid, routage CRM. Zéro intervention humaine jusqu'à la prise de contact.",
-                  excerptEn:
-                    "From incoming form to sales: AI scoring, enrichment, hot/warm/cold segmentation, CRM routing. Zero human intervention until first contact.",
-                  altFr:
-                    "Pipeline Axion-IA : 7 étapes automatisées du formulaire entrant au CRM (scoring IA, enrichissement, segmentation chaud/tiède/froid, routage).",
-                  altEn:
-                    "Axion-IA pipeline: 7 automated steps from incoming form to CRM (AI scoring, enrichment, hot/warm/cold segmentation, routing).",
-                },
-                {
-                  src: "/images/axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.avif",
-                  industryFr: "BTP & construction",
-                  industryEn: "Construction",
-                  metric: "Conflits détectés J-7",
-                  titleFr: "Planning Gantt IA · temps réel",
-                  titleEn: "AI Gantt planning · real-time",
-                  excerptFr:
-                    "Chantier Résidence Les Pins, 15 tâches. Conflits de ressources et alertes météo détectés automatiquement avant qu'ils arrivent.",
-                  excerptEn:
-                    "Résidence Les Pins worksite, 15 tasks. Resource conflicts and weather alerts detected automatically before they happen.",
-                  altFr:
-                    "Planning Gantt Axion-IA : chantier Résidence Les Pins, 15 tâches, conflits de ressources détectés automatiquement, alertes météo.",
-                  altEn:
-                    "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts.",
-                },
-                {
-                  src: "/images/axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere.avif",
-                  industryFr: "Ressources humaines",
-                  industryEn: "Human resources",
-                  metric: "8 sem → 3 sem · 80% auto",
-                  titleFr: "Recrutement IA · cycle divisé par 2,5",
-                  titleEn: "AI recruitment · cycle divided by 2.5",
-                  excerptFr:
-                    "Publication multi-plateformes, collecte CVs, scoring et classement, fiche candidat auto, convocations, CR entretien, contrat rédigé. RH ne valide que la shortlist et conduit les entretiens.",
-                  excerptEn:
-                    "Multi-platform posting, CV collection, scoring and ranking, auto candidate sheet, invites, interview report, contract draft. HR only validates the shortlist and conducts interviews.",
-                  altFr:
-                    "Schéma 3 couloirs Axion-IA : système IA (publication, collecte CV, scoring, fiche, convocation, CR, contrat), RH (validation shortlist, entretiens, signature), candidat. 8 semaines → 3 semaines, 80% des tâches automatisées.",
-                  altEn:
-                    "Axion-IA 3-lane diagram: AI system (posting, CV collection, scoring, sheet, invitation, report, contract), HR (shortlist validation, interviews, signature), candidate. 8 weeks → 3 weeks, 80% of tasks automated.",
-                },
-                {
-                  src: "/images/axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.avif",
-                  industryFr: "Groupe international",
-                  industryEn: "International group",
-                  metric: "3 sem → J+1 · 278 salariés",
-                  titleFr: "Consolidation groupe 4 pays · IA continue",
-                  titleEn: "4-country group consolidation · continuous AI",
-                  excerptFr:
-                    "France, Allemagne, Singapour, Brésil. Comptabilité, paie, supply chain, RH et compliance temps réel. Le cerveau IA agrège les 4 moteurs, détecte les anomalies cross-entités et génère le rapport consolidé J+1.",
-                  excerptEn:
-                    "France, Germany, Singapore, Brazil. Real-time accounting, payroll, supply chain, HR and compliance. AI brain aggregates the 4 engines, detects cross-entity anomalies and generates the consolidated report on D+1.",
-                  altFr:
-                    "Architecture groupe international Axion-IA : 4 entités (France siège, Allemagne production, Singapour Asie hub, Brésil commercial), tableau de bord groupe temps réel, cerveau IA central, consolidation financière 4 devises, compliance multi-juridictions, supply chain intelligente, RH groupe centralisé.",
-                  altEn:
-                    "Axion-IA international group architecture: 4 entities (France HQ, Germany production, Singapore Asia hub, Brazil commercial), real-time group dashboard, central AI brain, 4-currency financial consolidation, multi-jurisdiction compliance, intelligent supply chain, centralized group HR.",
-                },
-              ] as const
-            ).map((demo, idx) => (
-              <li
-                key={idx}
-                className="bg-bg border-border flex h-full flex-col overflow-hidden rounded-2xl border"
-              >
-                <FadeInOnView delay={idx * 60}>
-                  <ImageLightbox
-                    src={demo.src}
-                    alt={isFr ? demo.altFr : demo.altEn}
-                    width={1600}
-                    height={900}
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-                    className="rounded-none rounded-t-2xl [&_figure]:aspect-[16/10] [&_figure]:overflow-hidden [&_figure>img]:!h-full [&_figure>img]:!w-full [&_figure>img]:!object-cover"
-                  />
-                  <div className="flex flex-col gap-2.5 p-4">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium">
-                        {isFr ? demo.industryFr : demo.industryEn}
-                      </span>
-                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold">
-                        {demo.metric}
-                      </span>
-                    </div>
-                    <h3
-                      className="text-fg text-sm leading-tight font-semibold tracking-tight"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {isFr ? demo.titleFr : demo.titleEn}
-                    </h3>
-                    <p className="text-fg-soft line-clamp-3 text-xs leading-relaxed">
-                      {isFr ? demo.excerptFr : demo.excerptEn}
-                    </p>
-                  </div>
-                </FadeInOnView>
-              </li>
-            ))}
-          </ul>
         </Container>
+        {/* Bande « cas concrets » — même style que la section Réalisations de
+            /audit : cartes compactes à largeur fixe (300/340px), images réduites
+            en aspect-[16/10], défilement marquee CSS pur (anim `caseScrollX` de
+            globals.css, track dupliqué → translateX -50% pour boucler sans saut,
+            pause au survol, désactivé en prefers-reduced-motion). Server-only,
+            zéro JS. (Will 2026-06-10 : « images trop grosses → comme la section
+            Réalisations de /audit ».) */}
+        <div className="group relative mt-12">
+          {/* Fondus latéraux pour une entrée/sortie propre */}
+          <div
+            aria-hidden="true"
+            className="from-paper pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r to-transparent sm:w-24"
+          />
+          <div
+            aria-hidden="true"
+            className="from-paper pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l to-transparent sm:w-24"
+          />
+          {(() => {
+            const demos = [
+              {
+                src: "/images/axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.avif",
+                industryFr: "Prospection B2B",
+                industryEn: "B2B prospecting",
+                metric: "0 min/lead",
+                titleFr: "Pipeline lead automatisé · 7 étapes",
+                titleEn: "Automated lead pipeline · 7 steps",
+                excerptFr:
+                  "Du formulaire entrant au commercial : scoring IA, enrichissement, segmentation chaud/tiède/froid, routage CRM. Zéro intervention humaine jusqu'à la prise de contact.",
+                excerptEn:
+                  "From incoming form to sales: AI scoring, enrichment, hot/warm/cold segmentation, CRM routing. Zero human intervention until first contact.",
+                altFr:
+                  "Pipeline Axion-IA : 7 étapes automatisées du formulaire entrant au CRM (scoring IA, enrichissement, segmentation chaud/tiède/froid, routage).",
+                altEn:
+                  "Axion-IA pipeline: 7 automated steps from incoming form to CRM (AI scoring, enrichment, hot/warm/cold segmentation, routing).",
+              },
+              {
+                src: "/images/axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.avif",
+                industryFr: "BTP & construction",
+                industryEn: "Construction",
+                metric: "Conflits détectés J-7",
+                titleFr: "Planning Gantt IA · temps réel",
+                titleEn: "AI Gantt planning · real-time",
+                excerptFr:
+                  "Chantier Résidence Les Pins, 15 tâches. Conflits de ressources et alertes météo détectés automatiquement avant qu'ils arrivent.",
+                excerptEn:
+                  "Résidence Les Pins worksite, 15 tasks. Resource conflicts and weather alerts detected automatically before they happen.",
+                altFr:
+                  "Planning Gantt Axion-IA : chantier Résidence Les Pins, 15 tâches, conflits de ressources détectés automatiquement, alertes météo.",
+                altEn:
+                  "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts.",
+              },
+              {
+                src: "/images/axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere.avif",
+                industryFr: "Ressources humaines",
+                industryEn: "Human resources",
+                metric: "8 sem → 3 sem · 80% auto",
+                titleFr: "Recrutement IA · cycle divisé par 2,5",
+                titleEn: "AI recruitment · cycle divided by 2.5",
+                excerptFr:
+                  "Publication multi-plateformes, collecte CVs, scoring et classement, fiche candidat auto, convocations, CR entretien, contrat rédigé. RH ne valide que la shortlist et conduit les entretiens.",
+                excerptEn:
+                  "Multi-platform posting, CV collection, scoring and ranking, auto candidate sheet, invites, interview report, contract draft. HR only validates the shortlist and conducts interviews.",
+                altFr:
+                  "Schéma 3 couloirs Axion-IA : système IA (publication, collecte CV, scoring, fiche, convocation, CR, contrat), RH (validation shortlist, entretiens, signature), candidat. 8 semaines → 3 semaines, 80% des tâches automatisées.",
+                altEn:
+                  "Axion-IA 3-lane diagram: AI system (posting, CV collection, scoring, sheet, invitation, report, contract), HR (shortlist validation, interviews, signature), candidate. 8 weeks → 3 weeks, 80% of tasks automated.",
+              },
+              {
+                src: "/images/axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.avif",
+                industryFr: "Groupe international",
+                industryEn: "International group",
+                metric: "3 sem → J+1 · 278 salariés",
+                titleFr: "Consolidation groupe 4 pays · IA continue",
+                titleEn: "4-country group consolidation · continuous AI",
+                excerptFr:
+                  "France, Allemagne, Singapour, Brésil. Comptabilité, paie, supply chain, RH et compliance temps réel. Le cerveau IA agrège les 4 moteurs, détecte les anomalies cross-entités et génère le rapport consolidé J+1.",
+                excerptEn:
+                  "France, Germany, Singapore, Brazil. Real-time accounting, payroll, supply chain, HR and compliance. AI brain aggregates the 4 engines, detects cross-entity anomalies and generates the consolidated report on D+1.",
+                altFr:
+                  "Architecture groupe international Axion-IA : 4 entités (France siège, Allemagne production, Singapour Asie hub, Brésil commercial), tableau de bord groupe temps réel, cerveau IA central, consolidation financière 4 devises, compliance multi-juridictions, supply chain intelligente, RH groupe centralisé.",
+                altEn:
+                  "Axion-IA international group architecture: 4 entities (France HQ, Germany production, Singapore Asia hub, Brazil commercial), real-time group dashboard, central AI brain, 4-currency financial consolidation, multi-jurisdiction compliance, intelligent supply chain, centralized group HR.",
+              },
+            ] as const;
+            // Dupliqué pour une boucle continue (translateX -50% → défile droite→gauche).
+            const tracks = [...demos, ...demos];
+            return (
+              <ul
+                className="case-marquee-track flex w-max list-none items-stretch gap-5 p-0 motion-reduce:animate-none sm:gap-6"
+                style={
+                  {
+                    "--marquee-duration": "80s",
+                    animation: "caseScrollX var(--marquee-duration) linear infinite",
+                  } as CSSProperties
+                }
+              >
+                {tracks.map((demo, idx) => (
+                  <li key={idx} aria-hidden={idx >= demos.length}>
+                    <article className="border-border bg-bg shadow-subtle hover:border-terracotta/50 hover:shadow-card flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-2xl border transition sm:w-[340px]">
+                      {/* Visuel — image réduite, aspect 16/10, object-cover */}
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <Image
+                          src={demo.src}
+                          alt={isFr ? demo.altFr : demo.altEn}
+                          fill
+                          loading="lazy"
+                          decoding="async"
+                          sizes="340px"
+                          className="object-cover"
+                        />
+                        <span className="bg-paper/90 text-terracotta-deep absolute top-3 left-3 rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase backdrop-blur">
+                          {isFr ? demo.industryFr : demo.industryEn}
+                        </span>
+                      </div>
+
+                      {/* Contenu */}
+                      <div className="flex flex-1 flex-col p-6">
+                        <h3 className="text-fg text-[17px] leading-snug font-semibold tracking-tight">
+                          {isFr ? demo.titleFr : demo.titleEn}
+                        </h3>
+                        <p
+                          className="text-terracotta mt-3 text-2xl leading-none font-semibold tracking-tight"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {demo.metric}
+                        </p>
+                        <p className="text-fg-soft mt-3 line-clamp-4 text-[13.5px] leading-relaxed">
+                          {isFr ? demo.excerptFr : demo.excerptEn}
+                        </p>
+                      </div>
+                    </article>
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
+        </div>
       </section>
 
       {/* ───────────── CTA CONTACT — après cas clients ─────────────
