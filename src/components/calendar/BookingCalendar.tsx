@@ -18,6 +18,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Calendar,
   Check,
   Sparkles,
@@ -31,6 +32,11 @@ import {
   Crown,
   Star,
   ShieldCheck,
+  GraduationCap,
+  ClipboardCheck,
+  Compass,
+  Rocket,
+  Repeat,
 } from "lucide-react";
 import {
   Dialog,
@@ -48,241 +54,49 @@ import {
   ESSENTIELLE_SUB_TIERS,
   TEMPS_SUB_TIERS,
   CLAUDE_SUB_TIERS,
-  AUDIT_TIERS,
-  INTERVENTION_TIERS,
-  getTierById,
-  formatAmount,
 } from "@/content/pricing";
+import {
+  BOOKING_CATALOG,
+  BOOKABLE_FORMATS,
+  findBookableBySlug,
+  findCategoryOfSlug,
+  type BookingFormat,
+  type BookingCategoryId,
+  type BookingAccent,
+  type BookingIconKey,
+} from "@/content/booking-catalog";
+import type { InterventionSlug } from "@/lib/intervention-type";
 import { createBookingAction } from "@/features/booking/actions";
 
-// Prix d'entrée Essentielle / Approfondie dérivés de pricing.ts (premier
-// sous-tier). Affichés sous forme « À partir de N € » dans les hints et previews —
-// Sprint 14.10.4 supprime les anciens hardcodings dans INTERVENTION_OPTIONS
-// et INTERVENTION_VISUAL ; Sprint 14.10.7 (Will 2026-05-11) harmonise sur
-// « À partir de » / « Starting at » au lieu de « dès » / « from ».
-const ESSENTIELLE_ENTRY_PRICE_EUR = ESSENTIELLE_SUB_TIERS[0]!.priceFlat;
-const ESSENTIELLE_HINT_FR = `Journée · 9 h – 17 h · à partir de ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
-const ESSENTIELLE_HINT_EN = `Day · 9 a.m. – 5 p.m. · starting at €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
-const ESSENTIELLE_PRICE_TAG_FR = `À partir de ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
-const ESSENTIELLE_PRICE_TAG_EN = `Starting at €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
-const APPROFONDIE_ENTRY_PRICE_EUR = APPROFONDIE_SUB_TIERS[0]!.priceFlat;
-const APPROFONDIE_HINT_FR = `2 jours consécutifs · à partir de ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
-const APPROFONDIE_HINT_EN = `2 consecutive days · starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
-const APPROFONDIE_PRICE_TAG_FR = `À partir de ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
-const APPROFONDIE_PRICE_TAG_EN = `Starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
+// ── Catalogue calendrier (SSOT) ──────────────────────────────────────────
+// La liste des prestations réservables + leurs prix vient désormais de
+// `@/content/booking-catalog` (lui-même dérivé de `pricing.ts`). Ce composant
+// ne fait plus que mapper les clés d'icône / d'accent vers leurs équivalents UI.
+// Fin du double hardcode INTERVENTION_OPTIONS + INTERVENTION_VISUAL.
 
-// Prix fixes dérivés de pricing.ts pour les formats bookables direct (SSOT).
-// Sprint pricing-SSOT : suppression des montants € hardcodés dans les labels
-// et previews des cards calendrier au profit de dérivations.
-// - Audit sur place : tier `audit-flash` champ `priceFlat` (1190 € — présentiel,
-//   Will 2026-05-31, suppression du 490 € distanciel).
-// - Gagner du temps : tier `intervention-temps` (990 €).
-// - Démarrage IA Express / Atelier IA ciblé : tier `intervention-4h` (590 €).
-// - Formation Claude : tier `intervention-claude` (990 €).
-const AUDIT_FLASH_ONSITE_PRICE_EUR = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
-const GAGNER_DU_TEMPS_PRICE_EUR = getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!;
-const INTERVENTION_4H_PRICE_EUR = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
-const INTERVENTION_CLAUDE_PRICE_EUR = getTierById(
-  INTERVENTION_TIERS,
-  "intervention-claude",
-).priceFlat!;
-
-// 5 interventions Module 1 + audit Flash terrain — slug + label FR/EN +
-// durationDays + scheduleHint. Sprint 14.10.8 (Will 2026-05-12) : ajout
-// `audit-flash-onsite` (réservation directe depuis le hub /audit refondu).
-type InterventionOption = {
-  slug:
-    | "essentielle"
-    | "approfondie"
-    | "conference"
-    | "dirigeants"
-    | "audit-flash-onsite"
-    | "gagner-du-temps"
-    | "demarrage-ia-express"
-    | "intervention-claude";
-  fr: string;
-  en: string;
-  durationDays: 1 | 2;
-  scheduleHintFr: string;
-  scheduleHintEn: string;
+const CATALOG_ICONS: Record<BookingIconKey, typeof Sparkles> = {
+  sparkles: Sparkles,
+  layers: Layers,
+  mic: Mic,
+  crown: Crown,
+  star: Star,
+  shield: ShieldCheck,
+  user: User,
+  compass: Compass,
+  rocket: Rocket,
+  repeat: Repeat,
+  graduation: GraduationCap,
+  users: User,
+  clipboard: ClipboardCheck,
 };
 
-const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
-  {
-    slug: "essentielle",
-    fr: "L'Essentielle",
-    en: "The Essential",
-    durationDays: 1,
-    scheduleHintFr: ESSENTIELLE_HINT_FR,
-    scheduleHintEn: ESSENTIELLE_HINT_EN,
-  },
-  {
-    slug: "approfondie",
-    fr: "L'Approfondie",
-    en: "Deep Dive",
-    durationDays: 2,
-    scheduleHintFr: APPROFONDIE_HINT_FR,
-    scheduleHintEn: APPROFONDIE_HINT_EN,
-  },
-  {
-    slug: "conference",
-    fr: "Conférence 1 journée",
-    en: "1-day talk",
-    durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · format collectif",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · collective format",
-  },
-  {
-    slug: "dirigeants",
-    fr: "Dirigeant (1-to-1)",
-    en: "Executive (1-on-1)",
-    durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · 1 dirigeant strict",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 1 executive only",
-  },
-  {
-    // Sprint 14.10.8 (Will 2026-05-12) — Audit Flash terrain 890 € réservable
-    // directement sur le calendrier. Slot 1 journée 9 h-17 h sur site avec
-    // démos live + plan d'action sous 48 h.
-    slug: "audit-flash-onsite",
-    fr: `Audit Flash terrain · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "fr", { compact: true })}`,
-    en: `On-site Flash audit · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "en", { compact: true })}`,
-    durationDays: 1,
-    scheduleHintFr: `Journée · 9 h – 17 h · sur site · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "en", { compact: true })}`,
-  },
-  {
-    // Will (audit /interventions 2026-05-12) — formation à prix fixe 990 €
-    // câblée sur formulaire au lieu du calendrier. Bug réparé : Gagner du
-    // temps rejoint les formats bookables direct. Enum DB `gagner_du_temps`
-    // déjà présent dans prisma/schema.prisma.
-    slug: "gagner-du-temps",
-    fr: `Gagner du temps · à partir de ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr", { compact: true })}`,
-    en: `Save Time · from ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
-    durationDays: 1,
-    scheduleHintFr: `Journée · 9 h – 17 h · sur site · à partir de ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · from ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
-  },
-  {
-    // Will (audit /interventions 2026-05-12) — formation 4 h prix fixe.
-    // 2026-06-03 (Will) : passage 590 € → 690 €, effectif plafonné à 12 pers.
-    // Atelier IA ciblé supprimé (une seule formation 4 h désormais).
-    // Bug réparé : la formation 4 h câblait son CTA sur /interventions/demande
-    // alors que le tarif est fixe. Promue bookable direct calendrier. Enum DB
-    // `demarrage_ia_express` ajouté via migration 20260512120000_collective_4h_enum_values.
-    slug: "demarrage-ia-express",
-    fr: `Démarrage IA Express · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr", { compact: true })}`,
-    en: `AI Express Kickoff · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
-    durationDays: 1,
-    scheduleHintFr: `Demi-journée · 9 h – 13 h · sur site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Half-day · 9 a.m. – 1 p.m. · on site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
-  },
-  {
-    // Will (audit /interventions 2026-05-12) — Formation Claude équipe passe
-    // de Sur devis à prix fixe pour 2 à 8 personnes, bookable direct calendrier
-    // (cf. pricing.ts intervention-claude). 2026-05-24 : alignement à 990 € HT.
-    slug: "intervention-claude",
-    fr: `Formation Claude · à partir de ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr", { compact: true })}`,
-    en: `Claude Training · from ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
-    durationDays: 1,
-    scheduleHintFr: `Journée · 9 h – 17 h · sur site · à partir de ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr")}`,
-    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · from ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
-  },
-];
-
-type InterventionSlug = InterventionOption["slug"];
-
-// Icônes + accent + preview hover par formation. Le preview s'affiche au
-// hover sur la card (mini-résumé conversion-friendly).
-const INTERVENTION_VISUAL: Record<
-  InterventionSlug,
-  {
-    icon: typeof Sparkles;
-    accentBg: string;
-    accentFg: string;
-    priceFr: string;
-    priceEn: string;
-    previewFr: string;
-    previewEn: string;
-  }
-> = {
-  essentielle: {
-    icon: Sparkles,
-    accentBg: "bg-terracotta-soft",
-    accentFg: "text-terracotta-deep",
-    priceFr: ESSENTIELLE_PRICE_TAG_FR,
-    priceEn: ESSENTIELLE_PRICE_TAG_EN,
-    previewFr:
-      "Découvrir les outils IA · 5 à 10 usages identifiés · automatisations dès le lendemain",
-    previewEn: "Discover AI tools · 5 to 10 uses identified · automations from day two",
-  },
-  approfondie: {
-    icon: Layers,
-    accentBg: "bg-primary-soft",
-    accentFg: "text-primary",
-    priceFr: APPROFONDIE_PRICE_TAG_FR,
-    priceEn: APPROFONDIE_PRICE_TAG_EN,
-    previewFr: "2 jours équipes · 10 à 20 automatisations co-construites · plan d'action 30 jours",
-    previewEn: "2 team days · 10 to 20 co-built automations · 30-day action plan",
-  },
-  conference: {
-    icon: Mic,
-    accentBg: "bg-terracotta-soft",
-    accentFg: "text-terracotta-deep",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    previewFr: "Sensibiliser toute l'entreprise · panorama IA 2026 · démos live + Q&A",
-    previewEn: "Upskill the whole company · 2026 AI panorama · live demos + Q&A",
-  },
-  dirigeants: {
-    icon: Crown,
-    accentBg: "bg-mocha-rich",
-    accentFg: "text-mocha-fg",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    previewFr:
-      "Vision claire de l'IA en 2026 · usages prioritaires identifiés · référentiel d'arbitrage",
-    previewEn: "Clear AI vision for 2026 · priority uses identified · decision framework",
-  },
-  "audit-flash-onsite": {
-    icon: ShieldCheck,
-    accentBg: "bg-terracotta-soft",
-    accentFg: "text-terracotta-deep",
-    priceFr: formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "fr"),
-    priceEn: formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "en", { compact: true }),
-    previewFr: "1 journée sur site · cartographie 1 zone d'usage · démos live · rapport sous 48 h",
-    previewEn: "1 day on site · map 1 use area · live demos · report within 48 h",
-  },
-  "gagner-du-temps": {
-    icon: Star,
-    accentBg: "bg-terracotta-soft",
-    accentFg: "text-terracotta-deep",
-    priceFr: `À partir de ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr")}`,
-    priceEn: `Starting at ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
-    previewFr:
-      "1 journée équipe · automatisations tâches récurrentes · plusieurs heures gagnées/semaine",
-    previewEn: "1 team day · recurring task automations · hours reclaimed each week",
-  },
-  "demarrage-ia-express": {
-    icon: Sparkles,
-    accentBg: "bg-terracotta-soft",
-    accentFg: "text-terracotta-deep",
-    priceFr: formatAmount(INTERVENTION_4H_PRICE_EUR, "fr"),
-    priceEn: formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true }),
-    previewFr: "Demi-journée · démystifier l'IA · panorama 2026 · 2-3 prompts opérationnels testés",
-    previewEn: "Half-day · demystify AI · 2026 panorama · 2-3 working prompts tested",
-  },
-  "intervention-claude": {
-    icon: Sparkles,
-    // hex-ok: brand-anthropic-claude — couleurs Anthropic imposées pour
-    // la Formation Claude (cohérent avec la card listing InterventionFormatCard).
-    accentBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
-    accentFg: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
-    priceFr: `À partir de ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr")}`,
-    priceEn: `Starting at ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
-    previewFr: "1 journée 100 % Claude · jusqu'à 30 pers. · Chat + Projects + Code CLI",
-    previewEn: "1 day 100 % Claude · up to 30 ppl · Chat + Projects + Code CLI",
-  },
+const ACCENT_CLASSES: Record<BookingAccent, { bg: string; fg: string }> = {
+  terracotta: { bg: "bg-terracotta-soft", fg: "text-terracotta-deep" },
+  primary: { bg: "bg-primary-soft", fg: "text-primary" },
+  mocha: { bg: "bg-mocha-rich", fg: "text-mocha-fg" },
+  // hex-ok: brand-anthropic-claude — couleurs Anthropic imposées pour la Formation Claude.
+  claude: { bg: "bg-[#FFF5EC]", fg: "text-[#9C3E1E]" },
+  sage: { bg: "bg-primary-soft", fg: "text-primary" },
 };
 
 // Essentielle ET Approfondie : 3 tranches identiques selon nb participants.
@@ -474,18 +288,26 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const interventionFromUrl = searchParams.get("intervention") as InterventionSlug | null;
+  const interventionFromUrl = searchParams.get("intervention");
 
-  // INTERVENTION_OPTIONS est garanti non-vide par construction.
-  const defaultOpt: InterventionOption = INTERVENTION_OPTIONS[0]!;
-  const initialOpt: InterventionOption =
-    (interventionFromUrl && INTERVENTION_OPTIONS.find((o) => o.slug === interventionFromUrl)) ||
-    defaultOpt;
+  // Le calendrier ne réserve que des formats `bookable` (enum Prisma existant) ;
+  // BOOKABLE_FORMATS est garanti non-vide par construction (cf. booking-catalog).
+  const defaultOpt: BookingFormat = BOOKABLE_FORMATS[0]!;
+  const initialOpt: BookingFormat =
+    (interventionFromUrl && findBookableBySlug(interventionFromUrl)) || defaultOpt;
 
   // L'utilisateur peut changer l'intervention DANS le calendrier (override URL).
-  // Re-render des dates bloquées quand la durée change.
-  const [selectedOpt, setSelectedOpt] = React.useState<InterventionOption>(initialOpt);
+  // Re-render des dates bloquées quand la durée change. `selectedOpt` est
+  // TOUJOURS un format réservable (la grille + le modal en dépendent).
+  const [selectedOpt, setSelectedOpt] = React.useState<BookingFormat>(initialOpt);
   const preselectedOpt = selectedOpt;
+
+  // Accordéon 3 catégories (Formations / 1-to-1 / Audits). Ouverte par défaut :
+  // celle qui contient le format pré-sélectionné (deep-link `?intervention=`),
+  // sinon la première (Formations). Mono-ouvert pour rester compact et lisible.
+  const [openCategory, setOpenCategory] = React.useState<BookingCategoryId | null>(
+    () => findCategoryOfSlug(initialOpt.slug) ?? "formation",
+  );
 
   // Tier participants (effectif → prix). Lu depuis ?tier= ou défaut "standard".
   // Visible si selectedOpt.slug ∈ TIERED_SLUGS (Essentielle, Approfondie).
@@ -502,7 +324,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   const calendarFrameRef = React.useRef<HTMLDivElement>(null);
 
   // Synchronisation URL ↔ state. Si on quitte un slug à paliers, on retire ?tier=.
-  function pickOpt(opt: InterventionOption) {
+  function pickOpt(opt: BookingFormat) {
     const isChange = opt.slug !== selectedOpt.slug;
     setSelectedOpt(opt);
     const sp = new URLSearchParams(searchParams.toString());
@@ -924,7 +746,8 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
           ...prev,
           {
             date: openSlot,
-            intervention: preselectedOpt.slug,
+            // selectedOpt est toujours un format réservable → slug ∈ InterventionSlug.
+            intervention: preselectedOpt.slug as InterventionSlug,
             city: companyCity || "—",
             sector: companySector,
             companySize,
@@ -969,104 +792,145 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
               {isFr ? "Étape 1" : "Step 1"}
             </p>
             <p className="text-fg mt-0.5 text-base leading-tight font-bold sm:text-lg">
-              {isFr ? "Quelle intervention ou audit ?" : "Which session or audit?"}
+              {isFr ? "Quelle prestation ?" : "Which offering?"}
             </p>
           </div>
         </div>
 
-        {/* List 1 par ligne · cards horizontales icône+texte+prix+check */}
-        <ul className="space-y-2.5">
-          {INTERVENTION_OPTIONS.map((opt) => {
-            const isSel = opt.slug === selectedOpt.slug;
-            const visual = INTERVENTION_VISUAL[opt.slug];
-            const Icon = visual.icon;
+        {/* Accordéon 3 catégories — Formations / 1-to-1 / Audits. Un clic sur un
+            bloc déplie ses prestations. Mono-ouvert pour rester compact. */}
+        <div className="space-y-3">
+          {BOOKING_CATALOG.map((cat) => {
+            const isOpen = openCategory === cat.id;
+            const CatIcon = CATALOG_ICONS[cat.iconKey];
+            const catAccent = ACCENT_CLASSES[cat.accent];
+            const containsSelected = cat.formats.some(
+              (f) => f.bookable && f.slug === selectedOpt.slug,
+            );
             return (
-              <li key={opt.slug}>
+              <div
+                key={cat.id}
+                className={cn(
+                  "bg-paper overflow-hidden rounded-2xl border-2 transition-colors",
+                  isOpen
+                    ? "border-terracotta shadow-card"
+                    : "border-border hover:border-terracotta/60",
+                )}
+              >
+                {/* En-tête du bloc catégorie */}
                 <button
                   type="button"
-                  onClick={() => pickOpt(opt)}
-                  aria-pressed={isSel}
-                  className={cn(
-                    "group flex w-full items-center gap-4 rounded-2xl border-2 p-4 text-left transition-all",
-                    isSel
-                      ? "border-terracotta bg-halo-warm shadow-card scale-[1.01]"
-                      : "border-border bg-paper hover:border-terracotta/60 hover:bg-halo-warm/40 hover:shadow-subtle",
-                  )}
+                  onClick={() => setOpenCategory((c) => (c === cat.id ? null : cat.id))}
+                  aria-expanded={isOpen}
+                  className="flex w-full items-center gap-4 p-4 text-left"
                 >
-                  {/* Icône à gauche dans pastille accent */}
                   <span
                     className={cn(
                       "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl",
-                      visual.accentBg,
-                      visual.accentFg,
+                      catAccent.bg,
+                      catAccent.fg,
                     )}
                   >
-                    <Icon aria-hidden="true" className="h-5 w-5" />
+                    <CatIcon aria-hidden="true" className="h-5 w-5" />
                   </span>
-
-                  {/* Bloc central — titre + hint + preview hover */}
                   <div className="min-w-0 flex-1">
-                    <p className="text-fg text-base leading-tight font-bold">
-                      {isFr ? opt.fr : opt.en}
+                    <p className="text-fg flex items-center gap-2 text-base leading-tight font-bold sm:text-lg">
+                      {isFr ? cat.labelFr : cat.labelEn}
+                      <span className="border-border text-fg-muted rounded-full border px-1.5 py-0.5 text-[11px] font-semibold tabular-nums">
+                        {cat.formats.length}
+                      </span>
+                      {containsSelected ? (
+                        <span
+                          aria-hidden="true"
+                          className="bg-terracotta inline-block h-2 w-2 rounded-full"
+                        />
+                      ) : null}
                     </p>
-                    <p className="text-fg-muted mt-1 text-[12px] leading-snug">
-                      {opt.durationDays === 1
-                        ? isFr
-                          ? "1 jour · "
-                          : "1 day · "
-                        : isFr
-                          ? "2 jours · "
-                          : "2 days · "}
-                      {isFr ? opt.scheduleHintFr : opt.scheduleHintEn}
-                    </p>
-                    <p
-                      className={cn(
-                        "mt-1.5 text-[12px] font-bold tracking-wide tabular-nums",
-                        isSel ? "text-terracotta-deep" : "text-fg-soft",
-                      )}
-                    >
-                      {isFr ? visual.priceFr : visual.priceEn}
-                    </p>
-                    {/* Preview hover — révélé au group-hover (motion safe).
-                        Affiche un mini-résumé conversion-friendly. */}
-                    <p
-                      className={cn(
-                        "text-terracotta-deep max-h-0 overflow-hidden text-[11.5px] leading-snug font-medium opacity-0 transition-all duration-300",
-                        "group-hover:mt-2 group-hover:max-h-20 group-hover:opacity-100",
-                        isSel && "mt-2 max-h-20 opacity-100",
-                      )}
-                    >
-                      <span aria-hidden="true">→ </span>
-                      {isFr ? visual.previewFr : visual.previewEn}
+                    <p className="text-fg-muted mt-1 line-clamp-2 text-[12px] leading-snug">
+                      {isFr ? cat.taglineFr : cat.taglineEn}
                     </p>
                   </div>
-
-                  {/* Indicateur sélection à droite */}
-                  <span
+                  <ChevronDown
+                    aria-hidden="true"
                     className={cn(
-                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all",
-                      isSel
-                        ? "bg-terracotta text-mocha-fg shadow-subtle"
-                        : "border-border-strong bg-paper group-hover:border-terracotta/60 border-2 text-transparent",
+                      "text-fg-muted h-5 w-5 shrink-0 transition-transform",
+                      isOpen && "rotate-180",
                     )}
-                  >
-                    <Check aria-hidden="true" className="h-4 w-4" strokeWidth={3} />
-                  </span>
+                  />
                 </button>
-              </li>
+
+                {/* Prestations de la catégorie (dépliées) */}
+                {isOpen ? (
+                  <ul className="border-border space-y-2.5 border-t p-3 sm:p-4">
+                    {cat.formats.map((f) => {
+                      const isSel = f.bookable && f.slug === selectedOpt.slug;
+                      if (f.bookable) {
+                        return (
+                          <li key={f.slug}>
+                            <button
+                              type="button"
+                              onClick={() => pickOpt(f)}
+                              aria-pressed={isSel}
+                              className={cn(
+                                "group flex w-full items-center gap-3.5 rounded-xl border-2 p-3.5 text-left transition-all",
+                                isSel
+                                  ? "border-terracotta bg-halo-warm shadow-subtle"
+                                  : "border-border bg-paper hover:border-terracotta/60 hover:bg-halo-warm/40",
+                              )}
+                            >
+                              <FormatCardBody format={f} isFr={isFr} isSel={isSel} />
+                              {/* Indicateur sélection (créneau réservable) */}
+                              <span
+                                className={cn(
+                                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all",
+                                  isSel
+                                    ? "bg-terracotta text-mocha-fg shadow-subtle"
+                                    : "border-border-strong bg-paper group-hover:border-terracotta/60 border-2 text-transparent",
+                                )}
+                              >
+                                <Check aria-hidden="true" className="h-4 w-4" strokeWidth={3} />
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      }
+                      // Format « sur devis » — pas de créneau calendrier : la carte
+                      // renvoie vers sa page détail / le formulaire de demande.
+                      const href = `/${locale}${(isFr ? f.hrefFr : f.hrefEn) ?? "/interventions"}`;
+                      return (
+                        <li key={f.slug}>
+                          <a
+                            href={href}
+                            className="group border-border bg-paper hover:border-terracotta/60 hover:bg-halo-warm/40 flex w-full items-center gap-3.5 rounded-xl border-2 border-dashed p-3.5 text-left transition-all"
+                          >
+                            <FormatCardBody format={f} isFr={isFr} isSel={false} />
+                            {/* Indicateur « voir la page » (non réservable direct) */}
+                            <span
+                              className="border-border-strong text-fg-muted group-hover:border-terracotta/60 group-hover:text-terracotta-deep flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 transition-all"
+                              title={isFr ? "Voir la prestation" : "View offering"}
+                            >
+                              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                            </span>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : null}
+              </div>
             );
           })}
-        </ul>
+        </div>
 
-        {/* Aide contextuelle sous la liste */}
+        {/* Aide contextuelle sous l'accordéon */}
         <p className="text-fg-muted mt-4 flex items-start gap-2 text-[12px] leading-snug">
           <ArrowRight
             aria-hidden="true"
             className="text-terracotta-deep mt-0.5 h-3.5 w-3.5 shrink-0"
           />
           {isFr
-            ? "Une fois choisie, sélectionnez votre date dans le calendrier →"
-            : "Once picked, select your date in the calendar →"}
+            ? "Choisissez une catégorie, sélectionnez une prestation, puis cliquez sur une date libre du calendrier →"
+            : "Pick a category, select an offering, then click an open date in the calendar →"}
         </p>
       </aside>
 
@@ -1392,8 +1256,8 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                 {openSlot && submittingState !== "success" ? (
                   <DialogDescription className="text-fg-soft mt-3 text-base sm:text-lg">
                     {isFr
-                      ? `${formatDateFr(openSlot, preselectedOpt.durationDays)} · ${isFr ? preselectedOpt.fr : preselectedOpt.en}`
-                      : `${formatDateEn(openSlot, preselectedOpt.durationDays)} · ${preselectedOpt.en}`}
+                      ? `${formatDateFr(openSlot, preselectedOpt.durationDays)} · ${isFr ? preselectedOpt.labelFr : preselectedOpt.labelEn}`
+                      : `${formatDateEn(openSlot, preselectedOpt.durationDays)} · ${preselectedOpt.labelEn}`}
                   </DialogDescription>
                 ) : null}
               </DialogHeader>
@@ -1633,7 +1497,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                       <StepRecap
                         isFr={isFr}
                         iso={openSlot}
-                        interventionLabel={isFr ? preselectedOpt.fr : preselectedOpt.en}
+                        interventionLabel={isFr ? preselectedOpt.labelFr : preselectedOpt.labelEn}
                         durationDays={preselectedOpt.durationDays}
                         company={{
                           name: companyName,
@@ -1710,6 +1574,62 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
 }
 
 // === Sub-components ===
+
+// Corps d'une carte prestation (icône + titre + horaire + prix + preview hover).
+// Partagé par les cartes réservables (<button>) et « sur devis » (<a>) de
+// l'accordéon. La sélection / l'indicateur de droite sont gérés par le wrapper.
+function FormatCardBody({
+  format,
+  isFr,
+  isSel,
+}: {
+  format: BookingFormat;
+  isFr: boolean;
+  isSel: boolean;
+}) {
+  const Icon = CATALOG_ICONS[format.iconKey];
+  const accent = ACCENT_CLASSES[format.accent];
+  return (
+    <>
+      <span
+        className={cn(
+          "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+          accent.bg,
+          accent.fg,
+        )}
+      >
+        <Icon aria-hidden="true" className="h-5 w-5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-fg text-[15px] leading-tight font-bold">
+          {isFr ? format.labelFr : format.labelEn}
+        </p>
+        <p className="text-fg-muted mt-1 text-[12px] leading-snug">
+          {isFr ? format.scheduleHintFr : format.scheduleHintEn}
+        </p>
+        <p
+          className={cn(
+            "mt-1.5 text-[12px] font-bold tracking-wide tabular-nums",
+            isSel ? "text-terracotta-deep" : "text-fg-soft",
+          )}
+        >
+          {isFr ? format.priceFr : format.priceEn}
+        </p>
+        {/* Preview — mini-résumé conversion révélé au hover / à la sélection. */}
+        <p
+          className={cn(
+            "text-terracotta-deep max-h-0 overflow-hidden text-[11.5px] leading-snug font-medium opacity-0 transition-all duration-300",
+            "group-hover:mt-2 group-hover:max-h-20 group-hover:opacity-100",
+            isSel && "mt-2 max-h-20 opacity-100",
+          )}
+        >
+          <span aria-hidden="true">→ </span>
+          {isFr ? format.previewFr : format.previewEn}
+        </p>
+      </div>
+    </>
+  );
+}
 
 function ProgressBar({ step, isFr }: { step: 1 | 2 | 3 | 4; isFr: boolean }) {
   const labels = isFr

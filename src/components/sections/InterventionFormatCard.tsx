@@ -11,21 +11,14 @@ import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import type { FormatAccent, InterventionFormatEntry } from "@/content/interventions-taxonomy";
 import { formatPath } from "@/content/interventions-taxonomy";
+import { BOOKABLE_FORMATS } from "@/content/booking-catalog";
 
-// Will (audit /interventions 2026-05-12) — slugs reconnus par BookingCalendar.
+// Will (audit /interventions 2026-05-12) — slugs reconnus par le calendrier.
 // Tout autre slug renvoie au calendrier sans pré-sélection (fallback Essentielle).
 // Pour éviter ce fallback silencieux, on n'ajoute `?intervention=…` que si le
-// slug est supporté. Source de vérité : `BookingCalendar.tsx::INTERVENTION_OPTIONS`.
-const CALENDAR_SUPPORTED_SLUGS: ReadonlySet<string> = new Set([
-  "essentielle",
-  "approfondie",
-  "conference",
-  "dirigeants",
-  "audit-flash-onsite",
-  "gagner-du-temps",
-  "demarrage-ia-express",
-  "intervention-claude",
-]);
+// slug est réservable. Source de vérité unique : `@/content/booking-catalog`
+// (`BOOKABLE_FORMATS`) — plus de liste dupliquée à resynchroniser à la main.
+const CALENDAR_SUPPORTED_SLUGS: ReadonlySet<string> = new Set(BOOKABLE_FORMATS.map((f) => f.slug));
 
 interface Props {
   entry: InterventionFormatEntry;
