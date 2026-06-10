@@ -6,18 +6,13 @@ test.describe("i18n + layout", () => {
     expect(response?.url()).toMatch(/\/fr$/);
   });
 
-  test("locale switcher: /fr → /en keeps the same pathname", async ({ page }) => {
+  test("no public locale switcher (EN disabled, FR-only UI)", async ({ page }) => {
+    // EN désactivé (2026-05-16, cf. AGENTS.md) — le LocaleSwitcher FR/EN a été
+    // retiré du footer public car EN ne s'affiche plus nulle part (301 → FR).
+    // On vérifie qu'aucun toggle de langue n'est rendu.
     await page.goto("/fr");
     await expect(page).toHaveURL(/\/fr$/);
-
-    // Find the EN link in the LocaleSwitcher via stable data-testid
-    // (resilient to aria-label translation across locales).
-    const enLink = page.locator('[data-testid="locale-switcher"] a', { hasText: "en" }).first();
-    await enLink.click();
-
-    await expect(page).toHaveURL(/\/en$/);
-    // <html lang="en"> must be set
-    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await expect(page.locator('[data-testid="locale-switcher"]')).toHaveCount(0);
   });
 
   test("hreflang alternates exposed in <head>", async ({ page }) => {

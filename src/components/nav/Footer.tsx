@@ -4,7 +4,6 @@ import { getTopRegionsByPib } from "@/content/regions";
 import { SERVICES, serviceFooter } from "@/content/services";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
-import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export async function Footer() {
   const t = await getTranslations();
@@ -96,8 +95,8 @@ export async function Footer() {
       style={{
         // V-04 P0h (Sprint Correctif 2026-05-22) — CSS containment.
         // Isole les shifts internes du footer (font-swap Fraunces/Manrope sur
-        // bg mocha-rich, hydration LocaleSwitcher) de la contribution CLS de
-        // la page → CLS footer maintenu ≤ 0.05 sur toutes les routes.
+        // bg mocha-rich) de la contribution CLS de la page → CLS footer
+        // maintenu ≤ 0.05 sur toutes les routes.
         contain: "layout style",
       }}
     >
@@ -199,8 +198,6 @@ export async function Footer() {
             <a href="/sitemap.xml" className={linkCn}>
               {t("footer.siteMap")}
             </a>
-            <Dot />
-            <LocaleSwitcher />
           </div>
         </div>
       </div>
