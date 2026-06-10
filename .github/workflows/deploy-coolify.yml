@@ -69,16 +69,23 @@ permissions:
   contents: read
   packages: write
 
-# Audit 2026-05-15 P0-01 : 8 deploys consécutifs ÉCHEC observés ce matin
-# (`cancelled-by-user via API`). Cause : chaque push trigger POST Coolify
-# /api/v1/deploy ; Coolify cancel le deploy précédent en cours. Avec
-# `cancel-in-progress: false`, GH Actions queue les workflows successifs
-# — chaque workflow attend que le précédent ait fini (deploy + CF purge
-# + LHCI) avant de démarrer. Coolify ne reçoit qu'un POST à la fois →
-# pas de cascade de cancellations.
-concurrency:
-  group: deploy-coolify
-  cancel-in-progress: false
+# Audit 2026-05-15 P0-01 : 8 deploys consécutifs ÉCHEC (`cancelled-by-user via
+# API`). Cause : chaque POST Coolify /api/v1/deploy fait annuler par Coolify le
+# deploy précédent en cours → cascade de cancellations. Correctif d'origine :
+# `concurrency: { group: deploy-coolify, cancel-in-progress: false }` AU NIVEAU
+# WORKFLOW (sérialisait TOUT, build de 25-90 min inclus → la file s'empilait).
+#
+# 2026-06-10 (Will) — concurrence SCINDÉE au niveau JOB pour regrouper les
+# pushes rapprochés en un seul deploy SANS rouvrir le P0-01 :
+#   - job `build`  → groupe `build-*`, cancel-in-progress: TRUE. Un push plus
+#     récent annule le build obsolète en cours. AUCUN effet de bord (le build
+#     ne touche jamais Coolify) → économise les builds redondants de 25-90 min.
+#   - job `deploy` → groupe `deploy-coolify`, cancel-in-progress: FALSE.
+#     L'étape qui POST Coolify reste SÉRIALISÉE (un POST à la fois, jamais
+#     annulée) → P0-01 toujours prévenu.
+# Net : N pushes rapprochés ⇒ au plus 1 build complet + 1 deploy (le plus
+# récent, qui contient tout — `main` est linéaire). ⚠️ NE PAS remettre une
+# `concurrency` au niveau workflow ni passer le job `deploy` à `true` (= P0-01).
 
 jobs:
   # ───────────────────────────────────────────────────────────────────────
@@ -88,6 +95,12 @@ jobs:
   # ───────────────────────────────────────────────────────────────────────
   build:
     name: Build & push image to GHCR
+    # Concurrence build-only : un push plus récent annule ce build obsolète
+    # (cf. bloc « concurrence SCINDÉE » en tête de fichier). cancel-in-progress
+    # TRUE est SÛR ici — le build ne touche jamais Coolify.
+    concurrency:
+      group: build-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     # Audit deploy-unstuck 2026-05-18 : streak 12+ deploys ratés depuis fea4b2e
     # (last green 2026-05-17 13:40 UTC) avec pattern OOM-kill silencieux à ~38 min
     # sur ubuntu-latest 16 GB. Diagnostic D2/D3/D4 confirme peak RAM 14.8-16.2 GB
@@ -259,6 +272,12 @@ jobs:
   deploy:
     name: Trigger Coolify deploy
     needs: build
+    # Concurrence deploy : SÉRIALISÉE (cancel-in-progress FALSE) → l'étape qui
+    # POST Coolify ne tourne JAMAIS en parallèle et n'est jamais annulée →
+    # correctif P0-01 préservé (cf. bloc en tête de fichier). NE PAS passer à true.
+    concurrency:
+      group: deploy-coolify
+      cancel-in-progress: false
     # Skip deploy si workflow_dispatch + input skip_deploy=true (1er run avant
     # reconfiguration Coolify en mode "Docker Image").
     if: github.event_name != 'workflow_dispatch' || inputs.skip_deploy != true
