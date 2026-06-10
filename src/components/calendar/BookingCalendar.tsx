@@ -94,8 +94,8 @@ const ACCENT_CLASSES: Record<BookingAccent, { bg: string; fg: string }> = {
   terracotta: { bg: "bg-terracotta-soft", fg: "text-terracotta-deep" },
   primary: { bg: "bg-primary-soft", fg: "text-primary" },
   mocha: { bg: "bg-mocha-rich", fg: "text-mocha-fg" },
-  // hex-ok: brand-anthropic-claude — couleurs Anthropic imposées pour la Formation Claude.
-  claude: { bg: "bg-[#FFF5EC]", fg: "text-[#9C3E1E]" },
+  // Couleurs Anthropic imposées pour la Formation Claude (exception charte).
+  claude: { bg: "bg-[#FFF5EC]", fg: "text-[#9C3E1E]" }, // hex-ok: brand-anthropic-claude
   sage: { bg: "bg-primary-soft", fg: "text-primary" },
 };
 
