@@ -11,25 +11,42 @@ export async function Footer() {
   const isFr = locale === "fr";
   const year = new Date().getFullYear();
 
+  // Les 5 verticales (= les 5 services réels d'Axion-IA), dans le même ordre que
+  // le header (cf. `Header.tsx`), + Tarifs en clôture. Libellés footer délibérément
+  // plus explicites que ceux (raccourcis) du header car ici il n'y a pas le
+  // contexte visuel de la barre de nav (Will 2026-06-10). ❌ NE PAS réintroduire
+  // « Essentielle » : c'est un FORMAT de formation (sous-page
+  // `/interventions/essentielle`), pas un service — il mélangeait la colonne.
   const services = [
     {
-      href: "/interventions/essentielle",
-      label: isFr ? "Essentielle" : "Essential",
+      href: "/interventions/collectives" as const,
+      label: isFr ? "Formations IA" : "AI training",
     },
-    { href: "/interventions/collectives", label: t("nav.interventions") },
-    { href: "/audit", label: t("nav.audit") },
-    { href: "/implementation", label: t("nav.implementation") },
+    {
+      href: "/un-a-un" as const,
+      label: isFr ? "Accompagnement 1 to 1" : "1-to-1 coaching",
+    },
+    {
+      href: "/audit" as const,
+      label: isFr ? "Audit IA" : "AI audit",
+    },
+    {
+      href: "/implementation" as const,
+      label: isFr ? "Implémentation & automatisation IA" : "AI implementation & automation",
+    },
     {
       href: "/sites-web-augmentes" as const,
       label: isFr ? "Sites web & SaaS IA" : "AI websites & SaaS",
     },
     {
-      href: "/un-a-un" as const,
-      label: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching",
+      href: "/tarifs" as const,
+      label: isFr ? "Tarifs" : "Pricing",
     },
-    { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
+  // Contenus à lire / outils pour décider. « Simulateur ROI » rapatrié ici depuis
+  // « Entreprise » (2026-06-10) : c'est un outil interactif d'aide à la décision,
+  // pas une info corporate.
   const resources = [
     { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
     { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
@@ -38,21 +55,22 @@ export async function Footer() {
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },
     { href: "/comparaisons", label: isFr ? "Comparatifs" : "Comparisons" },
+    { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
     { href: "/galerie", label: isFr ? "Banque d'images" : "Image bank" },
     { href: "/faq", label: "FAQ" },
   ];
 
+  // Ordonné par sens : identité (qui/comment) → presse → nous rejoindre → joindre.
   const company = [
     { href: "/a-propos", label: t("nav.about") },
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
-    { href: "/contact", label: t("nav.contact") },
+    { href: "/presse", label: isFr ? "Presse" : "Press" },
+    { href: "/carrieres" as const, label: isFr ? "Carrières" : "Careers" },
     {
       href: "/devenir-commercial-ia" as const,
       label: isFr ? "Recrutement commerciaux" : "Sales rep recruitment",
     },
-    { href: "/carrieres" as const, label: isFr ? "Carrières" : "Careers" },
-    { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
-    { href: "/presse", label: isFr ? "Presse" : "Press" },
+    { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
     { href: "/reserver", label: isFr ? "Réserver un appel" : "Book a call" },
   ];
