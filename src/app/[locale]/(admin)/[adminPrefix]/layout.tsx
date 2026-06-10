@@ -21,9 +21,10 @@
 // V1 visuel intact ; les ajouts sont passifs jusqu'à la PR 5/6.
 
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import type { Locale } from "@/i18n/routing";
 import {
   AdminSessionExpiryWarning,
@@ -38,6 +39,19 @@ import { buildAdminNav } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
 import { prisma } from "@/lib/prisma";
+
+// Refonte admin juin 2026 — police Inter pour TOUTE la console (lisibilité
+// supérieure en petites tailles, référence des dashboards modernes). Exposée
+// via la variable CSS `--font-admin`, appliquée par admin.css à
+// `.admin-layout-v2 / .admin-layout` (et au rail `.admin-rail`).
+// Self-host woff2 par next/font ; admin = noindex/force-dynamic (hors budget
+// Web Vitals des 15 pages publiques).
+const interAdmin = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-admin",
+});
 
 // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — cache 30s du
 // compteur "contacts sans réponse" pour éviter une query DB à chaque render
@@ -89,6 +103,16 @@ function buildNav(adminPrefix: string): NavItem[] {
   // Délègue à la SSOT (src/lib/admin-nav.ts) pour éviter le drift avec
   // AdminCommandPalette qui consommera la même source en PR 5.
   return buildAdminNav(adminPrefix) as NavItem[];
+}
+
+// Server Action de déconnexion exposée au footer profil de la sidebar (rail
+// mocha). POST via <form action> — évite le GET → 405 sur /api/auth/signout
+// (Auth.js v5 attend un POST). Même pattern que DashboardV2Wrapper.logoutAction.
+async function logoutAction(): Promise<void> {
+  "use server";
+  await signOut({ redirect: false });
+  const prefix = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
+  redirect(`/fr/${prefix}/login`);
 }
 
 export default async function AdminLayout({ children, params }: AdminLayoutProps) {
@@ -241,11 +265,28 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     // L'AdminUserMenu n'a pas de logoutHref ici — éviterait un GET → 405 sur
     // /api/auth/signout (Auth.js v5 attend un POST).
     return (
-      <div className="admin-layout-v2 min-h-screen bg-[color:var(--color-admin-bg)]">
+      <div
+        className={`admin-layout-v2 ${interAdmin.variable} min-h-screen bg-[color:var(--color-admin-bg)]`}
+      >
         {}
         <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
         <AdminTopbar
-          brand={<strong className="admin-brand">Axion-IA · Admin</strong>}
+          brand={
+            // Mobile uniquement : le rail (hors-écran sur mobile) porte
+            // l'identité sur desktop. Décalé (pl) pour dégager le hamburger
+            // flottant. Pastille « A » terracotta = écho du logo du rail.
+            <span className="flex items-center gap-[var(--space-admin-3)] pl-[44px] lg:hidden">
+              <span
+                aria-hidden="true"
+                className="flex h-[26px] w-[26px] items-center justify-center rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-rail-accent)] text-[length:var(--text-admin-sm)] font-bold text-white"
+              >
+                A
+              </span>
+              <span className="text-[length:var(--text-admin-base)] font-bold tracking-tight text-[color:var(--color-admin-fg)]">
+                Axion-IA
+              </span>
+            </span>
+          }
           commandPalette={<AdminCommandPalette adminPrefix={adminPrefix} />}
           notifications={
             <AdminNotificationsDropdown items={notificationItems} allHref={`${adminBase}/alerts`} />
@@ -263,6 +304,9 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             alertsCount={alertsCount}
             siteExplorerAnomaliesHighCount={siteExplorerAnomaliesHighCount}
             unreadContactsCount={unreadContactsCount}
+            userEmail={session.user.email ?? null}
+            accountHref={adminBase}
+            logoutAction={logoutAction}
           />
           <main className="admin-main min-w-0 flex-1">{children}</main>
         </div>
@@ -273,7 +317,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
 
   // Pas de session — page /login (children gère son propre rendu).
   return (
-    <div className="admin-layout">
+    <div className={`admin-layout ${interAdmin.variable}`}>
       {}
       <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
       <main className="admin-main">{children}</main>

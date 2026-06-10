@@ -110,6 +110,94 @@
     --duration-admin-base: 160ms;
     --duration-admin-slow: 240ms;
     --easing-admin: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* =====================================================================
+     * Sidebar « rail mocha premium » (refonte juin 2026 — ADR 0028 suite).
+     * Le rail est un accent sombre contrastant SUR une app claire (pattern
+     * Vercel / Linear / Stripe). Ce n'est PAS un dark mode (doctrine light
+     * only respectée : seul le rail de navigation est sombre, tout le reste
+     * de l'admin demeure ivoire). Tokens cloisonnés `--color-admin-rail-*`.
+     * Contrastes vérifiés WCAG AA sur fond mocha #2a2520 :
+     *   - fg #f3ede2  → 13.4:1 (AAA)
+     *   - fg-soft #cbc1b2 → 8.6:1 (AAA)
+     *   - fg-muted #968b7b → 4.6:1 (AA)
+     *   - accent #e0683a (barre active + icône) → graphique, 3:1 OK
+     * ===================================================================== */
+    --admin-topbar-h: 49px; /* hauteur topbar — sert au calc() de hauteur du rail */
+
+    --color-admin-rail-bg: #2a2520; /* mocha rich — fond du rail */
+    --color-admin-rail-bg-elevated: #332d27; /* header / footer / champ recherche */
+    --color-admin-rail-border: #3d362e; /* dividers internes subtils */
+    --color-admin-rail-fg: #f5f0e7; /* texte principal ivoire (un cran plus clair) */
+    --color-admin-rail-fg-soft: #dcd3c5; /* liens nav au repos (contraste relevé ~10:1) */
+    --color-admin-rail-fg-muted: #ada291; /* labels / méta / niveau 3 (~6.3:1) */
+    --color-admin-rail-hover: rgb(255 255 255 / 0.06); /* fond hover lien */
+    --color-admin-rail-active-bg: rgb(237 124 77 / 0.18); /* tuile active (terracotta tint) */
+    --color-admin-rail-active-fg: #fdf5ee; /* texte lien actif */
+    --color-admin-rail-accent: #ed7c4d; /* terracotta éclaircie d'un cran (~5.2:1 sur mocha) */
+    --color-admin-rail-ring: rgb(237 124 77 / 0.5); /* focus ring sur fond sombre */
+    --color-admin-rail-badge-danger: #e5484d; /* badge rouge (jobs, anomalies, contacts) */
+    --color-admin-rail-badge-warn: #f5a623; /* badge ambre (alertes ops) */
+    --color-admin-rail-avatar-bg: #ed7c4d; /* pastille avatar footer */
+  }
+}
+
+/* =============================================================
+ * Refonte admin juin 2026 — police Inter sur TOUTE la console.
+ * On pose la font-family sur le shell admin ET on remappe `--font-sans`
+ * localement : ainsi même les éléments utilisant l'utilitaire Tailwind
+ * `font-sans` (Manrope par défaut) basculent sur Inter à l'intérieur de
+ * l'admin. Cloisonné aux shells admin — globals.css intact (doctrine ADR 0028).
+ * Règle non-layered (priorité forte) pour garantir l'application.
+ * =============================================================*/
+.admin-layout-v2,
+.admin-layout {
+  font-family:
+    var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+  --font-sans:
+    var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+}
+
+/* =============================================================
+ * Refonte sidebar juin 2026 — rail mocha : scrollbar fine + ring focus.
+ * Cloisonné `.admin-rail` (porté par <aside> de AdminSidebarNav).
+ * =============================================================*/
+@layer admin-rail {
+  .admin-rail {
+    /* Police Inter (var. exposée par le layout admin) — fallback système. */
+    font-family:
+      var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+    /* Lissage : texte clair sur fond sombre = bien plus net en antialiased. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0.005em;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-admin-rail-border) transparent;
+  }
+  .admin-rail ::-webkit-scrollbar {
+    width: 8px;
+  }
+  .admin-rail ::-webkit-scrollbar-thumb {
+    background-color: var(--color-admin-rail-border);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .admin-rail ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-admin-rail-fg-muted);
+  }
+  .admin-rail ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Focus visible adapté au fond sombre (le ring info bleu disparaît). */
+  .admin-rail a:focus-visible,
+  .admin-rail button:focus-visible,
+  .admin-rail input:focus-visible,
+  .admin-rail summary:focus-visible {
+    outline: 2px solid var(--color-admin-rail-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-admin-md);
   }
 }
 
