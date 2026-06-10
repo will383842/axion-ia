@@ -918,9 +918,28 @@
   background-color: var(--color-terracotta-soft);
   color: var(--color-terracotta-deep);
 }
-.admin-badge-confirmed {
+.admin-badge-confirmed,
+.admin-badge-validated {
   background-color: var(--color-sage-soft);
   color: var(--color-sage);
+}
+.admin-badge-prereserved {
+  background-color: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.admin-badge-reserved {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.admin-badge-available {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-badge-blocked {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
 }
 .admin-badge-cancelled,
 .admin-badge-refused,
@@ -1072,6 +1091,32 @@
 }
 .admin-calendar-cell-reserved {
   background-color: var(--color-sage-soft);
+}
+/* Pré-réservation publique (option_pending → awaiting_admin_validation) :
+   ambre = action admin attendue (valider). Validé = confirmé (verrouillé). */
+.admin-calendar-cell-prereserved {
+  background-color: var(--color-terracotta-soft);
+}
+.admin-calendar-cell-validated {
+  background-color: var(--color-sage-soft);
+}
+/* Journée cliquable (a des demandes) → ouvre /reservations?date= */
+.admin-calendar-cell-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+.admin-calendar-cell-link:hover {
+  box-shadow: 0 0 0 2px var(--color-terracotta);
+  transform: translateY(-1px);
+}
+/* Compteurs demandes/validées : badges côte à côte qui peuvent passer à la ligne */
+.admin-calendar-cell-counts {
+  flex-wrap: wrap;
+  gap: 4px;
 }
 .admin-calendar-cell-blocked {
   background-color: var(--color-bg);

@@ -40,6 +40,8 @@ const BookingCalendarInner = dynamic(
 
 interface BookingCalendarLazyProps {
   initialBookedSlots: ReadonlyArray<BookedSlot>;
+  /** Dates (yyyy-mm-dd) bloquées par l'admin — grisées, non réservables. */
+  blockedDates?: ReadonlyArray<string>;
   locale: "fr" | "en";
 }
 

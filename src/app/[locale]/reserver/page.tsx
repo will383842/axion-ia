@@ -14,6 +14,13 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { prisma } from "@/lib/prisma";
 import { enumToSlug } from "@/lib/intervention-type";
+import { BOOKABLE_FORMATS } from "@/content/booking-catalog";
+
+// Types d'intervention affichés en social proof sur le calendrier public.
+// SSOT : dérivé des formats réservables du catalogue (booking-catalog.ts) pour
+// rester synchronisé avec ce que le visiteur peut réellement réserver — évite
+// toute dérive avec l'agrégation console (qui, elle, compte TOUT, vue admin).
+const VISIBLE_SLUGS: ReadonlySet<string> = new Set(BOOKABLE_FORMATS.map((f) => f.slug));
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -55,24 +62,10 @@ async function loadDbBookedSlots(): Promise<BookedSlot[]> {
       take: 250,
     });
 
-    const VISIBLE = new Set([
-      "essentielle",
-      "approfondie",
-      "conference",
-      "dirigeants",
-      // Sprint 14.10.8 (Will 2026-05-12) — audit Flash terrain affichable
-      // dans le calendrier social-proof feed.
-      "audit-flash-onsite",
-      // Will (audit /interventions 2026-05-12) — Gagner du temps + formation
-      // 4 h + Formation Claude rejoignent les formats bookables direct calendrier.
-      "gagner-du-temps",
-      "demarrage-ia-express",
-      "intervention-claude",
-    ]);
     const out: BookedSlot[] = [];
     for (const b of bookings) {
       const slug = enumToSlug(b.interventionType);
-      if (!VISIBLE.has(slug)) continue;
+      if (!VISIBLE_SLUGS.has(slug)) continue;
       const iso = b.bookingDate.toISOString().slice(0, 10);
       const det = b.submission?.details as Record<string, unknown> | null | undefined;
       const cityFromDetails =
@@ -96,6 +89,30 @@ async function loadDbBookedSlots(): Promise<BookedSlot[]> {
   } catch {
     // Fallback silencieux — la page doit toujours afficher les fixtures
     // social proof même si la DB est offline (résilience visiteur).
+    return [];
+  }
+}
+
+// Dates bloquées par l'admin (CalendarSlot status='blocked', console
+// /calendrier). Harmonisation 2026-06-10 : la page publique lit désormais
+// aussi les blocages pour les griser (avant, seuls les Booking étaient lus →
+// une date bloquée restait réservable côté visiteur). Best-effort comme
+// loadDbBookedSlots : si DB offline, on retourne [] (page reste rendue).
+async function loadBlockedDates(): Promise<string[]> {
+  if (!process.env["DATABASE_URL"]) return [];
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const horizon = new Date(today);
+    horizon.setDate(horizon.getDate() + 90);
+    const blocked = await prisma.calendarSlot.findMany({
+      where: { status: "blocked", slotDate: { gte: today, lte: horizon } },
+      select: { slotDate: true },
+      orderBy: { slotDate: "asc" },
+      take: 120,
+    });
+    return blocked.map((s) => s.slotDate.toISOString().slice(0, 10));
+  } catch {
     return [];
   }
 }
@@ -421,7 +438,10 @@ export default async function ReserverPage({ params }: Props) {
   // la DB est indisponible (build statique sans DATABASE_URL), on retombe sur
   // les seules fixtures pour ne pas casser la SSG. La page reste dynamic via
   // les revalidatePath des admin-actions.
-  const realBookedSlots = await loadDbBookedSlots();
+  const [realBookedSlots, blockedDates] = await Promise.all([
+    loadDbBookedSlots(),
+    loadBlockedDates(),
+  ]);
   const bookedSlots: ReadonlyArray<BookedSlot> = [...realBookedSlots, ...buildFixtureBookedSlots()];
 
   return (
@@ -461,7 +481,11 @@ export default async function ReserverPage({ params }: Props) {
           paraissait trop gros sur la page). */}
       <div className="bg-bg py-8 sm:py-10">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <BookingCalendarLazy initialBookedSlots={bookedSlots} locale={loc} />
+          <BookingCalendarLazy
+            initialBookedSlots={bookedSlots}
+            blockedDates={blockedDates}
+            locale={loc}
+          />
         </div>
       </div>
 

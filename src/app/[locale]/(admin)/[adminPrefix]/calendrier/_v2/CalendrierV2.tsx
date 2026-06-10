@@ -22,24 +22,24 @@ const MONTH_LABELS = [
   "Décembre",
 ];
 
-const STATUS_LABELS: Record<string, string> = {
-  available: "Disponible",
-  reserved: "Réservé",
-  blocked: "Bloqué",
-};
-
-interface SlotInfo {
+// Modèle multi-demandes (Will 2026-06-10) : une journée = conteneur de demandes.
+// Chaque case affiche le nombre de pré-réservations (demandes à rappeler) et de
+// validées, ou « Complet » si l'admin a bloqué la date. Cliquer une journée
+// ouvre la liste filtrée /reservations?date=YYYY-MM-DD (boutons valider/refuser).
+interface DaySummary {
   date: string;
-  status: string;
-  pendingOptionsCount?: number;
+  blocked: boolean;
   blockedReason?: string | null;
+  demandesCount: number;
+  valideesCount: number;
+  formateurs?: string[];
 }
 
 interface Props {
   adminPrefix: string;
   year: number;
   month: number;
-  slots: ReadonlyArray<SlotInfo>;
+  slots: ReadonlyArray<DaySummary>;
   canAct: boolean;
 }
 
@@ -66,12 +66,15 @@ export function CalendrierV2({
   const monthLabel = `${MONTH_LABELS[month - 1]} ${year}`;
   const prevMonth = month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
   const nextMonth = month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 };
+  const totalDemandes = slots.reduce((n, s) => n + s.demandesCount, 0);
+  const totalValidees = slots.reduce((n, s) => n + s.valideesCount, 0);
+  const reservationsBase = `/fr/${adminPrefix}/reservations`;
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
         title={monthLabel}
-        description={`${slots.length} créneau${slots.length > 1 ? "x" : ""} actif${slots.length > 1 ? "s" : ""} sur ce mois`}
+        description={`${totalDemandes} demande${totalDemandes > 1 ? "s" : ""} à traiter · ${totalValidees} validée${totalValidees > 1 ? "s" : ""} ce mois`}
         actions={
           <div className="admin-filters-actions">
             <Link
@@ -126,29 +129,66 @@ export function CalendrierV2({
             }
             const dateKey = d.toISOString().slice(0, 10);
             const slot = slotByDate.get(dateKey);
-            const status = slot?.status ?? "available";
             const isToday = dateKey === new Date().toISOString().slice(0, 10);
-            return (
-              <div
-                key={dateKey}
-                className={`admin-calendar-cell admin-calendar-cell-${status} ${isToday ? "admin-calendar-cell-today" : ""}`}
-              >
+            const cellKey = slot?.blocked
+              ? "blocked"
+              : slot?.valideesCount
+                ? "validated"
+                : slot?.demandesCount
+                  ? "prereserved"
+                  : "available";
+            const hasActivity = !!slot && (slot.demandesCount > 0 || slot.valideesCount > 0);
+            const inner = (
+              <>
                 <div className="admin-calendar-cell-date">{d.getUTCDate()}</div>
-                <div className="admin-calendar-cell-status">
-                  <span className={`admin-badge admin-badge-${status}`}>
-                    {STATUS_LABELS[status] ?? status}
-                  </span>
-                </div>
-                {slot?.pendingOptionsCount ? (
-                  <div className="admin-calendar-cell-meta">
-                    {slot.pendingOptionsCount} option{slot.pendingOptionsCount > 1 ? "s" : ""} pend.
+                {slot?.blocked ? (
+                  <>
+                    <div className="admin-calendar-cell-status">
+                      <span className="admin-badge admin-badge-blocked">Complet</span>
+                    </div>
+                    {slot.blockedReason ? (
+                      <div className="admin-calendar-cell-meta admin-meta-small">
+                        {slot.blockedReason}
+                      </div>
+                    ) : null}
+                  </>
+                ) : hasActivity ? (
+                  <div className="admin-calendar-cell-status admin-calendar-cell-counts">
+                    {slot!.demandesCount > 0 ? (
+                      <span className="admin-badge admin-badge-prereserved">
+                        {slot!.demandesCount} dem.
+                      </span>
+                    ) : null}
+                    {slot!.valideesCount > 0 ? (
+                      <span className="admin-badge admin-badge-validated">
+                        {slot!.valideesCount} val.
+                      </span>
+                    ) : null}
                   </div>
                 ) : null}
-                {slot?.blockedReason ? (
-                  <div className="admin-calendar-cell-meta admin-meta-small">
-                    {slot.blockedReason}
+                {!slot?.blocked && slot?.formateurs && slot.formateurs.length > 0 ? (
+                  <div
+                    className="admin-calendar-cell-meta admin-meta-small"
+                    title={slot.formateurs.join(", ")}
+                  >
+                    👤 {slot.formateurs.join(", ")}
                   </div>
                 ) : null}
+              </>
+            );
+            const cls = `admin-calendar-cell admin-calendar-cell-${cellKey} ${isToday ? "admin-calendar-cell-today" : ""}`;
+            return hasActivity ? (
+              <Link
+                key={dateKey}
+                href={`${reservationsBase}?status=all&date=${dateKey}`}
+                className={`${cls} admin-calendar-cell-link`}
+                title={`Voir les demandes du ${dateKey}`}
+              >
+                {inner}
+              </Link>
+            ) : (
+              <div key={dateKey} className={cls}>
+                {inner}
               </div>
             );
           })}
@@ -157,11 +197,11 @@ export function CalendrierV2({
 
       {canAct && (
         <AdminCard>
-          <h2 className="admin-h2">Bloquer / débloquer une date</h2>
+          <h2 className="admin-h2">Marquer complet / rouvrir une date</h2>
           <p className="admin-meta">
-            Bloque une date (vacances, indisponibilité ponctuelle). Impossible de bloquer si une
-            réservation ferme ou des options pending existent — refusez ou attendez
-            l&apos;expiration d&apos;abord.
+            « Complet » ferme la date aux nouvelles demandes côté public (vacances, journée pleine).
+            Les demandes déjà reçues restent gérables dans Réservations — les bloquer ne les
+            supprime pas. Rouvrir la date la rend de nouveau réservable.
           </p>
           <CalendarBlockPanel />
         </AdminCard>

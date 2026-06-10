@@ -77,10 +77,23 @@ export async function ReservationsV2({
   const page = Math.max(1, parseInt(searchParams["page"] ?? "1", 10) || 1);
   const skip = (page - 1) * PAGE_SIZE;
 
-  const where: { status?: BookingStatus | { in: BookingStatus[] } } = {};
+  // Filtre par jour (lien depuis le calendrier console — modèle multi-demandes).
+  const rawDate = searchParams["date"];
+  const dateValid = typeof rawDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(rawDate);
+
+  const where: {
+    status?: BookingStatus | { in: BookingStatus[] };
+    bookingDate?: { gte: Date; lt: Date };
+  } = {};
   if (rawStatus !== "all") {
     if (rawStatus === "active") where.status = { in: ACTIVE_STATUSES };
     else where.status = rawStatus as BookingStatus;
+  }
+  if (dateValid) {
+    const start = new Date(`${rawDate}T00:00:00.000Z`);
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 1);
+    where.bookingDate = { gte: start, lt: end };
   }
 
   const [items, total] = await Promise.all([
@@ -97,6 +110,7 @@ export async function ReservationsV2({
         participantsCount: true,
         basePriceHtCents: true,
         updatedAt: true,
+        formateur: { select: { prenom: true, nom: true } },
         submission: { select: { companyName: true, contactName: true, contactEmail: true } },
         fromSubmission: { select: { companyName: true, contactName: true, contactEmail: true } },
       },
@@ -141,6 +155,7 @@ export async function ReservationsV2({
           status={b.status}
           label={STATUS_LABELS[b.status] ?? b.status}
         />,
+        b.formateur ? `${b.formateur.prenom} ${b.formateur.nom}` : "—",
         fmtEur(b.basePriceHtCents),
         fmtDate(b.updatedAt),
       ],
@@ -149,7 +164,11 @@ export async function ReservationsV2({
 
   return (
     <AdminListScaffold
-      title="Réservations"
+      title={
+        dateValid
+          ? `Réservations · ${fmtDate(new Date(`${rawDate}T00:00:00.000Z`))}`
+          : "Réservations"
+      }
       itemLabel="booking(s)"
       total={total}
       page={page}
@@ -161,12 +180,15 @@ export async function ReservationsV2({
         "Contact",
         "Intervention",
         "Status",
+        "Formateur",
         "Montant HT",
         "Mise à jour",
       ]}
       rows={rows}
       paginationBaseHref={base}
-      paginationPreservedParams={{ status: rawStatus }}
+      paginationPreservedParams={
+        dateValid ? { status: rawStatus, date: rawDate } : { status: rawStatus }
+      }
     />
   );
 }

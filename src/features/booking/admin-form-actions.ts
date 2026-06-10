@@ -34,6 +34,11 @@ function pathsToRevalidate(adminPrefix: string, bookingId: string): string[] {
     `/fr/${adminPrefix}/reservations`,
     `/fr/${adminPrefix}/reservations/${bookingId}`,
     `/fr/${adminPrefix}/calendrier`,
+    // Modèle multi-demandes (2026-06-10) : valider/déplacer/annuler une demande
+    // change les compteurs « déjà X demandes » côté public → on rafraîchit aussi
+    // la page de réservation publique (cohérent avec admin-calendar/actions.ts).
+    "/fr/reserver",
+    "/en/book",
   ];
 }
 

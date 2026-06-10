@@ -138,7 +138,24 @@ export async function createBookingAction(
   const notesRaw = (formData.get("notes") as string | null) ?? null;
   // Sprint X.18 — attribution funnel (UTM cookie + pSEO referrerCity).
   const funnelAttr = await readFunnelAttribution();
-  const { booking } = await prisma.$transaction(async (tx) => {
+  // Harmonisation /reserver ↔ /calendrier (Will 2026-06-10, modèle multi-demandes).
+  // Une pré-réservation = une DEMANDE de date souhaitée (le visiteur sera
+  // rappelé), PAS un verrou exclusif : plusieurs demandes peuvent coexister le
+  // même jour (capacité illimitée, pilotée à la main depuis la console). Le
+  // SEUL cas de refus = la journée a été marquée « Complet » par l'admin
+  // (CalendarSlot.status='blocked'). Le Booking est rattaché au JOUR via
+  // bookingDate (pas de slotId exclusif : Booking.slotId est @unique → il
+  // empêcherait justement plusieurs demandes/jour). L'admin agrège les demandes
+  // par date sur /calendrier → /reservations?date=YYYY-MM-DD.
+  const slotDate = new Date(`${parsed.data.date}T00:00:00.000Z`);
+  const dayState = await prisma.calendarSlot.findUnique({
+    where: { slotDate },
+    select: { status: true },
+  });
+  if (dayState?.status === "blocked") {
+    return { ok: false, error: "Cette date est complète. Choisissez une autre date." };
+  }
+  const result = await prisma.$transaction(async (tx) => {
     // Méta-cert 2026-05-15 AGENT 12 P0 OWASP A02 — PII at-rest encryption.
     // `encryptPii` est passe-through en dev sans clé (warn log) + idempotent
     // (rows déjà chiffrées ne sont pas re-chiffrées). Format `enc:v1:iv:ct:tag`
@@ -202,10 +219,11 @@ export async function createBookingAction(
     });
     return { submission, booking: b };
   });
+  const createdBookingId = result.booking.id;
 
   await sendTelegram({
     tag: "INTERVENTION",
-    body: `Nouvelle réservation ${interventionTypeEnum}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${parsed.data.participantsCount}\n• Prix : ${pricePaidCents != null ? `${(pricePaidCents / 100).toFixed(0)} € HT` : "sur devis"}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${booking.id}\``,
+    body: `Nouvelle réservation ${interventionTypeEnum}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${parsed.data.participantsCount}\n• Prix : ${pricePaidCents != null ? `${(pricePaidCents / 100).toFixed(0)} € HT` : "sur devis"}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${createdBookingId}\``,
   });
 
   await enqueueEmail("booking-confirmed", parsed.data.email, locale, {
@@ -214,10 +232,10 @@ export async function createBookingAction(
     bookingTime: parsed.data.time,
     interventionType: interventionTypeEnum,
     participantsCount: parsed.data.participantsCount,
-    bookingId: booking.id,
+    bookingId: createdBookingId,
   });
 
-  return { ok: true, bookingId: booking.id };
+  return { ok: true, bookingId: createdBookingId };
 }
 
 // ============================================================

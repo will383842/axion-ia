@@ -795,6 +795,10 @@ model Booking {
   submission        Submission?      @relation(fields: [submissionId], references: [id], onDelete: SetNull)
   slotId            String?          @unique @map("slot_id") @db.Uuid
   slot              CalendarSlot?    @relation(fields: [slotId], references: [id], onDelete: SetNull)
+  // Formateur affecté à l'intervention (Phase 2 calendrier, 2026-06-10). Optionnel,
+  // libre parmi les formateurs actifs. SetNull si le formateur est supprimé.
+  formateurId       String?          @map("formateur_id") @db.Uuid
+  formateur         Trainer?         @relation("BookingFormateur", fields: [formateurId], references: [id], onDelete: SetNull)
   // Calendrier externe (legacy Cal.com — peut rester null après migration calendrier maison)
   calendarEventId   String?          @map("calendar_event_id") @db.VarChar(255)
   status            BookingStatus    @default(pending)
@@ -904,6 +908,7 @@ model Booking {
   @@index([companyCityNormalized])
   @@index([pausedUntil])
   @@index([cancellationWindow])
+  @@index([formateurId])
   @@map("bookings")
 }
 
@@ -5095,6 +5100,9 @@ model Trainer {
   email                String        @unique @db.Citext
   telephone            String?       @db.VarChar(40)
   statut               TrainerStatut
+  /// Région d'intervention (Phase 2 calendrier 2026-06-10). Slug parmi les 13
+  /// régions FR (cf. src/content/regions.ts). Null = non renseigné.
+  region               String?       @map("region") @db.VarChar(60)
   cvUrl                String?       @map("cv_url") @db.Text
   cvUploadedAt         DateTime?     @map("cv_uploaded_at")
   /// [{ domaine, niveauMaitrise, verifiedAt }].
@@ -5111,9 +5119,11 @@ model Trainer {
   updatedAt            DateTime      @updatedAt @map("updated_at")
 
   sessionsAnimees TrainingSession[] @relation("SessionFormateurPrincipal")
+  bookingsAnimes  Booking[]         @relation("BookingFormateur")
 
   @@index([statut])
   @@index([actif])
+  @@index([region])
   @@map("trainers")
 }
 

@@ -236,6 +236,9 @@ export interface BookedSlot {
 
 interface BookingCalendarProps {
   initialBookedSlots?: ReadonlyArray<BookedSlot>;
+  /** Dates (yyyy-mm-dd) bloquées par l'admin (calendrier console) — grisées,
+   *  non réservables. Harmonisation /reserver ↔ /calendrier (2026-06-10). */
+  blockedDates?: ReadonlyArray<string>;
   locale: "fr" | "en";
 }
 
@@ -278,7 +281,11 @@ function addDays(iso: string, n: number): string {
   return dateKey(dt.getFullYear(), dt.getMonth(), dt.getDate());
 }
 
-export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCalendarProps) {
+export function BookingCalendar({
+  initialBookedSlots = [],
+  blockedDates = [],
+  locale,
+}: BookingCalendarProps) {
   const isFr = locale === "fr";
   const months = isFr ? FR_MONTHS : EN_MONTHS;
   const weekDays = isFr
@@ -367,22 +374,25 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   const [bookedSlots, setBookedSlots] =
     React.useState<ReadonlyArray<BookedSlot>>(initialBookedSlots);
 
-  // Index booked dates → l'indexe par date pour O(1) lookup, en tenant compte
-  // des durations (slot 2j bloque date AND date+1).
-  const bookedByDate = React.useMemo(() => {
-    const map = new Map<string, BookedSlot>();
+  // Modèle multi-demandes (Will 2026-06-10) : une pré-réservation = une DEMANDE
+  // de date, pas un verrou. Une même journée peut recevoir plusieurs demandes →
+  // on ne bloque plus le jour, on COMPTE les demandes (social proof « déjà X
+  // demande(s) »). Le jour reste réservable tant que l'admin ne l'a pas marqué
+  // « Complet » (blockedSet). countByDate = nb de demandes par jour ;
+  // sampleByDate = une demande représentative (pour la ville en infobulle).
+  const { countByDate, sampleByDate } = React.useMemo(() => {
+    const counts = new Map<string, number>();
+    const sample = new Map<string, BookedSlot>();
     for (const slot of bookedSlots) {
-      map.set(slot.date, slot);
-      if (slot.duration === 2) {
-        // Bloque le J+1 aussi pour la durée 2 jours
-        const next = addDays(slot.date, 1);
-        if (!map.has(next)) {
-          map.set(next, { ...slot, date: next });
-        }
-      }
+      counts.set(slot.date, (counts.get(slot.date) ?? 0) + 1);
+      if (!sample.has(slot.date)) sample.set(slot.date, slot);
     }
-    return map;
+    return { countByDate: counts, sampleByDate: sample };
   }, [bookedSlots]);
+
+  // Dates « Complet » marquées par l'admin (console /calendrier) : seules dates
+  // grisées / non réservables côté public.
+  const blockedSet = React.useMemo(() => new Set(blockedDates), [blockedDates]);
 
   // Modal state
   const [openSlot, setOpenSlot] = React.useState<string | null>(null);
@@ -593,18 +603,16 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   }
 
   // === Stats social proof + urgence légitime ===
-  const slotsThisMonthBooked = bookedSlots.filter((s) => {
-    const [y, m] = s.date.split("-").map(Number);
+  // Multi-demandes : un jour réservable n'est PAS « consommé » par une demande.
+  // Jours encore ouverts = total - jours passés - jours marqués Complet.
+  const completThisMonth = Array.from(blockedSet).filter((iso) => {
+    const [y, m] = iso.split("-").map(Number);
     return y === viewYear && m! - 1 === viewMonth;
   }).length;
   const totalDaysThisMonth = daysInMonth;
-  // Estimation jours encore dispos = total - booked - jours passés
   const isViewingCurrentMonth = viewYear === today.getFullYear() && viewMonth === today.getMonth();
   const passedDaysIfCurrent = isViewingCurrentMonth ? today.getDate() : 0;
-  const availableSlots = Math.max(
-    0,
-    totalDaysThisMonth - slotsThisMonthBooked - passedDaysIfCurrent,
-  );
+  const availableSlots = Math.max(0, totalDaysThisMonth - completThisMonth - passedDaysIfCurrent);
 
   // « Réservations cette semaine » — compte des bookings dans les 7 derniers jours
   const sevenDaysAgo = new Date(today);
@@ -635,8 +643,8 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     const d = new Date(today);
     d.setDate(today.getDate() + offset);
     const k = dateKey(d.getFullYear(), d.getMonth(), d.getDate());
-    if (bookedByDate.has(k)) continue;
-    if (dur === 2 && bookedByDate.has(addDays(k, 1))) continue;
+    if (blockedSet.has(k)) continue;
+    if (dur === 2 && blockedSet.has(addDays(k, 1))) continue;
     nextAvailableKey = k;
     break;
   }
@@ -671,15 +679,13 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   // Click sur une cellule
   function onCellClick(iso: string) {
     if (iso < todayKey) return;
-    if (bookedByDate.has(iso)) return;
-    // Vérifier que le J+1 est libre si la durée est 2
+    // Multi-demandes : on n'empêche plus de cliquer un jour qui a déjà des
+    // demandes — seuls les jours « Complet » (bloqués admin) sont refusés.
+    if (blockedSet.has(iso)) return;
+    // Pour une intervention 2 jours, refuse si le J+1 est marqué Complet.
     const dur = preselectedOpt.durationDays;
-    if (dur === 2) {
-      const next = addDays(iso, 1);
-      if (bookedByDate.has(next)) {
-        // Le 2ème jour est pris — pas d'ouverture modal, feedback
-        return;
-      }
+    if (dur === 2 && blockedSet.has(addDays(iso, 1))) {
+      return;
     }
     setOpenSlot(iso);
     setStep(1);
@@ -1046,12 +1052,15 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
               const iso = cell.key;
               const isPast = iso < todayKey;
               const isToday = iso === todayKey;
-              const booked = bookedByDate.get(iso);
-              const isBooked = !!booked;
+              // Multi-demandes : un jour reste réservable même avec des demandes ;
+              // seul « Complet » (bloqué admin) le rend indisponible.
+              const isComplet = !isPast && blockedSet.has(iso);
               const dur = preselectedOpt.durationDays;
-              const nextDayBooked = dur === 2 && bookedByDate.has(addDays(iso, 1));
-              const isBlockedByOverlap = !isBooked && !isPast && nextDayBooked;
-              const isAvailable = !isPast && !isBooked && !isBlockedByOverlap;
+              const nextDayComplet = dur === 2 && blockedSet.has(addDays(iso, 1));
+              const isAvailable = !isPast && !isComplet && !nextDayComplet;
+              const count = countByDate.get(iso) ?? 0;
+              const sample = sampleByDate.get(iso);
+              const hasDemands = count > 0;
 
               return (
                 <li key={cell.key} className="relative">
@@ -1066,24 +1075,32 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                     // WCAG 2.5.3 / Lighthouse `label-content-name-mismatch`
                     // (un aria-label figé omettait « Réserver » / la ville).
                     title={
-                      isBooked && booked
-                        ? `${isFr ? "Réservé" : "Booked"} · ${booked.city}${booked.country ? ` (${booked.country})` : ""} · ${booked.sector} · ${booked.companySize}`
-                        : undefined
+                      isComplet
+                        ? isFr
+                          ? "Complet"
+                          : "Full"
+                        : hasDemands && sample
+                          ? `${isFr ? "Déjà" : "Already"} ${count} ${isFr ? (count > 1 ? "demandes" : "demande") : count > 1 ? "requests" : "request"} · ${sample.city}`
+                          : undefined
                     }
                     className={cn(
                       "group relative flex aspect-square w-full flex-col items-stretch justify-start rounded-2xl text-left transition-all",
                       // Passé : SIMPLE — line-through opacity 40
                       isPast &&
                         "text-fg-muted cursor-not-allowed p-2 line-through opacity-40 sm:p-2.5",
-                      // Réservé : LUMINEUX (halo-warm + accent terracotta) avec infos publiques
-                      isBooked &&
-                        "bg-halo-warm border-terracotta/40 text-fg shadow-subtle cursor-not-allowed border-2 p-1.5 sm:p-2",
-                      // Chevauchement (2j et J+1 pris) — neutre
-                      isBlockedByOverlap &&
+                      // Complet (bloqué admin) — neutre, non réservable
+                      isComplet &&
+                        "border-border bg-paper text-fg-muted cursor-not-allowed border-2 p-2 opacity-50 sm:p-2.5",
+                      // J+1 complet (intervention 2 jours) — neutre
+                      !isComplet &&
+                        nextDayComplet &&
+                        !isPast &&
                         "border-border bg-paper text-fg-muted cursor-not-allowed border-2 p-2 opacity-40 sm:p-2.5",
-                      // Dispo : lumineux, hover halo-warm + lift fort
+                      // Dispo : lumineux, hover halo-warm + lift fort. Les jours
+                      // avec demandes restent réservables (accent terracotta léger).
                       isAvailable &&
                         "border-border-strong bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card text-fg cursor-pointer border-2 p-2 hover:-translate-y-1 sm:p-2.5",
+                      isAvailable && hasDemands && "border-terracotta/40 bg-halo-warm",
                       isToday &&
                         isAvailable &&
                         "ring-terracotta/40 ring-offset-paper ring-4 ring-offset-2",
@@ -1094,15 +1111,13 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                       <span
                         className={cn(
                           "font-bold tabular-nums",
-                          isBooked
-                            ? "text-fg text-base sm:text-lg"
-                            : "text-lg sm:text-xl lg:text-2xl",
+                          "text-lg sm:text-xl lg:text-2xl",
                           isToday && isAvailable && "text-terracotta-deep",
                         )}
                       >
                         {cell.day}
                       </span>
-                      {isBooked ? (
+                      {isAvailable && hasDemands ? (
                         <span
                           aria-hidden="true"
                           className="bg-terracotta shadow-subtle inline-block h-2.5 w-2.5 rounded-full"
@@ -1110,51 +1125,51 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                       ) : null}
                     </div>
 
-                    {isBooked && booked ? (
-                      /* Cell réservée : ville + secteur + taille en chips compactes.
-                       Anonymat : pas de nom d'entreprise. */
-                      <div className="mt-auto flex flex-col gap-1 text-left">
-                        <p className="text-fg truncate text-[12px] leading-tight font-bold sm:text-[13px]">
-                          <span aria-hidden="true">📍 </span>
-                          {booked.city}
-                          {booked.country && booked.country !== "FR" ? (
-                            <span className="text-fg-muted ml-0.5 font-semibold">
-                              · {booked.country}
-                            </span>
-                          ) : null}
-                        </p>
-                        <p className="text-fg-soft truncate text-[11px] leading-tight font-medium sm:text-[12px]">
-                          {booked.sector}
-                        </p>
-                        <p className="text-fg-muted truncate text-[11px] leading-tight font-semibold sm:text-[12px]">
-                          {booked.companySize}
-                        </p>
-                      </div>
-                    ) : isAvailable ? (
-                      <span className="text-terracotta-deep mt-auto text-[13px] font-bold opacity-0 transition-opacity group-hover:opacity-100 sm:text-sm">
-                        {isFr ? "Réserver " : "Book "}
-                        <span aria-hidden="true">→</span>
+                    {isComplet ? (
+                      <span className="text-fg-muted mt-auto text-[12px] font-semibold sm:text-[13px]">
+                        {isFr ? "Complet" : "Full"}
                       </span>
+                    ) : isAvailable ? (
+                      <div className="mt-auto flex flex-col gap-1 text-left">
+                        {hasDemands ? (
+                          /* Social proof : nombre de demandes déjà reçues ce jour.
+                             Le jour reste réservable (plusieurs demandes possibles). */
+                          <span className="text-terracotta-deep text-[11px] leading-tight font-semibold sm:text-[12px]">
+                            <span aria-hidden="true">🔥 </span>
+                            {isFr
+                              ? `déjà ${count} demande${count > 1 ? "s" : ""}`
+                              : `${count} request${count > 1 ? "s" : ""}`}
+                          </span>
+                        ) : null}
+                        <span className="text-terracotta-deep text-[13px] font-bold opacity-0 transition-opacity group-hover:opacity-100 sm:text-sm">
+                          {isFr ? "Réserver " : "Book "}
+                          <span aria-hidden="true">→</span>
+                        </span>
+                      </div>
                     ) : null}
 
                     {/* Suffixe d'état réservé aux lecteurs d'écran (le texte
                         visible reste le préfixe du nom accessible). */}
                     <span className="sr-only">
-                      {isBooked
+                      {isPast
                         ? isFr
-                          ? " — réservé"
-                          : " — booked"
-                        : isPast
+                          ? " — passé"
+                          : " — past"
+                        : isComplet
                           ? isFr
-                            ? " — passé"
-                            : " — past"
+                            ? " — complet"
+                            : " — full"
                           : isAvailable
                             ? isFr
-                              ? " — disponible"
-                              : " — available"
+                              ? hasDemands
+                                ? ` — disponible, déjà ${count} demande${count > 1 ? "s" : ""}`
+                                : " — disponible"
+                              : hasDemands
+                                ? ` — available, ${count} request${count > 1 ? "s" : ""}`
+                                : " — available"
                             : isFr
-                              ? " — non disponible (chevauchement)"
-                              : " — unavailable (overlap)"}
+                              ? " — non disponible"
+                              : " — unavailable"}
                     </span>
                   </button>
                 </li>
@@ -1176,9 +1191,11 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
             </span>
             <span className="inline-flex items-center gap-2.5">
               <span className="bg-halo-warm border-terracotta/40 h-4 w-4 rounded-md border-2" />
-              {isFr
-                ? "Réservé (ville · secteur · taille visibles)"
-                : "Booked (city · sector · size visible)"}
+              {isFr ? "Réservable — déjà des demandes ce jour" : "Bookable — already has requests"}
+            </span>
+            <span className="inline-flex items-center gap-2.5">
+              <span className="bg-paper border-border h-4 w-4 rounded-md border-2 opacity-50" />
+              {isFr ? "Complet" : "Full"}
             </span>
             <span className="inline-flex items-center gap-2.5">
               <span className="text-fg-muted text-base line-through opacity-40">—</span>

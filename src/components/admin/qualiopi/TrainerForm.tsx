@@ -10,6 +10,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createTrainerAction, updateTrainerAction } from "@/server/actions/qualiopi/trainers";
+import { REGIONS } from "@/content/regions";
 
 type Statut = "salarie" | "sous_traitant";
 
@@ -24,6 +25,7 @@ export interface TrainerFormProps {
     email: string;
     telephone: string | null;
     statut: Statut;
+    region: string | null;
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
   };
@@ -45,6 +47,7 @@ export function TrainerForm({
   const [email, setEmail] = useState(initial?.email ?? "");
   const [telephone, setTelephone] = useState(initial?.telephone ?? "");
   const [statut, setStatut] = useState<Statut>(initial?.statut ?? "salarie");
+  const [region, setRegion] = useState(initial?.region ?? "");
   const [tarifEuros, setTarifEuros] = useState(
     initial?.tarifJourneeHtCents != null ? String(initial.tarifJourneeHtCents / 100) : "",
   );
@@ -64,6 +67,7 @@ export function TrainerForm({
           prenom,
           email,
           statut,
+          region,
           ...(telephone ? { telephone } : {}),
           ...(tarifCents !== undefined && !Number.isNaN(tarifCents)
             ? { tarifJourneeHtCents: tarifCents }
@@ -82,6 +86,7 @@ export function TrainerForm({
           prenom,
           email,
           statut,
+          region,
           ...(telephone ? { telephone } : {}),
           ...(tarifCents !== undefined && !Number.isNaN(tarifCents)
             ? { tarifJourneeHtCents: tarifCents }
@@ -178,6 +183,25 @@ export function TrainerForm({
           >
             <option value="salarie">Salarié</option>
             <option value="sous_traitant">Sous-traitant</option>
+          </select>
+        </div>
+        <div className={fieldCls}>
+          <label className={labelCls} htmlFor="t-region">
+            Région d&apos;intervention
+          </label>
+          <select
+            id="t-region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+            disabled={isPending}
+            className={inputCls}
+          >
+            <option value="">— Non renseignée —</option>
+            {REGIONS.map((r) => (
+              <option key={r.slug} value={r.slug}>
+                {r.nameFr}
+              </option>
+            ))}
           </select>
         </div>
         <div className={fieldCls}>

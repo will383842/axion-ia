@@ -20,7 +20,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { BookingStatus, CalendarSlotStatus } from "../../../prisma/generated/client";
+import type { BookingStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -40,52 +40,106 @@ async function requireAdminRead() {
 // getCalendarMonth
 // ============================================================
 
-export interface CalendarMonthSlot {
-  id: string;
+// Modèle multi-demandes (Will 2026-06-10) : une journée n'est plus une case
+// binaire réservé/dispo mais un CONTENEUR de demandes. On agrège par jour :
+//   - demandesCount  = pré-réservations en cours (le visiteur sera rappelé)
+//   - valideesCount  = interventions confirmées/en cours/terminées
+//   - blocked        = journée marquée « Complet » par l'admin
+export interface CalendarDaySummary {
   date: string; // YYYY-MM-DD
-  status: CalendarSlotStatus;
-  displaySector: string | null;
-  interventionType: string | null;
-  participantsCount: number | null;
+  blocked: boolean;
   blockedReason: string | null;
-  bookingId: string | null;
-  bookingStatus: BookingStatus | null;
-  pendingOptionsCount: number;
+  demandesCount: number;
+  valideesCount: number;
+  /** Noms des formateurs affectés aux interventions validées ce jour (distincts). */
+  formateurs: string[];
 }
+
+// Statuts « demande » (parcours en cours) vs « validée » (verrouillé). Aligné
+// sur la state machine + le distinguo préréservé/validé côté UI.
+const PRERESERVED_STATUSES: ReadonlySet<BookingStatus> = new Set<BookingStatus>([
+  "option_pending",
+  "cadrage_scheduled",
+  "cadrage_held",
+  "quote_required",
+  "quote_sent",
+  "quote_signed",
+  "contract_pending",
+  "contract_payment_sent",
+  "contract_signed",
+  "awaiting_admin_validation",
+]);
+const VALIDATED_STATUSES: ReadonlySet<BookingStatus> = new Set<BookingStatus>([
+  "confirmed",
+  "reminded_j7",
+  "in_progress",
+  "paused",
+  "completed",
+  "invoiced_balance",
+  "installment_overdue",
+  "paid_balance",
+]);
 
 export async function getCalendarMonthAction(
   year: number,
   month: number,
-): Promise<CalendarMonthSlot[]> {
+): Promise<CalendarDaySummary[]> {
   await requireAdminRead();
   // month attendu en 1-12 (humain), JS Date.UTC veut 0-11
   const start = new Date(Date.UTC(year, month - 1, 1));
   const end = new Date(Date.UTC(year, month, 1));
 
-  const slots = await prisma.calendarSlot.findMany({
-    where: { slotDate: { gte: start, lt: end } },
-    orderBy: { slotDate: "asc" },
-    include: {
-      booking: { select: { id: true, status: true } },
-      options: {
-        where: { status: "pending" },
-        select: { id: true },
+  const [bookings, blockedSlots] = await Promise.all([
+    prisma.booking.findMany({
+      where: { bookingDate: { gte: start, lt: end } },
+      select: {
+        bookingDate: true,
+        status: true,
+        formateur: { select: { prenom: true, nom: true } },
       },
-    },
-  });
+    }),
+    prisma.calendarSlot.findMany({
+      where: { slotDate: { gte: start, lt: end }, status: "blocked" },
+      select: { slotDate: true, blockedReason: true },
+    }),
+  ]);
 
-  return slots.map((s) => ({
-    id: s.id,
-    date: s.slotDate.toISOString().slice(0, 10),
-    status: s.status,
-    displaySector: s.displaySector,
-    interventionType: s.interventionType,
-    participantsCount: s.participantsCount,
-    blockedReason: s.blockedReason,
-    bookingId: s.booking?.id ?? null,
-    bookingStatus: s.booking?.status ?? null,
-    pendingOptionsCount: s.options.length,
-  }));
+  const byDate = new Map<string, CalendarDaySummary>();
+  const ensure = (date: string): CalendarDaySummary => {
+    let d = byDate.get(date);
+    if (!d) {
+      d = {
+        date,
+        blocked: false,
+        blockedReason: null,
+        demandesCount: 0,
+        valideesCount: 0,
+        formateurs: [],
+      };
+      byDate.set(date, d);
+    }
+    return d;
+  };
+
+  for (const b of bookings) {
+    if (PRERESERVED_STATUSES.has(b.status))
+      ensure(b.bookingDate.toISOString().slice(0, 10)).demandesCount++;
+    else if (VALIDATED_STATUSES.has(b.status)) {
+      const day = ensure(b.bookingDate.toISOString().slice(0, 10));
+      day.valideesCount++;
+      if (b.formateur) {
+        const name = `${b.formateur.prenom} ${b.formateur.nom}`;
+        if (!day.formateurs.includes(name)) day.formateurs.push(name);
+      }
+    }
+  }
+  for (const s of blockedSlots) {
+    const d = ensure(s.slotDate.toISOString().slice(0, 10));
+    d.blocked = true;
+    d.blockedReason = s.blockedReason;
+  }
+
+  return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
 }
 
 // ============================================================
@@ -119,62 +173,71 @@ export async function blockDateAction(
   const ip = await getClientIp();
   const slotDate = new Date(`${parsed.data.date}T00:00:00.000Z`);
 
-  await prisma.$transaction(async (tx) => {
-    // Sprint 15 fix Fork 2 W4-2 : SELECT FOR UPDATE pour verrouiller la ligne
-    // pendant la decision admin (race avec visiteur posant option en parallele).
-    await tx.$queryRaw`
+  try {
+    await prisma.$transaction(async (tx) => {
+      // Sprint 15 fix Fork 2 W4-2 : SELECT FOR UPDATE pour verrouiller la ligne
+      // pendant la decision admin (race avec visiteur posant option en parallele).
+      await tx.$queryRaw`
       SELECT id FROM calendar_slots
       WHERE slot_date = ${slotDate}::date
       FOR UPDATE
     `;
 
-    // Verifie pas de booking ferme sur ce slot
-    const existing = await tx.calendarSlot.findUnique({
-      where: { slotDate },
-      include: {
-        booking: { select: { id: true, status: true } },
-        options: { where: { status: "pending" }, select: { id: true } },
-      },
-    });
-
-    if (existing?.booking && existing.booking.status === "confirmed") {
-      throw new Error("booking_active");
-    }
-    if (existing && existing.options.length > 0) {
-      throw new Error("options_pending");
-    }
-
-    if (existing) {
-      await tx.calendarSlot.update({
-        where: { id: existing.id },
-        data: {
-          status: "blocked",
-          blockedReason: parsed.data.reason,
-          displaySector: null,
-          interventionType: null,
-          participantsCount: null,
+      const existing = await tx.calendarSlot.findUnique({
+        where: { slotDate },
+        include: {
+          options: { where: { status: "pending" }, select: { id: true } },
         },
       });
-    } else {
-      await tx.calendarSlot.create({
+
+      // Modèle multi-demandes (Will 2026-06-10) : « Bloquer » = marquer la
+      // journée COMPLETE → on n'accepte plus de NOUVELLE pré-réservation
+      // publique ce jour-là. Les demandes déjà reçues (Booking rattachés par
+      // bookingDate, sans slotId) restent gérables sur /reservations — bloquer
+      // ne les écrase pas. On autorise donc toujours le blocage, on refuse
+      // seulement s'il reste des options 48h pending (flux legacy lié au slot).
+      if (existing && existing.options.length > 0) {
+        throw new Error("options_pending");
+      }
+
+      if (existing) {
+        await tx.calendarSlot.update({
+          where: { id: existing.id },
+          data: {
+            status: "blocked",
+            blockedReason: parsed.data.reason,
+            displaySector: null,
+            interventionType: null,
+            participantsCount: null,
+          },
+        });
+      } else {
+        await tx.calendarSlot.create({
+          data: {
+            slotDate,
+            status: "blocked",
+            blockedReason: parsed.data.reason,
+            showPublicly: false,
+          },
+        });
+      }
+      await tx.activityLog.create({
         data: {
-          slotDate,
-          status: "blocked",
-          blockedReason: parsed.data.reason,
-          showPublicly: false,
+          adminUserId: session.userId,
+          action: "calendar.blocked",
+          targetType: "calendar_slot",
+          changes: { date: parsed.data.date, reason: parsed.data.reason },
+          ipAddress: ip,
         },
       });
-    }
-    await tx.activityLog.create({
-      data: {
-        adminUserId: session.userId,
-        action: "calendar.blocked",
-        targetType: "calendar_slot",
-        changes: { date: parsed.data.date, reason: parsed.data.reason },
-        ipAddress: ip,
-      },
     });
-  });
+  } catch (err) {
+    const msg = (err as Error).message;
+    if (msg === "options_pending") {
+      return { ok: false, error: "Options en attente sur cette date — refusez-les d'abord." };
+    }
+    return { ok: false, error: "Impossible de marquer cette date complète." };
+  }
 
   revalidatePath(adminPath("fr", "calendrier"));
   // Sprint 24 / C1 — bloquer une date retire le slot des dispos public.

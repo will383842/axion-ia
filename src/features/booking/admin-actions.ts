@@ -28,9 +28,11 @@
 //     `markNoShowAction` et `markForceMajeureAction` qui exigent super_admin.
 
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { getClientIp } from "@/lib/client-ip";
 import { enqueueEmail } from "@/server/queue/queues";
 import { applyTransition, StateMachineError, type ApplyTransitionOptions } from "./state-machine";
 
@@ -123,6 +125,7 @@ export interface AdminActionResult {
     | "invalid_input"
     | "booking_not_found"
     | "transition_not_allowed"
+    | "trainer_unavailable"
     | "internal_error";
 }
 
@@ -542,5 +545,71 @@ export async function validateBookingOnCalendarAction(
     return { ok: true };
   } catch (err) {
     return stateMachineErrorResult(err, "[validateBookingOnCalendarAction]");
+  }
+}
+
+// ============================================================
+// assignTrainerToBookingAction (Phase 2 calendrier — Will 2026-06-10)
+// ============================================================
+//
+// Affecte (ou retire) le formateur d'une intervention/réservation. Modifiable à
+// tout moment depuis la fiche /reservations/[id]. Libre parmi les formateurs
+// ACTIFS (pas de contrôle d'habilitation : les interventions calendrier ≠ les
+// formations Qualiopi cataloguées — décision Will). `trainerId = null` retire.
+const assignFormateurSchema = z.object({
+  bookingId: z.string().uuid(),
+  trainerId: z.string().uuid().nullable(),
+});
+
+export async function assignTrainerToBookingAction(
+  input: z.input<typeof assignFormateurSchema>,
+): Promise<AdminActionResult> {
+  const parsed = assignFormateurSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid_input" };
+
+  let admin: AdminContext;
+  try {
+    admin = await requireAdmin("admin");
+  } catch (err) {
+    return authErrorResult(err);
+  }
+
+  const { bookingId, trainerId } = parsed.data;
+
+  try {
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
+      select: { id: true },
+    });
+    if (!booking) return { ok: false, error: "booking_not_found" };
+
+    if (trainerId !== null) {
+      const trainer = await prisma.trainer.findUnique({
+        where: { id: trainerId },
+        select: { actif: true },
+      });
+      if (!trainer) return { ok: false, error: "trainer_unavailable" };
+      if (!trainer.actif) return { ok: false, error: "trainer_unavailable" };
+    }
+
+    await prisma.$transaction([
+      prisma.booking.update({ where: { id: bookingId }, data: { formateurId: trainerId } }),
+      prisma.activityLog.create({
+        data: {
+          adminUserId: admin.userId,
+          action: trainerId ? "booking.assign_formateur" : "booking.unassign_formateur",
+          targetType: "booking",
+          targetId: bookingId,
+          changes: { formateurId: trainerId },
+          ipAddress: await getClientIp(),
+        },
+      }),
+    ]);
+
+    revalidatePath("/fr/reserver");
+    return { ok: true };
+  } catch (err) {
+    console.error("[assignTrainerToBookingAction]", err);
+    return { ok: false, error: "internal_error" };
   }
 }

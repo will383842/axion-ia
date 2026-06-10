@@ -19,10 +19,22 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
+import { getAllRegionSlugs } from "@/content/regions";
 
 type ActionResult<T> = { data: T } | { error: string };
 
 const TRAINER_STATUTS = ["salarie", "sous_traitant"] as const;
+
+// Région d'intervention : slug parmi les 13 régions FR + 5 DROM (SSOT regions.ts).
+// Phase 2 calendrier (Will 2026-06-10). "" autorisé = non renseigné → null.
+const REGION_SLUGS: ReadonlySet<string> = new Set(getAllRegionSlugs());
+const regionField = z
+  .string()
+  .max(60)
+  .optional()
+  .refine((v) => v === undefined || v === "" || REGION_SLUGS.has(v), {
+    message: "Région inconnue",
+  });
 
 const createTrainerSchema = z.object({
   nom: z.string().min(1).max(200),
@@ -30,6 +42,7 @@ const createTrainerSchema = z.object({
   email: z.string().email(),
   telephone: z.string().max(40).optional(),
   statut: z.enum(TRAINER_STATUTS),
+  region: regionField,
   cvUrl: z.string().url().optional(),
   domainesCompetences: z.array(z.unknown()).optional(),
   formationsHabilitees: z.array(z.string().uuid()).optional(),
@@ -45,6 +58,7 @@ const updateTrainerSchema = z.object({
   email: z.string().email().optional(),
   telephone: z.string().max(40).optional(),
   statut: z.enum(TRAINER_STATUTS).optional(),
+  region: regionField,
   cvUrl: z.string().url().optional(),
   domainesCompetences: z.array(z.unknown()).optional(),
   dateEmbauche: z.coerce.date().optional(),
@@ -87,6 +101,7 @@ export async function createTrainerAction(
         prenom: v.prenom,
         email: v.email,
         statut: v.statut,
+        ...(v.region !== undefined ? { region: v.region === "" ? null : v.region } : {}),
         ...(v.telephone !== undefined ? { telephone: v.telephone } : {}),
         ...(v.cvUrl !== undefined ? { cvUrl: v.cvUrl, cvUploadedAt: new Date() } : {}),
         ...(v.domainesCompetences !== undefined
@@ -139,6 +154,9 @@ export async function updateTrainerAction(
         ...(fields.email !== undefined ? { email: fields.email } : {}),
         ...(fields.telephone !== undefined ? { telephone: fields.telephone } : {}),
         ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
+        ...(fields.region !== undefined
+          ? { region: fields.region === "" ? null : fields.region }
+          : {}),
         ...(fields.cvUrl !== undefined ? { cvUrl: fields.cvUrl, cvUploadedAt: new Date() } : {}),
         ...(fields.domainesCompetences !== undefined
           ? { domainesCompetences: fields.domainesCompetences as never }

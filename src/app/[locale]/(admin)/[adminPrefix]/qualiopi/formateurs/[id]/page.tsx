@@ -36,6 +36,37 @@ async function listFormationsLite(): Promise<Array<{ id: string; titre: string }
   }
 }
 
+// « Nombre de formations faites » — calculé automatiquement (Will 2026-06-10) :
+// sessions Qualiopi animées + interventions calendrier confirmées/réalisées.
+// Stub-safe (build sans DB → 0).
+async function getTrainerActivityCounts(
+  trainerId: string,
+): Promise<{ sessionsCount: number; interventionsCount: number }> {
+  try {
+    const [sessionsCount, interventionsCount] = await Promise.all([
+      prisma.trainingSession.count({ where: { formateurPrincipalId: trainerId } }),
+      prisma.booking.count({
+        where: {
+          formateurId: trainerId,
+          status: {
+            in: [
+              "confirmed",
+              "reminded_j7",
+              "in_progress",
+              "completed",
+              "invoiced_balance",
+              "paid_balance",
+            ],
+          },
+        },
+      }),
+    ]);
+    return { sessionsCount, interventionsCount };
+  } catch {
+    return { sessionsCount: 0, interventionsCount: 0 };
+  }
+}
+
 export default async function FicheFormateurPage({ params }: PageProps) {
   const { locale, adminPrefix, id } = await params;
   const session = await auth();
@@ -49,6 +80,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   if (!trainer) notFound();
 
   const formations = await listFormationsLite();
+  const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
 
   return (
     <AdminPageShell width="wide">
@@ -58,6 +90,17 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         <Link href={base} className="text-[color:var(--color-admin-accent)] underline">
           ← Retour aux formateurs
         </Link>
+      </div>
+
+      <div className="admin-card mb-[var(--space-admin-5)] p-[var(--space-admin-4)]">
+        <p className="admin-meta">Activité (calculée automatiquement)</p>
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          <strong>{sessionsCount}</strong> session{sessionsCount > 1 ? "s" : ""} Qualiopi animée
+          {sessionsCount > 1 ? "s" : ""} · <strong>{interventionsCount}</strong> intervention
+          {interventionsCount > 1 ? "s" : ""} calendrier réalisée{interventionsCount > 1 ? "s" : ""}
+          {" — soit "}
+          <strong>{sessionsCount + interventionsCount}</strong> au total.
+        </p>
       </div>
 
       <div className="mb-[var(--space-admin-6)]">
@@ -71,6 +114,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
             email: trainer.email,
             telephone: trainer.telephone,
             statut: trainer.statut,
+            region: trainer.region,
             tarifJourneeHtCents: trainer.tarifJourneeHtCents,
             sousTraitantNda: trainer.sousTraitantNda,
           }}

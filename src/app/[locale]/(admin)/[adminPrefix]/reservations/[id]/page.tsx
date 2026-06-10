@@ -12,7 +12,13 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { BookingActions } from "./BookingActions";
+import { BookingFormateurSelect, type TrainerOption } from "./BookingFormateurSelect";
+import { REGIONS } from "@/content/regions";
 import type { BookingStatus } from "../../../../../../../prisma/generated/client";
+
+const REGION_LABELS: Record<string, string> = Object.fromEntries(
+  REGIONS.map((r) => [r.slug, r.nameFr]),
+);
 
 export const dynamic = "force-dynamic";
 
@@ -113,6 +119,8 @@ export default async function ReservationDetailPage({ params }: PageProps) {
       originPath: true,
       locale: true,
       slot: { select: { id: true, slotDate: true, status: true } },
+      formateurId: true,
+      formateur: { select: { id: true, prenom: true, nom: true } },
       submission: {
         select: {
           id: true,
@@ -169,6 +177,18 @@ export default async function ReservationDetailPage({ params }: PageProps) {
 
   const role = (session.user as { role?: string }).role ?? "reader";
   const submission = booking.fromSubmission ?? booking.submission ?? null;
+
+  // Formateurs actifs pour l'affectation (libre parmi actifs — Phase 2).
+  const activeTrainers = await prisma.trainer.findMany({
+    where: { actif: true },
+    select: { id: true, prenom: true, nom: true, region: true },
+    orderBy: [{ nom: "asc" }, { prenom: "asc" }],
+  });
+  const trainerOptions: TrainerOption[] = activeTrainers.map((t) => ({
+    id: t.id,
+    label: `${t.prenom} ${t.nom}`,
+    region: t.region,
+  }));
 
   return (
     <AdminPageShell>
@@ -373,6 +393,25 @@ export default async function ReservationDetailPage({ params }: PageProps) {
             <p>{booking.internalNotes}</p>
           </div>
         )}
+
+        <div className="admin-card admin-card-wide">
+          <h2 className="admin-h2">Formateur</h2>
+          <p className="admin-meta">
+            Formateur affecté à cette intervention :{" "}
+            <strong>
+              {booking.formateur ? `${booking.formateur.prenom} ${booking.formateur.nom}` : "aucun"}
+            </strong>
+            . Modifiable à tout moment (libre parmi les formateurs actifs).
+          </p>
+          <div className="mt-[var(--space-admin-3)]">
+            <BookingFormateurSelect
+              bookingId={booking.id}
+              current={booking.formateurId}
+              trainers={trainerOptions}
+              regionLabels={REGION_LABELS}
+            />
+          </div>
+        </div>
 
         <div className="admin-card admin-card-wide">
           <h2 className="admin-h2">Décision admin</h2>
