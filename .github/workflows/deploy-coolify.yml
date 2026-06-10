@@ -465,13 +465,28 @@ jobs:
           # fail le LHCI gate (SEO penalty pour URL testée qui redirect).
           # Remplacé par `/fr/interventions` = page produit stratégique.
           # Quand EN sera réactivé, restore `--url=https://axion-ia.com/en`.
-          pnpm exec lhci collect \
-            --url=https://axion-ia.com/fr \
-            --url=https://axion-ia.com/fr/interventions \
-            --url=https://axion-ia.com/fr/audit \
-            --url=https://axion-ia.com/fr/reserver \
-            --url=https://axion-ia.com/fr/implantations/ile-de-france/paris \
-            --numberOfRuns=2 \
-            --settings.preset=desktop \
-            --settings.throttlingMethod=devtools
+          URLS=(
+            --url=https://axion-ia.com/fr
+            --url=https://axion-ia.com/fr/interventions
+            --url=https://axion-ia.com/fr/audit
+            --url=https://axion-ia.com/fr/reserver
+            --url=https://axion-ia.com/fr/implantations/ile-de-france/paris
+          )
+          LH_SETTINGS=(--settings.preset=desktop --settings.throttlingMethod=devtools)
+
+          # ── Warm-up anti cold-start CLS (2026-06-10) ───────────────────────
+          # Juste après un deploy, le conteneur + le cache Cloudflare sont
+          # froids : le tout premier chargement sert les polices web (Fraunces)
+          # à froid → FOUT/swap du hero → CLS transitoire (~0.09 mesuré sur
+          # /fr/audit, 0 à chaud — vérifié au navigateur). Les vrais visiteurs
+          # n'en voient rien (HTML + polices servis depuis le cache CF). On fait
+          # donc UNE passe navigateur jetable qui amorce conteneur + CF (HTML,
+          # JS, polices), on jette son rapport, puis on MESURE à chaud. Sans ça,
+          # le gate clignotait rouge ~5/7 deploys sur du bruit cold-start, ce
+          # qui masquait les vraies régressions Web Vitals.
+          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1 "${LH_SETTINGS[@]}" || true
+          rm -rf .lighthouseci
+
+          # Mesure réelle (à chaud) + assertions strictes (lighthouserc.json).
+          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=2 "${LH_SETTINGS[@]}"
           pnpm exec lhci assert
