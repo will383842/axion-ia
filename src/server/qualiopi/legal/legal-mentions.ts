@@ -43,6 +43,47 @@ export const LEGAL_MENTIONS = {
 
 export type LegalMentionKey = keyof typeof LEGAL_MENTIONS;
 
+/** Partenaire/relais externe vers qui orienter un stagiaire en situation de handicap. */
+export interface HandicapPartenaire {
+  nom: string;
+  role: string;
+  url: string;
+}
+
+/**
+ * Relais nationaux vers qui orienter un stagiaire en situation de handicap
+ * (indicateur Qualiopi n°26). Affiché dans le livret d'accueil et sur la page
+ * publique d'accessibilité. Liste d'organismes nationaux stables — le référent
+ * handicap concret (nom/contact) reste paramétré dans SiteSetting (cat. qualiopi).
+ */
+export const HANDICAP_PARTENAIRES: readonly HandicapPartenaire[] = [
+  {
+    nom: "Agefiph",
+    role: "Aides au financement de l'adaptation des situations de formation et d'emploi.",
+    url: "https://www.agefiph.fr",
+  },
+  {
+    nom: "Cap emploi",
+    role: "Accompagnement à l'insertion et au maintien dans l'emploi des personnes handicapées.",
+    url: "https://www.capemploi.fr",
+  },
+  {
+    nom: "MDPH",
+    role: "Reconnaissance de la qualité de travailleur handicapé (RQTH) et orientation.",
+    url: "https://www.monparcourshandicap.gouv.fr",
+  },
+  {
+    nom: "Ressource Handicap Formation (RHF)",
+    role: "Appui aux organismes de formation pour l'accueil et l'adaptation des parcours.",
+    url: "https://www.agefiph.fr/aides-handicap/ressource-handicap-formation-rhf",
+  },
+  {
+    nom: "FIPHFP",
+    role: "Fonds pour l'insertion des personnes handicapées dans la fonction publique.",
+    url: "https://www.fiphfp.fr",
+  },
+] as const;
+
 /**
  * Formate une durée en heures décimales vers le format réglementaire
  * « EN CENTIÈMES » exigé sur le certificat de réalisation (OPCO Atlas) :

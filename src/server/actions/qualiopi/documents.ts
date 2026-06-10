@@ -38,6 +38,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 // Templates
 import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention";
 import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/convention-tripartite";
+import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contrat-formation";
 import { ConvocationPdf } from "@/server/qualiopi/documents/templates/convocation";
 import { EmargementPdf } from "@/server/qualiopi/documents/templates/emargement";
 import { PositionnementPdf } from "@/server/qualiopi/documents/templates/positionnement";
@@ -324,6 +325,99 @@ export async function genererConventionTripartiteAction(input: {
     targetType: "TrainingSession",
     targetId: sessionId,
     changes: { documentId: doc.id, numero: doc.numero },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2bis. Contrat de formation professionnelle (particulier / B2C, L.6353-3 à 7)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Génère le contrat de formation professionnelle pour un PARTICULIER qui finance
+ * lui-même sa formation (L.6353-3 à L.6353-7). Par inscription (enrollment) =
+ * un stagiaire personne physique. Distinct de la convention (personnes morales).
+ *
+ * Le prix porté au contrat est le montant net de la session (formation exonérée
+ * de TVA). Pour une session inter à plusieurs particuliers, renseigner le
+ * montant par stagiaire au niveau de la session.
+ */
+export async function genererContratFormationAction(input: {
+  enrollmentId: string;
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = enrollmentIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { enrollmentId } = parsed.data;
+
+  const enrollment = await prisma.enrollment.findUnique({
+    where: { id: enrollmentId },
+    select: {
+      id: true,
+      trainee: { select: { nom: true, prenom: true, email: true, telephone: true } },
+      session: {
+        select: {
+          id: true,
+          titreSession: true,
+          dateDebut: true,
+          dateFin: true,
+          modalite: true,
+          montantHtCents: true,
+          formation: {
+            select: {
+              objectifsPedagogiques: true,
+              dureeHeures: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  if (!enrollment) return { error: "Inscription introuvable" };
+
+  const identite = await getOrganismeIdentite();
+  const session = enrollment.session;
+  const trainee = enrollment.trainee;
+  const objectifs = parseObjectifs(session.formation.objectifsPedagogiques);
+  const nomPrenom = `${trainee.prenom} ${trainee.nom}`.trim();
+
+  const doc = await generateDocument({
+    type: "contrat",
+    buildElement: (numero) =>
+      React.createElement(ContratFormationPdf, {
+        data: {
+          numero,
+          stagiaire: {
+            nomPrenom,
+            ...(trainee.email ? { email: trainee.email } : {}),
+            ...(trainee.telephone !== null && trainee.telephone !== undefined
+              ? { telephone: trainee.telephone }
+              : {}),
+          },
+          intitule: session.titreSession,
+          objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
+          dureeHeures: session.formation.dureeHeures,
+          dateDebut: formatDate(new Date(session.dateDebut)),
+          dateFin: formatDate(new Date(session.dateFin)),
+          modalite: modaliteLabel(session.modalite),
+          lieu: identite.adresseExercice || identite.adresseSiege || "—",
+          prixNet: session.montantHtCents / 100,
+          dateContrat: formatDateFr(new Date()),
+        },
+        identite,
+      }),
+    refs: { sessionId: session.id },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.contrat.genere",
+    targetType: "Enrollment",
+    targetId: enrollmentId,
+    changes: { documentId: doc.id, numero: doc.numero, sessionId: session.id },
     session: adminSession,
   });
 

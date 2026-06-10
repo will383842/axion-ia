@@ -5326,6 +5326,7 @@ model FormationGenerationJob {
 enum DocumentType {
   convention
   convention_tripartite
+  contrat
   convocation
   emargement
   releve_connexion

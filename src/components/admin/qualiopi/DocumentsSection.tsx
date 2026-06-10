@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import {
   genererConventionAction,
   genererConventionTripartiteAction,
+  genererContratFormationAction,
   genererEmargementAction,
   genererReglementInterieurAction,
   genererLivretAccueilAction,
@@ -76,6 +77,7 @@ export interface DocumentsSectionProps {
 const DOC_LABELS: Record<DocumentType, string> = {
   convention: "Convention de formation (L.6353-1)",
   convention_tripartite: "Convention tripartite (OPCO)",
+  contrat: "Contrat de formation (L.6353-3, particulier)",
   convocation: "Convocation",
   emargement: "Feuille d'émargement",
   releve_connexion: "Relevé de connexion",
@@ -415,6 +417,12 @@ export function DocumentsSection({
                 <EnrollmentDocButton
                   label="Attestation de réalisation"
                   action={genererAttestationAction}
+                  enrollmentId={selectedEnrollmentId}
+                  onDone={handleDone}
+                />
+                <EnrollmentDocButton
+                  label="Contrat de formation (particulier, L.6353-3)"
+                  action={genererContratFormationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
                 />

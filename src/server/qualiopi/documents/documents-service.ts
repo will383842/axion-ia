@@ -26,6 +26,7 @@ import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions
 const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
   convention: "formation",
   convention_tripartite: "formation",
+  contrat: "formation",
   convocation: "session",
   emargement: "session",
   releve_connexion: "session",

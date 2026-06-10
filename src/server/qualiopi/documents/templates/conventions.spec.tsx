@@ -20,6 +20,7 @@ beforeAll(() => {
 
 import { ConventionPdf, type ConventionData } from "./convention";
 import { ConventionTripartitePdf, type ConventionTripartiteData } from "./convention-tripartite";
+import { ContratFormationPdf, type ContratFormationData } from "./contrat-formation";
 import { LettreMissionPdf, type LettreMissionData } from "./lettre-mission";
 import { ReglementInterieurPdf, type ReglementInterieurData } from "./reglement-interieur";
 import { LivretAccueilPdf, type LivretAccueilData } from "./livret-accueil";
@@ -124,6 +125,42 @@ describe("ConventionTripartitePdf", () => {
 
   it("rend un PDF valide (%PDF)", async () => {
     await expectPdf(<ConventionTripartitePdf data={data} identite={identite} />);
+  }, 30_000);
+});
+
+// ============================================================
+// Contrat de formation (particulier / B2C, L.6353-3 à 7)
+// ============================================================
+
+describe("ContratFormationPdf", () => {
+  const data: ContratFormationData = {
+    numero: "AXI-FORM-2026-010",
+    estCopie: false,
+    stagiaire: {
+      nomPrenom: "Camille Durand",
+      email: "camille.durand@example.fr",
+      telephone: "+33 6 11 22 33 44",
+    },
+    intitule: "Maîtriser l'IA générative",
+    objectifs: ["Rédiger des prompts efficaces", "Automatiser des tâches métier"],
+    dureeHeures: 14,
+    dateDebut: "10/10/2026",
+    dateFin: "11/10/2026",
+    modalite: "Distanciel",
+    lieu: "Distanciel (visioconférence)",
+    prixNet: 1490,
+    dateContrat: "20/09/2026",
+  };
+
+  it("rend un PDF valide (%PDF)", async () => {
+    await expectPdf(<ContratFormationPdf data={data} identite={identite} />);
+  }, 30_000);
+
+  it("plafonne l'acompte à 30 % même si une valeur supérieure est fournie", async () => {
+    // L.6353-6 : acompte ≤ 30 % — le template ne doit pas throw et reste un PDF valide.
+    await expectPdf(
+      <ContratFormationPdf data={{ ...data, acomptePercent: 80 }} identite={identite} />,
+    );
   }, 30_000);
 });
 

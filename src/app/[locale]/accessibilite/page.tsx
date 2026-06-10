@@ -9,6 +9,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -151,6 +152,37 @@ export default async function AccessibilityPage({ params }: Props) {
                 <p className="text-fg-soft text-base leading-relaxed">{s.p}</p>
               </section>
             ))}
+
+            {/* Accessibilité des formations & situation de handicap (Qualiopi n°26).
+                Distinct de l'accessibilité numérique ci-dessus : relais d'orientation
+                pour les stagiaires en situation de handicap. */}
+            <section className="space-y-3">
+              <h2 className="text-fg text-xl leading-tight font-semibold tracking-tight">
+                {isFr
+                  ? "Accessibilité des formations & situation de handicap"
+                  : "Training accessibility & disability"}
+              </h2>
+              <p className="text-fg-soft text-base leading-relaxed">
+                {isFr
+                  ? "Nous nous engageons à rendre nos formations accessibles à toutes et tous. Si vous êtes en situation de handicap ou avez des besoins spécifiques, notre référent handicap étudie avec vous les aménagements possibles — contactez-nous avant le début de la formation. Nous pouvons aussi vous orienter vers les relais spécialisés suivants :"
+                  : "We are committed to making our training accessible to everyone. If you have a disability or specific needs, our disability officer will assess possible accommodations with you — please contact us before the training starts. We can also refer you to the following specialised bodies:"}
+              </p>
+              <ul className="text-fg-soft space-y-2 text-base leading-relaxed">
+                {HANDICAP_PARTENAIRES.map((p) => (
+                  <li key={p.nom}>
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-terracotta hover:text-terracotta-deep font-medium underline-offset-4 hover:underline"
+                    >
+                      {p.nom}
+                    </a>{" "}
+                    — {p.role}
+                  </li>
+                ))}
+              </ul>
+            </section>
           </div>
 
           <nav

@@ -14,7 +14,11 @@ import {
   FieldRow,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
-import { LEGAL_MENTIONS, DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
+import {
+  LEGAL_MENTIONS,
+  DOCUMENT_RETENTION_YEARS,
+  HANDICAP_PARTENAIRES,
+} from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -217,6 +221,14 @@ export function LivretAccueilPdf({
             label="Contact"
             value={identite.referentHandicapEmail || identite.email || "—"}
           />
+          <Text style={[local.bodyText, { marginTop: 6, fontWeight: "bold" }]}>
+            Nos partenaires et relais spécialisés
+          </Text>
+          {HANDICAP_PARTENAIRES.map((p) => (
+            <Text key={p.nom} style={local.bulletItem}>
+              • {p.nom} — {p.role} ({p.url})
+            </Text>
+          ))}
           <Text style={pdfStyles.legalNote}>
             Nous vous encourageons à nous contacter avant le début de la formation pour anticiper
             tout aménagement spécifique.
