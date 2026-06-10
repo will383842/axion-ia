@@ -153,7 +153,13 @@
 .admin-layout-v2,
 .admin-layout {
   font-family:
-    var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+    var(--font-admin),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    roboto,
+    sans-serif;
   --font-sans:
     var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
 }
@@ -166,7 +172,13 @@
   .admin-rail {
     /* Police Inter (var. exposée par le layout admin) — fallback système. */
     font-family:
-      var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+      var(--font-admin),
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      roboto,
+      sans-serif;
     /* Lissage : texte clair sur fond sombre = bien plus net en antialiased. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
