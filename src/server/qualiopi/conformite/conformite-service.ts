@@ -80,6 +80,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ndaNumero,
     typesActionResult,
     formationsCertifiantesResult,
+    nbSupports,
+    nbDocsAccueil,
+    nbDocsPresence,
+    responsableQualiteNom,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -144,6 +148,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
           return rncp !== "" || rs !== "";
         }),
       ),
+    // off.19 : ressources/supports pédagogiques réellement produits (≠ n'importe quel PDF)
+    prisma.supportFormation.count(),
+    // off.9 : documents d'accueil/information (convocation, livret, règlement) — pas tous types confondus
+    prisma.documentGenere.count({
+      where: { type: { in: ["convocation", "livret_accueil", "reglement_interieur"] } },
+    }),
+    // off.12 : preuves de suivi/présence (émargement, relevé de connexion) — pas tous types confondus
+    prisma.documentGenere.count({
+      where: { type: { in: ["emargement", "releve_connexion"] } },
+    }),
+    // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
+    getQualiopiConfig("responsable_qualite_nom").catch(() => ""),
   ]);
 
   const typesAction = typesActionResult;
@@ -184,7 +200,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   }
   set(1, off1Preuves, nbFormations > 0 && ndaNumero.trim().length > 0);
 
-  set(2, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
+  // off.2 : résultats publiés — exige des résultats MESURÉS (évaluations finales =
+  //         taux de réussite) sur des sessions réalisées, pas la seule existence d'une session.
+  set(
+    2,
+    [
+      `${nbSessionsRealisees} session(s) réalisée(s)`,
+      `${nbEvaluationsFinales} évaluation(s) finale(s) (taux de réussite mesurable)`,
+    ],
+    nbSessionsRealisees > 0 && nbEvaluationsFinales > 0,
+  );
 
   // off.3 : taux d'obtention certifications — couvert si ≥1 formation certifiante
   //         (code RS/RNCP) ET évaluations finales présentes
@@ -224,10 +249,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 3
+  // off.9 : conditions de déroulement communiquées — docs d'accueil/info réels
+  //         (convocation, livret, règlement), pas n'importe quel document généré.
   set(
     9,
-    [`${nbDocuments} document(s) généré(s)`, `${nbSessionsRealisees} session(s) réalisées`],
-    nbDocuments > 0 && nbSessionsRealisees > 0,
+    [
+      `${nbDocsAccueil} document(s) d'accueil/information (convocation, livret, règlement)`,
+      `${nbSessionsRealisees} session(s) réalisées`,
+    ],
+    nbDocsAccueil > 0 && nbSessionsRealisees > 0,
   );
   set(
     10,
@@ -235,13 +265,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbEnrollmentsAdaptations > 0,
   );
   set(11, [`${nbEvaluationsFinales} évaluation(s) finale(s)`], nbEvaluationsFinales > 0);
+  // off.12 : suivi de l'assiduité — émargements / relevés de connexion réels,
+  //          pas n'importe quel document généré.
   set(
     12,
     [
       `${nbSessionsRealisees} session(s) réalisée(s)`,
-      `${nbDocuments} document(s) de suivi (émargements, relevés de connexion)`,
+      `${nbDocsPresence} preuve(s) de présence (émargements, relevés de connexion)`,
     ],
-    nbSessionsRealisees > 0 && nbDocuments > 0,
+    nbSessionsRealisees > 0 && nbDocsPresence > 0,
   );
   // off.13/14/15 (APP) : conditionnels apprentissage. Si applicables (OF déclare
   //   alternance_afest), on ne peut pas les automatiser en V1 → a_completer avec
@@ -267,7 +299,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // Critère 4
   set(17, [`${nbTrainers} formateur(s) actif(s)`], nbTrainers > 0);
   set(18, [`${nbTrainers} formateur(s) coordonnés`], nbTrainers > 0);
-  set(19, [`${nbDocuments} document(s) pédagogiques générés`], nbDocuments > 0);
+  // off.19 : ressources pédagogiques mises à disposition — supports de formation
+  //          réels (SupportFormation), pas n'importe quel document généré.
+  set(19, [`${nbSupports} support(s) pédagogique(s) produit(s)`], nbSupports > 0);
   set(
     20,
     [`${nbTraineesHandicap} stagiaire(s) en situation de handicap suivi(s)`],
@@ -284,7 +318,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     nbTrainersAvecCV > 0,
   );
-  set(22, [`${nbTrainers} formateur(s) actif(s)`], nbTrainers > 0);
+  // off.22 : entretien/développement des compétences des formateurs — exige des
+  //          formateurs dont la qualification est tracée (CV téléversé), pas la
+  //          seule présence d'un formateur actif.
+  set(
+    22,
+    [
+      `${nbTrainersAvecCV} formateur(s) avec CV/qualification tracée`,
+      `${nbTrainers} formateur(s) actif(s) au total`,
+    ],
+    nbTrainersAvecCV > 0,
+  );
 
   // Critère 6
   set(23, [`${nbVeilleLegale} entrée(s) de veille légale/réglementaire`], nbVeilleLegale > 0);
@@ -308,12 +352,33 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
   set(27, [`${nbSousTraitants} sous-traitant(s) référencé(s)`], nbSousTraitants > 0);
   set(28, appAfestApplicable ? preuveAppAfest : [], false); // AFEST conditionnel
-  set(29, [`${nbSessionsRealisees} session(s) réalisée(s)`], nbSessionsRealisees > 0);
+  // off.29 : insertion / débouchés — donnée de suivi post-formation NON déductible
+  //          d'un artefact logiciel (l'existence d'une session ne prouve pas l'insertion).
+  //          a_completer avec preuve explicite (à renseigner manuellement).
+  set(
+    29,
+    [
+      "Suivi de l'insertion / des débouchés à renseigner manuellement (donnée post-formation non automatisable).",
+    ],
+    false,
+  );
 
   // Critère 7
   // off.30 : couvert si ≥1 appréciation multi-parties (stagiaire/entreprise/financeur/formateur)
   set(30, [`${nbAppreciations} appréciation(s) multi-parties (off.30)`], nbAppreciations > 0);
-  set(31, [`${nbReclamations} réclamation(s) enregistrée(s)`], nbReclamations > 0);
+  // off.31 : traitement des réclamations — le RNQ exige un PROCESS opérationnel
+  //          (avec un responsable identifié), pas l'existence de réclamations.
+  //          Un OF sans aucune réclamation reste couvert si le process a un propriétaire.
+  set(
+    31,
+    [
+      responsableQualiteNom.trim().length > 0
+        ? `Process réclamations piloté par : ${responsableQualiteNom}`
+        : "Responsable qualité (propriétaire du process réclamations) : non renseigné",
+      `${nbReclamations} réclamation(s) enregistrée(s) et traitée(s)`,
+    ],
+    responsableQualiteNom.trim().length > 0 || nbReclamations > 0,
+  );
   set(
     32,
     [`${nbRevues} revue(s) de direction`, `${nbReclamations} réclamation(s) + plan d'actions`],

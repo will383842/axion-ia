@@ -70,6 +70,7 @@ function setupEmptyMocks() {
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
   mockGetConfig.mockImplementation((key: string) => {
     if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+    if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
     if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
     // BPF de l'année N-1 considéré déposé (marqueur config) → pas d'alerte BPF par défaut.
     if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
@@ -121,6 +122,42 @@ describe("evaluerAlertes — referent_handicap_absent", () => {
   it("ne crée PAS d'alerte si referent_handicap_nom est renseigné", async () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "referent_handicap_absent");
+    expect(a).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle responsable_qualite_absent
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — responsable_qualite_absent", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("crée une alerte importante si responsable_qualite_nom est vide", async () => {
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "responsable_qualite_nom") return Promise.resolve("");
+      if (key === "qualiopi_validite") {
+        const futur = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
+        return Promise.resolve(futur.toISOString().slice(0, 10));
+      }
+      if (key === "bpf_annee_deposee") return Promise.resolve(new Date().getFullYear());
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "responsable_qualite_absent");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBeUndefined();
+  });
+
+  it("ne crée PAS d'alerte si responsable_qualite_nom est renseigné", async () => {
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "responsable_qualite_absent");
     expect(a).toBeUndefined();
   });
 });

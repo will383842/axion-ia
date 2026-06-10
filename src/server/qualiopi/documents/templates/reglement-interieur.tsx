@@ -227,7 +227,7 @@ export function ReglementInterieurPdf({
             Le stagiaire dispose des droits d'accès, de rectification, d'effacement, de limitation
             et de portabilité de ses données, ainsi que du droit de s'opposer à leur traitement. Ces
             droits s'exercent auprès du délégué à la protection des données (DPO) de l'organisme à
-            l'adresse : {identite.email || "—"}.
+            l'adresse : {identite.dpoEmail || identite.email || "—"}.
           </Text>
         </DocSection>
 

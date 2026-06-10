@@ -42,6 +42,19 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   logo_url: { ...str(), description: "URL du logo Axion-IA (en-tête PDF)." },
   site_url: { ...str("https://axion-ia.com"), description: "URL publique du site." },
 
+  // ── Contact général de l'organisme (≠ référent handicap, ≠ DPO) ──
+  // Imprimé comme coordonnées de l'OF prestataire sur convention/facture/réclamations.
+  email_organisme: {
+    ...str(),
+    description: "Email de contact général de l'OF (convention, facture, réclamations).",
+  },
+  telephone_organisme: { ...str(), description: "Téléphone de contact général de l'OF." },
+  // Délégué/point de contact protection des données (RGPD art. 13). Fallback = email_organisme.
+  dpo_contact_email: {
+    ...str(),
+    description: "Email du DPO / contact RGPD (exercice des droits).",
+  },
+
   // ── Référent handicap (indicateur 26 ⭐) ──
   referent_handicap_nom: { ...str("Williams Jullin"), description: "Nom du référent handicap." },
   referent_handicap_email: { ...str(), description: "Email du référent handicap." },
@@ -50,6 +63,17 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(48),
     description: "Délai de réponse référent handicap (heures).",
   },
+
+  // ── Responsable / référent qualité (pilote le RNQ, prépare les audits) ──
+  // Distinct du référent handicap et de l'assistant financement. Recommandation
+  // forte de l'auditeur COFRAC : une personne identifiée pilote la démarche
+  // qualité et la revue de direction (critère 7, ind. 30-32).
+  responsable_qualite_nom: {
+    ...str("Williams Jullin"),
+    description: "Nom du responsable/référent qualité (pilote le référentiel, prépare les audits).",
+  },
+  responsable_qualite_email: { ...str(), description: "Email du responsable qualité." },
+  responsable_qualite_telephone: { ...str(), description: "Téléphone du responsable qualité." },
 
   // ── Paramètres financiers (modifiables) ──
   smic_horaire_brut: {
@@ -78,6 +102,12 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   seuil_reclamation_jours: {
     ...num(15),
     description: "Seuil J+15 alerte réclamation sans réponse.",
+  },
+
+  // ── Seuil satisfaction (alerte si taux moyen sous ce seuil) ──
+  seuil_satisfaction_pct: {
+    ...num(90),
+    description: "Seuil de satisfaction (%) sous lequel une alerte est levée.",
   },
 
   // ── BPF (Bilan Pédagogique et Financier — dépôt DREETS) ──

@@ -28,6 +28,7 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: { count: vi.fn() },
     documentGenere: { count: vi.fn() },
     revueDirection: { count: vi.fn() },
+    supportFormation: { count: vi.fn() },
   },
 }));
 
@@ -53,6 +54,7 @@ type MockPrisma = {
   enrollment: { count: ReturnType<typeof vi.fn> };
   documentGenere: { count: ReturnType<typeof vi.fn> };
   revueDirection: { count: ReturnType<typeof vi.fn> };
+  supportFormation: { count: ReturnType<typeof vi.fn> };
 };
 
 const mockP = prisma as unknown as MockPrisma;
@@ -78,7 +80,8 @@ function setupEmpty() {
   mockP.enrollment.count.mockResolvedValue(0);
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
-  // Par défaut : référent handicap vide
+  mockP.supportFormation.count.mockResolvedValue(0);
+  // Par défaut : référent handicap + responsable qualité vides
   mockGetConfig.mockResolvedValue("");
 }
 
@@ -142,10 +145,19 @@ describe("evaluerConformite", () => {
     expect(ind31?.statut).toBe("couvert");
   });
 
-  it("off.31 a_completer si 0 réclamation", async () => {
+  it("off.31 a_completer si 0 réclamation ET responsable qualité non renseigné", async () => {
     const result = await evaluerConformite();
     const ind31 = result.indicateurs.find((i) => i.numero === 31);
     expect(ind31?.statut).toBe("a_completer");
+  });
+
+  it("off.31 couvert si responsable qualité désigné même sans réclamation (process opérationnel)", async () => {
+    // 0 réclamation mais un responsable qualité (propriétaire du process) est nommé.
+    mockP.reclamation.count.mockResolvedValue(0);
+    mockGetConfig.mockResolvedValue("Williams Jullin");
+    const result = await evaluerConformite();
+    const ind31 = result.indicateurs.find((i) => i.numero === 31);
+    expect(ind31?.statut).toBe("couvert");
   });
 
   it("off.11 couvert si au moins 1 évaluation finale existe", async () => {

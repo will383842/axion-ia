@@ -293,7 +293,7 @@ export function SatisfactionPdf({
 
         <Text style={pdfStyles.legalNote}>
           Données traitées conformément au RGPD — Indicateur 31. Résultats agrégés pour amélioration
-          continue. Droit d'accès : {identite.email || "contact@formation"}.
+          continue. Droit d'accès : {identite.dpoEmail || identite.email || "contact@formation"}.
         </Text>
       </QualiopiPage>
     </Document>

@@ -29,12 +29,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
-  // ── Réclamations ──────────────────────────────────────────────────────────
-  registre_reclamations_vide_jamais_verifie: {
-    niveau: "info",
-    titre: "Registre réclamations jamais vérifié",
-    resolutionAuto: false,
+  // ── Pilotage qualité ────────────────────────────────────────────────────────
+  responsable_qualite_absent: {
+    niveau: "important",
+    titre: "Responsable qualité non désigné",
+    resolutionAuto: true,
   },
+
+  // ── Réclamations ──────────────────────────────────────────────────────────
   reclamation_sans_reponse_j15: {
     niveau: "critique",
     titre: "Réclamation sans réponse depuis +15 jours",
@@ -175,16 +177,8 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // ── IA / système ──────────────────────────────────────────────────────────
-  budget_ia_depasse: {
-    niveau: "important",
-    titre: "Budget IA dépassé sur une formation",
-    resolutionAuto: false,
-  },
-  email_bounce: {
-    niveau: "important",
-    titre: "Email bounced (document non livré)",
-    resolutionAuto: false,
-  },
+  // Émise par le worker engine (qualiopi-formation-engine-worker) sur échec
+  // définitif de génération IA (tentatives BullMQ épuisées).
   job_ia_echoue: {
     niveau: "important",
     titre: "Job IA en échec (dead letter queue)",

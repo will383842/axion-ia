@@ -149,7 +149,9 @@ export function ConvocationPdf({
             Si vous êtes en situation de handicap et nécessitez un aménagement, contactez notre
             référent handicap au plus tôt avant la session :
           </Text>
-          {identite.email ? <FieldRow label="Référent handicap" value={identite.email} /> : null}
+          {identite.referentHandicapEmail ? (
+            <FieldRow label="Référent handicap" value={identite.referentHandicapEmail} />
+          ) : null}
           <Text style={[pdfStyles.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
         </DocSection>
 

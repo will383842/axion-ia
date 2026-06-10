@@ -58,9 +58,27 @@ async function regleReferentHandicap(now: Date): Promise<AlerteCandidate[]> {
   ];
 }
 
-/** R02 — Réclamations sans réponse depuis > 15 jours. */
+/** R01b — Responsable qualité non désigné si nom vide dans config. */
+async function regleResponsableQualite(now: Date): Promise<AlerteCandidate[]> {
+  void now;
+  const nom = await getQualiopiConfig("responsable_qualite_nom");
+  if (nom && nom.trim().length > 0) return [];
+  return [
+    {
+      code: "responsable_qualite_absent",
+      niveau: "important",
+      titre: "Responsable qualité non désigné",
+      message:
+        "Aucun responsable/référent qualité renseigné dans la configuration. L'auditeur COFRAC attend une personne identifiée qui pilote le référentiel et prépare les audits (critère 7).",
+    },
+  ];
+}
+
+/** R02 — Réclamations sans réponse depuis > N jours (N = seuil_reclamation_jours, défaut 15). */
 async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[]> {
-  const seuil = daysAgo(15, now);
+  const joursCfg = await getQualiopiConfig("seuil_reclamation_jours").catch(() => 15);
+  const jours = typeof joursCfg === "number" && joursCfg > 0 ? joursCfg : 15;
+  const seuil = daysAgo(jours, now);
   const reclamations = await prisma.reclamation.findMany({
     where: {
       statut: { in: ["nouvelle", "en_cours"] },
@@ -188,11 +206,10 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
   }));
 }
 
-/** R07 — Satisfaction sous seuil (90% par défaut, non configurable dans registry actuel). */
+/** R07 — Satisfaction sous seuil (seuil_satisfaction_pct, défaut 90%). */
 async function regleSatisfactionSousSeuil(_now: Date): Promise<AlerteCandidate[]> {
-  // Le seuil satisfaction n'est pas encore dans le registry — on utilise 90%
-  // comme indiqué dans la spec §6.5. À externaliser dans registry si besoin.
-  const SEUIL_SATISFACTION_PCT = 90;
+  const seuilCfg = await getQualiopiConfig("seuil_satisfaction_pct").catch(() => 90);
+  const SEUIL_SATISFACTION_PCT = typeof seuilCfg === "number" && seuilCfg > 0 ? seuilCfg : 90;
 
   // On cherche des sessions réalisées ayant un taux de satisfaction calculable
   const sessions = await prisma.trainingSession.findMany({
@@ -599,6 +616,7 @@ type RegleFn = (now: Date) => Promise<AlerteCandidate[]>;
 
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
+  { nom: "responsable_qualite", fn: regleResponsableQualite },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },

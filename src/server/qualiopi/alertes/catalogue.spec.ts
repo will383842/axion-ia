@@ -1,7 +1,7 @@
 /**
  * Tests — alertes/catalogue.ts (T15 AGENT A).
  *
- * Vérifie : exhaustivité du catalogue (29 codes), cohérence niveau/resolutionAuto,
+ * Vérifie : exhaustivité du catalogue (27 codes), cohérence niveau/resolutionAuto,
  * niveauFromSpec (mapping spec→enum), types corrects.
  * Module PUR : aucun mock requis.
  */
@@ -16,7 +16,7 @@ import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 const CODES_ATTENDUS: string[] = [
   "referent_handicap_absent",
-  "registre_reclamations_vide_jamais_verifie",
+  "responsable_qualite_absent",
   "emargement_manquant",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
@@ -40,8 +40,6 @@ const CODES_ATTENDUS: string[] = [
   "convention_formation_manquante",
   "facture_impayee_j30",
   "facture_impayee_j60",
-  "budget_ia_depasse",
-  "email_bounce",
   "job_ia_echoue",
   "suppression_rgpd_j30",
 ];
@@ -53,7 +51,7 @@ const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("ALERTE_CATALOGUE", () => {
-  it("contient exactement les 29 codes attendus", () => {
+  it("contient exactement les 27 codes attendus", () => {
     const codesPresents = Object.keys(ALERTE_CATALOGUE).sort();
     const codesAttendus = [...CODES_ATTENDUS].sort();
     expect(codesPresents).toEqual(codesAttendus);
@@ -129,10 +127,6 @@ describe("ALERTE_CATALOGUE", () => {
     expect(ALERTE_CATALOGUE["suppression_rgpd_j30"]?.niveau).toBe("info");
   });
 
-  it("registre_reclamations_vide_jamais_verifie est info", () => {
-    expect(ALERTE_CATALOGUE["registre_reclamations_vide_jamais_verifie"]?.niveau).toBe("info");
-  });
-
   // Vérifications resolutionAuto SPEC §6.5
   it("referent_handicap_absent a resolutionAuto=true", () => {
     expect(ALERTE_CATALOGUE["referent_handicap_absent"]?.resolutionAuto).toBe(true);
@@ -164,10 +158,6 @@ describe("ALERTE_CATALOGUE", () => {
 
   it("bpf_a_deposer_j60 a resolutionAuto=true", () => {
     expect(ALERTE_CATALOGUE["bpf_a_deposer_j60"]?.resolutionAuto).toBe(true);
-  });
-
-  it("budget_ia_depasse a resolutionAuto=false", () => {
-    expect(ALERTE_CATALOGUE["budget_ia_depasse"]?.resolutionAuto).toBe(false);
   });
 
   it("suppression_rgpd_j30 a resolutionAuto=false", () => {

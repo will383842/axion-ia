@@ -213,7 +213,10 @@ export function LivretAccueilPdf({
             à votre disposition pour étudier les aménagements nécessaires.
           </Text>
           <FieldRow label="Référent handicap" value={identite.raisonSociale || "Axion-IA SAS"} />
-          <FieldRow label="Contact" value={identite.email || "—"} />
+          <FieldRow
+            label="Contact"
+            value={identite.referentHandicapEmail || identite.email || "—"}
+          />
           <Text style={pdfStyles.legalNote}>
             Nous vous encourageons à nous contacter avant le début de la formation pour anticiper
             tout aménagement spécifique.
@@ -252,7 +255,10 @@ export function LivretAccueilPdf({
             Vous disposez des droits d'accès, de rectification, d'effacement, de limitation et de
             portabilité de vos données, ainsi que du droit de vous opposer à leur traitement.
           </Text>
-          <FieldRow label="Exercice de vos droits (DPO)" value={identite.email || "—"} />
+          <FieldRow
+            label="Exercice de vos droits (DPO)"
+            value={identite.dpoEmail || identite.email || "—"}
+          />
           <Text style={pdfStyles.legalNote}>
             Pour toute question relative au traitement de vos données, vous pouvez également
             contacter la Commission Nationale de l'Informatique et des Libertés (CNIL) :

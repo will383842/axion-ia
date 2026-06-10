@@ -46,6 +46,7 @@ import {
 } from "@/server/qualiopi/engine/prompts";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
 import { hasUnsourcedClaims } from "@/server/qualiopi/engine/anti-hallucination";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 // Modules créés par l'autre agent — importés en avance (erreurs "Cannot find module" transitoires)
 import { runAdversarialCritique } from "@/server/qualiopi/engine/adversarial-critique";
 import { validateExcellence } from "@/server/qualiopi/engine/validation-excellence";
@@ -1162,6 +1163,29 @@ export function startFormationEngineWorker(): Worker<FormationEngineJobData> {
   worker.on("completed", (job) => console.log(`[qualiopi:engine] done: ${job.data.formationId}`));
   worker.on("failed", (job, err) => {
     console.error(`[qualiopi:engine] failed: ${job?.data?.formationId}: ${err.message}`);
+    // Alerte système job_ia_echoue — UNIQUEMENT sur échec définitif (tentatives
+    // épuisées), pas à chaque retry intermédiaire. creerOuDedup est stub-aware
+    // et dé-duplique par (code, cibleId=formationId). Fail-soft.
+    const formationId = job?.data?.formationId;
+    const attemptsMade = job?.attemptsMade ?? 0;
+    const maxAttempts = job?.opts?.attempts ?? 1;
+    if (formationId && attemptsMade >= maxAttempts) {
+      void creerOuDedup({
+        code: "job_ia_echoue",
+        niveau: "important",
+        titre: "Job IA en échec (dead letter queue)",
+        message:
+          `La génération IA de la formation ${formationId} a échoué après ${attemptsMade} ` +
+          `tentative(s) : ${err.message}`.slice(0, 1000),
+        cibleType: "Formation",
+        cibleId: formationId,
+      }).catch((e) =>
+        console.error(
+          "[qualiopi:engine] alerte job_ia_echoue fail-soft:",
+          e instanceof Error ? e.message : String(e),
+        ),
+      );
+    }
   });
 
   return worker;

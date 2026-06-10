@@ -161,6 +161,10 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   // off.1 : numéro NDA DREETS (obligatoire pour considérer off.1 comme couvert)
   const ndaNumero = await getQualiopiConfig("nda_numero").catch(() => "");
 
+  // off.31/32 : responsable qualité (pilote le RNQ + la revue de direction).
+  // Lecture APRÈS nda_numero pour ne pas perturber l'ordre des appels mockés en test.
+  const responsableQualiteNom = await getQualiopiConfig("responsable_qualite_nom").catch(() => "");
+
   // off.30 : appréciations multi-parties
   const nbAppreciations = await prisma.appreciation.count();
 
@@ -201,6 +205,18 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       [
         `${nbAppreciations} appréciation(s) multi-parties (stagiaire/entreprise/financeur/formateur)`,
       ],
+    ],
+    [
+      31,
+      responsableQualiteNom.trim().length > 0
+        ? [`Responsable qualité désigné (pilote la revue de direction) : ${responsableQualiteNom}`]
+        : ["Responsable qualité : non renseigné en config"],
+    ],
+    [
+      32,
+      responsableQualiteNom.trim().length > 0
+        ? [`Démarche d'amélioration continue pilotée par : ${responsableQualiteNom}`]
+        : ["Responsable qualité : non renseigné en config (pilotage amélioration continue)"],
     ],
     [
       21,

@@ -18,9 +18,14 @@ export interface OrganismeIdentite {
   siret: string;
   adresseSiege: string;
   adresseExercice: string;
+  /** Email/téléphone de contact GÉNÉRAL de l'OF (convention, facture, réclamations). */
   email: string;
   telephone: string;
   site: string;
+  /** Contact du référent handicap (sections handicap uniquement). Optionnel. */
+  referentHandicapEmail?: string;
+  /** Contact DPO / RGPD (exercice des droits). Fallback = email général. Optionnel. */
+  dpoEmail?: string;
 }
 
 /**
@@ -39,6 +44,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     email,
     telephone,
     site,
+    referentHandicapEmail,
+    dpoEmail,
   ] = await Promise.all([
     getQualiopiConfig("raison_sociale"),
     getQualiopiConfig("nda_numero"),
@@ -46,10 +53,15 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     getQualiopiConfig("siret"),
     getQualiopiConfig("adresse_siege"),
     getQualiopiConfig("adresse_exercice"),
-    getQualiopiConfig("referent_handicap_email"),
-    getQualiopiConfig("referent_handicap_telephone"),
+    // Contact GÉNÉRAL de l'OF (plus le contact handicap — corrigé audit 2026-06-10).
+    getQualiopiConfig("email_organisme"),
+    getQualiopiConfig("telephone_organisme"),
     getQualiopiConfig("site_url"),
+    getQualiopiConfig("referent_handicap_email"),
+    getQualiopiConfig("dpo_contact_email"),
   ]);
+
+  const emailOrganisme = email || "";
 
   return {
     raisonSociale: raisonSociale || "",
@@ -58,8 +70,11 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     siret: siret || "",
     adresseSiege: adresseSiege || "",
     adresseExercice: adresseExercice || "",
-    email: email || "",
+    email: emailOrganisme,
     telephone: telephone || "",
     site: site || "",
+    referentHandicapEmail: referentHandicapEmail || "",
+    // DPO non renseigné → on retombe sur le contact général de l'OF (jamais le handicap).
+    dpoEmail: dpoEmail || emailOrganisme,
   };
 }

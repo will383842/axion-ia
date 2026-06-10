@@ -201,7 +201,8 @@ export function PositionnementPdf({
 
         <Text style={pdfStyles.legalNote}>
           Données collectées dans le cadre du suivi pédagogique Qualiopi — Indicateur 7. Traitement
-          conforme au RGPD. Droit d'accès : {identite.email || "contact@formation"}.
+          conforme au RGPD. Droit d'accès :{" "}
+          {identite.dpoEmail || identite.email || "contact@formation"}.
         </Text>
       </QualiopiPage>
     </Document>
