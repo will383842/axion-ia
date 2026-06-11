@@ -99,6 +99,11 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     anglePedagogiqueFr: "sensibilisation",
   },
   {
+    // ⚠️ Orpheline depuis 2026-06-11 : le format public « Productivité dirigeant »
+    // (/interventions/dirigeant-productivite) a été supprimé (décision Will). L'offre
+    // est désactivée en prod par la migration 20260611170000 (actif=false). On garde
+    // l'entrée pour préserver la numérotation séquentielle AXI-OFF-NNN (les seeds ne
+    // tournent qu'en dev/fresh ; la prod est gérée par la migration + la console).
     tierId: "intervention-dirigeants",
     titreFr: "Dirigeants",
     slug: "dirigeants",

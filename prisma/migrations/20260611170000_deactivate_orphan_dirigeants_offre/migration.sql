@@ -1,0 +1,13 @@
+-- Désactive l'offre Qualiopi orpheline « Dirigeants » (tier `intervention-dirigeants`)
+-- suite à la suppression du format public « Productivité dirigeant »
+-- (/interventions/dirigeant-productivite) décidée par Will le 2026-06-11.
+--
+-- L'offre reste GATED (OF_PUBLIC_DISCLOSURE_ENABLED) : aucun impact public. On la
+-- désactive pour qu'elle ne ressorte pas comme fiche orpheline le jour où le flag
+-- de divulgation publique sera activé (post-agrément). Les 2 offres dirigeant
+-- survivantes (`intervention-dirigeant-vision`, `intervention-claude-dirigeant`)
+-- restent actives.
+--
+-- Idempotent : ré-exécutable sans effet de bord. Réversible côté console admin
+-- (réactivation manuelle de l'offre si Will le décide au cadrage post-agrément).
+UPDATE "offres_site" SET "actif" = false WHERE "tier_id" = 'intervention-dirigeants';
