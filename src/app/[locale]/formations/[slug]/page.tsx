@@ -22,6 +22,8 @@ import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
+import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
+import { FormationDetailV2 } from "@/components/formations/FormationDetailV2";
 
 // ── Dynamisme & ISR ──────────────────────────────────────────────────────────
 // ISR `revalidate=3600` (budget Web Vitals Phase B : éviter un appel DB par requête
@@ -38,9 +40,9 @@ export async function generateStaticParams() {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
   // Phase A légale — pas de divulgation publique → aucune route SSG.
   if (!isQualiopiPublicDisclosureEnabled()) return [];
-  // Phase B — laisser ISR gérer les slugs dynamiquement (retourner [] ici
-  // n'empêche pas le rendu dynamique grâce à dynamicParams=true).
-  return [];
+  // Phase B — slugs du catalogue V2 (SSOT, sans DB). Les fiches DB legacy
+  // restent générées à la demande via dynamicParams=true.
+  return FORMATIONS_V2.map((f) => ({ slug: f.slugFr }));
 }
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
@@ -57,10 +59,21 @@ export async function generateMetadata({
   const { locale, slug } = await params;
 
   // Même garde que la page — pas de metadata si phase A.
-  if (process.env.DATABASE_URL?.includes("stub.invalid")) return {};
   if (!isQualiopiPublicDisclosureEnabled()) return {};
   if (!hasLocale(routing.locales, locale)) return {};
 
+  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise.
+  const cat = getFormationV2(slug);
+  if (cat) {
+    return buildProductMetadata({
+      locale,
+      path: `/formations/${slug}`,
+      title: cat.metaTitleFr,
+      description: cat.metaDescriptionFr,
+    });
+  }
+
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return {};
   const f = await getPublicFormationBySlug(slug);
   if (!f) return {};
 
@@ -149,19 +162,23 @@ function SectionBlock({ title, children }: { title: string; children: React.Reac
 export default async function FormationSlugPage({ params }: { params: Promise<PageParams> }) {
   const { locale, slug } = await params;
 
-  // Contrat build ADR 0026 — stub.invalid → notFound() immédiat.
-  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
-    notFound();
-  }
-
-  // Garde légale phase A — illégal d'afficher Qualiopi avant certification.
+  // Garde légale phase A — gate tout le namespace /formations (catalogue + DB).
   if (!isQualiopiPublicDisclosureEnabled()) {
     notFound();
   }
-
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
+  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise (rend même sous stub.invalid).
+  const cat = getFormationV2(slug);
+  if (cat) {
+    return <FormationDetailV2 formation={cat} locale={locale} />;
+  }
+
+  // Sinon : fiche Qualiopi DB legacy. Contrat build ADR 0026 — stub.invalid → notFound().
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
+    notFound();
+  }
   const f = await getPublicFormationBySlug(slug);
   if (!f) notFound();
 

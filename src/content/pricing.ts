@@ -990,3 +990,114 @@ export const PRICING = {
   maintenance: MAINTENANCE_TIERS,
   codage: CODAGE_TIERS,
 } as const;
+
+// ============================================================================
+// CATALOGUE FORMATIONS V2 — matrice de prix (gamme × durée × effectif).
+//
+// ⚠️ ADDITIF STRICT : ne remplace PAS `INTERVENTION_TIERS` (consommé par les
+// 445 pages villes, /reserver, offers-catalog, chatbot — tous LIVE). Cette
+// matrice est lue UNIQUEMENT par le nouveau catalogue formations (gated par
+// `OF_PUBLIC_DISCLOSURE_ENABLED`). SSOT du prix des 17 formations : ici.
+//
+// Le prix dépend de (gamme × durée × tranche d'effectif), identique pour toutes
+// les formations d'une même case (décision Will 2026-06-11). Tarifs HT par
+// groupe, intra-entreprise, hors frais de déplacement. Source :
+// `50-commercial/catalogue-formations-ia-final.md`.
+// ============================================================================
+
+/** Gammes (axe thématique du catalogue V2). */
+export type FormationGamme = "ia-standard" | "agents-automatisations" | "claude";
+
+/** Durées catalogue (axe durée). `sur-mesure` = devis, hors matrice. */
+export type FormationDuree = "4h" | "1j" | "2j" | "3j";
+
+/** Tranches d'effectif. `2-12` = gammes à groupe limité (Agents, Claude pro). */
+export type FormationBracket = "2-15" | "16-30" | "2-12";
+
+/**
+ * Matrice prix HT par groupe. `gamme → durée → tranche → prix €`.
+ * Une case absente = combinaison non proposée (ex. Agents en 4h, ou IA en 2-12).
+ */
+export const FORMATION_PRICE_MATRIX: Record<
+  FormationGamme,
+  Partial<Record<FormationDuree, Partial<Record<FormationBracket, number>>>>
+> = {
+  "ia-standard": {
+    "4h": { "2-15": 1200, "16-30": 1900 },
+    "1j": { "2-15": 1900, "16-30": 3200 },
+    "2j": { "2-15": 3600, "16-30": 5800 },
+    "3j": { "2-15": 4900, "16-30": 7900 },
+  },
+  "agents-automatisations": {
+    "2j": { "2-12": 3600 },
+    "3j": { "2-12": 4900 },
+  },
+  claude: {
+    "1j": { "2-15": 2300, "16-30": 3850 },
+    "2j": { "2-12": 4300 },
+    "3j": { "2-12": 5900 },
+  },
+};
+
+/** Prix HT (€) d'une case, ou `undefined` si la combinaison n'existe pas. */
+export function getFormationPrice(
+  gamme: FormationGamme,
+  duree: FormationDuree,
+  bracket: FormationBracket,
+): number | undefined {
+  return FORMATION_PRICE_MATRIX[gamme]?.[duree]?.[bracket];
+}
+
+/** Tranches d'effectif disponibles pour une (gamme, durée), dans l'ordre. */
+export function getFormationBrackets(
+  gamme: FormationGamme,
+  duree: FormationDuree,
+): ReadonlyArray<FormationBracket> {
+  const cell = FORMATION_PRICE_MATRIX[gamme]?.[duree];
+  if (!cell) return [];
+  const order: ReadonlyArray<FormationBracket> = ["2-15", "16-30", "2-12"];
+  return order.filter((b) => typeof cell[b] === "number");
+}
+
+/** Prix d'entrée (le plus bas) d'une (gamme, durée) — pour CTA « à partir de ». */
+export function getFormationEntryPrice(
+  gamme: FormationGamme,
+  duree: FormationDuree,
+): number | undefined {
+  const cell = FORMATION_PRICE_MATRIX[gamme]?.[duree];
+  if (!cell) return undefined;
+  const vals = Object.values(cell).filter((v): v is number => typeof v === "number");
+  return vals.length ? Math.min(...vals) : undefined;
+}
+
+/** Prix formaté d'une case (réutilise `formatAmount`). */
+export function formatFormationPrice(
+  gamme: FormationGamme,
+  duree: FormationDuree,
+  bracket: FormationBracket,
+  locale: "fr" | "en" = "fr",
+): string {
+  const p = getFormationPrice(gamme, duree, bracket);
+  if (p === undefined) return locale === "fr" ? "Sur devis" : "On quote";
+  return formatAmount(p, locale);
+}
+
+/**
+ * Fourchette de prix du catalogue formations (min/max sur toute la matrice).
+ * Pour les accroches « de X à Y » / « dès X » — SANS jamais hardcoder le montant.
+ */
+export function getFormationCatalogPriceRange(): { minEur: number; maxEur: number } {
+  let minEur = Number.POSITIVE_INFINITY;
+  let maxEur = 0;
+  for (const gamme of Object.values(FORMATION_PRICE_MATRIX)) {
+    for (const duree of Object.values(gamme)) {
+      for (const v of Object.values(duree)) {
+        if (typeof v === "number") {
+          if (v < minEur) minEur = v;
+          if (v > maxEur) maxEur = v;
+        }
+      }
+    }
+  }
+  return { minEur, maxEur };
+}

@@ -1224,7 +1224,7 @@ export interface CourseJsonLdInput {
    * accepte plusieurs.
    */
   readonly courseMode?: ReadonlyArray<"Onsite" | "Hybrid" | "Online">;
-  /** Durée ISO 8601 (ex. "PT8H" pour 1 jour, "PT4H" pour 4h). */
+  /** Durée ISO 8601 (ex. "PT7H" pour 1 jour, "PT4H" pour 4h). SSOT : `formationDurationIso` (src/content/formations). */
   readonly duration?: string;
   /** Niveau éducatif (par défaut "Professional" — public B2B Axion-IA). */
   readonly educationalLevel?: string;
