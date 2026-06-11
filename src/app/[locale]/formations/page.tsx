@@ -39,7 +39,7 @@ export async function generateMetadata({
     locale,
     path: "/formations",
     title: "Formations IA intra-entreprise — 17 formations | Axion-IA",
-    description: `17 formations IA en intra-entreprise (4 h à 3 jours, par durée et par gamme) : vos équipes apprennent à faire, sur vos cas réels, dans vos locaux. Dès ${formatAmount(minEur, "fr")} HT.`,
+    description: `17 formations IA en intra-entreprise (4 h à 3 jours, par durée et par gamme) : vos équipes apprennent à faire, sur vos cas réels, dans vos locaux. Dès ${formatAmount(minEur, "fr")}.`,
   });
 }
 

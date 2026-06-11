@@ -62,9 +62,11 @@ export async function generateMetadata({
   if (!isQualiopiPublicDisclosureEnabled()) return {};
   if (!hasLocale(routing.locales, locale)) return {};
 
-  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise.
+  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise. Canonique = slugFr
+  // uniquement (un accès via slugEn/id ne produit pas de doublon de contenu).
   const cat = getFormationV2(slug);
   if (cat) {
+    if (cat.slugFr !== slug) return {};
     return buildProductMetadata({
       locale,
       path: `/formations/${slug}`,
@@ -170,8 +172,10 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
   setRequestLocale(locale);
 
   // Catalogue V2 (SSOT) — prioritaire, aucune DB requise (rend même sous stub.invalid).
+  // Canonique = slugFr uniquement → un accès via slugEn/id renvoie 404 (anti-doublon GSC).
   const cat = getFormationV2(slug);
   if (cat) {
+    if (cat.slugFr !== slug) notFound();
     return <FormationDetailV2 formation={cat} locale={locale} />;
   }
 

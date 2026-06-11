@@ -115,7 +115,7 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {offre.gamme ? (
-                      <span className="rounded-full bg-[color:var(--color-admin-paper)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium">
+                      <span className="inline-block rounded-full border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium">
                         {GAMME_LABELS[offre.gamme] ?? offre.gamme}
                         {offre.dureeCode ? ` · ${offre.dureeCode}` : ""}
                       </span>

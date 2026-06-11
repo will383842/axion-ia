@@ -112,7 +112,9 @@ export const FORMATION_GAMMES_META: ReadonlyArray<GammeMeta> = [
   },
   {
     id: "agents-automatisations",
-    slug: "agents-automatisations",
+    // Slug d'URL « agents » (≠ slugFr de la formation « agents-automatisations »)
+    // pour éviter toute collision de namespace /formations/gamme/… ↔ /formations/….
+    slug: "agents",
     labelFr: "Agents & Automatisations",
     taglineFr:
       "Vos équipes créent leurs propres automatisations en code source qui appartient à l'entreprise — sans savoir coder, zéro abonnement. Groupes limités à 12.",

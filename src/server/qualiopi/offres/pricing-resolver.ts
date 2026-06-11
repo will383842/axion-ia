@@ -54,8 +54,9 @@ export function resolveOffrePriceLabelV2(
   if (!gamme || !dureeCode) return locale === "fr" ? "Sur devis" : "On quote";
   const entry = getFormationEntryPrice(gamme as FormationGamme, dureeCode as FormationDuree);
   if (entry == null) return locale === "fr" ? "Sur devis" : "On quote";
+  // `formatAmount` inclut déjà « € HT » (fr) / « (excl. VAT) » (en) — pas de suffixe.
   return locale === "fr"
-    ? `À partir de ${formatAmount(entry, "fr")} HT`
+    ? `À partir de ${formatAmount(entry, "fr")}`
     : `From ${formatAmount(entry, "en")}`;
 }
 
@@ -87,12 +88,31 @@ export function deriveTarifType(tier: PricingTier): OffreTarifType {
  * Vérifie la cohérence offre ↔ pricing.ts : le `tierId` existe-t-il encore et
  * le `tarifType` stocké correspond-il au tier ? Retourne la liste des écarts.
  */
-export function verifyOffreCoherence(input: { tierId: string | null; tarifType: OffreTarifType }): {
+export function verifyOffreCoherence(input: {
+  tierId: string | null;
+  tarifType: OffreTarifType;
+  gamme?: string | null;
+  dureeCode?: string | null;
+}): {
   ok: boolean;
   ecarts: string[];
 } {
-  // Offres catalogue V2 (tierId null) : cohérence structurelle (gamme+dureeCode →
-  // matrice), pas de tier pricing.ts à vérifier ici.
+  // Offres catalogue V2 : cohérence = la paire gamme+dureeCode résout un prix dans
+  // FORMATION_PRICE_MATRIX (sinon l'offre afficherait silencieusement « Sur devis »).
+  if (input.gamme && input.dureeCode) {
+    const entry = getFormationEntryPrice(
+      input.gamme as FormationGamme,
+      input.dureeCode as FormationDuree,
+    );
+    if (entry == null) {
+      return {
+        ok: false,
+        ecarts: [`gamme/durée "${input.gamme}/${input.dureeCode}" absente de la matrice prix`],
+      };
+    }
+    return { ok: true, ecarts: [] };
+  }
+  // Offre legacy sans tierId (cas résiduel) : rien à vérifier.
   if (!input.tierId) return { ok: true, ecarts: [] };
   const ecarts: string[] = [];
   const tier = findPricingTier(input.tierId);

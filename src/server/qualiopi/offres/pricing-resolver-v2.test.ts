@@ -20,8 +20,9 @@ describe("resolver V2 — prix catalogue dérivé de la matrice", () => {
       const entry = getFormationEntryPrice(f.gamme, f.duree);
       expect(entry, `${f.id}`).toBeGreaterThan(0);
       const label = resolveOffrePriceLabelV2(f.gamme, f.duree, "fr");
-      expect(label, f.id).toContain("À partir de");
-      expect(label, f.id).toContain(formatAmount(entry!, "fr"));
+      expect(label, f.id).toBe(`À partir de ${formatAmount(entry!, "fr")}`);
+      // formatAmount inclut déjà « € HT » → jamais de double suffixe « HT HT ».
+      expect(label, f.id).not.toContain("HT HT");
     }
   });
 

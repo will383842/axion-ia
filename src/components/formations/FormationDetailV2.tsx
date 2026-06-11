@@ -132,7 +132,7 @@ export function FormationDetailV2({
                   Tarif
                 </p>
                 <p className="text-fg text-2xl font-semibold">
-                  {entryPrice ? `à partir de ${formatAmount(entryPrice, "fr")} HT` : "Sur devis"}
+                  {entryPrice ? `à partir de ${formatAmount(entryPrice, "fr")}` : "Sur devis"}
                 </p>
               </div>
               <div className="border-border hidden h-10 border-l sm:block" />
@@ -237,7 +237,7 @@ export function FormationDetailV2({
                       <li key={b} className="flex items-center justify-between py-2.5">
                         <span className="text-fg-soft text-[15px]">{BRACKET_LABEL[b]}</span>
                         <span className="text-fg font-semibold tabular-nums">
-                          {p ? `${formatAmount(p, "fr")} HT` : "Sur devis"}
+                          {p ? formatAmount(p, "fr") : "Sur devis"}
                         </span>
                       </li>
                     );

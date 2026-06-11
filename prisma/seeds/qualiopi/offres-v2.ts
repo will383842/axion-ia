@@ -33,8 +33,9 @@ const DUREE_HEURES: Record<FormationDuree, [number, number]> = {
 const MODALITES_V2 = ["presentiel", "distanciel"];
 
 function offreCodeV2(index: number): string {
-  // Après AXI-OFF-011 (11 offres legacy) → V2 démarre à 012.
-  return `AXI-OFF-${String(index + 12).padStart(3, "0")}`;
+  // Code STABLE dérivé du numéro catalogue (1-17 → AXI-OFF-012…028), après les
+  // 11 offres legacy (001-011). Indépendant de l'ordre d'itération (anti-collision).
+  return `AXI-OFF-${String(index + 11).padStart(3, "0")}`;
 }
 
 /** Seed idempotent (par slug) des 17 offres catalogue V2. */
@@ -53,7 +54,7 @@ export async function seedOffresV2(prisma: PrismaClient): Promise<void> {
     const gamme = getGammeMeta(f.gamme);
     await prisma.offreSite.create({
       data: {
-        code: offreCodeV2(i),
+        code: offreCodeV2(f.numero),
         tierId: null, // prix via FORMATION_PRICE_MATRIX (gamme + dureeCode)
         gamme: f.gamme,
         dureeCode: f.duree,
@@ -88,19 +89,34 @@ export async function reconcileOffresV2(prisma: PrismaClient): Promise<void> {
   for (const f of FORMATIONS_V2) {
     const existing = await prisma.offreSite.findUnique({ where: { slug: f.slugFr } });
     if (!existing) continue;
+    const [hMin, hMax] = DUREE_HEURES[f.duree];
+    const format = FORMAT_PEDA[f.duree];
+    const angle = getGammeMeta(f.gamme).labelFr;
+    // Recalcule TOUS les champs dérivés (un changement de durée doit aussi
+    // resynchroniser format/heures, pas seulement gamme/dureeCode).
     const drift =
       existing.gamme !== f.gamme ||
       existing.dureeCode !== f.duree ||
+      existing.formatPedagogique !== format ||
+      existing.dureeHeuresMin !== hMin ||
+      existing.dureeHeuresMax !== hMax ||
       existing.publicViseFr !== f.publicViseFr ||
-      existing.titreFr !== f.titreFr;
+      existing.titreFr !== f.titreFr ||
+      existing.promessePrincipaleFr !== f.accrocheFr ||
+      existing.anglePedagogiqueFr !== angle;
     if (!drift) continue;
     await prisma.offreSite.update({
       where: { slug: f.slugFr },
       data: {
         gamme: f.gamme,
         dureeCode: f.duree,
+        formatPedagogique: format,
+        dureeHeuresMin: hMin,
+        dureeHeuresMax: hMax,
         publicViseFr: f.publicViseFr,
         titreFr: f.titreFr,
+        promessePrincipaleFr: f.accrocheFr,
+        anglePedagogiqueFr: angle,
       },
     });
     updated += 1;

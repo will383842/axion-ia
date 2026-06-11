@@ -126,7 +126,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
                     if (brackets.length === 0) return null;
                     const cell = (b: FormationBracket) =>
                       brackets.includes(b)
-                        ? formatFormationPrice(block.gamme, row.duree, b, "fr") + " HT"
+                        ? formatFormationPrice(block.gamme, row.duree, b, "fr")
                         : "—";
                     return (
                       <tr key={row.duree} className="bg-paper">

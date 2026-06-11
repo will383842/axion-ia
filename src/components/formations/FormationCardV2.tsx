@@ -27,7 +27,7 @@ export function FormationCardV2({
   const duree = getDureeMeta(formation.duree);
   const gamme = getGammeMeta(formation.gamme);
   const entryPrice = getFormationV2EntryPrice(formation);
-  const priceLabel = entryPrice ? `à partir de ${formatAmount(entryPrice, "fr")} HT` : "Sur devis";
+  const priceLabel = entryPrice ? `à partir de ${formatAmount(entryPrice, "fr")}` : "Sur devis";
 
   return (
     <a

@@ -106,11 +106,23 @@ export interface CoherenceReport {
 export async function verifyAllOffresCoherenceAction(): Promise<ActionResult<CoherenceReport>> {
   const session = await requireAdminRead();
   const offres = await prisma.offreSite.findMany({
-    select: { id: true, code: true, tierId: true, tarifType: true },
+    select: {
+      id: true,
+      code: true,
+      tierId: true,
+      tarifType: true,
+      gamme: true,
+      dureeCode: true,
+    },
   });
   const incoherentes: CoherenceReport["incoherentes"] = [];
   for (const o of offres) {
-    const { ok, ecarts } = verifyOffreCoherence({ tierId: o.tierId, tarifType: o.tarifType });
+    const { ok, ecarts } = verifyOffreCoherence({
+      tierId: o.tierId,
+      tarifType: o.tarifType,
+      gamme: o.gamme,
+      dureeCode: o.dureeCode,
+    });
     if (!ok) incoherentes.push({ id: o.id, code: o.code, tierId: o.tierId, ecarts });
   }
   await prisma.offreSite.updateMany({ data: { derniereVerifCoherenceAt: new Date() } });
