@@ -139,6 +139,11 @@ const IA_EXPRESS: FormationV2 = {
       reponse:
         "De 2 à 15 personnes (1 200 € HT) ou de 16 à 30 personnes (1 900 € HT), en intra-entreprise dans vos locaux.",
     },
+    {
+      question: "Peut-on former toute son équipe à l'IA en une demi-journée ?",
+      reponse:
+        "Oui : IA Express tient en 4 heures et mélange tous les postes, sans prérequis ni ordinateur. Chaque participant produit dès la séance et repart capable de travailler avec l'IA le lendemain.",
+    },
   ],
 };
 
@@ -156,7 +161,7 @@ const ART_DU_PROMPT: FormationV2 = {
   h1Fr: "Savoir demander à l'IA : la compétence qui change tout",
   metaTitleFr: "Formation prompt engineering en français — niveau 2 | Axion-IA",
   metaDescriptionFr:
-    "Formation prompt avancé intra-entreprise (4 h) pour équipes qui utilisent déjà l'IA : construire des demandes efficaces, itérer, créer ses gabarits. Dès 1 200 € HT.",
+    "Formation prompt avancé intra-entreprise (4 h) pour équipes qui utilisent déjà l'IA : demandes efficaces, itération, gabarits. Dès 1 200 € HT.",
   termesSemantiquesFr: [
     "gabarits réutilisables",
     "itération",
@@ -205,6 +210,11 @@ const ART_DU_PROMPT: FormationV2 = {
       reponse:
         "IA Express initie les débutants ; L'Art du Prompt fait passer les utilisateurs déjà à l'aise au niveau supérieur : prompts experts, itération, gabarits réutilisables.",
     },
+    {
+      question: "Comment écrire des prompts efficaces au travail ?",
+      reponse:
+        "On structure chaque demande avec contexte, rôle, format et exemple, puis on itère par critiques précises jusqu'à un résultat diffusable. La formation transforme cette méthode en gabarits réutilisables pour vos tâches récurrentes.",
+    },
   ],
 };
 
@@ -221,7 +231,7 @@ const IA_SECURITE: FormationV2 = {
   h1Fr: "Utiliser l'IA sans mettre l'entreprise en danger",
   metaTitleFr: "Formation IA sécurité des données en entreprise | Axion-IA",
   metaDescriptionFr:
-    "Formation IA & sécurité intra-entreprise (4 h) : anonymisation, liste rouge, RGPD, charte d'usage rédigée en séance. Maîtrisez le risque shadow AI. Dès 1 200 € HT.",
+    "Formation IA & sécurité intra-entreprise (4 h) : anonymisation, liste rouge, RGPD, charte d'usage en séance, risque shadow AI maîtrisé. Dès 1 200 € HT.",
   termesSemantiquesFr: [
     "anonymisation",
     "liste rouge",
@@ -229,6 +239,7 @@ const IA_SECURITE: FormationV2 = {
     "AI Act",
     "circuit d'alerte",
     "shadow AI",
+    "conformité",
     "RGPD",
   ],
   publicViseFr:
@@ -274,6 +285,11 @@ const IA_SECURITE: FormationV2 = {
       reponse:
         "Votre charte d'usage IA personnalisée, rédigée en séance, plus la liste rouge des données de l'entreprise et les réflexes RGPD pour chaque salarié.",
     },
+    {
+      question: "Que peut-on mettre dans une IA au travail ?",
+      reponse:
+        "Tout ce qui n'est ni une donnée personnelle, ni un secret professionnel, ni une information client identifiante. La formation construit votre liste rouge et apprend à anonymiser en 30 secondes avant de confier un document à une IA.",
+    },
   ],
 };
 
@@ -298,6 +314,7 @@ const IA_CONFORMITE: FormationV2 = {
     "registre des usages",
     "charte",
     "plan 90 jours",
+    "attestations de formation",
     "responsabilité employeur",
     "RGPD",
   ],
@@ -350,6 +367,11 @@ const IA_CONFORMITE: FormationV2 = {
       reponse:
         "Non. C'est une formation et un outillage opérationnel ; elle ne constitue pas un conseil juridique individualisé.",
     },
+    {
+      question: "Comment se mettre en conformité avec l'AI Act ?",
+      reponse:
+        "On cartographie les usages réels, on classe les risques, puis on construit le registre v1 et un plan 90 jours. Les attestations de formation de vos équipes complètent le dossier comme élément de preuve de la maîtrise de l'IA exigée.",
+    },
   ],
 };
 
@@ -369,7 +391,7 @@ const IA_FONDAMENTAUX: FormationV2 = {
   h1Fr: "Rendre toute votre équipe autonome avec l'IA en une journée",
   metaTitleFr: "Formation IA 1 jour en entreprise — équipe autonome | Axion-IA",
   metaDescriptionFr:
-    "Formation IA générative intra-entreprise (1 jour), sans prérequis : analyse de documents, livrable complet, boîte à outils personnelle. Dans vos locaux, dès 1 900 € HT.",
+    "Formation IA générative intra-entreprise (1 jour), sans prérequis : analyse de documents, livrable complet, boîte à outils personnelle. Dès 1 900 € HT.",
   termesSemantiquesFr: [
     "analyse de documents",
     "livrable professionnel",
@@ -431,6 +453,11 @@ const IA_FONDAMENTAUX: FormationV2 = {
     {
       question: "Faut-il un niveau préalable ?",
       reponse: "Aucun. La journée part des bases et amène chaque participant à l'autonomie.",
+    },
+    {
+      question: "Quelle durée pour une formation IA ?",
+      reponse:
+        "Comptez 4 heures pour une initiation collective et une journée complète pour rendre l'équipe autonome avec un vrai livrable. Les formats 2 et 3 jours servent à transformer des tâches et des processus en profondeur.",
     },
   ],
 };
@@ -505,6 +532,11 @@ const IA_COMMERCIAL: FormationV2 = {
       reponse:
         "Non : l'IA structure et rédige, mais les montants restent vérifiés à la main. On vous apprend justement à fiabiliser avant d'envoyer.",
     },
+    {
+      question: "Peut-on faire ses devis avec l'intelligence artificielle ?",
+      reponse:
+        "Oui : on construit votre gabarit de devis et l'IA le remplit trois fois plus vite à partir de la demande client. Les chiffres restent vérifiés à la main ; vous gagnez sur la rédaction, pas sur le contrôle.",
+    },
   ],
 };
 
@@ -520,13 +552,15 @@ const IA_AU_BUREAU: FormationV2 = {
   h1Fr: "Produire vos documents et courriers deux fois plus vite",
   metaTitleFr: "Formation IA assistante administrative & secrétariat | Axion-IA",
   metaDescriptionFr:
-    "Formation IA pour l'administratif (1 jour) : gabarits de courriers, dépouillement de dossiers, réponses aux administrations, suivi sans ressaisie. Dès 1 900 € HT.",
+    "Formation IA pour l'administratif (1 jour) : gabarits de courriers, dépouillement de dossiers, réponses aux administrations, suivi. Dès 1 900 € HT.",
   termesSemantiquesFr: [
+    "assistante administrative",
     "gabarits de courriers",
     "comptes rendus",
     "dossiers",
     "échéancier",
     "suivi sans ressaisie",
+    "RH et paie",
   ],
   publicViseFr: "Assistant(e)s, secrétariat, gestion, comptabilité, RH, services généraux.",
   objectifsFr: [
@@ -588,6 +622,11 @@ const IA_AU_BUREAU: FormationV2 = {
       reponse:
         "Oui, avec une liste rouge renforcée sur les données personnelles : on apprend à gagner du temps tout en protégeant les données sensibles.",
     },
+    {
+      question: "Comment rédiger les réponses aux administrations avec l'IA ?",
+      reponse:
+        "On part d'une vraie réponse en attente : l'IA structure le courrier à partir de vos pièces, vous vérifiez et validez. La formation produit des gabarits réutilisables pour vos échanges récurrents avec les organismes et administrations.",
+    },
   ],
 };
 
@@ -600,10 +639,10 @@ const IA_SUR_LE_TERRAIN: FormationV2 = {
   duree: "1j",
   titreFr: "IA sur le terrain",
   accrocheFr: "Comptes rendus, photos, dictée vocale : tout depuis son téléphone",
-  h1Fr: "Comptes rendus, photos, dictée vocale : tout depuis son téléphone",
+  h1Fr: "Boucler le circuit terrain → bureau depuis un simple smartphone",
   metaTitleFr: "Formation IA terrain sur smartphone, sans ordinateur | Axion-IA",
   metaDescriptionFr:
-    "Formation IA pour les équipes terrain (1 jour, smartphone uniquement) : comptes rendus dictés, signalements photo, documents depuis le téléphone. Dès 1 900 € HT.",
+    "Formation IA pour les équipes terrain (1 jour, smartphone) : comptes rendus dictés, signalements photo, documents depuis le téléphone. Dès 1 900 € HT.",
   termesSemantiquesFr: [
     "dictée vocale",
     "photo signalement",
@@ -667,6 +706,11 @@ const IA_SUR_LE_TERRAIN: FormationV2 = {
       reponse:
         "Les comptes rendus arrivent le soir même, propres et structurés : fini la ressaisie et les rapports illisibles ou en retard.",
     },
+    {
+      question: "Comment faire ses comptes rendus d'intervention à la voix ?",
+      reponse:
+        "On dicte le déroulé en quittant le site et l'IA le met en forme en compte rendu structuré, prêt à envoyer. La journée entraîne ce réflexe sur smartphone, plus le signalement à partir d'une photo (constat, cause, action, urgence).",
+    },
   ],
 };
 
@@ -682,7 +726,7 @@ const AUTOMATISATIONS_DECOUVERTE: FormationV2 = {
   h1Fr: "Découvrir ce que l'automatisation IA peut faire pour votre entreprise",
   metaTitleFr: "Formation découverte automatisation IA en entreprise | Axion-IA",
   metaDescriptionFr:
-    "Journée découverte de l'automatisation IA en intra-entreprise : repérer les tâches automatisables, chiffrer les gains, repartir avec un plan priorisé. Dès 1 900 € HT.",
+    "Journée découverte de l'automatisation IA en intra-entreprise : repérer les tâches automatisables, chiffrer les gains, plan priorisé. Dès 1 900 € HT.",
   termesSemantiquesFr: [
     "déclencheur traitement action",
     "matrice gain difficulté",
@@ -747,6 +791,11 @@ const AUTOMATISATIONS_DECOUVERTE: FormationV2 = {
       reponse:
         "Le plan d'automatisation de l'entreprise : les 3-5 premières automatisations priorisées et chiffrées, prêtes à réaliser ensuite par vos équipes ou en clé en main.",
     },
+    {
+      question: "Quelles tâches automatiser avec l'IA dans une PME ?",
+      reponse:
+        "Les tâches répétitives, à règles claires et déclenchées par un événement : saisies, relances, tris, mises en forme. La journée les inventorie par service, chiffre les gains et les classe sur une matrice gain / difficulté.",
+    },
   ],
 };
 
@@ -766,7 +815,7 @@ const IA_INTEGRATION_METIER: FormationV2 = {
   h1Fr: "Vos 5 tâches les plus chronophages transformées avant la fin",
   metaTitleFr: "Formation IA métier 2 jours — tâches transformées | Axion-IA",
   metaDescriptionFr:
-    "Formation IA intégration métier (2 jours) : chaque participant transforme ses 5 tâches les plus chronophages en séance, kit d'équipe remis. Intra, dès 3 600 € HT.",
+    "Formation IA intégration métier (2 jours) : chaque participant transforme ses 5 tâches les plus chronophages en séance, kit d'équipe remis. Dès 3 600 € HT.",
   termesSemantiquesFr: [
     "tâches chronophages",
     "gabarits reproductibles",
@@ -830,6 +879,11 @@ const IA_INTEGRATION_METIER: FormationV2 = {
       reponse:
         "Le kit d'équipe : bibliothèque de modèles validés + règles d'usage écrites, remis au responsable — les gains sont standardisés, pas individuels.",
     },
+    {
+      question: "Comment transformer ses 5 tâches les plus chronophages avec l'IA ?",
+      reponse:
+        "Chaque participant liste ses tâches lourdes, les valide avec le formateur, puis les reconstruit en gabarits diffusables et reproductibles, testés deux fois. À la fin du jour 2, les 5 tâches sont réellement transformées, pas promises.",
+    },
   ],
 };
 
@@ -845,7 +899,7 @@ const IA_COMMERCIAL_AVANCE: FormationV2 = {
   h1Fr: "Tout le cycle de vente passé à l'IA, de la prospection à la signature",
   metaTitleFr: "Formation IA commerciale avancée — appels d'offres | Axion-IA",
   metaDescriptionFr:
-    "Formation IA commerciale avancée (2 jours) : prospection personnalisée, appels d'offres, propositions différenciantes, bibliothèque d'équipe. Intra, dès 3 600 € HT.",
+    "Formation IA commerciale avancée (2 jours) : prospection personnalisée, appels d'offres, propositions différenciantes, bibliothèque d'équipe. Dès 3 600 € HT.",
   termesSemantiquesFr: [
     "mémoire technique",
     "matrice de conformité",
@@ -914,6 +968,11 @@ const IA_COMMERCIAL_AVANCE: FormationV2 = {
       reponse:
         "Le 1 jour couvre devis/propositions/relances ; l'avancé ajoute la prospection en série, les appels d'offres et un jour entier sur vos affaires réelles.",
     },
+    {
+      question: "Comment répondre à un appel d'offres avec l'IA ?",
+      reponse:
+        "On décortique un vrai AO en exigences et preuves, on bâtit la trame de réponse et la matrice de conformité, puis l'IA aide à produire une proposition différenciante. Le jour 2 traite vos affaires en cours jusqu'au statut « prêt à partir ».",
+    },
   ],
 };
 
@@ -930,10 +989,10 @@ const IA_TRANSFORMATION_EQUIPE: FormationV2 = {
   duree: "3j",
   titreFr: "IA Transformation d'équipe",
   accrocheFr: "Vos processus passés à l'IA, des référents formés, une équipe autonome",
-  h1Fr: "Vos processus passés à l'IA, des référents formés, une équipe autonome",
+  h1Fr: "Rendre votre équipe autonome sur l'IA en 3 jours, sans prestataire",
   metaTitleFr: "Formation transformation IA d'équipe 3 jours | Axion-IA",
   metaDescriptionFr:
-    "Formation transformation IA (3 jours) : 2 processus passés à l'IA, des référents internes formés, un tableau de bord des gains remis à la direction. Dès 4 900 € HT.",
+    "Formation transformation IA (3 jours) : 2 processus passés à l'IA, des référents internes formés, un tableau de bord des gains direction. Dès 4 900 € HT.",
   termesSemantiquesFr: [
     "processus de bout en bout",
     "points de contrôle humain",
@@ -1010,6 +1069,11 @@ const IA_TRANSFORMATION_EQUIPE: FormationV2 = {
       reponse:
         "C'est recommandé, avec 1-2 référents volontaires, et la direction présente à la restitution finale pour s'approprier le dispositif.",
     },
+    {
+      question: "Comment former des référents IA en interne ?",
+      reponse:
+        "Le jour 3 outille 1-2 volontaires : intégrer un nouvel arrivant en une heure, faire vivre le kit d'équipe et animer une revue mensuelle. Ils deviennent autonomes pour former les suivants, sans recourir à un prestataire externe.",
+    },
   ],
 };
 
@@ -1028,10 +1092,10 @@ const AGENTS_AUTOMATISATIONS: FormationV2 = {
     "PC avec droits d'installation (point réglé avec votre DSI à J-15, à notre initiative). Aucune connaissance en programmation requise.",
   titreFr: "Agents & Automatisations",
   accrocheFr: "Créez vos propres automatisations IA, sans savoir coder",
-  h1Fr: "Créez vos propres automatisations IA, sans savoir coder",
+  h1Fr: "Faire écrire vos automatisations par l'IA — le code reste à l'entreprise",
   metaTitleFr: "Formation créer ses automatisations IA sans coder | Axion-IA",
   metaDescriptionFr:
-    "Formation Agents & Automatisations (2 jours, groupe 2-12) : vos équipes créent leurs automatisations en code source qui appartient à l'entreprise, sans coder. 3 600 € HT.",
+    "Formation Agents & Automatisations (2 jours, groupe 2-12) : vos équipes créent des automatisations en code source, propriété de l'entreprise. 3 600 € HT.",
   termesSemantiquesFr: [
     "code source généré par l'IA",
     "propriété du code",
@@ -1116,6 +1180,12 @@ const AGENTS_AUTOMATISATIONS: FormationV2 = {
       reponse:
         "Ici vos équipes créent des automatisations autonomes en code source, indépendantes de tout outil. Dans la gamme Claude, chacun construit son outil dans l'environnement Claude.",
     },
+    {
+      question:
+        "Peut-on avoir des automatisations qui appartiennent à l'entreprise sans abonnement ?",
+      reponse:
+        "Oui : l'IA écrit un code source en clair qui tourne chez vous, sans plateforme ni abonnement mensuel. Il est documenté, appartient à l'entreprise et un inventaire est remis à votre DSI — zéro dépendance à un prestataire.",
+    },
   ],
 };
 
@@ -1134,7 +1204,7 @@ const AGENTS_AUTOMATISATIONS_AVANCE: FormationV2 = {
   h1Fr: "Construire ET déployer son automatisation complète, en fonctionnement le dernier jour",
   metaTitleFr: "Formation déploiement d'automatisations IA 3 jours | Axion-IA",
   metaDescriptionFr:
-    "Formation Agents & Automatisations avancé (3 jours, groupe 2-12) : étendre, fiabiliser et déployer une automatisation qui tourne tous les jours, testée au chaos. 4 900 € HT.",
+    "Formation Agents & Automatisations avancé (3 jours, groupe 2-12) : étendre, fiabiliser et déployer une automatisation qui tourne chaque jour. 4 900 € HT.",
   termesSemantiquesFr: [
     "exécution planifiée",
     "test du chaos",
@@ -1204,6 +1274,11 @@ const AGENTS_AUTOMATISATIONS_AVANCE: FormationV2 = {
       reponse:
         "Vous apprenez à gérer les erreurs, lire le journal d'activité, recevoir des alertes d'échec et intervenir — et à en créer de nouvelles seul.",
     },
+    {
+      question: "Comment déployer une automatisation IA qui tourne tous les jours ?",
+      reponse:
+        "On met en place l'exécution planifiée, l'hébergement et un dépôt central du code, puis on signe une check-list de mise en service. Le test du chaos provoque des pannes pour vérifier que l'automatisation réagit proprement avant la production.",
+    },
   ],
 };
 
@@ -1222,7 +1297,7 @@ const CLAUDE_DECOUVERTE: FormationV2 = {
     "Comptes gratuits suffisent (les fonctions avancées sont démontrées par le formateur certifié).",
   titreFr: "Claude Découverte",
   accrocheFr: "Découvrir Claude et tout ce qu'il rend possible pour votre entreprise",
-  h1Fr: "Découvrir Claude et tout ce qu'il rend possible pour votre entreprise",
+  h1Fr: "Évaluer Claude sur pièces en une journée, avec un formateur certifié",
   metaTitleFr: "Formation Claude en entreprise — formateur certifié | Axion-IA",
   metaDescriptionFr:
     "Formation Claude (Anthropic) en intra-entreprise (1 jour), animée par un formateur certifié : analyse de documents, Projets, confidentialité. Dès 2 300 € HT.",
@@ -1296,6 +1371,11 @@ const CLAUDE_DECOUVERTE: FormationV2 = {
       reponse:
         "C'est un différenciateur : une expertise certifiée de l'écosystème Claude (Anthropic) que quasi aucun organisme ne propose en France.",
     },
+    {
+      question: "Claude ou ChatGPT pour mon entreprise ?",
+      reponse:
+        "La journée compare les outils sur trois tâches réelles, de façon factuelle et sans dénigrement. Vous repartez avec des critères de choix démontrés (analyse de documents, Projets, confidentialité) pour décider sur pièces, pas sur la réputation.",
+    },
   ],
 };
 
@@ -1311,9 +1391,9 @@ const CLAUDE_CREATEUR: FormationV2 = {
   titreFr: "Claude Créateur",
   accrocheFr: "Chaque participant construit son propre outil IA pour son activité — et repart avec",
   h1Fr: "Chaque participant construit son propre outil IA — et repart avec",
-  metaTitleFr: "Formation Claude Créateur — assistant personnalisé | Axion-IA",
+  metaTitleFr: "Formation Claude Projets — assistant IA personnalisé | Axion-IA",
   metaDescriptionFr:
-    "Formation Claude Créateur (2 jours, groupe 2-12, formateur certifié) : chaque salarié construit son assistant Claude personnalisé sur ses vrais dossiers. 4 300 € HT.",
+    "Formation Claude Créateur (2 jours, groupe 2-12, formateur certifié) : chaque salarié construit son assistant Claude sur ses vrais dossiers. 4 300 € HT.",
   termesSemantiquesFr: [
     "Projet Claude",
     "instructions permanentes",
@@ -1385,6 +1465,11 @@ const CLAUDE_CREATEUR: FormationV2 = {
       reponse:
         "Son assistant personnalisé qui connaît son métier, ses formats et son ton, configuré une fois pour toutes — un actif qui reste dans l'entreprise et se duplique aux collègues.",
     },
+    {
+      question: "Comment construire son outil IA personnalisé avec Claude ?",
+      reponse:
+        "On crée un Projet Claude par activité, avec instructions permanentes (identité, formats, ton, interdits, exemples) et base documentaire intégrée. Chacun l'affine sur ses vrais dossiers jusqu'à un outil qui répond juste sans remise en contexte.",
+    },
   ],
 };
 
@@ -1401,9 +1486,9 @@ const CLAUDE_ARCHITECTE: FormationV2 = {
   accrocheFr:
     "Son outil complet : assistant personnalisé, automatisations, espaces de travail — opérationnel le dernier jour",
   h1Fr: "Son outil IA complet, opérationnel le dernier jour",
-  metaTitleFr: "Formation Claude Architecte — outil IA complet 3 jours | Axion-IA",
+  metaTitleFr: "Formation Claude avancée — outil IA complet 3 jours | Axion-IA",
   metaDescriptionFr:
-    "Formation Claude Architecte (3 jours, groupe 2-12, formateur certifié) : chaque participant connecte son outil Claude à ses flux réels et automatise. 5 900 € HT.",
+    "Formation Claude Architecte (3 jours, groupe 2-12, formateur certifié) : chaque participant connecte son outil Claude à ses flux réels. 5 900 € HT.",
   termesSemantiquesFr: [
     "flux de travail",
     "routine quotidienne",
@@ -1468,6 +1553,11 @@ const CLAUDE_ARCHITECTE: FormationV2 = {
       question: "Quelle frontière avec la gamme Agents ?",
       reponse:
         "Claude Architecte automatise DANS l'environnement Claude ; la gamme Agents crée des automatisations autonomes en code source. Le jour 3 clarifie ce qui relève de chaque approche et du clé en main.",
+    },
+    {
+      question: "Comment connecter Claude à ses flux de travail quotidiens ?",
+      reponse:
+        "Le jour 3 organise les flux entrants avec un filtre de confidentialité, met en place la « tournée du matin » et des séquences réutilisables multi-étapes. Ce qui prenait 2 à 3 heures se traite en 30 à 45 minutes, démontré sur vos flux réels.",
     },
   ],
 };

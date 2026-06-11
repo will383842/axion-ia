@@ -35,6 +35,13 @@ import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // communiqués de presse (`/presse/[slug]` × N locales). Source = PRESS_RELEASES
 // (fixtures éditoriales `src/content/press.ts`, lastmod = `publishedAt`).
 import { PRESS_RELEASES } from "@/content/press";
+// Catalogue Formations V2 (Qualiopi déploiement phasé) — sub-sitemap dédié, GATÉ
+// par le flag OF_PUBLIC_DISCLOSURE_ENABLED. Tant que l'agrément OF n'est pas
+// obtenu (Phase A), AUCUNE URL formation ne doit fuiter dans le sitemap public
+// (afficher Qualiopi/CPF/OPCO avant certification est illégal — cf. flag.ts).
+import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
+import { FORMATION_DUREES_META, getGammesThematiques } from "@/content/formations/catalog-v2-meta";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -111,7 +118,13 @@ type StaticSitemapId =
   // ~22 URLs V1 (11 outils × 2 locales). Sub-sitemap propre pour isoler le
   // diagnostic Product JSON-LD côté Search Console. Scale prête pour +5
   // outils/trimestre sans refactor.
-  | "stack-ia-tools";
+  | "stack-ia-tools"
+  // Catalogue Formations V2 (Qualiopi, déploiement phasé) — hub /formations,
+  // /formations/tarifs, /formations/duree/<slug>, /formations/gamme/<slug> et
+  // les 17 fiches /formations/<slug>. GATÉ par OF_PUBLIC_DISCLOSURE_ENABLED :
+  // l'ID n'est même pas déclaré dans generateSitemaps() en Phase A, et le
+  // builder retourne [] par sécurité (defense-in-depth).
+  | "formations";
 // Refonte villes 2026-05-26 — sub-sitemap `implantations-villes-verticales` retiré
 // suite à la suppression des 10 750 pages `/implantations/[region]/[ville]/[verticale]`
 // (risque doorway HCU 2024 + cannibalisation des pages services). Les 301 redirects
@@ -319,6 +332,15 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "stack-ia-tools",
   ];
 
+  // Catalogue Formations V2 — GATING Qualiopi : on ne déclare le sub-sitemap
+  // `formations` QUE si l'agrément OF est obtenu (OF_PUBLIC_DISCLOSURE_ENABLED).
+  // En Phase A (flag absent / ≠ "true"), l'ID n'apparaît pas dans le
+  // sitemap-index → aucune URL formation crawlable, conforme à l'interdiction
+  // d'afficher Qualiopi/CPF/OPCO avant certification.
+  if (isQualiopiPublicDisclosureEnabled()) {
+    staticIds.push("formations");
+  }
+
   // KB : dériver le nombre de chunks depuis le count DB. Lecture unique au
   // build (puis next-intl SSG fige). Bootstrap-safe (count=0 si P2021).
   const kbCount = await countKnowledgePublicEntries();
@@ -451,6 +473,9 @@ export default async function sitemap(props: {
     // Sprint S+4-B City Domination 2026-05-18 — pages détail outils stack-ia.
     case "stack-ia-tools":
       return filterEnIfDisabled(buildStackIaToolsSitemap(EDITORIAL_BASELINE));
+    // Catalogue Formations V2 (Qualiopi, déploiement phasé) — GATÉ par flag.
+    case "formations":
+      return filterEnIfDisabled(buildFormationsSitemap(EDITORIAL_BASELINE));
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -957,6 +982,121 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
     ],
     now,
   );
+}
+
+/**
+ * Sub-sitemap `formations` — Catalogue Formations V2 (Qualiopi, déploiement phasé).
+ *
+ * ⚠️ GATING OBLIGATOIRE : ce builder retourne un tableau VIDE tant que
+ * `OF_PUBLIC_DISCLOSURE_ENABLED` ≠ "true" (Phase A). Le sitemap public ne doit
+ * PAS exposer les URLs formation tant que l'agrément OF (NDA + Qualiopi) n'est
+ * pas obtenu — afficher Qualiopi/CPF/OPCO avant certification est illégal.
+ * `generateSitemaps()` ne déclare déjà PAS l'ID `formations` en Phase A ; ce
+ * `return []` est une garde secondaire (defense-in-depth) au cas où l'ID serait
+ * sollicité directement (`/sitemap/formations.xml`).
+ *
+ * Contenu (Phase B uniquement) :
+ *   - le hub `/formations` (priority 0.8)
+ *   - la page tarifs `/formations/tarifs` (priority 0.7)
+ *   - les 4 listings par durée `/formations/duree/<slug>` (FORMATION_DUREES_META)
+ *   - les gammes thématiques `/formations/gamme/<slug>` (getGammesThematiques :
+ *     Agents & Automatisations, Claude)
+ *   - les 17 fiches `/formations/<slug>` (FORMATIONS_V2, slug FR canonique +
+ *     slug EN miroir routing-only)
+ *
+ * Slugs EN = mapping de route uniquement (contenu 100 % FR, EN désactivé
+ * 301→FR). `effectiveLocales` / `filterEnIfDisabled` retirent les URLs EN du
+ * sitemap servi tant que `EN_LOCALE_ENABLED` ≠ "true". `lastModified` =
+ * `EDITORIAL_BASELINE` (date éditoriale figée, audit fraîcheur 2026-06-08).
+ * Aucun prix ici (le sitemap ne porte pas de montant ; les prix dérivent de
+ * FORMATION_PRICE_MATRIX côté pages).
+ */
+function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
+  // GATING Qualiopi — garde secondaire (defense-in-depth).
+  if (!isQualiopiPublicDisclosureEnabled()) return [];
+
+  const entries: MetadataRoute.Sitemap = [];
+
+  // Hub /formations · /training et page tarifs /formations/tarifs · /training/pricing.
+  const hubs: ReadonlyArray<{ fr: string; en: string; priority: number }> = [
+    { fr: "/formations", en: "/training", priority: 0.8 },
+    { fr: "/formations/tarifs", en: "/training/pricing", priority: 0.7 },
+  ];
+  for (const hub of hubs) {
+    const frUrl = `${SITE_URL}/fr${hub.fr}`;
+    const enUrl = `${SITE_URL}/en${hub.en}`;
+    const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
+    entries.push({
+      url: frUrl,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: hub.priority,
+      alternates: { languages: langs },
+    });
+    if (!EN_LOCALE_DISABLED) {
+      entries.push({
+        url: enUrl,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: hub.priority,
+        alternates: { languages: langs },
+      });
+    }
+  }
+
+  // Listings par durée /formations/duree/<slug> (slug FR/EN identique : segment
+  // d'URL « 4-heures », « 1-jour »… n'est pas traduit).
+  const dureeSlugs = FORMATION_DUREES_META.map((d) => d.slug);
+  entries.push(
+    ...buildDynamic(
+      [
+        {
+          fr: "/formations/duree/:slug",
+          en: "/training/duration/:slug",
+          slugs: dureeSlugs,
+          changeFrequency: "monthly",
+          priority: 0.6,
+        },
+      ],
+      now,
+    ),
+  );
+
+  // Gammes thématiques /formations/gamme/<slug> (Agents & Automatisations, Claude).
+  const gammeSlugs = getGammesThematiques().map((g) => g.slug);
+  entries.push(
+    ...buildDynamic(
+      [
+        {
+          fr: "/formations/gamme/:slug",
+          en: "/training/track/:slug",
+          slugs: gammeSlugs,
+          changeFrequency: "monthly",
+          priority: 0.6,
+        },
+      ],
+      now,
+    ),
+  );
+
+  // Les 17 fiches /formations/<slug> (slug FR canonique + slug EN miroir).
+  entries.push(
+    ...buildDynamic(
+      [
+        {
+          fr: "/formations/:slug",
+          en: "/training/:slug",
+          slugs: FORMATIONS_V2.map((f) => f.slugFr),
+          slugsEn: FORMATIONS_V2.map((f) => f.slugEn),
+          changeFrequency: "monthly",
+          priority: 0.7,
+        },
+      ],
+      now,
+    ),
+  );
+
+  return entries;
 }
 
 // pSEO Implantations — hub + régions indexable seulement.
