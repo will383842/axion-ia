@@ -4669,6 +4669,7 @@ enum OffreFormatPedagogique {
   collectif_4h
   collectif_1jour
   collectif_2jours
+  collectif_3jours
   conference
   dirigeant_1to1
   individuel
@@ -4684,13 +4685,19 @@ enum OffreTarifType {
 
 /// Référentiel des offres publiques rattachables à une formation (PART5 A.1).
 /// Le Formation Engine ne crée QUE des formations correspondant à une offre
-/// active. `tierId` lie au SSOT pricing.ts (prix + durée dérivés, jamais en dur).
+/// active. Offres legacy : `tierId` lie au SSOT pricing.ts. Offres catalogue V2 :
+/// `tierId` null, prix dérivé de `FORMATION_PRICE_MATRIX` via `gamme`+`dureeCode`.
 model OffreSite {
   id                       String                 @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle officielle AXI-OFF-NNN.
   code                     String                 @unique @db.VarChar(40)
-  /// Identifiant de tier pricing.ts (SSOT prix/durée). Unique → 1 offre / tier.
-  tierId                   String                 @unique @map("tier_id") @db.VarChar(80)
+  /// Identifiant de tier pricing.ts (SSOT prix/durée legacy). Null pour le
+  /// catalogue V2 (prix dérivé de la matrice via gamme+dureeCode).
+  tierId                   String?                @unique @map("tier_id") @db.VarChar(80)
+  /// Catalogue V2 — gamme ("ia-standard" | "agents-automatisations" | "claude").
+  gamme                    String?                @db.VarChar(40)
+  /// Catalogue V2 — code durée ("4h" | "1j" | "2j" | "3j").
+  dureeCode                String?                @map("duree_code") @db.VarChar(8)
   titreFr                  String                 @map("titre_fr") @db.VarChar(200)
   /// Slug public (fiche `/formations/[slug]` Phase B).
   slug                     String                 @unique @db.VarChar(160)
@@ -4718,6 +4725,7 @@ model OffreSite {
 
   @@index([categorie])
   @@index([actif])
+  @@index([gamme])
   @@map("offres_site")
 }
 

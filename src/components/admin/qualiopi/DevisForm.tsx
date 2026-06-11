@@ -27,7 +27,7 @@ export interface ClientOption {
 }
 
 export interface OffreOption {
-  tierId: string;
+  tierId: string | null;
   code: string;
   titreFr: string;
   prixLabelFr: string;
@@ -262,7 +262,7 @@ export function DevisForm({ clients, offres, basePath }: DevisFormProps): React.
                 >
                   <option value="">— Aucune —</option>
                   {offres.map((o) => (
-                    <option key={o.tierId} value={o.tierId}>
+                    <option key={o.code} value={o.tierId ?? o.code}>
                       {o.code} — {o.titreFr}
                     </option>
                   ))}

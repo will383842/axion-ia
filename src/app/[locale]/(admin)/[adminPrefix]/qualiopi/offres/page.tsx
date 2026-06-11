@@ -30,10 +30,17 @@ const FORMAT_LABELS: Record<string, string> = {
   collectif_4h: "Collectif · 4 h",
   collectif_1jour: "Collectif · 1 jour",
   collectif_2jours: "Collectif · 2 jours",
+  collectif_3jours: "Collectif · 3 jours",
   conference: "Conférence",
   dirigeant_1to1: "Dirigeant · 1-to-1",
   individuel: "Individuel",
   sur_devis: "Sur devis",
+};
+
+const GAMME_LABELS: Record<string, string> = {
+  "ia-standard": "IA",
+  "agents-automatisations": "Agents & Auto.",
+  claude: "Claude",
 };
 
 interface PageProps {
@@ -84,6 +91,7 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
               <tr>
                 <th className={headCls}>Code</th>
                 <th className={headCls}>Titre</th>
+                <th className={headCls}>Gamme</th>
                 <th className={headCls}>Format</th>
                 <th className={headCls}>Durée (h)</th>
                 <th className={headCls}>Prix (pricing.ts)</th>
@@ -104,6 +112,16 @@ export default async function QualiopiOffresPage({ params }: PageProps) {
                     <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                       /formations/{offre.slug}
                     </div>
+                  </td>
+                  <td className={cellCls}>
+                    {offre.gamme ? (
+                      <span className="rounded-full bg-[color:var(--color-admin-paper)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium">
+                        {GAMME_LABELS[offre.gamme] ?? offre.gamme}
+                        {offre.dureeCode ? ` · ${offre.dureeCode}` : ""}
+                      </span>
+                    ) : (
+                      <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                    )}
                   </td>
                   <td className={cellCls}>
                     {FORMAT_LABELS[offre.formatPedagogique] ?? offre.formatPedagogique}

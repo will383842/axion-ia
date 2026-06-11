@@ -7,17 +7,17 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
+import { resolveOffrePrice } from "@/server/qualiopi/offres/pricing-resolver";
 import type { OffreSite } from "@/server/qualiopi/offres/types";
 
 export interface OffreWithPrice {
   offre: OffreSite;
-  /** Libellé prix FR résolu depuis pricing.ts (jamais stocké en DB). */
+  /** Libellé prix FR résolu : legacy (tierId → pricing.ts) ou V2 (gamme+durée → matrice). */
   prixLabelFr: string;
 }
 
 function withPrice(offre: OffreSite): OffreWithPrice {
-  return { offre, prixLabelFr: resolveOffrePriceLabel(offre.tierId, "fr") };
+  return { offre, prixLabelFr: resolveOffrePrice(offre, "fr") };
 }
 
 /** Toutes les offres (admin), triées par code. Stub-safe → [] au build. */

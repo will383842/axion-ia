@@ -95,7 +95,7 @@ export async function toggleOffreActifAction(
 
 export interface CoherenceReport {
   checked: number;
-  incoherentes: Array<{ id: string; code: string; tierId: string; ecarts: string[] }>;
+  incoherentes: Array<{ id: string; code: string; tierId: string | null; ecarts: string[] }>;
 }
 
 /**
