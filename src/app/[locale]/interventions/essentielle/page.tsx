@@ -20,6 +20,7 @@ import {
 } from "@/content/interventions";
 // SSOT pricing — sous-tranches Essentielle (690/890/1490) pour offres JSON-LD.
 import { ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
+import { formationDurationIso } from "@/content/formations";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -151,7 +152,9 @@ export default async function Essentielle({ params }: Props) {
     name: copy.title,
     description: copy.answer,
     courseMode: ["Onsite"],
-    duration: "PT8H",
+    ...(formationDurationIso("essentielle")
+      ? { duration: formationDurationIso("essentielle")! }
+      : {}),
     audienceType: isFr
       ? "Équipes TPE et PME, tous métiers — découverte de l'IA opérationnelle (B2B)"
       : "Small business and SME teams, all roles — operational AI discovery (B2B)",

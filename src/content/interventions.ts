@@ -6,6 +6,7 @@
 // dans un gros bloc dédié orienté conversion B2B.
 
 import type { Locale } from "@/i18n/routing";
+import { getDurationCanonical, getSkeletonBySlug } from "./formations";
 import {
   APPROFONDIE_SUB_TIERS,
   ESSENTIELLE_SUB_TIERS,
@@ -329,89 +330,71 @@ const LOGISTICS_NOTE_FR =
 const LOGISTICS_NOTE_EN =
   "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature. Availability confirmed within 48 business hours.";
 
-export const DIRIGEANTS_SCHEDULE_FR: DaySchedule = {
-  title: "Déroulement de la journée",
-  intro:
-    "Programme type d'une journée Dirigeants (9 h – 17 h). Identique pour toutes les entreprises : panorama, ateliers de positionnement, référentiel d'arbitrage IA pour vos décisions futures.",
-  days: [
-    {
-      items: [
-        { time: "9 h 00", title: "Accueil + cadrage 1-to-1 avec le dirigeant" },
-        {
-          time: "9 h 30",
-          title: "Panorama IA 2026 — opportunités, risques, marché",
-          description: "État de l'art, où en sont les concurrents, ce qui marche vraiment.",
-        },
-        { time: "11 h 00", title: "Pause café" },
-        {
-          time: "11 h 15",
-          title: "Atelier 1 — Positionnement de votre entreprise",
-          description: "Échelle de maturité IA 2026 appliquée à votre contexte.",
-        },
-        { time: "12 h 00", title: "Déjeuner avec le dirigeant (12 h – 14 h)" },
-        {
-          time: "14 h 00",
-          title: "Atelier 2 — Cas d'usage prioritaires par fonction",
-          description: "Quels usages testent les ETI/grandes entreprises de votre secteur.",
-        },
-        { time: "15 h 30", title: "Pause" },
-        {
-          time: "15 h 45",
-          title: "Atelier 3 — Référentiel d'arbitrage des décisions IA",
-          description: "Grille de lecture pour évaluer vos prochains choix IA en interne.",
-        },
-        {
-          time: "17 h 00",
-          title: "Synthèse + ressources pédagogiques + clôture",
-          description: "Référentiel dirigeant, cas d'usage, lectures recommandées.",
-        },
-      ],
-    },
-  ],
-  logisticsNote: LOGISTICS_NOTE_FR,
-};
+// ============================================================================
+// Dérivation du SSOT squelette (`@/content/formations`). La durée affichée et
+// le programme heure-par-heure ne sont plus écrits ici : ils descendent du
+// squelette (source unique). Will édite le contenu dans skeletons.ts.
+// ============================================================================
 
-export const DIRIGEANTS_SCHEDULE_EN: DaySchedule = {
-  title: "Day-by-day breakdown",
-  intro:
-    "Standard programme for the Executives day (9 a.m. – 5 p.m.). Identical for every company: panorama, positioning workshops, AI decision framework for your future calls.",
-  days: [
-    {
-      items: [
-        { time: "9:00", title: "Welcome + 1-on-1 framing with the executive" },
-        {
-          time: "9:30",
-          title: "2026 AI panorama — opportunities, risks, market",
-          description: "State of the art, where competitors stand, what really works.",
-        },
-        { time: "11:00", title: "Coffee break" },
-        {
-          time: "11:15",
-          title: "Workshop 1 — Position your company",
-          description: "2026 AI maturity scale applied to your context.",
-        },
-        { time: "12:00", title: "Lunch with the executive (12:00 – 14:00)" },
-        {
-          time: "14:00",
-          title: "Workshop 2 — Priority use cases by function",
-          description: "What mid-market and enterprise peers in your sector are testing.",
-        },
-        { time: "15:30", title: "Break" },
-        {
-          time: "15:45",
-          title: "Workshop 3 — AI decision framework",
-          description: "Reading grid to assess your next internal AI choices.",
-        },
-        {
-          time: "17:00",
-          title: "Synthesis + takeaways + close",
-          description: "Executive reference sheet, use cases, recommended reading.",
-        },
-      ],
-    },
-  ],
-  logisticsNote: LOGISTICS_NOTE_EN,
-};
+/** Durée affichée + jours de blocage calendrier, dérivés du squelette. */
+function durationSummary(
+  slug: InterventionSlug,
+  locale: "fr" | "en",
+): Pick<InterventionSummary, "duration" | "durationDays"> {
+  const s = getSkeletonBySlug(slug);
+  if (!s) throw new Error(`[interventions] squelette introuvable : "${slug}"`);
+  const days = getDurationCanonical(s.duration).days;
+  if (days !== 1 && days !== 2) {
+    throw new Error(`[interventions] durationDays inattendu (${days}) pour "${slug}"`);
+  }
+  return {
+    duration: locale === "fr" ? s.summaryDurationFr : s.summaryDurationEn,
+    durationDays: days,
+  };
+}
+
+/** Convertit le programme bilingue du squelette en `DaySchedule` localisé. */
+function programmeToDaySchedule(
+  slug: InterventionSlug,
+  locale: "fr" | "en",
+  logisticsNote: string,
+): DaySchedule {
+  const programme = getSkeletonBySlug(slug)?.programme;
+  if (!programme) throw new Error(`[interventions] programme introuvable : "${slug}"`);
+  const fr = locale === "fr";
+  const intro = fr ? programme.introFr : programme.introEn;
+  return {
+    title: fr ? programme.titleFr : programme.titleEn,
+    ...(intro ? { intro } : {}),
+    days: programme.days.map((d) => {
+      const label = fr ? d.labelFr : d.labelEn;
+      return {
+        ...(label ? { label } : {}),
+        items: d.items.map((it) => {
+          const description = fr ? it.descFr : it.descEn;
+          return {
+            time: fr ? it.time : it.timeEn,
+            title: fr ? it.titleFr : it.titleEn,
+            ...(description ? { description } : {}),
+          };
+        }),
+      };
+    }),
+    logisticsNote,
+  };
+}
+
+export const DIRIGEANTS_SCHEDULE_FR: DaySchedule = programmeToDaySchedule(
+  "dirigeants",
+  "fr",
+  LOGISTICS_NOTE_FR,
+);
+
+export const DIRIGEANTS_SCHEDULE_EN: DaySchedule = programmeToDaySchedule(
+  "dirigeants",
+  "en",
+  LOGISTICS_NOTE_EN,
+);
 
 export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
   {
@@ -423,8 +406,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       fr: {
         benefitTagline:
           "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'usages IA pour gagner du temps dès le lendemain. Une journée de formation sur site, ressources prêtes à utiliser dès le retour au bureau.",
-        duration: "1 journée sur site (9 h – 17 h)",
-        durationDays: 1,
+        ...durationSummary("essentielle", "fr"),
         price: `à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_FR,
         groupSize: "2 à 30 personnes",
@@ -445,8 +427,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       en: {
         benefitTagline:
           "Discover AI applied to your day-to-day — tools, concrete uses, AI usage ideas to save time from day two. A one-day on-site training with ready-to-use takeaways from day one back at the office.",
-        duration: "1 day on site (9 a.m. – 5 p.m.)",
-        durationDays: 1,
+        ...durationSummary("essentielle", "en"),
         price: `Starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_EN,
         groupSize: "2 to 30 people",
@@ -570,50 +551,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         title: `Intervention IA Essentielle · cabinet Axion-IA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
         description: `Une journée de formation IA sur site (2 à 30 personnes) : découverte des outils, ateliers pratiques, idées d'usages IA opérationnels. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
       },
-      daySchedule: {
-        title: "Déroulement de la journée",
-        intro:
-          "Programme type d'une journée Essentielle (9 h – 17 h). Identique pour toutes les entreprises : des ressources pédagogiques standardisées remises en fin de journée pour être réutilisées dès le lendemain.",
-        days: [
-          {
-            items: [
-              { time: "9 h 00", title: "Accueil + tour de table + objectifs" },
-              {
-                time: "9 h 30",
-                title: "Découverte des outils IA principaux",
-                description:
-                  "ChatGPT, Claude, Copilot, Gemini : à quoi ils servent vraiment et quand les choisir.",
-              },
-              { time: "10 h 30", title: "Pause café" },
-              {
-                time: "10 h 45",
-                title: "Atelier 1 — Rédaction & communication assistées",
-                description: "Mails, comptes-rendus, supports : prompts efficaces, garde-fous.",
-              },
-              { time: "12 h 00", title: "Pause déjeuner (12 h – 14 h)" },
-              {
-                time: "14 h 00",
-                title: "Atelier 2 — Recherche, analyse & synthèse",
-                description: "Veille, extraction, traitement de documents et de données.",
-              },
-              { time: "15 h 00", title: "Pause café" },
-              {
-                time: "15 h 15",
-                title: "Atelier 3 — Idées d'usages sur leurs outils",
-                description:
-                  "Repérer les tâches répétitives et imaginer comment l'IA peut faire gagner du temps.",
-              },
-              {
-                time: "16 h 30",
-                title: "Récap des usages + ressources fournies",
-                description: "Référentiel des outils, prompts types, cas d'usage par métier.",
-              },
-              { time: "17 h 00", title: "Q&A ouverte + clôture" },
-            ],
-          },
-        ],
-        logisticsNote: LOGISTICS_NOTE_FR,
-      },
+      daySchedule: programmeToDaySchedule("essentielle", "fr", LOGISTICS_NOTE_FR),
     },
     en: {
       eyebrow: "Flagship offering · Module 1 · 1 day on site",
@@ -688,49 +626,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         title: `Essential AI session · Axion-IA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
         description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, AI usage ideas. Standardised toolbox provided. All industries, all levels, starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
       },
-      daySchedule: {
-        title: "Day-by-day breakdown",
-        intro:
-          "Standard programme for the Essential day (9 a.m. – 5 p.m.). Identical for every company: standardised learning takeaways shared at end of day, ready to reuse the next morning.",
-        days: [
-          {
-            items: [
-              { time: "9:00", title: "Welcome + round table + objectives" },
-              {
-                time: "9:30",
-                title: "Discovery of the main AI tools",
-                description:
-                  "ChatGPT, Claude, Copilot, Gemini: what they really do and when to pick each.",
-              },
-              { time: "10:30", title: "Coffee break" },
-              {
-                time: "10:45",
-                title: "Workshop 1 — AI-assisted writing & communication",
-                description: "Emails, minutes, decks: effective prompts, guardrails.",
-              },
-              { time: "12:00", title: "Lunch break (12:00 – 14:00)" },
-              {
-                time: "14:00",
-                title: "Workshop 2 — Research, analysis & synthesis",
-                description: "Watch, extraction, document and data processing.",
-              },
-              { time: "15:00", title: "Coffee break" },
-              {
-                time: "15:15",
-                title: "Workshop 3 — Automation ideas on their own tools",
-                description: "Spotting repetitive tasks and imagining where AI saves time.",
-              },
-              {
-                time: "16:30",
-                title: "Use-case recap + takeaways shared",
-                description: "Tool reference sheet, prompt templates, use cases by role.",
-              },
-              { time: "17:00", title: "Open Q&A + close" },
-            ],
-          },
-        ],
-        logisticsNote: LOGISTICS_NOTE_EN,
-      },
+      daySchedule: programmeToDaySchedule("essentielle", "en", LOGISTICS_NOTE_EN),
     },
   },
   // Sprint 14.10.6 — Approfondie 2 jours, format équipes étendu (Will, 2026-05-08).
@@ -746,8 +642,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       fr: {
         benefitTagline:
           "Deux journées consécutives sur site pour aller au fond du sujet : ateliers étendus, co-construction d'usages IA sur leurs vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.",
-        duration: "2 jours consécutifs sur site",
-        durationDays: 2,
+        ...durationSummary("approfondie", "fr"),
         price: `À partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}`,
         priceTiers: APPROFONDIE_PRICE_TIERS_FR,
         groupSize: "2 à 30 personnes",
@@ -768,8 +663,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       en: {
         benefitTagline:
           "Two consecutive on-site days to go deep: extended workshops, co-built AI methods on their real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.",
-        duration: "2 consecutive days on site",
-        durationDays: 2,
+        ...durationSummary("approfondie", "en"),
         price: `Starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}`,
         priceTiers: APPROFONDIE_PRICE_TIERS_EN,
         groupSize: "2 to 30 people",
@@ -958,8 +852,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       fr: {
         benefitTagline:
           "Une journée strictement 1-to-1 (vous seul·e avec moi) pour structurer votre entreprise et chiffrer précisément les gains d'implémentation IA poste par poste. Le soir, 3 actions immédiates. Sous 7 jours, votre rapport complet de mise en œuvre — gains chiffrés en € attendus.",
-        duration: "1 journée + rapport sous 7 jours",
-        durationDays: 1,
+        ...durationSummary("dirigeants", "fr"),
         price: DIRIGEANTS_PRICE_FR,
         groupSize: "1 dirigeant (1-to-1)",
         format: "Sur site dirigeant · France & international",
@@ -980,8 +873,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       en: {
         benefitTagline:
           "A strictly 1-on-1 day (just you and me) to structure your company and quantify AI implementation gains role by role. That evening, 3 immediate actions. Within 7 days, your full implementation report — gains quantified in expected €.",
-        duration: "1 day + report within 7 days",
-        durationDays: 1,
+        ...durationSummary("dirigeants", "en"),
         price: DIRIGEANTS_PRICE_EN,
         groupSize: "1 executive (1-on-1)",
         format: "On site · France & international",
@@ -1150,8 +1042,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       fr: {
         benefitTagline:
           "Une journée pour gagner du temps concrètement : méthodes IA appliquées sur les tâches répétitives, prompts efficaces, intégration dans le flux de travail quotidien. Vos équipes ressortent avec des heures gagnées chaque semaine.",
-        duration: "1 journée sur site",
-        durationDays: 1,
+        ...durationSummary("gagner-du-temps", "fr"),
         price: TEMPS_PRICE_FR,
         groupSize: "2 à 30 personnes",
         format: "Sur site · France & international",
@@ -1171,8 +1062,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       en: {
         benefitTagline:
           "One day to save time concretely: AI methods on repetitive tasks, effective prompts, integration into daily workflow. Your teams leave with hours saved every week.",
-        duration: "1 day on site",
-        durationDays: 1,
+        ...durationSummary("gagner-du-temps", "en"),
         price: TEMPS_PRICE_EN,
         groupSize: "2 to 30 people",
         format: "On site · France & international",
@@ -1367,8 +1257,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       fr: {
         benefitTagline:
           "Une journée 100 % dédiée à Claude (Anthropic). Trois volets : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (Claude Code en CLI, génération et refactoring). Vos équipes ressortent autonomes sur l'outil de pointe IA.",
-        duration: "1 journée sur site",
-        durationDays: 1,
+        ...durationSummary("intervention-claude", "fr"),
         price: CLAUDE_PRICE_FR,
         groupSize: "2 à 30 personnes (2 paliers)",
         format: "Sur site · France & international",
@@ -1388,8 +1277,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       en: {
         benefitTagline:
           "A full day 100 % focused on Claude (Anthropic). Three tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, memory) and Code (Claude Code CLI, generation and refactoring). Your teams leave autonomous on the cutting-edge AI tool.",
-        duration: "1 day on site",
-        durationDays: 1,
+        ...durationSummary("intervention-claude", "en"),
         price: CLAUDE_PRICE_EN,
         groupSize: "2 to 30 people (2 tiers)",
         format: "On site · France & international",

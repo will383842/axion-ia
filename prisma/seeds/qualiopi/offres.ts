@@ -10,6 +10,7 @@
  */
 
 import type { PrismaClient, OffreFormatPedagogique, OffreTarifType } from "../../generated/client";
+import { getSkeletonByTier } from "../../../src/content/formations";
 
 interface OffreSeed {
   tierId: string;
@@ -27,21 +28,23 @@ interface OffreSeed {
   anglePedagogiqueFr: string;
 }
 
-const PRESENTIEL_DISTANCIEL = ["presentiel", "distanciel"];
-const TOUTES_MODALITES = ["presentiel", "distanciel", "hybride"];
+/**
+ * Champs NON dérivés du squelette (titre OF, slug, format pédagogique, type de
+ * tarif, promesse, nb de modules, angle). La DURÉE, le PUBLIC VISÉ et les
+ * MODALITÉS viennent du SSOT squelette (`src/content/formations`) — édition en
+ * un seul endroit. Ordre = code AXI-OFF-001 → 011.
+ */
+type OffreSeedBase = Omit<
+  OffreSeed,
+  "dureeHeuresMin" | "dureeHeuresMax" | "publicViseFr" | "modalites"
+>;
 
-/** Catalogue offres (ordre = code AXI-OFF-001 → 011). */
-export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
+const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
   {
     tierId: "intervention-4h",
     titreFr: "Formation 4 heures",
     slug: "demarrage-ia-express",
     formatPedagogique: "collectif_4h",
-    publicViseFr:
-      "TPE/PME et équipes souhaitant découvrir l'IA ou cadrer un cas d'usage métier précis.",
-    dureeHeuresMin: 4,
-    dureeHeuresMax: 4,
-    modalites: PRESENTIEL_DISTANCIEL,
     tarifType: "fixe",
     promessePrincipaleFr:
       "Découvrir l'IA opérationnelle ou cadrer un cas d'usage métier en une demi-journée.",
@@ -54,10 +57,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Essentielle",
     slug: "essentielle",
     formatPedagogique: "collectif_1jour",
-    publicViseFr: "Équipes de 2 à 30 personnes découvrant l'IA opérationnelle.",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: TOUTES_MODALITES,
     tarifType: "a_partir_de",
     promessePrincipaleFr: "Maîtriser les usages IA opérationnels en une journée sur site.",
     nbModulesMin: 3,
@@ -69,10 +68,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Gagner du temps",
     slug: "gagner-du-temps",
     formatPedagogique: "collectif_1jour",
-    publicViseFr: "Équipes opérationnelles souhaitant automatiser leurs tâches récurrentes.",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: TOUTES_MODALITES,
     tarifType: "a_partir_de",
     promessePrincipaleFr:
       "Automatiser les tâches récurrentes et intégrer l'IA au flux de travail quotidien.",
@@ -85,10 +80,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Approfondie",
     slug: "approfondie",
     formatPedagogique: "collectif_2jours",
-    publicViseFr: "Équipes de 2 à 30 personnes visant un ancrage durable des pratiques IA.",
-    dureeHeuresMin: 12,
-    dureeHeuresMax: 14,
-    modalites: TOUTES_MODALITES,
     tarifType: "a_partir_de",
     promessePrincipaleFr:
       "Deux journées pour ancrer durablement les pratiques IA dans les métiers.",
@@ -101,10 +92,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Conférence",
     slug: "conference",
     formatPedagogique: "conference",
-    publicViseFr: "Grands effectifs (séminaires, kick-off annuels).",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: ["presentiel"],
     tarifType: "sur_devis",
     promessePrincipaleFr: "Embarquer un grand collectif autour de l'IA en une journée plénière.",
     nbModulesMin: 2,
@@ -116,10 +103,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Dirigeants",
     slug: "dirigeants",
     formatPedagogique: "dirigeant_1to1",
-    publicViseFr: "Dirigeant en accompagnement individuel (1-to-1).",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: PRESENTIEL_DISTANCIEL,
     tarifType: "fixe",
     promessePrincipaleFr: "Structurer l'entreprise et chiffrer les gains d'implémentation IA.",
     nbModulesMin: 2,
@@ -131,10 +114,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Membre d'équipe",
     slug: "membre-equipe",
     formatPedagogique: "individuel",
-    publicViseFr: "Collaborateur clé en accompagnement individuel (1-to-1).",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: PRESENTIEL_DISTANCIEL,
     tarifType: "fixe",
     promessePrincipaleFr: "Monter en compétence IA sur ses propres cas métier.",
     nbModulesMin: 2,
@@ -146,10 +125,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Intervention Claude",
     slug: "intervention-claude",
     formatPedagogique: "collectif_1jour",
-    publicViseFr: "Équipes de 2 à 30 personnes outillées sur Claude (Anthropic).",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: TOUTES_MODALITES,
     tarifType: "a_partir_de",
     promessePrincipaleFr: "Une journée 100 % dédiée à Claude (Anthropic) : Chat, Cowork, Code.",
     nbModulesMin: 3,
@@ -161,10 +136,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Vision IA stratégique",
     slug: "vision-ia-strategique",
     formatPedagogique: "dirigeant_1to1",
-    publicViseFr: "Dirigeant en accompagnement individuel (1-to-1).",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: PRESENTIEL_DISTANCIEL,
     tarifType: "fixe",
     promessePrincipaleFr:
       "Ouvrir les opportunités IA du secteur du dirigeant et bâtir sa feuille de route.",
@@ -177,10 +148,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Intervention Claude · Dirigeant",
     slug: "intervention-claude-dirigeant",
     formatPedagogique: "dirigeant_1to1",
-    publicViseFr: "Dirigeant en accompagnement individuel (1-to-1), 100 % Claude.",
-    dureeHeuresMin: 6,
-    dureeHeuresMax: 8,
-    modalites: PRESENTIEL_DISTANCIEL,
     tarifType: "fixe",
     promessePrincipaleFr: "Journée 1-to-1 dirigeant 100 % dédiée à Claude (Anthropic).",
     nbModulesMin: 2,
@@ -192,11 +159,6 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     titreFr: "Sur demande",
     slug: "sur-demande",
     formatPedagogique: "sur_devis",
-    publicViseFr:
-      "Configurations hors-cadre : multi-sites, multi-jours, offsite, contenus spécifiques.",
-    dureeHeuresMin: 4,
-    dureeHeuresMax: 21,
-    modalites: TOUTES_MODALITES,
     tarifType: "sur_devis",
     promessePrincipaleFr: "Cadrage et programme sur mesure pour les besoins hors standard.",
     nbModulesMin: 2,
@@ -204,6 +166,28 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = [
     anglePedagogiqueFr: "sur_mesure",
   },
 ];
+
+/** Durée + public visé + modalités dérivés du SSOT squelette (source unique). */
+function dureesDuSquelette(
+  tierId: string,
+): Pick<OffreSeed, "dureeHeuresMin" | "dureeHeuresMax" | "publicViseFr" | "modalites"> {
+  const s = getSkeletonByTier(tierId);
+  if (!s) {
+    throw new Error(`[qualiopi:offres] squelette introuvable pour le tier "${tierId}"`);
+  }
+  return {
+    dureeHeuresMin: s.hoursMin,
+    dureeHeuresMax: s.hoursMax,
+    publicViseFr: s.publicViseFr,
+    modalites: [...s.modalites],
+  };
+}
+
+/** Catalogue offres complet — durée/public/modalités dérivés du squelette. */
+export const OFFRES_SEED: ReadonlyArray<OffreSeed> = OFFRES_SEED_BASE.map((base) => ({
+  ...base,
+  ...dureesDuSquelette(base.tierId),
+}));
 
 function offreCode(index: number): string {
   return `AXI-OFF-${String(index + 1).padStart(3, "0")}`;
@@ -245,5 +229,55 @@ export async function seedOffresSite(prisma: PrismaClient): Promise<void> {
   }
   console.log(
     `✅ [qualiopi:seed] offres_site — ${created} créée(s), ${kept} préservée(s) (total ${OFFRES_SEED.length}).`,
+  );
+}
+
+/**
+ * Réconciliation DB ← SSOT squelette (décision Will 2026-06-11). `seedOffresSite`
+ * ne met JAMAIS à jour les lignes existantes ; cette passe aligne les champs
+ * PILOTÉS PAR LE SQUELETTE (durée, public visé, modalités) des `OffreSite` déjà
+ * en base sur le squelette. Idempotente : ne `update` que si une valeur diffère,
+ * et loggue chaque écart corrigé. Ne touche QUE ces 3 champs — les autres
+ * (titre, promesse, nb modules…) restent éditables en console sans être écrasés.
+ */
+export async function reconcileOffresFromSkeleton(prisma: PrismaClient): Promise<void> {
+  let updated = 0;
+  let aligned = 0;
+  const sameModalites = (a: string[], b: string[]): boolean =>
+    a.length === b.length && [...a].sort().join("|") === [...b].sort().join("|");
+
+  for (const o of OFFRES_SEED) {
+    const existing = await prisma.offreSite.findUnique({ where: { tierId: o.tierId } });
+    if (!existing) continue; // créée par seedOffresSite avec les bonnes valeurs
+
+    const drift =
+      existing.dureeHeuresMin !== o.dureeHeuresMin ||
+      existing.dureeHeuresMax !== o.dureeHeuresMax ||
+      existing.publicViseFr !== o.publicViseFr ||
+      !sameModalites((existing.modalites as string[]) ?? [], o.modalites);
+
+    if (!drift) {
+      aligned += 1;
+      continue;
+    }
+
+    console.log(
+      `↻ [qualiopi:seed] offres_site — réconciliation "${o.tierId}" : ` +
+        `durée ${existing.dureeHeuresMin}-${existing.dureeHeuresMax}h → ${o.dureeHeuresMin}-${o.dureeHeuresMax}h, ` +
+        `modalités [${(existing.modalites as string[])?.join(",")}] → [${o.modalites.join(",")}].`,
+    );
+    await prisma.offreSite.update({
+      where: { tierId: o.tierId },
+      data: {
+        dureeHeuresMin: o.dureeHeuresMin,
+        dureeHeuresMax: o.dureeHeuresMax,
+        publicViseFr: o.publicViseFr,
+        modalites: o.modalites,
+      },
+    });
+    updated += 1;
+  }
+  console.log(
+    `✅ [qualiopi:seed] offres_site — réconciliation : ${updated} alignée(s) sur le squelette, ${aligned} déjà à jour.`,
   );
 }

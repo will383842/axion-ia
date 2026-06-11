@@ -7,6 +7,7 @@
 // 4 h (demarrage-ia-express) a son propre template (CollectiveTrainingPage) ;
 // le coaching/dirigeants/individuel relève du module un-à-un (hors périmètre).
 
+import { formationDurationIso } from "./formations";
 import type { InterventionSlug } from "./interventions";
 
 /** Sous-ensemble des slugs interventions qui sont des formations collectives
@@ -16,6 +17,13 @@ export type FormationDetailSlug =
   | "approfondie"
   | "gagner-du-temps"
   | "intervention-claude";
+
+const FORMATION_DETAIL_SLUGS: ReadonlyArray<FormationDetailSlug> = [
+  "essentielle",
+  "approfondie",
+  "gagner-du-temps",
+  "intervention-claude",
+];
 
 /**
  * Pages suggérées (maillage interne « Voir aussi »). 3 formations sœurs par
@@ -44,16 +52,19 @@ export const FORMATION_GEO_LABEL: Record<FormationDetailSlug, { fr: string; en: 
 
 /**
  * Durée ISO 8601 par format collectif — alimente le Course JSON-LD des pages
- * détail (CourseInstance.courseWorkload). Aligné sur les durées réelles de la
- * taxonomie (essentielle/gagner-du-temps/intervention-claude = 1 jour ≈ PT8H ;
- * approfondie = 2 jours = P2D).
+ * détail (CourseInstance.courseWorkload). DÉRIVÉE du SSOT squelette
+ * (`formationDurationIso`) : 1 jour = `PT7H`, 2 jours = `P2D`. Plus de littéral
+ * (fin de la dérive historique `PT7H`/`PT8H`).
  */
-export const FORMATION_DURATION_ISO: Record<FormationDetailSlug, string> = {
-  essentielle: "PT8H",
-  approfondie: "P2D",
-  "gagner-du-temps": "PT8H",
-  "intervention-claude": "PT8H",
-};
+export const FORMATION_DURATION_ISO: Record<FormationDetailSlug, string> = Object.fromEntries(
+  FORMATION_DETAIL_SLUGS.map((slug) => {
+    const iso = formationDurationIso(slug);
+    if (!iso) {
+      throw new Error(`[interventions-subpages] durée ISO manquante pour "${slug}"`);
+    }
+    return [slug, iso];
+  }),
+) as Record<FormationDetailSlug, string>;
 
 /** Garde de type : ce slug intervention est-il une formation collective détail ? */
 export function isFormationDetailSlug(slug: InterventionSlug): slug is FormationDetailSlug {

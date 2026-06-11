@@ -28,6 +28,7 @@
 //      Dirigeants) liste automatiquement la nouvelle entrée.
 
 import type { Locale } from "@/i18n/routing";
+import { getDurationCanonical } from "./formations";
 import { INTERVENTION_TIERS, formatAmount, formatPrice, getTierById } from "./pricing";
 
 // ============================================================================
@@ -194,7 +195,9 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
     durationDetailEn: "Half-day (≈ 4 h)",
     pathFr: "/interventions/collectives/4h",
     pathEn: "/interventions/team-trainings/4h",
-    iso8601Duration: "PT4H",
+    // SSOT squelette — durée ISO canonique (fin du littéral local). `!` : ces
+    // 3 paliers ont toujours une ISO (seul « 3 jours et + » est null, sans champ).
+    iso8601Duration: getDurationCanonical("4h").iso!,
   },
   {
     id: "1-jour",
@@ -207,7 +210,7 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
     durationDetailEn: "1 day (≈ 7 h on site)",
     pathFr: "/interventions/collectives/1-jour",
     pathEn: "/interventions/team-trainings/1-day",
-    iso8601Duration: "PT7H",
+    iso8601Duration: getDurationCanonical("1-jour").iso!,
   },
   {
     id: "2-jours",
@@ -220,7 +223,7 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
     durationDetailEn: "2 consecutive days",
     pathFr: "/interventions/collectives/2-jours",
     pathEn: "/interventions/team-trainings/2-days",
-    iso8601Duration: "P2D",
+    iso8601Duration: getDurationCanonical("2-jours").iso!,
   },
   {
     id: "3-jours-plus",
