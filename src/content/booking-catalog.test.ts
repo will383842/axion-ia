@@ -81,14 +81,19 @@ describe("booking-catalog — invariant réservabilité (anti-régression bookin
 
 describe("booking-catalog — helpers", () => {
   it("findBookableBySlug retrouve un format réservable et ignore les `sur devis`", () => {
-    expect(findBookableBySlug("essentielle")?.slug).toBe("essentielle");
+    // Refonte Formations V2 2026-06-11 — les 17 formations remplacent les anciens
+    // collectifs. Une formation 1 jour est réservable ; une 3 jours est sur devis.
+    expect(findBookableBySlug("ia-fondamentaux")?.slug).toBe("ia-fondamentaux");
+    // `claude-architecte` (3 jours) existe mais n'est pas réservable (sur devis).
+    expect(findBookableBySlug("claude-architecte")).toBeUndefined();
     // `dirigeant-vision-strategique` existe mais n'est pas réservable.
     expect(findBookableBySlug("dirigeant-vision-strategique")).toBeUndefined();
     expect(findBookableBySlug("inconnu-xyz")).toBeUndefined();
   });
 
   it("findCategoryOfSlug situe un slug (réservable ou non) dans sa catégorie", () => {
-    expect(findCategoryOfSlug("essentielle")).toBe("formation");
+    expect(findCategoryOfSlug("ia-fondamentaux")).toBe("formation");
+    expect(findCategoryOfSlug("claude-architecte")).toBe("formation");
     expect(findCategoryOfSlug("dirigeants")).toBe("un-a-un");
     expect(findCategoryOfSlug("dirigeant-vision-strategique")).toBe("un-a-un");
     expect(findCategoryOfSlug("audit-flash-onsite")).toBe("audit");

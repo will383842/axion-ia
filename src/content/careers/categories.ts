@@ -150,7 +150,7 @@ export const CAREER_VERTICALS: ReadonlyArray<{
   en: string;
 }> = [
   {
-    href: "/interventions/collectives",
+    href: "/formations",
     fr: "Formations IA",
     en: "AI training",
   },

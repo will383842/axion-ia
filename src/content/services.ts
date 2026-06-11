@@ -44,7 +44,7 @@ export interface ServiceDef {
 export const SERVICES: readonly ServiceDef[] = [
   {
     id: "formations",
-    href: "/interventions/collectives",
+    href: "/formations",
     officialFr: "Formations & interventions IA",
     officialEn: "AI training & sessions",
     navShortFr: "Formations IA",

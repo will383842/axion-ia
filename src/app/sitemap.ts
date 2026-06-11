@@ -40,8 +40,7 @@ import { PRESS_RELEASES } from "@/content/press";
 // obtenu (Phase A), AUCUNE URL formation ne doit fuiter dans le sitemap public
 // (afficher Qualiopi/CPF/OPCO avant certification est illégal — cf. flag.ts).
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
-import { FORMATION_DUREES_META, getGammesThematiques } from "@/content/formations/catalog-v2-meta";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -332,14 +331,11 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "stack-ia-tools",
   ];
 
-  // Catalogue Formations V2 — GATING Qualiopi : on ne déclare le sub-sitemap
-  // `formations` QUE si l'agrément OF est obtenu (OF_PUBLIC_DISCLOSURE_ENABLED).
-  // En Phase A (flag absent / ≠ "true"), l'ID n'apparaît pas dans le
-  // sitemap-index → aucune URL formation crawlable, conforme à l'interdiction
-  // d'afficher Qualiopi/CPF/OPCO avant certification.
-  if (isQualiopiPublicDisclosureEnabled()) {
-    staticIds.push("formations");
-  }
+  // Catalogue Formations V2 — PUBLIC/live (décision Will 2026-06-11) : le
+  // sub-sitemap `formations` (hub + tarifs + 4 durées + 17 fiches) est toujours
+  // déclaré. Les pages sont des pages marketing publiques (ZÉRO mention Qualiopi
+  // côté public) ; la divulgation Qualiopi légale reste une couche DB séparée.
+  staticIds.push("formations");
 
   // KB : dériver le nombre de chunks depuis le count DB. Lecture unique au
   // build (puis next-intl SSG fige). Bootstrap-safe (count=0 si P2021).
@@ -1012,9 +1008,8 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
  * FORMATION_PRICE_MATRIX côté pages).
  */
 function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
-  // GATING Qualiopi — garde secondaire (defense-in-depth).
-  if (!isQualiopiPublicDisclosureEnabled()) return [];
-
+  // Public/live (décision Will 2026-06-11) — pages marketing publiques
+  // (hub + tarifs + 4 durées + 17 fiches), ZÉRO mention Qualiopi côté public.
   const entries: MetadataRoute.Sitemap = [];
 
   // Hub /formations · /training et page tarifs /formations/tarifs · /training/pricing.
@@ -1062,22 +1057,8 @@ function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
     ),
   );
 
-  // Gammes thématiques /formations/gamme/<slug> (Agents & Automatisations, Claude).
-  const gammeSlugs = getGammesThematiques().map((g) => g.slug);
-  entries.push(
-    ...buildDynamic(
-      [
-        {
-          fr: "/formations/gamme/:slug",
-          en: "/training/track/:slug",
-          slugs: gammeSlugs,
-          changeFrequency: "monthly",
-          priority: 0.6,
-        },
-      ],
-      now,
-    ),
-  );
+  // Mono-axe durée (décision Will 2026-06-11) : pas de pages /formations/gamme/*
+  // (la gamme reste un badge sur les cartes). Aucune entrée gamme au sitemap.
 
   // Les 17 fiches /formations/<slug> (slug FR canonique + slug EN miroir).
   entries.push(
@@ -1212,7 +1193,7 @@ function buildVillesByRegionSitemap(
 // préfère des sub-sitemaps homogènes par template plutôt qu'un mega-sitemap mixte.
 const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: string }> = {
   audit: { pathFr: "/audit/par-ville", pathEn: "/audit/by-city" },
-  interventions: { pathFr: "/interventions/par-ville", pathEn: "/interventions/by-city" },
+  interventions: { pathFr: "/formations/par-ville", pathEn: "/formations/by-city" },
   implementation: { pathFr: "/implementation/par-ville", pathEn: "/implementation/by-city" },
   // Sprint S+2 City Domination — 4e verticale `un-a-un`.
   "un-a-un": { pathFr: "/un-a-un/par-ville", pathEn: "/one-to-one/by-city" },

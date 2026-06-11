@@ -66,8 +66,8 @@ Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur 
 ## 4 modules
 
 ### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
-Format opérationnel sur site (ou distance). 1 journée d'intervention = diagnostic terrain + démos appliquées sur vos données + plan d'action chiffré priorisé. Page phare : l'Essentielle ${interventionsCompact}.
-URL : ${SITE_URL}/fr/interventions
+17 formations IA intra-entreprise sur site (ou distance), 4 paliers durée (4 h à 3 jours), pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
+URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/formations/tarifs
 
 ### Module 2 — ${SERVICE_BY_ID.audit.officialFr} (${auditRange})
 Audit en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.

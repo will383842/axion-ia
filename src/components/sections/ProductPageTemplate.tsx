@@ -121,6 +121,10 @@ interface ProductPageTemplateProps {
   /** Optionnel — supprime la FAQ du template (rendue ailleurs, ex. tout en bas
    *  de page, juste avant le footer, sur les sous-pages implémentation). */
   hideFaq?: boolean;
+  /** Optionnel — masque le bandeau « Réservation directe » (ReserveBigCta) pour
+   *  les formats pas encore réservables au calendrier (fiches catalogue V2). Le
+   *  déroulé (daySchedule) reste affiché. Défaut false → comportement inchangé. */
+  hideReserveCta?: boolean;
 }
 
 // Coupe le dernier mot d'un titre pour le mettre en valeur (terracotta italique
@@ -145,6 +149,7 @@ export function ProductPageTemplate({
   hideFinalCta = false,
   midBand,
   hideFaq = false,
+  hideReserveCta = false,
 }: ProductPageTemplateProps) {
   const metricsVariant: "primary" | "purple" | "orange" | "green" = accent;
   const benefitsT = splitEm(copy.benefitsTitle);
@@ -187,7 +192,7 @@ export function ProductPageTemplate({
       {/* Gros CTA conversion — « Je réserve cette intervention ».
           Placé immédiatement après le déroulement (intent maximal) +
           rappelé en CTA final mocha. Module 1 uniquement (a daySchedule). */}
-      {copy.daySchedule ? (
+      {copy.daySchedule && !hideReserveCta ? (
         <ReserveBigCta
           isFr={isFr}
           ctaPrimaryHref={ctaPrimaryHref}

@@ -13,11 +13,11 @@ import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import {
   AUDIT_TIERS,
-  INTERVENTION_TIERS,
   UN_A_UN_TIERS,
   IMPLEMENTATION_TIERS,
   formatAmount,
   getEntryPriceEur,
+  getFormationCatalogPriceRange,
 } from "@/content/pricing";
 
 interface PricingGridVilleProps {
@@ -27,7 +27,8 @@ interface PricingGridVilleProps {
 }
 
 export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVilleProps) {
-  const interventionEntryPrice = formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, loc, {
+  // Prix d'entrée du catalogue Formations V2 (remplace l'offre /interventions).
+  const interventionEntryPrice = formatAmount(getFormationCatalogPriceRange().minEur, loc, {
     compact: true,
   });
   const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
@@ -50,7 +51,7 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
       categoryFr: "Formation",
       includesFr: "Ateliers métier · Sur site · Groupes 1–30 pers.",
       price: interventionEntryPrice,
-      href: "/interventions" as const,
+      href: "/formations" as const,
     },
     {
       id: "audit",

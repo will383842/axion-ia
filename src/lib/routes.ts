@@ -35,14 +35,15 @@ export const ROUTES = {
   glossary: "/glossaire",
   guideAi: "/guide-ia",
 
-  // Module 1 — Interventions (hub /interventions supprimé refonte 2026-05-28 :
-  // 301 → /interventions/collectives. Famille Conférence supprimée entièrement.)
-  interventions: "/interventions/collectives",
-  interventionsEssentielle: "/interventions/essentielle",
-  interventionsApprofondie: "/interventions/approfondie",
+  // Module 1 — Formations IA (refonte 2026-06-11 : l'offre collective /interventions
+  // est devenue /formations). Les anciens slugs collectifs → hub /formations (les
+  // pages collectives sont supprimées + 301). interventionsDirigeants = 1-to-1, conservé.
+  interventions: "/formations",
+  interventionsEssentielle: "/formations",
+  interventionsApprofondie: "/formations",
   interventionsDirigeants: "/interventions/dirigeants",
-  interventionsGagnerDuTemps: "/interventions/gagner-du-temps",
-  interventionsClaude: "/interventions/intervention-claude",
+  interventionsGagnerDuTemps: "/formations",
+  interventionsClaude: "/formations",
 
   // Module 2 — Audit (Sprint 14.10.8 : auditProcess → auditCible)
   audit: "/audit",

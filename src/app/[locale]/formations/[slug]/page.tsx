@@ -23,7 +23,7 @@ import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formation
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
 import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
-import { FormationDetailV2 } from "@/components/formations/FormationDetailV2";
+import { FormationDetailPage } from "@/components/formations/FormationDetailPage";
 
 // ── Dynamisme & ISR ──────────────────────────────────────────────────────────
 // ISR `revalidate=3600` (budget Web Vitals Phase B : éviter un appel DB par requête
@@ -36,12 +36,10 @@ export const dynamicParams = true;
 
 // ── Params pré-rendus ────────────────────────────────────────────────────────
 export async function generateStaticParams() {
-  // Contrat build ADR 0026 — stub.invalid sans DB → aucune route SSG.
-  if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
-  // Phase A légale — pas de divulgation publique → aucune route SSG.
-  if (!isQualiopiPublicDisclosureEnabled()) return [];
-  // Phase B — slugs du catalogue V2 (SSOT, sans DB). Les fiches DB legacy
-  // restent générées à la demande via dynamicParams=true.
+  // Catalogue V2 = pages marketing PUBLIQUES/live (décision Will 2026-06-11),
+  // rendues sans DB → toujours pré-rendues (les 17 slugs FR), indépendamment du
+  // flag Qualiopi. Les fiches DB legacy (divulgation Qualiopi gatée) restent
+  // générées à la demande via dynamicParams=true.
   return FORMATIONS_V2.map((f) => ({ slug: f.slugFr }));
 }
 
@@ -57,14 +55,11 @@ export async function generateMetadata({
   params: Promise<PageParams>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-
-  // Même garde que la page — pas de metadata si phase A.
-  if (!isQualiopiPublicDisclosureEnabled()) return {};
   if (!hasLocale(routing.locales, locale)) return {};
 
-  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise. Le canonical pointe
-  // TOUJOURS vers le slugFr (même si on accède via slugEn/id) → consolidation SEO
-  // robuste, indépendante du statut de la redirection runtime.
+  // Catalogue V2 (SSOT) — PUBLIC/live, prioritaire, aucune DB ni flag requis. Le
+  // canonical pointe TOUJOURS vers le slugFr (même si on accède via slugEn/id) →
+  // consolidation SEO robuste, indépendante de la redirection runtime.
   const cat = getFormationV2(slug);
   if (cat) {
     return buildProductMetadata({
@@ -75,6 +70,8 @@ export async function generateMetadata({
     });
   }
 
+  // Fiche Qualiopi DB legacy — gatée phase A.
+  if (!isQualiopiPublicDisclosureEnabled()) return {};
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return {};
   const f = await getPublicFormationBySlug(slug);
   if (!f) return {};
@@ -163,24 +160,24 @@ function SectionBlock({ title, children }: { title: string; children: React.Reac
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default async function FormationSlugPage({ params }: { params: Promise<PageParams> }) {
   const { locale, slug } = await params;
-
-  // Garde légale phase A — gate tout le namespace /formations (catalogue + DB).
-  if (!isQualiopiPublicDisclosureEnabled()) {
-    notFound();
-  }
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise (rend même sous stub.invalid).
-  // Canonique = slugFr : un accès via slugEn/id redirige en 308 vers le slugFr
-  // (anti-doublon GSC + link-equity consolidé sur l'URL canonique, jamais un soft-404).
+  // Catalogue V2 (SSOT) — PUBLIC/live (décision Will 2026-06-11), prioritaire,
+  // aucune DB ni flag requis (rend même sous stub.invalid). Canonique = slugFr :
+  // un accès via slugEn/id redirige en 308 vers le slugFr (anti-doublon GSC +
+  // link-equity consolidé sur l'URL canonique, jamais un soft-404).
   const cat = getFormationV2(slug);
   if (cat) {
     if (cat.slugFr !== slug) permanentRedirect(`/${locale}/formations/${cat.slugFr}`);
-    return <FormationDetailV2 formation={cat} locale={locale} />;
+    return <FormationDetailPage formation={cat} locale={locale as Locale} />;
   }
 
-  // Sinon : fiche Qualiopi DB legacy. Contrat build ADR 0026 — stub.invalid → notFound().
+  // Sinon : fiche Qualiopi DB legacy — gatée phase A (divulgation Qualiopi).
+  if (!isQualiopiPublicDisclosureEnabled()) {
+    notFound();
+  }
+  // Contrat build ADR 0026 — stub.invalid → notFound().
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
     notFound();
   }

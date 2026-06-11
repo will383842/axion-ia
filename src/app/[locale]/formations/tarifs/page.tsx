@@ -1,7 +1,7 @@
 /**
  * Page TARIFS du catalogue formations V2 — /formations/tarifs. Affiche la
  * matrice de prix (gamme × durée × effectif) dérivée de pricing.ts — aucun prix
- * en dur. Gated Phase A (`OF_PUBLIC_DISCLOSURE_ENABLED`). Contenu 100 % FR.
+ * en dur. Public/live (décision Will 2026-06-11). Contenu 100 % FR.
  */
 
 import type { Metadata } from "next";
@@ -14,7 +14,6 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 import { getSurMesureGlobal } from "@/content/formations/catalog-v2-meta";
 import {
   type FormationBracket,
@@ -59,7 +58,6 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  if (!isQualiopiPublicDisclosureEnabled()) return {};
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const { minEur, maxEur } = getFormationCatalogPriceRange();
@@ -72,7 +70,6 @@ export async function generateMetadata({
 }
 
 export default async function TarifsPage({ params }: { params: Promise<{ locale: string }> }) {
-  if (!isQualiopiPublicDisclosureEnabled()) notFound();
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

@@ -43,10 +43,11 @@ import {
   IMPLEMENTATION_TIERS,
   UN_A_UN_TIERS,
   CODAGE_TIERS,
+  formatAmount,
   formatPrice,
   getEntryPriceEur,
   getEntryTier,
-  type PricingTier,
+  getFormationCatalogPriceRange,
 } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildVilleServiceJsonLdGraph } from "@/lib/seo/ville-service-jsonld";
@@ -74,14 +75,18 @@ const SERVICE_META = {
     accent: "primary" as const,
     tiers: AUDIT_TIERS,
   },
+  // Refonte 2026-06-11 — la verticale « interventions » (offre collective) est
+  // devenue « Formation IA en entreprise » à l'URL /formations. La CLÉ interne
+  // reste "interventions" (copy ville `copy.services.interventions`, tiers, gate,
+  // drip réutilisés) ; seuls les URL/naming publics passent à /formations.
   interventions: {
-    canonical: "/interventions",
-    pathFr: "/interventions/par-ville",
-    pathEn: "/interventions/by-city",
-    nameFr: "Interventions IA en entreprise",
-    nameEn: "Corporate AI sessions",
-    eyebrowFr: "Interventions IA en entreprise",
-    eyebrowEn: "Corporate AI sessions",
+    canonical: "/formations",
+    pathFr: "/formations/par-ville",
+    pathEn: "/formations/by-city",
+    nameFr: "Formation IA en entreprise",
+    nameEn: "Corporate AI training",
+    eyebrowFr: "Formation IA en entreprise (intra)",
+    eyebrowEn: "Corporate AI training (in-house)",
     icon: Building2,
     accent: "terracotta" as const,
     tiers: INTERVENTION_TIERS,
@@ -304,9 +309,15 @@ export async function renderVilleServicePage({
   const isFr = loc === "fr";
   const meta = SERVICE_META[service];
   const hasCopy = !!getVilleServiceCopy(ville, service);
-  const entryPriceEur = getEntryPriceEur(meta.tiers);
-  const entryTier: PricingTier = getEntryTier(meta.tiers);
-  const formattedEntryPrice = formatPrice(entryTier, isFr ? "fr" : "en");
+  // Refonte Formations V2 — le service "interventions" (= Formation IA en entreprise)
+  // dérive son prix d'entrée de la matrice formation (FORMATION_PRICE_MATRIX), PAS
+  // d'INTERVENTION_TIERS (legacy). Les 3 autres verticales gardent leurs tiers.
+  const isFormationService = service === "interventions";
+  const formationEntryEur = getFormationCatalogPriceRange().minEur;
+  const entryPriceEur = isFormationService ? formationEntryEur : getEntryPriceEur(meta.tiers);
+  const formattedEntryPrice = isFormationService
+    ? formatAmount(formationEntryEur, isFr ? "fr" : "en", { compact: true })
+    : formatPrice(getEntryTier(meta.tiers), isFr ? "fr" : "en");
   // sites-web = prestation sur devis/projet (pas de réservation agenda ni
   // d'acompte) → CTA alignés sur le header : « Réserver un appel » (/appel) +
   // « Nous écrire » (/contact). Les autres verticales gardent le flux calendrier.

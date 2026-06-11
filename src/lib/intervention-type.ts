@@ -23,6 +23,27 @@ export const INTERVENTION_SLUGS = [
   // direct calendrier (au lieu du formulaire générique). Atelier IA ciblé
   // supprimé le 2026-06-03 (une seule formation 4 h).
   "demarrage-ia-express",
+  // Refonte Formations V2 2026-06-11 — les 17 formations du catalogue (catalog-v2).
+  // Prix dérivé de FORMATION_PRICE_MATRIX (cf. FORMATION_BOOKING + branche pricing
+  // ci-dessous), pas de SLUG_TO_TIER_ID. Les 3 formations 3 jours sont « sur devis »
+  // (bookable:false côté booking-catalog) mais restent des slugs valides.
+  "ia-express",
+  "art-du-prompt",
+  "ia-securite",
+  "ia-conformite",
+  "ia-fondamentaux",
+  "ia-commercial",
+  "ia-au-bureau",
+  "ia-sur-le-terrain",
+  "automatisations-decouverte",
+  "ia-integration-metier",
+  "ia-commercial-avance",
+  "ia-transformation-equipe",
+  "agents-automatisations",
+  "agents-automatisations-avance",
+  "claude-decouverte",
+  "claude-createur",
+  "claude-architecte",
 ] as const;
 
 export type InterventionSlug = (typeof INTERVENTION_SLUGS)[number];
@@ -55,10 +76,59 @@ import {
   TEMPS_SUB_TIERS,
   CLAUDE_SUB_TIERS,
   AUDIT_TIERS,
+  type FormationBracket,
+  type FormationDuree,
+  type FormationGamme,
+  getFormationBrackets,
+  getFormationEntryPrice,
+  getFormationPrice,
 } from "@/content/pricing";
 
-/** Map slug UI → id pricing tier (`intervention-<id>`). */
-const SLUG_TO_TIER_ID: Record<InterventionSlug, string> = {
+// Refonte Formations V2 2026-06-11 — mapping slug formation → (gamme, durée) pour
+// dériver le prix booking via FORMATION_PRICE_MATRIX (pricing.ts). Hardcodé ici
+// (vérifié 1:1 vs catalog-v2) pour NE PAS importer catalog-v2 (1,6k lignes) dans
+// la chaîne du calendrier (budget Web Vitals /reserver). Verrouillé par test.
+const FORMATION_BOOKING: Partial<Record<string, { gamme: FormationGamme; duree: FormationDuree }>> =
+  {
+    "ia-express": { gamme: "ia-standard", duree: "4h" },
+    "art-du-prompt": { gamme: "ia-standard", duree: "4h" },
+    "ia-securite": { gamme: "ia-standard", duree: "4h" },
+    "ia-conformite": { gamme: "ia-standard", duree: "4h" },
+    "ia-fondamentaux": { gamme: "ia-standard", duree: "1j" },
+    "ia-commercial": { gamme: "ia-standard", duree: "1j" },
+    "ia-au-bureau": { gamme: "ia-standard", duree: "1j" },
+    "ia-sur-le-terrain": { gamme: "ia-standard", duree: "1j" },
+    "automatisations-decouverte": { gamme: "ia-standard", duree: "1j" },
+    "ia-integration-metier": { gamme: "ia-standard", duree: "2j" },
+    "ia-commercial-avance": { gamme: "ia-standard", duree: "2j" },
+    "ia-transformation-equipe": { gamme: "ia-standard", duree: "3j" },
+    "agents-automatisations": { gamme: "agents-automatisations", duree: "2j" },
+    "agents-automatisations-avance": { gamme: "agents-automatisations", duree: "3j" },
+    "claude-decouverte": { gamme: "claude", duree: "1j" },
+    "claude-createur": { gamme: "claude", duree: "2j" },
+    "claude-architecte": { gamme: "claude", duree: "3j" },
+  };
+
+/** Tranche d'effectif d'une formation matchant `count` (sinon la dernière). */
+function pickFormationBracket(
+  brackets: ReadonlyArray<FormationBracket>,
+  count: number,
+): FormationBracket | undefined {
+  for (const b of brackets) {
+    const parts = b.split("-");
+    const lo = Number.parseInt(parts[0] ?? "", 10);
+    const hi = Number.parseInt(parts[1] ?? "", 10);
+    if (Number.isFinite(lo) && Number.isFinite(hi) && count >= lo && count <= hi) return b;
+  }
+  return brackets[brackets.length - 1];
+}
+
+/**
+ * Map slug UI → id pricing tier (`intervention-<id>`). Partial : les 17 formations
+ * V2 ne sont PAS ici (prix dérivé de la matrice via FORMATION_BOOKING ci-dessus) ;
+ * un slug absent retombe sur `{ cents: null }` côté getInterventionPriceCents.
+ */
+const SLUG_TO_TIER_ID: Partial<Record<InterventionSlug, string>> = {
   essentielle: "intervention-essentielle",
   approfondie: "intervention-approfondie",
   conference: "intervention-conference",
@@ -115,6 +185,19 @@ export function getInterventionPriceCents(
       return { cents: onsite.priceFlat * 100, tierLabel: onsite.labelFr };
     }
     return { cents: 89000, tierLabel: "Audit Flash terrain" };
+  }
+  // Refonte Formations V2 — les 17 formations dérivent leur prix de la matrice
+  // (gamme × durée × tranche d'effectif), pas d'un tier intervention.
+  const fb = FORMATION_BOOKING[slug];
+  if (fb) {
+    const brackets = getFormationBrackets(fb.gamme, fb.duree);
+    const bracket = pickFormationBracket(brackets, participantsCount);
+    const eur =
+      bracket !== undefined
+        ? getFormationPrice(fb.gamme, fb.duree, bracket)
+        : getFormationEntryPrice(fb.gamme, fb.duree);
+    if (typeof eur === "number") return { cents: eur * 100, tierLabel: `Formation ${fb.duree}` };
+    return { cents: null, tierLabel: null };
   }
   const tierId = SLUG_TO_TIER_ID[slug];
   const tier = INTERVENTION_TIERS.find((t) => t.id === tierId);

@@ -38,7 +38,11 @@ import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
   UN_A_UN_RECURRING_TIER,
+  type FormationDuree,
+  type FormationGamme,
   formatAmount,
+  getFormationBrackets,
+  getFormationEntryPrice,
   getTierById,
 } from "@/content/pricing";
 
@@ -124,15 +128,6 @@ function flat(tierId: string): { fr: string; en: string } {
   };
 }
 
-/** « À partir de <prix d'entrée> » d'un tier intervention (prix d'entrée = priceFlat). */
-function from(tierId: string): { fr: string; en: string } {
-  const price = getTierById(INTERVENTION_TIERS, tierId).priceFlat!;
-  return {
-    fr: `À partir de ${formatAmount(price, "fr", { compact: true })}`,
-    en: `Starting at ${formatAmount(price, "en", { compact: true })}`,
-  };
-}
-
 /** « À partir de <priceMin> » d'un tier audit (audits = priceMin + sous-tiers). */
 function fromAudit(tierId: string): { fr: string; en: string } {
   const price = getTierById(AUDIT_TIERS, tierId).priceMin!;
@@ -157,6 +152,286 @@ const recurring = {
 };
 
 // ============================================================================
+// Formations V2 (refonte 2026-06-11) — les 17 formations du catalogue,
+// réservables sur /reserver. Prix dérivé de FORMATION_PRICE_MATRIX (gamme ×
+// durée × effectif). Les 3 formations « 3 jours » sont « sur devis »
+// (bookable:false → lien fiche) car le calendrier ne bloque que 1-2 jours.
+// (gamme, durée) hardcodés = miroir de catalog-v2 (vérifié) ; on n'importe PAS
+// catalog-v2 ici (budget bundle /reserver). Verrouillé par booking-catalog.test.
+// ============================================================================
+
+/** « À partir de <prix d'entrée matrice> » d'une (gamme, durée). */
+function fromFormation(gamme: FormationGamme, duree: FormationDuree): { fr: string; en: string } {
+  const p = getFormationEntryPrice(gamme, duree);
+  if (typeof p !== "number") return surDevis;
+  return {
+    fr: `À partir de ${formatAmount(p, "fr", { compact: true })}`,
+    en: `Starting at ${formatAmount(p, "en", { compact: true })}`,
+  };
+}
+
+const FORMATION_DUREE_BOOKING: Record<
+  FormationDuree,
+  { hintFr: string; hintEn: string; days: 1 | 2; bookable: boolean }
+> = {
+  "4h": {
+    hintFr: "Demi-journée · 4 h · sur site",
+    hintEn: "Half-day · 4 h · on site",
+    days: 1,
+    bookable: true,
+  },
+  "1j": {
+    hintFr: "Journée · 9 h – 17 h · sur site",
+    hintEn: "Day · 9 a.m. – 5 p.m. · on site",
+    days: 1,
+    bookable: true,
+  },
+  "2j": {
+    hintFr: "2 jours consécutifs · sur site",
+    hintEn: "2 consecutive days · on site",
+    days: 2,
+    bookable: true,
+  },
+  // 3 jours = sur devis (calendrier limité à 1-2 j ; décision Will 2026-06-11).
+  "3j": { hintFr: "3 jours · sur devis", hintEn: "3 days · on quote", days: 1, bookable: false },
+};
+
+interface FormationDef {
+  slug: string;
+  gamme: FormationGamme;
+  duree: FormationDuree;
+  labelFr: string;
+  labelEn: string;
+  iconKey: BookingIconKey;
+  accent: BookingAccent;
+  previewFr: string;
+  previewEn: string;
+}
+
+const FORMATION_DEFS: ReadonlyArray<FormationDef> = [
+  // 4 heures (ia-standard)
+  {
+    slug: "ia-express",
+    gamme: "ia-standard",
+    duree: "4h",
+    labelFr: "IA Express · 4 h",
+    labelEn: "AI Express · 4 h",
+    iconKey: "rocket",
+    accent: "terracotta",
+    previewFr: "4 h pour que toute l'équipe travaille avec l'IA dès demain — sans prérequis.",
+    previewEn: "4 h to get the whole team working with AI from day one — no prerequisites.",
+  },
+  {
+    slug: "art-du-prompt",
+    gamme: "ia-standard",
+    duree: "4h",
+    labelFr: "L'Art du Prompt (N2) · 4 h",
+    labelEn: "Prompt Mastery (L2) · 4 h",
+    iconKey: "sparkles",
+    accent: "terracotta",
+    previewFr:
+      "Niveau 2 : la compétence qui change tout — demandes efficaces, itération, gabarits.",
+    previewEn:
+      "Level 2: the skill that changes everything — effective prompts, iteration, templates.",
+  },
+  {
+    slug: "ia-securite",
+    gamme: "ia-standard",
+    duree: "4h",
+    labelFr: "IA & Sécurité · 4 h",
+    labelEn: "AI & Security · 4 h",
+    iconKey: "shield",
+    accent: "terracotta",
+    previewFr: "4 h pour utiliser l'IA sans fuite de données — réflexes et ligne rouge.",
+    previewEn: "4 h to use AI without data leaks — reflexes and red lines.",
+  },
+  {
+    slug: "ia-conformite",
+    gamme: "ia-standard",
+    duree: "4h",
+    labelFr: "IA & Conformité · 4 h",
+    labelEn: "AI & Compliance · 4 h",
+    iconKey: "shield",
+    accent: "terracotta",
+    previewFr: "AI Act + RGPD : obligations employeur et usage conforme, en 4 h.",
+    previewEn: "AI Act + GDPR: employer obligations and compliant use, in 4 h.",
+  },
+  // 1 jour (ia-standard + claude)
+  {
+    slug: "ia-fondamentaux",
+    gamme: "ia-standard",
+    duree: "1j",
+    labelFr: "IA Fondamentaux · 1 j",
+    labelEn: "AI Fundamentals · 1 d",
+    iconKey: "graduation",
+    accent: "terracotta",
+    previewFr: "Journée socle : chacun repart avec un livrable terminé sur ses propres outils.",
+    previewEn: "Foundation day: everyone leaves with a finished deliverable on their own tools.",
+  },
+  {
+    slug: "ia-commercial",
+    gamme: "ia-standard",
+    duree: "1j",
+    labelFr: "IA Commercial · 1 j",
+    labelEn: "AI for Sales · 1 d",
+    iconKey: "star",
+    accent: "terracotta",
+    previewFr: "Prospection, propositions, relances : le cycle commercial accéléré à l'IA.",
+    previewEn: "Prospecting, proposals, follow-ups: the sales cycle accelerated with AI.",
+  },
+  {
+    slug: "ia-au-bureau",
+    gamme: "ia-standard",
+    duree: "1j",
+    labelFr: "IA au Bureau · 1 j",
+    labelEn: "AI at the Office · 1 d",
+    iconKey: "users",
+    accent: "terracotta",
+    previewFr: "Mails, comptes-rendus, documents et tableurs : le quotidien bureau à l'IA.",
+    previewEn: "Emails, minutes, documents and spreadsheets: office daily work with AI.",
+  },
+  {
+    slug: "ia-sur-le-terrain",
+    gamme: "ia-standard",
+    duree: "1j",
+    labelFr: "IA sur le Terrain · 1 j",
+    labelEn: "AI in the Field · 1 d",
+    iconKey: "compass",
+    accent: "terracotta",
+    previewFr:
+      "Usages mobiles : dictée, photos, rapports sur site — l'IA pour les équipes terrain.",
+    previewEn: "Mobile uses: dictation, photos, on-site reports — AI for field teams.",
+  },
+  {
+    slug: "automatisations-decouverte",
+    gamme: "ia-standard",
+    duree: "1j",
+    labelFr: "Automatisations Découverte · 1 j",
+    labelEn: "Automations Discovery · 1 d",
+    iconKey: "layers",
+    accent: "terracotta",
+    previewFr: "Créer ses premières automatisations métier — sans savoir coder.",
+    previewEn: "Build your first business automations — without knowing how to code.",
+  },
+  {
+    slug: "claude-decouverte",
+    gamme: "claude",
+    duree: "1j",
+    labelFr: "Claude Découverte · 1 j",
+    labelEn: "Claude Discovery · 1 d",
+    iconKey: "sparkles",
+    accent: "claude",
+    previewFr: "Journée 100 % Claude : Chat, Projects, premiers usages métier.",
+    previewEn: "Full Claude day: Chat, Projects, first business uses.",
+  },
+  // 2 jours (ia-standard + agents + claude)
+  {
+    slug: "ia-integration-metier",
+    gamme: "ia-standard",
+    duree: "2j",
+    labelFr: "IA Intégration Métier · 2 j",
+    labelEn: "AI Business Integration · 2 d",
+    iconKey: "layers",
+    accent: "terracotta",
+    previewFr: "2 jours pour intégrer l'IA dans vos process métier réels.",
+    previewEn: "2 days to embed AI into your real business processes.",
+  },
+  {
+    slug: "ia-commercial-avance",
+    gamme: "ia-standard",
+    duree: "2j",
+    labelFr: "IA Commercial Avancé · 2 j",
+    labelEn: "Advanced AI for Sales · 2 d",
+    iconKey: "star",
+    accent: "terracotta",
+    previewFr: "Séquences, CRM, scoring assistés par l'IA — niveau avancé.",
+    previewEn: "AI-assisted sequences, CRM, scoring — advanced level.",
+  },
+  {
+    slug: "agents-automatisations",
+    gamme: "agents-automatisations",
+    duree: "2j",
+    labelFr: "Agents & Automatisations · 2 j",
+    labelEn: "Agents & Automations · 2 d",
+    iconKey: "layers",
+    accent: "sage",
+    previewFr: "Vos équipes construisent leurs automatisations — le code source vous appartient.",
+    previewEn: "Your teams build their automations — the source code is yours.",
+  },
+  {
+    slug: "claude-createur",
+    gamme: "claude",
+    duree: "2j",
+    labelFr: "Claude Créateur · 2 j",
+    labelEn: "Claude Creator · 2 d",
+    iconKey: "sparkles",
+    accent: "claude",
+    previewFr: "2 jours : chacun repart avec son propre outil Claude construit.",
+    previewEn: "2 days: everyone leaves with their own Claude tool built.",
+  },
+  // 3 jours = sur devis (bookable:false)
+  {
+    slug: "ia-transformation-equipe",
+    gamme: "ia-standard",
+    duree: "3j",
+    labelFr: "IA Transformation Équipe · 3 j",
+    labelEn: "AI Team Transformation · 3 d",
+    iconKey: "users",
+    accent: "terracotta",
+    previewFr: "Transformation d'équipe : référents formés, processus complets, autonomie.",
+    previewEn: "Team transformation: trained champions, full processes, autonomy.",
+  },
+  {
+    slug: "agents-automatisations-avance",
+    gamme: "agents-automatisations",
+    duree: "3j",
+    labelFr: "Agents & Automatisations Avancé · 3 j",
+    labelEn: "Advanced Agents & Automations · 3 d",
+    iconKey: "layers",
+    accent: "sage",
+    previewFr: "Automatisations avancées, processus complets en code source qui vous appartient.",
+    previewEn: "Advanced automations, full processes in source code you own.",
+  },
+  {
+    slug: "claude-architecte",
+    gamme: "claude",
+    duree: "3j",
+    labelFr: "Claude Architecte · 3 j",
+    labelEn: "Claude Architect · 3 d",
+    iconKey: "crown",
+    accent: "claude",
+    previewFr: "Niveau architecte Claude — déploiement à l'échelle de l'entreprise.",
+    previewEn: "Claude architect level — enterprise-scale deployment.",
+  },
+];
+
+const FORMATION_BOOKING_FORMATS: ReadonlyArray<BookingFormat> = FORMATION_DEFS.map((f) => {
+  const d = FORMATION_DUREE_BOOKING[f.duree];
+  const price = d.bookable ? fromFormation(f.gamme, f.duree) : surDevis;
+  const tiered = getFormationBrackets(f.gamme, f.duree).length > 1;
+  return {
+    slug: f.slug,
+    labelFr: f.labelFr,
+    labelEn: f.labelEn,
+    bookable: d.bookable,
+    durationDays: d.days,
+    iconKey: f.iconKey,
+    accent: f.accent,
+    priceFr: price.fr,
+    priceEn: price.en,
+    scheduleHintFr: d.hintFr,
+    scheduleHintEn: d.hintEn,
+    previewFr: f.previewFr,
+    previewEn: f.previewEn,
+    ...(d.bookable
+      ? tiered
+        ? { tiered: true }
+        : {}
+      : { hrefFr: `/formations/${f.slug}`, hrefEn: `/formations/${f.slug}` }),
+  };
+});
+
+// ============================================================================
 // Catalogue — 3 catégories visibles
 // ============================================================================
 
@@ -174,106 +449,12 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
       "On-site AI trainings for your teams — from a half-day discovery to a 2-day deep dive.",
     iconKey: "graduation",
     accent: "terracotta",
-    formats: [
-      {
-        slug: "essentielle",
-        labelFr: "L'Essentielle",
-        labelEn: "The Essential",
-        bookable: true,
-        durationDays: 1,
-        iconKey: "sparkles",
-        accent: "terracotta",
-        priceFr: from("intervention-essentielle").fr,
-        priceEn: from("intervention-essentielle").en,
-        scheduleHintFr: "Journée · 9 h – 17 h · collectif",
-        scheduleHintEn: "Day · 9 a.m. – 5 p.m. · collective",
-        previewFr:
-          "Découvrir les outils IA · 5 à 10 usages identifiés · automatisations dès le lendemain",
-        previewEn: "Discover AI tools · 5 to 10 uses identified · automations from day two",
-        tiered: true,
-      },
-      {
-        slug: "gagner-du-temps",
-        labelFr: "Gagner du temps",
-        labelEn: "Save Time",
-        bookable: true,
-        durationDays: 1,
-        iconKey: "star",
-        accent: "terracotta",
-        priceFr: from("intervention-temps").fr,
-        priceEn: from("intervention-temps").en,
-        scheduleHintFr: "Journée · 9 h – 17 h · sur site",
-        scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site",
-        previewFr:
-          "Automatiser les tâches récurrentes · plusieurs heures gagnées par personne et par semaine",
-        previewEn: "Automate recurring tasks · hours reclaimed per person every week",
-        tiered: true,
-      },
-      {
-        slug: "intervention-claude",
-        labelFr: "Formation Claude",
-        labelEn: "Claude Training",
-        bookable: true,
-        durationDays: 1,
-        iconKey: "sparkles",
-        accent: "claude",
-        priceFr: from("intervention-claude").fr,
-        priceEn: from("intervention-claude").en,
-        scheduleHintFr: "Journée · 9 h – 17 h · 100 % Claude",
-        scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 100 % Claude",
-        previewFr: "1 journée 100 % Claude · jusqu'à 30 pers. · Chat + Projects + Code CLI",
-        previewEn: "1 day 100 % Claude · up to 30 ppl · Chat + Projects + Code CLI",
-        tiered: true,
-      },
-      {
-        slug: "demarrage-ia-express",
-        labelFr: "Démarrage IA Express · 4 h",
-        labelEn: "AI Express Kickoff · 4 h",
-        bookable: true,
-        durationDays: 1,
-        iconKey: "rocket",
-        accent: "terracotta",
-        priceFr: flat("intervention-4h").fr,
-        priceEn: flat("intervention-4h").en,
-        scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site",
-        scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site",
-        previewFr:
-          "Demi-journée · démystifier l'IA · panorama 2026 · 2-3 prompts opérationnels testés",
-        previewEn: "Half-day · demystify AI · 2026 panorama · 2-3 working prompts tested",
-      },
-      {
-        slug: "approfondie",
-        labelFr: "L'Approfondie · 2 jours",
-        labelEn: "Deep Dive · 2 days",
-        bookable: true,
-        durationDays: 2,
-        iconKey: "layers",
-        accent: "primary",
-        priceFr: from("intervention-approfondie").fr,
-        priceEn: from("intervention-approfondie").en,
-        scheduleHintFr: "2 jours consécutifs · collectif",
-        scheduleHintEn: "2 consecutive days · collective",
-        previewFr:
-          "2 jours équipes · 10 à 20 automatisations co-construites · plan d'action 30 jours",
-        previewEn: "2 team days · 10 to 20 co-built automations · 30-day action plan",
-        tiered: true,
-      },
-      {
-        slug: "conference",
-        labelFr: "Conférence 1 journée",
-        labelEn: "1-day Talk",
-        bookable: true,
-        durationDays: 1,
-        iconKey: "mic",
-        accent: "terracotta",
-        priceFr: surDevis.fr,
-        priceEn: surDevis.en,
-        scheduleHintFr: "Journée · plénière grands effectifs",
-        scheduleHintEn: "Day · plenary for large audiences",
-        previewFr: "Sensibiliser toute l'entreprise · panorama IA 2026 · démos live + Q&A",
-        previewEn: "Upskill the whole company · 2026 AI panorama · live demos + Q&A",
-      },
-    ],
+    // Refonte 2026-06-11 — les 17 formations du catalogue V2 (FORMATION_DEFS).
+    // 14 réservables (4h/1j/2j) ; 3 formations « 3 jours » sur devis (lien fiche).
+    // Les anciens formats collectifs (essentielle, approfondie, gagner-du-temps,
+    // intervention-claude, demarrage-ia-express, conference) restent en legacy
+    // dans INTERVENTION_SLUGS/enum (bookings passés) mais ne sont plus proposés.
+    formats: FORMATION_BOOKING_FORMATS,
   },
 
   // --------------------------------------------------------------------------

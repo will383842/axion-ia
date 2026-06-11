@@ -95,6 +95,26 @@ enum InterventionType {
   // promues bookables direct calendrier (au lieu du formulaire générique).
   demarrage_ia_express
   atelier_ia_cible
+  // Refonte Formations V2 2026-06-11 — les 17 formations du catalogue (catalog-v2)
+  // réservables sur /reserver (prix dérivé de FORMATION_PRICE_MATRIX). Les valeurs
+  // historiques ci-dessus restent (bookings passés). Additif (ADR 0020, jamais de DROP).
+  ia_express
+  art_du_prompt
+  ia_securite
+  ia_conformite
+  ia_fondamentaux
+  ia_commercial
+  ia_au_bureau
+  ia_sur_le_terrain
+  automatisations_decouverte
+  ia_integration_metier
+  ia_commercial_avance
+  ia_transformation_equipe
+  agents_automatisations
+  agents_automatisations_avance
+  claude_decouverte
+  claude_createur
+  claude_architecte
 }
 
 /// Sprint X.1 — state machine V1 deposit-validation-gated.

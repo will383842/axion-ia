@@ -298,7 +298,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale(fr|en)/implantations/:region/:ville/interventions",
-        destination: "/:locale/interventions/collectives",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
@@ -324,7 +324,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale(fr|en)/locations/:region/:ville/interventions",
-        destination: "/:locale/interventions/collectives",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
@@ -356,42 +356,102 @@ const nextConfig: NextConfig = {
         destination: "/:locale/sites-web-augmentes",
         permanent: true,
       },
-      // Refonte /interventions 2026-05-28 — simplification radicale du hub.
-      // Le hub des 4 familles `/interventions` est supprimé (devenu redondant
-      // après extraction du 1-to-1 vers `/un-a-un` et suppression de la
-      // famille Conférence). La page formations équipe `/interventions/collectives`
-      // devient la destination par défaut de `/interventions`. La famille
-      // Conférence est entièrement supprimée (3 pages : hub + 2 formats).
+      // Refonte /formations 2026-06-11 (Will) — l'offre de formations COLLECTIVES
+      // de /interventions/* est remplacée par /formations (public/live). 301 des
+      // anciennes URLs collectives → /formations (zéro lien mort, autorité SEO
+      // transférée). Le 1-to-1 (/interventions/{dirigeants,individuel,coaching*,
+      // claude-dirigeant,claude-implementation-individuel,demande}) RESTE intact
+      // (aucune source ci-dessous ne le capture — chemins exacts).
       {
         source: "/:locale(fr|en)/interventions",
-        destination: "/:locale/interventions/collectives",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
+        source: "/:locale(fr|en)/interventions/collectives",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/collectives/4h",
+        destination: "/:locale/formations/duree/4-heures",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/collectives/1-jour",
+        destination: "/:locale/formations/duree/1-jour",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/collectives/2-jours",
+        destination: "/:locale/formations/duree/2-jours",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/collectives/3-jours-plus",
+        destination: "/:locale/formations/duree/3-jours",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/essentielle",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/approfondie",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/gagner-du-temps",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/intervention-claude",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/demarrage-ia-express",
+        destination: "/:locale/formations",
+        permanent: true,
+      },
+      // Pages formation par ville (verticale per-ville migrée /interventions → /formations).
+      {
+        source: "/:locale(fr|en)/interventions/par-ville/:ville",
+        destination: "/:locale/formations/par-ville/:ville",
+        permanent: true,
+      },
+      {
+        source: "/en/interventions/by-city/:ville",
+        destination: "/en/formations/by-city/:ville",
+        permanent: true,
+      },
+      // Anciens slugs déjà redirigés (conférence, atelier) → repointés /formations.
+      {
         source: "/:locale(fr|en)/interventions/conference",
-        destination: "/:locale/interventions/collectives",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
         source: "/:locale(fr|en)/interventions/conference-pleniere",
-        destination: "/:locale/interventions/collectives",
+        destination: "/:locale/formations",
         permanent: true,
       },
       {
         source: "/:locale(fr|en)/interventions/conference-keynote",
-        destination: "/:locale/interventions/collectives",
+        destination: "/:locale/formations",
         permanent: true,
       },
-      // Suppression Atelier IA ciblé 2026-06-03 (Will) — le palier 4 h ne garde
-      // qu'une formation. 301 de l'ancien slug (FR + EN miroir) vers la page 4 h.
       {
         source: "/:locale(fr|en)/interventions/atelier-ia-cible",
-        destination: "/:locale/interventions/collectives/4h",
+        destination: "/:locale/formations/duree/4-heures",
         permanent: true,
       },
       {
         source: "/en/interventions/targeted-ai-workshop",
-        destination: "/fr/interventions/collectives/4h",
+        destination: "/fr/formations/duree/4-heures",
         permanent: true,
       },
     ];

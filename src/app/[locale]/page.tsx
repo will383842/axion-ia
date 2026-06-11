@@ -137,7 +137,7 @@ export default async function Home({ params }: HomeProps) {
         ? `À partir de ${interventionEntryPrice} HT`
         : `From ${interventionEntryPrice} excl. tax`,
       gain: t("value1Gain"),
-      href: "/interventions" as const,
+      href: "/formations" as const,
     },
     {
       id: "coach",
@@ -272,7 +272,7 @@ export default async function Home({ params }: HomeProps) {
   //    (Blueprint §22 → 1 Service par service public). Provider référence
   //    l'Organization déjà émise layout-level (pas de re-émission complète).
   const SERVICE_PATHS: Record<string, string> = {
-    intervene: "/interventions",
+    intervene: "/formations",
     audit: "/audit",
     coach: "/un-a-un",
     implement: "/implementation",
@@ -973,7 +973,7 @@ export default async function Home({ params }: HomeProps) {
                       includesFr: "Ateliers métier · Sur site · Groupes 1–30 pers.",
                       includesEn: "Business workshops · On-site · Groups of 1–30",
                       price: interventionEntryPrice,
-                      href: "/interventions" as const,
+                      href: "/formations" as const,
                     },
                     {
                       id: "audit",
@@ -1754,7 +1754,7 @@ export default async function Home({ params }: HomeProps) {
           Disparaît à 320 px du bottom (laisse place au CTA final natif).
           rAF dedup pour INP < 100 ms (cf. perf budget). */}
       <StickyMobileCta
-        href="/interventions/essentielle"
+        href="/formations"
         label={t("heroCtaPrimary", { price: interventionEntryPrice })}
         track="home-sticky-mobile"
         threshold={600}

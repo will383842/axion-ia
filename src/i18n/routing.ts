@@ -19,7 +19,19 @@ export const routing = defineRouting({
     "/components": "/components",
     "/sections": "/sections",
 
-    // Module 1 — Interventions entreprise
+    // Module 1 — Formations IA (remplace l'offre /interventions collective).
+    // /formations est PUBLIC/live (décision Will 2026-06-11). en == fr : EN est
+    // redirigé 301→FR (proxy) et fr==en évite le bug next-intl 307 self-loop
+    // (qui ne survient que sur un mapping fr≠en) si EN était réactivé.
+    "/formations": { fr: "/formations", en: "/formations" },
+    "/formations/tarifs": { fr: "/formations/tarifs", en: "/formations/tarifs" },
+    "/formations/duree/[duree]": {
+      fr: "/formations/duree/[duree]",
+      en: "/formations/duree/[duree]",
+    },
+    "/formations/[slug]": { fr: "/formations/[slug]", en: "/formations/[slug]" },
+
+    // Module 1 — Interventions entreprise (1-to-1 conservé ; collectif → /formations)
     "/interventions": { fr: "/interventions", en: "/interventions" },
 
     // Sprint 14.10.7 (2026-05-11) — refonte taxonomique en 3 blocs famille.
@@ -345,9 +357,9 @@ export const routing = defineRouting({
       fr: "/audit/par-ville/[ville]",
       en: "/audit/by-city/[ville]",
     },
-    "/interventions/par-ville/[ville]": {
-      fr: "/interventions/par-ville/[ville]",
-      en: "/interventions/by-city/[ville]",
+    "/formations/par-ville/[ville]": {
+      fr: "/formations/par-ville/[ville]",
+      en: "/formations/by-city/[ville]",
     },
     "/implementation/par-ville/[ville]": {
       fr: "/implementation/par-ville/[ville]",
