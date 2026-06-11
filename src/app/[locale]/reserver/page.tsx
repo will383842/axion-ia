@@ -9,7 +9,6 @@ import { BookingCalendarLazy } from "@/components/calendar/BookingCalendarLazy";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { INTERVENTION_TIERS, formatPrice, getTierById } from "@/content/pricing";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { prisma } from "@/lib/prisma";
@@ -470,8 +469,8 @@ export default async function ReserverPage({ params }: Props) {
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "Choisissez l'intervention ou l'audit, puis cliquez sur une date libre. Réservation finalisée après call de cadrage + acompte 50 %."
-              : "Pick the session or audit, then click an open date. Booking finalised after framing call + 50 % deposit."}
+              ? "Choisissez la formation, l'intervention ou l'audit, puis cliquez sur une date libre. Réservation finalisée après un échange de cadrage."
+              : "Pick the training, session or audit, then click an open date. Booking finalised after a framing call."}
           </p>
         </Container>
       </section>
@@ -491,15 +490,11 @@ export default async function ReserverPage({ params }: Props) {
 
       <CtaBlock
         eyebrow={isFr ? "À noter" : "Note"}
-        title={
-          isFr
-            ? `L’Essentielle ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "fr")}`
-            : `The Essential ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "en")}`
-        }
+        title={isFr ? "Formations IA, interventions & audits" : "AI trainings, sessions & audits"}
         description={
           isFr
-            ? "Le créneau est verrouillé après le versement de l’acompte 50 %. Conditions de réservation détaillées dans les CGV."
-            : "The slot is locked after the 50 % deposit is received. Booking conditions detailed in the Terms."
+            ? "Le créneau est confirmé après l'échange de cadrage. Conditions de réservation détaillées dans les CGV."
+            : "The slot is confirmed after the framing call. Booking conditions detailed in the Terms."
         }
         cta={
           <Cta href="/conditions-generales" variant="outline">

@@ -188,7 +188,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
                   {
                     title: "Vous pré-réservez sur le calendrier",
                     description:
-                      "Une fois le format validé, vous choisissez votre date sur le calendrier maison. Confirmation immédiate, paiement 50 % à la réservation.",
+                      "Une fois le format validé, vous choisissez votre date sur le calendrier maison. Confirmation après un échange de cadrage.",
                   },
                 ]
               : [
@@ -205,7 +205,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
                   {
                     title: "You pre-book on the calendar",
                     description:
-                      "Once the format is validated, pick your date on our live calendar. Immediate confirmation, 50 % payment on booking.",
+                      "Once the format is validated, pick your date on our live calendar. Confirmation after a framing call.",
                   },
                 ]
             ).map((step, i) => (

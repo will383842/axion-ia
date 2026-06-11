@@ -496,9 +496,15 @@ export async function renderVilleServicePage({
               ? isFr
                 ? "Réserver un appel"
                 : "Book a call"
-              : isFr
-                ? `Réserver · ${formattedEntryPrice}`
-                : `Book · ${formattedEntryPrice}`}
+              : isFormationService
+                ? // Formations intra-entreprise : le calendrier = mettre une OPTION
+                  // sur une date (demande, pas un verrou ferme — modèle multi-demandes).
+                  isFr
+                  ? `Demander une date · ${formattedEntryPrice}`
+                  : `Request a date · ${formattedEntryPrice}`
+                : isFr
+                  ? `Réserver · ${formattedEntryPrice}`
+                  : `Book · ${formattedEntryPrice}`}
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </Cta>
           <Cta
@@ -800,8 +806,8 @@ export async function renderVilleServicePage({
               ? `Un appel pour cadrer votre site ou plateforme à ${ville.nameFr} : on identifie les briques IA à plus fort ROI, puis devis ferme à partir de 24-48 h selon la complexité du projet. Code et données à vous.`
               : `A call to scope your site or platform in ${ville.nameFr}: we identify the highest-ROI AI bricks, then a firm quote from 24-48 h depending on project complexity. Code and data yours.`
             : isFr
-              ? `Calendrier réel temps réel. Acompte 50 % à la confirmation. Champ « ville » pré-rempli avec ${ville.nameFr}, champ « service » pré-rempli avec ${meta.nameFr}.`
-              : `Real-time calendar. 50% deposit on confirmation. "City" field pre-filled with ${ville.nameFr}, "service" field pre-filled with ${meta.nameEn}.`
+              ? `Calendrier en temps réel. Champ « ville » pré-rempli avec ${ville.nameFr}, champ « service » pré-rempli avec ${meta.nameFr}.`
+              : `Real-time calendar. "City" field pre-filled with ${ville.nameFr}, "service" field pre-filled with ${meta.nameEn}.`
         }
         cta={
           <div className="flex flex-wrap items-center justify-center gap-3">

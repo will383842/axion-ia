@@ -14,7 +14,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { getSurMesureGlobal } from "@/content/formations/catalog-v2-meta";
+import { SUR_MESURE } from "@/content/formations/catalog-v2-meta";
 import {
   type FormationBracket,
   type FormationDuree,
@@ -65,7 +65,7 @@ export async function generateMetadata({
     locale,
     path: "/formations/tarifs",
     title: "Tarifs des formations IA en entreprise | Axion-IA",
-    description: `Tarifs HT par groupe (pas par personne) des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} (4 h) à ${formatAmount(maxEur, "fr")} (3 jours). Prise en charge OPCO possible — nous montons le dossier.`,
+    description: `Tarifs HT par groupe (pas par personne) des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} (4 h) à ${formatAmount(maxEur, "fr")} (3 jours), dans vos locaux, sur vos cas réels.`,
   });
 }
 
@@ -74,7 +74,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  const surMesureGlobal = getSurMesureGlobal();
+  const surMesure = SUR_MESURE;
 
   return (
     <>
@@ -144,22 +144,18 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
         </Section>
       ))}
 
-      {/* FINANCEMENT / INCLUS */}
-      <Section
-        tone="sand"
-        eyebrow="Financement & inclus"
-        title="Prise en charge"
-        titleEm="OPCO possible"
-        description="Les formations peuvent être prises en charge par votre OPCO (selon votre opérateur et votre accord de branche) — nous montons le dossier avec vous. La demande doit être faite avant la formation, jamais rétroactivement."
-      >
+      {/* CE QUI EST TOUJOURS INCLUS */}
+      <Section tone="sand" eyebrow="Ce qui est inclus" title="Toujours" titleEm="inclus">
         <Container>
           <ul className="text-fg-soft mx-auto grid max-w-3xl gap-3 text-[15px] sm:grid-cols-2">
             {[
-              "Attestation de fin de formation + certificat de réalisation",
-              "Supports et fiches pratiques remis à chaque participant",
-              "Questionnaire de cadrage (15 min) — adaptation à votre métier",
+              "Cadrage en amont par appel — programme adapté à votre métier",
               "Pratique sur vos vraies tâches et documents (anonymisés)",
-              "Formateur qui apporte sa connexion 4G/5G de secours",
+              "Beaucoup de mise en pratique, pas de théorie passive",
+              "Supports et fiches pratiques remis à chaque participant",
+              "Attestation de fin de formation",
+              "Aucune préparation requise de votre côté",
+              "Programme adapté à votre secteur d'activité",
               "Sur mesure possible (toute durée, toute gamme) — sur devis",
             ].map((line, i) => (
               <li key={i} className="flex items-start gap-2.5">
@@ -174,12 +170,12 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
         </Container>
       </Section>
 
-      {/* SUR-MESURE GLOBAL (toute durée / toute gamme) */}
-      {surMesureGlobal.length > 0 ? (
-        <Section eyebrow="Au-delà du catalogue" title="Sur mesure" titleEm="de A à Z">
+      {/* SUR-MESURE — les 7 offres (par durée, par gamme, 100 % sur mesure) */}
+      {surMesure.length > 0 ? (
+        <Section eyebrow="Au-delà du catalogue" title="Formats" titleEm="sur mesure">
           <Container>
-            <div className="mx-auto grid max-w-3xl gap-4">
-              {surMesureGlobal.map((s) => (
+            <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+              {surMesure.map((s) => (
                 <div
                   key={s.id}
                   className="border-border bg-paper flex flex-col items-start gap-3 rounded-3xl border border-dashed p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7"
@@ -205,7 +201,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
       <CtaBlock
         eyebrow="Un devis ?"
         title="On chiffre votre besoin précisément"
-        description="Devis sous 24-48 h, montage du dossier OPCO inclus. Vous pouvez nous écrire, réserver un appel, ou choisir directement au calendrier."
+        description="Devis sous 24-48 h. Vous pouvez nous écrire, réserver un appel, ou choisir directement au calendrier."
         cta={
           <Cta
             href="/appel"

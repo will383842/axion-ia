@@ -1302,8 +1302,8 @@ export function BookingCalendar({
                     </p>
                     <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                       {isFr
-                        ? "Elle ne sera définitive qu'après l'échange téléphonique de cadrage et le versement du premier acompte (50 %)."
-                        : "It will only be final after the framing call and the 50 % deposit payment."}
+                        ? "Elle ne sera définitive qu'après l'échange téléphonique de cadrage et la validation des modalités."
+                        : "It will only be final after the framing call and confirmation of the details."}
                     </p>
                   </div>
 
@@ -1321,12 +1321,10 @@ export function BookingCalendar({
                       },
                       {
                         num: "2",
-                        title: isFr
-                          ? "Versement du premier acompte (50 %)"
-                          : "First deposit (50 %)",
+                        title: isFr ? "Validation des modalités" : "Confirmation of the details",
                         detail: isFr
-                          ? "Virement bancaire ou carte. Facture immédiate. C'est ce paiement qui valide votre créneau dans le calendrier."
-                          : "Bank transfer or card. Invoice issued immediately. This payment locks your slot.",
+                          ? "On valide ensemble le format, la date et les modalités pratiques. Les conditions de règlement sont précisées dans le devis et les CGV."
+                          : "We confirm the format, date and practicalities together. Payment terms are detailed in the quote and Terms.",
                       },
                       {
                         num: "3",

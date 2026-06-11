@@ -215,10 +215,10 @@ export default async function PricingPage({ params }: Props) {
             "Non. Tous nos tarifs publics sont HT (hors taxes). La TVA française à 20 % s'ajoute sur les factures, sauf clients hors UE (auto-liquidation B2B intra-UE).",
         },
         {
-          id: "acompte-engagement",
-          question: "Y a-t-il un acompte ou un engagement long ?",
+          id: "engagement",
+          question: "Y a-t-il un engagement dans la durée ?",
           answer:
-            "Acompte 30 % à la commande pour les formats journée + audits. Aucun engagement annuel : chaque prestation est un livrable autonome. Maintenance optionnelle après les 30 jours de support inclus.",
+            "Aucun engagement annuel : chaque prestation est un livrable autonome. Les conditions de règlement sont précisées au devis et dans les CGV. Maintenance optionnelle après la période de support incluse.",
         },
         {
           id: "devis-personnalise",
@@ -247,10 +247,10 @@ export default async function PricingPage({ params }: Props) {
             "No. All our public prices are excl. VAT. French 20 % VAT is added on invoices, except non-EU customers (B2B EU reverse-charge).",
         },
         {
-          id: "acompte-engagement",
-          question: "Is there a deposit or long-term commitment?",
+          id: "engagement",
+          question: "Is there a long-term commitment?",
           answer:
-            "30 % deposit on order for full-day formats + audits. No annual commitment: each engagement is a standalone deliverable. Optional maintenance after the included 30-day support window.",
+            "No annual commitment: each engagement is a standalone deliverable. Payment terms are detailed in the quote and Terms. Optional maintenance after the included support window.",
         },
         {
           id: "devis-personnalise",

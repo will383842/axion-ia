@@ -25,6 +25,7 @@ import {
   type DureeMeta,
   formationDureeIso,
   getDureeMeta,
+  getSurMesureByDuree,
 } from "@/content/formations/catalog-v2-meta";
 import type { FormationDuree } from "@/content/pricing";
 import { buildCourseJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
@@ -154,6 +155,7 @@ export function FormationDurationListing({ dureeId, locale }: Props): ReactNode 
   const isFr = locale === "fr";
   const meta: DureeMeta = getDureeMeta(dureeId);
   const formations = getFormationsV2ByDuree(dureeId);
+  const surMesure = getSurMesureByDuree(dureeId);
   const isEmpty = formations.length === 0;
   const path = `/formations/duree/${meta.slug}`;
 
@@ -258,6 +260,47 @@ export function FormationDurationListing({ dureeId, locale }: Props): ReactNode 
           ))}
         </div>
       </Section>
+
+      {/* SUR MESURE — format de cette durée co-construit avec vous (sur devis) */}
+      {surMesure.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow="Sur mesure"
+          title="Plutôt un format"
+          titleEm={`${meta.shortFr} sur mesure ?`}
+          description="On co-construit le programme avec vous : thème, public, cas pratiques définis ensemble. Sur devis."
+          contentClassName={TIGHT_X}
+        >
+          <Container>
+            <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+              {surMesure.map((s) => (
+                <div
+                  key={s.id}
+                  className="border-border bg-paper flex flex-col items-start gap-3 rounded-3xl border border-dashed p-6 sm:p-7"
+                >
+                  <div>
+                    <p className="text-fg text-lg font-semibold">
+                      {s.labelFr} <span className="text-fg-muted font-normal">· {s.dureeFr}</span>
+                    </p>
+                    <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
+                      {s.descriptionFr}
+                    </p>
+                  </div>
+                  <Cta
+                    href="/contact"
+                    variant="outline"
+                    size="md"
+                    track={`formations-duree-${meta.slug}-surmesure`}
+                  >
+                    Demander un devis
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </Cta>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
       <LocalCoverageSection
