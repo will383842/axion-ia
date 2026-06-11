@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Mail, Crown, Compass, Sparkles } from "lucide-react";
+import { ArrowRight, Mail, Compass, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -53,8 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Executive sessions · strategic 1-on-1 · Axion-IA",
     description:
       loc === "fr"
-        ? "3 formats 1-to-1 dédiés aux dirigeants : productivité personnelle, vision IA stratégique, intervention Claude. Pour un seul dirigeant, pas un comité. Sur devis."
-        : "3 1-on-1 formats dedicated to executives: personal productivity, strategic AI vision, Claude intervention. For one executive, not a committee. On request.",
+        ? "2 formats 1-to-1 dédiés aux dirigeants : vision IA stratégique et intervention Claude. Pour un seul dirigeant, pas un comité. Sur devis."
+        : "2 1-on-1 formats dedicated to executives: strategic AI vision and Claude intervention. For one executive, not a committee. On request.",
     alternates: { fr: "/interventions/dirigeants", en: "/interventions/executives" },
   });
 }
@@ -91,7 +91,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   });
 
   // ItemList JSON-LD — AEO/GEO 2026 : permet aux LLMs d'énumérer la liste
-  // des 3 formats Dirigeants quand quelqu'un demande « formations IA pour
+  // des 2 formats Dirigeants quand quelqu'un demande « formations IA pour
   // dirigeant Axion-IA ». Audit 2026-05-12 P2.
   const itemListJsonLd = buildItemListJsonLd({
     locale: loc,
@@ -118,8 +118,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
           ? "William — Fondateur Axion-IA, partenaire 1-to-1 des dirigeants TPE et PME"
           : "William — Axion-IA founder, 1-on-1 partner for small business and SME executives",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 3 formats (productivité personnelle, vision IA stratégique, maîtrise Claude). Confidentialité totale."
-          : "Portrait of William, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 3 formats (personal productivity, strategic AI vision, Claude mastery). Total confidentiality.",
+          ? "Portrait de William, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 2 formats (vision IA stratégique, maîtrise Claude). Confidentialité totale."
+          : "Portrait of William, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 2 formats (strategic AI vision, Claude mastery). Total confidentiality.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",
@@ -139,17 +139,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
     ],
   });
 
-  // 3 mini-blocs « pour qui » — alignés sur les 3 formats Dirigeants.
+  // 2 mini-blocs « pour qui » — alignés sur les 2 formats Dirigeants.
   const audiences = [
-    {
-      icon: Crown,
-      titleFr: "Dirigeant qui veut gagner du temps",
-      titleEn: "Executive who wants to save time",
-      bodyFr:
-        "Boîte mail, prépa réunions, reporting, comptes-rendus, suivi commercial — votre quotidien est saturé. La journée Productivité installe les bons usages IA pour libérer plusieurs heures par semaine.",
-      bodyEn:
-        "Inbox, meeting prep, reporting, meeting notes, sales follow-up — your daily work is saturated. The Productivity day installs the right AI methods to free up several hours per week.",
-    },
     {
       icon: Compass,
       titleFr: "Dirigeant qui veut anticiper l'IA",
@@ -225,7 +216,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                 className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
               >
                 <Mail aria-hidden="true" className="h-4 w-4" />
-                {isFr ? "Pré-réservez une journée" : "Pre-book a day"}
+                {isFr ? "Demander une journée" : "Request a day"}
               </Cta>
               <Cta href="/un-a-un" variant="outline" size="lg">
                 {isFr ? "← Retour au 1-to-1" : "← Back to 1-to-1"}
@@ -235,9 +226,9 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* SECTION CŒUR : liste des 3 formats Dirigeants */}
+      {/* SECTION CŒUR : liste des 2 formats Dirigeants */}
       <Section
-        eyebrow={isFr ? "3 formats disponibles" : "3 available formats"}
+        eyebrow={isFr ? "2 formats disponibles" : "2 available formats"}
         title={isFr ? "Journées" : "Days"}
         titleEm={isFr ? "1-to-1 dirigeant" : "1-on-1 executive"}
         description={
@@ -247,18 +238,18 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         }
         contentClassName={TIGHT_X}
       >
-        <div className="grid gap-6 lg:grid-cols-3 lg:gap-7">
+        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
           {formats.map((entry) => (
             <InterventionFormatCard key={entry.slug} entry={entry} locale={loc} />
           ))}
         </div>
       </Section>
 
-      {/* POUR QUI — 3 profils visibles en permanence (1 par format) */}
+      {/* POUR QUI — 2 profils visibles en permanence (1 par format) */}
       <Section
         tone="sand"
         eyebrow={isFr ? "Pour qui" : "Who for"}
-        title={isFr ? "3 profils" : "3 profiles"}
+        title={isFr ? "2 profils" : "2 profiles"}
         titleEm={isFr ? "dirigeant ciblés" : "of executives targeted"}
         description={
           isFr
@@ -267,7 +258,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         }
         contentClassName={TIGHT_X}
       >
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2">
           {audiences.map((a, idx) => {
             const Icon = a.icon;
             return (
@@ -326,9 +317,9 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                     },
                     {
                       id: "choisir",
-                      question: "Comment choisir entre les 3 formats dirigeant ?",
+                      question: "Comment choisir entre les 2 formats dirigeant ?",
                       answer:
-                        "Productivité pour gagner des heures sur votre quotidien, Vision stratégique pour repérer les opportunités IA de votre marché, Claude pour maîtriser l'IA la plus avancée sur vos dossiers. Un appel de cadrage permet de trancher.",
+                        "Vision stratégique pour repérer les opportunités IA de votre marché, Claude pour maîtriser l'IA la plus avancée sur vos dossiers. Un appel de cadrage permet de trancher.",
                     },
                     {
                       id: "repars",
@@ -352,9 +343,9 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                     },
                     {
                       id: "choisir",
-                      question: "How to choose between the 3 executive formats?",
+                      question: "How to choose between the 2 executive formats?",
                       answer:
-                        "Productivity to save hours in your daily work, Strategic Vision to spot AI opportunities in your market, Claude to master the most advanced AI on your files. A framing call helps decide.",
+                        "Strategic Vision to spot AI opportunities in your market, Claude to master the most advanced AI on your files. A framing call helps decide.",
                     },
                     {
                       id: "repars",

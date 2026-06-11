@@ -11,14 +11,6 @@ import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import type { FormatAccent, InterventionFormatEntry } from "@/content/interventions-taxonomy";
 import { formatPath } from "@/content/interventions-taxonomy";
-import { BOOKABLE_FORMATS } from "@/content/booking-catalog";
-
-// Will (audit /interventions 2026-05-12) — slugs reconnus par le calendrier.
-// Tout autre slug renvoie au calendrier sans pré-sélection (fallback Essentielle).
-// Pour éviter ce fallback silencieux, on n'ajoute `?intervention=…` que si le
-// slug est réservable. Source de vérité unique : `@/content/booking-catalog`
-// (`BOOKABLE_FORMATS`) — plus de liste dupliquée à resynchroniser à la main.
-const CALENDAR_SUPPORTED_SLUGS: ReadonlySet<string> = new Set(BOOKABLE_FORMATS.map((f) => f.slug));
 
 interface Props {
   entry: InterventionFormatEntry;
@@ -203,25 +195,6 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
             {ctaLabel}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </Link>
-          {!href.includes("/contact") && !href.includes("/reserver") ? (
-            <Link
-              href={
-                CALENDAR_SUPPORTED_SLUGS.has(entry.slug)
-                  ? (`/reserver?intervention=${entry.slug}` as never)
-                  : "/reserver"
-              }
-              data-cta={`intervention-format-${entry.slug}-prebook`}
-              className={cn(
-                "cta-lift inline-flex items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-colors",
-                dark
-                  ? "border-mocha-fg/40 text-mocha-fg hover:bg-mocha-fg/10"
-                  : "border-terracotta-deep text-terracotta-deep hover:bg-terracotta-soft",
-              )}
-            >
-              {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Link>
-          ) : null}
         </div>
       </div>
     </article>

@@ -9,12 +9,11 @@
 // `InterventionDetailPage` rend chaque page de façon identique → harmonie
 // visuelle parfaite entre les pages.
 
-import { Compass, Sparkles, TrendingUp, Target, Inbox, Eye, Lightbulb } from "lucide-react";
+import { Compass, Sparkles, TrendingUp, Target, Eye, Lightbulb } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { INTERVENTION_TIERS, getTierById } from "./pricing";
 
 export type InterventionDetailSlug =
-  | "dirigeant-productivite"
   | "dirigeant-vision-strategique"
   | "claude-dirigeant"
   | "claude-implementation-individuel";
@@ -72,133 +71,8 @@ export interface InterventionDetailConfig {
 }
 
 // ============================================================================
-// DIRIGEANTS — 3 formats (Productivité / Vision stratégique / Claude)
+// DIRIGEANTS — 2 formats (Vision stratégique / Claude)
 // ============================================================================
-
-const DIRIGEANT_PRODUCTIVITE_BENEFITS: ReadonlyArray<DetailBenefit> = [
-  {
-    icon: Inbox,
-    titleFr: "Libérer vos heures dirigeant",
-    titleEn: "Free your executive hours",
-    bodyFr:
-      "Boîte mail, préparation de réunions, reporting, comptes-rendus, suivi commercial : on cartographie vos chronophages réels et on identifie ce qui peut passer en IA — chiffré en heures par semaine.",
-    bodyEn:
-      "Inbox, meeting prep, reporting, meeting notes, sales follow-up: we map your real time-sinks and identify what can move to AI — quantified in hours per week.",
-  },
-  {
-    icon: TrendingUp,
-    titleFr: "Augmenter vos marges",
-    titleEn: "Lift your margins",
-    bodyFr:
-      "Gains de productivité personnels, accélération commerciale, réduction des coûts cachés — chaque levier chiffré en € attendus, pas en promesses vagues.",
-    bodyEn:
-      "Personal productivity gains, sales acceleration, hidden cost reduction — each lever quantified in expected €, not vague promises.",
-  },
-  {
-    icon: Compass,
-    titleFr: "Décider seul sur l'IA",
-    titleEn: "Call your own AI shots",
-    bodyFr:
-      "Vision 12-24 mois pour votre entreprise + grille d'arbitrage personnelle — vous tranchez vos prochains investissements IA en autonomie, sans dépendre d'un cabinet.",
-    bodyEn:
-      "12-24 month vision for your company + personal decision framework — you decide on future AI investments in autonomy, no consulting dependency.",
-  },
-  {
-    icon: Target,
-    titleFr: "Plan d'exécution sous 7 jours",
-    titleEn: "Execution plan within 7 days",
-    bodyFr:
-      "Rapport complet livré sous 7 jours : synthèse de la journée + recherches & vérifications post-séance + plan d'exécution priorisé et chiffré, prêt à lancer par vos équipes ou par nous.",
-    bodyEn:
-      "Full report delivered within 7 days: day-of synthesis + post-session research & validation + prioritised quantified execution plan, ready to ship by your teams or by us.",
-  },
-];
-
-const DIRIGEANT_PRODUCTIVITE_SCHEDULE: ReadonlyArray<DetailScheduleItem> = [
-  {
-    time: "9 h 00",
-    titleFr: "Accueil + cadrage 1-to-1 avec le dirigeant",
-    titleEn: "Welcome + 1-on-1 framing with the executive",
-  },
-  {
-    time: "9 h 30",
-    titleFr: "Cartographie de votre journée type",
-    titleEn: "Mapping your typical day",
-    descriptionFr:
-      "Boîte mail, réunions, reporting, comptes-rendus, suivi — on liste les chronophages réels et leur poids horaire.",
-    descriptionEn:
-      "Inbox, meetings, reporting, meeting notes, follow-up — we list the real time-sinks and their hourly weight.",
-  },
-  {
-    time: "11 h 00",
-    titleFr: "Pause café",
-    titleEn: "Coffee break",
-  },
-  {
-    time: "11 h 15",
-    titleFr: "Atelier 1 — Quick-wins IA personnels",
-    titleEn: "Workshop 1 — Personal AI quick-wins",
-    descriptionFr:
-      "Méthodes IA appliquées à vos vrais cas dirigeant, testées en live sur vos vraies données.",
-    descriptionEn:
-      "AI methods applied to your real executive cases, tested live on your real data.",
-  },
-  {
-    time: "12 h 30",
-    titleFr: "Déjeuner avec le dirigeant (12 h 30 – 14 h)",
-    titleEn: "Lunch with the executive (12:30 – 14:00)",
-  },
-  {
-    time: "14 h 00",
-    titleFr: "Atelier 2 — Méthodes prioritaires par fonction",
-    titleEn: "Workshop 2 — Priority methods by function",
-    descriptionFr: "Pratique sur vos vrais dossiers : préparation, synthèse, rédaction, recherche.",
-    descriptionEn: "Practice on your real files: preparation, synthesis, writing, research.",
-  },
-  {
-    time: "15 h 30",
-    titleFr: "Pause",
-    titleEn: "Break",
-  },
-  {
-    time: "15 h 45",
-    titleFr: "Atelier 3 — Vision IA 12-24 mois pour votre entreprise",
-    titleEn: "Workshop 3 — 12-24 month AI vision for your company",
-    descriptionFr:
-      "Grille d'arbitrage personnelle pour décider vos prochains investissements IA en autonomie.",
-    descriptionEn: "Personal decision framework to choose your future AI investments in autonomy.",
-  },
-  {
-    time: "17 h 00",
-    titleFr: "Synthèse + ressources fournies + clôture",
-    titleEn: "Synthesis + takeaways + close",
-    descriptionFr:
-      "Référentiel dirigeant, méthodes pratiquées, lectures recommandées — rapport sous 7 jours.",
-    descriptionEn:
-      "Executive reference sheet, methods practised, recommended reading — full report within 7 days.",
-  },
-];
-
-const DIRIGEANT_PRODUCTIVITE_FAQ: ReadonlyArray<DetailFaq> = [
-  {
-    qFr: "Y a-t-il de l'implémentation pendant la journée ?",
-    qEn: "Is there implementation during the day?",
-    aFr: "Non. La journée est 100 % formation et stratégie : on identifie, on chiffre, on priorise. L'implémentation se fait après — soit par vos équipes (le rapport est prêt à exécuter), soit par nous via le module Implémentation IA.",
-    aEn: "No. The day is 100 % training and strategy: we identify, quantify, prioritise. Implementation happens after — either by your teams (the report is ready to execute), or by us via the AI Implementation module.",
-  },
-  {
-    qFr: "Que contient exactement le rapport sous 7 jours ?",
-    qEn: "What's exactly in the 7-day report?",
-    aFr: "Synthèse de la journée + recherches complémentaires faites après la séance (vérification des outils, comparatifs, chiffrages affinés) + plan d'exécution priorisé avec coûts, gains attendus et calendrier indicatif. Document directement actionnable.",
-    aEn: "Day-of synthesis + complementary research done after the session (tool validation, comparisons, refined quantification) + prioritised execution plan with costs, expected gains and indicative timeline. A directly actionable document.",
-  },
-  {
-    qFr: "Pour qui est-ce vraiment fait ?",
-    qEn: "Who is this really for?",
-    aFr: "Fondateurs, DG, dirigeants de TPE / PME / ETI / grandes entreprises. Le format strictement 1-to-1 (vous seul·e avec moi, pas de comité) garantit que la journée colle exactement à votre contexte et à vos enjeux personnels — confidentialité totale.",
-    aEn: "Founders, CEOs, executives of small to enterprise companies. The strictly 1-on-1 format (just you and me, no committee) guarantees the day fits your context and personal stakes exactly — total confidentiality.",
-  },
-];
 
 const DIRIGEANT_VISION_BENEFITS: ReadonlyArray<DetailBenefit> = [
   {
@@ -578,28 +452,6 @@ const CLAUDE_INDIVIDUEL_FAQ: ReadonlyArray<DetailFaq> = [
 
 export const INTERVENTION_DETAIL_CONFIGS: Record<InterventionDetailSlug, InterventionDetailConfig> =
   {
-    "dirigeant-productivite": {
-      slug: "dirigeant-productivite",
-      formatSlug: "dirigeants",
-      familySlug: "dirigeants",
-      contactObject: "dirigeants",
-      titleFr: "Productivité dirigeant",
-      titleEn: "Executive productivity",
-      titleEmFr: "1 jour 1-to-1 pour gagner vos heures",
-      titleEmEn: "1 day 1-on-1 to reclaim your hours",
-      promiseFr:
-        "Une journée strictement 1-to-1 (vous seul·e avec moi) pour optimiser VOTRE journée dirigeant. Boîte mail, prépa réunions, reporting, comptes-rendus, suivi commercial — on installe les bons usages IA pour vous faire gagner plusieurs heures par semaine. Le soir : plan d'action chiffré sous 7 jours.",
-      promiseEn:
-        "A strictly 1-on-1 day (just you and me) to optimise YOUR executive day. Inbox, meeting prep, reporting, meeting notes, sales follow-up — we install the right AI methods to save you several hours per week. By evening: quantified action plan within 7 days.",
-      chipsFr: ["Plusieurs heures gagnées/sem", "Confidentialité totale", "Rapport sous 7 jours"],
-      chipsEn: ["Hours saved per week", "Total confidentiality", "Report within 7 days"],
-      benefits: DIRIGEANT_PRODUCTIVITE_BENEFITS,
-      schedule: DIRIGEANT_PRODUCTIVITE_SCHEDULE,
-      faq: DIRIGEANT_PRODUCTIVITE_FAQ,
-      priceFlatEur: getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
-      groupSizeFr: "1 dirigeant (1-to-1 strict)",
-      groupSizeEn: "1 executive (strict 1-on-1)",
-    },
     "dirigeant-vision-strategique": {
       slug: "dirigeant-vision-strategique",
       formatSlug: "dirigeant-vision-strategique",

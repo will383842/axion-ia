@@ -55,7 +55,7 @@ const OFFER_FR_PATH: Readonly<Record<string, string>> = {
   "intervention-approfondie": "/interventions/approfondie",
   // Conférence : pas de page propre → /interventions/collectives (cible 301 vérifiée).
   "intervention-conference": "/interventions/collectives",
-  "intervention-dirigeants": "/interventions/dirigeant-productivite",
+  "intervention-dirigeants": "/interventions/dirigeants",
   // Membre d'équipe (890 €) : pas de page /interventions/membre-equipe → hub 1-to-1 (D-MEMBRE-EQUIPE 🔒).
   "intervention-membre-equipe": "/un-a-un",
   "intervention-claude": "/interventions/intervention-claude",

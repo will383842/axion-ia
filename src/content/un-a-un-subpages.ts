@@ -10,8 +10,6 @@
 /** Les 6 slugs de pages détail un-à-un. */
 export type UnAUnDetailSlug =
   | "coaching-decouverte"
-  | "coaching-avance"
-  | "dirigeant-productivite"
   | "dirigeant-vision-strategique"
   | "claude-dirigeant"
   | "claude-implementation-individuel";
@@ -36,22 +34,6 @@ export const UN_A_UN_PAGES: Record<UnAUnDetailSlug, UnAUnPageMeta> = {
       "Une journée pour démarrer : prise en main des outils et 3 à 5 méthodes applicables dès le lendemain.",
     descEn:
       "A day to get started: hands-on with the tools and 3 to 5 methods you can apply the next day.",
-  },
-  "coaching-avance": {
-    href: "/interventions/coaching-avance",
-    labelFr: "Coaching Avancé",
-    labelEn: "Advanced coaching",
-    descFr:
-      "Vous utilisez déjà l'IA ? On industrialise : enchaînements multi-outils, agents personnels, niveau pro.",
-    descEn: "Already using AI? We industrialise it: multi-tool chains, personal agents, pro level.",
-  },
-  "dirigeant-productivite": {
-    href: "/interventions/dirigeant-productivite",
-    labelFr: "Dirigeant · Productivité",
-    labelEn: "Executive · Productivity",
-    descFr:
-      "Une journée 1-to-1 pour libérer plusieurs heures par semaine sur votre quotidien de dirigeant.",
-    descEn: "A 1-to-1 day to free up several hours a week in your daily work as an executive.",
   },
   "dirigeant-vision-strategique": {
     href: "/interventions/dirigeant-vision-strategique",
@@ -88,29 +70,23 @@ export const UN_A_UN_PAGES: Record<UnAUnDetailSlug, UnAUnPageMeta> = {
  */
 export const UN_A_UN_RELATED: Record<UnAUnDetailSlug, UnAUnDetailSlug[]> = {
   "coaching-decouverte": [
-    "coaching-avance",
-    "dirigeant-productivite",
-    "claude-implementation-individuel",
-  ],
-  "coaching-avance": [
-    "coaching-decouverte",
-    "claude-implementation-individuel",
-    "dirigeant-productivite",
-  ],
-  "dirigeant-productivite": [
     "dirigeant-vision-strategique",
     "claude-dirigeant",
+    "claude-implementation-individuel",
+  ],
+  "dirigeant-vision-strategique": [
+    "claude-dirigeant",
+    "claude-implementation-individuel",
     "coaching-decouverte",
   ],
-  "dirigeant-vision-strategique": ["dirigeant-productivite", "claude-dirigeant", "coaching-avance"],
   "claude-dirigeant": [
-    "dirigeant-productivite",
     "dirigeant-vision-strategique",
     "claude-implementation-individuel",
+    "coaching-decouverte",
   ],
   "claude-implementation-individuel": [
     "claude-dirigeant",
-    "coaching-avance",
+    "dirigeant-vision-strategique",
     "coaching-decouverte",
   ],
 };

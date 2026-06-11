@@ -5,9 +5,8 @@
 // (anti-soft-404), pas des routes planifiées /fr/coaching-ia-dirigeants/*. Les
 // vraies pages un-à-un sont :
 //   /fr/un-a-un, /fr/un-a-un/par-ville,
-//   /fr/interventions/{coaching-decouverte, coaching-avance, dirigeant-productivite,
-//     dirigeant-vision-strategique, claude-implementation-individuel, claude-dirigeant,
-//     individuel, dirigeants}
+//   /fr/interventions/{coaching-decouverte, dirigeant-vision-strategique,
+//     claude-implementation-individuel, claude-dirigeant, individuel, dirigeants}
 //
 // Garde-fous : 0 financement (silence total), dédup vs g6c (phrasings distincts),
 // AEO en '?', pas de niveau1+priorite1. Module `coaching-1-to-1`.
@@ -119,14 +118,14 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     urlCible: "/fr/interventions/coaching-decouverte",
   }),
 
-  // ── Avancé (productivité poussée) → coaching-avance ─────────────────────────
+  // ── Avancé (productivité poussée) → hub individuel ─────────────────────────
   u({
     keyword: "coaching IA avancé workflows multi-outils",
     intent: "transactionnel",
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/coaching-avance",
+    urlCible: "/fr/interventions/individuel",
   }),
   u({
     keyword: "industrialiser mes usages IA personnels",
@@ -134,7 +133,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/coaching-avance",
+    urlCible: "/fr/interventions/individuel",
   }),
   u({
     keyword: "créer mes propres agents IA personnels",
@@ -142,7 +141,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/coaching-avance",
+    urlCible: "/fr/interventions/individuel",
   }),
   u({
     keyword: "passer au niveau supérieur sur l'IA",
@@ -150,7 +149,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/coaching-avance",
+    urlCible: "/fr/interventions/individuel",
   }),
   u({
     keyword: "optimiser ma stack IA personnelle",
@@ -158,17 +157,17 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/interventions/coaching-avance",
+    urlCible: "/fr/interventions/individuel",
   }),
 
-  // ── Dirigeant — productivité personnelle → dirigeant-productivite ───────────
+  // ── Dirigeant — productivité personnelle → hub dirigeants ───────────
   u({
     keyword: "coaching IA productivité du dirigeant",
     intent: "transactionnel",
     cible: "pme",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/interventions/dirigeant-productivite",
+    urlCible: "/fr/interventions/dirigeants",
   }),
   u({
     keyword: "gagner du temps dirigeant grâce à l'IA",
@@ -176,7 +175,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/dirigeant-productivite",
+    urlCible: "/fr/interventions/dirigeants",
   }),
   u({
     keyword: "automatiser le quotidien d'un dirigeant",
@@ -184,7 +183,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/dirigeant-productivite",
+    urlCible: "/fr/interventions/dirigeants",
   }),
   u({
     keyword: "assistant IA personnel pour dirigeant",
@@ -192,7 +191,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/dirigeant-productivite",
+    urlCible: "/fr/interventions/dirigeants",
   }),
 
   // ── Dirigeant — vision stratégique → dirigeant-vision-strategique ───────────

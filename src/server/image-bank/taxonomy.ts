@@ -65,8 +65,6 @@ export const SUB_MODULES_INTERVENTIONS = [
   "demarrage-ia-express",
   "gagner-du-temps",
   "coaching-decouverte",
-  "coaching-avance",
-  "dirigeant-productivite",
   "dirigeant-vision-strategique",
   "claude-dirigeant",
   "claude-implementation-individuel",

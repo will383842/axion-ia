@@ -417,6 +417,19 @@ const nextConfig: NextConfig = {
         destination: "/:locale/formations",
         permanent: true,
       },
+      // Formats 1-to-1 supprimés (Will 2026-06-11) → hubs famille survivants.
+      // Slugs EN (executive-productivity / advanced-coaching) gérés par le proxy
+      // en-to-fr (→ slug FR) puis ces règles (convention identique aux collectives).
+      {
+        source: "/:locale(fr|en)/interventions/dirigeant-productivite",
+        destination: "/:locale/interventions/dirigeants",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/coaching-avance",
+        destination: "/:locale/interventions/individuel",
+        permanent: true,
+      },
       // Pages formation par ville (verticale per-ville migrée /interventions → /formations).
       {
         source: "/:locale(fr|en)/interventions/par-ville/:ville",

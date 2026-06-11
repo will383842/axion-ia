@@ -458,8 +458,8 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
   },
 
   // --------------------------------------------------------------------------
-  // 1-TO-1 — dirigeant ET collaborateur. Seul « Dirigeant » est réservable
-  // direct (enum `dirigeants`). Les autres sont « sur devis » → lien page.
+  // 1-TO-1 — dirigeant ET collaborateur. Tous « sur devis » → lien page
+  // détail (aucune réservation directe au calendrier pour le 1-to-1).
   // --------------------------------------------------------------------------
   {
     id: "un-a-un",
@@ -472,21 +472,6 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
     iconKey: "user",
     accent: "mocha",
     formats: [
-      {
-        slug: "dirigeants",
-        labelFr: "Dirigeant · Productivité",
-        labelEn: "Executive · Productivity",
-        bookable: true,
-        durationDays: 1,
-        iconKey: "crown",
-        accent: "mocha",
-        priceFr: flat("intervention-dirigeants").fr,
-        priceEn: flat("intervention-dirigeants").en,
-        scheduleHintFr: "Journée · 1-to-1 · sur site",
-        scheduleHintEn: "Day · 1-on-1 · on site",
-        previewFr: "1 journée 1-to-1 sur VOTRE quotidien · plusieurs heures gagnées par semaine",
-        previewEn: "1-on-1 day about YOUR daily work · several hours saved per week",
-      },
       {
         slug: "dirigeant-vision-strategique",
         labelFr: "Dirigeant · Vision IA stratégique",
@@ -538,25 +523,6 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
         previewEn: "1 day at your workstation · 3-5 automations installed · implementation plan",
         hrefFr: "/interventions/coaching-decouverte",
         hrefEn: "/interventions/discovery-coaching",
-      },
-      {
-        slug: "coaching-avance",
-        labelFr: "Collaborateur · Productivité avancée",
-        labelEn: "Team member · Advanced productivity",
-        bookable: false,
-        durationDays: 1,
-        iconKey: "star",
-        accent: "terracotta",
-        priceFr: surDevis.fr,
-        priceEn: surDevis.en,
-        scheduleHintFr: "Journée · 1-to-1 · niveau avancé",
-        scheduleHintEn: "Day · 1-on-1 · advanced level",
-        previewFr:
-          "Workflows IA multi-outils · agents personnels · Claude CLI / API · automatisations sophistiquées",
-        previewEn:
-          "Multi-tool AI workflows · personal agents · Claude CLI / API · sophisticated automations",
-        hrefFr: "/interventions/coaching-avance",
-        hrefEn: "/interventions/advanced-coaching",
       },
       {
         slug: "claude-implementation-individuel",

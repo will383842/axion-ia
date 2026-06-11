@@ -50,7 +50,6 @@ const CALENDAR_SUPPORTED_FORMAT_SLUGS: ReadonlySet<string> = new Set([
   "essentielle",
   "approfondie",
   "conference",
-  "dirigeants",
   "audit-flash-onsite",
   "gagner-du-temps",
   "demarrage-ia-express",
@@ -70,8 +69,8 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
     : `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
   const primaryCtaLabelFr = isBookable
     ? "Réserver sur le calendrier"
-    : "Pré-réservez cette intervention";
-  const primaryCtaLabelEn = isBookable ? "Book on the calendar" : "Pre-book this session";
+    : "Demander cette intervention";
+  const primaryCtaLabelEn = isBookable ? "Book on the calendar" : "Request this session";
   // Pour les formats sans schedule fixe (keynote événementielle), on reste
   // toujours sur le formulaire — c'est un cadrage personnalisé.
   const flexibleCtaHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;

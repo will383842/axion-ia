@@ -94,7 +94,7 @@ describe("booking-catalog — helpers", () => {
   it("findCategoryOfSlug situe un slug (réservable ou non) dans sa catégorie", () => {
     expect(findCategoryOfSlug("ia-fondamentaux")).toBe("formation");
     expect(findCategoryOfSlug("claude-architecte")).toBe("formation");
-    expect(findCategoryOfSlug("dirigeants")).toBe("un-a-un");
+    expect(findCategoryOfSlug("claude-dirigeant")).toBe("un-a-un");
     expect(findCategoryOfSlug("dirigeant-vision-strategique")).toBe("un-a-un");
     expect(findCategoryOfSlug("audit-flash-onsite")).toBe("audit");
     expect(findCategoryOfSlug("audit-cible")).toBe("audit");

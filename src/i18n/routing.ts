@@ -78,10 +78,6 @@ export const routing = defineRouting({
       fr: "/interventions/coaching-decouverte",
       en: "/interventions/discovery-coaching",
     },
-    "/interventions/coaching-avance": {
-      fr: "/interventions/coaching-avance",
-      en: "/interventions/advanced-coaching",
-    },
 
     "/interventions/essentielle": {
       fr: "/interventions/essentielle",
@@ -94,10 +90,6 @@ export const routing = defineRouting({
     "/interventions/dirigeants": {
       fr: "/interventions/dirigeants",
       en: "/interventions/executives",
-    },
-    "/interventions/dirigeant-productivite": {
-      fr: "/interventions/dirigeant-productivite",
-      en: "/interventions/executive-productivity",
     },
     "/interventions/dirigeant-vision-strategique": {
       fr: "/interventions/dirigeant-vision-strategique",

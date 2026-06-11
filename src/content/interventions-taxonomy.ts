@@ -251,7 +251,6 @@ const FOUR_H_PRICE = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFla
 const ESSENTIELLE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!;
 const APPROFONDIE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!;
 const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
-const DIRIGEANTS_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
 const DIRIGEANT_VISION_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision");
 const CLAUDE_DIRIGEANT_TIER = getTierById(INTERVENTION_TIERS, "intervention-claude-dirigeant");
 const CLAUDE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-claude").priceFlat!;
@@ -394,33 +393,6 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   // FAMILLE : Dirigeants (liste plate, pas de paliers durée)
   // -------------------------------------------------------------------------
   {
-    // Sprint 14.10.7 (Will 2026-05-12) — refondu : focus 100 % sur la
-    // PRODUCTIVITÉ PERSONNELLE du dirigeant. Comment optimiser SA journée,
-    // automatiser SES tâches répétitives, lui faire gagner du temps. C'est
-    // une formation sur le dirigeant LUI-MÊME.
-    slug: "dirigeants",
-    family: "dirigeants",
-    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée. `/interventions/dirigeants`
-    // devient le hub famille (lister les 3 formats Dirigeants).
-    pathFr: "/interventions/dirigeant-productivite",
-    pathEn: "/interventions/executive-productivity",
-    labelFr: "Productivité dirigeant",
-    labelEn: "Executive productivity",
-    taglineFr:
-      "1 journée 1-to-1 entièrement sur VOUS, dirigeant. On regarde votre vraie journée — boîte mail, prépa réunions, reporting, suivi commercial, comptes-rendus — et on installe les bons usages IA pour vous faire gagner plusieurs heures par semaine. Sans intermédiaire, sans équipe à embarquer.",
-    taglineEn:
-      "1-on-1 day entirely about YOU, the executive. We look at your real day — inbox, meeting prep, reporting, sales follow-up, meeting notes — and install the right AI methods to save you several hours per week. No intermediary, no team to onboard.",
-    priceFr: formatPrice(DIRIGEANTS_TIER, "fr"),
-    priceEn: formatPrice(DIRIGEANTS_TIER, "en"),
-    groupSizeFr: "1 dirigeant (1-to-1)",
-    groupSizeEn: "1 executive (1-on-1)",
-    audienceFr: "Dirigeant qui veut gagner du temps sur son propre quotidien",
-    audienceEn: "Executive who wants to save time on their own daily work",
-    accent: "mocha",
-    badgeFr: "Gain de temps personnel · 1-to-1",
-    badgeEn: "Personal time saving · 1-on-1",
-  },
-  {
     // Sprint 14.10.7 (Will 2026-05-12) — 2ᵉ format dirigeants : VISION
     // STRATÉGIQUE pour l'entreprise. Pas un audit complet, juste « ouvrir
     // les yeux » du dirigeant : panorama IA secteur, opportunités stratégiques,
@@ -503,27 +475,6 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     accent: "terracotta",
     badgeFr: "Niveau débutant → intermédiaire",
     badgeEn: "Beginner → intermediate",
-  },
-  {
-    slug: "coaching-avance",
-    family: "individuel",
-    pathFr: "/interventions/coaching-avance",
-    pathEn: "/interventions/advanced-coaching",
-    labelFr: "Coaching IA · Productivité avancée",
-    labelEn: "AI Coaching · Advanced productivity",
-    taglineFr:
-      "1 journée pour passer au niveau supérieur : workflows IA multi-outils, agents personnels, Claude CLI / API, automatisations sophistiquées. On audite votre stack actuelle, on l'optimise, on industrialise. Programme d'implémentation possible sur devis pour aller encore plus loin.",
-    taglineEn:
-      "1 day to level up: multi-tool AI workflows, personal agents, Claude CLI / API, sophisticated automations. We audit your current stack, optimise it, industrialise it. Further implementation programme on request.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    groupSizeFr: "1 personne (1-to-1 strict)",
-    groupSizeEn: "1 person (strict 1-on-1)",
-    audienceFr: "Pros déjà à l'aise avec ChatGPT/Claude · veulent maxer",
-    audienceEn: "Pros already comfortable with ChatGPT/Claude · want to max out",
-    accent: "terracotta",
-    badgeFr: "Niveau avancé",
-    badgeEn: "Advanced level",
   },
   {
     // Sprint 14.10.7 (Will 2026-05-11) — variante Claude pour 1 personne.

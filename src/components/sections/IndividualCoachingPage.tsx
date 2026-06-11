@@ -37,7 +37,7 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 // Configs spécifiques aux 2 formats — seules variations vs template commun.
 // ----------------------------------------------------------------------------
 
-export type IndividualCoachingSlug = "coaching-decouverte" | "coaching-avance";
+export type IndividualCoachingSlug = "coaching-decouverte";
 
 interface CoachingBenefit {
   icon: typeof Compass;
@@ -200,130 +200,6 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
         qEn: "What if I want to go further after the day?",
         aFr: "Le plan d'implémentation que vous emportez chiffre ce qui reste à faire. Vous pouvez l'exécuter en interne, ou nous le confier sur devis via le module Implémentation IA.",
         aEn: "The implementation plan you take with you quantifies what remains to do. You can execute it internally, or commission us via the AI Implementation module on request.",
-      },
-    ],
-  },
-  "coaching-avance": {
-    slug: "coaching-avance",
-    contactObject: "coaching-avance-1j",
-    titleFr: "Coaching IA · Productivité avancée",
-    titleEn: "AI Coaching · Advanced productivity",
-    titleEmFr: "1 jour pour maxer",
-    titleEmEn: "1 day to level up",
-    promiseFr:
-      "Vous utilisez déjà ChatGPT ou Claude. On audite votre stack, on industrialise, on monte d'un cran : workflows multi-outils, agents personnels, Claude CLI / API. À la sortie, vous avez l'arsenal complet d'un pro IA.",
-    promiseEn:
-      "You already use ChatGPT or Claude. We audit your stack, industrialise it, level up: multi-tool workflows, personal agents, Claude CLI / API. By the end, you have the complete arsenal of an AI pro.",
-    chipsFr: ["Workflows multi-outils", "Agents personnels", "Claude CLI / API maîtrisés"],
-    chipsEn: ["Multi-tool workflows", "Personal agents", "Claude CLI / API mastered"],
-    benefits: [
-      {
-        icon: Compass,
-        titleFr: "Audit de votre stack IA actuelle",
-        titleEn: "Audit of your current AI stack",
-        bodyFr:
-          "On regarde ce que vous utilisez vraiment et comment. On identifie les outils sous-exploités, les méthodes qui peuvent être améliorées avec l'IA et les fonctionnalités avancées que vous n'utilisez pas encore.",
-        bodyEn:
-          "We look at what you actually use and how. We identify under-leveraged tools, methods that can be improved with AI, and advanced features you don't use yet.",
-      },
-      {
-        icon: Sparkles,
-        titleFr: "Workflows IA multi-outils",
-        titleEn: "Multi-tool AI workflows",
-        bodyFr:
-          "Vous apprenez à enchaîner les outils IA : passer un document de Claude à vos notes, vers vos docs, vers votre CRM. Méthode complète enseignée pas-à-pas sur vos vrais cas — plus de copier-coller manuel entre 5 onglets.",
-        bodyEn:
-          "You learn to chain AI tools: move a document from Claude to your notes, to your docs, to your CRM. Complete method taught step-by-step on your real cases — no more manual copy-pasting between 5 tabs.",
-      },
-      {
-        icon: TrendingUp,
-        titleFr: "Agents personnels + Claude CLI / API",
-        titleEn: "Personal agents + Claude CLI / API",
-        bodyFr:
-          "Configuration d'agents IA personnels (Claude Projects, Custom GPTs, Claude Code en CLI) pour vos cas récurrents. Vous appelez l'IA en 1 commande au lieu de réécrire le contexte à chaque fois.",
-        bodyEn:
-          "Configuration of personal AI agents (Claude Projects, Custom GPTs, Claude Code CLI) for your recurring cases. You call AI in 1 command instead of rewriting context every time.",
-      },
-      {
-        icon: Target,
-        titleFr: "Plan d'industrialisation pour votre équipe",
-        titleEn: "Industrialisation plan for your team",
-        bodyFr:
-          "Vous voulez que vos collaborateurs montent au même niveau ? On chiffre le déploiement (formation équipe Approfondie, agents partagés, MCP servers internes) — prêt à exécuter en interne ou par nous sur devis.",
-        bodyEn:
-          "Want your team at the same level? We quantify the rollout (Deep Dive team training, shared agents, internal MCP servers) — ready to execute internally or by us on request.",
-      },
-    ],
-    schedule: [
-      {
-        time: "9 h 00",
-        titleFr: "Accueil + audit de votre stack actuelle",
-        titleEn: "Welcome + audit of your current stack",
-      },
-      {
-        time: "9 h 30",
-        titleFr: "Diagnostic : outils sous-exploités, méthodes à améliorer",
-        titleEn: "Diagnosis: under-leveraged tools, methods to improve",
-        descriptionFr:
-          "On liste ce que l'IA peut accélérer dans votre quotidien. Priorisation par gain de temps.",
-        descriptionEn:
-          "We list where AI can accelerate your daily work. Prioritisation by time saved.",
-      },
-      {
-        time: "11 h 00",
-        titleFr: "Maîtrise des workflows multi-outils",
-        titleEn: "Mastering multi-tool workflows",
-        descriptionFr:
-          "Méthodes d'enchaînement : passer d'un outil à l'autre avec l'IA. Pratiqué sur vos vrais cas.",
-        descriptionEn:
-          "Chaining methods: moving from one tool to another with AI. Practised on your real cases.",
-      },
-      {
-        time: "12 h 30",
-        titleFr: "Pause déjeuner (12 h 30 – 14 h)",
-        titleEn: "Lunch break (12:30 – 14:00)",
-      },
-      {
-        time: "14 h 00",
-        titleFr: "Agents personnels + Claude CLI / API",
-        titleEn: "Personal agents + Claude CLI / API",
-        descriptionFr:
-          "Configuration de Claude Projects / Custom GPTs / Claude Code CLI pour vos cas récurrents.",
-        descriptionEn:
-          "Configuration of Claude Projects / Custom GPTs / Claude Code CLI for your recurring cases.",
-      },
-      {
-        time: "16 h 00",
-        titleFr: "Plan d'industrialisation pour votre équipe",
-        titleEn: "Industrialisation plan for your team",
-        descriptionFr:
-          "Chiffrage du déploiement IA à l'échelle équipe — formation, agents partagés, MCP.",
-        descriptionEn: "Quantification of team-scale AI rollout — training, shared agents, MCP.",
-      },
-      {
-        time: "17 h 00",
-        titleFr: "Synthèse + ressources fournies + clôture",
-        titleEn: "Synthesis + resources shared + close",
-      },
-    ],
-    faq: [
-      {
-        qFr: "Quel est le pré-requis exact ?",
-        qEn: "What's the exact prerequisite?",
-        aFr: "Avoir utilisé ChatGPT ou Claude au moins quotidiennement pendant 2-3 mois. Si vous découvrez, prenez le format Découverte personnelle d'abord — vous gagnerez beaucoup plus.",
-        aEn: "Having used ChatGPT or Claude at least daily for 2-3 months. If you're starting, take the Personal Discovery format first — you'll gain much more.",
-      },
-      {
-        qFr: "Claude Code CLI, c'est pour moi qui ne code pas ?",
-        qEn: "Claude Code CLI — is that for me if I don't code?",
-        aFr: "Oui, partiellement. Le CLI sert aussi à automatiser des tâches non-code (manipulation de fichiers, génération de rapports, glue scripts). On adapte la journée à votre métier — si vous codez, on creuse plus profond ; sinon, on reste sur les usages bureau avancés.",
-        aEn: "Yes, partially. The CLI also serves to automate non-code tasks (file manipulation, report generation, glue scripts). We adapt the day to your role — if you code, we go deeper; otherwise, we stay on advanced desktop use.",
-      },
-      {
-        qFr: "Mes données restent privées ?",
-        qEn: "Does my data stay private?",
-        aFr: "Oui. On utilise vos comptes pros (Claude Team, ChatGPT Enterprise si vous l'avez) et on évite tout outil qui exporterait vos données vers du training tiers. Audit confidentialité fait en début de journée.",
-        aEn: "Yes. We use your pro accounts (Claude Team, ChatGPT Enterprise if you have it) and avoid any tool that would export your data to third-party training. Confidentiality audit done at the start of the day.",
       },
     ],
   },
