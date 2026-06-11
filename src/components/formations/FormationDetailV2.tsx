@@ -113,7 +113,7 @@ export function FormationDetailV2({
               ) : null}
               {formation.featured ? (
                 <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-3 py-1 text-[12px] font-semibold">
-                  ★ À la une
+                  <span aria-hidden="true">★</span> À la une
                 </span>
               ) : null}
             </div>
@@ -222,7 +222,7 @@ export function FormationDetailV2({
                   {formation.beneficeDirigeantFr}
                 </p>
                 <p className="text-fg border-terracotta mt-4 border-l-2 pl-4 text-[15px] leading-relaxed font-medium">
-                  ⏱️ {formation.equationTempsFr}
+                  <span aria-hidden="true">⏱️</span> {formation.equationTempsFr}
                 </p>
               </SectionCard>
             </div>

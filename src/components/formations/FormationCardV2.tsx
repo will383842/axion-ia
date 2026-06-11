@@ -48,7 +48,7 @@ export function FormationCardV2({
         ) : null}
         {formation.featured ? (
           <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-2.5 py-1 text-[11px] font-semibold">
-            ★ À la une
+            <span aria-hidden="true">★</span> À la une
           </span>
         ) : null}
       </div>

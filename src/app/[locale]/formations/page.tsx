@@ -92,7 +92,7 @@ export default async function FormationsHubPage({
             {featured ? (
               <div className="border-border bg-paper shadow-subtle mt-7 rounded-2xl border p-5">
                 <p className="text-terracotta-deep text-[12px] font-semibold tracking-wide uppercase">
-                  ★ La formation par laquelle commencer
+                  <span aria-hidden="true">★</span> La formation par laquelle commencer
                 </p>
                 <a
                   href={`/${locale}/formations/${featured.slugFr}`}

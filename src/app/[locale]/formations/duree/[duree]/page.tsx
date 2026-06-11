@@ -23,11 +23,10 @@ import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag
 import { getFormationsV2ByDuree } from "@/content/formations/catalog-v2";
 import {
   FORMATION_DUREES_META,
-  formationDureeIso,
   getDureeMetaBySlug,
   getSurMesureByDuree,
 } from "@/content/formations/catalog-v2-meta";
-import { buildCourseJsonLd, buildItemListJsonLd, buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildItemListJsonLd, buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -85,21 +84,9 @@ export default async function DureeListingPage({ params }: { params: Promise<Pag
     })),
   });
 
-  const courseJsonLd = buildCourseJsonLd({
-    locale,
-    path: `/formations/duree/${meta.slug}`,
-    name: `Formations IA en entreprise — ${meta.labelFr}`,
-    description: meta.taglineFr,
-    courseMode: ["Onsite"],
-    duration: formationDureeIso(meta.id),
-    audienceType: "Salariés et équipes en entreprise (intra-entreprise, B2B)",
-    about: "Formation professionnelle IA opérationnelle — Axion-IA",
-  });
-
   return (
     <>
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={courseJsonLd} />
 
       {/* HERO */}
       <section className="bg-halo-warm text-fg py-14 sm:py-16 lg:py-20">

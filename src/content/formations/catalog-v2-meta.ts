@@ -225,3 +225,8 @@ export function getSurMesureByDuree(duree: FormationDuree): ReadonlyArray<SurMes
 export function getSurMesureByGamme(gamme: FormationGamme): ReadonlyArray<SurMesureMeta> {
   return SUR_MESURE.filter((s) => s.gamme === gamme);
 }
+
+/** Offres sur-mesure GLOBALES (ni durée ni gamme spécifique — ex. « 100 % sur mesure »). */
+export function getSurMesureGlobal(): ReadonlyArray<SurMesureMeta> {
+  return SUR_MESURE.filter((s) => !s.duree && !s.gamme);
+}

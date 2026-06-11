@@ -10,7 +10,7 @@
  */
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
@@ -62,14 +62,14 @@ export async function generateMetadata({
   if (!isQualiopiPublicDisclosureEnabled()) return {};
   if (!hasLocale(routing.locales, locale)) return {};
 
-  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise. Canonique = slugFr
-  // uniquement (un accès via slugEn/id ne produit pas de doublon de contenu).
+  // Catalogue V2 (SSOT) — prioritaire, aucune DB requise. Le canonical pointe
+  // TOUJOURS vers le slugFr (même si on accède via slugEn/id) → consolidation SEO
+  // robuste, indépendante du statut de la redirection runtime.
   const cat = getFormationV2(slug);
   if (cat) {
-    if (cat.slugFr !== slug) return {};
     return buildProductMetadata({
       locale,
-      path: `/formations/${slug}`,
+      path: `/formations/${cat.slugFr}`,
       title: cat.metaTitleFr,
       description: cat.metaDescriptionFr,
     });
@@ -172,10 +172,11 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
   setRequestLocale(locale);
 
   // Catalogue V2 (SSOT) — prioritaire, aucune DB requise (rend même sous stub.invalid).
-  // Canonique = slugFr uniquement → un accès via slugEn/id renvoie 404 (anti-doublon GSC).
+  // Canonique = slugFr : un accès via slugEn/id redirige en 308 vers le slugFr
+  // (anti-doublon GSC + link-equity consolidé sur l'URL canonique, jamais un soft-404).
   const cat = getFormationV2(slug);
   if (cat) {
-    if (cat.slugFr !== slug) notFound();
+    if (cat.slugFr !== slug) permanentRedirect(`/${locale}/formations/${cat.slugFr}`);
     return <FormationDetailV2 formation={cat} locale={locale} />;
   }
 

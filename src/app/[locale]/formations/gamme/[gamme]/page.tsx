@@ -70,6 +70,13 @@ export default async function GammeListingPage({ params }: { params: Promise<Pag
   if (!meta || !meta.thematique) notFound();
 
   const formations = [...getFormationsV2ByGamme(meta.id)].sort((a, b) => a.numero - b.numero);
+  // Libellé du nombre de niveaux, dérivé du nombre réel de formations de la gamme.
+  const NIVEAUX_FR: Record<number, string> = {
+    1: "Un niveau",
+    2: "Deux niveaux",
+    3: "Trois niveaux",
+  };
+  const niveauxTitre = NIVEAUX_FR[formations.length] ?? `${formations.length} niveaux`;
   const surMesure = getSurMesureByGamme(meta.id);
   // Pré-requis commun à la gamme (pris sur la 1re formation qui en a un).
   const prerequis = formations.find((f) => f.prerequisFr)?.prerequisFr;
@@ -135,7 +142,7 @@ export default async function GammeListingPage({ params }: { params: Promise<Pag
       {/* GRILLE — les niveaux de la gamme, par durée croissante */}
       <Section
         eyebrow="Les niveaux de la gamme"
-        title="Trois niveaux"
+        title={niveauxTitre}
         titleEm="progressifs"
         description="Chaque niveau reprend le précédent et va plus loin. Cliquez pour le programme détaillé, le public visé et les tarifs par effectif."
       >

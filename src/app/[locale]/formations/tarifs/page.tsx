@@ -15,6 +15,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { getSurMesureGlobal } from "@/content/formations/catalog-v2-meta";
 import {
   type FormationBracket,
   type FormationDuree,
@@ -75,6 +76,8 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+
+  const surMesureGlobal = getSurMesureGlobal();
 
   return (
     <>
@@ -173,6 +176,34 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
           </ul>
         </Container>
       </Section>
+
+      {/* SUR-MESURE GLOBAL (toute durée / toute gamme) */}
+      {surMesureGlobal.length > 0 ? (
+        <Section eyebrow="Au-delà du catalogue" title="Sur mesure" titleEm="de A à Z">
+          <Container>
+            <div className="mx-auto grid max-w-3xl gap-4">
+              {surMesureGlobal.map((s) => (
+                <div
+                  key={s.id}
+                  className="border-border bg-paper flex flex-col items-start gap-3 rounded-3xl border border-dashed p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7"
+                >
+                  <div>
+                    <p className="text-fg text-lg font-semibold">
+                      {s.labelFr} <span className="text-fg-muted font-normal">· {s.dureeFr}</span>
+                    </p>
+                    <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
+                      {s.descriptionFr}
+                    </p>
+                  </div>
+                  <Cta href="/appel" size="lg" track="formations-tarifs-surmesure-global">
+                    Demander un devis
+                  </Cta>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
       <CtaBlock
         eyebrow="Un devis ?"
