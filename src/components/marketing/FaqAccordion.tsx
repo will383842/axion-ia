@@ -57,7 +57,7 @@ export function FaqAccordion({
                 </span>
               </summary>
               <div className="pb-5">
-                <p data-faq-a className="text-fg-soft text-[15px] leading-relaxed">
+                <p data-faq-a data-answer className="text-fg-soft text-[15px] leading-relaxed">
                   {item.answer}
                 </p>
                 {permalinkBase ? (

@@ -449,58 +449,50 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Politique de",
       titleEm: "déplacement",
       intro:
-        "Frais et conditions de déplacement applicables aux interventions sur site (Module 1) et audits sur site (Module 2).",
+        "Conditions et modalités de déplacement pour les interventions sur site (Module 1) et les audits sur site (Module 2).",
       sections: [
         {
-          title: "Périmètre standard",
-          body: "France métropolitaine, Belgique, Luxembourg, Suisse romande : frais de déplacement inclus dans le tarif catalogue. Au-delà, devis personnalisé.",
-        },
-        {
-          title: "Tarification au-delà du périmètre",
-          body: "Train : 2e classe SNCF/Thalys au tarif réel. Avion : économique au tarif réel. Hébergement : 3 étoiles au tarif réel. Repas : forfait 50 €/jour.",
+          title: "Périmètre d'intervention",
+          body: "France métropolitaine, Belgique, Luxembourg, Suisse romande. Au-delà, modalités définies ensemble au devis.",
         },
         {
           title: "Validation préalable",
-          body: "Tout déplacement hors périmètre standard fait l'objet d'un devis chiffré et accepté par le client avant départ.",
+          body: "Tout déplacement hors périmètre standard est défini et accepté par le client avant départ, dans le cadre du devis.",
         },
         {
           title: "Annulation pour cas de force majeure",
-          body: "Grève transports, conditions météo extrêmes, pandémie : réorganisation à distance ou nouveau créneau sans frais.",
+          body: "Grève transports, conditions météo extrêmes, pandémie : réorganisation à distance ou report sur un nouveau créneau.",
         },
       ],
       metaSeo: {
         title: "Politique de déplacement · Axion-IA",
         description:
-          "Frais et conditions de déplacement Axion-IA pour interventions sur site. Périmètre France/BE/LU/CH.",
+          "Conditions et modalités de déplacement Axion-IA pour les interventions sur site. Périmètre France/BE/LU/CH.",
       },
     },
     en: {
       title: "Travel",
       titleEm: "policy",
       intro:
-        "Travel fees and conditions applicable to on-site sessions (Module 1) and on-site audits (Module 2).",
+        "Travel conditions and arrangements for on-site sessions (Module 1) and on-site audits (Module 2).",
       sections: [
         {
-          title: "Standard area",
-          body: "France, Belgium, Luxembourg, French-speaking Switzerland: travel costs included in catalogue prices. Beyond, personalized quote.",
-        },
-        {
-          title: "Pricing beyond standard area",
-          body: "Train: 2nd-class SNCF/Thalys at actual cost. Flight: economy at actual cost. Accommodation: 3-star at actual cost. Meals: €50/day flat rate.",
+          title: "Coverage area",
+          body: "France, Belgium, Luxembourg, French-speaking Switzerland. Beyond, arrangements defined together in the quote.",
         },
         {
           title: "Prior validation",
-          body: "Any travel outside the standard area is subject to a costed quote accepted by the client before departure.",
+          body: "Any travel outside the standard area is defined and accepted by the client before departure, as part of the quote.",
         },
         {
           title: "Force majeure cancellation",
-          body: "Transport strikes, extreme weather, pandemic: remote rescheduling or new slot at no extra charge.",
+          body: "Transport strikes, extreme weather, pandemic: remote rescheduling or a new slot.",
         },
       ],
       metaSeo: {
         title: "Travel policy · Axion-IA",
         description:
-          "Axion-IA travel fees and conditions for on-site sessions. France/BE/LU/CH standard area.",
+          "Axion-IA travel conditions and arrangements for on-site sessions. France/BE/LU/CH coverage area.",
       },
     },
   },

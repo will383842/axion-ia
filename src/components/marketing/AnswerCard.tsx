@@ -75,6 +75,7 @@ export function AnswerCard({
     <aside
       role="doc-tip"
       data-aeo="tldr"
+      data-answer
       className={cn(
         // Distinct visuellement du body : bord gauche terracotta 4px
         // + halo warm subtle background + arrondi paper card.

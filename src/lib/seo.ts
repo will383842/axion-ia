@@ -328,7 +328,7 @@ export function buildServiceJsonLd({
             selectors:
               typeof speakable === "object" && speakable.selectors
                 ? speakable.selectors
-                : ["h1", "h2", "[data-speakable]"],
+                : ["h1", "h2", "[data-speakable]", "[data-answer]", "[data-faq-a]"],
           }),
         }
       : {}),

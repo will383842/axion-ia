@@ -690,6 +690,7 @@ export async function renderVilleServicePage({
             {ville.copy?.directAnswerFr ? (
               <p
                 id="axion-direct-answer"
+                data-answer
                 className="text-fg-soft text-base leading-relaxed"
                 aria-label={isFr ? "Réponse directe" : "Direct answer"}
               >
