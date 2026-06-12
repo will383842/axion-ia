@@ -37,8 +37,8 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
       en: "Audit sur place IA à Neuilly-sur-Marne dès {{price:audit-flash|flat}} — 4 heures pour cartographier les processus à automatiser dans votre commerce, structure de services ou cabinet médico-social.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
-      en: "Intervention Essentielle à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
+      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
+      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Neuilly-sur-Marne dès {{price:impl-poc|entry}} — développement sur mesure et conformité RGPD pour les TPE et PME du Nord-Est parisien.",
@@ -229,7 +229,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Neuilly-sur-Marne ?",
-      a: "Les interventions IA à Neuilly-sur-Marne démarrent à {{price:intervention-4h|flat}} pour une Intervention Essentielle. L'Audit sur place 4 heures débute à {{price:audit-flash|flat}}, l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
+      a: "Les interventions IA à Neuilly-sur-Marne démarrent à {{price:intervention-4h|flat}} pour une intervention en groupe. L'Audit sur place 4 heures débute à {{price:audit-flash|flat}}, l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
     },
     {
       q: "Comment Axion-IA gère-t-elle les déplacements à Neuilly-sur-Marne ?",

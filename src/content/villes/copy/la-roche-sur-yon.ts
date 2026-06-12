@@ -36,8 +36,8 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
       en: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — William se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Intervention Essentielle à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
-      en: "Intervention Essentielle à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
+      fr: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
+      en: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
     },
     implementation: {
       fr: "Implémentation IA sur site à La Roche-sur-Yon dès {{price:impl-poc|entry}} — intégration code custom à votre ERP/CRM existant, sans dépendance no-code.",
@@ -236,7 +236,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à La Roche-sur-Yon ?",
-      a: "Pour une TPE ou PME yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une Intervention Essentielle démarre sous 10 à 15 jours selon le périmètre et la disponibilité.",
+      a: "Pour une TPE ou PME yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon le périmètre et la disponibilité.",
     },
     {
       q: "Couvrez-vous les communes proches de La Roche-sur-Yon ?",

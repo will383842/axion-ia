@@ -238,7 +238,7 @@ export const CHAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Chaumont ?",
-      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit sur place est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité.",
+      a: "Une intervention en groupe (1 journée) est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit sur place est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité.",
     },
     {
       q: "Quels secteurs économiques chaumontais ciblez-vous en priorité ?",

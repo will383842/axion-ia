@@ -65,7 +65,7 @@ export const GIGEAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Gigean ?",
-      a: "L'Audit sur place 4 h démarre à {{price:audit-flash|flat}}. Intervention Essentielle sur site à {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics identiques partout en France, pas de devis opaque.",
+      a: "L'Audit sur place 4 h démarre à {{price:audit-flash|flat}}. Formation collective sur site à {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics identiques partout en France, pas de devis opaque.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD à Gigean ?",

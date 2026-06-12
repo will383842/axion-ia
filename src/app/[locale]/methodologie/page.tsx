@@ -19,7 +19,7 @@ import {
   buildArticleJsonLd,
   SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { INTERVENTION_TIERS, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -87,7 +87,7 @@ export default async function MethodologyPage({ params }: Props) {
       ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
       : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
     totalTime: "P12W",
-    // Prix d'entrée de la méthode = tarif SSOT de l'intervention Essentielle
+    // Prix d'entrée de la méthode = tarif SSOT du format collectif (1 journée)
     // (la « 1 journée d'intervention » de l'étape Identifier). Jamais hardcodé :
     // dérivé de pricing.ts pour rester aligné si Will fait évoluer la grille.
     estimatedCost: {
@@ -455,15 +455,12 @@ export default async function MethodologyPage({ params }: Props) {
         title={isFr ? "Prêt à démarrer ?" : "Ready to start?"}
         description={
           isFr
-            ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour identifier 3-5 quick-wins en une journée.`
-            : `Book the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to identify 3-5 quick-wins in one day.`
+            ? "Réservez le format collectif (1 journée) pour identifier 3-5 quick-wins en une journée."
+            : "Book the group format to identify 3-5 quick-wins in one day."
         }
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            {isFr
-              ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-              : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}{" "}
-            â†’
+          <Cta href="/formations" size="lg">
+            {isFr ? "Voir nos formations" : "See our trainings"} â†’
           </Cta>
         }
         tone="dark"

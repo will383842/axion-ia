@@ -229,7 +229,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Michel-sur-Orge ?",
-      a: "Nos interventions à Saint-Michel-sur-Orge démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle), un Audit sur place est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous les tarifs sont publics sur axion-ia.com.",
+      a: "Nos interventions à Saint-Michel-sur-Orge démarrent à {{price:intervention-4h|flat}} (formation collective), un Audit sur place est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous les tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Axion-IA peut-il se déplacer rapidement à Saint-Michel-sur-Orge ?",

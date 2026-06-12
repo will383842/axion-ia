@@ -311,7 +311,7 @@ export const NANTES_COPY: VilleCopy = {
         whyHere: [
           "Nantes est un terrain d'intervention clé pour Axion-IA : diversité sectorielle unique — industrie aéronautique, agroalimentaire, numérique French Tech, biotech — qui nécessite des sessions calibrées par métier.",
           "Toute la métropole couverte en présentiel : Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais, Rezé, Orvault, Saint-Sébastien-sur-Loire.",
-          "Le format Essentielle est conçu pour les structures nantaises de quelques personnes à une centaine de collaborateurs — PME tech, cabinets, agences, ateliers industriels.",
+          "Le format collectif (1 journée) est conçu pour les structures nantaises de quelques personnes à une centaine de collaborateurs — PME tech, cabinets, agences, ateliers industriels.",
           "Le format Conférence convient aux grandes plénières d'entreprise (Cité des Congrès, Euronantes, auditoriums industriels).",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction nantais.",
           "Vocabulaire ajusté à votre secteur dominant : industrie, agroalimentaire, numérique, santé. Aucune session générique recyclée.",
@@ -346,15 +346,15 @@ export const NANTES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, cabinets, agences numériques et artisans nantais jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commercial, qualité, RH, bureau d'études).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (commercial, qualité, RH, bureau d'études).",
           },
           {
             sizeLabel: "ETI",
@@ -372,7 +372,7 @@ export const NANTES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré pour notre secteur industriel : nos équipes sont reparties avec leurs outils IA installés et configurés sur leurs postes de travail. Le lendemain, une partie significative les utilisaient déjà sur leurs vrais dossiers.",
+              "Formation collective parfaitement calibrée pour notre secteur industriel : nos équipes sont reparties avec leurs outils IA installés et configurés sur leurs postes de travail. Le lendemain, une partie significative les utilisaient déjà sur leurs vrais dossiers.",
             role: "DRH",
             companyProfile: "ETI industrielle, métropole nantaise",
           },
@@ -386,11 +386,11 @@ export const NANTES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nantes ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence avec un schéma plénière + ateliers en sous-groupes est plus adapté.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence avec un schéma plénière + ateliers en sous-groupes est plus adapté.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -417,7 +417,7 @@ export const NANTES_COPY: VilleCopy = {
         whyHere: [
           "Nantes is a key engagement ground for Axion-IA: unique sector diversity — aeronautics, agri-food, French Tech digital, biotech — requiring sector-calibrated sessions.",
           "Whole metropolis covered in person: Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais, Rezé, Orvault, Saint-Sébastien-sur-Loire.",
-          "The Essential format is designed for Nantes structures from a few people to about a hundred staff — tech SMEs, firms, agencies, industrial workshops.",
+          "The one-day format is designed for Nantes structures from a few people to about a hundred staff — tech SMEs, firms, agencies, industrial workshops.",
           "The Talk format suits large corporate plenaries (Cité des Congrès, Euronantes, industrial auditoriums).",
           "The Executives format enables strategic in-camera framing for Nantes executive committees.",
           "Vocabulary adjusted to your dominant sector: industry, agri-food, digital, health. No recycled generic session.",
@@ -452,15 +452,15 @@ export const NANTES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Nantes freelancers, firms, digital agencies and craftspeople up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (sales, quality, HR, engineering office).",
+              "Group format for the whole group or Teams to focus on one department (sales, quality, HR, engineering office).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -478,7 +478,7 @@ export const NANTES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated for our industrial sector: our teams left with their AI tools installed and configured on their workstations. The next day, a significant share were already using them on real files.",
+              "Group training perfectly calibrated for our industrial sector: our teams left with their AI tools installed and configured on their workstations. The next day, a significant share were already using them on real files.",
             role: "Head of HR",
             companyProfile: "Industrial mid-cap, Nantes metropolis",
           },
@@ -492,11 +492,11 @@ export const NANTES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Nantes take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format with a plenary + sub-group workshops is more suitable.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format with a plenary + sub-group workshops is more suitable.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

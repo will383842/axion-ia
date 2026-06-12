@@ -302,7 +302,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         whyHere: [
           "Saint-Étienne est un bassin industriel en reconversion numérique accélérée — nos interventions s'adressent aux équipes qui n'ont jamais touché à l'IA autant qu'aux pionniers du design.",
           "Tous les secteurs stéphanois couverts : ateliers industriels (opérateurs, bureau d'études), agences design Cité du Design / ESADSE, équipes de vente Casino/distribution, équipes RH et support PME.",
-          "Le format Essentielle est calibré pour les structures de quelques personnes à une centaine de collaborateurs — la majorité du tissu stéphanois.",
+          "Le format collectif (1 journée) est calibré pour les structures de quelques personnes à une centaine de collaborateurs — la majorité du tissu stéphanois.",
           "Le format Conférence convient aux plénières d'entreprise (salles Châteaucreux, amphithéâtres Mines Saint-Étienne, espaces Cité du Design).",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction stéphanois.",
           "Vocabulaire ajusté à votre activité dominante : industrie, design, distribution, santé. Aucune session générique recyclée.",
@@ -337,15 +337,15 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour artisans, ateliers, petites agences et TPE de services stéphanoises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour l'ensemble de la structure ou Équipes pour un département spécifique (bureau d'études, commercial, RH, production).",
+              "Formation collective pour l'ensemble de la structure ou Équipes pour un département spécifique (bureau d'études, commercial, RH, production).",
           },
           {
             sizeLabel: "ETI",
@@ -363,7 +363,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement adapté à notre contexte industriel : les équipes bureau d'études ont découvert comment l'IA pouvait traiter leurs plans techniques et comptes-rendus. Le lendemain, les outils tournaient en autonomie.",
+              "Formation collective parfaitement adaptée à notre contexte industriel : les équipes bureau d'études ont découvert comment l'IA pouvait traiter leurs plans techniques et comptes-rendus. Le lendemain, les outils tournaient en autonomie.",
             role: "Responsable bureau d'études",
             companyProfile: "PME sous-traitant mécanique, Loire",
           },
@@ -377,7 +377,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Saint-Étienne ?",
-            a: "Cela dépend du format retenu. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format retenu. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Vos intervenants comprennent-ils les contraintes industrielles ?",
@@ -408,7 +408,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         whyHere: [
           "Saint-Étienne is an industrial basin undergoing accelerated digital transformation — our sessions serve teams who have never touched AI as much as design pioneers.",
           "All Saint-Étienne sectors covered: industrial workshops (operators, engineering), design agencies at Cité du Design / ESADSE, Casino/distribution sales teams, HR and support teams in SMEs.",
-          "The Essential format is calibrated for structures from a few people to about a hundred staff — the majority of the Saint-Étienne fabric.",
+          "The one-day format is calibrated for structures from a few people to about a hundred staff — the majority of the Saint-Étienne fabric.",
           "The Talk format suits large corporate plenaries (Châteaucreux conference rooms, Mines Saint-Étienne amphitheatres, Cité du Design spaces).",
           "The Executives format enables strategic in-camera framing for Saint-Étienne executive committees.",
           "Vocabulary adjusted to your dominant activity: manufacturing, design, distribution, healthcare. No recycled generic session.",
@@ -443,15 +443,15 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Saint-Étienne artisans, workshops, small agencies and service micro-businesses up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole structure or Teams for a specific department (engineering, sales, HR, production).",
+              "Group format for the whole structure or Teams for a specific department (engineering, sales, HR, production).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -469,7 +469,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly suited to our industrial context: the engineering teams discovered how AI could handle their technical documents and meeting minutes. Next day, the tools were running autonomously.",
+              "Group training perfectly suited to our industrial context: the engineering teams discovered how AI could handle their technical documents and meeting minutes. Next day, the tools were running autonomously.",
             role: "Head of Engineering",
             companyProfile: "Mechanical subcontractor SME, Loire",
           },
@@ -483,7 +483,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Saint-Étienne take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Do your facilitators understand industrial constraints?",

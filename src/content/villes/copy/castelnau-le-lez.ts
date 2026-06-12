@@ -228,7 +228,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Castelnau-le-Lez ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour l'Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour le format d'une journée et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
     },
     {
       q: "Quels délais pour une intervention IA à Castelnau-le-Lez ?",

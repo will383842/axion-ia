@@ -324,7 +324,7 @@ export const ROUEN_COPY: VilleCopy = {
         whyHere: [
           "Rouen est l'un de nos terrains d'intervention normands : entreprises industrielles et portuaires, PME pharmaceutiques, cabinets tertiaires Vatine et startups numériques Madrillet représentent une part significative de nos sessions.",
           "Tous les arrondissements et communes de la Métropole couverts en présentiel : Madrillet, Vatine, Petit-Quevilly, Grand-Quevilly, Mont-Saint-Aignan, Saint-Étienne-du-Rouvray, Sotteville-lès-Rouen, Bois-Guillaume, Canteleu.",
-          "Le format Essentielle est calibré pour les structures rouennaises de quelques personnes à une centaine de collaborateurs, en particulier les PME numériques du Madrillet et les cabinets du Plateau de la Vatine.",
+          "Le format collectif (1 journée) est calibré pour les structures rouennaises de quelques personnes à une centaine de collaborateurs, en particulier les PME numériques du Madrillet et les cabinets du Plateau de la Vatine.",
           "Le format Conférence convient aux plénières d'entreprise rouennaises (espaces Madrillet, salles tertiaires Vatine, auditoriums campus INSA ou NEOMA).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des groupes implantés dans la Métropole.",
           "Vocabulaire ajusté à votre secteur dominant : logistique portuaire, chimie/pharma, automobile, assurance, numérique. Pas de session générique recyclée.",
@@ -359,15 +359,15 @@ export const ROUEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets et petites agences rouennaises jusqu'à une dizaine de collaborateurs — centre historique, Rive Droite, Bois-Guillaume.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — opérations logistiques, R&D, commercial, finance — particulièrement efficace pour les PME industrielles du Madrillet.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — opérations logistiques, R&D, commercial, finance — particulièrement efficace pour les PME industrielles du Madrillet.",
           },
           {
             sizeLabel: "ETI",
@@ -385,7 +385,7 @@ export const ROUEN_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos équipes opérations. Ils sont repartis avec leurs outils configurés sur leurs vrais processus logistiques. Dès le lendemain, plusieurs les utilisaient pour traiter la documentation de transit.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes opérations. Ils sont repartis avec leurs outils configurés sur leurs vrais processus logistiques. Dès le lendemain, plusieurs les utilisaient pour traiter la documentation de transit.",
             role: "Directeur opérations",
             companyProfile: "PME logistique, axe Seine Rouen",
           },
@@ -399,7 +399,7 @@ export const ROUEN_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Rouen ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements industriels portuaires ou pharmaceutiques ?",
@@ -430,7 +430,7 @@ export const ROUEN_COPY: VilleCopy = {
         whyHere: [
           "Rouen is one of our Norman engagement grounds: industrial and port companies, pharma SMEs, Vatine tertiary firms and Madrillet digital startups represent a significant share of our sessions.",
           "All arrondissements and Métropole communes covered in person: Madrillet, Vatine, Petit-Quevilly, Grand-Quevilly, Mont-Saint-Aignan, Saint-Étienne-du-Rouvray, Sotteville-lès-Rouen, Bois-Guillaume, Canteleu.",
-          "The Essential format is calibrated for Rouen structures from a few people to about a hundred staff, particularly digital SMEs at Madrillet and Plateau de la Vatine consulting firms.",
+          "The one-day format is calibrated for Rouen structures from a few people to about a hundred staff, particularly digital SMEs at Madrillet and Plateau de la Vatine consulting firms.",
           "The Talk format suits Rouen corporate plenaries (Madrillet spaces, Vatine tertiary rooms, INSA or NEOMA campus auditoriums).",
           "The Executives format enables in-camera framing for industrial mid-cap and large group executive committees in the Métropole.",
           "Vocabulary adjusted to your dominant sector: port logistics, chemicals/pharma, automotive, insurance, digital. No recycled generic session.",
@@ -465,15 +465,15 @@ export const ROUEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Rouen freelancers, practices and small agencies up to about ten staff — historic centre, Rive Droite, Bois-Guillaume.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — logistics operations, R&D, sales, finance — particularly effective for Madrillet industrial SMEs.",
+              "Group format for the whole group or Teams to focus on one department — logistics operations, R&D, sales, finance — particularly effective for Madrillet industrial SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -491,7 +491,7 @@ export const ROUEN_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our operations team's needs. They left with tools configured for their real logistics processes. By the next day, several were already using them to handle transit documentation.",
+              "The group format perfectly matched our operations team's needs. They left with tools configured for their real logistics processes. By the next day, several were already using them to handle transit documentation.",
             role: "Operations Director",
             companyProfile: "Logistics SME, Seine axis Rouen",
           },
@@ -505,7 +505,7 @@ export const ROUEN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Rouen take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in industrial port or pharmaceutical environments?",

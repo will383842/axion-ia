@@ -298,7 +298,7 @@ export const LYON_COPY: VilleCopy = {
         whyHere: [
           "Lyon est l'un de nos principaux terrains d'intervention : entreprises industrielles, biotech, services financiers Part-Dieu et PME numériques Villeurbanne représentent une part significative de nos sessions.",
           "Tous les arrondissements et communes de la Métropole couverts en présentiel : Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise, Écully, Bron, Saint-Priest, Vénissieux, Caluire.",
-          "Le format Essentielle est calibré pour les structures lyonnaises de quelques personnes à une centaine de collaborateurs, en particulier les PME numériques de Villeurbanne et les cabinets de la Presqu'île.",
+          "Le format collectif (1 journée) est calibré pour les structures lyonnaises de quelques personnes à une centaine de collaborateurs, en particulier les PME numériques de Villeurbanne et les cabinets de la Presqu'île.",
           "Le format Conférence convient aux plénières d'entreprise lyonnaises (auditoriums Part-Dieu, salles Confluence, espaces incubateur H7).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des groupes implantés dans la Métropole.",
           "Vocabulaire ajusté à votre secteur dominant : industrie, pharma/biotech, finance, numérique, gastronomie/hôtellerie. Pas de session générique recyclée.",
@@ -333,15 +333,15 @@ export const LYON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets et petites agences lyonnaises jusqu'à une dizaine de collaborateurs — Presqu'île, Vieux Lyon, quartiers résidentiels.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — commerciaux, R&D, finance, opérations — particulièrement efficace pour les PME numériques de Villeurbanne.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — commerciaux, R&D, finance, opérations — particulièrement efficace pour les PME numériques de Villeurbanne.",
           },
           {
             sizeLabel: "ETI",
@@ -359,7 +359,7 @@ export const LYON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos équipes R&D. Ils sont repartis avec leurs outils configurés sur leurs vrais protocoles. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus d'expériences.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes R&D. Ils sont repartis avec leurs outils configurés sur leurs vrais protocoles. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus d'expériences.",
             role: "Directeur R&D",
             companyProfile: "PME biotech, Gerland Lyon",
           },
@@ -373,7 +373,7 @@ export const LYON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Lyon ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements industriels ou laboratoires ?",
@@ -404,7 +404,7 @@ export const LYON_COPY: VilleCopy = {
         whyHere: [
           "Lyon is one of our top engagement grounds: industrial firms, biotech companies, Part-Dieu financial services and Villeurbanne digital SMEs represent a significant share of our sessions.",
           "All arrondissements and Métropole communes covered in person: Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise, Écully, Bron, Saint-Priest, Vénissieux, Caluire.",
-          "The Essential format is calibrated for Lyon structures from a few people to about a hundred staff, particularly digital SMEs in Villeurbanne and Presqu'île consulting firms.",
+          "The one-day format is calibrated for Lyon structures from a few people to about a hundred staff, particularly digital SMEs in Villeurbanne and Presqu'île consulting firms.",
           "The Talk format suits Lyon corporate plenaries (Part-Dieu auditoriums, Confluence rooms, H7 incubator spaces).",
           "The Executives format enables in-camera framing for industrial mid-cap and large group executive committees in the Métropole.",
           "Vocabulary adjusted to your dominant sector: industry, pharma/biotech, finance, digital, hospitality/gastronomy. No recycled generic session.",
@@ -439,15 +439,15 @@ export const LYON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Lyon freelancers, practices and small agencies up to about ten staff — Presqu'île, Vieux Lyon, residential districts.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — sales, R&D, finance, operations — particularly effective for Villeurbanne digital SMEs.",
+              "Group format for the whole group or Teams to focus on one department — sales, R&D, finance, operations — particularly effective for Villeurbanne digital SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -465,7 +465,7 @@ export const LYON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our R&D team's needs. They left with tools configured for their real protocols. By the next day, several were already using them to write up experimental reports.",
+              "The group format perfectly matched our R&D team's needs. They left with tools configured for their real protocols. By the next day, several were already using them to write up experimental reports.",
             role: "R&D Director",
             companyProfile: "Biotech SME, Gerland Lyon",
           },
@@ -479,7 +479,7 @@ export const LYON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Lyon take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in industrial environments or laboratories?",

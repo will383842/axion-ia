@@ -301,7 +301,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         whyHere: [
           "Le Havre est un pôle industriel B2B à fort potentiel IA : les équipes logistiques, opérationnelles et administratives des entreprises de la ZIP et du tissu PME havrais sont régulièrement sollicitées sur des tâches documentaires chronophages (CMR, manifestes, offres de prix, reporting ERP).",
           "Toutes les zones couvertes en présentiel : ville du Havre, Zone Industrialo-Portuaire, Gonfreville-l'Orcher, Montivilliers, Harfleur, Octeville-sur-Mer, Sainte-Adresse, Saint-Romain-de-Colbosc.",
-          "Le format Essentielle est calibré pour les TPE et PME havraises de quelques personnes à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les TPE et PME havraises de quelques personnes à une centaine de collaborateurs.",
           "Le format Équipes permet de focaliser sur un département clé : équipe logistique, service commercial, ADV, RH, bureau d'études technique.",
           "Le format Dirigeants permet un cadrage IA en huis-clos pour les comités de direction d'ETI et grandes entreprises industrielles.",
           "Vocabulaire ajusté à votre secteur dominant : logistique maritime, pétrochimie, aéronautique, services B2B portuaires. Pas de session générique recyclée.",
@@ -336,15 +336,15 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour les indépendants, petites agences et PME havraises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (logistique, commercial, ADV, RH, technique).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (logistique, commercial, ADV, RH, technique).",
           },
           {
             sizeLabel: "ETI",
@@ -376,11 +376,11 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA au Havre ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -407,7 +407,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         whyHere: [
           "Le Havre is a high-potential B2B industrial hub for AI: logistics, operational and administrative teams in ZIP enterprises and the Le Havre SME fabric regularly face time-consuming document tasks (CMR, manifests, price offers, ERP reporting).",
           "All zones covered in person: Le Havre city, Port Industrial Zone, Gonfreville-l'Orcher, Montivilliers, Harfleur, Octeville-sur-Mer, Sainte-Adresse, Saint-Romain-de-Colbosc.",
-          "The Essential format is calibrated for Le Havre micro-businesses and SMEs from a few people to about a hundred staff.",
+          "The one-day format is calibrated for Le Havre micro-businesses and SMEs from a few people to about a hundred staff.",
           "The Teams format focuses on a key department: logistics team, sales department, customer service, HR, technical office.",
           "The Executives format enables an AI framing in-camera for industrial mid-cap and large enterprise executive committees.",
           "Vocabulary adjusted to your dominant sector: maritime logistics, petrochemicals, aeronautics, port B2B services. No recycled generic session.",
@@ -442,15 +442,15 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Le Havre freelancers, small agencies and SMEs up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on a department (logistics, sales, customer service, HR, technical).",
+              "Group format for the whole group or Teams to focus on a department (logistics, sales, customer service, HR, technical).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -482,11 +482,11 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Le Havre take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Do the tools installed remain usable after the session?",

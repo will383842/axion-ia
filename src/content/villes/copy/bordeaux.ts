@@ -299,7 +299,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         whyHere: [
           "Bordeaux et sa Métropole sont un terrain d'intervention Axion-IA en croissance : filière aéronautique, négoce de vin, services B2B, numérique et santé représentent des profils de collaborateurs très différents que nous savons adresser.",
           "Tous les territoires de la Métropole couverts en présentiel : Bordeaux intra-muros, Mérignac (Aéroparc, Bordeaux Technowest), Pessac, Talence (campus), Le Bouscat, Bègles (Cité Numérique), Lormont, Cenon.",
-          "Le format Essentielle est calibré pour les structures bordelaises de quelques personnes à une centaine de collaborateurs — indépendants, TPE, PME B2B.",
+          "Le format collectif (1 journée) est calibré pour les structures bordelaises de quelques personnes à une centaine de collaborateurs — indépendants, TPE, PME B2B.",
           "Le format Conférence convient aux grandes plénières d'entreprise (Palais des Congrès de Bordeaux, auditoriums Euratlantique, salles de séminaire Aéroparc).",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction.",
           "Vocabulaire ajusté à votre secteur dominant : aéronautique (documentation technique, gestion de non-conformités), viticole (gestion de millésimes, export, négociant), numérique (développement, support, marketing). Pas de session générique recyclée.",
@@ -334,15 +334,15 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour vignerons indépendants, petits négociants, cabinets bordelais ou studios numériques jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département clé (bureau d'études, commerce export, RH, support client).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département clé (bureau d'études, commerce export, RH, support client).",
           },
           {
             sizeLabel: "ETI",
@@ -360,7 +360,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré : nos ingénieurs méthodes et nos acheteurs sont repartis avec leurs outils IA configurés. Le lendemain, plusieurs l'utilisaient déjà pour rédiger des fiches de non-conformité.",
+              "Formation collective parfaitement calibrée : nos ingénieurs méthodes et nos acheteurs sont repartis avec leurs outils IA configurés. Le lendemain, plusieurs l'utilisaient déjà pour rédiger des fiches de non-conformité.",
             role: "Responsable excellence opérationnelle",
             companyProfile: "PME sous-traitante aéronautique, Mérignac",
           },
@@ -374,7 +374,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Bordeaux ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage, en tenant compte de vos contraintes opérationnelles.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage, en tenant compte de vos contraintes opérationnelles.",
           },
           {
             q: "Pouvez-vous intervenir sur des sites à accès contrôlé (zones industrielles, sites classés défense) ?",
@@ -405,7 +405,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         whyHere: [
           "Bordeaux and its Métropole are a growing Axion-IA engagement ground: the aerospace supply chain, wine trade, B2B services, digital and health represent very different staff profiles that we know how to address.",
           "All Métropole territories covered in person: central Bordeaux, Mérignac (Aéroparc, Bordeaux Technowest), Pessac, Talence (campus), Le Bouscat, Bègles (Cité Numérique), Lormont, Cenon.",
-          "The Essential format is calibrated for Bordeaux structures from a few people to about a hundred staff — freelancers, micro-businesses, B2B SMEs.",
+          "The one-day format is calibrated for Bordeaux structures from a few people to about a hundred staff — freelancers, micro-businesses, B2B SMEs.",
           "The Talk format suits large corporate plenaries (Palais des Congrès de Bordeaux, Euratlantique auditoriums, Aéroparc seminar rooms).",
           "The Executives format enables strategic in-camera framing for executive committees.",
           "Vocabulary adjusted to your dominant sector: aerospace (technical documentation, non-conformity management), wine (vintage management, export, trading), digital (development, support, marketing). No recycled generic session.",
@@ -440,15 +440,15 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for independent winemakers, small merchants, Bordeaux practices or digital studios up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on a key department (engineering office, export sales, HR, customer support).",
+              "Group format for the whole group or Teams to focus on a key department (engineering office, export sales, HR, customer support).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -466,7 +466,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated: our methods engineers and buyers left with their AI tools configured. The next day, several were already using them to write non-conformity reports.",
+              "Group format perfectly calibrated: our methods engineers and buyers left with their AI tools configured. The next day, several were already using them to write non-conformity reports.",
             role: "Operational Excellence Manager",
             companyProfile: "Aerospace sub-contractor SME, Mérignac",
           },
@@ -480,7 +480,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Bordeaux take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing, factoring in your operational constraints.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing, factoring in your operational constraints.",
           },
           {
             q: "Can you intervene on controlled-access sites (industrial zones, defence-classified sites)?",

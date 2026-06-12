@@ -10,9 +10,9 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
   directAnswerFr:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   directAnswerEn:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   seoHook: "commerce détail & services aux entreprises",
   ecosystemFr:
     "Le Bouscat est limitrophe de Bordeaux, Bruges et Eysines, et membre de Bordeaux Métropole. Avec 4 750 habitants/km², la commune concentre commerces de proximité, professions libérales (santé, droit, expertise comptable), services aux entreprises et quelques unités artisanales. L'Hippodrome du Bouscat, le stade Sainte-Germaine et le Castel d'Andorte rythment la vie locale. L'accès rapide à la rocade bordelaise (sortie 7) connecte les entreprises locales à l'ensemble du bassin métropolitain.",
@@ -227,7 +227,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention au Bouscat ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une formation collective et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment au Bouscat ?",
@@ -235,7 +235,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une implémentation IA au Bouscat ?",
-      a: "Une Intervention Essentielle se planifie sous 5 à 10 jours ouvrés. Une implémentation complète (intégration ERP/CRM, automatisations chaînées) prend généralement 3 à 6 semaines selon le périmètre validé en audit.",
+      a: "Une formation collective se planifie sous 5 à 10 jours ouvrés. Une implémentation complète (intégration ERP/CRM, automatisations chaînées) prend généralement 3 à 6 semaines selon le périmètre validé en audit.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD au Bouscat ?",

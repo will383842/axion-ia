@@ -248,7 +248,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA propose-t-il des interventions collectives pour les équipes financières de Nanterre ?",
-      a: "Oui. Nos interventions collectives sont adaptables aux métiers de la finance, de l'assurance et du conseil — secteurs dominants à Nanterre. Le format Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Les contenus couvrent les usages IA concrets : analyse de données, automatisation de reporting, assistance documentaire.",
+      a: "Oui. Nos interventions collectives sont adaptables aux métiers de la finance, de l'assurance et du conseil — secteurs dominants à Nanterre. Le format collectif (1 journée) démarre à {{price:intervention-4h|flat}}. Les contenus couvrent les usages IA concrets : analyse de données, automatisation de reporting, assistance documentaire.",
     },
   ],
 };

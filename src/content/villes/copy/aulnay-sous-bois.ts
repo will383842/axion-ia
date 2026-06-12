@@ -36,8 +36,8 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
       en: "Audit sur place à Aulnay-sous-Bois pour les TPE/PME logistiques de Garonor et Parinor : identification des goulots d'étranglement administratifs et opérationnels, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Aulnay-sous-Bois pour automatiser devis, BL et facturation des PME de commerce de gros et de BTP, dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Aulnay-sous-Bois pour automatiser devis, BL et facturation des PME de commerce de gros et de BTP, dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Aulnay-sous-Bois pour automatiser devis, BL et facturation des PME de commerce de gros et de BTP, dès {{price:intervention-4h|flat}}.",
+      en: "Group training à Aulnay-sous-Bois pour automatiser devis, BL et facturation des PME de commerce de gros et de BTP, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation à Aulnay-sous-Bois d'agents IA reliés à vos WMS/ERP pour les entrepôts SEGRO, Garonor et Parinor, dès {{price:impl-poc|entry}}.",

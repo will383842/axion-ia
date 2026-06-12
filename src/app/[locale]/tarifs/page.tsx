@@ -314,7 +314,7 @@ export default async function PricingPage({ params }: Props) {
         schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
         schemaAriaLabel={
           isFr
-            ? `Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formation 4 h ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr", { compact: true })}, Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, Approfondie ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "fr", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
+            ? `Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formation 4 h ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr", { compact: true })}, Formation 1 jour ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, Formation 2 jours ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "fr", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
             : `Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, 4 h training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, Deep dive ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "en", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
         }
         schemaNodes={[
@@ -337,7 +337,7 @@ export default async function PricingPage({ params }: Props) {
             accent: "sage",
           },
           {
-            label: "Essentielle",
+            label: isFr ? "Formation 1 jour" : "One-day training",
             benefit: formatAmount(
               getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
               "fr",
@@ -345,7 +345,7 @@ export default async function PricingPage({ params }: Props) {
             accent: "mocha",
           },
           {
-            label: isFr ? "Approfondie" : "Deep dive",
+            label: isFr ? "Formation 2 jours" : "Two-day training",
             benefit: formatAmount(
               getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!,
               "fr",

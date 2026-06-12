@@ -84,11 +84,11 @@ const FAQS_BY_SERVICE: Record<
       id: "interventions-paris",
       fr: {
         q: "Vos interventions IA sont-elles disponibles à Paris ?",
-        a: "Oui. Paris est notre premier terrain d'intervention. Cinq formats sont disponibles, d'une journée à plusieurs semaines selon vos équipes : Essentielle, Équipes, Managers, Conférence, Dirigeants. Tous accessibles dans les arrondissements parisiens et la première couronne.",
+        a: "Oui. Paris est notre premier terrain d'intervention. Cinq formats sont disponibles, d'une journée à plusieurs semaines selon vos équipes : formation collective, Équipes, Managers, Conférence, Dirigeants. Tous accessibles dans les arrondissements parisiens et la première couronne.",
       },
       en: {
         q: "Are your AI sessions available in Paris?",
-        a: "Yes. Paris is our top engagement ground. Five formats are available, from one day to several weeks depending on your teams: Essential, Teams, Managers, Talk, Executives. All accessible in Paris arrondissements and inner suburbs.",
+        a: "Yes. Paris is our top engagement ground. Five formats are available, from one day to several weeks depending on your teams: group training, Teams, Managers, Talk, Executives. All accessible in Paris arrondissements and inner suburbs.",
       },
     },
     {

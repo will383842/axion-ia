@@ -298,7 +298,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         whyHere: [
           "Boulogne-Billancourt est un terrain d'intervention prioritaire en proche couronne : grands groupes du Trapèze, équipes médias du Quai du Point-du-Jour, PME conseil et cabinets numériques représentent une part significative de nos sessions.",
           "Toute la commune et les communes du bassin couvertes en présentiel : Trapèze, Île Seguin, Quai du Point-du-Jour, centre-ville, Issy-les-Moulineaux, Vanves, Sèvres, Meudon, Saint-Cloud.",
-          "Le format Essentielle est calibré pour les structures boulonnaises de quelques personnes à une centaine de collaborateurs, notamment les PME numériques et les cabinets de conseil ouest-parisiens.",
+          "Le format collectif (1 journée) est calibré pour les structures boulonnaises de quelques personnes à une centaine de collaborateurs, notamment les PME numériques et les cabinets de conseil ouest-parisiens.",
           "Le format Conférence convient aux plénières d'entreprise (espaces La Seine Musicale, auditoriums des sièges du Trapèze, salles de séminaire Pont-de-Sèvres).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des grands groupes boulonnais ou des ETI tertiaires du Trapèze.",
           "Vocabulaire ajusté à votre secteur dominant : médias/audiovisuel, automobile, finance, conseil, numérique. Pas de session générique recyclée.",
@@ -333,15 +333,15 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets et petites agences boulonnaises jusqu'à une dizaine de collaborateurs — centre-ville, Pont-de-Sèvres, quartiers résidentiels.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — commerciaux, création, finance, opérations — particulièrement efficace pour les PME conseil et numériques du bassin ouest parisien.",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département — commerciaux, création, finance, opérations — particulièrement efficace pour les PME conseil et numériques du bassin ouest parisien.",
           },
           {
             sizeLabel: "ETI",
@@ -359,7 +359,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos équipes créa. Ils sont repartis avec leurs outils configurés sur leurs vrais briefs. Dès le lendemain, plusieurs les utilisaient pour rédiger des notes de synthèse et préparer leurs pitchs.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes créa. Ils sont repartis avec leurs outils configurés sur leurs vrais briefs. Dès le lendemain, plusieurs les utilisaient pour rédiger des notes de synthèse et préparer leurs pitchs.",
             role: "Directeur de la création",
             companyProfile: "Agence communication, Boulogne-Billancourt",
           },
@@ -373,7 +373,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Boulogne-Billancourt ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans les locaux sécurisés des grands groupes boulonnais ?",
@@ -404,7 +404,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         whyHere: [
           "Boulogne-Billancourt is a priority engagement ground in the Paris inner ring: Trapèze large groups, Quai du Point-du-Jour media teams and western-Paris consulting SMEs represent a significant share of our sessions.",
           "Full municipality and basin communes covered in person: Trapèze, Île Seguin, Quai du Point-du-Jour, town centre, Issy-les-Moulineaux, Vanves, Sèvres, Meudon, Saint-Cloud.",
-          "The Essential format is calibrated for Boulogne structures from a few people to about a hundred staff, particularly digital SMEs and west-Paris consulting firms.",
+          "The one-day format is calibrated for Boulogne structures from a few people to about a hundred staff, particularly digital SMEs and west-Paris consulting firms.",
           "The Talk format suits corporate plenaries (La Seine Musicale spaces, Trapèze HQ auditoriums, Pont-de-Sèvres seminar rooms).",
           "The Executives format enables in-camera framing for Boulogne large-group or Trapèze mid-cap executive committees.",
           "Vocabulary adjusted to your dominant sector: media/broadcasting, automotive, finance, consulting, digital. No recycled generic session.",
@@ -439,15 +439,15 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group training",
             detail:
               "Ideal Boulogne freelancers, practices and small agencies up to about ten staff — town centre, Pont-de-Sèvres, residential districts.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — sales, creative, finance, operations — particularly effective for west-Paris consulting and digital SMEs.",
+              "Group format for the whole group or Teams to focus on one department — sales, creative, finance, operations — particularly effective for west-Paris consulting and digital SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -465,7 +465,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our creative team's needs. They left with tools configured for their real briefs. By the next day, several were already using them to draft summaries and prepare pitches.",
+              "The group format perfectly matched our creative team's needs. They left with tools configured for their real briefs. By the next day, several were already using them to draft summaries and prepare pitches.",
             role: "Creative Director",
             companyProfile: "Communications agency, Boulogne-Billancourt",
           },
@@ -479,7 +479,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Boulogne-Billancourt take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in secure large-group offices in Boulogne?",

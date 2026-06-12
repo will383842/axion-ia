@@ -292,7 +292,7 @@ export const TOULON_COPY: VilleCopy = {
         whyHere: [
           "Toulon et l'agglomération TPM (La Seyne-sur-Mer, La Garde, La Valette-du-Var, Hyères, Six-Fours) sont couverts en présentiel par nos consultants.",
           "Nous adaptons le contenu et les démos à votre secteur spécifique : ingénierie navale, économie maritime, tourisme côte d'Azur, commerce, services aux entreprises, cybersécurité.",
-          "Le format Essentielle est calibré pour les structures toulonnaises de quelques personnes à une centaine de collaborateurs — cabinets, agences, PME industrielles, organismes de formation.",
+          "Le format collectif (1 journée) est calibré pour les structures toulonnaises de quelques personnes à une centaine de collaborateurs — cabinets, agences, PME industrielles, organismes de formation.",
           "Le format Conférence convient aux plénières d'entreprise (salles de conférence agglomération TPM, espaces Chalucet, sites industriels Naval Group / Thales).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI et grands comptes toulonnais.",
           "Vocabulaire ajusté à votre domaine : défense & souveraineté, maritime & nautisme, tourisme, BTP, services. Pas de session générique recyclée.",
@@ -327,15 +327,15 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, artisans, cabinets et commerces toulonnais jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (ingénieurs, commercial, administration, logistique).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (ingénieurs, commercial, administration, logistique).",
           },
           {
             sizeLabel: "ETI",
@@ -353,7 +353,7 @@ export const TOULON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement adapté à notre réalité métier. Les démos utilisaient nos propres documents techniques. Le lendemain, nos équipes utilisaient déjà les outils IA sur leurs tâches quotidiennes.",
+              "Formation collective parfaitement adaptée à notre réalité métier. Les démos utilisaient nos propres documents techniques. Le lendemain, nos équipes utilisaient déjà les outils IA sur leurs tâches quotidiennes.",
             role: "Directeur des opérations",
             companyProfile: "PME ingénierie maritime, Toulon",
           },
@@ -367,7 +367,7 @@ export const TOULON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Toulon ?",
-            a: "Selon le format : l'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Selon le format : le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir sur des sites soumis à des contraintes de sécurité ?",
@@ -375,7 +375,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous animer à Toulon ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -398,7 +398,7 @@ export const TOULON_COPY: VilleCopy = {
         whyHere: [
           "Toulon and the TPM agglomeration (La Seyne-sur-Mer, La Garde, La Valette-du-Var, Hyères, Six-Fours) are covered in person by our consultants.",
           "We adapt content and demos to your specific sector: naval engineering, maritime economy, Côte d'Azur tourism, trade, professional services, cybersecurity.",
-          "The Essential format is calibrated for Toulon structures from a few people to about a hundred staff — practices, agencies, industrial SMEs, training organisations.",
+          "The one-day format is calibrated for Toulon structures from a few people to about a hundred staff — practices, agencies, industrial SMEs, training organisations.",
           "The Talk format suits corporate plenaries (TPM agglomeration conference rooms, Chalucet spaces, Naval Group / Thales industrial sites).",
           "The Executives format enables in-camera framing for mid-cap and large Toulon account executive committees.",
           "Vocabulary adjusted to your domain: defence & sovereignty, maritime & boating, tourism, construction, services. No recycled generic session.",
@@ -433,15 +433,15 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Toulon independents, tradespeople, practices and retail businesses up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (engineers, sales, administration, logistics).",
+              "Group format for the whole group or Teams to focus on one department (engineers, sales, administration, logistics).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -459,7 +459,7 @@ export const TOULON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly adapted to our business reality. Demos used our own technical documents. The next day our teams were already using the AI tools on their daily tasks.",
+              "Group format perfectly adapted to our business reality. Demos used our own technical documents. The next day our teams were already using the AI tools on their daily tasks.",
             role: "Operations Director",
             companyProfile: "Maritime engineering SME, Toulon",
           },
@@ -473,7 +473,7 @@ export const TOULON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Toulon take?",
-            a: "By format: the Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format programme, the rhythm is defined together at framing.",
+            a: "By format: the one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format programme, the rhythm is defined together at framing.",
           },
           {
             q: "Can you deliver on sites subject to security constraints?",
@@ -481,7 +481,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "What group size can you handle in Toulon?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

@@ -304,7 +304,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         whyHere: [
           "Clermont-Ferrand concentre des profils de collaborateurs particulièrement adaptés aux interventions IA pratiques : ingénieurs industriels, techniciens agro, chercheurs UCA-ISIMA, commerciaux PME services — tous producteurs de documents structurés que l'IA traite avec un gain immédiat.",
           "Déplacement sur site dans l'ensemble du bassin clermontois : Technopôle La Pardieu, campus des Cézeaux, sites industriels de Cournon-d'Auvergne, zones d'activité de Chamalières, Aubière, Riom.",
-          "Le format Essentielle est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME du Puy-de-Dôme.",
+          "Le format collectif (1 journée) est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME du Puy-de-Dôme.",
           "Le format Conférence est adapté aux grandes plénières d'entreprise (salles Grande Halle d'Auvergne, Polydome, auditoriums campus des Cézeaux).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI et grandes entreprises clermontoise.",
           "Vocabulaire ajusté à votre secteur dominant : industrie, agro, biotechnologie, services, santé, R&D. Pas de session générique recyclée.",
@@ -339,15 +339,15 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour les sous-traitants TPE, cabinets libéraux, startups French Tech et indépendants du bassin clermontois jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Format collectif (1 journée) ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (bureau d'études, qualité, commercial, logistique, finance).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (bureau d'études, qualité, commercial, logistique, finance).",
           },
           {
             sizeLabel: "ETI",
@@ -365,7 +365,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré pour nos ingénieurs : les démos sur nos gammes techniques et nos rapports qualité ont transformé des sceptiques en utilisateurs quotidiens. Le lendemain, l'adoption était concrète.",
+              "Formation collective parfaitement calibrée pour nos ingénieurs : les démos sur nos gammes techniques et nos rapports qualité ont transformé des sceptiques en utilisateurs quotidiens. Le lendemain, l'adoption était concrète.",
             role: "Directeur des opérations",
             companyProfile: "PME équipementière automobile, bassin clermontois",
           },
@@ -379,11 +379,11 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Clermont-Ferrand ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes — compatible avec les grandes salles de Clermont-Ferrand (Grande Halle d'Auvergne, Polydome).",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes — compatible avec les grandes salles de Clermont-Ferrand (Grande Halle d'Auvergne, Polydome).",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -410,7 +410,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         whyHere: [
           "Clermont-Ferrand hosts staff profiles particularly well-suited to hands-on AI sessions: industrial engineers, agri-food technicians, UCA-ISIMA researchers, service-sector account managers — all heavy producers of structured documents that AI processes with immediate gains.",
           "On-site delivery across the entire Clermont basin: Technopôle La Pardieu, campus des Cézeaux, Cournon-d'Auvergne industrial sites, Chamalières, Aubière, Riom business parks.",
-          "The Essential format is calibrated for structures from a few people to about a hundred staff — ideal for Puy-de-Dôme SMEs.",
+          "The one-day format is calibrated for structures from a few people to about a hundred staff — ideal for Puy-de-Dôme SMEs.",
           "The Talk format suits large corporate plenaries (Grande Halle d'Auvergne, Polydome, campus des Cézeaux auditoriums).",
           "The Executives format enables in-camera framing for Clermont mid-cap and large-group executive committees.",
           "Vocabulary adjusted to your dominant sector: manufacturing, agri-food, biotech, services, healthcare, R&D. No recycled generic session.",
@@ -445,15 +445,15 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for TPE sub-contractors, professional practices, French Tech startups and freelancers in the Clermont basin up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (R&D, quality, sales, logistics, finance).",
+              "Group format for the whole group or Teams to focus on one department (R&D, quality, sales, logistics, finance).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -471,7 +471,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated for our engineers: demos on our technical specs and quality reports turned sceptics into daily users. The next day, adoption was real.",
+              "Group format perfectly calibrated for our engineers: demos on our technical specs and quality reports turned sceptics into daily users. The next day, adoption was real.",
             role: "Operations Director",
             companyProfile: "Automotive parts SME, Clermont basin",
           },
@@ -485,11 +485,11 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Clermont-Ferrand take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format programme, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format programme, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops — compatible with Clermont-Ferrand's large venues (Grande Halle d'Auvergne, Polydome).",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops — compatible with Clermont-Ferrand's large venues (Grande Halle d'Auvergne, Polydome).",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

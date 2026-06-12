@@ -39,8 +39,8 @@ const VILLE_COPY: VilleCopy = {
       en: "Audit sur place à Carpentras pour TPE viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation d'agents IA à Carpentras pour PME et ETI locales : tri automatique des emails clients, génération de fiches techniques produit, OCR factures fournisseurs. Tarifs publics, devis sur cadrage.",
@@ -243,7 +243,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Carpentras ?",
-      a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Intervention Essentielle livrée en 2 à 4 semaines selon complexité du cadrage. Pour les caves en pleine vendange, Axion-IA s'adapte au calendrier agricole.",
+      a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité du cadrage. Pour les caves en pleine vendange, Axion-IA s'adapte au calendrier agricole.",
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Carpentras ?",

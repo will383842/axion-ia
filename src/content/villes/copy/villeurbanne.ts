@@ -333,7 +333,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         whyHere: [
           "Villeurbanne est l'un de nos principaux terrains d'intervention IT et ingénierie en France : les équipes R&D du campus Doua (INSA, UCBL, Inria), les développeurs et intégrateurs IT de Gratte-Ciel et les collaborateurs industriels de FORVIA MATERI'ACT représentent des profils exigeants que nous accompagnons régulièrement.",
           "Tous les quartiers de Villeurbanne couverts en présentiel : Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie, Charpennes, Cusset, Bonnevay. Nous venons dans vos locaux — sans supplément de zone.",
-          "Le format Essentielle est calibré pour les PME IT et les équipes R&D de quelques personnes à une centaine de collaborateurs. Les ingénieurs et développeurs repartent avec des outils configurés sur leurs vrais projets.",
+          "Le format collectif (1 journée) est calibré pour les PME IT et les équipes R&D de quelques personnes à une centaine de collaborateurs. Les ingénieurs et développeurs repartent avec des outils configurés sur leurs vrais projets.",
           "Le format Conférence convient aux plénières d'entreprise (auditoriums campus Doua, salles Carré de Soie, espaces Bel Air Camp).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des startups deep tech en phase de scale.",
           "Vocabulaire ajusté à votre secteur dominant : IT/numérique, ingénierie/R&D, matériaux/industrie, conseil ERP. Pas de session générique recyclée.",
@@ -368,15 +368,15 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, petites agences IT et micro-équipes villeurbannaises jusqu'à une dizaine de collaborateurs — Gratte-Ciel, Charpennes.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Format collectif ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — développeurs, R&D, commercial, opérations — particulièrement efficace pour les PME IT et intégrateurs ERP de Villeurbanne.",
+              "Format collectif pour le groupe entier ou Équipes pour focaliser sur un département — développeurs, R&D, commercial, opérations — particulièrement efficace pour les PME IT et intégrateurs ERP de Villeurbanne.",
           },
           {
             sizeLabel: "ETI",
@@ -394,7 +394,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a collé parfaitement aux profils ingénieurs de notre équipe. Ils sont repartis avec leurs outils configurés sur leurs vrais documents techniques. Dès le lendemain, plusieurs les utilisaient pour rédiger des spécifications.",
+              "Le format collectif (1 journée) a collé parfaitement aux profils ingénieurs de notre équipe. Ils sont repartis avec leurs outils configurés sur leurs vrais documents techniques. Dès le lendemain, plusieurs les utilisaient pour rédiger des spécifications.",
             role: "Responsable technique",
             companyProfile: "PME IT, campus LyonTech-La Doua Villeurbanne",
           },
@@ -408,7 +408,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Villeurbanne ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans les locaux du campus LyonTech-La Doua ?",
@@ -439,7 +439,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         whyHere: [
           "Villeurbanne is one of our top IT and engineering engagement grounds in France: R&D teams at campus Doua (INSA, UCBL, Inria), IT developers and integrators around Gratte-Ciel, and industrial staff at FORVIA MATERI'ACT are demanding profiles we regularly support.",
           "All Villeurbanne districts covered in person: Gratte-Ciel, LyonTech-La Doua campus, Carré de Soie, Charpennes, Cusset, Bonnevay. We come to your offices — no zone surcharge.",
-          "The Essential format is calibrated for IT SMEs and R&D teams from a few people to about a hundred staff. Engineers and developers leave with tools configured for their real projects.",
+          "The group format is calibrated for IT SMEs and R&D teams from a few people to about a hundred staff. Engineers and developers leave with tools configured for their real projects.",
           "The Talk format suits corporate plenaries (campus Doua auditoriums, Carré de Soie rooms, Bel Air Camp spaces).",
           "The Executives format enables in-camera framing for industrial mid-cap and deep tech startup executive committees in scale phase.",
           "Vocabulary adjusted to your dominant sector: IT/digital, engineering/R&D, materials/industry, ERP consulting. No recycled generic session.",
@@ -474,15 +474,15 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Villeurbanne freelancers, small IT agencies and micro-teams up to about ten staff — Gratte-Ciel, Charpennes.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — developers, R&D, sales, operations — particularly effective for Villeurbanne IT SMEs and ERP integrators.",
+              "Group format for the whole group or Teams to focus on one department — developers, R&D, sales, operations — particularly effective for Villeurbanne IT SMEs and ERP integrators.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -500,7 +500,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our engineering team profiles. They left with tools configured for their real technical documents. By the next day, several were already using them to write specifications.",
+              "The group format perfectly matched our engineering team profiles. They left with tools configured for their real technical documents. By the next day, several were already using them to write specifications.",
             role: "Technical Lead",
             companyProfile: "IT SME, LyonTech-La Doua campus Villeurbanne",
           },
@@ -514,7 +514,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Villeurbanne take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The group format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions at LyonTech-La Doua campus?",

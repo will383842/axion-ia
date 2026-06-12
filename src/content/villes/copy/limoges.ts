@@ -326,7 +326,7 @@ export const LIMOGES_COPY: VilleCopy = {
         whyHere: [
           "Limoges est un terrain d'intervention singulier : industrie électrique Legrand, manufactures de porcelaine, céramique technique ESTER et PME de services constituent des publics avec des attentes très concrètes en matière d'outils IA opérationnels.",
           "Tous les sites et communes du bassin couverts en présentiel : centre-ville, ESTER Technopole, zones industrielles Magré et Romanet, Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne.",
-          "Le format Essentielle est calibré pour les structures limougeaudes de quelques personnes à une centaine de collaborateurs, en particulier les PME technologiques d'ESTER et les manufactures de porcelaine familiales.",
+          "Le format collectif (1 journée) est calibré pour les structures limougeaudes de quelques personnes à une centaine de collaborateurs, en particulier les PME technologiques d'ESTER et les manufactures de porcelaine familiales.",
           "Le format Conférence convient aux plénières d'entreprise limogeaudes (salles Legrand, amphithéâtres Université de Limoges, espaces ESTER).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des directions de Legrand.",
           "Vocabulaire ajusté à votre secteur dominant : industrie électrique, porcelaine/céramique, agroalimentaire, santé/recherche, numérique. Pas de session générique recyclée.",
@@ -361,15 +361,15 @@ export const LIMOGES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, artisans céramistes, manufactures familiales et petites agences limougeaudes jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — commercial, R&D, production, qualité — particulièrement efficace pour les PME d'ESTER Technopole.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — commercial, R&D, production, qualité — particulièrement efficace pour les PME d'ESTER Technopole.",
           },
           {
             sizeLabel: "ETI",
@@ -387,7 +387,7 @@ export const LIMOGES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos équipes production. Ils sont repartis avec leurs outils configurés sur leurs vrais process. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus qualité.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes production. Ils sont repartis avec leurs outils configurés sur leurs vrais process. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus qualité.",
             role: "Responsable production",
             companyProfile: "PME céramique, ESTER Technopole Limoges",
           },
@@ -401,7 +401,7 @@ export const LIMOGES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Limoges ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des ateliers de manufacture ou des sites industriels ?",
@@ -432,7 +432,7 @@ export const LIMOGES_COPY: VilleCopy = {
         whyHere: [
           "Limoges is a unique engagement ground: Legrand electrical industry, porcelain manufacturers, ESTER technical ceramics and services SMEs form audiences with very concrete expectations around operational AI tools.",
           "All sites and basin communes covered in person: city centre, ESTER Technopole, Magré and Romanet industrial zones, Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne.",
-          "The Essential format is calibrated for Limoges structures from a few people to about a hundred staff, particularly ESTER technology SMEs and family porcelain manufacturers.",
+          "The one-day format is calibrated for Limoges structures from a few people to about a hundred staff, particularly ESTER technology SMEs and family porcelain manufacturers.",
           "The Talk format suits Limoges corporate plenaries (Legrand rooms, Université de Limoges amphitheatres, ESTER spaces).",
           "The Executives format enables in-camera framing for industrial mid-cap executive committees and Legrand directorates.",
           "Vocabulary adjusted to your dominant sector: electrical industry, porcelain/ceramics, agri-food, health/research, digital. No recycled generic session.",
@@ -467,15 +467,15 @@ export const LIMOGES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Limoges freelancers, artisan ceramicists, family manufacturers and small agencies up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — sales, R&D, production, quality — particularly effective for ESTER Technopole SMEs.",
+              "Group format for the whole group or Teams to focus on one department — sales, R&D, production, quality — particularly effective for ESTER Technopole SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -493,7 +493,7 @@ export const LIMOGES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our production team's needs. They left with tools configured for their real processes. By the next day, several were already using them to write quality reports.",
+              "The one-day format perfectly matched our production team's needs. They left with tools configured for their real processes. By the next day, several were already using them to write quality reports.",
             role: "Production Manager",
             companyProfile: "Ceramics SME, ESTER Technopole Limoges",
           },
@@ -507,7 +507,7 @@ export const LIMOGES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Limoges take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in manufacture workshops or industrial sites?",

@@ -294,7 +294,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         whyHere: [
           "Toulouse est un pôle d'intervention prioritaire pour Axion-IA : industrie aérospatiale, numérique et agroalimentaire génèrent des besoins spécifiques que nos sessions adressent directement.",
           "Toute la métropole couverte en présentiel — Toulouse intra-muros, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — ainsi que les sites industriels de banlieue.",
-          "Le format Essentielle est calibré pour les TPE et PME de quelques personnes à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les TPE et PME de quelques personnes à une centaine de collaborateurs.",
           "Le format Conférence convient aux grandes plénières (amphithéâtres ISAE-SUPAERO, TBS Education, auditoriums d'entreprise Aerospace Valley).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction ou les équipes managériales de l'industrie.",
           "Vocabulaire ajusté à votre secteur : documentation aérospatiale, gestion de projet agilité/cascade, analyse de données capteurs IoT, processus qualité, agro-logistique. Pas de session générique recyclée.",
@@ -329,15 +329,15 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, bureaux d'études, agences IT ou PME sous-traitantes toulousaines jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (ingénieurs, achats, qualité, commerciaux, RH).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (ingénieurs, achats, qualité, commerciaux, RH).",
           },
           {
             sizeLabel: "ETI",
@@ -355,7 +355,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement adapté à nos ingénieurs : démos sur nos vraies données de documentation technique, outils installés en fin de session. Le lendemain, plusieurs collaborateurs utilisaient déjà Claude sur leurs rapports d'anomalie.",
+              "Formation collective parfaitement adaptée à nos ingénieurs : démos sur nos vraies données de documentation technique, outils installés en fin de session. Le lendemain, plusieurs collaborateurs utilisaient déjà Claude sur leurs rapports d'anomalie.",
             role: "Responsable R&D",
             companyProfile: "PME sous-traitante aéronautique Tier 2, Toulouse",
           },
@@ -369,7 +369,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Toulouse ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir sur les sites industriels de Blagnac et Labège ?",
@@ -400,7 +400,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         whyHere: [
           "Toulouse is a priority engagement hub for Axion-IA: aerospace, digital and agri-food industries generate specific needs our sessions address directly.",
           "The entire metro covered in person — Toulouse proper, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — as well as suburban industrial sites.",
-          "The Essential format is calibrated for structures from a few people to about a hundred staff.",
+          "The one-day format is calibrated for structures from a few people to about a hundred staff.",
           "The Talk format suits large plenaries (ISAE-SUPAERO, TBS Education amphitheatres, Aerospace Valley company auditoriums).",
           "The Executives format enables in-camera framing for executive committees or industrial management teams.",
           "Vocabulary adjusted to your sector: aerospace documentation, project management, IoT sensor data analysis, quality processes, agri-logistics. No recycled generic session.",
@@ -435,15 +435,15 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Toulouse freelancers, engineering offices, IT agencies or small sub-contractors up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (engineers, procurement, quality, sales, HR).",
+              "Group format for the whole group or Teams to focus on one department (engineers, procurement, quality, sales, HR).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -461,7 +461,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly adapted to our engineers: demos on our real technical documentation data, tools installed by end of session. The next day, several team members were already using Claude on their anomaly reports.",
+              "Group format perfectly adapted to our engineers: demos on our real technical documentation data, tools installed by end of session. The next day, several team members were already using Claude on their anomaly reports.",
             role: "Head of R&D",
             companyProfile: "Tier 2 aerospace sub-contractor, Toulouse",
           },
@@ -475,7 +475,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Toulouse take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions at Blagnac and Labège industrial sites?",

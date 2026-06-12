@@ -228,7 +228,7 @@ export const BRUNOY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Brunoy ?",
-      a: "Les interventions Axion-IA à Brunoy démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit sur place 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
+      a: "Les interventions Axion-IA à Brunoy démarrent à {{price:intervention-4h|flat}} (formation collective). L'Audit sur place 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Brunoy ?",

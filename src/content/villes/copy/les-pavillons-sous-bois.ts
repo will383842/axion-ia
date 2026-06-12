@@ -231,7 +231,7 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission IA aux Pavillons-sous-Bois ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque, pas de frais cachés.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). La formation collective démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque, pas de frais cachés.",
     },
     {
       q: "Quels délais pour une implémentation IA aux Pavillons-sous-Bois ?",

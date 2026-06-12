@@ -229,7 +229,7 @@ export const GONESSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Gonesse ?",
-      a: "L'Intervention Essentielle et l'Audit sur place débutent à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Paris (16 km, 25 min en RER D) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
+      a: "La formation collective et l'Audit sur place débutent à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Paris (16 km, 25 min en RER D) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gonesse ?",

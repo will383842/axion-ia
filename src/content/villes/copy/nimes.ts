@@ -292,7 +292,7 @@ export const NIMES_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Nîmes se déclinent en formats sur site d'une à plusieurs journées. Vos collaborateurs gardois ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — BTP, commerce, services, ingénierie, agroalimentaire. Frais de logement, repas et forfait trajet facturés à part.",
         whyHere: [
-          "Nîmes est une ville de TPE et PME actives : le format Essentielle (une journée) est le plus calibré pour les structures de quelques personnes à une centaine de collaborateurs.",
+          "Nîmes est une ville de TPE et PME actives : le format collectif (1 journée) est le plus calibré pour les structures de quelques personnes à une centaine de collaborateurs.",
           "Le tissu commercial (centre-ville, zones Grézan et Parc Georges Besse) concentre des équipes qui gagnent directement à automatiser devis, emails commerciaux, suivi client et reporting.",
           "Les PME du BTP nîmois bénéficient particulièrement des outils IA pour les comptes-rendus de chantier, la rédaction de CCTP et la gestion documentaire.",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction des ETI gardoises.",
@@ -329,15 +329,15 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal artisans, commerçants, cabinets et petites structures nîmoises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour un département (commerciaux, chantier, admin, RH) de quelques dizaines à 250 collaborateurs.",
+              "Formation collective pour le groupe entier ou Équipes pour un département (commerciaux, chantier, admin, RH) de quelques dizaines à 250 collaborateurs.",
           },
           {
             sizeLabel: "ETI",
@@ -355,7 +355,7 @@ export const NIMES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "La session Essentielle était adaptée à notre activité BTP nîmoise dès la préparation. Le lendemain, nos conducteurs de travaux utilisaient déjà les outils IA pour leurs comptes-rendus de chantier.",
+              "La formation en groupe était adaptée à notre activité BTP nîmoise dès la préparation. Le lendemain, nos conducteurs de travaux utilisaient déjà les outils IA pour leurs comptes-rendus de chantier.",
             role: "Gérant",
             companyProfile: "PME BTP, Nîmes, ~40 collaborateurs",
           },
@@ -369,11 +369,11 @@ export const NIMES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nîmes ?",
-            a: "Cela dépend du format. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir à Nîmes ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté — plénière suivie d'ateliers en sous-groupes selon vos espaces disponibles à Nîmes ou au Parc Georges Besse.",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté — plénière suivie d'ateliers en sous-groupes selon vos espaces disponibles à Nîmes ou au Parc Georges Besse.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -398,7 +398,7 @@ export const NIMES_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Nîmes come in on-site formats from one to several days. Your Gard staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — construction, trade, services, engineering, agri-food. Lodging, meals and travel allowance billed separately.",
         whyHere: [
-          "Nîmes is a city of active micro-businesses and SMEs: the Essential format (one day) is best calibrated for structures from a few people to about a hundred staff.",
+          "Nîmes is a city of active micro-businesses and SMEs: the one-day format (one day) is best calibrated for structures from a few people to about a hundred staff.",
           "The commercial fabric (city centre, Grézan and Parc Georges Besse zones) concentrates teams that gain directly from automating quotes, commercial emails, client follow-up and reporting.",
           "Nîmes construction SMEs benefit particularly from AI tools for site meeting minutes, specification writing and document management.",
           "The Executives format enables a strategic in-camera framing for Gard mid-cap executive committees.",
@@ -435,15 +435,15 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Nîmes tradespeople, retailers, firms and small structures up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (sales, site, admin, HR) from a few dozen to 250 staff.",
+              "Group training for the whole group or Teams to focus on one department (sales, site, admin, HR) from a few dozen to 250 staff.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -461,7 +461,7 @@ export const NIMES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential session was adapted to our Nîmes construction activity from preparation onwards. The next day, our site managers were already using AI tools for their site meeting minutes.",
+              "The group training session was adapted to our Nîmes construction activity from preparation onwards. The next day, our site managers were already using AI tools for their site meeting minutes.",
             role: "Managing Director",
             companyProfile: "Construction SME, Nîmes, ~40 staff",
           },
@@ -475,11 +475,11 @@ export const NIMES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Nîmes take?",
-            a: "It depends on the format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle in Nîmes?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable — plenary followed by sub-group workshops depending on your available spaces in Nîmes or at Parc Georges Besse.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable — plenary followed by sub-group workshops depending on your available spaces in Nîmes or at Parc Georges Besse.",
           },
           {
             q: "Do tools installed on workstations remain usable after the session?",

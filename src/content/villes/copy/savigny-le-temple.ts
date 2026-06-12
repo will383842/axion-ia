@@ -36,8 +36,8 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
       en: "Audit sur place à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation à Savigny-le-Temple d'agents IA en code custom reliés à vos outils logistiques, e-commerce ou CRM, dès {{price:impl-poc|entry}}.",

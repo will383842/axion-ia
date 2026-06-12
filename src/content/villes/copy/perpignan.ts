@@ -327,7 +327,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         whyHere: [
           "Perpignan cumule des profils d'entreprises très variés, tous à fort besoin de montée en compétence IA : négociants fruits-légumes Saint-Charles, producteurs viticoles Roussillon, PME BTP Pyrénées-Orientales, TPE services Polygone Nord et équipes Tecnosud.",
           "Toutes les communes de la Perpignan Méditerranée Métropole couvertes en présentiel : centre-ville, Saint-Charles, Tecnosud, Agrosud, Polygone Nord, Saint-Estève, Cabestany, Bompas, Rivesaltes.",
-          "Le format Essentielle est calibré pour les structures perpignanaises de quelques personnes à une centaine de collaborateurs — PME négoce, cabinets de conseil, agences, coopératives viticoles.",
+          "Le format collectif (1 journée) est calibré pour les structures perpignanaises de quelques personnes à une centaine de collaborateurs — PME négoce, cabinets de conseil, agences, coopératives viticoles.",
           "Le format Conférence convient aux plénières d'entreprise perpignanaises — salles Parc des Expositions, espaces French Tech, plateaux Saint-Charles.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI agroalimentaires, logistiques ou énergétiques implantées dans la Métropole.",
           "Vocabulaire ajusté à votre secteur : logistique et supply chain, agroalimentaire certifié, viticulture AOP, énergies renouvelables, transfrontalier France-Espagne. Pas de session générique recyclée.",
@@ -362,15 +362,15 @@ export const PERPIGNAN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, petits négoces et micro-entreprises perpignanaises jusqu'à une dizaine de collaborateurs — Saint-Charles, viticulteurs Roussillon, prestataires de services.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — commerciaux, logistique, qualité, production — particulièrement efficace pour les PME négoce et agroalimentaire.",
+              "La formation collective pour le groupe entier ou Équipes pour focaliser sur un département — commerciaux, logistique, qualité, production — particulièrement efficace pour les PME négoce et agroalimentaire.",
           },
           {
             sizeLabel: "ETI",
@@ -388,7 +388,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos équipes commerciales. Ils repartent avec des outils configurés sur leurs vrais flux de commandes. Dès le lendemain, plusieurs les utilisaient pour rédiger des offres clients.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes commerciales. Ils repartent avec des outils configurés sur leurs vrais flux de commandes. Dès le lendemain, plusieurs les utilisaient pour rédiger des offres clients.",
             role: "Directeur commercial",
             companyProfile: "PME négoce fruits-légumes, Saint-Charles Perpignan",
           },
@@ -402,7 +402,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Perpignan ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir sur la plateforme Saint-Charles International ?",
@@ -433,7 +433,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         whyHere: [
           "Perpignan combines very varied business profiles, all with strong AI upskilling needs: Saint-Charles fruit-vegetable traders, Roussillon wine producers, Pyrénées-Orientales construction SMEs, Polygone Nord service micro-businesses and Tecnosud teams.",
           "All Perpignan Méditerranée Métropole communes covered in person: city centre, Saint-Charles, Tecnosud, Agrosud, Polygone Nord, Saint-Estève, Cabestany, Bompas, Rivesaltes.",
-          "The Essential format is calibrated for Perpignan structures from a few people to about a hundred staff — trading SMEs, consulting firms, agencies, wine cooperatives.",
+          "The group format is calibrated for Perpignan structures from a few people to about a hundred staff — trading SMEs, consulting firms, agencies, wine cooperatives.",
           "The Talk format suits Perpignan corporate plenaries — Parc des Expositions rooms, French Tech spaces, Saint-Charles meeting areas.",
           "The Executives format enables in-camera framing for agri-food, logistics or energy mid-cap executive committees based in the Métropole.",
           "Vocabulary adjusted to your sector: logistics and supply chain, certified agri-food, AOP viticulture, renewables, France-Spain cross-border. No recycled generic session.",
@@ -468,15 +468,15 @@ export const PERPIGNAN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Perpignan freelancers, small traders and micro-firms up to about ten staff — Saint-Charles, Roussillon wine estates, service providers.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — sales, logistics, quality, production — particularly effective for trading and agri-food SMEs.",
+              "Group training for the whole group or Teams to focus on one department — sales, logistics, quality, production — particularly effective for trading and agri-food SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -494,7 +494,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our sales team's needs. They left with tools configured for their real order flows. By the next day, several were already using them to draft client proposals.",
+              "The group format perfectly matched our sales team's needs. They left with tools configured for their real order flows. By the next day, several were already using them to draft client proposals.",
             role: "Sales Director",
             companyProfile: "Fruit-vegetable trading SME, Saint-Charles Perpignan",
           },
@@ -508,7 +508,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Perpignan take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions at Saint-Charles International?",

@@ -35,8 +35,8 @@ export const NIORT_COPY: VilleCopy = {
       en: "L'Audit sur place 4h à Niort cartographie les processus d'un courtier, d'une PME sous-traitante d'une mutuelle, ou d'un cabinet d'expertise comptable, et chiffre les heures récupérables sur les workflows documentaires lourds du secteur assurantiel.",
     },
     interventions: {
-      fr: "Les Interventions Essentielles à Niort ciblent le traitement de documents sinistres, la qualification de leads B2B, la production de reportings réglementaires (ACPR, Solvabilité II) et la pré-rédaction de courriers gestion — code Python/TypeScript versionné.",
-      en: "Les Interventions Essentielles à Niort ciblent le traitement de documents sinistres, la qualification de leads B2B, la production de reportings réglementaires (ACPR, Solvabilité II) et la pré-rédaction de courriers gestion — code Python/TypeScript versionné.",
+      fr: "Les formations collectives à Niort ciblent le traitement de documents sinistres, la qualification de leads B2B, la production de reportings réglementaires (ACPR, Solvabilité II) et la pré-rédaction de courriers gestion — code Python/TypeScript versionné.",
+      en: "Les formations collectives à Niort ciblent le traitement de documents sinistres, la qualification de leads B2B, la production de reportings réglementaires (ACPR, Solvabilité II) et la pré-rédaction de courriers gestion — code Python/TypeScript versionné.",
     },
     implementation: {
       fr: "L'implémentation à Niort raccorde les briques IA aux ERP/CRM/GED existants (Salesforce, MS Dynamics, Mega, Documentum, GED maison) avec respect strict des règles ACPR et RGPD. Aucune dépendance no-code.",

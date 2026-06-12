@@ -228,7 +228,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Maubeuge ?",
-      a: "Les interventions à Maubeuge commencent à partir de {{price:intervention-4h|flat}} (Intervention Essentielle). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
+      a: "Les interventions à Maubeuge commencent à partir de {{price:intervention-4h|flat}} (format découverte). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines de Maubeuge ?",

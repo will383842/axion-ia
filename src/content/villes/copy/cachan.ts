@@ -37,8 +37,8 @@ export const CACHAN_COPY: VilleCopy = {
       en: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
-      en: "Intervention Essentielle à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      fr: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      en: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
@@ -229,7 +229,7 @@ export const CACHAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Cachan ?",
-      a: "Nos interventions à Cachan débutent à {{price:intervention-4h|flat}} pour une Intervention Essentielle sur site. L'Audit sur place 4 heures démarre à {{price:audit-flash|flat}} et l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et fermes.",
+      a: "Nos interventions à Cachan débutent à {{price:intervention-4h|flat}} pour une formation collective sur site. L'Audit sur place 4 heures démarre à {{price:audit-flash|flat}} et l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et fermes.",
     },
     {
       q: "Combien de temps faut-il pour intervenir à Cachan ?",

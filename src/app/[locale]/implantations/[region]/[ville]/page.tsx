@@ -415,10 +415,10 @@ export default async function VilleHubPage({ params }: Props) {
       },
       {
         "@type": "Offer",
-        name: "Intervention Essentielle (formation IA sur site)",
+        name: "Formation IA collective sur site",
         price: interventionEntryPrice,
         priceCurrency: "EUR",
-        url: `${SITE_URL}/${loc}/interventions`,
+        url: `${SITE_URL}/${loc}/formations`,
         availability: "https://schema.org/InStock",
         category: "AI training",
       },

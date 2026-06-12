@@ -304,7 +304,7 @@ export const LILLE_COPY: VilleCopy = {
         whyHere: [
           "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — toutes tailles, tous secteurs.",
           "Toute la métropole lilloise couverte en présentiel : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul, Lesquin et communes limitrophes.",
-          "Le format Essentielle est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME lilloise en transformation digitale.",
+          "Le format collectif (1 journée) est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME lilloise en transformation digitale.",
           "Le format Conférence convient aux plénières d'entreprise (Lille Grand Palais, auditoriums Euralille, campus EuraTechnologies, Plaine Images Tourcoing).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des sièges lillois.",
           "Vocabulaire ajusté à votre secteur dominant : retail, e-commerce, supply chain, cloud, agroalimentaire, services B2B. Aucune session générique recyclée.",
@@ -339,15 +339,15 @@ export const LILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, agences, cabinets et startups EuraTechnologies lillois jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commerciaux, logistique, e-commerce, finance, RH).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (commerciaux, logistique, e-commerce, finance, RH).",
           },
           {
             sizeLabel: "ETI",
@@ -365,7 +365,7 @@ export const LILLE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré sur notre activité e-commerce. Nos équipes merchandising et marketing sont reparties avec leurs outils IA configurés. Le lendemain, plusieurs utilisaient déjà l'IA pour rédiger des fiches produits et répondre aux avis clients.",
+              "Formation collective parfaitement calibrée sur notre activité e-commerce. Nos équipes merchandising et marketing sont reparties avec leurs outils IA configurés. Le lendemain, plusieurs utilisaient déjà l'IA pour rédiger des fiches produits et répondre aux avis clients.",
             role: "Responsable digital",
             companyProfile: "PME e-commerce, Roubaix, 60 collaborateurs",
           },
@@ -379,7 +379,7 @@ export const LILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Lille ?",
-            a: "Cela dépend du format : l'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format : le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous adapter le contenu au secteur retail et e-commerce lillois ?",
@@ -387,7 +387,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec une plénière + ateliers en sous-groupes (Lille Grand Palais, campus EuraTechnologies).",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec une plénière + ateliers en sous-groupes (Lille Grand Palais, campus EuraTechnologies).",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -410,7 +410,7 @@ export const LILLE_COPY: VilleCopy = {
         whyHere: [
           "Lille is one of our priority session locations: retail and e-commerce SME/mid-cap fabric, EuraTechnologies startups, large-group HQs (Decathlon, Auchan, La Redoute, OVHcloud) — all sizes, all sectors.",
           "Full Lille metropolitan area covered in person: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul, Lesquin and surrounding communes.",
-          "The Essential format is calibrated for structures from a few people to about a hundred staff — ideal for Lille SMEs in digital transformation.",
+          "The group format is calibrated for structures from a few people to about a hundred staff — ideal for Lille SMEs in digital transformation.",
           "The Talk format suits corporate plenaries (Lille Grand Palais, Euralille auditoriums, EuraTechnologies campus, Plaine Images Tourcoing).",
           "The Executives format enables in-camera framing for Lille HQ executive committees.",
           "Vocabulary adjusted to your dominant sector: retail, e-commerce, supply chain, cloud, agri-food, B2B services. No recycled generic session.",
@@ -445,15 +445,15 @@ export const LILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Lille freelancers, agencies, practices and EuraTechnologies startups up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (sales, logistics, e-commerce, finance, HR).",
+              "Group format for the whole group or Teams to focus on one department (sales, logistics, e-commerce, finance, HR).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -471,7 +471,7 @@ export const LILLE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated to our e-commerce activity. Our merchandising and marketing teams left with their AI tools configured. The next day, several were already using AI to write product sheets and reply to customer reviews.",
+              "Group format perfectly calibrated to our e-commerce activity. Our merchandising and marketing teams left with their AI tools configured. The next day, several were already using AI to write product sheets and reply to customer reviews.",
             role: "Head of Digital",
             companyProfile: "E-commerce SME, Roubaix, 60 staff",
           },
@@ -485,7 +485,7 @@ export const LILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Lille take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you adapt content to the Lille retail and e-commerce sector?",
@@ -493,7 +493,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops (Lille Grand Palais, EuraTechnologies campus).",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops (Lille Grand Palais, EuraTechnologies campus).",
           },
           {
             q: "Do the tools installed remain usable after the session?",

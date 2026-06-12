@@ -238,7 +238,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à La Seyne-sur-Mer ?",
-      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit sur place est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité fonctionnelle.",
+      a: "Une formation collective est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit sur place est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité fonctionnelle.",
     },
     {
       q: "Quels secteurs économiques seynois ciblez-vous en priorité ?",

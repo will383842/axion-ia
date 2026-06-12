@@ -302,7 +302,7 @@ export const DIJON_COPY: VilleCopy = {
         whyHere: [
           "Dijon est une étape stratégique de nos déploiements régionaux : métropole bien desservie (LGV ~1h34 Paris), tissu B2B dense (14 946 établissements actifs) et secteurs IA-matures (agroalimentaire, pharma, viticulture).",
           "Tous les secteurs de la métropole couverts en présentiel : Dijon intra-muros, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
-          "Le format Essentielle est calibré pour les PME dijonnaises de quelques personnes à une centaine de collaborateurs, idéal pour les équipes agroalimentaires, santé, commerce et services.",
+          "Le format collectif (1 journée) est calibré pour les PME dijonnaises de quelques personnes à une centaine de collaborateurs, idéal pour les équipes agroalimentaires, santé, commerce et services.",
           "Le format Conférence convient aux plénières des ETI et grands comptes dijonnais (salles Parc des Expositions, espaces Village by CA, Cité Internationale de la Gastronomie et du Vin).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction de Côte-d'Or.",
           "Vocabulaire et exemples ajustés à votre secteur dijonnais dominant : aucune session générique recyclée.",
@@ -337,15 +337,15 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, artisans, cabinets dijonnais et petites structures jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (production, commercial, finance, qualité, RH).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (production, commercial, finance, qualité, RH).",
           },
           {
             sizeLabel: "ETI",
@@ -363,7 +363,7 @@ export const DIJON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle très bien adapté à notre équipe commerciale : démos sur nos vrais emails et fiches client. Le lendemain, les commerciaux utilisaient Claude pour qualifier leurs leads. Résultat visible immédiatement.",
+              "Formation collective très bien adaptée à notre équipe commerciale : démos sur nos vrais emails et fiches client. Le lendemain, les commerciaux utilisaient Claude pour qualifier leurs leads. Résultat visible immédiatement.",
             role: "Directeur commercial",
             companyProfile: "PME agroalimentaire, Dijon métropole",
           },
@@ -377,11 +377,11 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Dijon ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous animer à Dijon ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes, adaptable aux salles du Parc des Expositions ou de la Cité Internationale de la Gastronomie et du Vin.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes, adaptable aux salles du Parc des Expositions ou de la Cité Internationale de la Gastronomie et du Vin.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -408,7 +408,7 @@ export const DIJON_COPY: VilleCopy = {
         whyHere: [
           "Dijon is a strategic stop in our regional deployments: well-connected metropolitan area (LGV ~1h34 from Paris), dense B2B fabric (14,946 active establishments) and AI-mature sectors (agri-food, pharma, viticulture).",
           "All metropolitan sectors covered in person: Dijon city, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
-          "The Essential format is calibrated for Dijon SMEs from a few to about a hundred staff, ideal for agri-food, healthcare, commerce and services teams.",
+          "The one-day format is calibrated for Dijon SMEs from a few to about a hundred staff, ideal for agri-food, healthcare, commerce and services teams.",
           "The Talk format suits large corporate plenaries at Dijon mid-caps and large accounts (Parc des Expositions, Village by CA spaces, International City of Gastronomy and Wine).",
           "The Executives format enables in-camera framing for Côte-d'Or executive committees.",
           "Vocabulary and examples adjusted to your dominant Dijon sector: no recycled generic session.",
@@ -443,15 +443,15 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Dijon freelancers, artisans, practices and small structures up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (production, sales, finance, quality, HR).",
+              "Group format for the whole group or Teams to focus on one department (production, sales, finance, quality, HR).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -469,7 +469,7 @@ export const DIJON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format very well adapted to our sales team: demos on our real emails and client sheets. The next day, sales reps were using Claude to qualify their leads. Immediately visible result.",
+              "Group training very well adapted to our sales team: demos on our real emails and client sheets. The next day, sales reps were using Claude to qualify their leads. Immediately visible result.",
             role: "Sales Director",
             companyProfile: "Agri-food SME, Dijon metropolitan area",
           },
@@ -483,11 +483,11 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Dijon take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle in Dijon?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops, adaptable to Parc des Expositions or International City of Gastronomy and Wine rooms.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops, adaptable to Parc des Expositions or International City of Gastronomy and Wine rooms.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

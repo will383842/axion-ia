@@ -10,9 +10,9 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de petites entreprises de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
   directAnswerFr:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une intervention en format collectif, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   directAnswerEn:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une intervention en format collectif, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Choisy-le-Roi (Val-de-Marne, 5,43 km², 8 462 habitants/km²) est limitrophe d'Alfortville, Créteil, Orly, Thiais, Valenton, Villeneuve-Saint-Georges et Vitry-sur-Seine. Le tissu économique mélange commerces de détail, transport routier, construction et services aux entreprises. La ville accueille le siège de la Fédération française de volley-ball et conserve une mémoire industrielle (faïencerie Boulenger, tuileries). La proximité immédiate du MIN de Rungis et de l'aéroport de Paris-Orly structure une partie de l'activité logistique locale.",
@@ -227,7 +227,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Choisy-le-Roi ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une intervention en format collectif et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment à Choisy-le-Roi ?",
@@ -235,7 +235,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une implémentation IA à Choisy-le-Roi ?",
-      a: "Une Intervention Essentielle se planifie sous 5 à 10 jours ouvrés. Une implémentation complète (intégration ERP/CRM, automatisations chaînées) prend généralement 3 à 6 semaines selon le périmètre validé en audit.",
+      a: "Une intervention en format collectif se planifie sous 5 à 10 jours ouvrés. Une implémentation complète (intégration ERP/CRM, automatisations chaînées) prend généralement 3 à 6 semaines selon le périmètre validé en audit.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Choisy-le-Roi ?",

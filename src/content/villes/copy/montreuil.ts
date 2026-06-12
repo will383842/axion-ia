@@ -97,7 +97,7 @@ export const MONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec des structures de l'ESS ou des incubateurs à Montreuil ?",
-      a: "Oui. Les structures de l'économie sociale et solidaire (ESS) et les porteurs de projets incubés à La Pousse peuvent bénéficier d'un Audit sur place ou d'une intervention Essentielle calibrée pour les petites structures. Nous adaptons la profondeur et le format à votre réalité opérationnelle.",
+      a: "Oui. Les structures de l'économie sociale et solidaire (ESS) et les porteurs de projets incubés à La Pousse peuvent bénéficier d'un Audit sur place ou d'une formation collective calibrée pour les petites structures. Nous adaptons la profondeur et le format à votre réalité opérationnelle.",
     },
   ],
 
@@ -325,7 +325,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil est un terrain d'intervention régulier pour Axion-IA en banlieue est de Paris : équipes numériques Bas-Montreuil, directions financières, équipes IT et structures ESS représentent une part significative de nos sessions.",
           "Toute la commune et les communes limitrophes couvertes en présentiel : Bas-Montreuil, Croix de Chavaux, Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois.",
-          "Le format Essentielle est calibré pour les structures montreuillaises de quelques personnes à une centaine de collaborateurs — studios créatifs, agences digitales, PME de services.",
+          "Le format collectif (1 journée) est calibré pour les structures montreuillaises de quelques personnes à une centaine de collaborateurs — studios créatifs, agences digitales, PME de services.",
           "Le format Conférence convient aux plénières d'entreprise (auditoriums grands groupes, espaces de conférence Bas-Montreuil, incubateurs).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI financières ou numériques implantées à Montreuil.",
           "Vocabulaire ajusté à votre secteur dominant : jeu vidéo, finance, numérique, conseil, ESS. Pas de session générique recyclée.",
@@ -360,15 +360,15 @@ export const MONTREUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, studios créatifs et petites agences montreuillaises jusqu'à une dizaine de collaborateurs — Bas-Montreuil, Croix de Chavaux.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — IT, finance, créatif, opérations — particulièrement efficace pour les PME numériques et agences de Montreuil.",
+              "La formation collective pour le groupe entier ou Équipes pour focaliser sur un département — IT, finance, créatif, opérations — particulièrement efficace pour les PME numériques et agences de Montreuil.",
           },
           {
             sizeLabel: "ETI",
@@ -386,7 +386,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de notre équipe créative. Ils sont repartis avec leurs outils configurés sur leurs vrais projets. Dès le lendemain, plusieurs les utilisaient pour rédiger des briefs et des game design documents.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de notre équipe créative. Ils sont repartis avec leurs outils configurés sur leurs vrais projets. Dès le lendemain, plusieurs les utilisaient pour rédiger des briefs et des game design documents.",
             role: "Head of Production",
             companyProfile: "Studio jeu vidéo, Bas-Montreuil",
           },
@@ -400,7 +400,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Montreuil ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements IT sécurisés ou des back-offices financiers ?",
@@ -431,7 +431,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         whyHere: [
           "Montreuil is a regular intervention ground for Axion-IA in Paris eastern suburbs: Bas-Montreuil digital teams, financial directorates, IT teams and social economy structures represent a significant share of our sessions.",
           "Full commune and neighbouring areas covered in person: Bas-Montreuil, Croix de Chavaux, Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois.",
-          "The Essential format is calibrated for Montreuil structures from a few people to about a hundred staff — creative studios, digital agencies, service SMEs.",
+          "The one-day format is calibrated for Montreuil structures from a few people to about a hundred staff — creative studios, digital agencies, service SMEs.",
           "The Talk format suits corporate plenaries (large-group auditoriums, Bas-Montreuil conference spaces, incubators).",
           "The Executives format enables in-camera framing for financial or digital mid-cap executive committees in Montreuil.",
           "Vocabulary adjusted to your dominant sector: gaming, finance, digital, consulting, social economy. No recycled generic session.",
@@ -466,15 +466,15 @@ export const MONTREUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group training",
             detail:
               "Ideal for Montreuil freelancers, creative studios and small agencies up to about ten staff — Bas-Montreuil, Croix de Chavaux.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — IT, finance, creative, operations — particularly effective for Montreuil digital SMEs and agencies.",
+              "Group training for the whole group or Teams to focus on one department — IT, finance, creative, operations — particularly effective for Montreuil digital SMEs and agencies.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -492,7 +492,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our creative team's needs. They left with tools configured for their real projects. By the next day, several were already using them to draft briefs and game design documents.",
+              "The one-day format perfectly matched our creative team's needs. They left with tools configured for their real projects. By the next day, several were already using them to draft briefs and game design documents.",
             role: "Head of Production",
             companyProfile: "Gaming studio, Bas-Montreuil",
           },
@@ -506,7 +506,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Montreuil take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in secured IT environments or financial back-offices?",

@@ -36,8 +36,8 @@ export const SCEAUX_COPY: VilleCopy = {
       en: "Audit sur place 4h à Sceaux pour TPE et PME des Hauts-de-Seine — diagnostic des processus de cabinet (juridique, comptable, conseil), facturation, gestion clients et CRM. À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention Essentielle sur site à Sceaux pour automatiser un goulot précis (relecture documents juridiques, génération de devis cabinet, suivi mandats). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours via RER B.",
-      en: "Intervention Essentielle sur site à Sceaux pour automatiser un goulot précis (relecture documents juridiques, génération de devis cabinet, suivi mandats). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours via RER B.",
+      fr: "Intervention sur site à Sceaux pour automatiser un goulot précis (relecture documents juridiques, génération de devis cabinet, suivi mandats). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours via RER B.",
+      en: "Intervention sur site à Sceaux pour automatiser un goulot précis (relecture documents juridiques, génération de devis cabinet, suivi mandats). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours via RER B.",
     },
     implementation: {
       fr: "Implémentation IA code-first à Sceaux : intégration outils métier (logiciels juridiques, comptables, CRM), agents internes, automatisations pour cabinets et commerces. À partir de {{price:impl-poc|entry}}.",

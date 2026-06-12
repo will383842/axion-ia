@@ -327,7 +327,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         whyHere: [
           "Le tissu TPE/PME argenteuillais est l'environnement idéal pour les interventions IA : entreprises de taille humaine où chaque collaborateur formé multiplie immédiatement l'impact sur la productivité collective.",
           "Tous les quartiers et zones d'activités couverts en présentiel : centre-ville, Parc du Val d'Argent, zone industrielle, quartiers résidentiels et communes du bassin (Bezons, Sartrouville, Colombes).",
-          "Le format Essentielle est calibré pour les structures argenteuillaises de quelques personnes à une centaine de collaborateurs — PME du BTP, commerces de gros, agences de services.",
+          "Le format collectif (1 journée) est calibré pour les structures argenteuillaises de quelques personnes à une centaine de collaborateurs — PME du BTP, commerces de gros, agences de services.",
           "Le format Conférence convient aux plénières d'entreprise du Val-d'Oise (salles de séminaire d'Argenteuil, espaces CCI).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des PME et ETI locales ou des groupes présents dans le bassin.",
           "Vocabulaire ajusté à votre secteur dominant : commerce, BTP, logistique, services aux entreprises, administration. Pas de session générique recyclée.",
@@ -362,15 +362,15 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour commerçants, artisans, indépendants et petites agences argenteuillaises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — conducteurs de travaux, service commercial, administration — particulièrement efficace pour les PME BTP du Val-d'Oise.",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département — conducteurs de travaux, service commercial, administration — particulièrement efficace pour les PME BTP du Val-d'Oise.",
           },
           {
             sizeLabel: "ETI",
@@ -388,7 +388,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de notre équipe commerciale. Ils sont repartis avec ChatGPT et Claude configurés sur leurs vrais emails clients. Dès le lendemain, les devis sortaient deux fois plus vite.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de notre équipe commerciale. Ils sont repartis avec ChatGPT et Claude configurés sur leurs vrais emails clients. Dès le lendemain, les devis sortaient deux fois plus vite.",
             role: "Directeur commercial",
             companyProfile: "PME BTP, Val-d'Oise",
           },
@@ -402,7 +402,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Argenteuil ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements BTP ou entrepôts logistiques ?",
@@ -433,7 +433,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         whyHere: [
           "Argenteuil's SME and micro-business fabric is the ideal environment for AI sessions: human-scale firms where every trained staff member immediately multiplies the impact on collective productivity.",
           "All districts and business zones covered in person: town centre, Val d'Argent business park, industrial zone, residential areas and basin communes (Bezons, Sartrouville, Colombes).",
-          "The Essential format is calibrated for Argenteuil structures from a few people to about a hundred staff — construction SMEs, wholesale traders, service agencies.",
+          "The one-day format is calibrated for Argenteuil structures from a few people to about a hundred staff — construction SMEs, wholesale traders, service agencies.",
           "The Talk format suits Val-d'Oise corporate plenaries (Argenteuil seminar rooms, CCI spaces).",
           "The Executives format enables in-camera framing for local SME and mid-cap executive committees or basin-based groups.",
           "Vocabulary adjusted to your dominant sector: commerce, construction, logistics, business services, administration. No recycled generic session.",
@@ -468,15 +468,15 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group training",
             detail:
               "Ideal for Argenteuil traders, craftspeople, freelancers and small agencies up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — site supervisors, sales, admin — particularly effective for Val-d'Oise construction SMEs.",
+              "Group format for the whole group or Teams to focus on one department — site supervisors, sales, admin — particularly effective for Val-d'Oise construction SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -494,7 +494,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our sales team's needs. They left with ChatGPT and Claude configured on their real client emails. By the next day, quotes were coming out twice as fast.",
+              "The one-day format perfectly matched our sales team's needs. They left with ChatGPT and Claude configured on their real client emails. By the next day, quotes were coming out twice as fast.",
             role: "Sales Director",
             companyProfile: "Construction SME, Val-d'Oise",
           },
@@ -508,7 +508,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Argenteuil take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in construction or logistics warehouse environments?",

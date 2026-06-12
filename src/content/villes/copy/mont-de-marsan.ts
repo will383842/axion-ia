@@ -229,7 +229,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Mont-de-Marsan ?",
-      a: "Nos interventions IA à Mont-de-Marsan démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
+      a: "Nos interventions IA à Mont-de-Marsan démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
       q: "William se déplace-t-il à Mont-de-Marsan ?",

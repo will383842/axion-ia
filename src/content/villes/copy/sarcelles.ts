@@ -235,7 +235,7 @@ export const SARCELLES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Sarcelles ?",
-      a: "Pour les TPE et PME de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les TPE et PME de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",

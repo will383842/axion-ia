@@ -228,7 +228,7 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Cherbourg-en-Cotentin ?",
-      a: "Nos tarifs publics commencent à {{price:intervention-4h|flat}} pour une Intervention Essentielle, et {{price:intervention-4h|flat}} pour un Audit sur place IA. Les tarifs détaillés (audit, interventions, implémentation, un-à-un) figurent sur la page tarifs publics du site Axion-IA.",
+      a: "Nos tarifs publics commencent à {{price:intervention-4h|flat}} pour une intervention en format collectif, et {{price:intervention-4h|flat}} pour un Audit sur place IA. Les tarifs détaillés (audit, interventions, implémentation, un-à-un) figurent sur la page tarifs publics du site Axion-IA.",
     },
     {
       q: "Quels délais pour une intervention sur site à Cherbourg-en-Cotentin ?",

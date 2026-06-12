@@ -36,8 +36,8 @@ export const FORBACH_COPY: VilleCopy = {
       en: "Audit sur place 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Intervention Essentielle sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Intervention en groupe sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      en: "Intervention en groupe sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
       fr: "Implémentation IA code-first à Forbach : intégrations API métier, agents internes multilingues FR/DE, automatisations pour commerces, industries et services. À partir de {{price:impl-poc|entry}}.",

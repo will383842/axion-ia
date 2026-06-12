@@ -296,7 +296,7 @@ export const ORLEANS_COPY: VilleCopy = {
         whyHere: [
           "Orléans est un terrain d'intervention B2B diversifié : laboratoires cosmétiques et pharmaceutiques, direction industrielle John Deere, équipes R&D BRGM et INRAE, PME numériques du LAB'O et startups French Tech Loire Valley.",
           "Toutes les communes de l'agglomération couvertes en présentiel : centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet, Fleury-les-Aubrais et La Chapelle-Saint-Mesmin.",
-          "Le format Essentielle est calibré pour les structures orléanaises de quelques personnes à une centaine de collaborateurs — laboratoires, PME numérique, cabinets conseil, agences.",
+          "Le format collectif (1 journée) est calibré pour les structures orléanaises de quelques personnes à une centaine de collaborateurs — laboratoires, PME numérique, cabinets conseil, agences.",
           "Le format Conférence convient aux plénières d'entreprise (CO'Met Orléans, auditoriums Le LAB'O, salles de séminaire agglomération).",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction des ETI cosmétiques, pharmaceutiques ou industrielles.",
           "Vocabulaire ajusté à votre secteur dominant : cosmétique, pharma/BPF, géosciences, agro-machinisme, numérique. Pas de session générique recyclée.",
@@ -331,15 +331,15 @@ export const ORLEANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets et petites agences orléanaises jusqu'à une dizaine de collaborateurs — centre-ville, La Source, Olivet.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — R&D, qualité, réglementaire, commercial, finance — particulièrement efficace pour les PME cosmétiques et numériques du LAB'O.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — R&D, qualité, réglementaire, commercial, finance — particulièrement efficace pour les PME cosmétiques et numériques du LAB'O.",
           },
           {
             sizeLabel: "ETI",
@@ -357,7 +357,7 @@ export const ORLEANS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "La session Essentielle a parfaitement collé aux attentes de nos équipes réglementaires. Ils sont repartis avec leurs outils configurés sur leurs vrais dossiers. Dès le lendemain, plusieurs rédigeaient leurs rapports deux fois plus vite.",
+              "La formation collective a parfaitement collé aux attentes de nos équipes réglementaires. Ils sont repartis avec leurs outils configurés sur leurs vrais dossiers. Dès le lendemain, plusieurs rédigeaient leurs rapports deux fois plus vite.",
             role: "Responsable affaires réglementaires",
             companyProfile: "PME pharmaceutique, Saint-Jean-de-Braye",
           },
@@ -371,7 +371,7 @@ export const ORLEANS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Orléans ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements de laboratoire pharmaceutique ou cosmétique ?",
@@ -402,7 +402,7 @@ export const ORLEANS_COPY: VilleCopy = {
         whyHere: [
           "Orléans is a diverse B2B engagement ground: cosmetics and pharma labs, John Deere industrial management, BRGM and INRAE R&D teams, LAB'O digital SMEs and French Tech Loire Valley startups.",
           "All agglomération communes covered in person: city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet, Fleury-les-Aubrais and La Chapelle-Saint-Mesmin.",
-          "The Essential format is calibrated for Orléans structures from a few people to about a hundred staff — labs, digital SMEs, consulting firms, agencies.",
+          "The group format is calibrated for Orléans structures from a few people to about a hundred staff — labs, digital SMEs, consulting firms, agencies.",
           "The Talk format suits corporate plenaries (CO'Met Orléans, LAB'O auditoriums, agglomération seminar rooms).",
           "The Executives format enables in-camera strategic framing for cosmetics, pharma or industrial mid-cap executive committees.",
           "Vocabulary adjusted to your dominant sector: cosmetics, pharma/GMP, geosciences, agri-machinery, digital. No recycled generic session.",
@@ -437,15 +437,15 @@ export const ORLEANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Orléans freelancers, practices and small agencies up to about ten staff — city centre, La Source, Olivet.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — R&D, quality, regulatory, sales, finance — particularly effective for LAB'O cosmetics and digital SMEs.",
+              "Group format for the whole group or Teams to focus on one department — R&D, quality, regulatory, sales, finance — particularly effective for LAB'O cosmetics and digital SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -463,7 +463,7 @@ export const ORLEANS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our regulatory team's needs. They left with tools configured for their real dossiers. By the next day, several were drafting reports twice as fast.",
+              "The group format perfectly matched our regulatory team's needs. They left with tools configured for their real dossiers. By the next day, several were drafting reports twice as fast.",
             role: "Head of Regulatory Affairs",
             companyProfile: "Pharmaceutical SME, Saint-Jean-de-Braye",
           },
@@ -477,7 +477,7 @@ export const ORLEANS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Orléans take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The group format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in pharma or cosmetics laboratory environments?",

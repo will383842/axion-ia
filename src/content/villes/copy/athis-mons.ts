@@ -235,7 +235,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Athis-Mons ?",
-      a: "Pour les TPE et PME d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les TPE et PME d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",

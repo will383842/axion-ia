@@ -231,7 +231,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Aubervilliers ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. L'Intervention Essentielle débute à {{price:intervention-4h|flat}}. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. La formation collective débute à {{price:intervention-4h|flat}}. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour un audit IA à Aubervilliers ?",

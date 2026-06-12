@@ -305,7 +305,7 @@ export const ANGERS_COPY: VilleCopy = {
         whyHere: [
           "Angers couvre des secteurs variés avec des besoins IA très différents : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, commerciaux TPE tertiaire, équipes viticulture Anjou. Nos sessions sont calibrées pour chacun de ces profils — pas de format générique recyclé.",
           "L'ensemble de la métropole Angers Loire Métropole est couvert en présentiel : centre-ville, Belle-Beille (Eviden/Atos, ESEO), Saint-Barthélemy-d'Anjou (Cointreau, ESAIP), Beaucouzé, zone Scania, et les communes du bassin.",
-          "Le format Essentielle est particulièrement adapté aux PME et ETI industrielles angevines souhaitant former plusieurs équipes en parallèle (production, commercial, R&D, support).",
+          "Le format collectif (1 journée) est particulièrement adapté aux PME et ETI industrielles angevines souhaitant former plusieurs équipes en parallèle (production, commercial, R&D, support).",
           "Le format Conférence convient aux grandes plénières d'entreprise dans les salles de réunion de la métropole ou au Parc des expositions d'Angers (SIVAL et événements B2B).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI et grandes entreprises angevines.",
           "Vocabulaire ajusté à votre secteur dominant : végétal, industriel, défense, spiritueux, viticulture, numérique. Aucune session générique recyclée.",
@@ -340,15 +340,15 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour les indépendants, TPE numériques, startups French Tech Angers et petits prestataires de la filière végétale jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour la structure entière ou Équipes pour un département ciblé (R&D végétal, production industrielle, commercial, support).",
+              "Formation collective pour la structure entière ou Équipes pour un département ciblé (R&D végétal, production industrielle, commercial, support).",
           },
           {
             sizeLabel: "ETI",
@@ -366,7 +366,7 @@ export const ANGERS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement adapté à notre équipe R&D filière végétale : démos concrètes sur nos vrais documents techniques. Nos ingénieurs utilisaient les outils installés dès le lendemain matin sur leurs rapports d'expérimentation.",
+              "Formation collective parfaitement calibrée pour notre équipe R&D filière végétale : démos concrètes sur nos vrais documents techniques. Nos ingénieurs utilisaient les outils installés dès le lendemain matin sur leurs rapports d'expérimentation.",
             role: "Directrice R&D",
             companyProfile: "ETI filière végétale, Angers Loire Métropole",
           },
@@ -380,7 +380,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Angers ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats sur plusieurs sites de la métropole angevine, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats sur plusieurs sites de la métropole angevine, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous adapter le contenu à la filière végétale ou à l'industrie angevine ?",
@@ -388,7 +388,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes — y compris dans les grandes salles du Parc des expositions d'Angers.",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes — y compris dans les grandes salles du Parc des expositions d'Angers.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -411,7 +411,7 @@ export const ANGERS_COPY: VilleCopy = {
         whyHere: [
           "Angers spans diverse sectors with very different AI needs: Vegepolys Valley R&D engineers, Scania/Eviden/Thales technicians, micro-business services staff, Anjou viticulture teams. Our sessions are calibrated for each profile — no recycled generic format.",
           "The full Angers Loire Métropole is covered on site: city centre, Belle-Beille (Eviden/Atos, ESEO), Saint-Barthélemy-d'Anjou (Cointreau, ESAIP), Beaucouzé, Scania zone, and surrounding municipalities.",
-          "The Essential format is particularly suited to Angers industrial SMEs and mid-caps wishing to train several teams in parallel (production, sales, R&D, support).",
+          "The one-day format is particularly suited to Angers industrial SMEs and mid-caps wishing to train several teams in parallel (production, sales, R&D, support).",
           "The Talk format suits large corporate plenaries in Angers metro meeting rooms or the Parc des expositions (SIVAL and B2B events).",
           "The Executives format enables in-camera framing for Angers mid-cap and large-enterprise executive committees.",
           "Vocabulary adjusted to your dominant sector: plant, industrial, defence, spirits, viticulture, digital. No recycled generic session.",
@@ -446,15 +446,15 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for freelancers, digital micro-firms, French Tech Angers startups and small plant-sector providers up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole structure or Teams to focus on one department (plant R&D, industrial production, sales, support).",
+              "Group format for the whole structure or Teams to focus on one department (plant R&D, industrial production, sales, support).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -472,7 +472,7 @@ export const ANGERS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly adapted to our plant-industry R&D team: concrete demos on our real technical documents. Our engineers were using the installed tools from the very next morning on their experimental reports.",
+              "Group training perfectly adapted to our plant-industry R&D team: concrete demos on our real technical documents. Our engineers were using the installed tools from the very next morning on their experimental reports.",
             role: "R&D Director",
             companyProfile: "Plant-industry mid-cap, Angers Loire Métropole",
           },
@@ -486,7 +486,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Angers take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program across several Angers metro sites, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program across several Angers metro sites, the rhythm is defined together at framing.",
           },
           {
             q: "Can you adapt content to the plant industry or Angers manufacturing sector?",
@@ -494,7 +494,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops — including in large rooms at the Parc des expositions d'Angers.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops — including in large rooms at the Parc des expositions d'Angers.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

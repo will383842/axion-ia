@@ -37,8 +37,8 @@ export const GRIGNY_COPY: VilleCopy = {
       en: "Audit sur place IA à Grigny dès {{price:audit-flash|flat}} — 4 heures pour identifier 3 à 5 automatisations prioritaires dans le commerce, le transport ou la construction.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Grigny dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
-      en: "Intervention Essentielle à Grigny dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
+      fr: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
+      en: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les TPE et PME de l'Essonne.",
@@ -229,7 +229,7 @@ export const GRIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention à Grigny ?",
-      a: "Les interventions à Grigny démarrent à {{price:intervention-4h|flat}} pour une Intervention Essentielle sur site. L'Audit sur place 4 heures débute à {{price:audit-flash|flat}} et l'accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
+      a: "Les interventions à Grigny démarrent à {{price:intervention-4h|flat}} pour une formation collective sur site. L'Audit sur place 4 heures débute à {{price:audit-flash|flat}} et l'accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
     },
     {
       q: "Combien de temps pour un audit à Grigny ?",

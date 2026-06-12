@@ -36,8 +36,8 @@ export const MONTAUBAN_COPY: VilleCopy = {
       en: "Audit sur place 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention Essentielle sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
-      en: "Intervention Essentielle sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
+      fr: "Formation collective sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
+      en: "Group training sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
     },
     implementation: {
       fr: "Implémentation IA code-first à Montauban : intégration API métier, agents internes, automatisations pour PME du commerce Albasud, BTP, transport-logistique A20. À partir de {{price:impl-poc|entry}}.",

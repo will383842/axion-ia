@@ -299,7 +299,7 @@ export const METZ_COPY: VilleCopy = {
         whyHere: [
           "Metz est l'un de nos principaux terrains d'intervention en Grand Est : entreprises industrielles, services bancaires, PME numÃ©riques du TechnopÃ´le et structures publiques reprÃ©sentent une part significative de nos sessions messines.",
           "Toutes les zones de l'EuromÃ©tropole couvertes en prÃ©sentiel : Metz centre, TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy, Marly, Longeville-lÃ¨s-Metz.",
-          "Le format Essentielle est calibrÃ© pour les structures messines de quelques personnes Ã  une centaine de collaborateurs, en particulier les PME numÃ©riques du TechnopÃ´le et les cabinets du quartier ImpÃ©rial.",
+          "Le format collectif (1 journÃ©e) est calibrÃ© pour les structures messines de quelques personnes Ã  une centaine de collaborateurs, en particulier les PME numÃ©riques du TechnopÃ´le et les cabinets du quartier ImpÃ©rial.",
           "Le format ConfÃ©rence convient aux plÃ©niÃ¨res d'entreprise messines (salles Metz Expo, espaces Centre Pompidou-Metz, auditoriums du TechnopÃ´le).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comitÃ©s de direction des ETI industrielles et bancaires, avec prise en compte des enjeux transfrontaliers Luxembourg si pertinent.",
           "Vocabulaire ajustÃ© Ã  votre secteur dominant : industrie automobile, finance, numÃ©rique, collectivitÃ©s, commerce transfrontalier. Pas de session gÃ©nÃ©rique recyclÃ©e.",
@@ -334,15 +334,15 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "IdÃ©al pour indÃ©pendants, cabinets et petites agences messines jusqu'Ã  une dizaine de collaborateurs â€” centre-ville, quartier ImpÃ©rial, ÃŽle du Saulcy.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Ã‰quipes",
+            price: "Formation collective ou Ã‰quipes",
             detail:
-              "Essentielle pour le groupe entier ou Ã‰quipes pour focaliser sur un dÃ©partement â€” efficace pour les PME numÃ©riques du TechnopÃ´le Metz 2000.",
+              "Formation collective pour le groupe entier ou Ã‰quipes pour focaliser sur un dÃ©partement â€” efficace pour les PME numÃ©riques du TechnopÃ´le Metz 2000.",
           },
           {
             sizeLabel: "ETI",
@@ -360,7 +360,7 @@ export const METZ_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a collÃ© aux attentes de nos Ã©quipes opÃ©rationnelles. Repartis avec leurs outils configurÃ©s sur leurs vrais cas d'usage. DÃ¨s le lendemain, plusieurs les utilisaient pour rÃ©diger des comptes-rendus.",
+              "Le format collectif (1 journÃ©e) a collÃ© aux attentes de nos Ã©quipes opÃ©rationnelles. Repartis avec leurs outils configurÃ©s sur leurs vrais cas d'usage. DÃ¨s le lendemain, plusieurs les utilisaient pour rÃ©diger des comptes-rendus.",
             role: "Directeur des opÃ©rations",
             companyProfile: "PME services, TechnopÃ´le Metz 2000",
           },
@@ -374,7 +374,7 @@ export const METZ_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA Ã  Metz ?",
-            a: "Cela dÃ©pend du format. L'Essentielle se dÃ©roule sur une journÃ©e, l'Approfondie sur deux journÃ©es consÃ©cutives. La ConfÃ©rence et le format Dirigeants tiennent sur une journÃ©e. Pour un programme multi-formats, le rythme est dÃ©fini ensemble en cadrage.",
+            a: "Cela dÃ©pend du format. Le format collectif se dÃ©roule sur une journÃ©e, le format approfondi sur deux journÃ©es consÃ©cutives. La ConfÃ©rence et le format Dirigeants tiennent sur une journÃ©e. Pour un programme multi-formats, le rythme est dÃ©fini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements industriels de l'EuromÃ©tropole ?",
@@ -405,7 +405,7 @@ export const METZ_COPY: VilleCopy = {
         whyHere: [
           "Metz is one of our top engagement grounds in Grand Est: industrial firms, banking services, TechnopÃ´le digital SMEs and public administration represent a significant share of our Metz sessions.",
           "All EuromÃ©tropole zones covered in person: Metz city centre, TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy, Marly, Longeville-lÃ¨s-Metz.",
-          "The Essential format is calibrated for Metz structures from a few people to about a hundred staff, particularly digital SMEs on the TechnopÃ´le and consulting firms in the Quartier ImpÃ©rial.",
+          "The group format is calibrated for Metz structures from a few people to about a hundred staff, particularly digital SMEs on the TechnopÃ´le and consulting firms in the Quartier ImpÃ©rial.",
           "The Talk format suits Metz corporate plenaries (Metz Expo rooms, Centre Pompidou-Metz spaces, TechnopÃ´le auditoriums).",
           "The Executives format enables in-camera framing for industrial and banking mid-cap executive committees, including cross-border Luxembourg considerations where relevant.",
           "Vocabulary adjusted to your dominant sector: automotive industry, finance, digital, public administration, cross-border trade. No recycled generic session.",
@@ -440,15 +440,15 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Metz freelancers, practices and small agencies up to about ten staff â€” city centre, Quartier ImpÃ©rial, ÃŽle du Saulcy.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department â€” particularly effective for digital SMEs at TechnopÃ´le Metz 2000.",
+              "Group format for the whole group or Teams to focus on one department â€” particularly effective for digital SMEs at TechnopÃ´le Metz 2000.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -466,7 +466,7 @@ export const METZ_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format matched our operational teams' expectations. They left with tools configured for their real use cases. By the next day, several were already using them to write reports.",
+              "The group format matched our operational teams' expectations. They left with tools configured for their real use cases. By the next day, several were already using them to write reports.",
             role: "Operations Director",
             companyProfile: "Services SME, TechnopÃ´le Metz 2000",
           },
@@ -480,7 +480,7 @@ export const METZ_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Metz take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in EuromÃ©tropole industrial environments?",
@@ -868,7 +868,7 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential programme",
+            price: "Entry-level programme",
             detail:
               "Ideal for Metz freelancers and micro-business owners looking to integrate AI into their daily activity without mobilising a whole team.",
           },

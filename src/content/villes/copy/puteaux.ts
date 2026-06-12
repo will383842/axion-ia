@@ -36,8 +36,8 @@ export const PUTEAUX_COPY: VilleCopy = {
       en: "Audit sur place IA à Puteaux dès {{price:audit-flash|flat}} — William se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
-      en: "Intervention Essentielle à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
+      fr: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
+      en: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
     },
     implementation: {
       fr: "Implémentation IA sur site à Puteaux dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
@@ -236,7 +236,7 @@ export const PUTEAUX_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Puteaux ?",
-      a: "Pour une TPE ou PME implantée à Puteaux, l'Audit sur place est planifiable sous 5 jours ouvrés. Une Intervention Essentielle démarre sous 10 à 15 jours selon périmètre.",
+      a: "Pour une TPE ou PME implantée à Puteaux, l'Audit sur place est planifiable sous 5 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon périmètre.",
     },
     {
       q: "Couvrez-vous les communes proches de Puteaux ?",

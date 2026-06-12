@@ -217,8 +217,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? `Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}). Pas d'investissement custom à ce stade.`
-                    : `Default recommendation: generic SaaS or short consultancy mission (Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}). No custom investment at this stage.`}
+                    ? `Recommandation par défaut : SaaS générique ou cabinet en mission courte (formation collective ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}). Pas d'investissement custom à ce stade.`
+                    : `Default recommendation: generic SaaS or short consultancy mission (group training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}). No custom investment at this stage.`}
                 </p>
               </CardContent>
             </Card>
@@ -287,15 +287,12 @@ export default async function ComparisonsListPage({ params }: Props) {
         title={isFr ? "Une décision IA à prendre ?" : "An AI decision to make?"}
         description={
           isFr
-            ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} : on cartographie votre situation et on tranche sur vos données, pas sur des slides.`
-            : `Book the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}: we map your situation and decide on your data, not on slides.`
+            ? `Réservez notre formation en groupe ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} : on cartographie votre situation et on tranche sur vos données, pas sur des slides.`
+            : `Book our group training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}: we map your situation and decide on your data, not on slides.`
         }
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            {isFr
-              ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-              : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}{" "}
-            â†’
+          <Cta href="/formations" size="lg">
+            {isFr ? "Voir nos formations" : "See our trainings"} â†’
           </Cta>
         }
         tone="dark"

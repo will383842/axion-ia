@@ -35,8 +35,8 @@ export const HALLUIN_COPY: VilleCopy = {
       en: "L'Audit sur place 4h à Halluin cartographie les processus d'un opérateur logistique cross-border, d'un acteur de la valorisation déchets ou d'un commerce de la zone des Cinq-Voies, et identifie les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Les Interventions Essentielles à Halluin ciblent les déclarations DEB intracommunautaires, le suivi de tournées camion vers la Belgique, et l'automatisation des relances B2B — code sur mesure, versionné, repris par votre équipe IT.",
-      en: "Les Interventions Essentielles à Halluin ciblent les déclarations DEB intracommunautaires, le suivi de tournées camion vers la Belgique, et l'automatisation des relances B2B — code sur mesure, versionné, repris par votre équipe IT.",
+      fr: "Les formations collectives à Halluin ciblent les déclarations DEB intracommunautaires, le suivi de tournées camion vers la Belgique, et l'automatisation des relances B2B — code sur mesure, versionné, repris par votre équipe IT.",
+      en: "Les formations collectives à Halluin ciblent les déclarations DEB intracommunautaires, le suivi de tournées camion vers la Belgique, et l'automatisation des relances B2B — code sur mesure, versionné, repris par votre équipe IT.",
     },
     implementation: {
       fr: "L'implémentation à Halluin raccorde les briques IA aux WMS, TMS et ERP existants (SAP, Sage X3, Akanea, AS400) sans dépendance à une plateforme no-code. Compatible des contraintes RGPD/GDPR cross-border.",

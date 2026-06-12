@@ -35,8 +35,8 @@ export const CAHORS_COPY: VilleCopy = {
       en: "L'Audit sur place 4h à Cahors cartographie les processus métier d'un domaine viticole, d'un restaurant du centre historique ou d'un commerce de la rue du Maréchal-Joffre, et chiffre les heures récupérables par automatisation.",
     },
     interventions: {
-      fr: "Les Interventions Essentielles à Cahors ciblent la facturation viticole, les relances clients dans le commerce de proximité et la prise de réservation restauration — livrées avec du code Python/TypeScript versionné.",
-      en: "Les Interventions Essentielles à Cahors ciblent la facturation viticole, les relances clients dans le commerce de proximité et la prise de réservation restauration — livrées avec du code Python/TypeScript versionné.",
+      fr: "Les formations collectives à Cahors ciblent la facturation viticole, les relances clients dans le commerce de proximité et la prise de réservation restauration — livrées avec du code Python/TypeScript versionné.",
+      en: "Les formations collectives à Cahors ciblent la facturation viticole, les relances clients dans le commerce de proximité et la prise de réservation restauration — livrées avec du code Python/TypeScript versionné.",
     },
     implementation: {
       fr: "L'implémentation à Cahors raccorde les outils IA à la stack existante d'une PME du Lot (Sage, EBP, Shopify viticole, caisse Lightspeed) sans dépendance à un éditeur SaaS no-code.",

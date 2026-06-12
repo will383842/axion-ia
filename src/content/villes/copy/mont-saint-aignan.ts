@@ -229,7 +229,7 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Mont-Saint-Aignan ?",
-      a: "L'Intervention Essentielle débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Paris (1h25 en train via gare Rouen Rive-Droite) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
+      a: "La formation collective débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Paris (1h25 en train via gare Rouen Rive-Droite) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Mont-Saint-Aignan ?",

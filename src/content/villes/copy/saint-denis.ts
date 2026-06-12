@@ -138,7 +138,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
   whyHere: [
     "Saint-Denis et sa Plaine concentrent des profils opérationnels très variés — logisticiens, techniciens de studio, conducteurs de travaux, agents ESS — pour lesquels un outillage IA immédiat sur leur poste génère un gain de temps mesurable dès le lendemain.",
     "Toute la commune et l'intercommunalité Plaine Commune couverts en présentiel : Plaine Saint-Denis, Stade de France, centre-ville, Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte.",
-    "Le format Essentielle est calibré pour les structures dyonisiennes de quelques personnes à une centaine de collaborateurs — PME logistiques, studios créatifs, agences, associations.",
+    "Le format collectif (1 journée) est calibré pour les structures dyonisiennes de quelques personnes à une centaine de collaborateurs — PME logistiques, studios créatifs, agences, associations.",
     "Le format Conférence convient aux plénières d'entreprise dans les espaces événementiels de la Plaine ou du Stade de France.",
     "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI logistiques et audiovisuelles implantées à Saint-Denis.",
     "Vocabulaire ajusté à votre secteur dominant : logistique, audiovisuel, BTP, services publics, ESS. Pas de session générique recyclée.",
@@ -173,15 +173,15 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
   pricing: [
     {
       sizeLabel: "TPE",
-      price: "Format Essentielle",
+      price: "Formation collective",
       detail:
         "Idéal pour indépendants, studios créatifs et petites structures dyonisiennes jusqu'à une dizaine de collaborateurs — ESS, agences, artisans.",
     },
     {
       sizeLabel: "PME",
-      price: "Format Essentielle ou Équipes",
+      price: "Format collectif ou Équipes",
       detail:
-        "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — logistique, production, commercial, finance — particulièrement efficace pour les PME de la Plaine Saint-Denis.",
+        "Format collectif pour le groupe entier ou Équipes pour focaliser sur un département — logistique, production, commercial, finance — particulièrement efficace pour les PME de la Plaine Saint-Denis.",
     },
     {
       sizeLabel: "ETI",
@@ -199,7 +199,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
   testimonials: [
     {
       quote:
-        "Le format Essentielle a parfaitement collé aux attentes de notre équipe logistique. Ils sont repartis avec leurs outils configurés sur les vrais bons de livraison. Dès le lendemain, le traitement des anomalies de stock prenait deux fois moins de temps.",
+        "Le format collectif (1 journée) a parfaitement collé aux attentes de notre équipe logistique. Ils sont repartis avec leurs outils configurés sur les vrais bons de livraison. Dès le lendemain, le traitement des anomalies de stock prenait deux fois moins de temps.",
       role: "Responsable entrepôt",
       companyProfile: "PME logistique, Plaine Saint-Denis",
     },
@@ -213,7 +213,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
   faq: [
     {
       q: "Combien de temps dure une intervention Axion-IA à Saint-Denis ?",
-      a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+      a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou des studios de tournage ?",

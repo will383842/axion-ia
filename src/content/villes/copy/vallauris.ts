@@ -37,8 +37,8 @@ export const VALLAURIS_COPY: VilleCopy = {
       en: "Audit sur place IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
     },
     interventions: {
-      fr: "Intervention Essentielle à Vallauris dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
-      en: "Intervention Essentielle à Vallauris dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
+      fr: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
+      en: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
@@ -229,11 +229,11 @@ export const VALLAURIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour un audit à Vallauris ?",
-      a: "Nos audits à Vallauris débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site. L'Intervention Essentielle démarre à {{price:intervention-4h|flat}} et l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
+      a: "Nos audits à Vallauris débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site. La formation collective démarre à {{price:intervention-4h|flat}} et l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
     },
     {
       q: "Comment se déroule une intervention IA à Vallauris ?",
-      a: "William se déplace à Vallauris depuis l'aéroport Nice-Côte d'Azur (20 km) ou par l'A8, généralement sous 5 jours ouvrés. L'Intervention Essentielle (dès {{price:intervention-4h|flat}}) cible un workflow concret : facturation, planning, relances, intégration CRM.",
+      a: "William se déplace à Vallauris depuis l'aéroport Nice-Côte d'Azur (20 km) ou par l'A8, généralement sous 5 jours ouvrés. La formation collective (dès {{price:intervention-4h|flat}}) cible un workflow concret : facturation, planning, relances, intégration CRM.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Vallauris ?",

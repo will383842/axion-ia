@@ -36,8 +36,8 @@ export const FONTAINE_COPY: VilleCopy = {
       en: "Audit sur place à Fontaine pour les PME industrielles des zones Vouillants, Les Plans et L'Argentière : cartographie des processus à automatiser, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation à Fontaine d'agents IA en code custom reliés à votre ERP métier, dès {{price:impl-poc|entry}}.",

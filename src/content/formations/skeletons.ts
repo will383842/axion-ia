@@ -86,9 +86,9 @@ const ESSENTIELLE_PROGRAMME: FormationProgramme = {
   titleFr: "Déroulement de la journée",
   titleEn: "Day-by-day breakdown",
   introFr:
-    "Programme type d'une journée Essentielle (9 h – 17 h). Identique pour toutes les entreprises : des ressources pédagogiques standardisées remises en fin de journée pour être réutilisées dès le lendemain.",
+    "Programme type d'une journée de formation collective (9 h – 17 h). Identique pour toutes les entreprises : des ressources pédagogiques standardisées remises en fin de journée pour être réutilisées dès le lendemain.",
   introEn:
-    "Standard programme for the Essential day (9 a.m. – 5 p.m.). Identical for every company: standardised learning takeaways shared at end of day, ready to reuse the next morning.",
+    "Standard programme for the group training day (9 a.m. – 5 p.m.). Identical for every company: standardised learning takeaways shared at end of day, ready to reuse the next morning.",
   days: [
     {
       items: [

@@ -230,7 +230,7 @@ export const MONTROUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Montrouge ?",
-      a: "Tarifs publics identiques partout en France : Audit sur place 4 h à {{price:audit-flash|flat}}, Intervention Essentielle sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
+      a: "Tarifs publics identiques partout en France : Audit sur place 4 h à {{price:audit-flash|flat}}, formation collective sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
     },
     {
       q: "Quels délais d'intervention sur Montrouge ?",

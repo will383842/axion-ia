@@ -18,7 +18,6 @@ import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/l
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { splitTitleEm } from "@/lib/title";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -225,12 +224,12 @@ export default async function CaseStudyPage({ params }: Props) {
         title={isFr ? "Démarrez votre propre cas concret" : "Start your own case study"}
         description={
           isFr
-            ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pose le diagnostic + le plan d'action chiffré.`
-            : `The Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} frames the diagnostic and the costed action plan.`
+            ? `Le format collectif (1 journée) pose le diagnostic + le plan d'action chiffré.`
+            : `The group format (one day) frames the diagnostic and the costed action plan.`
         }
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Réserver l'Essentielle" : "Book the Essential"} →
+          <Cta href="/formations" size="lg">
+            {isFr ? "Voir nos formations" : "See our trainings"} →
           </Cta>
         }
         tone="dark"

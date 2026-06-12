@@ -19,7 +19,6 @@ import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
@@ -517,13 +516,11 @@ export default async function BlogArticle({ params }: Props) {
       <CtaBlock
         title={isFr ? "Mettre en pratique" : "Put it to work"}
         description={
-          isFr
-            ? `Démarrez par une intervention Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}.`
-            : `Start with an Essential session ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}.`
+          isFr ? `Démarrez par notre formation en groupe.` : `Start with our group training.`
         }
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle" : "See the Essential"} →
+          <Cta href="/formations" size="lg">
+            {isFr ? "Voir nos formations" : "See our trainings"} →
           </Cta>
         }
         tone="dark"

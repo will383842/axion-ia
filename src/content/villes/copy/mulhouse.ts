@@ -332,7 +332,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         whyHere: [
           "Mulhouse est un terrain d'intervention industriel de premier plan pour Axion-IA : ETI et PME automobiles (Stellantis, équipementiers Île Napoléon), ingénieries (Clemessy), acteurs numérique (KMØ) et entreprises transfrontalières représentent une part significative de nos sessions.",
           "Toutes les zones du bassin couvertes en présentiel : centre-ville, Parc des Collines, Technoparc Bourtzwiller, Île Napoléon, Quartier DMC et communes (Riedisheim, Kingersheim, Illzach, Pfastatt).",
-          "Le format Essentielle est calibré pour les structures mulhousiennes de quelques personnes à une centaine de collaborateurs, en particulier les PME industrielles et les bureaux d'études.",
+          "Le format collectif (1 journée) est calibré pour les structures mulhousiennes de quelques personnes à une centaine de collaborateurs, en particulier les PME industrielles et les bureaux d'études.",
           "Le format Conférence convient aux plénières d'entreprise mulhousiennes et aux événements du Parc Expo ou du KMØ.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des groupes transfrontaliers.",
           "Vocabulaire ajusté à votre secteur dominant : automobile, industrie/mécatronique, chimie/matériaux, numérique, services B2B. Dimension transfrontalière intégrée si pertinente.",
@@ -367,15 +367,15 @@ export const MULHOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets et petites structures mulhousiennes jusqu'à une dizaine de collaborateurs — centre-ville, Quartier DMC, Bourtzwiller.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — production, qualité, R&D, commerce, finance — particulièrement efficace pour les PME industrielles et sous-traitants automobile.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — production, qualité, R&D, commerce, finance — particulièrement efficace pour les PME industrielles et sous-traitants automobile.",
           },
           {
             sizeLabel: "ETI",
@@ -393,7 +393,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement répondu aux attentes de nos ingénieurs. Ils sont repartis avec leurs outils configurés sur leurs vrais documents techniques. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus et analyser des plans.",
+              "Le format collectif (1 journée) a parfaitement répondu aux attentes de nos ingénieurs. Ils sont repartis avec leurs outils configurés sur leurs vrais documents techniques. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus et analyser des plans.",
             role: "Directeur technique",
             companyProfile: "PME bureau d'études, bassin mulhousien",
           },
@@ -407,7 +407,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Mulhouse ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements industriels ou ateliers de production ?",
@@ -438,7 +438,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         whyHere: [
           "Mulhouse is a prime industrial engagement ground for Axion-IA: automotive mid-caps and SMEs (Stellantis, Île Napoléon suppliers), engineering firms (Clemessy), digital players (KMØ) and cross-border companies represent a significant share of our sessions.",
           "All basin zones covered in person: city centre, Parc des Collines, Technoparc Bourtzwiller, Île Napoléon, Quartier DMC and communes (Riedisheim, Kingersheim, Illzach, Pfastatt).",
-          "The Essential format is calibrated for Mulhouse structures from a few people to about a hundred staff, particularly industrial SMEs and engineering firms.",
+          "The group format (one-day) is calibrated for Mulhouse structures from a few people to about a hundred staff, particularly industrial SMEs and engineering firms.",
           "The Talk format suits Mulhouse corporate plenaries and events at Parc Expo or KMØ.",
           "The Executives format enables in-camera framing for industrial mid-cap and cross-border group executive committees.",
           "Vocabulary adjusted to your dominant sector: automotive, industry/mechatronics, chemicals/materials, digital, B2B services. Cross-border dimension integrated where relevant.",
@@ -473,15 +473,15 @@ export const MULHOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group training",
             detail:
               "Ideal for Mulhouse freelancers, practices and small firms up to about ten staff — city centre, Quartier DMC, Bourtzwiller.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — production, quality, R&D, sales, finance — particularly effective for industrial SMEs and automotive sub-contractors.",
+              "Group format for the whole group or Teams to focus on one department — production, quality, R&D, sales, finance — particularly effective for industrial SMEs and automotive sub-contractors.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -499,7 +499,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly met our engineers' expectations. They left with tools configured for their real technical documents. By the next day, several were already using them to write reports and analyse technical plans.",
+              "The group format (one-day) perfectly met our engineers' expectations. They left with tools configured for their real technical documents. By the next day, several were already using them to write reports and analyse technical plans.",
             role: "Technical Director",
             companyProfile: "Engineering firm SME, Mulhouse basin",
           },
@@ -513,7 +513,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Mulhouse take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The group format (one-day) runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in industrial environments or production workshops?",
@@ -901,7 +901,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential programme",
+            price: "Essentiel programme",
             detail:
               "For Mulhouse micro-business owners and freelancers looking to structure their personal AI use and identify first concrete gains in their activity.",
           },

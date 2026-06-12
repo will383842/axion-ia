@@ -325,7 +325,7 @@ export const BESANCON_COPY: VilleCopy = {
         whyHere: [
           "Besançon est un terrain d'intervention où la demande de formation IA est portée par des équipes aux profils techniques élevés : ingénieurs microtechniques (ENSMM, TEMIS Innovation), personnels médicaux (TEMIS Santé, CHRU), chercheurs (UFC, FEMTO-ST) et fonctions supports des ETI locales.",
           "Tous les quartiers et communes du Grand Besançon couverts en présentiel : TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, centre historique, École-Valentin, Chalezeule, Pirey et communes proches.",
-          "Le format Essentielle est calibré pour les structures bisontines de quelques personnes à une centaine de collaborateurs, en particulier les PME microtechniques de TEMIS et les cabinets du centre-ville.",
+          "Le format collectif (1 journée) est calibré pour les structures bisontines de quelques personnes à une centaine de collaborateurs, en particulier les PME microtechniques de TEMIS et les cabinets du centre-ville.",
           "Le format Conférence convient aux plénières d'entreprise bisontines (Micropolis, salles TEMIS, espaces incubateur).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des PME technologiques du Grand Besançon.",
           "Vocabulaire ajusté à votre secteur dominant : microtechniques, médical/biomédical, industrie de précision, recherche, services B2B. Pas de session générique recyclée.",
@@ -360,15 +360,15 @@ export const BESANCON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, petits cabinets et micro-structures bisontines jusqu'à une dizaine de collaborateurs — centre historique, Planoise, Montrapon.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — R&D, qualité, production, commercial — particulièrement efficace pour les PME microtechniques et médicales de TEMIS.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — R&D, qualité, production, commercial — particulièrement efficace pour les PME microtechniques et médicales de TEMIS.",
           },
           {
             sizeLabel: "ETI",
@@ -386,7 +386,7 @@ export const BESANCON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos ingénieurs de précision. Ils sont repartis avec leurs outils configurés sur leurs vrais workflows de documentation technique. Dès le lendemain, plusieurs les utilisaient en production.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos ingénieurs de précision. Ils sont repartis avec leurs outils configurés sur leurs vrais workflows de documentation technique. Dès le lendemain, plusieurs les utilisaient en production.",
             role: "Directeur R&D",
             companyProfile: "PME microtechniques, TEMIS Innovation Besançon",
           },
@@ -400,7 +400,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Besançon ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des ateliers de précision ou laboratoires médicaux ?",
@@ -431,7 +431,7 @@ export const BESANCON_COPY: VilleCopy = {
         whyHere: [
           "Besançon is an engagement ground where AI training demand is driven by high-technical profiles: precision engineers (ENSMM, TEMIS Innovation), medical staff (TEMIS Santé, CHRU), researchers (UFC, FEMTO-ST) and support functions of local mid-caps.",
           "All Grand Besançon districts and communes covered in person: TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, historic centre, École-Valentin, Chalezeule, Pirey and surrounding communes.",
-          "The Essential format is calibrated for Besançon structures from a few people to about a hundred staff, particularly precision-tech and medical SMEs at TEMIS and city-centre practices.",
+          "The one-day format is calibrated for Besançon structures from a few people to about a hundred staff, particularly precision-tech and medical SMEs at TEMIS and city-centre practices.",
           "The Talk format suits Besançon corporate plenaries (Micropolis, TEMIS rooms, incubator spaces).",
           "The Executives format enables in-camera framing for industrial mid-cap and technology SME executive committees across Grand Besançon.",
           "Vocabulary adjusted to your dominant sector: microtechnologies, medical/biomedical, precision industry, research, B2B services. No recycled generic session.",
@@ -466,15 +466,15 @@ export const BESANCON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Besançon freelancers, small practices and micro-structures up to about ten staff — historic centre, Planoise, Montrapon.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — R&D, quality, production, sales — particularly effective for precision-tech and medical SMEs at TEMIS.",
+              "Group format for the whole group or Teams to focus on one department — R&D, quality, production, sales — particularly effective for precision-tech and medical SMEs at TEMIS.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -492,7 +492,7 @@ export const BESANCON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our precision engineers' needs. They left with tools configured for their real technical documentation workflows. By the next day, several were already using them in production.",
+              "The one-day format perfectly matched our precision engineers' needs. They left with tools configured for their real technical documentation workflows. By the next day, several were already using them in production.",
             role: "R&D Director",
             companyProfile: "Precision-tech SME, TEMIS Innovation Besançon",
           },
@@ -506,7 +506,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Besançon take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in precision workshops or medical laboratories?",

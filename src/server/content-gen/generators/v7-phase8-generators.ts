@@ -74,8 +74,8 @@ const PAIN_POINT_SOLUTION_CONFIG = buildConfig(
   `## Focus PAIN POINT → SOLUTION
 Story arc : présente un pain point métier concret (avec data sectorielle),
 puis la solution IA pas-à-pas. Cas concret anonymisé recommandé. FAQ × 8.`,
-  "/interventions/essentielle",
-  `Réserver l'intervention Essentielle · ${ESSENTIELLE_CTA_PRICE}`,
+  "/formations",
+  `Réserver une formation · ${ESSENTIELLE_CTA_PRICE}`,
 );
 
 const VS_COMPARATOR_CONFIG = buildConfig(

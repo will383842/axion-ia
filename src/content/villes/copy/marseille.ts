@@ -292,7 +292,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         whyHere: [
           "Marseille est l'un de nos terrains d'intervention prioritaires sur la Méditerranée : nous y déroulons des sessions pour des équipes aussi diverses qu'un service douane d'une ETI portuaire et une équipe commerciale de PME tech Luminy.",
           "Tous les arrondissements couverts en présentiel ainsi que le bassin : Euroméditerranée, Château-Gombert, Luminy, Aubagne, Aix-en-Provence, La Ciotat, Vitrolles.",
-          "Le format Essentielle est calibré pour les structures marseillaises de quelques personnes à une centaine de collaborateurs, quel que soit le secteur.",
+          "Le format collectif (1 journée) est calibré pour les structures marseillaises de quelques personnes à une centaine de collaborateurs, quel que soit le secteur.",
           "Le format Conférence convient aux plénières d'entreprise — salles du Parc Chanot, espaces Euroméditerranée, auditoriums AMU ou Centrale Méditerranée.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction d'ETI maritimes ou industrielles.",
           "Vocabulaire calé sur votre secteur dominant : logistique, santé, BTP, commerce, énergie. Pas de session générique recyclée.",
@@ -327,15 +327,15 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets, agences ou commerces marseillais jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour un département (douane, commercial export, finance, RH, opérations).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour un département (douane, commercial export, finance, RH, opérations).",
           },
           {
             sizeLabel: "ETI",
@@ -353,7 +353,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calé sur notre métier logistique : nos chargés d'exploitation sont repartis avec leurs outils IA configurés pour traiter nos documents d'escale. Adoption immédiate.",
+              "Formation collective parfaitement calée sur notre métier logistique : nos chargés d'exploitation sont repartis avec leurs outils IA configurés pour traiter nos documents d'escale. Adoption immédiate.",
             role: "Directeur d'exploitation",
             companyProfile: "PME opérateur portuaire, Joliette",
           },
@@ -367,11 +367,11 @@ export const MARSEILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Marseille ?",
-            a: "Cela dépend du format : l'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format : le format d'une journée se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté, avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté, avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -398,7 +398,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         whyHere: [
           "Marseille is one of our priority session hubs on the Mediterranean: we deliver sessions for teams as diverse as a port ETI's customs department and a Luminy tech SME's sales force.",
           "All arrondissements covered in person plus the basin: Euroméditerranée, Château-Gombert, Luminy, Aubagne, Aix-en-Provence, La Ciotat, Vitrolles.",
-          "The Essential format is calibrated for Marseille structures from a few people to about a hundred staff, regardless of sector.",
+          "The one-day format is calibrated for Marseille structures from a few people to about a hundred staff, regardless of sector.",
           "The Talk format suits corporate plenaries — Parc Chanot rooms, Euroméditerranée spaces, AMU or Centrale Méditerranée auditoriums.",
           "The Executives format enables in-camera framing for maritime or industrial mid-cap executive committees.",
           "Vocabulary adjusted to your dominant sector: logistics, health, construction, commerce, energy. No recycled generic session.",
@@ -433,15 +433,15 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Marseille freelancers, firms, agencies or businesses up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (customs, export sales, finance, HR, operations).",
+              "Group format for the whole group or Teams to focus on one department (customs, export sales, finance, HR, operations).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -459,7 +459,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated to our logistics business: our operations staff left with AI tools configured to process our port call documents. Immediate adoption.",
+              "Group format perfectly calibrated to our logistics business: our operations staff left with AI tools configured to process our port call documents. Immediate adoption.",
             role: "Head of Operations",
             companyProfile: "SME port operator, Joliette",
           },
@@ -473,11 +473,11 @@ export const MARSEILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Marseille take?",
-            a: "It depends on the format: the Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the format: the one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Do the installed tools remain usable after the session?",

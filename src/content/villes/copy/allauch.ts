@@ -229,7 +229,7 @@ export const ALLAUCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Allauch ?",
-      a: "Les interventions IA à Allauch débutent à {{price:intervention-4h|flat}} pour une Intervention Essentielle. Un Audit sur place est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions IA à Allauch débutent à {{price:intervention-4h|flat}} pour une formation collective. Un Audit sur place est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Allauch ?",

@@ -299,7 +299,7 @@ export const LE_MANS_COPY: VilleCopy = {
         hero: "Les interventions IA Axion-IA au Mans se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans les secteurs assurance, automobile, industrie et services. Frais de logement, repas et forfait trajet facturés à part.",
         whyHere: [
           "Le Mans regroupe des équipes opérationnelles à fort potentiel d'adoption IA : gestionnaires sinistres MMA/Covéa, techniciens et ingénieurs Renault ACI, commerciaux PME de services, équipes administratives des structures universitaires et de recherche.",
-          "Le format Essentielle est calibré pour les PME et ETI du bassin (quelques personnes à une centaine de collaborateurs) : sessions ciblées sur les cas métier réels du secteur assurance ou automobile.",
+          "Le format collectif (1 journée) est calibré pour les PME et ETI du bassin (quelques personnes à une centaine de collaborateurs) : sessions ciblées sur les cas métier réels du secteur assurance ou automobile.",
           "Le format Conférence convient aux plénières et séminaires des grandes entités (groupes assurance, sites industriels, campus universitaire).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI sartoises souhaitant aligner leur trajectoire IA avant de déployer.",
           "Vocabulaire ajusté à votre secteur dominant : aucune session générique recyclée — une formation pour une équipe sinistres n'a rien à voir avec une session pour une ligne de production automobile.",
@@ -335,15 +335,15 @@ export const LE_MANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets, petites PME sartoises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (gestionnaires sinistres, équipes commerciales, finance, production).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (gestionnaires sinistres, équipes commerciales, finance, production).",
           },
           {
             sizeLabel: "ETI",
@@ -361,7 +361,7 @@ export const LE_MANS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement adapté à notre équipe de gestion : nos collaborateurs sont repartis avec leurs outils IA installés et configurés sur leurs propres dossiers sinistres. Taux d'adoption très fort dès la semaine suivante.",
+              "Formation collective parfaitement adaptée à notre équipe de gestion : nos collaborateurs sont repartis avec leurs outils IA installés et configurés sur leurs propres dossiers sinistres. Taux d'adoption très fort dès la semaine suivante.",
             role: "Responsable formation",
             companyProfile: "ETI assurance, Le Mans",
           },
@@ -375,11 +375,11 @@ export const LE_MANS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA au Mans ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière et ateliers en sous-groupes.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière et ateliers en sous-groupes.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -405,7 +405,7 @@ export const LE_MANS_COPY: VilleCopy = {
         hero: "Axion-IA's AI sessions in Le Mans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in insurance, automotive, manufacturing and services. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Le Mans brings together operational teams with strong AI adoption potential: MMA/Covéa claims managers, Renault ACI engineers and technicians, service SME sales teams, administrative staff in university and research institutions.",
-          "The Essential format is calibrated for basin SMEs and mid-caps (a few people to about a hundred staff): sessions focused on real business use cases in insurance or automotive.",
+          "The one-day format is calibrated for basin SMEs and mid-caps (a few people to about a hundred staff): sessions focused on real business use cases in insurance or automotive.",
           "The Talk format suits plenaries and seminars at large entities (insurance groups, industrial sites, university campus).",
           "The Executives format enables in-camera framing for Sarthe mid-cap executive committees wishing to align their AI trajectory before deployment.",
           "Vocabulary adjusted to your dominant sector: no recycled generic session — a training for a claims team has nothing to do with a session for an automotive production line.",
@@ -441,14 +441,14 @@ export const LE_MANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail: "Ideal for Sarthe freelancers, practices and small SMEs up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (claims managers, sales, finance, production).",
+              "Group format for the whole group or Teams to focus on one department (claims managers, sales, finance, production).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -466,7 +466,7 @@ export const LE_MANS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly tailored to our management team: our staff left with their AI tools installed and configured on their own claims files. Very strong adoption rate from the following week.",
+              "Group format perfectly tailored to our management team: our staff left with their AI tools installed and configured on their own claims files. Very strong adoption rate from the following week.",
             role: "Training Manager",
             companyProfile: "Insurance mid-cap, Le Mans",
           },
@@ -480,11 +480,11 @@ export const LE_MANS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Le Mans take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary and sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary and sub-group workshops.",
           },
           {
             q: "Do the installed tools remain usable after the session?",

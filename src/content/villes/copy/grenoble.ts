@@ -295,7 +295,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         whyHere: [
           "Grenoble présente un profil de participants unique en province : ingénieurs issus de l'Ensimag, de Phelma ou de Grenoble INP, chercheurs CEA-Leti et Inria, équipes produit de start-ups Minalogic. Nos sessions sont calibrées pour ce niveau technique élevé.",
           "Couverture complète du bassin : Presqu'île scientifique, Inovallée à Meylan, campus UGA Saint-Martin-d'Hères, zones industrielles d'Échirolles et de Fontaine, Sassenage, Crolles.",
-          "Le format Essentielle est adapté aux structures de quelques personnes à une centaine de collaborateurs — PME deeptech, spin-offs, filiales de grands groupes.",
+          "Le format collectif (1 journée) est adapté aux structures de quelques personnes à une centaine de collaborateurs — PME deeptech, spin-offs, filiales de grands groupes.",
           "Le format Conférence est adapté aux plénières d'entreprise dans les amphithéâtres du campus GIANT, les salles Minatec ou les espaces Alpexpo.",
           "Le format Dirigeants permet un cadrage IA en huis-clos pour les comités de direction des ETI et grands groupes grenoblois.",
           "Vocabulaire systématiquement ajusté à votre secteur : semi-conducteurs, gestion de l'énergie, logiciel industriel, R&D matériaux, outdoor tech. Aucune session générique recyclée.",
@@ -330,15 +330,15 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour les spin-offs, start-ups Minalogic et cabinets d'ingénierie grenoblois jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME (10-249 collab)",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (R&D, production, commercial, support).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (R&D, production, commercial, support).",
           },
           {
             sizeLabel: "ETI (250-4 999 collab)",
@@ -356,7 +356,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Session Essentielle parfaitement calibrée pour nos ingénieurs : les démos sur nos propres specs techniques ont fait mouche. Le lendemain, plusieurs collègues utilisaient déjà Claude dans leur flux de travail quotidien.",
+              "Formation collective parfaitement calibrée pour nos ingénieurs : les démos sur nos propres specs techniques ont fait mouche. Le lendemain, plusieurs collègues utilisaient déjà Claude dans leur flux de travail quotidien.",
             role: "Responsable ingénierie",
             companyProfile: "PME spécialisée en systèmes embarqués, Inovallée Meylan",
           },
@@ -370,7 +370,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Grenoble ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Vos sessions sont-elles adaptées à des profils très techniques ?",
@@ -401,7 +401,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         whyHere: [
           "Grenoble presents a unique provincial participant profile: engineers from Ensimag, Phelma or Grenoble INP, CEA-Leti and Inria researchers, Minalogic start-up product teams. Our sessions are calibrated for this high technical level.",
           "Full basin coverage: Science Peninsula, Inovallée in Meylan, UGA campus Saint-Martin-d'Hères, Échirolles and Fontaine industrial zones, Sassenage, Crolles.",
-          "The Essential format suits structures from a few people to about a hundred staff — deep-tech SMEs, spin-offs, large-group subsidiaries.",
+          "The one-day format suits structures from a few people to about a hundred staff — deep-tech SMEs, spin-offs, large-group subsidiaries.",
           "The Talk format suits company plenaries in GIANT campus amphitheatres, Minatec rooms or Alpexpo spaces.",
           "The Executives format enables in-camera AI framing for mid-cap and large-group executive committees.",
           "Vocabulary systematically adjusted to your sector: semiconductors, energy management, industrial software, materials R&D, outdoor tech. No recycled generic session.",
@@ -436,15 +436,15 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Grenoble spin-offs, Minalogic start-ups and engineering practices up to about ten staff.",
           },
           {
             sizeLabel: "SME (10-249 staff)",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (R&D, production, sales, support).",
+              "Group training for the whole group or Teams to focus on one department (R&D, production, sales, support).",
           },
           {
             sizeLabel: "Mid-cap (250-4,999 staff)",
@@ -462,7 +462,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential session perfectly calibrated for our engineers: demos on our own technical specs hit the mark. The next day, several colleagues were already using Claude in their daily workflow.",
+              "Group training perfectly calibrated for our engineers: demos on our own technical specs hit the mark. The next day, several colleagues were already using Claude in their daily workflow.",
             role: "Engineering Manager",
             companyProfile: "Embedded systems SME, Inovallée Meylan",
           },
@@ -476,7 +476,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Grenoble take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Are your sessions suitable for very technical profiles?",
@@ -1115,7 +1115,7 @@ export const GRENOBLE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA travaille-t-il avec les entreprises de Minalogic et de la French Tech in the Alps ?",
-      a: "Oui. Nous accompagnons régulièrement des membres de Minalogic, des start-ups de la French Tech in the Alps (~450 membres) et des spin-offs du campus GIANT (CEA-Leti, CNRS, Inria). Notre Audit sur place et nos formats Essentielle sont calibrés pour les structures deeptech à fort potentiel.",
+      a: "Oui. Nous accompagnons régulièrement des membres de Minalogic, des start-ups de la French Tech in the Alps (~450 membres) et des spin-offs du campus GIANT (CEA-Leti, CNRS, Inria). Notre Audit sur place et nos formats collectifs (1 journée) sont calibrés pour les structures deeptech à fort potentiel.",
     },
     {
       q: "Pouvez-vous intervenir dans les entreprises de la Presqu'île scientifique ou d'Inovallée ?",

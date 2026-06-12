@@ -304,7 +304,7 @@ export const PARIS_COPY: VilleCopy = {
         whyHere: [
           "Paris est notre premier terrain d'intervention : nous y déroulons une part importante de nos sessions chaque mois.",
           "Tous les arrondissements couverts en présentiel ainsi que la première couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
-          "Le format Essentielle est calibré pour les structures parisiennes de quelques personnes à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les structures parisiennes de quelques personnes à une centaine de collaborateurs.",
           "Le format Conférence convient aux grandes plénières d'entreprise (auditoriums La Défense, lofts Sentier, espaces collaboratifs Station F).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction parisiens.",
           "Vocabulaire ajusté à votre secteur dominant : finance, conseil, tech, mode, retail. Pas de session générique recyclée.",
@@ -339,15 +339,15 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, cabinets, agences parisiennes jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commerciaux, finance, RH, opérations).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (commerciaux, finance, RH, opérations).",
           },
           {
             sizeLabel: "ETI",
@@ -365,7 +365,7 @@ export const PARIS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré : nos collaborateurs sont repartis avec leurs outils IA installés et configurés. Le lendemain, une partie significative les utilisaient déjà sur leur travail réel.",
+              "Formation collective parfaitement calibrée : nos collaborateurs sont repartis avec leurs outils IA installés et configurés. Le lendemain, une partie significative les utilisaient déjà sur leur travail réel.",
             role: "DRH",
             companyProfile: "Cabinet conseil parisien, 8e arrondissement",
           },
@@ -379,11 +379,11 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Paris ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -410,7 +410,7 @@ export const PARIS_COPY: VilleCopy = {
         whyHere: [
           "Paris is our top engagement ground: a significant share of our sessions take place there each month.",
           "All arrondissements covered in person plus the inner suburbs (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
-          "The Essential format is calibrated for Paris structures from a few people to about a hundred staff.",
+          "The group format is calibrated for Paris structures from a few people to about a hundred staff.",
           "The Talk format suits large corporate plenaries (La Défense auditoriums, Sentier lofts, Station F collaborative spaces).",
           "The Executives format enables in-camera framing for Paris executive committees.",
           "Vocabulary adjusted to your dominant sector: finance, consulting, tech, fashion, retail. No recycled generic session.",
@@ -445,14 +445,14 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail: "Ideal Paris freelancers, firms, agencies up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (sales, finance, HR, operations).",
+              "Group format for the whole group or Teams to focus on one department (sales, finance, HR, operations).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -470,7 +470,7 @@ export const PARIS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated: our staff left with their AI tools installed and configured. The next day, a significant share were already using them on real work.",
+              "Group format perfectly calibrated: our staff left with their AI tools installed and configured. The next day, a significant share were already using them on real work.",
             role: "Head of HR",
             companyProfile: "Paris consulting firm, 8th arrondissement",
           },
@@ -484,11 +484,11 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Paris take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",
@@ -1138,7 +1138,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups parisiennes (Station F, French Tech) ?",
-      a: "Oui. Nous accompagnons régulièrement les scale-ups séries A-B issues de Station F, du Quai d'Innovation et des programmes French Tech. Notre offre Essentielle est calibrée pour les structures avec un product-market fit établi qui veulent passer du POC IA à un déploiement opérationnel.",
+      a: "Oui. Nous accompagnons régulièrement les scale-ups séries A-B issues de Station F, du Quai d'Innovation et des programmes French Tech. Notre formation collective est calibrée pour les structures avec un product-market fit établi qui veulent passer du POC IA à un déploiement opérationnel.",
     },
   ],
 };

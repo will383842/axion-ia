@@ -35,8 +35,8 @@ export const VENISSIEUX_COPY: VilleCopy = {
       en: "L'Audit sur place 4h à Vénissieux cartographie les processus d'un sous-traitant automobile du Parilly, d'une PME métallurgique du Chêne-Velin, ou d'un logisticien de la rocade Est, et chiffre les heures récupérables par automatisation.",
     },
     interventions: {
-      fr: "Les Interventions Essentielles à Vénissieux ciblent le reporting MES, la qualité fournisseurs (PPAP/8D), la gestion d'ordres de fabrication et l'automatisation des relances clients industriels — code versionné, repris par votre IT.",
-      en: "Les Interventions Essentielles à Vénissieux ciblent le reporting MES, la qualité fournisseurs (PPAP/8D), la gestion d'ordres de fabrication et l'automatisation des relances clients industriels — code versionné, repris par votre IT.",
+      fr: "Les formations collectives à Vénissieux ciblent le reporting MES, la qualité fournisseurs (PPAP/8D), la gestion d'ordres de fabrication et l'automatisation des relances clients industriels — code versionné, repris par votre IT.",
+      en: "Les formations collectives à Vénissieux ciblent le reporting MES, la qualité fournisseurs (PPAP/8D), la gestion d'ordres de fabrication et l'automatisation des relances clients industriels — code versionné, repris par votre IT.",
     },
     implementation: {
       fr: "L'implémentation à Vénissieux raccorde les briques IA aux ERP industriels (SAP, Sage X3, Divalto) et MES (Aquiweb, Ordinal) existants, sans dépendance no-code. Compatible avec les exigences IATF 16949 des donneurs d'ordre auto.",

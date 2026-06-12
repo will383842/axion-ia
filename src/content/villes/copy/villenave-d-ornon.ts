@@ -39,8 +39,8 @@ const VILLE_COPY: VilleCopy = {
       en: "Audit sur place à Villenave-d'Ornon pour TPE viticoles, artisans BTP ou commerçants de la zone d'activités : 4 heures sur site, cartographie des tâches répétitives (suivi vinification, devis chantier, relances), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Villenave-d'Ornon pour PME girondines : automatisation devis-relances pour artisans BTP, suivi parcellaire et chai pour propriétés viticoles, synchronisation ERP-CRM pour PME de la zone d'activités. Code custom livré. Dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Villenave-d'Ornon pour PME girondines : automatisation devis-relances pour artisans BTP, suivi parcellaire et chai pour propriétés viticoles, synchronisation ERP-CRM pour PME de la zone d'activités. Code custom livré. Dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Villenave-d'Ornon pour PME girondines : automatisation devis-relances pour artisans BTP, suivi parcellaire et chai pour propriétés viticoles, synchronisation ERP-CRM pour PME de la zone d'activités. Code custom livré. Dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Villenave-d'Ornon pour PME girondines : automatisation devis-relances pour artisans BTP, suivi parcellaire et chai pour propriétés viticoles, synchronisation ERP-CRM pour PME de la zone d'activités. Code custom livré. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation d'agents IA à Villenave-d'Ornon pour PME-ETI de Bordeaux Métropole : tri automatique des emails clients, OCR factures fournisseurs, génération de fiches techniques produit (notamment vigne-vin). Tarifs publics, devis sur cadrage.",
@@ -243,7 +243,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Villenave-d'Ornon ?",
-      a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Intervention Essentielle livrée en 2 à 4 semaines selon complexité. Pour les propriétés en période de vendanges, calendrier adapté aux contraintes du chai.",
+      a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité. Pour les propriétés en période de vendanges, calendrier adapté aux contraintes du chai.",
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Villenave-d'Ornon ?",

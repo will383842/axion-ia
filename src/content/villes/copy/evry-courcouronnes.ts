@@ -228,7 +228,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Évry-Courcouronnes ?",
-      a: "Les interventions à Évry-Courcouronnes commencent à partir de {{price:intervention-4h|flat}} (Intervention Essentielle). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
+      a: "Les interventions à Évry-Courcouronnes commencent à partir de {{price:intervention-4h|flat}} (formation collective). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines d'Évry-Courcouronnes ?",

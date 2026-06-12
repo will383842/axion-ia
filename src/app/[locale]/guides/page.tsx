@@ -253,12 +253,12 @@ export default async function GuidesHubPage({ params }: Props) {
         title={isFr ? "Besoin d'un cadrage personnalisé ?" : "Need tailored scoping?"}
         description={
           isFr
-            ? "Un guide pose les repères. L'Essentielle Axion-IA pose le plan d'action sur vos données réelles."
-            : "A guide sets the benchmarks. The Axion-IA Essential sets the action plan on your real data."
+            ? "Un guide pose les repères. Le format collectif (1 journée) Axion-IA pose le plan d'action sur vos données réelles."
+            : "A guide sets the benchmarks. The Axion-IA group format sets the action plan on your real data."
         }
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle" : "See the Essential"}
+          <Cta href="/formations" size="lg">
+            {isFr ? "Voir nos formations" : "See our trainings"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Cta>
         }

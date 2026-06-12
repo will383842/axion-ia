@@ -302,7 +302,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         whyHere: [
           "Aix-en-Provence est un pôle d'intervention dans le bassin sud-est : nous y déroulons des sessions pour les équipes d'ingénierie, de conseil, de services et d'administration.",
           "Toutes les zones d'activité couvertes : centre-ville aixois, Technopôle Arbois, Zone des Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air, Venelles.",
-          "Le format Essentielle est calibré pour les structures aixoises de quelques personnes à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les structures aixoises de quelques personnes à une centaine de collaborateurs.",
           "Le format Conférence convient aux grandes plénières d'entreprise (salles de séminaire des hôtels haut de gamme d'Aix, espaces de l'Arbois, auditoriums des grandes entreprises du bassin).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI et filiales régionales.",
           "Vocabulaire ajusté à votre secteur : ingénierie aérospatiale, énergie, services numériques, conseil, agroalimentaire. Pas de session générique recyclée.",
@@ -337,15 +337,15 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour les indépendants, cabinets, agences et petites structures aixoises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (ingénierie, commercial, finance, RH) dans les PME industrielles ou de services du bassin.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (ingénierie, commercial, finance, RH) dans les PME industrielles ou de services du bassin.",
           },
           {
             sizeLabel: "ETI",
@@ -363,7 +363,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré à nos métiers d'ingénierie. Nos collaborateurs sont repartis avec leurs outils configurés sur nos vrais types de documents. L'adoption a été rapide.",
+              "Formation collective parfaitement calibrée à nos métiers d'ingénierie. Nos collaborateurs sont repartis avec leurs outils configurés sur nos vrais types de documents. L'adoption a été rapide.",
             role: "Responsable RH",
             companyProfile: "PME sous-traitante aérospatiale, bassin de Marignane",
           },
@@ -377,11 +377,11 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Aix-en-Provence ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats (plusieurs sites du bassin ou plusieurs équipes), le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats (plusieurs sites du bassin ou plusieurs équipes), le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Les outils IA installés sur les postes restent-ils utilisables après la session ?",
@@ -408,7 +408,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         whyHere: [
           "Aix-en-Provence is an engagement hub in the south-east basin: we run sessions there for engineering, consulting, services and administration teams.",
           "All business zones covered: Aix city centre, Arbois technopole, Les Milles district, Marignane, Vitrolles, Rousset, Bouc-Bel-Air, Venelles.",
-          "The Essential format is calibrated for Aix structures from a few people to about a hundred staff.",
+          "The one-day format is calibrated for Aix structures from a few people to about a hundred staff.",
           "The Talk format suits large corporate plenaries (Aix premium hotel seminar rooms, Arbois spaces, large-group basin auditoriums).",
           "The Executives format enables in-camera framing for mid-cap and regional subsidiary executive committees.",
           "Vocabulary adjusted to your sector: aerospace engineering, energy, digital services, consulting, food industry. No recycled generic session.",
@@ -443,14 +443,14 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail: "Ideal for Aix freelancers, firms and agencies up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (engineering, sales, finance, HR) in industrial or services SMEs across the basin.",
+              "Group format for the whole group or Teams to focus on one department (engineering, sales, finance, HR) in industrial or services SMEs across the basin.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -468,7 +468,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated to our engineering roles. Our staff left with tools configured on our real document types. Adoption was fast.",
+              "Group training perfectly calibrated to our engineering roles. Our staff left with tools configured on our real document types. Adoption was fast.",
             role: "HR Manager",
             companyProfile: "Aerospace subcontracting SME, Marignane basin",
           },
@@ -482,11 +482,11 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Aix-en-Provence take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program (multiple basin sites or teams), the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program (multiple basin sites or teams), the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Do the AI tools installed on workstations remain usable after the session?",
@@ -1138,7 +1138,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups de la French Tech Aix-Marseille ?",
-      a: "Oui. Nous accompagnons régulièrement les startups et scale-ups issues de la French Tech Aix-Marseille Région Sud et des structures d'incubation du Technopôle Arbois. Notre offre POC et Essentielle est calibrée pour les structures avec un product-market fit établi qui veulent passer du prototype IA à un déploiement opérationnel.",
+      a: "Oui. Nous accompagnons régulièrement les startups et scale-ups issues de la French Tech Aix-Marseille Région Sud et des structures d'incubation du Technopôle Arbois. Notre offre POC et formation collective est calibrée pour les structures avec un product-market fit établi qui veulent passer du prototype IA à un déploiement opérationnel.",
     },
   ],
 };

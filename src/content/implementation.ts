@@ -345,7 +345,7 @@ function makeFr(args: {
         id: "fit",
         question: "Comment savoir si c'est adapté à mon entreprise ?",
         answer:
-          "Démarrez par un audit (Module 2) ou une intervention Essentielle (Module 1) pour cadrer le besoin.",
+          "Démarrez par un audit (Module 2) ou une formation collective (Module 1) pour cadrer le besoin.",
       },
       {
         id: "tech",
@@ -437,8 +437,7 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
       {
         id: "fit",
         question: "How do I know this fits my company?",
-        answer:
-          "Start with an audit (Module 2) or an Essential session (Module 1) to frame the need.",
+        answer: "Start with an audit (Module 2) or a group training (Module 1) to frame the need.",
       },
       {
         id: "tech",

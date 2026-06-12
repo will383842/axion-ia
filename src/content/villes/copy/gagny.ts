@@ -229,7 +229,7 @@ export const GAGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Gagny ?",
-      a: "Nos interventions IA à Gagny démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, et à {{price:audit-flash|flat}} pour un Audit sur place. Tarifs publics, sans devis caché.",
+      a: "Nos interventions IA à Gagny démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), et à {{price:audit-flash|flat}} pour un Audit sur place. Tarifs publics, sans devis caché.",
     },
     {
       q: "Combien de temps avant une intervention à Gagny ?",

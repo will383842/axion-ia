@@ -36,7 +36,6 @@ import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -366,14 +365,10 @@ export default async function NewsArticlePage({ params }: Props) {
 
       <CtaBlock
         title="Mettre en pratique"
-        description={`Démarrez par une intervention Essentielle ${formatAmount(
-          getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-          "fr",
-          { compact: true },
-        )}.`}
+        description="Démarrez par notre formation collective (1 journée)."
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            Voir l&apos;Essentielle →
+          <Cta href="/formations" size="lg">
+            Voir nos formations →
           </Cta>
         }
         tone="dark"

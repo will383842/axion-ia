@@ -229,7 +229,7 @@ export const ELANCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Élancourt ?",
-      a: "Nos prestations à Élancourt démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics consultables sur axion-ia.com.",
+      a: "Nos prestations à Élancourt démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une formation collective et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Élancourt ?",

@@ -326,7 +326,7 @@ export const CAEN_COPY: VilleCopy = {
         whyHere: [
           "Caen est un terrain d'intervention industriel et académique porteur : entreprises électroniques, équipes R&D ENSICAEN/UCN/GREYC, services financiers et PME numériques d'EffiScience représentent un profil de collaborateurs exigeants qui attendent des cas d'usage concrets.",
           "Tous les sites du bassin couverts en présentiel : hypercentre, plateau Nord (UCN/ENSICAEN/CHU), EffiScience, ZAC Presqu'île, Hérouville-Saint-Clair, Mondeville, Colombelles et communes limitrophes.",
-          "Le format Essentielle est calibré pour les structures caennaises de quelques personnes à une centaine de collaborateurs, en particulier les PME d'EffiScience et les équipes de recherche appliquée.",
+          "Le format collectif (1 journée) est calibré pour les structures caennaises de quelques personnes à une centaine de collaborateurs, en particulier les PME d'EffiScience et les équipes de recherche appliquée.",
           "Le format Conférence convient aux plénières d'entreprise caennaises (amphithéâtres UCN/ENSICAEN, salles Parc des Expositions, espaces Normandie Incubation).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des groupes du bassin Caen la Mer.",
           "Vocabulaire ajusté à votre secteur dominant : électronique, automobile/mobilités, santé/recherche médicale, filière équine, numérique. Pas de session générique recyclée.",
@@ -361,15 +361,15 @@ export const CAEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, cabinets et petites agences caennaises jusqu'à une dizaine de collaborateurs — hypercentre, ZAC Presqu'île, quartiers résidentiels.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département — R&D, commerciaux, finance, opérations — particulièrement efficace pour les PME numériques d'EffiScience.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département — R&D, commerciaux, finance, opérations — particulièrement efficace pour les PME numériques d'EffiScience.",
           },
           {
             sizeLabel: "ETI",
@@ -387,7 +387,7 @@ export const CAEN_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a parfaitement collé aux attentes de nos ingénieurs. Ils sont repartis avec leurs outils configurés sur leurs vrais process de test. Dès le lendemain, plusieurs les utilisaient pour rédiger des rapports d'analyse.",
+              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos ingénieurs. Ils sont repartis avec leurs outils configurés sur leurs vrais process de test. Dès le lendemain, plusieurs les utilisaient pour rédiger des rapports d'analyse.",
             role: "Directeur R&D",
             companyProfile: "PME électronique, technopôle EffiScience Caen",
           },
@@ -401,7 +401,7 @@ export const CAEN_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Caen ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements industriels ou laboratoires de recherche ?",
@@ -432,7 +432,7 @@ export const CAEN_COPY: VilleCopy = {
         whyHere: [
           "Caen is a compelling industrial and academic engagement ground: electronics firms, R&D teams at ENSICAEN/UCN/GREYC, financial services and EffiScience digital SMEs represent demanding staff who expect concrete use cases.",
           "All basin sites covered in person: city centre, Plateau Nord (UCN/ENSICAEN/CHU), EffiScience, ZAC Presqu'île, Hérouville-Saint-Clair, Mondeville, Colombelles and surrounding communes.",
-          "The Essential format is calibrated for Caen structures from a few people to about a hundred staff, particularly EffiScience digital SMEs and applied research teams.",
+          "The one-day format is calibrated for Caen structures from a few people to about a hundred staff, particularly EffiScience digital SMEs and applied research teams.",
           "The Talk format suits Caen corporate plenaries (UCN/ENSICAEN auditoriums, Parc des Expositions rooms, Normandie Incubation spaces).",
           "The Executives format enables in-camera framing for industrial mid-cap and large group executive committees across the Caen la Mer area.",
           "Vocabulary adjusted to your dominant sector: electronics, automotive/mobility, health/medical research, equine industry, digital. No recycled generic session.",
@@ -467,15 +467,15 @@ export const CAEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Caen freelancers, practices and small agencies up to about ten staff — city centre, ZAC Presqu'île, residential districts.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department — R&D, sales, finance, operations — particularly effective for EffiScience digital SMEs.",
+              "Group format for the whole group or Teams to focus on one department — R&D, sales, finance, operations — particularly effective for EffiScience digital SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -493,7 +493,7 @@ export const CAEN_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format perfectly matched our engineers' needs. They left with tools configured for their real test processes. By the next day, several were already using them to write up analysis reports.",
+              "The group format perfectly matched our engineers' needs. They left with tools configured for their real test processes. By the next day, several were already using them to write up analysis reports.",
             role: "R&D Director",
             companyProfile: "Electronics SME, EffiScience technopole Caen",
           },
@@ -507,7 +507,7 @@ export const CAEN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Caen take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in industrial environments or research laboratories?",
@@ -845,7 +845,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Puis-je ensuite cascader les compétences à mon équipe ?",
-            a: "Oui. Après votre parcours individuel, nous pouvons compléter avec des sessions collectives pour vos équipes — formats Essentielle ou Équipes adaptés à votre contexte caennais.",
+            a: "Oui. Après votre parcours individuel, nous pouvons compléter avec des sessions collectives pour vos équipes — formats collectifs ou Équipes adaptés à votre contexte caennais.",
           },
           {
             q: "Quelle est la différence entre le coaching 1-to-1 et une intervention collective ?",
@@ -951,7 +951,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Can I cascade skills to my team afterwards?",
-            a: "Yes. After your individual programme, we can complement with group sessions for your teams — Essential or Teams formats adapted to your Caen context.",
+            a: "Yes. After your individual programme, we can complement with group sessions for your teams — group or Teams formats adapted to your Caen context.",
           },
           {
             q: "What is the difference between 1-to-1 coaching and a group session?",

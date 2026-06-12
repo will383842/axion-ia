@@ -15,7 +15,6 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { BLOG_POSTS } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { slugify } from "@/lib/slug";
 import { BlogSearch } from "@/components/blog/BlogSearch";
 
@@ -348,12 +347,12 @@ export default async function BlogListing({ params, searchParams }: Props) {
         title={isFr ? "Démarrer concrètement" : "Start concretely"}
         description={
           isFr
-            ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pose le diagnostic + le plan d'action.`
-            : `The Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} frames the diagnostic and the action plan.`
+            ? `Le format collectif (1 journée) pose le diagnostic + le plan d'action.`
+            : `The one-day format frames the diagnostic and the action plan.`
         }
         cta={
-          <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle" : "See the Essential"} â†’
+          <Cta href="/formations" size="lg">
+            {isFr ? "Voir nos formations" : "See our trainings"} â†’
           </Cta>
         }
         tone="dark"

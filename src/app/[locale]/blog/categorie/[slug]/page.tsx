@@ -16,7 +16,6 @@ import {
   getBlogCategoryLabel,
 } from "@/content/transversal";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -124,10 +123,8 @@ export default async function BlogCategoryPage({ params }: Props) {
               {isFr ? "Voir tous les articles" : "See all articles"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/interventions/essentielle" variant="outline" size="lg">
-              {isFr
-                ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-                : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
+            <Cta href="/formations" variant="outline" size="lg">
+              {isFr ? "Voir nos formations" : "See our trainings"}
             </Cta>
           </div>
         </Container>

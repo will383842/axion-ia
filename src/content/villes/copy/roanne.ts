@@ -228,7 +228,7 @@ export const ROANNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Roanne ?",
-      a: "Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-4h|flat}} pour un Audit sur place IA. La grille complète (audit, interventions, implémentation, un-à-un) est publiée sur la page tarifs du site Axion-IA.",
+      a: "Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une formation collective et {{price:intervention-4h|flat}} pour un Audit sur place IA. La grille complète (audit, interventions, implémentation, un-à-un) est publiée sur la page tarifs du site Axion-IA.",
     },
     {
       q: "Quels délais pour une intervention IA à Roanne ?",

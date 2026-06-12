@@ -300,7 +300,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         whyHere: [
           "Montpellier est l'un de nos terrains d'intervention réguliers en Occitanie : secteurs santé, IT, jeux vidéo, agronomie et industrie y coexistent, ce qui nous donne une palette de cas d'usage très concrète à démontrer.",
           "Toute la métropole couverte en présentiel ainsi que les communes voisines (Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio) et les pôles d'activité périphériques.",
-          "Le format Essentielle est calibré pour les structures montpelliéraines de quelques personnes à une centaine de collaborateurs — startups numériques, PME biotech, studios jeux vidéo.",
+          "Le format collectif (1 journée) est calibré pour les structures montpelliéraines de quelques personnes à une centaine de collaborateurs — startups numériques, PME biotech, studios jeux vidéo.",
           "Le format Conférence convient aux grandes plénières (Campus IBM, salles Parc Millénaire, amphithéâtres Cap Omega, espaces Montpellier Business School).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction ETI ou les comités d'innovation des groupes IT et pharmaceutiques implantés à Montpellier.",
           "Vocabulaire ajusté à votre secteur dominant : santé/médical, numérique/IT, jeux vidéo, agronomie/agroalimentaire, ingénierie. Aucune session générique recyclée.",
@@ -335,15 +335,15 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal startups numériques Cap Omega, micro-entreprises biotech, studios indépendants jeux vidéo jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (R&D, commercial, support, production, agronomie).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (R&D, commercial, support, production, agronomie).",
           },
           {
             sizeLabel: "ETI",
@@ -361,7 +361,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré pour notre équipe R&D : vocabulaire médical respecté, démos sur nos propres documents. Le lendemain, nos collaborateurs utilisaient déjà l'IA sur leurs rédactions réglementaires.",
+              "Formation collective parfaitement calibrée pour notre équipe R&D : vocabulaire médical respecté, démos sur nos propres documents. Le lendemain, nos collaborateurs utilisaient déjà l'IA sur leurs rédactions réglementaires.",
             role: "Directeur R&D",
             companyProfile: "PME dispositifs médicaux, Euromédecine",
           },
@@ -375,7 +375,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Montpellier ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous adapter le contenu aux spécificités du secteur santé ?",
@@ -406,7 +406,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         whyHere: [
           "Montpellier is one of our regular engagement grounds in Occitania: health, IT, video games, agronomy and industry sectors coexist, giving us a very concrete palette of use cases to demonstrate.",
           "The entire metropolis covered in person along with neighbouring communes (Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio) and peripheral business parks.",
-          "The Essential format is calibrated for Montpellier structures from a few people to about a hundred staff — digital startups, biotech SMEs, video-game studios.",
+          "The group format is calibrated for Montpellier structures from a few people to about a hundred staff — digital startups, biotech SMEs, video-game studios.",
           "The Talk format suits large plenaries (IBM Campus, Parc Millénaire rooms, Cap Omega auditoria, Montpellier Business School spaces).",
           "The Executives format enables in-camera framing for ETI executive committees or innovation committees of IT and pharmaceutical groups established in Montpellier.",
           "Vocabulary adjusted to your dominant sector: health/medical, digital/IT, video games, agronomy/agri-food, engineering. No recycled generic session.",
@@ -441,15 +441,15 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group training",
             detail:
               "Ideal for Cap Omega digital startups, biotech micro-firms, independent video-game studios up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (R&D, sales, support, production, agronomy).",
+              "Group format for the whole group or Teams to focus on one department (R&D, sales, support, production, agronomy).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -467,7 +467,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated for our R&D team: medical vocabulary respected, demos on our own documents. The next day, our staff were already using AI on their regulatory write-ups.",
+              "Group format perfectly calibrated for our R&D team: medical vocabulary respected, demos on our own documents. The next day, our staff were already using AI on their regulatory write-ups.",
             role: "Head of R&D",
             companyProfile: "Medical device SME, Euromédecine",
           },
@@ -481,7 +481,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Montpellier take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The group format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you adapt content to healthcare sector specifics?",
@@ -1125,7 +1125,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups French Tech Méditerranée ?",
-      a: "Oui. Nous accompagnons régulièrement les startups et scale-ups du label French Tech Méditerranée, du BIC Montpellier et de Cap Omega. Notre offre Essentielle est calibrée pour les structures avec un product-market fit établi qui veulent passer du POC IA à un déploiement opérationnel.",
+      a: "Oui. Nous accompagnons régulièrement les startups et scale-ups du label French Tech Méditerranée, du BIC Montpellier et de Cap Omega. Notre formation collective est calibrée pour les structures avec un product-market fit établi qui veulent passer du POC IA à un déploiement opérationnel.",
     },
     {
       q: "Quels secteurs sont prioritaires à Montpellier ?",

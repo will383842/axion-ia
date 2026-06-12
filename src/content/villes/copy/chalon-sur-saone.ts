@@ -232,7 +232,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Chalon-sur-Saône ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4h sur site ou visio). L'Intervention Essentielle est à {{price:intervention-4h|flat}}. L'Implémentation et le coaching 1-to-1 sont sur devis dès {{price:intervention-dirigeants|flat}} selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4h sur site ou visio). L'Intervention en format collectif (1 journée) est à {{price:intervention-4h|flat}}. L'Implémentation et le coaching 1-to-1 sont sur devis dès {{price:intervention-dirigeants|flat}} selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Chalon-sur-Saône ?",

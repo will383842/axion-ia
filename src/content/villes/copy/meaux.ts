@@ -235,7 +235,7 @@ export const MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Meaux ?",
-      a: "Pour les TPE et PME de Meaux, l'Audit sur place est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les TPE et PME de Meaux, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux depuis Meaux ?",

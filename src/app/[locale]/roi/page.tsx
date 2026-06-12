@@ -61,7 +61,7 @@ export default async function RoiPage({ params }: Props) {
         reportsAutoPerMonth: "Comptes-rendus / synthèses générés par mois",
         pctTimeFreed: "Du temps quotidien rendu à la valeur ajoutée",
         estimateNote:
-          "Chiffres observés chez les 38 entreprises sortant d'une formation Essentielle. Vos résultats dépendent de l'adoption interne et des outils retenus.",
+          "Chiffres observés chez les 38 entreprises sortant d'une formation collective. Vos résultats dépendent de l'adoption interne et des outils retenus.",
       }
     : {
         intro:
@@ -77,7 +77,7 @@ export default async function RoiPage({ params }: Props) {
         reportsAutoPerMonth: "Minutes / summaries generated per month",
         pctTimeFreed: "Of daily time returned to value-add work",
         estimateNote:
-          "Figures observed across the 38 companies completing an Essential session. Your results depend on internal adoption and tools chosen.",
+          "Figures observed across the 38 companies completing a group training. Your results depend on internal adoption and tools chosen.",
       };
 
   return (
@@ -93,8 +93,8 @@ export default async function RoiPage({ params }: Props) {
         titleTail={isFr ? " après la formation ?" : " after training?"}
         description={
           isFr
-            ? "Pas de % ROI, pas de payback en mois. Juste les heures rendues à votre équipe — chiffres observés chez les entreprises ayant suivi l'Essentielle."
-            : "No ROI %, no payback months. Just the hours returned to your team — figures observed across companies completing the Essential session."
+            ? "Pas de % ROI, pas de payback en mois. Juste les heures rendues à votre équipe — chiffres observés chez les entreprises ayant suivi une formation collective."
+            : "No ROI %, no payback months. Just the hours returned to your team — figures observed across companies completing a group training."
         }
       >
         <Container className="mt-8 max-w-2xl">
@@ -192,7 +192,7 @@ export default async function RoiPage({ params }: Props) {
                 {
                   question: "Combien d'heures par jour l'IA peut-elle libérer dans mon équipe ?",
                   answer:
-                    "Axion-IA observe en moyenne 1 à 3 heures libérées par personne et par jour suite à une formation IA, selon les profils et les tâches automatisées. Chiffres issus du suivi de 38 entreprises après une session Essentielle.",
+                    "Axion-IA observe en moyenne 1 à 3 heures libérées par personne et par jour suite à une formation IA, selon les profils et les tâches automatisées. Chiffres issus du suivi de 38 entreprises après une formation collective.",
                 },
                 {
                   question: "Comment calculer le ROI d'une formation IA pour une PME ?",
@@ -215,7 +215,7 @@ export default async function RoiPage({ params }: Props) {
                 {
                   question: "How many hours per day can AI free up in my team?",
                   answer:
-                    "Axion-IA observes an average of 1 to 3 hours freed per person per day after AI training, depending on profiles and automated tasks. Figures from tracking 38 companies after an Essential session.",
+                    "Axion-IA observes an average of 1 to 3 hours freed per person per day after AI training, depending on profiles and automated tasks. Figures from tracking 38 companies after a group training.",
                 },
                 {
                   question: "How do you calculate the ROI of AI training for an SME?",

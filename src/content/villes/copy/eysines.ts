@@ -235,7 +235,7 @@ export const EYSINES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Eysines ?",
-      a: "Pour les TPE et PME d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les TPE et PME d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Bordeaux, Le Bouscat et Mérignac depuis Eysines ?",

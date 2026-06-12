@@ -36,8 +36,8 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
       en: "Audit sur place à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation à Montaigu-Vendée d'agents IA en code custom pour la qualité, le contrôle production et la logistique, dès {{price:impl-poc|entry}}.",

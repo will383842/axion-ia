@@ -555,7 +555,7 @@ tarif réel (source de vérité pricing.ts) au rendu. N'écris JAMAIS un montant
 chiffres ni « € »/« EUR »/« euros » — uniquement le token.
 - Audit Flash (4h) : {{price:audit-flash|flat}}
 - Formation 4h : {{price:intervention-4h|flat}}
-- Intervention Essentielle (1 jour) : {{price:intervention-essentielle|flat}}
+- Formation collective (1 jour) : {{price:intervention-essentielle|flat}}
 - Implémentation (Pilote IA) : à partir de {{price:impl-poc|entry}}
 - Coaching 1-to-1 dirigeant : {{price:intervention-dirigeants|flat}}
 

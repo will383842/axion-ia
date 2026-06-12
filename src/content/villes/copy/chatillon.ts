@@ -36,8 +36,8 @@ export const CHATILLON_COPY: VilleCopy = {
       en: "Audit sur place IA à Châtillon dès {{price:audit-flash|flat}} — William se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
-      en: "Intervention Essentielle à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
+      fr: "Formation collective à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
+      en: "Group training à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
     },
     implementation: {
       fr: "Implémentation IA sur site à Châtillon dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
@@ -236,7 +236,7 @@ export const CHATILLON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Châtillon ?",
-      a: "Pour une TPE ou PME implantée à Châtillon, l'Audit sur place est planifiable sous 5 jours ouvrés après validation. Une Intervention Essentielle démarre généralement sous 10 à 15 jours selon le périmètre.",
+      a: "Pour une TPE ou PME implantée à Châtillon, l'Audit sur place est planifiable sous 5 jours ouvrés après validation. Une formation collective démarre généralement sous 10 à 15 jours selon le périmètre.",
     },
     {
       q: "Couvrez-vous les communes proches de Châtillon ?",

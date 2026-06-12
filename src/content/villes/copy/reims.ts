@@ -296,7 +296,7 @@ export const REIMS_COPY: VilleCopy = {
         whyHere: [
           "Reims est desservie par la gare TGV Champagne-Ardenne à ~45 min de Paris — nos consultants y interviennent en journée sans nuit contrainte, et couvrent aussi le bassin Champagne jusqu'à Épernay, Châlons et Troyes.",
           "Le tissu économique rémois est multi-sectoriel : maisons de Champagne export-intensives, industries bioéconomie, structures académiques (NEOMA, Sciences Po, URCA) — chaque session est calibrée sur votre vocabulaire métier.",
-          "Le format Essentielle est calibré pour les PME et maisons familiales du Grand Reims de quelques dizaines à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les PME et maisons familiales du Grand Reims de quelques dizaines à une centaine de collaborateurs.",
           "Le format Dirigeants est adapté aux CODIR des grandes maisons de Champagne ou des directions régionales de grands groupes (LVMH, Pernod Ricard) implantés à Reims.",
           "Le format Conférence convient aux journées portes ouvertes, séminaires grand groupe ou événements fédératifs CCI Marne en Champagne.",
           "Vocabulaire ajusté à votre réalité : Champagne / vitivinicole, bioéconomie / agro-industrie, management académique, tertiaire services. Aucune session générique recyclée.",
@@ -331,15 +331,15 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour viticulteurs indépendants, petits négoces, prestataires de services du Grand Reims jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commercial export, qualité, RH, marketing Champagne).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (commercial export, qualité, RH, marketing Champagne).",
           },
           {
             sizeLabel: "ETI",
@@ -357,7 +357,7 @@ export const REIMS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement adapté à notre équipe export : vocabulaire Champagne, démos sur nos propres fiches techniques et emails clients. Le lendemain, plusieurs collaborateurs utilisaient déjà les outils installés sur leur travail réel.",
+              "Formation collective parfaitement adaptée à notre équipe export : vocabulaire Champagne, démos sur nos propres fiches techniques et emails clients. Le lendemain, plusieurs collaborateurs utilisaient déjà les outils installés sur leur travail réel.",
             role: "Responsable export",
             companyProfile: "Maison de Champagne indépendante, Reims, 45 collaborateurs",
           },
@@ -371,7 +371,7 @@ export const REIMS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Reims ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Vos consultants peuvent-ils venir dans le bassin Champagne (Épernay, Châlons, Troyes) ?",
@@ -383,7 +383,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
@@ -402,7 +402,7 @@ export const REIMS_COPY: VilleCopy = {
         whyHere: [
           "Reims is served by Champagne-Ardenne TGV station, ~45 min from Paris — our consultants intervene there for day visits without overnight constraints and cover the Champagne basin to Épernay, Châlons and Troyes.",
           "Reims' economic fabric is multi-sectoral: export-intensive Champagne houses, bioeconomy industries, academic structures (NEOMA, Sciences Po, URCA) — each session is calibrated to your sector vocabulary.",
-          "The Essential format is calibrated for Grand Reims SMEs and family houses from a few dozen to about a hundred staff.",
+          "The one-day format is calibrated for Grand Reims SMEs and family houses from a few dozen to about a hundred staff.",
           "The Executives format suits the executive committees of major Champagne houses or regional leadership of large groups (LVMH, Pernod Ricard) based in Reims.",
           "The Talk format suits open days, large-group seminars or CCI Marne en Champagne federating events.",
           "Vocabulary adjusted to your reality: Champagne / wine, bioeconomy / agri-industry, academic management, tertiary services. No recycled generic session.",
@@ -437,15 +437,15 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for independent winegrowers, small traders, Grand Reims service providers up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (export sales, quality, HR, Champagne marketing).",
+              "Group format for the whole group or Teams to focus on one department (export sales, quality, HR, Champagne marketing).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -463,7 +463,7 @@ export const REIMS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly suited to our export team: Champagne vocabulary, demos on our own technical sheets and client emails. The next day, several staff were already using the installed tools on real work.",
+              "Group format perfectly suited to our export team: Champagne vocabulary, demos on our own technical sheets and client emails. The next day, several staff were already using the installed tools on real work.",
             role: "Head of Export",
             companyProfile: "Independent Champagne house, Reims, 45 staff",
           },
@@ -477,7 +477,7 @@ export const REIMS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Reims take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can your consultants come to the Champagne basin (Épernay, Châlons, Troyes)?",
@@ -489,7 +489,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Are your sessions eligible for training funds?",
@@ -1132,7 +1132,7 @@ export const REIMS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les structures académiques rémois (NEOMA, Sciences Po, URCA) ?",
-      a: "Oui. Nous accompagnons les établissements d'enseignement supérieur sur leurs cas IA administratifs et pédagogiques — génération de contenus de formation, traitement de dossiers de candidature, automatisation du reporting institutionnel. Notre offre Essentielle est calibrée pour les équipes de quelques dizaines à plusieurs centaines de collaborateurs.",
+      a: "Oui. Nous accompagnons les établissements d'enseignement supérieur sur leurs cas IA administratifs et pédagogiques — génération de contenus de formation, traitement de dossiers de candidature, automatisation du reporting institutionnel. Notre formation collective est calibrée pour les équipes de quelques dizaines à plusieurs centaines de collaborateurs.",
     },
   ],
 };

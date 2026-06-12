@@ -39,8 +39,8 @@ const VILLE_COPY: VilleCopy = {
       en: "Audit sur place à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation d'agents IA à Illkirch-Graffenstaden pour PME-ETI bas-rhinoises : tri automatique des emails clients multilingues, génération de comptes rendus R&D, intégration ERP-CRM existant. Tarifs publics, devis sur cadrage.",
@@ -243,7 +243,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Illkirch-Graffenstaden ?",
-      a: "Audit sur place bookable sous 5 à 10 jours ouvrés. Intervention Essentielle livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
+      a: "Audit sur place bookable sous 5 à 10 jours ouvrés. Formation collective livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Illkirch-Graffenstaden ?",

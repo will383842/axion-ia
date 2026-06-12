@@ -22,7 +22,6 @@ import {
   type StackTool,
 } from "@/content/stack-ia";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
@@ -295,13 +294,11 @@ export default async function StackIaPage({ params }: Props) {
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta
-                  href="/interventions/essentielle"
+                  href="/formations"
                   size="lg"
                   className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)]"
                 >
-                  {isFr
-                    ? `Démarrer avec l'Essentielle · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-                    : `Start with the Essential · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
+                  {isFr ? "Voir nos formations" : "See our trainings"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/audit/tpe-1-jour" variant="outline" size="lg">

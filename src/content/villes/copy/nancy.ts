@@ -298,7 +298,7 @@ export const NANCY_COPY: VilleCopy = {
         whyHere: [
           "Nancy est un terrain d'intervention multi-sectoriel : organisations de santé et de recherche (CHRU, Inria, CNRS), industrie lorraine (Saint-Gobain PAM, Materalia), enseignement supérieur (Mines Nancy, ICN, Polytech Nancy) et services tertiaires centre-ville.",
           "Tous les quartiers et communes du Grand Nancy couverts en présentiel : centre-ville, Brabois (Vandœuvre-lès-Nancy), campus Artem, Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
-          "Le format Essentielle est calibré pour les structures nancéiennes de quelques personnes à une centaine de collaborateurs, en particulier les PME de services, les cabinets et les équipes de recherche du campus Artem.",
+          "Le format collectif (1 journée) est calibré pour les structures nancéiennes de quelques personnes à une centaine de collaborateurs, en particulier les PME de services, les cabinets et les équipes de recherche du campus Artem.",
           "Le format Conférence convient aux plénières d'entreprise ou aux séminaires institutionnels (salles CHRU, espaces de congrès Grand Nancy).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des grandes organisations du bassin nancéien.",
           "Vocabulaire ajusté à votre secteur dominant : industrie des matériaux, santé/médical, recherche académique, services B2B, agroalimentaire. Pas de session générique recyclée.",
@@ -333,15 +333,15 @@ export const NANCY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour indépendants, petits cabinets et structures nancéiennes jusqu'à une dizaine de collaborateurs — centre-ville, quartier Rives de Meurthe, communes proches.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour un département — R&D, commercial, finance, opérations — particulièrement efficace pour les PME issues du Grand Nancy Innovation ou de l'Incubateur Lorrain.",
+              "Formation collective pour le groupe entier ou Équipes pour un département — R&D, commercial, finance, opérations — particulièrement efficace pour les PME issues du Grand Nancy Innovation ou de l'Incubateur Lorrain.",
           },
           {
             sizeLabel: "ETI",
@@ -359,7 +359,7 @@ export const NANCY_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle a collé aux attentes de nos équipes R&D. Ils sont repartis avec leurs outils configurés sur leurs vrais protocoles de recherche. Dès le lendemain, plusieurs rédigeaient des comptes-rendus d'expériences avec l'IA.",
+              "Le format collectif (1 journée) a collé aux attentes de nos équipes R&D. Ils sont repartis avec leurs outils configurés sur leurs vrais protocoles de recherche. Dès le lendemain, plusieurs rédigeaient des comptes-rendus d'expériences avec l'IA.",
             role: "Directrice R&D",
             companyProfile: "PME recherche appliquée, Brabois Nancy",
           },
@@ -373,7 +373,7 @@ export const NANCY_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nancy ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous intervenir dans des environnements hospitaliers ou industriels ?",
@@ -404,7 +404,7 @@ export const NANCY_COPY: VilleCopy = {
         whyHere: [
           "Nancy is a multi-sector engagement ground: health and research organisations (CHRU, Inria, CNRS), Lorraine industry (Saint-Gobain PAM, Materalia), higher education (Mines Nancy, ICN, Polytech Nancy) and city-centre services.",
           "All Grand Nancy districts and communes covered in person: city centre, Brabois (Vandœuvre-lès-Nancy), Artem campus, Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
-          "The Essential format is calibrated for Nancy structures from a few people to about a hundred staff, particularly service SMEs, consulting firms and research teams on the Artem campus.",
+          "The one-day format is calibrated for Nancy structures from a few people to about a hundred staff, particularly service SMEs, consulting firms and research teams on the Artem campus.",
           "The Talk format suits corporate plenaries or institutional seminars (CHRU conference rooms, Grand Nancy congress spaces).",
           "The Executives format enables in-camera framing for executive committees of Lorraine basin industrial mid-caps and large organisations.",
           "Vocabulary adjusted to your dominant sector: materials industry, health/medical, academic research, B2B services, agri-food. No recycled generic session.",
@@ -439,15 +439,15 @@ export const NANCY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for Nancy freelancers, small practices and structures up to about ten staff — city centre, Rives de Meurthe district, nearby communes.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on a department — R&D, sales, finance, operations — particularly effective for SMEs from Grand Nancy Innovation or Incubateur Lorrain.",
+              "Group format for the whole group or Teams to focus on a department — R&D, sales, finance, operations — particularly effective for SMEs from Grand Nancy Innovation or Incubateur Lorrain.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -465,7 +465,7 @@ export const NANCY_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format matched our R&D team's needs. They left with tools configured for their real research protocols. By the next day, several were already writing up experiment summaries with AI.",
+              "The one-day format matched our R&D team's needs. They left with tools configured for their real research protocols. By the next day, several were already writing up experiment summaries with AI.",
             role: "R&D Director",
             companyProfile: "Applied research SME, Brabois Nancy",
           },
@@ -479,7 +479,7 @@ export const NANCY_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Nancy take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you run sessions in hospital or industrial environments?",

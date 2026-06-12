@@ -340,15 +340,15 @@ export const BREST_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, petites structures de service et artisans du bassin brestois jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (bureau d'études, commercial, administration, opérations).",
+              "Le format collectif (1 journée) pour le groupe entier ou Équipes pour focaliser sur un département (bureau d'études, commercial, administration, opérations).",
           },
           {
             sizeLabel: "ETI",
@@ -380,7 +380,7 @@ export const BREST_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Brest ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous adapter le contenu aux métiers de la défense maritime ou des sciences de la mer ?",
@@ -446,15 +446,15 @@ export const BREST_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for freelancers, small service structures and artisans in the Brest basin up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (engineering office, sales, administration, operations).",
+              "Group format for the whole group or Teams to focus on one department (engineering office, sales, administration, operations).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -486,7 +486,7 @@ export const BREST_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Brest take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The group format (one day) runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you adapt content to maritime defence or marine science roles?",

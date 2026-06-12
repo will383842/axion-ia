@@ -307,7 +307,7 @@ export const RENNES_COPY: VilleCopy = {
         whyHere: [
           "Rennes couvre un tissu diversifié que nous animons régulièrement : ingénieurs Atalante, équipes industrielles La Janais, commerciaux Crédit Mutuel Arkéa, chercheurs Canon CRF, agronomes Valorial.",
           "Tous les sites du bassin rennais sont couverts en présentiel : Atalante Beaulieu et ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz), La Janais (Chartres-de-Bretagne), centre historique et enceinte universitaire.",
-          "Le format Essentielle est calibré pour les structures rennaises de quelques personnes à une centaine de collaborateurs, qu'elles soient numériques, industrielles ou tertiaires.",
+          "Le format collectif (1 journée) est calibré pour les structures rennaises de quelques personnes à une centaine de collaborateurs, qu'elles soient numériques, industrielles ou tertiaires.",
           "Le format Conférence convient aux plénières d'entreprise (auditorium Canon, salles Couvent des Jacobins, espaces Atalante ou Rennes School of Business).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction du bassin rennais.",
           "Vocabulaire ajusté à votre secteur dominant : numérique / IA, agroalimentaire, automobile / industrie décarbonée, télécoms ou banque. Pas de session générique recyclée.",
@@ -342,15 +342,15 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, cabinets, micro-structures numériques ou agro rennaises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME (10-249 collab)",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (R&D, commercial, finance, production) dans une PME Atalante ou Valorial.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (R&D, commercial, finance, production) dans une PME Atalante ou Valorial.",
           },
           {
             sizeLabel: "ETI (250-4 999 collab)",
@@ -368,7 +368,7 @@ export const RENNES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement ciblé sur notre secteur : nos développeurs et chefs de projet sont repartis avec leurs outils IA installés et testés sur de vrais fichiers. Productivité mesurée dès la semaine suivante.",
+              "Formation collective parfaitement ciblée sur notre secteur : nos développeurs et chefs de projet sont repartis avec leurs outils IA installés et testés sur de vrais fichiers. Productivité mesurée dès la semaine suivante.",
             role: "Directeur des opérations",
             companyProfile: "ETI numérique, Rennes Atalante Beaulieu",
           },
@@ -382,11 +382,11 @@ export const RENNES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Rennes ?",
-            a: "Selon le format : l'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats (CODIR + cascade équipes), le rythme est défini ensemble en cadrage.",
+            a: "Selon le format : le format collectif (1 journée) se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats (CODIR + cascade équipes), le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir à Rennes ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté, avec plénière + ateliers en sous-groupes dans les espaces Atalante ou le Couvent des Jacobins.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté, avec plénière + ateliers en sous-groupes dans les espaces Atalante ou le Couvent des Jacobins.",
           },
           {
             q: "Les outils IA installés restent-ils utilisables après la session ?",
@@ -413,7 +413,7 @@ export const RENNES_COPY: VilleCopy = {
         whyHere: [
           "Rennes covers a diverse fabric we regularly animate: Atalante engineers, La Janais industrial teams, Crédit Mutuel Arkéa commercial staff, Canon CRF researchers, Valorial agronomists.",
           "All Rennes basin sites covered in person: Atalante Beaulieu and ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz), La Janais (Chartres-de-Bretagne), historic centre and university precinct.",
-          "The Essential format is calibrated for Rennes organizations from a few people to about a hundred staff, whether digital, industrial or service-oriented.",
+          "The one-day format is calibrated for Rennes organizations from a few people to about a hundred staff, whether digital, industrial or service-oriented.",
           "The Talk format suits corporate plenaries (Canon auditorium, Couvent des Jacobins rooms, Atalante or Rennes School of Business spaces).",
           "The Executives format enables in-camera framing for Rennes basin executive committees.",
           "Vocabulary adjusted to your dominant sector: digital / AI, agri-food, automotive / decarbonized industry, telecom or banking. No recycled generic session.",
@@ -448,15 +448,15 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal freelancers, firms, digital or agri-food micro-structures in Rennes up to about ten staff.",
           },
           {
             sizeLabel: "SME (10-249 staff)",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (R&D, sales, finance, production) in an Atalante or Valorial SME.",
+              "Group training for the whole group or Teams to focus on one department (R&D, sales, finance, production) in an Atalante or Valorial SME.",
           },
           {
             sizeLabel: "Mid-cap (250-4,999 staff)",
@@ -474,7 +474,7 @@ export const RENNES_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly targeted at our sector: our developers and project managers left with their AI tools installed and tested on real files. Productivity gains measured from the following week.",
+              "Group format perfectly targeted at our sector: our developers and project managers left with their AI tools installed and tested on real files. Productivity gains measured from the following week.",
             role: "Head of Operations",
             companyProfile: "Digital mid-cap, Rennes Atalante Beaulieu",
           },
@@ -488,11 +488,11 @@ export const RENNES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Rennes take?",
-            a: "By format: the Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program (exec committee + cascade teams), the cadence is defined together at framing.",
+            a: "By format: the one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program (exec committee + cascade teams), the cadence is defined together at framing.",
           },
           {
             q: "What group size can you handle in Rennes?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops in Atalante spaces or the Couvent des Jacobins.",
+            a: "The one-day format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops in Atalante spaces or the Couvent des Jacobins.",
           },
           {
             q: "Do the AI tools installed remain usable after the session?",

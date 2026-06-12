@@ -297,7 +297,7 @@ export const TOURS_COPY: VilleCopy = {
         whyHere: [
           "Tours est un bassin diversifié avec des contextes métiers très différents — industrie (STMicro, SKF, Michelin, Hutchinson), énergie (S2E2), services B2B, santé, agroalimentaire, viticulture — ce qui nous force à calibrer chaque session sur VOS données réelles.",
           "Tous les sites de Tours Métropole couverts en présentiel : Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours, Saint-Avertin, Saint-Cyr-sur-Loire, La Riche.",
-          "Le format Essentielle est calibré pour les PME tourangelles de quelques personnes à une centaine de collaborateurs — équipes commerciales, RH, finance, support.",
+          "Le format collectif (1 journée) est calibré pour les PME tourangelles de quelques personnes à une centaine de collaborateurs — équipes commerciales, RH, finance, support.",
           "Le format Équipes permet d'intervenir département par département dans les ETI industrielles — production, méthodes, qualité, achats — avec des démos sur vos données techniques réelles.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI tourangelles — alignement sur la trajectoire IA sans jargon.",
           "Vocabulaire ajusté à votre secteur dominant : industriel, énergie, agri, tertiaire. Pas de session générique recyclée.",
@@ -332,15 +332,15 @@ export const TOURS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal indépendants, artisans, commerces et cabinets tourangeaux jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commercial, RH, finance, méthodes, qualité).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (commercial, RH, finance, méthodes, qualité).",
           },
           {
             sizeLabel: "ETI",
@@ -372,7 +372,7 @@ export const TOURS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Tours ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. Les formats Équipes et Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi (2 jours) sur deux journées consécutives. Les formats Équipes et Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous adapter le contenu aux secteurs industriels de Tours (semi-conducteurs, énergie, automobile) ?",
@@ -380,7 +380,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir à Tours ?",
-            a: "L'Essentielle et Équipes accueillent jusqu'à une centaine de collaborateurs en interaction. Au-delà, un format personnalisé avec plénière + ateliers en sous-groupes est plus adapté.",
+            a: "Le format collectif (1 journée) et Équipes accueillent jusqu'à une centaine de collaborateurs en interaction. Au-delà, un format personnalisé avec plénière + ateliers en sous-groupes est plus adapté.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -403,7 +403,7 @@ export const TOURS_COPY: VilleCopy = {
         whyHere: [
           "Tours is a diversified basin with very different professional contexts — industry (STMicro, SKF, Michelin, Hutchinson), energy (S2E2), B2B services, healthcare, agrifood, wine — which forces us to calibrate each session on YOUR real data.",
           "All Tours Métropole sites covered in person: Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours, Saint-Avertin, Saint-Cyr-sur-Loire, La Riche.",
-          "The Essential format is calibrated for Tours SMEs from a few people to about a hundred staff — sales, HR, finance, support.",
+          "The group format is calibrated for Tours SMEs from a few people to about a hundred staff — sales, HR, finance, support.",
           "The Teams format allows department-by-department engagement in industrial mid-caps — production, methods, quality, procurement — with demos on your real technical data.",
           "The Executives format enables in-camera framing for Tours mid-cap executive committees — AI trajectory alignment, no jargon.",
           "Vocabulary adjusted to your dominant sector: industrial, energy, agri, services. No recycled generic session.",
@@ -438,15 +438,15 @@ export const TOURS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Tours freelancers, craftspeople, local businesses and practices up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (sales, HR, finance, methods, quality).",
+              "Group format for the whole group or Teams to focus on one department (sales, HR, finance, methods, quality).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -478,7 +478,7 @@ export const TOURS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Tours take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Teams and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Teams and Executives formats fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "Can you adapt content to Tours industrial sectors (semiconductors, energy, automotive)?",
@@ -486,7 +486,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "What group size can you handle in Tours?",
-            a: "The Essential and Teams formats handle up to about a hundred staff in interaction. Beyond that, a custom format with plenary + sub-group workshops is more suitable.",
+            a: "The group format and Teams formats handle up to about a hundred staff in interaction. Beyond that, a custom format with plenary + sub-group workshops is more suitable.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

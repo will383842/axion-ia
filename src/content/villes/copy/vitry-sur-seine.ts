@@ -174,7 +174,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Essential AI showcase or e-commerce site",
+            price: "Entry-level AI showcase or e-commerce site",
             detail:
               "For Vitry artisans, retailers and freelancers — galleries and artist studios in the MAC VAL district, town-centre shops: mobile-first site, simple e-commerce, first-contact chatbot, quote from 24-48 h depending on complexity.",
           },
@@ -248,7 +248,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel format d'intervention est adapté à un artisan ou une TPE de Vitry-sur-Seine ?",
-      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. L'intervention Essentielle (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
+      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
     },
   ],
 };

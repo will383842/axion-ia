@@ -296,7 +296,7 @@ export const AMIENS_COPY: VilleCopy = {
         whyHere: [
           "Amiens et son bassin concentrent un tissu d'entreprises manufacturières et de services où la montée en compétence IA génère des gains opérationnels immédiats : rédaction de rapports qualité, gestion documentaire fournisseurs, suivi de production.",
           "Nos consultants se déplacent sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques. Pas d'aléa logistique.",
-          "Le format Essentielle est calibré pour les équipes de quelques personnes à une centaine de collaborateurs, adapté aux TPE artisanales comme aux PME industrielles.",
+          "Le format collectif (1 journée) est calibré pour les équipes de quelques personnes à une centaine de collaborateurs, adapté aux TPE artisanales comme aux PME industrielles.",
           "Le format Conférence convient aux plénières d'entreprise et aux séminaires de rentrée : auditoriums d'entreprise, salles de séminaire des hôtels amiénois, campus UPJV ou UniLaSalle.",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et les CODIR régionaux.",
           "Contenu ajusté à votre secteur dominant : industrie manufacturière, logistique, R&D, commerce de gros, services. Pas de session générique recyclée.",
@@ -331,15 +331,15 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal artisans, indépendants, petits commerces et petites structures industrielles amiénoises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (production, achats, commercial, RH, finance).",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (production, achats, commercial, RH, finance).",
           },
           {
             sizeLabel: "ETI",
@@ -357,7 +357,7 @@ export const AMIENS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré pour notre équipe logistique. Nos collaborateurs sont repartis avec leurs outils IA opérationnels le jour même. Deux semaines plus tard, la moitié les utilisait au quotidien sur leurs tâches réelles.",
+              "Formation collective parfaitement calibrée pour notre équipe logistique. Nos collaborateurs sont repartis avec leurs outils IA opérationnels le jour même. Deux semaines plus tard, la moitié les utilisait au quotidien sur leurs tâches réelles.",
             role: "Responsable logistique",
             companyProfile: "PME transport & logistique, bassin amiénois",
           },
@@ -371,11 +371,11 @@ export const AMIENS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Amiens ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+            a: "Le format collectif accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -402,7 +402,7 @@ export const AMIENS_COPY: VilleCopy = {
         whyHere: [
           "Amiens and its basin concentrate manufacturing and service companies where AI upskilling delivers immediate operational gains: quality report writing, supplier document management, production tracking.",
           "Our consultants travel on site to Amiens — city centre, northern industrial zone, Pôle Jules Verne, surrounding business parks. No logistics uncertainty.",
-          "The Essential format is calibrated for teams from a few people to about a hundred staff, suited to craft micro-businesses and industrial SMEs alike.",
+          "The one-day format is calibrated for teams from a few people to about a hundred staff, suited to craft micro-businesses and industrial SMEs alike.",
           "The Talk format suits corporate plenaries and conference seminars: company auditoriums, Amiens hotel seminar rooms, UPJV or UniLaSalle campus.",
           "The Executives format enables in-camera framing for executive committees and regional CODIRs.",
           "Content adjusted to your dominant sector: manufacturing, logistics, R&D, wholesale trade, services. No recycled generic session.",
@@ -437,15 +437,15 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal Amiens craft businesses, freelancers, small shops and small industrial structures up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (production, procurement, sales, HR, finance).",
+              "Group format for the whole group or Teams to focus on one department (production, procurement, sales, HR, finance).",
           },
           {
             sizeLabel: "Mid-cap",
@@ -463,7 +463,7 @@ export const AMIENS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated for our logistics team. Staff left with operational AI tools the same day. Two weeks later, half were using them daily on real tasks.",
+              "Group format perfectly calibrated for our logistics team. Staff left with operational AI tools the same day. Two weeks later, half were using them daily on real tasks.",
             role: "Logistics Manager",
             companyProfile: "Transport & logistics SME, Amiens basin",
           },
@@ -477,11 +477,11 @@ export const AMIENS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Amiens take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",

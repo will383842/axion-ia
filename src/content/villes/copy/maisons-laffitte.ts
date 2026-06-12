@@ -229,7 +229,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Maisons-Laffitte ?",
-      a: "Nos prestations à Maisons-Laffitte débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics sur axion-ia.com.",
+      a: "Nos prestations à Maisons-Laffitte débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une formation collective et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA à Maisons-Laffitte ?",

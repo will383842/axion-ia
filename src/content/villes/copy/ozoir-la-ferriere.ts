@@ -39,8 +39,8 @@ const VILLE_COPY: VilleCopy = {
       en: "Audit sur place à Ozoir-la-Ferrière pour TPE de la Brie : 4 heures sur site, cartographie des tâches répétitives (saisie compta artisanale, devis BTP, relances clients commerce), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Ozoir-la-Ferrière pour PME locales : automatisation devis-relances pour artisans BTP, synchronisation caisse-compta pour commerces de la Place Horizon, suivi tournées pour transporteurs. Code custom livré. Dès {{price:intervention-4h|flat}}.",
-      en: "Intervention Essentielle à Ozoir-la-Ferrière pour PME locales : automatisation devis-relances pour artisans BTP, synchronisation caisse-compta pour commerces de la Place Horizon, suivi tournées pour transporteurs. Code custom livré. Dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Ozoir-la-Ferrière pour PME locales : automatisation devis-relances pour artisans BTP, synchronisation caisse-compta pour commerces de la Place Horizon, suivi tournées pour transporteurs. Code custom livré. Dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Ozoir-la-Ferrière pour PME locales : automatisation devis-relances pour artisans BTP, synchronisation caisse-compta pour commerces de la Place Horizon, suivi tournées pour transporteurs. Code custom livré. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation d'agents IA à Ozoir-la-Ferrière pour PME-ETI seine-et-marnaises : tri automatique des emails clients, OCR factures fournisseurs, génération de bons de commande. Tarifs publics, devis sur cadrage.",
@@ -243,7 +243,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Ozoir-la-Ferrière ?",
-      a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Intervention Essentielle livrée en 2 à 4 semaines selon complexité du cadrage. Pour les artisans BTP en pic de charge, planification adaptée au calendrier de chantiers.",
+      a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité du cadrage. Pour les artisans BTP en pic de charge, planification adaptée au calendrier de chantiers.",
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Ozoir-la-Ferrière ?",

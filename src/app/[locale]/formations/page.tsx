@@ -1162,13 +1162,13 @@ export default async function FormationsHub({ params }: Props) {
                       id: "effectif",
                       question: "Combien de participants par session ?",
                       answer:
-                        "Selon le palier : Essentielle (1 jour) accueille 2-30 personnes en 3 tranches tarifaires (2-8, 9-15, 16-30). Approfondie (2 jours) idem. Format 4 h : 2-20 personnes prix fixe. Au-delà de 30 personnes, on bascule sur Conférence (sur devis).",
+                        "Selon le palier : le format 1 jour accueille 2-30 personnes en 3 tranches tarifaires (2-8, 9-15, 16-30). Le format 2 jours idem. Format 4 h : 2-20 personnes prix fixe. Au-delà de 30 personnes, on bascule sur conférence (sur devis).",
                     },
                     {
                       id: "duree",
                       question: "Quelle durée choisir ?",
                       answer:
-                        "4 h pour découvrir l'IA ou cadrer 1 cas d'usage. 1 jour Essentielle pour le format de découverte opérationnelle. 1 jour Gagner du temps pour des automatisations métier ciblées. 2 jours Approfondie pour aller en profondeur. 3 jours+ pour multi-sites ou contenus ultra-spécifiques.",
+                        "4 h pour découvrir l'IA ou cadrer 1 cas d'usage. 1 jour pour une découverte opérationnelle. 1 jour productivité pour des automatisations métier ciblées. 2 jours pour aller en profondeur. 3 jours+ pour multi-sites ou contenus ultra-spécifiques.",
                     },
                     {
                       id: "frais-deplacement",
@@ -1220,13 +1220,13 @@ export default async function FormationsHub({ params }: Props) {
                       id: "headcount",
                       question: "How many participants per session?",
                       answer:
-                        "Depending on the tier: Essential (1 day) hosts 2-30 people in 3 price brackets (2-8, 9-15, 16-30). Deep dive (2 days) same. 4 h format: 2-20 people flat price. Beyond 30, we switch to Conference (on quote).",
+                        "Depending on the tier: the one-day format hosts 2-30 people in 3 price brackets (2-8, 9-15, 16-30). The two-day format same. 4 h format: 2-20 people flat price. Beyond 30, we switch to conference (on quote).",
                     },
                     {
                       id: "duration",
                       question: "Which duration to choose?",
                       answer:
-                        "4 h to discover AI or frame 1 use case. 1 day Essential for operational discovery. 1 day Save Time for targeted business automations. 2 days Deep dive for depth. 3+ days for multi-site or ultra-specific content.",
+                        "4 h to discover AI or frame 1 use case. 1 day for operational discovery. 1 day productivity for targeted business automations. 2 days for depth. 3+ days for multi-site or ultra-specific content.",
                     },
                     {
                       id: "travel-fees",

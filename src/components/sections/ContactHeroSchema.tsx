@@ -36,7 +36,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Intervention",
-          title: `L'Essentielle · ${formatAmount(essentielleAmount, "fr", { compact: true })}`,
+          title: `Formation collective · ${formatAmount(essentielleAmount, "fr", { compact: true })}`,
           detail: "Diagnostic 90 min + plan d'action.",
           lead: false,
         },

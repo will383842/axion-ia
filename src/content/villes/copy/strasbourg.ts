@@ -307,7 +307,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Strasbourg est desservie en moins de 2h depuis Paris en TGV et en 1h15 depuis Francfort en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
           "Tous les secteurs du bassin strasbourgeois couverts en présentiel : Wacken-Europe, Presqu'île, Parc d'Innovation d'Illkirch (PII), Espace Européen de l'Entreprise à Schiltigheim, Port du Rhin, communes de l'Eurométropole.",
           "Dimension bilingue FR/DE gérée nativement : pour les équipes franco-allemandes de l'Eurodistrict, les démos et ateliers peuvent être conduits en français, en allemand ou en mode mixte selon les participants.",
-          "Le format Essentielle est calibré pour les PME et ETI industrielles, biotech et de services strasbourgeoises jusqu'à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les PME et ETI industrielles, biotech et de services strasbourgeoises jusqu'à une centaine de collaborateurs.",
           "Le format Conférence convient aux plénières d'entreprise : salles CIARUS, Palais des Congrès de Strasbourg, espaces Parc Expo du Wacken.",
           "Vocabulaire ajusté à votre secteur dominant : institutions et droit européen, biotech et R&D, industrie et domotique, banque-assurance, médias. Aucune session générique recyclée.",
         ],
@@ -341,15 +341,15 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour les indépendants, cabinets et startups strasbourgeoises jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (R&D, commercial, production, finance) dans les PME industrielles ou biotech.",
+              "Formation collective pour le groupe entier ou Équipes pour focaliser sur un département (R&D, commercial, production, finance) dans les PME industrielles ou biotech.",
           },
           {
             sizeLabel: "ETI",
@@ -367,7 +367,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "Le format Essentielle était parfaitement adapté à notre double culture FR/DE. Les démos sur nos vrais documents R&D ont immédiatement convaincu même les collaborateurs les plus sceptiques. Autonomie réelle le lendemain.",
+              "Le format collectif (1 journée) était parfaitement adapté à notre double culture FR/DE. Les démos sur nos vrais documents R&D ont immédiatement convaincu même les collaborateurs les plus sceptiques. Autonomie réelle le lendemain.",
             role: "Responsable formation",
             companyProfile: "PME biotech, Parc d'Innovation d'Illkirch",
           },
@@ -381,7 +381,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Strasbourg ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats (ex. session CODIR + cascade équipes), le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format choisi. Le format d'une journée se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats (ex. session CODIR + cascade équipes), le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Pouvez-vous animer une session en allemand ou en mode bilingue FR/DE ?",
@@ -413,7 +413,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Strasbourg is under 2h from Paris by TGV and 1h15 from Frankfurt by ICE: our consultants arrive in the morning and leave in the evening, minimising logistics costs for you.",
           "All Strasbourg basin sectors covered in person: Wacken-Europe, Presqu'île, Illkirch Innovation Park (PII), Espace Européen de l'Entreprise in Schiltigheim, Port du Rhin, Eurométropole communes.",
           "FR/DE bilingualism natively handled: for Franco-German teams in the Eurodistrict, demos and workshops can be conducted in French, German or mixed mode per participants.",
-          "The Essential format is calibrated for Strasbourg industrial, biotech and service SMEs and mid-caps up to about a hundred staff.",
+          "The one-day format is calibrated for Strasbourg industrial, biotech and service SMEs and mid-caps up to about a hundred staff.",
           "The Talk format suits corporate plenaries: CIARUS rooms, Strasbourg Congress Centre, Wacken Parc Expo venues.",
           "Vocabulary adjusted to your dominant sector: European institutions and law, biotech and R&D, industry and automation, banking-insurance, media. No recycled generic session.",
         ],
@@ -447,14 +447,14 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Essential format",
+            price: "Group format",
             detail: "Ideal for Strasbourg freelancers, firms and startups up to about ten staff.",
           },
           {
             sizeLabel: "SME",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole group or Teams to focus on one department (R&D, sales, production, finance) in industrial or biotech SMEs.",
+              "Group training for the whole group or Teams to focus on one department (R&D, sales, production, finance) in industrial or biotech SMEs.",
           },
           {
             sizeLabel: "Mid-cap",
@@ -472,7 +472,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Essential format was perfectly suited to our FR/DE dual culture. Demos on our real R&D documents immediately convinced even the most sceptical staff. Real autonomy the next day.",
+              "The group format was perfectly suited to our FR/DE dual culture. Demos on our real R&D documents immediately convinced even the most sceptical staff. Real autonomy the next day.",
             role: "Training Manager",
             companyProfile: "Biotech SME, Illkirch Innovation Park",
           },
@@ -486,7 +486,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Strasbourg take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program (e.g. exec session + team cascade), the rhythm is defined together at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program (e.g. exec session + team cascade), the rhythm is defined together at framing.",
           },
           {
             q: "Can you run a session in German or FR/DE bilingual mode?",

@@ -303,7 +303,7 @@ export const ANNECY_COPY: VilleCopy = {
         whyHere: [
           "Le bassin annécien concentre des secteurs à fort potentiel IA pratique : bureau d'études outdoor, ligne de production mécanique de précision, équipes commerciales export vers la Suisse.",
           "Nos consultants adaptent chaque session aux réalités métier locales — terminologie technique outdoor, culture Qualité industrie, enjeux transfrontaliers — sans session générique recyclée.",
-          "Format Essentielle calibré pour les PME industrielles et de service du bassin : jusqu'à une centaine de collaborateurs en interaction sur une journée.",
+          "Formation collective calibrée pour les PME industrielles et de service du bassin : jusqu'à une centaine de collaborateurs en interaction sur une journée.",
           "Format Conférence adapté aux plénières d'entreprise à Annecy (salles Bonlieu, centres de congrès, espaces collaboratifs French Tech in The Alps).",
           "Format Dirigeants pour les comités de direction des PME/ETI annéciennes souhaitant cadrer leur stratégie IA en huis-clos.",
           "Couverture géographique étendue : Annecy, Annecy-le-Vieux, Cran-Gevrier, Seynod, Meythet, Pringy, Rumilly, Vallée de l'Arve.",
@@ -338,15 +338,15 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "Format Essentielle",
+            price: "Formation collective",
             detail:
               "Idéal pour artisans, indépendants, petites structures industrielles ou de services du bassin annécien jusqu'à une dizaine de collaborateurs.",
           },
           {
             sizeLabel: "PME (10-249 collab)",
-            price: "Format Essentielle ou Équipes",
+            price: "Formation collective ou Équipes",
             detail:
-              "Essentielle pour l'ensemble de la structure ou Équipes pour focaliser sur un département : bureau d'études, commerce, production, qualité, RH.",
+              "Formation collective pour l'ensemble de la structure ou Équipes pour focaliser sur un département : bureau d'études, commerce, production, qualité, RH.",
           },
           {
             sizeLabel: "ETI (250-4 999 collab)",
@@ -378,11 +378,11 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Annecy ?",
-            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini en cadrage.",
+            a: "Cela dépend du format choisi. Le format collectif (1 journée) se déroule sur une journée, le format approfondi sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini en cadrage.",
           },
           {
             q: "Quelle taille de groupe peut-on accueillir ?",
-            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence avec schéma plénière + ateliers en sous-groupes est plus adapté.",
+            a: "Le format collectif (1 journée) accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence avec schéma plénière + ateliers en sous-groupes est plus adapté.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -409,7 +409,7 @@ export const ANNECY_COPY: VilleCopy = {
         whyHere: [
           "The Annecy basin concentrates sectors with strong practical AI potential: outdoor engineering teams, precision manufacturing lines, commercial teams exporting to Switzerland.",
           "Our consultants adapt each session to local professional realities — outdoor technical vocabulary, industrial quality culture, cross-border challenges — no recycled generic session.",
-          "Essential format calibrated for industrial and service SMEs in the basin: up to about a hundred staff in interaction over a day.",
+          "Group format calibrated for industrial and service SMEs in the basin: up to about a hundred staff in interaction over a day.",
           "Talk format adapted to corporate plenaries in Annecy (Bonlieu spaces, congress centres, French Tech in The Alps collaborative spaces).",
           "Executives format for SME/mid-cap executive committees wishing to frame their AI strategy in camera.",
           "Extended coverage: Annecy, Annecy-le-Vieux, Cran-Gevrier, Seynod, Meythet, Pringy, Rumilly, Vallée de l'Arve.",
@@ -444,15 +444,15 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "Essential format",
+            price: "Group format",
             detail:
               "Ideal for craftspeople, freelancers, small industrial or service businesses in the Annecy basin up to about ten staff.",
           },
           {
             sizeLabel: "SME (10-249 staff)",
-            price: "Essential or Teams format",
+            price: "Group or Teams format",
             detail:
-              "Essential for the whole organization or Teams to focus on one department: engineering, sales, production, quality, HR.",
+              "Group format for the whole organization or Teams to focus on one department: engineering, sales, production, quality, HR.",
           },
           {
             sizeLabel: "Mid-cap (250-4,999 staff)",
@@ -484,11 +484,11 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA session in Annecy take?",
-            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined at framing.",
+            a: "It depends on the chosen format. The one-day format runs over a day, the two-day format over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined at framing.",
           },
           {
             q: "What group size can you handle?",
-            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format with plenary + sub-group workshops is more suitable.",
+            a: "The group format handles up to about a hundred staff in interaction. Beyond that, the Talk format with plenary + sub-group workshops is more suitable.",
           },
           {
             q: "Do tools installed on workstations remain usable after the session?",
@@ -1135,7 +1135,7 @@ export const ANNECY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups de la French Tech in The Alps à Annecy ?",
-      a: "Oui. Nous accompagnons les startups et scale-ups du chapitre French Tech in The Alps - Annecy sur leurs cas IA opérationnels. Notre offre Essentielle est calibrée pour les structures avec un product-market fit établi qui souhaitent passer du POC IA à un déploiement opérationnel.",
+      a: "Oui. Nous accompagnons les startups et scale-ups du chapitre French Tech in The Alps - Annecy sur leurs cas IA opérationnels. Notre formation collective est calibrée pour les structures avec un product-market fit établi qui souhaitent passer du POC IA à un déploiement opérationnel.",
     },
     {
       q: "Avez-vous des références dans le secteur outdoor ou l'industrie de précision ?",
