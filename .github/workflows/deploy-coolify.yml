@@ -160,6 +160,26 @@ jobs:
           sudo apt-get clean
           df -h /
 
+      - name: Relocate Docker storage to /mnt (build headroom)
+        # ubuntu-latest expose DEUX disques : / (~75 GB) et /mnt (~75 GB séparés).
+        # Le pic du build Docker (statique précompressé ~5,5 GB + layers builder
+        # + COPY runner) débordait la partition / MALGRÉ le cleanup ci-dessus →
+        # « no space left on device » à l'assemblage de l'image runner
+        # (run 27429145791, échec à 44 min sur COPY /app/.next/standalone).
+        # On bascule le data-root Docker sur /mnt AVANT setup-buildx pour que le
+        # buildkit (driver docker-container) et ses layers vivent sur /mnt.
+        # Pur infra runner : zéro impact sur l'image, l'app ou les Web Vitals.
+        run: |
+          set -x
+          df -h / /mnt || true
+          sudo systemctl stop docker docker.socket || true
+          sudo mkdir -p /mnt/docker
+          existing=$(cat /etc/docker/daemon.json 2>/dev/null || echo '{}')
+          echo "$existing" | jq '. + {"data-root":"/mnt/docker"}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl start docker
+          sudo docker info | grep -i "Docker Root Dir" || true
+          df -h / /mnt || true
+
       # Audit deploy-unstuck 2026-05-18 (S10 instrumentation) — background
       # monitor RAM + disk + load + CPU toutes les 30s. Crucial pour
       # diagnostiquer si build OOM-kill silencieusement (pattern observé sur
