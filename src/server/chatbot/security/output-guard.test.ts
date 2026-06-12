@@ -86,7 +86,7 @@ describe("T-39 URL", () => {
 describe("T-39 combiné", () => {
   it("réponse 100 % groundée → ok", () => {
     const r = verifyOutput(
-      "L'Intervention Claude (2 650 € HT, 1 journée) : voir /fr/interventions/intervention-claude.",
+      "L'audit ciblé (2 450 € HT, 1 journée) : voir /fr/audit/cible pour les détails.",
     );
     expect(r.ok).toBe(true);
   });

@@ -4,6 +4,7 @@ exports[`<AnswerCard> > matches snapshot (FR, question + source link) 1`] = `
 <aside
   class="bg-halo-warm border-terracotta tldr-answer relative my-8 rounded-2xl border-l-4 px-6 py-5 sm:px-7 sm:py-6"
   data-aeo="tldr"
+  data-answer="true"
   role="doc-tip"
 >
   <div
