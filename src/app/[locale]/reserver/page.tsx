@@ -32,7 +32,10 @@ interface Props {
 // approfondie / conference / dirigeants). `gagner-du-temps` /
 // `intervention-claude` ne s'affichent pas (pas de slot calendrier dédié).
 async function loadDbBookedSlots(): Promise<BookedSlot[]> {
-  if (!process.env["DATABASE_URL"]) return [];
+  // ADR 0026 — court-circuite si pas de DB (dev local) OU si DB stub au build
+  // GH Actions (`stub.invalid`), pour ne pas dépendre du Proxy Prisma au SSG.
+  if (!process.env["DATABASE_URL"] || process.env["DATABASE_URL"].includes("stub.invalid"))
+    return [];
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -98,7 +101,10 @@ async function loadDbBookedSlots(): Promise<BookedSlot[]> {
 // une date bloquée restait réservable côté visiteur). Best-effort comme
 // loadDbBookedSlots : si DB offline, on retourne [] (page reste rendue).
 async function loadBlockedDates(): Promise<string[]> {
-  if (!process.env["DATABASE_URL"]) return [];
+  // ADR 0026 — court-circuite si pas de DB (dev local) OU si DB stub au build
+  // GH Actions (`stub.invalid`), pour ne pas dépendre du Proxy Prisma au SSG.
+  if (!process.env["DATABASE_URL"] || process.env["DATABASE_URL"].includes("stub.invalid"))
+    return [];
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
