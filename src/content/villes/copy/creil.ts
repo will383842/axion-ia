@@ -240,5 +240,9 @@ export const CREIL_COPY: VilleCopy = {
       q: "Quels secteurs accompagnez-vous spécifiquement à Creil ?",
       a: "À Creil et dans le sud-Oise, nous accompagnons principalement les industriels aéronautiques et leurs sous-traitants, les opérateurs logistiques et e-commerce, les PME tertiaires (banques, assurances), et les entreprises de services aux entreprises.",
     },
+    {
+      q: "Intervenez-vous aussi à distance pour les équipes de Creil ?",
+      a: "Oui. En complément des interventions sur site dans le bassin Creil Sud Oise, nous assurons des sessions et un suivi en visio — pratique pour les équipes multi-sites ou les sous-traitants aéronautiques répartis autour de Roissy. Le mix présentiel/distanciel se cale sur votre organisation.",
+    },
   ],
 };

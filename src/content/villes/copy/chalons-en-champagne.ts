@@ -241,5 +241,9 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
       q: "Travaillez-vous avec les services préfectoraux et administrations ?",
       a: "Oui, nous accompagnons les administrations à Châlons sur leurs cas IA opérationnels : automatisation traitement dossiers, classification documents, assistants conversationnels internes. Conformité RGPD et hébergement UE garantis, code restant votre propriété.",
     },
+    {
+      q: "Une partie de l'accompagnement à Châlons peut-elle se faire en visio ?",
+      a: "Oui. Les ateliers et démos clés se tiennent en présentiel sur site à Châlons-en-Champagne ; le suivi, les points d'avancement et certaines sessions peuvent se faire en visio — utile pour les structures de la filière champagne réparties sur le vignoble. Le rythme est défini avec vous.",
+    },
   ],
 };
