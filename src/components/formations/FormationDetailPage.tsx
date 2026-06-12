@@ -60,6 +60,7 @@ import {
   getDureeMeta,
   getGammeMeta,
 } from "@/content/formations/catalog-v2-meta";
+import { deriveProgrammeSchedule } from "@/content/formations/catalog-v2-schedule";
 import { findBookableBySlug } from "@/content/booking-catalog";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { buildCourseJsonLd, buildFaqJsonLd, buildHowToJsonLd, buildServiceJsonLd } from "@/lib/seo";
@@ -299,17 +300,17 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         contentClassName={TIGHT_X}
       >
         <div className="space-y-12">
-          {f.programme.map((sectionDay, idx) => {
-            const items: ReadonlyArray<InterventionScheduleItem> = sectionDay.steps.map((s) => ({
-              time: s.temps ?? "",
-              titleFr: s.titre,
-              titleEn: s.titre,
+          {deriveProgrammeSchedule(f.programme).map((sectionDay, idx) => {
+            const items: ReadonlyArray<InterventionScheduleItem> = sectionDay.items.map((s) => ({
+              time: s.time,
+              titleFr: s.title,
+              titleEn: s.title,
             }));
             return (
               <div key={idx}>
                 {multiDay ? (
                   <p className="text-terracotta-deep mb-5 text-center text-[13px] font-bold tracking-[0.16em] uppercase">
-                    {sectionDay.titreFr}
+                    {sectionDay.label}
                   </p>
                 ) : null}
                 <InterventionSchedule items={items} isFr={isFr} />
