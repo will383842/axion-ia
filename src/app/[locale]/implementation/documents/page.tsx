@@ -68,11 +68,11 @@ export default async function DocumentsPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert traitement documents IA"
-          : "William — Axion-IA founder, AI document processing expert",
+          ? "Williams — Fondateur Axion-IA, expert traitement documents IA"
+          : "Williams — Axion-IA founder, AI document processing expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets de traitement documentaire IA pour dirigeants TPE et PME — architecture, choix LLM multimodal, qualité d'extraction, supervision humaine."
-          : "Portrait of William, Axion-IA founder. Personally drives AI document processing projects for small business and SME executives — architecture, multimodal LLM selection, extraction quality, human oversight.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets de traitement documentaire IA pour dirigeants TPE et PME — architecture, choix LLM multimodal, qualité d'extraction, supervision humaine."
+          : "Portrait of Williams, Axion-IA founder. Personally drives AI document processing projects for small business and SME executives — architecture, multimodal LLM selection, extraction quality, human oversight.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

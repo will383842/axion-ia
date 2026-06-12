@@ -115,11 +115,11 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, partenaire 1-to-1 des dirigeants TPE et PME"
-          : "William — Axion-IA founder, 1-on-1 partner for small business and SME executives",
+          ? "Williams — Fondateur Axion-IA, partenaire 1-to-1 des dirigeants TPE et PME"
+          : "Williams — Axion-IA founder, 1-on-1 partner for small business and SME executives",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 2 formats (vision IA stratégique, maîtrise Claude). Confidentialité totale."
-          : "Portrait of William, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 2 formats (strategic AI vision, Claude mastery). Total confidentiality.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 2 formats (vision IA stratégique, maîtrise Claude). Confidentialité totale."
+          : "Portrait of Williams, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 2 formats (strategic AI vision, Claude mastery). Total confidentiality.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

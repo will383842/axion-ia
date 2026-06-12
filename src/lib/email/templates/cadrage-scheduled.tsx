@@ -23,7 +23,7 @@ const COPY = {
     body: (i: string, d: string, t: string, dur: number) =>
       `Votre appel de cadrage pour l'intervention « ${i} » est planifié le ${d} à ${t} (durée prévue ${dur} min).`,
     visioRow: (u: string) => `Lien visio : ${u}`,
-    visioPending: "Le lien visio vous sera envoyé séparément par William avant la date prévue.",
+    visioPending: "Le lien visio vous sera envoyé séparément par Williams avant la date prévue.",
     nextPrep:
       "Préparez 2-3 questions concrètes sur ce que vous attendez de l'intervention. Le cadrage sert à valider la pertinence et préparer le contenu.",
     cta: "Ajouter à mon calendrier",
@@ -35,7 +35,7 @@ const COPY = {
     body: (i: string, d: string, t: string, dur: number) =>
       `Your scoping call for the "${i}" session is scheduled on ${d} at ${t} (expected duration ${dur} min).`,
     visioRow: (u: string) => `Video link: ${u}`,
-    visioPending: "The video link will be sent separately by William before the scheduled date.",
+    visioPending: "The video link will be sent separately by Williams before the scheduled date.",
     nextPrep:
       "Prepare 2-3 concrete questions about what you expect from the session. The call validates fit and prepares the content.",
     cta: "Add to my calendar",

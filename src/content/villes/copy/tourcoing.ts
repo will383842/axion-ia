@@ -36,8 +36,8 @@ export const TOURCOING_COPY: VilleCopy = {
       en: "Nous réalisons des audits IA à Tourcoing pour identifier les processus automatisables dans les PME textiles, commerciales ou IT du bassin — résultat livré sous forme de cartographie priorisée, sans jargon. Détail complet sur la sous-page /audits.",
     },
     interventions: {
-      fr: "William se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
-      en: "William se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
+      fr: "Williams se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
+      en: "Williams se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès {{price:intervention-4h|flat}} pour une session en groupe. Formats et contenus détaillés sur /interventions.",
     },
     implementation: {
       fr: "Nous déployons des outils IA sur mesure à Tourcoing — automatisation de relances, génération de devis, RAG (Retrieval-Augmented Generation) documentaire — intégrables aux SI existants des PME du Parc de la Marlière. Voir /implementations.",

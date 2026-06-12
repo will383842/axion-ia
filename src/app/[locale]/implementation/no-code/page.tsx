@@ -67,10 +67,10 @@ export default async function NoCodePage({ params }: Props) {
       },
       {
         src: "/illustrations/home-founder-william.avif",
-        name: isFr ? "William — Fondateur Axion-IA" : "William — Axion-IA founder",
+        name: isFr ? "Williams — Fondateur Axion-IA" : "Williams — Axion-IA founder",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote les projets d'intégration IA dans vos outils no-code existants pour dirigeants TPE et PME — analyse de l'existant, design des flows, transfert d'autonomie aux équipes."
-          : "Portrait of William, Axion-IA founder. Drives AI integration projects into your existing no-code tools for small business and SME executives — analysis of existing setup, flow design, autonomy transfer to teams.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote les projets d'intégration IA dans vos outils no-code existants pour dirigeants TPE et PME — analyse de l'existant, design des flows, transfert d'autonomie aux équipes."
+          : "Portrait of Williams, Axion-IA founder. Drives AI integration projects into your existing no-code tools for small business and SME executives — analysis of existing setup, flow design, autonomy transfer to teams.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

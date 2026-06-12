@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: isFr ? "/demande-devis/confirmation" : "/request-quote/confirmation",
     title: isFr ? "Demande envoyée · Axion-IA" : "Request sent · Axion-IA",
     description: isFr
-      ? "Votre demande de devis a bien été reçue. William vous recontactera sous 24-48 h ouvrées."
-      : "Your quote request has been received. William will get back to you within 24-48 business hours.",
+      ? "Votre demande de devis a bien été reçue. Williams vous recontactera sous 24-48 h ouvrées."
+      : "Your quote request has been received. Williams will get back to you within 24-48 business hours.",
     alternates: {
       fr: "/demande-devis/confirmation",
       en: "/request-quote/confirmation",
@@ -53,8 +53,8 @@ export default async function ConfirmationPage({ params }: Props) {
             </h1>
             <p className="text-fg-soft mt-5 text-lg leading-relaxed">
               {isFr
-                ? "Merci, votre demande de devis qualifiée est entre nos mains. William vous recontactera sous 24 à 48 heures ouvrées pour un appel de cadrage personnalisé."
-                : "Thank you, your qualified quote request is in our hands. William will get back to you within 24 to 48 business hours for a personalized scoping call."}
+                ? "Merci, votre demande de devis qualifiée est entre nos mains. Williams vous recontactera sous 24 à 48 heures ouvrées pour un appel de cadrage personnalisé."
+                : "Thank you, your qualified quote request is in our hands. Williams will get back to you within 24 to 48 business hours for a personalized scoping call."}
             </p>
             <p className="text-fg-muted mt-4 text-sm">
               {isFr

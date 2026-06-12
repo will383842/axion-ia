@@ -229,7 +229,7 @@ export const CRETEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il physiquement à Créteil pour les audits et interventions ?",
-      a: "Oui. William et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
+      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
     },
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA d'une TPE/PME cristolienne ?",

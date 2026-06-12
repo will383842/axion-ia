@@ -10,9 +10,9 @@ export const COUERON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Couëron, commune de 24 100 habitants située à 16 km à l'ouest de Nantes dans Nantes Métropole. Le tissu local mélange industrie métallurgique historique (NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), karting de compétition (Sodikart, leader mondial implanté depuis 1981) et activités tertiaires de proximité. Nous intervenons sur site auprès des dirigeants couëronnais pour cadrer, prototyper et déployer leurs premiers cas d'usage IA en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les TPE et PME locales. William réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:intervention-4h|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:intervention-4h|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les TPE et PME locales. William réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:intervention-4h|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:intervention-4h|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
   seoHook: "métallurgie & industrie Nantes Métropole",
   ecosystemFr:
     "Couëron appartient à Nantes Métropole (24 communes). L'économie locale s'appuie sur la métallurgie spécialisée (NGK Berylco, alliages cuivre-béryllium), le karting (Sodikart, leader mondial depuis 1981), la ZAC des Hauts de Couëron, plus un tissu de TPE/PME en commerce, BTP et services. La commune est bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares).",
@@ -31,8 +31,8 @@ export const COUERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). William se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
-      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). William se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Couëron pour les TPE/PME industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
@@ -230,12 +230,12 @@ export const COUERON_COPY: VilleCopy = {
       a: "Nos audits Sur place à Couëron démarrent à {{price:intervention-4h|flat}} pour 4 heures sur site. Tarifs publics consultables sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
     },
     {
-      q: "William se déplace-t-il à Couëron pour intervenir sur site ?",
-      a: "Oui. William se déplace à Couëron (44220) et dans tout Nantes Métropole — Indre, Saint-Herblain, Sautron, Saint-Étienne-de-Montluc, Saint-Jean-de-Boiseau, Le Pellerin — sans frais kilométriques additionnels.",
+      q: "Williams se déplace-t-il à Couëron pour intervenir sur site ?",
+      a: "Oui. Williams se déplace à Couëron (44220) et dans tout Nantes Métropole — Indre, Saint-Herblain, Sautron, Saint-Étienne-de-Montluc, Saint-Jean-de-Boiseau, Le Pellerin — sans frais kilométriques additionnels.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",
-      a: "William se déplace à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
+      a: "Williams se déplace à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Couëron ?",

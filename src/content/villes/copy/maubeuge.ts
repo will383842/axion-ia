@@ -236,7 +236,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Maubeuge ?",
-      a: "William se déplace sur site à Maubeuge dans un délai de 5 jours ouvrés après validation de votre demande, via TER ou la N2.",
+      a: "Williams se déplace sur site à Maubeuge dans un délai de 5 jours ouvrés après validation de votre demande, via TER ou la N2.",
     },
     {
       q: "Axion-IA respecte-t-elle le RGPD lors des interventions à Maubeuge ?",

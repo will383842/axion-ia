@@ -11,9 +11,9 @@ export const PALAISEAU_COPY: VilleCopy = {
   pitchEn:
     "Palaiseau, sous-préfecture de l'Essonne de 37 471 habitants située à environ 18 km au sud-ouest de Paris, est un pôle scientifique et technologique majeur du cluster Paris-Saclay. La commune accueille l'École polytechnique, Télécom Paris, l'ENSTA Paris ainsi que des centres de recherche d'Onera, du CEA et de Danone. Axion-IA y accompagne en priorité les TPE et PME locales — startups deeptech, cabinets, sous-traitants industriels — dans l'intégration concrète de l'IA opérationnelle, en code custom et sans no-code.",
   directAnswerFr:
-    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
+    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
   directAnswerEn:
-    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
+    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Palaiseau est au cœur du cluster Paris-Saclay, l'un des principaux pôles scientifiques européens. La commune héberge l'École polytechnique, Télécom Paris, l'ENSTA Paris, ainsi que des centres de recherche d'Onera, du CEA et de Danone. Elle appartient à la communauté d'agglomération Paris-Saclay (créée en 2016 par fusion de deux intercommunalités) et est desservie par le RER B, le RER C et de nombreuses lignes de bus, avec des extensions prévues via le Grand Paris Express.",
@@ -231,12 +231,12 @@ export const PALAISEAU_COPY: VilleCopy = {
       a: "L'Audit sur place 4 heures à Palaiseau démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
     },
     {
-      q: "William se déplace-t-il sur site à Palaiseau ?",
-      a: "Oui, William se déplace depuis Paris via le RER B (gares Palaiseau, Palaiseau-Villebon, Lozère). Pas de frais kilométriques additionnels sur l'Île-de-France.",
+      q: "Williams se déplace-t-il sur site à Palaiseau ?",
+      a: "Oui, Williams se déplace depuis Paris via le RER B (gares Palaiseau, Palaiseau-Villebon, Lozère). Pas de frais kilométriques additionnels sur l'Île-de-France.",
     },
     {
       q: "Quels délais pour un audit à Palaiseau ?",
-      a: "William intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit sur place remis sous 7 jours après la visite sur site.",
+      a: "Williams intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit sur place remis sous 7 jours après la visite sur site.",
     },
     {
       q: "Quelles communes voisines de Palaiseau couvrez-vous également ?",

@@ -231,7 +231,7 @@ export const NANTERRE_COPY: VilleCopy = {
       a: "L'Audit sur place (4h) démarre à {{price:audit-flash|flat}} — il couvre la cartographie de vos processus et l'identification des chantiers IA prioritaires. Pour une PME du 92 avec plusieurs services à analyser, des formules étendues existent. Tarifs publics complets consultables sur axion-ia.fr/audits.",
     },
     {
-      q: "William se déplace-t-il physiquement à Nanterre ou l'intervention est-elle à distance ?",
+      q: "Williams se déplace-t-il physiquement à Nanterre ou l'intervention est-elle à distance ?",
       a: "Axion-IA intervient sur site chez le client à Nanterre — en présentiel dans vos locaux, que vous soyez sur ZAC Seine Arche, La Défense ou ailleurs dans le 92. Les formats hybrides (présentiel + distanciel) sont possibles selon le programme retenu.",
     },
     {

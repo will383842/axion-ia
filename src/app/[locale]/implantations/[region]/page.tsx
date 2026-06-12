@@ -669,7 +669,7 @@ export default async function RegionPage({ params }: Props) {
           réutilisées de la home via les clés i18n `audience{N}{Title,Lead,Detail}`. */}
       <RegionAudienceSection region={region} isFr={isFr} />
 
-      {/* Section fondateur William — crédibilité avant le contexte régional
+      {/* Section fondateur Williams — crédibilité avant le contexte régional
           + CTA final. Composant partagé `FounderTrustSection` (i18n home). */}
       <FounderTrustSection isFr={isFr} />
 

@@ -68,11 +68,11 @@ export default async function AgentsPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert agents IA agentiques"
-          : "William — Axion-IA founder, agentic AI expert",
+          ? "Williams — Fondateur Axion-IA, expert agents IA agentiques"
+          : "Williams — Axion-IA founder, agentic AI expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'agents IA agentiques pour dirigeants TPE et PME — choix framework, orchestration, garde-fous, production sécurisée."
-          : "Portrait of William, Axion-IA founder. Personally drives agentic AI projects for small business and SME executives — framework choice, orchestration, guardrails, secure production deployment.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'agents IA agentiques pour dirigeants TPE et PME — choix framework, orchestration, garde-fous, production sécurisée."
+          : "Portrait of Williams, Axion-IA founder. Personally drives agentic AI projects for small business and SME executives — framework choice, orchestration, guardrails, secure production deployment.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

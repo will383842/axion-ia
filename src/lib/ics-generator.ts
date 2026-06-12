@@ -105,10 +105,10 @@ export function generateCadrageIcs(opts: {
     end,
     summary: isFr ? "Cadrage Axion-IA" : "Axion-IA scoping call",
     description: isFr
-      ? "Appel de cadrage avec William pour préparer votre intervention Axion-IA. Merci de prévoir un environnement calme et une connexion stable."
-      : "Scoping call with William to prepare your Axion-IA session. Please plan for a quiet environment and a stable connection.",
+      ? "Appel de cadrage avec Williams pour préparer votre intervention Axion-IA. Merci de prévoir un environnement calme et une connexion stable."
+      : "Scoping call with Williams to prepare your Axion-IA session. Please plan for a quiet environment and a stable connection.",
     ...(opts.visioUrl ? { location: opts.visioUrl } : {}),
     organizerEmail: "william@axion-ia.com",
-    organizerName: isFr ? "William — Axion-IA" : "William — Axion-IA",
+    organizerName: isFr ? "Williams — Axion-IA" : "Williams — Axion-IA",
   });
 }

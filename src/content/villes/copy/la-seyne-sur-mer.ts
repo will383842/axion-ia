@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de La Seyne-sur-Mer (Var, 63 732 habitants), deuxième ville du département après Toulon. Située entre Marseille et Saint-Tropez, sur la rade de Toulon, La Seyne-sur-Mer s'est reconvertie après la fermeture des Forges et Chantiers de la Méditerranée en 1989 vers le tourisme, la plaisance, les services et l'industrie de niche. CNIM Systèmes Industriels y maintient une activité d'environ 450 collaborateurs. Nous concevons pour les artisans, commerçants des Sablettes, prestataires touristiques, PME industrielles et professionnels de santé seynois des agents IA et automatisations sur mesure en code custom francophone — jamais en no-code. William se déplace sur site pour auditer vos processus, prototyper et déployer une solution conforme RGPD.",
+    "Axion-IA accompagne les TPE et PME de La Seyne-sur-Mer (Var, 63 732 habitants), deuxième ville du département après Toulon. Située entre Marseille et Saint-Tropez, sur la rade de Toulon, La Seyne-sur-Mer s'est reconvertie après la fermeture des Forges et Chantiers de la Méditerranée en 1989 vers le tourisme, la plaisance, les services et l'industrie de niche. CNIM Systèmes Industriels y maintient une activité d'environ 450 collaborateurs. Nous concevons pour les artisans, commerçants des Sablettes, prestataires touristiques, PME industrielles et professionnels de santé seynois des agents IA et automatisations sur mesure en code custom francophone — jamais en no-code. Williams se déplace sur site pour auditer vos processus, prototyper et déployer une solution conforme RGPD.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de La Seyne-sur-Mer (Var, 63 732 habitants), deuxième ville du département après Toulon. Située entre Marseille et Saint-Tropez, sur la rade de Toulon, La Seyne-sur-Mer s'est reconvertie après la fermeture des Forges et Chantiers de la Méditerranée en 1989 vers le tourisme, la plaisance, les services et l'industrie de niche. CNIM Systèmes Industriels y maintient une activité d'environ 450 collaborateurs. Nous concevons pour les artisans, commerçants des Sablettes, prestataires touristiques, PME industrielles et professionnels de santé seynois des agents IA et automatisations sur mesure en code custom francophone — jamais en no-code. William se déplace sur site pour auditer vos processus, prototyper et déployer une solution conforme RGPD.",
+    "Axion-IA accompagne les TPE et PME de La Seyne-sur-Mer (Var, 63 732 habitants), deuxième ville du département après Toulon. Située entre Marseille et Saint-Tropez, sur la rade de Toulon, La Seyne-sur-Mer s'est reconvertie après la fermeture des Forges et Chantiers de la Méditerranée en 1989 vers le tourisme, la plaisance, les services et l'industrie de niche. CNIM Systèmes Industriels y maintient une activité d'environ 450 collaborateurs. Nous concevons pour les artisans, commerçants des Sablettes, prestataires touristiques, PME industrielles et professionnels de santé seynois des agents IA et automatisations sur mesure en code custom francophone — jamais en no-code. Williams se déplace sur site pour auditer vos processus, prototyper et déployer une solution conforme RGPD.",
   directAnswerFr:
-    "À La Seyne-sur-Mer (Var, PACA), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces et restaurants des Sablettes, artisans du BTP, prestataires touristiques et de plaisance, PME industrielles autour de CNIM et de l'ancien site des chantiers navals reconverti en Parc de la Navale, professionnels de santé. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, OCR, planning équipes, relance client, reporting. Cadrage clair, livrable opérationnel, conformité RGPD intégrée dès la conception. William se déplace sur site depuis Paris pour auditer, prototyper et transférer la solution.",
+    "À La Seyne-sur-Mer (Var, PACA), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces et restaurants des Sablettes, artisans du BTP, prestataires touristiques et de plaisance, PME industrielles autour de CNIM et de l'ancien site des chantiers navals reconverti en Parc de la Navale, professionnels de santé. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, OCR, planning équipes, relance client, reporting. Cadrage clair, livrable opérationnel, conformité RGPD intégrée dès la conception. Williams se déplace sur site depuis Paris pour auditer, prototyper et transférer la solution.",
   directAnswerEn:
-    "À La Seyne-sur-Mer (Var, PACA), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces et restaurants des Sablettes, artisans du BTP, prestataires touristiques et de plaisance, PME industrielles autour de CNIM et de l'ancien site des chantiers navals reconverti en Parc de la Navale, professionnels de santé. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, OCR, planning équipes, relance client, reporting. Cadrage clair, livrable opérationnel, conformité RGPD intégrée dès la conception. William se déplace sur site depuis Paris pour auditer, prototyper et transférer la solution.",
+    "À La Seyne-sur-Mer (Var, PACA), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces et restaurants des Sablettes, artisans du BTP, prestataires touristiques et de plaisance, PME industrielles autour de CNIM et de l'ancien site des chantiers navals reconverti en Parc de la Navale, professionnels de santé. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, OCR, planning équipes, relance client, reporting. Cadrage clair, livrable opérationnel, conformité RGPD intégrée dès la conception. Williams se déplace sur site depuis Paris pour auditer, prototyper et transférer la solution.",
   seoHook: "tourisme, plaisance & PME industrielles",
   ecosystemFr:
     "Le tissu économique seynois s'articule autour du tourisme balnéaire (Sablettes, Mar Vivo, Tamaris), des activités portuaires de plaisance et pêche, du commerce et de la restauration côtière, de l'artisanat BTP, et d'un noyau industriel hérité reconverti. CNIM Systèmes Industriels (~450 salariés) reste le principal employeur industriel privé. La friche des anciens chantiers FCM accueille désormais le Parc de la Navale et des projets de renouvellement urbain pilotés à l'échelle de la métropole Toulon Provence Méditerranée.",
@@ -38,8 +38,8 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
       en: "Audit IA à La Seyne-sur-Mer — diagnostic des goulots opérationnels chez les TPE/PME du tourisme, de la restauration, du nautisme et des PME industrielles autour de CNIM. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à La Seyne-sur-Mer — Williams se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à La Seyne-sur-Mer — Williams se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA pour TPE/PME seynoises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Lightspeed, Pennylane, Sage, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
@@ -127,7 +127,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
             a: "Un devis est établi à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre se cadre vite ; pour une plateforme SaaS IA-native destinée à une PME du bassin naval, le chiffrage demande l'analyse de vos intégrations et de vos contraintes de données.",
           },
           {
-            q: "William se déplace-t-il à La Seyne-sur-Mer ?",
+            q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
             a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon, puis une dizaine de minutes en TER ou voiture. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous nous déplaçons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
           },
           {
@@ -213,7 +213,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
             a: "Un devis est établi à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre se cadre vite ; pour une plateforme SaaS IA-native destinée à une PME du bassin naval, le chiffrage demande l'analyse de vos intégrations et de vos contraintes de données.",
           },
           {
-            q: "William se déplace-t-il à La Seyne-sur-Mer ?",
+            q: "Williams se déplace-t-il à La Seyne-sur-Mer ?",
             a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon, puis une dizaine de minutes en TER ou voiture. Le kick-off se tient toujours dans vos locaux — du Technopôle de la Mer et de Brégaillon au centre-ville et aux Sablettes — et nous nous déplaçons aussi à Ollioules, Six-Fours-les-Plages, Saint-Mandrier-sur-Mer, Toulon et Sanary-sur-Mer.",
           },
           {
@@ -233,8 +233,8 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
       a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à La Seyne-sur-Mer, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
-      q: "William se déplace-t-il à La Seyne-sur-Mer depuis Paris ?",
-      a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon (3h45 depuis Paris-Gare de Lyon), puis ~10 min en TER ou voiture. William intervient directement dans vos locaux, des Sablettes au centre-ville en passant par les zones d'activité.",
+      q: "Williams se déplace-t-il à La Seyne-sur-Mer depuis Paris ?",
+      a: "Oui. La Seyne-sur-Mer est accessible par TGV via Toulon (3h45 depuis Paris-Gare de Lyon), puis ~10 min en TER ou voiture. Williams intervient directement dans vos locaux, des Sablettes au centre-ville en passant par les zones d'activité.",
     },
     {
       q: "Quels délais pour une intervention IA à La Seyne-sur-Mer ?",

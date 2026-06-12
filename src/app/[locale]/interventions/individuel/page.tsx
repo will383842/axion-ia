@@ -107,11 +107,11 @@ export default async function IndividuelFamilyPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, coach IA individuel"
-          : "William — Axion-IA founder, individual AI coach",
+          ? "Williams — Fondateur Axion-IA, coach IA individuel"
+          : "Williams — Axion-IA founder, individual AI coach",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Accompagne personnellement les coachings IA individuels 1-to-1 — cadrage visio 20 min, parcours sur-mesure par métier, séances facturées à l'unité."
-          : "Portrait of William, Axion-IA founder. Personally runs individual 1-on-1 AI coachings — 20-min framing video, bespoke journey by role, sessions invoiced per unit.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Accompagne personnellement les coachings IA individuels 1-to-1 — cadrage visio 20 min, parcours sur-mesure par métier, séances facturées à l'unité."
+          : "Portrait of Williams, Axion-IA founder. Personally runs individual 1-on-1 AI coachings — 20-min framing video, bespoke journey by role, sessions invoiced per unit.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

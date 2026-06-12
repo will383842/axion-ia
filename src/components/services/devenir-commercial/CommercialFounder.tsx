@@ -18,7 +18,7 @@ export function CommercialFounder({ isFr }: CommercialFounderProps): ReactNode {
           <Image
             src="/illustrations/devenir-commercial-fondateur.webp"
             alt={
-              isFr ? "William, fondateur et CEO d'Axion-IA" : "William, Axion-IA founder and CEO"
+              isFr ? "Williams, fondateur et CEO d'Axion-IA" : "Williams, Axion-IA founder and CEO"
             }
             width={224}
             height={224}
@@ -38,7 +38,7 @@ export function CommercialFounder({ isFr }: CommercialFounderProps): ReactNode {
                 : "\"We're looking for hungry sales reps. The AI market is huge, our products are concrete and easy to defend, and our team makes sure you're well equipped: sales materials, training on the offer and day-to-day support. You keep your freedom, your portfolio, and you earn real commissions on what you sell. If you've got the instinct, we'll build something big together.\""}
             </blockquote>
             <p className="text-fg mt-4 font-semibold">
-              William
+              Williams
               <span className="text-fg-muted font-normal">
                 {isFr
                   ? " · Fondateur & CEO, Axion-IA (axion-ia.com)"

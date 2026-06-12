@@ -68,11 +68,11 @@ export default async function CrmErpPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert intégration IA CRM/ERP"
-          : "William — Axion-IA founder, CRM/ERP AI integration expert",
+          ? "Williams — Fondateur Axion-IA, expert intégration IA CRM/ERP"
+          : "Williams — Axion-IA founder, CRM/ERP AI integration expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'intégration IA CRM et ERP pour dirigeants TPE et PME — connecteurs, mapping de données, supervision qualité, ROI commercial."
-          : "Portrait of William, Axion-IA founder. Personally drives CRM and ERP AI integration projects for small business and SME executives — connectors, data mapping, quality oversight, commercial ROI.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'intégration IA CRM et ERP pour dirigeants TPE et PME — connecteurs, mapping de données, supervision qualité, ROI commercial."
+          : "Portrait of Williams, Axion-IA founder. Personally drives CRM and ERP AI integration projects for small business and SME executives — connectors, data mapping, quality oversight, commercial ROI.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

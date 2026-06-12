@@ -70,11 +70,11 @@ export default async function AuditStrategiquePmePage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, auditeur stratégique IA PME"
-          : "William — Axion-IA founder, SME strategic AI auditor",
+          ? "Williams — Fondateur Axion-IA, auditeur stratégique IA PME"
+          : "Williams — Axion-IA founder, SME strategic AI auditor",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Conduit personnellement les audits stratégiques IA pour dirigeants PME — vision IA d'entreprise, gouvernance, priorisation cas d'usage par valeur, plan d'implémentation 6-12 mois."
-          : "Portrait of William, Axion-IA founder. Personally conducts strategic AI audits for SME executives — enterprise AI vision, governance, value-driven use case prioritization, 6-12 month implementation plan.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Conduit personnellement les audits stratégiques IA pour dirigeants PME — vision IA d'entreprise, gouvernance, priorisation cas d'usage par valeur, plan d'implémentation 6-12 mois."
+          : "Portrait of Williams, Axion-IA founder. Personally conducts strategic AI audits for SME executives — enterprise AI vision, governance, value-driven use case prioritization, 6-12 month implementation plan.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

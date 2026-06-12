@@ -11,9 +11,9 @@ export const CACHAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   directAnswerFr:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. William se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   directAnswerEn:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. William se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   seoHook: "ingénierie & services universitaires",
   ecosystemFr:
     "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
@@ -37,8 +37,8 @@ export const CACHAN_COPY: VilleCopy = {
       en: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
     },
     interventions: {
-      fr: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
-      en: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      fr: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      en: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
@@ -233,7 +233,7 @@ export const CACHAN_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour intervenir à Cachan ?",
-      a: "William se déplace à Cachan dans un délai de 5 jours ouvrés après confirmation. La gare Arcueil-Cachan est à 15 minutes en RER B de Paris, ce qui permet une intervention demi-journée ou journée sans frais de déplacement.",
+      a: "Williams se déplace à Cachan dans un délai de 5 jours ouvrés après confirmation. La gare Arcueil-Cachan est à 15 minutes en RER B de Paris, ce qui permet une intervention demi-journée ou journée sans frais de déplacement.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Cachan ?",

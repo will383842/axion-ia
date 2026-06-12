@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const LES_LILAS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME des Lilas, commune de 23 800 habitants en Seine-Saint-Denis, limitrophe du 19e arrondissement de Paris. Le tissu local mêle services aux entreprises, santé (Maternité des Lilas, 180 salariés), télécoms (TDF, tour 124 m), industrie spécialisée (Drieux-Combaluzier, ascenseurs, 220 salariés) et transports (Centre Bus RATP, ~800 salariés). William se déplace sur site pour cadrer et déployer les cas d'usage IA des dirigeants lilasiens en code custom.",
+    "Axion-IA accompagne les TPE et PME des Lilas, commune de 23 800 habitants en Seine-Saint-Denis, limitrophe du 19e arrondissement de Paris. Le tissu local mêle services aux entreprises, santé (Maternité des Lilas, 180 salariés), télécoms (TDF, tour 124 m), industrie spécialisée (Drieux-Combaluzier, ascenseurs, 220 salariés) et transports (Centre Bus RATP, ~800 salariés). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA des dirigeants lilasiens en code custom.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME des Lilas, commune de 23 800 habitants en Seine-Saint-Denis, limitrophe du 19e arrondissement de Paris. Le tissu local mêle services aux entreprises, santé (Maternité des Lilas, 180 salariés), télécoms (TDF, tour 124 m), industrie spécialisée (Drieux-Combaluzier, ascenseurs, 220 salariés) et transports (Centre Bus RATP, ~800 salariés). William se déplace sur site pour cadrer et déployer les cas d'usage IA des dirigeants lilasiens en code custom.",
+    "Axion-IA accompagne les TPE et PME des Lilas, commune de 23 800 habitants en Seine-Saint-Denis, limitrophe du 19e arrondissement de Paris. Le tissu local mêle services aux entreprises, santé (Maternité des Lilas, 180 salariés), télécoms (TDF, tour 124 m), industrie spécialisée (Drieux-Combaluzier, ascenseurs, 220 salariés) et transports (Centre Bus RATP, ~800 salariés). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA des dirigeants lilasiens en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:intervention-4h|flat}}. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:intervention-4h|flat}}. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:intervention-4h|flat}}. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:intervention-4h|flat}}. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
   seoHook: "TPE/PME Seine-Saint-Denis Paris Est",
   ecosystemFr:
     "Les Lilas accueillent plusieurs employeurs structurants : Centre Bus RATP (~800 salariés, premier employeur), Drieux-Combaluzier (ascenseurs, 220 salariés), Maternité des Lilas (180 salariés), TDF (télécoms, 150 salariés, tour de 124 m). Le commerce de proximité s'organise autour de la mairie et des deux stations de la ligne 11 du métro. Tissu dense de TPE/PME tertiaires en lien direct avec Paris Est et le 19e arrondissement.",
@@ -32,8 +32,8 @@ export const LES_LILAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Lilas pour TPE/PME tertiaires, cabinets libéraux santé et commerces de proximité. William se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA exploitables en 90 jours.",
-      en: "Audit IA aux Lilas pour TPE/PME tertiaires, cabinets libéraux santé et commerces de proximité. William se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA exploitables en 90 jours.",
+      fr: "Audit IA aux Lilas pour TPE/PME tertiaires, cabinets libéraux santé et commerces de proximité. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA exploitables en 90 jours.",
+      en: "Audit IA aux Lilas pour TPE/PME tertiaires, cabinets libéraux santé et commerces de proximité. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA exploitables en 90 jours.",
     },
     interventions: {
       fr: "Interventions ponctuelles aux Lilas pour PME de services, structures santé et acteurs des télécoms. Refonte de prompts, intégration LLM via APIs, debug de pipelines existants en Python ou TypeScript.",
@@ -231,12 +231,12 @@ export const LES_LILAS_COPY: VilleCopy = {
       a: "Audits Sur place à partir de {{price:intervention-4h|flat}} pour 4 heures sur site aux Lilas. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
     },
     {
-      q: "William se déplace-t-il aux Lilas pour intervenir sur site ?",
-      a: "Oui. William se déplace aux Lilas (93260) et dans les communes limitrophes : Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville, ainsi que le 19e et 20e arrondissements de Paris, sans frais kilométriques additionnels.",
+      q: "Williams se déplace-t-il aux Lilas pour intervenir sur site ?",
+      a: "Oui. Williams se déplace aux Lilas (93260) et dans les communes limitrophes : Pantin, Bagnolet, Le Pré-Saint-Gervais, Romainville, ainsi que le 19e et 20e arrondissements de Paris, sans frais kilométriques additionnels.",
     },
     {
       q: "Quels délais pour démarrer une mission IA aux Lilas ?",
-      a: "William se déplace aux Lilas dans les 5 jours ouvrés après signature du devis. L'Audit sur place débouche sur un rendu écrit sous 7 jours ouvrés.",
+      a: "Williams se déplace aux Lilas dans les 5 jours ouvrés après signature du devis. L'Audit sur place débouche sur un rendu écrit sous 7 jours ouvrés.",
     },
     {
       q: "Comment Axion-IA gère-t-elle le RGPD et l'AI Act aux Lilas ?",

@@ -231,7 +231,7 @@ export const GARDANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Gardanne ?",
-      a: "William se déplace à Gardanne sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon la complexité.",
+      a: "Williams se déplace à Gardanne sous 5 à 7 jours ouvrés après brief. Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon la complexité.",
     },
     {
       q: "Axion-IA couvre-t-elle les communes autour de Gardanne ?",
@@ -246,7 +246,7 @@ export const GARDANNE_COPY: VilleCopy = {
       a: "Les TPE et PME de la sous-traitance industrielle (gravitant autour d'Alteo), les artisans BTP, les bureaux d'études microélectronique liés à l'École des Mines, et les services tertiaires métropolitains gagnent le plus en automatisation IA custom.",
     },
     {
-      q: "William se déplace-t-il sur site à Gardanne ?",
+      q: "Williams se déplace-t-il sur site à Gardanne ?",
       a: "Oui, déplacement systématique sur site à Gardanne (gare SNCF directe, A51/A8/A52, TGV Aix à 20 min, aéroport Marseille-Provence à 25 min). Pas d'audit à distance pour les premières missions.",
     },
   ],

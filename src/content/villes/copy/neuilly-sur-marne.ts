@@ -11,9 +11,9 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Neuilly-sur-Marne (93330, Seine-Saint-Denis, 39 800 habitants en 2023), commune située à 13,1 km à l'est de Paris en bordure de Marne. Avec 2 221 établissements actifs dont 1 546 dans le commerce, le transport et les services, 324 dans la construction et 100 dans l'industrie, et la présence des hôpitaux psychiatriques de Ville-Évrard et Maison Blanche comme employeurs majeurs, la ville offre un terrain riche pour automatiser les processus métier des PME locales en code custom.",
   directAnswerFr:
-    "À Neuilly-sur-Marne (Seine-Saint-Denis, 93330), Axion-IA déploie des automatisations IA sur mesure pour les TPE et PME locales — commerces, services aux entreprises, construction, transport et structures médico-sociales liées à l'écosystème des hôpitaux Ville-Évrard et Maison Blanche. William se déplace sur site depuis Paris via les RER A (Neuilly-Plaisance), B (Vert-Galant), E (Chénay-Gagny) ou par l'A4/A86, pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}. Code custom uniquement.",
+    "À Neuilly-sur-Marne (Seine-Saint-Denis, 93330), Axion-IA déploie des automatisations IA sur mesure pour les TPE et PME locales — commerces, services aux entreprises, construction, transport et structures médico-sociales liées à l'écosystème des hôpitaux Ville-Évrard et Maison Blanche. Williams se déplace sur site depuis Paris via les RER A (Neuilly-Plaisance), B (Vert-Galant), E (Chénay-Gagny) ou par l'A4/A86, pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}. Code custom uniquement.",
   directAnswerEn:
-    "À Neuilly-sur-Marne (Seine-Saint-Denis, 93330), Axion-IA déploie des automatisations IA sur mesure pour les TPE et PME locales — commerces, services aux entreprises, construction, transport et structures médico-sociales liées à l'écosystème des hôpitaux Ville-Évrard et Maison Blanche. William se déplace sur site depuis Paris via les RER A (Neuilly-Plaisance), B (Vert-Galant), E (Chénay-Gagny) ou par l'A4/A86, pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}. Code custom uniquement.",
+    "À Neuilly-sur-Marne (Seine-Saint-Denis, 93330), Axion-IA déploie des automatisations IA sur mesure pour les TPE et PME locales — commerces, services aux entreprises, construction, transport et structures médico-sociales liées à l'écosystème des hôpitaux Ville-Évrard et Maison Blanche. Williams se déplace sur site depuis Paris via les RER A (Neuilly-Plaisance), B (Vert-Galant), E (Chénay-Gagny) ou par l'A4/A86, pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}. Code custom uniquement.",
   seoHook: "commerce, services & médico-social",
   ecosystemFr:
     "Neuilly-sur-Marne, 39 800 habitants en 2023 en Seine-Saint-Denis, présente 2 221 établissements actifs : 1 546 dans le commerce, le transport et les services, 324 dans la construction, 100 dans l'industrie. Le tissu local est marqué par la présence des hôpitaux psychiatriques de Ville-Évrard et Maison Blanche, employeurs majeurs, et bénéficie de la proximité immédiate de Bry-sur-Marne, Gagny, Gournay-sur-Marne, Neuilly-Plaisance, Noisy-le-Grand, Rosny-sous-Bois et Villemomble.",
@@ -37,8 +37,8 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
       en: "Audit sur place IA à Neuilly-sur-Marne dès {{price:audit-flash|flat}} — 4 heures pour cartographier les processus à automatiser dans votre commerce, structure de services ou cabinet médico-social.",
     },
     interventions: {
-      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
-      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
+      fr: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
+      en: "Intervention en groupe à Neuilly-sur-Marne dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER A, B ou E pour automatiser un workflow (relances, planning, reporting).",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Neuilly-sur-Marne dès {{price:impl-poc|entry}} — développement sur mesure et conformité RGPD pour les TPE et PME du Nord-Est parisien.",
@@ -233,7 +233,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA gère-t-elle les déplacements à Neuilly-sur-Marne ?",
-      a: "William se déplace depuis Paris vers Neuilly-sur-Marne (13,1 km à l'est) via les RER A (Neuilly-Plaisance), B (Vert-Galant), E (Chénay-Gagny) ou par l'A4/A86. Délai standard : 5 jours ouvrés après confirmation.",
+      a: "Williams se déplace depuis Paris vers Neuilly-sur-Marne (13,1 km à l'est) via les RER A (Neuilly-Plaisance), B (Vert-Galant), E (Chénay-Gagny) ou par l'A4/A86. Délai standard : 5 jours ouvrés après confirmation.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Neuilly-sur-Marne ?",

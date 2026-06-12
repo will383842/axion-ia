@@ -232,8 +232,8 @@ export const AUXERRE_COPY: VilleCopy = {
       a: "Les audits IA à Auxerre démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, puis l'Audit Ciblé à partir de {{price:audit-cible|entry}} pour un périmètre plus large. Tarifs publics affichés, sans devis caché.",
     },
     {
-      q: "William se déplace-t-il à Auxerre depuis Paris ?",
-      a: "Oui, William se déplace à Auxerre depuis Paris (1h35 en train depuis Paris-Bercy, ou environ 170 km par l'A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
+      q: "Williams se déplace-t-il à Auxerre depuis Paris ?",
+      a: "Oui, Williams se déplace à Auxerre depuis Paris (1h35 en train depuis Paris-Bercy, ou environ 170 km par l'A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
     },
     {
       q: "Quels secteurs auxerrois Axion-IA accompagne-t-il ?",

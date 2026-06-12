@@ -233,7 +233,7 @@ export const ANGOULEME_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Angoulême ?",
-      a: "Après validation du devis, William et l'équipe Axion-IA se déplacent à Angoulême sous 5 jours ouvrés en moyenne pour les missions standard, et plus rapidement pour les Audits Sur place.",
+      a: "Après validation du devis, Williams et l'équipe Axion-IA se déplacent à Angoulême sous 5 jours ouvrés en moyenne pour les missions standard, et plus rapidement pour les Audits Sur place.",
     },
     {
       q: "Axion-IA couvre-t-il les communes autour d'Angoulême ?",

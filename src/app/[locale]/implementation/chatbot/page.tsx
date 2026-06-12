@@ -68,11 +68,11 @@ export default async function ChatbotPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert chatbots IA"
-          : "William — Axion-IA founder, AI chatbots expert",
+          ? "Williams — Fondateur Axion-IA, expert chatbots IA"
+          : "Williams — Axion-IA founder, AI chatbots expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets de chatbots IA conversationnels pour dirigeants TPE et PME — choix LLM, base de connaissances, garde-fous, mise en production."
-          : "Portrait of William, Axion-IA founder. Personally drives conversational AI chatbot projects for small business and SME executives — LLM selection, knowledge base, guardrails, production deployment.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets de chatbots IA conversationnels pour dirigeants TPE et PME — choix LLM, base de connaissances, garde-fous, mise en production."
+          : "Portrait of Williams, Axion-IA founder. Personally drives conversational AI chatbot projects for small business and SME executives — LLM selection, knowledge base, guardrails, production deployment.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

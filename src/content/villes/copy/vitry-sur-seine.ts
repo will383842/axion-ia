@@ -36,8 +36,8 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Vitry-sur-Seine : nous cartographions vos processus métier — notamment dans les secteurs R&D et santé présents sur la ville — pour identifier 3 chantiers IA prioritaires chiffrés. Détail complet sur la sous-page /audits.",
     },
     interventions: {
-      fr: "Intervention collective à Vitry-sur-Seine : William se déplace sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
-      en: "Intervention collective à Vitry-sur-Seine : William se déplace sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
+      fr: "Intervention collective à Vitry-sur-Seine : Williams se déplace sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
+      en: "Intervention collective à Vitry-sur-Seine : Williams se déplace sur site pour former vos équipes aux outils IA adaptés à votre secteur — industrie, construction ou services. Formats demi-journée à deux jours. Détail sur /interventions.",
     },
     implementation: {
       fr: "Implémentation IA à Vitry-sur-Seine : déploiement d'outils RAG (Retrieval-Augmented Generation), automatisation de workflows et intégration dans votre SI existant — sans dépendance à un éditeur unique. Détail sur /implementations.",
@@ -232,7 +232,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",
-      a: "Oui. Axion-IA est un cabinet national qui intervient sur site chez le client. William et l'équipe se déplacent à Vitry-sur-Seine pour les audits, interventions et implémentations. La ville est accessible en moins de 30 minutes depuis Paris via le métro ou la Gare de Lyon.",
+      a: "Oui. Axion-IA est un cabinet national qui intervient sur site chez le client. Williams et l'équipe se déplacent à Vitry-sur-Seine pour les audits, interventions et implémentations. La ville est accessible en moins de 30 minutes depuis Paris via le métro ou la Gare de Lyon.",
     },
     {
       q: "Une PME vitriote sans DSI peut-elle bénéficier d'une implémentation IA clés en main ?",

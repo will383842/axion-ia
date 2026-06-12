@@ -68,11 +68,11 @@ export default async function IntegrationsPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert intégrations API IA"
-          : "William — Axion-IA founder, API AI integrations expert",
+          ? "Williams — Fondateur Axion-IA, expert intégrations API IA"
+          : "Williams — Axion-IA founder, API AI integrations expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'intégration API IA pour dirigeants TPE et PME — architecture, sécurité, monitoring coûts LLM, fallbacks et garde-fous."
-          : "Portrait of William, Axion-IA founder. Personally drives API AI integration projects for small business and SME executives — architecture, security, LLM cost monitoring, fallbacks and guardrails.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'intégration API IA pour dirigeants TPE et PME — architecture, sécurité, monitoring coûts LLM, fallbacks et garde-fous."
+          : "Portrait of Williams, Axion-IA founder. Personally drives API AI integration projects for small business and SME executives — architecture, security, LLM cost monitoring, fallbacks and guardrails.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

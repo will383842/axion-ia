@@ -330,7 +330,7 @@ describe("docuseal — createContractSubmission (pattern B2B client → Axion-IA
 
   it("contre-signataire override via env AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL", async () => {
     process.env["AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL"] = "will@axion-ia.com";
-    process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"] = "William";
+    process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"] = "Williams";
     const fetchMock = mockOk();
     await createContractSubmission({
       templateId: 42,
@@ -338,7 +338,7 @@ describe("docuseal — createContractSubmission (pattern B2B client → Axion-IA
     });
     const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
     expect(body.submitters[1].email).toBe("will@axion-ia.com");
-    expect(body.submitters[1].name).toBe("William");
+    expect(body.submitters[1].name).toBe("Williams");
   });
 
   it("contre-signataire override explicite (paramètre `countersigner`)", async () => {

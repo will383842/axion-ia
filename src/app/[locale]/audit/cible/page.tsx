@@ -71,11 +71,11 @@ export default async function AuditCiblePage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, auditeur IA ciblé"
-          : "William — Axion-IA founder, Targeted AI auditor",
+          ? "Williams — Fondateur Axion-IA, auditeur IA ciblé"
+          : "Williams — Axion-IA founder, Targeted AI auditor",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Conduit personnellement les audits IA ciblés pour dirigeants TPE et PME — diagnostic département par département, cas d'usage chiffrés, plan d'action 90 jours."
-          : "Portrait of William, Axion-IA founder. Personally conducts Targeted AI audits for small business and SME executives — department-by-department diagnosis, quantified use cases, 90-day action plan.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Conduit personnellement les audits IA ciblés pour dirigeants TPE et PME — diagnostic département par département, cas d'usage chiffrés, plan d'action 90 jours."
+          : "Portrait of Williams, Axion-IA founder. Personally conducts Targeted AI audits for small business and SME executives — department-by-department diagnosis, quantified use cases, 90-day action plan.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

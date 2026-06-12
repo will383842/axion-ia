@@ -231,7 +231,7 @@ export const GRASSE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Grasse ?",
-      a: "William se déplace sur site à Grasse dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
+      a: "Williams se déplace sur site à Grasse dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Grasse ?",

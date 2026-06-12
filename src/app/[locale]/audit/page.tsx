@@ -145,11 +145,11 @@ export default async function AuditHub({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA et auditeur IA"
-          : "William — Axion-IA founder and AI auditor",
+          ? "Williams — Fondateur Axion-IA et auditeur IA"
+          : "Williams — Axion-IA founder and AI auditor",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Réalise personnellement les audits IA stratégiques pour dirigeants TPE, PME, ETI et grandes entreprises françaises — cartographie IA, ROI chiffré, roadmap 6-12 mois."
-          : "Portrait of William, Axion-IA founder. Personally conducts strategic AI audits for French SME, mid-cap and large enterprise executives — AI mapping, quantified ROI, 6-12 month roadmap.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Réalise personnellement les audits IA stratégiques pour dirigeants TPE, PME, ETI et grandes entreprises françaises — cartographie IA, ROI chiffré, roadmap 6-12 mois."
+          : "Portrait of Williams, Axion-IA founder. Personally conducts strategic AI audits for French SME, mid-cap and large enterprise executives — AI mapping, quantified ROI, 6-12 month roadmap.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

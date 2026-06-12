@@ -95,11 +95,11 @@ export function SitesWebLandingPage({
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, architecte sites web IA"
-          : "William — Axion-IA founder, AI website architect",
+          ? "Williams — Fondateur Axion-IA, architecte sites web IA"
+          : "Williams — Axion-IA founder, AI website architect",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA, qui pilote l'intégration IA des sites web et SaaS pour TPE, PME et ETI françaises."
-          : "Portrait of William, Axion-IA founder, driving AI integration of websites and SaaS for French SMEs and mid-caps.",
+          ? "Portrait de Williams, fondateur d'Axion-IA, qui pilote l'intégration IA des sites web et SaaS pour TPE, PME et ETI françaises."
+          : "Portrait of Williams, Axion-IA founder, driving AI integration of websites and SaaS for French SMEs and mid-caps.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

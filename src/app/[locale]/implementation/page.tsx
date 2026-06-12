@@ -194,10 +194,10 @@ export default async function ImplementationListing({ params }: Props) {
       },
       {
         src: "/illustrations/william-fondateur-axion-ia.webp",
-        name: isFr ? "William — Fondateur & CEO Axion-IA" : "William — Founder & CEO Axion-IA",
+        name: isFr ? "Williams — Fondateur & CEO Axion-IA" : "Williams — Founder & CEO Axion-IA",
         alt: isFr
-          ? "Portrait de William, fondateur et CEO d'Axion-IA — pilote les implémentations IA (agents IA, automatisations, RAG, intégrations CRM/ERP) avec une exigence technique et une relation directe et humaine."
-          : "Portrait of William, Axion-IA founder and CEO — drives AI implementations (AI agents, automations, RAG, CRM/ERP integrations) with technical rigour and a direct, human relationship.",
+          ? "Portrait de Williams, fondateur et CEO d'Axion-IA — pilote les implémentations IA (agents IA, automatisations, RAG, intégrations CRM/ERP) avec une exigence technique et une relation directe et humaine."
+          : "Portrait of Williams, Axion-IA founder and CEO — drives AI implementations (AI agents, automations, RAG, CRM/ERP integrations) with technical rigour and a direct, human relationship.",
         width: 1000,
         height: 1000,
         encodingFormat: "image/webp",

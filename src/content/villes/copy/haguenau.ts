@@ -10,9 +10,9 @@ export const HAGUENAU_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Haguenau, deuxième ville du Bas-Rhin et quatrième d'Alsace avec 36 391 habitants (aire urbaine de 61 637). Sous-préfecture intégrée à la Communauté d'agglomération de Haguenau et à la Collectivité européenne d'Alsace, la ville s'étend sur 18 259 hectares — la commune la plus vaste d'Alsace — au cœur d'un tissu industriel et tertiaire dense. Notre cabinet IA opérationnelle se déplace sur site pour automatiser les processus métier (devis, ordres de fabrication, OCR, relances), avec un focus marqué TPE-PME et un complément ETI.",
   directAnswerFr:
-    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. William se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
+    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. Williams se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
   directAnswerEn:
-    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. William se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
+    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. Williams se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
   seoHook: "industrie & tertiaire alsacien",
   ecosystemFr:
     "Haguenau combine un pôle industriel historique (fabrication de produits métalliques, plasturgie, agroalimentaire, équipementiers) et un tissu tertiaire de centre-ville (commerce, services administratifs, santé). La forêt de Haguenau (13 800 hectares au sein d'un massif de 20 000 ha) et la rivière Moder structurent le territoire. La ville dessert plusieurs zones d'activités et son éco-quartier Thurot, sous-préfecture du Bas-Rhin et siège de l'agglomération.",
@@ -130,7 +130,7 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site à Haguenau ?",
-            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. William se déplace ensuite sur site à Haguenau (gare TER à 15 min de Strasbourg, A4 via la D1340) pour le cadrage avant tout développement.",
+            a: "Nous remettons un devis à partir de 24 à 48 h selon la complexité du projet. Williams se déplace ensuite sur site à Haguenau (gare TER à 15 min de Strasbourg, A4 via la D1340) pour le cadrage avant tout développement.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote for a site in Haguenau?",
-            a: "We deliver a quote from 24 to 48 hours depending on project complexity. William then travels on site to Haguenau (TER station 15 minutes from Strasbourg, A4 via the D1340) for scoping before any development.",
+            a: "We deliver a quote from 24 to 48 hours depending on project complexity. Williams then travels on site to Haguenau (TER station 15 minutes from Strasbourg, A4 via the D1340) for scoping before any development.",
           },
         ],
         guarantees:
@@ -231,8 +231,8 @@ export const HAGUENAU_COPY: VilleCopy = {
       a: "L'Audit sur place 4h sur site à Haguenau démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant tout démarrage, sans abonnement.",
     },
     {
-      q: "William se déplace-t-il à Haguenau depuis Paris ?",
-      a: "Oui. William se déplace à Haguenau sous 5 jours ouvrés. L'accès s'effectue par la gare de Haguenau (TER toutes les 15 min depuis Strasbourg), l'A4 via la D1340 ou l'aéroport de Strasbourg-Entzheim à 40 km.",
+      q: "Williams se déplace-t-il à Haguenau depuis Paris ?",
+      a: "Oui. Williams se déplace à Haguenau sous 5 jours ouvrés. L'accès s'effectue par la gare de Haguenau (TER toutes les 15 min depuis Strasbourg), l'A4 via la D1340 ou l'aéroport de Strasbourg-Entzheim à 40 km.",
     },
     {
       q: "Quelles communes de l'agglomération haguenovienne couvrez-vous ?",

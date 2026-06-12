@@ -231,7 +231,7 @@ export const MONTGERON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Montgeron ?",
-      a: "William se déplace à Montgeron sous 5 à 7 jours ouvrés (RER D Montgeron-Crosne, RN6 ou Paris-Orly à 8 km). Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
+      a: "Williams se déplace à Montgeron sous 5 à 7 jours ouvrés (RER D Montgeron-Crosne, RN6 ou Paris-Orly à 8 km). Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Montgeron ?",
@@ -246,7 +246,7 @@ export const MONTGERON_COPY: VilleCopy = {
       a: "Les TPE et PME des commerces de proximité (RN6, centre-ville), les cabinets de santé et professions libérales, les agences immobilières et les artisans BTP du Val d'Yerres Val de Seine tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
-      q: "William se déplace-t-il vraiment sur site à Montgeron ?",
+      q: "Williams se déplace-t-il vraiment sur site à Montgeron ?",
       a: "Oui, déplacement systématique sur site à Montgeron via RER D (gare Montgeron-Crosne) ou véhicule (19 km depuis Paris). Aucune mission initiale en distanciel : observation des processus réels dans vos locaux.",
     },
   ],

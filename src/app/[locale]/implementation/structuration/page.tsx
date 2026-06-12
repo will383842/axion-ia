@@ -68,11 +68,11 @@ export default async function StructurationPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert structuration données IA"
-          : "William — Axion-IA founder, AI data structuring expert",
+          ? "Williams — Fondateur Axion-IA, expert structuration données IA"
+          : "Williams — Axion-IA founder, AI data structuring expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets de structuration de données IA pour dirigeants TPE et PME — audit data, modélisation, gouvernance, mise en qualité progressive."
-          : "Portrait of William, Axion-IA founder. Personally drives AI data structuring projects for small business and SME executives — data audit, modeling, governance, progressive quality improvement.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets de structuration de données IA pour dirigeants TPE et PME — audit data, modélisation, gouvernance, mise en qualité progressive."
+          : "Portrait of Williams, Axion-IA founder. Personally drives AI data structuring projects for small business and SME executives — data audit, modeling, governance, progressive quality improvement.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

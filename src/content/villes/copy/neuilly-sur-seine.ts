@@ -10,9 +10,9 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. William se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. William se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   seoHook: "conseil, sièges sociaux & professions libérales",
   ecosystemFr:
     "Neuilly-sur-Seine s'est imposée comme prolongement résidentiel et tertiaire de l'axe Champs-Élysées / La Défense via la RN 13 (Avenue Charles-de-Gaulle). La commune se classe troisième nationale en concentration de richesse parmi les communes de plus de 20 000 habitants. Le tissu local est dominé par les cabinets de conseil, agences de communication, services financiers, professions libérales (avocats, notaires, médecins) et sièges sociaux, dans un cadre bordé par le Bois de Boulogne et l'Île de la Jatte.",
@@ -126,7 +126,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Neuilly-sur-Seine ?",
-            a: "Oui. William se déplace dans vos locaux de l'avenue Charles-de-Gaulle, de l'Île de la Jatte ou du quartier Ybry, par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off et recette se font en présentiel ; les communes voisines (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et 17e) sont couvertes lors d'un même déplacement.",
+            a: "Oui. Williams se déplace dans vos locaux de l'avenue Charles-de-Gaulle, de l'Île de la Jatte ou du quartier Ybry, par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off et recette se font en présentiel ; les communes voisines (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et 17e) sont couvertes lors d'un même déplacement.",
           },
           {
             q: "Sous quel délai recevons-nous un devis et quelle technologie utilisez-vous ?",
@@ -212,7 +212,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Neuilly-sur-Seine?",
-            a: "Yes. William travels to your offices on avenue Charles-de-Gaulle, Île de la Jatte or the Ybry district via metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off and acceptance happen in person; neighboring towns (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16th and 17th) are covered in the same visit.",
+            a: "Yes. Williams travels to your offices on avenue Charles-de-Gaulle, Île de la Jatte or the Ybry district via metro line 1 (Pont de Neuilly, Les Sablons, Porte Maillot). Kick-off and acceptance happen in person; neighboring towns (Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16th and 17th) are covered in the same visit.",
           },
           {
             q: "How fast is a quote and what technology do you use?",
@@ -231,8 +231,8 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
       a: "L'Audit sur place 4h sur site à Neuilly-sur-Seine démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant démarrage, aucun abonnement.",
     },
     {
-      q: "William se déplace-t-il à Neuilly-sur-Seine ?",
-      a: "Oui, William se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), le tramway T3b ou la RN 13.",
+      q: "Williams se déplace-t-il à Neuilly-sur-Seine ?",
+      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), le tramway T3b ou la RN 13.",
     },
     {
       q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",

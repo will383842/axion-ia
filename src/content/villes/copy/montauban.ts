@@ -36,8 +36,8 @@ export const MONTAUBAN_COPY: VilleCopy = {
       en: "Audit sur place 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Formation collective sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
-      en: "Group training sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
+      fr: "Formation collective sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
+      en: "Group training sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
     },
     implementation: {
       fr: "Implémentation IA code-first à Montauban : intégration API métier, agents internes, automatisations pour PME du commerce Albasud, BTP, transport-logistique A20. À partir de {{price:impl-poc|entry}}.",
@@ -232,7 +232,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Montauban ?",
-      a: "William se déplace à Montauban sous 5 jours ouvrés après validation du devis (TGV ou Intercités via Ville-Bourbon, ou A20). Audit livré sous 5 jours après visite. Implémentation : 2 à 6 semaines.",
+      a: "Williams se déplace à Montauban sous 5 jours ouvrés après validation du devis (TGV ou Intercités via Ville-Bourbon, ou A20). Audit livré sous 5 jours après visite. Implémentation : 2 à 6 semaines.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Montauban ?",

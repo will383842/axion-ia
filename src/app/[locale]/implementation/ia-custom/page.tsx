@@ -68,11 +68,11 @@ export default async function IaCustomPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert IA sur-mesure"
-          : "William — Axion-IA founder, custom AI expert",
+          ? "Williams — Fondateur Axion-IA, expert IA sur-mesure"
+          : "Williams — Axion-IA founder, custom AI expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'IA sur-mesure pour dirigeants TPE et PME — cadrage métier, choix d'architecture, mise en production sécurisée."
-          : "Portrait of William, Axion-IA founder. Personally drives custom AI projects for small business and SME executives — business scoping, architecture choice, secure production deployment.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'IA sur-mesure pour dirigeants TPE et PME — cadrage métier, choix d'architecture, mise en production sécurisée."
+          : "Portrait of Williams, Axion-IA founder. Personally drives custom AI projects for small business and SME executives — business scoping, architecture choice, secure production deployment.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

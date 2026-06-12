@@ -128,11 +128,11 @@ export default async function CaseStudiesListing({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA et garant des cas clients"
-          : "William — Axion-IA founder, guarantor of client case studies",
+          ? "Williams — Fondateur Axion-IA et garant des cas clients"
+          : "Williams — Axion-IA founder, guarantor of client case studies",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les missions cas clients IA et garantit l'authenticité des résultats chiffrés présentés sur Axion-IA — ROI mesuré, témoignages vérifiés."
-          : "Portrait of William, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les missions cas clients IA et garantit l'authenticité des résultats chiffrés présentés sur Axion-IA — ROI mesuré, témoignages vérifiés."
+          : "Portrait of Williams, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

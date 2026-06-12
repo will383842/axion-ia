@@ -236,7 +236,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Lanester ?",
-      a: "William se déplace à Lanester sous 5 jours ouvrés après confirmation. Audit sur place restitué sous 7 jours. Trajet depuis la gare de Lorient (5 min) ou aéroport Lorient Bretagne Sud (15 min).",
+      a: "Williams se déplace à Lanester sous 5 jours ouvrés après confirmation. Audit sur place restitué sous 7 jours. Trajet depuis la gare de Lorient (5 min) ou aéroport Lorient Bretagne Sud (15 min).",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Lanester ?",

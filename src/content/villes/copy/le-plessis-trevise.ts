@@ -11,9 +11,9 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   pitchEn:
     "Le Plessis-Trévise (21 112 habitants, Val-de-Marne) est une commune urbaine dense (4 887 hab/km²) du Grand Paris Sud Est Avenir (GPSEA), urbanisée depuis les années 1950. Située à 18 km à l'est de Paris, elle est desservie par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) et bordée par l'A4 au nord. Axion-IA accompagne les TPE et PME locales (commerce de proximité, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:intervention-4h|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). William se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:intervention-4h|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   directAnswerEn:
-    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:intervention-4h|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). William se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:intervention-4h|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   seoHook: "commerce proximité & artisanat GPSEA",
   ecosystemFr:
     "Le Plessis-Trévise s'inscrit dans le territoire Grand Paris Sud Est Avenir (GPSEA), aux côtés de Champigny-sur-Marne, Chennevières-sur-Marne, Noisy-le-Grand, Pontault-Combault, La Queue-en-Brie et Villiers-sur-Marne. Le tissu économique de cette commune urbaine de peuplement récent (existence administrative depuis 1899, urbanisation post-1950) repose sur le commerce de proximité, les services aux entreprises et les professions libérales, avec un taux de propriétaires de 56,8 %.",
@@ -130,7 +130,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place au Plessis-Trévise et le devis est-il ferme ?",
-            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, William se déplaçant depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
+            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, Williams se déplaçant depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place au Plessis-Trévise et le devis est-il ferme ?",
-            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, William se déplaçant depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
+            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, Williams se déplaçant depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
           },
         ],
         guarantees:
@@ -228,15 +228,15 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA au Plessis-Trévise ?",
-      a: "Les audits IA au Plessis-Trévise débutent à {{price:intervention-4h|flat}} pour un Audit sur place de 4 heures sur site, déplacement William depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA au Plessis-Trévise débutent à {{price:intervention-4h|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA au Plessis-Trévise ?",
-      a: "William se déplace sur site au Plessis-Trévise (18 km de Paris via RER E ou A4) pour des interventions à partir de {{price:intervention-4h|flat}}. Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
+      a: "Williams se déplace sur site au Plessis-Trévise (18 km de Paris via RER E ou A4) pour des interventions à partir de {{price:intervention-4h|flat}}. Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
     },
     {
       q: "Quels délais pour une implémentation IA au Plessis-Trévise ?",
-      a: "William se déplace habituellement sous 5 à 10 jours ouvrés au Plessis-Trévise. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines pour une PME locale.",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés au Plessis-Trévise. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines pour une PME locale.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions au Plessis-Trévise ?",

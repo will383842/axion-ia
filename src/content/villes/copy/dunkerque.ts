@@ -11,9 +11,9 @@ export const DUNKERQUE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. William se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. William se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "port, métallurgie & sous-traitance",
   ecosystemFr:
     "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
@@ -233,7 +233,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Dunkerque ?",
-      a: "William se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis. Les missions de formation ou d'audit peuvent démarrer plus rapidement selon disponibilités.",
+      a: "Williams se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis. Les missions de formation ou d'audit peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
       q: "Quelles communes autour de Dunkerque sont couvertes ?",

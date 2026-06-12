@@ -236,7 +236,7 @@ export const VINCENNES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Vincennes ?",
-      a: "William se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit sur place restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
+      a: "Williams se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit sur place restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Vincennes ?",

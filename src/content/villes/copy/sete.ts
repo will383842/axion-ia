@@ -231,7 +231,7 @@ export const SETE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Sète ?",
-      a: "William se déplace à Sète sous 5 à 7 jours ouvrés après brief (gare TGV/Intercités/TER directe, A9). Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon le périmètre.",
+      a: "Williams se déplace à Sète sous 5 à 7 jours ouvrés après brief (gare TGV/Intercités/TER directe, A9). Audit sur place livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon le périmètre.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Sète ?",
@@ -246,7 +246,7 @@ export const SETE_COPY: VilleCopy = {
       a: "Les TPE et PME du port (pêche, transitaires, plaisance), les conchyliculteurs de l'étang de Thau (huîtres et moules de Bouzigues), les hôteliers-restaurateurs du lido et les viticulteurs environnants tirent un bénéfice direct des automatisations IA codées sur mesure.",
     },
     {
-      q: "William se déplace-t-il vraiment sur site à Sète ?",
+      q: "Williams se déplace-t-il vraiment sur site à Sète ?",
       a: "Oui, déplacement systématique sur site à Sète via la gare ferroviaire (TGV, Intercités, TER Occitanie) ou l'A9. Aucune mission initiale en distanciel : observation des processus réels dans vos locaux, du quai au comptoir.",
     },
   ],

@@ -233,7 +233,7 @@ export const ALBI_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Albi ?",
-      a: "William se déplace sur Albi sous 5 jours ouvrés en moyenne après validation du devis, depuis notre base nationale. Les missions courtes (audit, formation) peuvent démarrer encore plus rapidement.",
+      a: "Williams se déplace sur Albi sous 5 jours ouvrés en moyenne après validation du devis, depuis notre base nationale. Les missions courtes (audit, formation) peuvent démarrer encore plus rapidement.",
     },
     {
       q: "Quelles communes autour d'Albi sont couvertes par Axion-IA ?",

@@ -68,11 +68,11 @@ export default async function ProcessusPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert automatisation processus IA"
-          : "William — Axion-IA founder, AI process automation expert",
+          ? "Williams — Fondateur Axion-IA, expert automatisation processus IA"
+          : "Williams — Axion-IA founder, AI process automation expert",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'automatisation de processus IA pour dirigeants TPE et PME — cartographie des flux, ROI par étape, conduite du changement."
-          : "Portrait of William, Axion-IA founder. Personally drives AI process automation projects for small business and SME executives — flow mapping, step-by-step ROI, change management.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les projets d'automatisation de processus IA pour dirigeants TPE et PME — cartographie des flux, ROI par étape, conduite du changement."
+          : "Portrait of Williams, Axion-IA founder. Personally drives AI process automation projects for small business and SME executives — flow mapping, step-by-step ROI, change management.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

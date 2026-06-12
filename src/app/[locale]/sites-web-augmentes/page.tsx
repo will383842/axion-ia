@@ -183,11 +183,11 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA et architecte sites web IA"
-          : "William — Axion-IA founder and AI website architect",
+          ? "Williams — Fondateur Axion-IA et architecte sites web IA"
+          : "Williams — Axion-IA founder and AI website architect",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote la création de sites web augmentés IA et SaaS native IA pour dirigeants TPE, PME, ETI et grandes entreprises françaises — agents conversationnels, recommandations IA, automatisations métier."
-          : "Portrait of William, Axion-IA founder. Drives AI-augmented website and AI-native SaaS creation for French SME, mid-cap and large enterprise executives — conversational agents, AI recommendations, business automations.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Pilote la création de sites web augmentés IA et SaaS native IA pour dirigeants TPE, PME, ETI et grandes entreprises françaises — agents conversationnels, recommandations IA, automatisations métier."
+          : "Portrait of Williams, Axion-IA founder. Drives AI-augmented website and AI-native SaaS creation for French SME, mid-cap and large enterprise executives — conversational agents, AI recommendations, business automations.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

@@ -23,7 +23,7 @@ const COPY = {
     body: (n: string, a: string, d: string) =>
       `Nous avons bien reçu votre paiement de ${a} pour la facture ${n} le ${d}. Merci.`,
     nextDeposit:
-      "Vous recevrez prochainement un email de validation par William, puis votre intervention sera officiellement verrouillée dans le calendrier.",
+      "Vous recevrez prochainement un email de validation par Williams, puis votre intervention sera officiellement verrouillée dans le calendrier.",
     nextBalance:
       "Toutes les opérations sont soldées. Votre dossier passe en archives administratives sous 30 jours.",
     nextInstallment: "L'échéance suivante sera facturée selon votre échéancier convenu.",
@@ -35,7 +35,7 @@ const COPY = {
     body: (n: string, a: string, d: string) =>
       `We received your payment of ${a} for invoice ${n} on ${d}. Thank you.`,
     nextDeposit:
-      "You'll soon receive a final validation email from William, after which your session will be officially locked in the calendar.",
+      "You'll soon receive a final validation email from Williams, after which your session will be officially locked in the calendar.",
     nextBalance:
       "All operations are settled. Your file will move to administrative archives within 30 days.",
     nextInstallment: "The next installment will be billed according to your agreed schedule.",

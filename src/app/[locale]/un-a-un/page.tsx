@@ -269,11 +269,11 @@ export default async function UnAUnHubPage({ params }: Props) {
       {
         src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
         name: isFr
-          ? "William — Fondateur Axion-IA et coach IA 1-to-1"
-          : "William — Axion-IA founder and 1-to-1 AI coach",
+          ? "Williams — Fondateur Axion-IA et coach IA 1-to-1"
+          : "Williams — Axion-IA founder and 1-to-1 AI coach",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA et coach IA individuel. Accompagne en tête-à-tête dirigeants et collaborateurs clés (secrétariat, comptabilité, achats…) pour gagner du temps avec l'IA, partout en France métropolitaine."
-          : "Portrait of William, Axion-IA founder and individual AI coach. Coaches executives and key team members (admin, accounting, purchasing…) one-on-one to save time with AI, across metropolitan France.",
+          ? "Portrait de Williams, fondateur d'Axion-IA et coach IA individuel. Accompagne en tête-à-tête dirigeants et collaborateurs clés (secrétariat, comptabilité, achats…) pour gagner du temps avec l'IA, partout en France métropolitaine."
+          : "Portrait of Williams, Axion-IA founder and individual AI coach. Coaches executives and key team members (admin, accounting, purchasing…) one-on-one to save time with AI, across metropolitan France.",
         width: 800,
         height: 1000,
       },
@@ -688,7 +688,7 @@ export default async function UnAUnHubPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* SECTION COACH — crédibilité (William ou un membre de l'équipe) */}
+      {/* SECTION COACH — crédibilité (Williams ou un membre de l'équipe) */}
       <section
         id="coach"
         aria-labelledby="coach-heading"
@@ -714,8 +714,8 @@ export default async function UnAUnHubPage({ params }: Props) {
               </h2>
               <p className="text-fg-soft mt-7 text-lg leading-relaxed">
                 {isFr
-                  ? "William, fondateur d'Axion-IA, assure lui-même l'essentiel des journées 1-to-1 — ou un coach de son équipe — dédié à votre poste, calibré sur votre métier, vos outils et vos enjeux."
-                  : "William, founder of Axion-IA, personally runs most of the 1-to-1 days — or a coach from his team — dedicated to your role, calibrated to your work, your tools and your stakes."}
+                  ? "Williams, fondateur d'Axion-IA, assure lui-même l'essentiel des journées 1-to-1 — ou un coach de son équipe — dédié à votre poste, calibré sur votre métier, vos outils et vos enjeux."
+                  : "Williams, founder of Axion-IA, personally runs most of the 1-to-1 days — or a coach from his team — dedicated to your role, calibrated to your work, your tools and your stakes."}
               </p>
               <p className="text-fg-soft mt-5 text-lg leading-relaxed">
                 {isFr
@@ -731,8 +731,8 @@ export default async function UnAUnHubPage({ params }: Props) {
                     src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
                     alt={
                       isFr
-                        ? "William, fondateur Axion-IA et coach IA — portrait posé devant olivier, ambiance méditerranée. Accompagne dirigeants et collaborateurs clés en tête-à-tête, partout en France métropolitaine."
-                        : "William, Axion-IA founder and AI coach — portrait in front of olive tree, Mediterranean atmosphere. Coaches executives and key team members one-on-one, across metropolitan France."
+                        ? "Williams, fondateur Axion-IA et coach IA — portrait posé devant olivier, ambiance méditerranée. Accompagne dirigeants et collaborateurs clés en tête-à-tête, partout en France métropolitaine."
+                        : "Williams, Axion-IA founder and AI coach — portrait in front of olive tree, Mediterranean atmosphere. Coaches executives and key team members one-on-one, across metropolitan France."
                     }
                     width={800}
                     height={1000}
@@ -744,7 +744,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                   />
                 </figure>
                 <div className="mt-4 text-center">
-                  <p className="text-fg text-lg font-semibold">William</p>
+                  <p className="text-fg text-lg font-semibold">Williams</p>
                   <p className="text-fg-muted text-sm">
                     {isFr ? "Fondateur & coach IA · Axion-IA" : "Founder & AI coach · Axion-IA"}
                   </p>

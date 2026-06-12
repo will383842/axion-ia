@@ -161,7 +161,7 @@ export default async function FormationsHub({ params }: Props) {
   // JSON-LD ImageObject @graph — refactor 2026-05-28 (Will sprint perfection) :
   // utilise désormais la factory centralisée `buildImageGraphJsonLd` (lib/seo.ts).
   // Réutilisable cross-site, élimine 70+ lignes de duplication. Émet 6 ImageObject
-  // (4 photos formation + 1 quadriptyque + 1 portrait William) avec license
+  // (4 photos formation + 1 quadriptyque + 1 portrait Williams) avec license
   // CC BY 4.0, creator/copyrightHolder Axion-IA, datePublished.
   const photosImageObjectJsonLd = buildImageGraphJsonLd({
     locale: loc,
@@ -187,11 +187,11 @@ export default async function FormationsHub({ params }: Props) {
       {
         src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
         name: isFr
-          ? "William — Fondateur Axion-IA et formateur IA"
-          : "William — Axion-IA founder and AI trainer",
+          ? "Williams — Fondateur Axion-IA et formateur IA"
+          : "Williams — Axion-IA founder and AI trainer",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
-          : "Portrait of William, Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
+          ? "Portrait de Williams, fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
+          : "Portrait of Williams, Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
         width: 800,
         height: 1000,
       },
@@ -893,7 +893,7 @@ export default async function FormationsHub({ params }: Props) {
       </Section>
 
       {/* SECTION FORMATEUR — Sprint 2026-05-28 (Will). Pattern home « Section
-          Fondateur » adapté formation IA : crédibilité du formateur (William
+          Fondateur » adapté formation IA : crédibilité du formateur (Williams
           ou un membre de son équipe) placé juste après le bloc Formation
           régulière mensuelle. Donne confiance avant la conversion (bandeau
           terracotta + Comment réserver + quadriptyque). */}
@@ -923,8 +923,8 @@ export default async function FormationsHub({ params }: Props) {
               </h2>
               <p className="text-fg-soft mt-7 text-lg leading-relaxed">
                 {isFr
-                  ? "William, fondateur d'Axion-IA, intervient souvent durant les formations, ou un formateur de son équipe — dédié à votre entreprise, qui adapte la formation à votre métier, votre stack et vos enjeux."
-                  : "William, founder of Axion-IA, often delivers the trainings himself, or a trainer from his team — dedicated to your business, who adapts the training to your work, your stack and your stakes."}
+                  ? "Williams, fondateur d'Axion-IA, intervient souvent durant les formations, ou un formateur de son équipe — dédié à votre entreprise, qui adapte la formation à votre métier, votre stack et vos enjeux."
+                  : "Williams, founder of Axion-IA, often delivers the trainings himself, or a trainer from his team — dedicated to your business, who adapts the training to your work, your stack and your stakes."}
               </p>
               <p className="text-fg-soft mt-5 text-lg leading-relaxed">
                 {isFr
@@ -953,7 +953,7 @@ export default async function FormationsHub({ params }: Props) {
               </p>
             </div>
 
-            {/* Colonne droite : photo William */}
+            {/* Colonne droite : photo Williams */}
             <div className="flex justify-center lg:justify-end">
               <div className="w-full max-w-xs">
                 <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
@@ -961,8 +961,8 @@ export default async function FormationsHub({ params }: Props) {
                     src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
                     alt={
                       isFr
-                        ? "William, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes TPE, PME, ETI et grandes entreprises françaises avec une équipe de formateurs experts dédiés."
-                        : "William, Axion-IA founder and AI trainer — portrait in front of olive tree, Mediterranean atmosphere. Trains French SME, mid-cap and large enterprise teams with a dedicated team of expert trainers."
+                        ? "Williams, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes TPE, PME, ETI et grandes entreprises françaises avec une équipe de formateurs experts dédiés."
+                        : "Williams, Axion-IA founder and AI trainer — portrait in front of olive tree, Mediterranean atmosphere. Trains French SME, mid-cap and large enterprise teams with a dedicated team of expert trainers."
                     }
                     width={800}
                     height={1000}
@@ -974,7 +974,7 @@ export default async function FormationsHub({ params }: Props) {
                   />
                 </figure>
                 <div className="mt-4 text-center">
-                  <p className="text-fg text-lg font-semibold">William</p>
+                  <p className="text-fg text-lg font-semibold">Williams</p>
                   <p className="text-fg-muted text-sm">
                     {isFr
                       ? "Fondateur & formateur IA · Axion-IA"

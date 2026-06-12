@@ -236,7 +236,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Chalon-sur-Saône ?",
-      a: "William se déplace à Chalon-sur-Saône sous 5 jours ouvrés après confirmation. L'Audit sur place est restitué sous 7 jours. Les interventions sur site démarrent selon planning convenu (généralement 2 à 4 semaines).",
+      a: "Williams se déplace à Chalon-sur-Saône sous 5 jours ouvrés après confirmation. L'Audit sur place est restitué sous 7 jours. Les interventions sur site démarrent selon planning convenu (généralement 2 à 4 semaines).",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Chalon ?",

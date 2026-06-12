@@ -340,10 +340,10 @@ export default async function Home({ params }: HomeProps) {
       },
       {
         src: "/illustrations/home-founder-william.avif",
-        name: isFr ? "William — Fondateur & CEO Axion-IA" : "William — Founder & CEO Axion-IA",
+        name: isFr ? "Williams — Fondateur & CEO Axion-IA" : "Williams — Founder & CEO Axion-IA",
         alt: isFr
-          ? "Portrait de William, fondateur et CEO d'Axion-IA. Top 1% expertise IA opérationnelle France, accompagne dirigeants TPE, PME, ETI et grandes entreprises sur ChatGPT, Claude, Mistral, agents IA et automatisations métier."
-          : "Portrait of William, founder and CEO of Axion-IA. Top 1% France operational AI expertise, advises executives of SMEs, mid-caps and large enterprises on ChatGPT, Claude, Mistral, AI agents and business automations.",
+          ? "Portrait de Williams, fondateur et CEO d'Axion-IA. Top 1% expertise IA opérationnelle France, accompagne dirigeants TPE, PME, ETI et grandes entreprises sur ChatGPT, Claude, Mistral, agents IA et automatisations métier."
+          : "Portrait of Williams, founder and CEO of Axion-IA. Top 1% France operational AI expertise, advises executives of SMEs, mid-caps and large enterprises on ChatGPT, Claude, Mistral, AI agents and business automations.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",
@@ -659,8 +659,8 @@ export default async function Home({ params }: HomeProps) {
                     filenameTarget="public/illustrations/home-founder-william.avif"
                     caption={
                       isFr
-                        ? "William — Fondateur & CEO Axion-IA"
-                        : "William — Founder & CEO Axion-IA"
+                        ? "Williams — Fondateur & CEO Axion-IA"
+                        : "Williams — Founder & CEO Axion-IA"
                     }
                     alt={t("founderPhotoAlt")}
                   />

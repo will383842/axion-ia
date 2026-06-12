@@ -232,7 +232,7 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il à Neuilly-Plaisance pour les interventions ?",
-      a: "Oui, William se déplace sur site à Neuilly-Plaisance dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
+      a: "Oui, Williams se déplace sur site à Neuilly-Plaisance dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Neuilly-Plaisance ?",

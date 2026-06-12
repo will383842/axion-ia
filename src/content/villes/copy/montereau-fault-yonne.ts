@@ -238,7 +238,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Montereau-Fault-Yonne ?",
-      a: "William se déplace à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Accès via gare directe (Paris-Lyon 1h) ou A5 / RD606. Mission dans vos locaux industriels, au port fluvial ou en boutique.",
+      a: "Williams se déplace à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Accès via gare directe (Paris-Lyon 1h) ou A5 / RD606. Mission dans vos locaux industriels, au port fluvial ou en boutique.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Montereau-Fault-Yonne ?",

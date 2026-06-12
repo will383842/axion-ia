@@ -68,11 +68,11 @@ export default async function AuditStrategiqueEtiPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, auditeur stratégique IA ETI"
-          : "William — Axion-IA founder, mid-cap strategic AI auditor",
+          ? "Williams — Fondateur Axion-IA, auditeur stratégique IA ETI"
+          : "Williams — Axion-IA founder, mid-cap strategic AI auditor",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Conduit personnellement les audits stratégiques IA ETI — interview comité exécutif, gouvernance IA multi-BU, AI Act compliance, plan stratégique IA pluri-annuel."
-          : "Portrait of William, Axion-IA founder. Personally conducts mid-cap strategic AI audits — executive committee interviews, multi-BU AI governance, AI Act compliance, multi-year strategic AI plan.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Conduit personnellement les audits stratégiques IA ETI — interview comité exécutif, gouvernance IA multi-BU, AI Act compliance, plan stratégique IA pluri-annuel."
+          : "Portrait of Williams, Axion-IA founder. Personally conducts mid-cap strategic AI audits — executive committee interviews, multi-BU AI governance, AI Act compliance, multi-year strategic AI plan.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

@@ -45,9 +45,9 @@ describe("generateIcsEvent", () => {
       end: new Date(),
       summary: "Test",
       organizerEmail: "william@axion-ia.com",
-      organizerName: "William",
+      organizerName: "Williams",
     });
-    expect(ics).toContain("ORGANIZER;CN=William:mailto:william@axion-ia.com");
+    expect(ics).toContain("ORGANIZER;CN=Williams:mailto:william@axion-ia.com");
   });
 
   it("n'inclut pas LOCATION quand absent", () => {

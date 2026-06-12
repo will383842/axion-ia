@@ -220,11 +220,11 @@ export default async function PressePage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA disponible pour interviews"
-          : "William — Axion-IA founder available for interviews",
+          ? "Williams — Fondateur Axion-IA disponible pour interviews"
+          : "Williams — Axion-IA founder available for interviews",
         alt: isFr
-          ? "Portrait haute résolution de William, fondateur d'Axion-IA. Disponible pour interviews presse, podcasts, conférences sur l'IA opérationnelle pour TPE, PME, ETI et grandes entreprises françaises."
-          : "High-resolution portrait of William, Axion-IA founder. Available for press interviews, podcasts, conferences on operational AI for French SMEs, mid-caps and large enterprises.",
+          ? "Portrait haute résolution de Williams, fondateur d'Axion-IA. Disponible pour interviews presse, podcasts, conférences sur l'IA opérationnelle pour TPE, PME, ETI et grandes entreprises françaises."
+          : "High-resolution portrait of Williams, Axion-IA founder. Available for press interviews, podcasts, conferences on operational AI for French SMEs, mid-caps and large enterprises.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

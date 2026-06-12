@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const GRIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. William se déplace sur site pour des automatisations IA en code custom, sans no-code.",
+    "Axion-IA accompagne les TPE et PME de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. Williams se déplace sur site pour des automatisations IA en code custom, sans no-code.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. William se déplace sur site pour des automatisations IA en code custom, sans no-code.",
+    "Axion-IA accompagne les TPE et PME de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. Williams se déplace sur site pour des automatisations IA en code custom, sans no-code.",
   directAnswerFr:
-    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les TPE et PME locales — commerces de détail, transport, construction, restauration et services. William se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
+    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les TPE et PME locales — commerces de détail, transport, construction, restauration et services. Williams se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
   directAnswerEn:
-    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les TPE et PME locales — commerces de détail, transport, construction, restauration et services. William se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
+    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les TPE et PME locales — commerces de détail, transport, construction, restauration et services. Williams se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
   seoHook: "commerce détail & transport",
   ecosystemFr:
     "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de TPE et PME des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
@@ -37,8 +37,8 @@ export const GRIGNY_COPY: VilleCopy = {
       en: "Audit sur place IA à Grigny dès {{price:audit-flash|flat}} — 4 heures pour identifier 3 à 5 automatisations prioritaires dans le commerce, le transport ou la construction.",
     },
     interventions: {
-      fr: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
-      en: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — William se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
+      fr: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
+      en: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les TPE et PME de l'Essonne.",
@@ -233,7 +233,7 @@ export const GRIGNY_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps pour un audit à Grigny ?",
-      a: "L'Audit sur place dure 4 heures et se déroule sur site à Grigny, généralement sous 5 jours ouvrés après confirmation. William se déplace depuis Paris via la ligne D du RER.",
+      a: "L'Audit sur place dure 4 heures et se déroule sur site à Grigny, généralement sous 5 jours ouvrés après confirmation. Williams se déplace depuis Paris via la ligne D du RER.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Grigny ?",

@@ -1,4 +1,4 @@
-// Server component — section fondateur William (crédibilité + Top 1 %).
+// Server component — section fondateur Williams (crédibilité + Top 1 %).
 // Réutilisable home / régions / villes. Lit le namespace i18n "home" via
 // `getTranslations("home")` pour rester en synchro avec la home (clés
 // founderEyebrow, founderTitleLine1, founderTitleLine2, founderDescription,
@@ -78,7 +78,9 @@ export async function FounderTrustSection({ isFr }: FounderTrustSectionProps) {
                   aspectRatio="4:5"
                   filenameTarget="public/illustrations/home-founder-william.avif"
                   caption={
-                    isFr ? "William — Fondateur & CEO Axion-IA" : "William — Founder & CEO Axion-IA"
+                    isFr
+                      ? "Williams — Fondateur & CEO Axion-IA"
+                      : "Williams — Founder & CEO Axion-IA"
                   }
                   alt={t("founderPhotoAlt")}
                 />

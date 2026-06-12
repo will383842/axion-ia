@@ -242,7 +242,7 @@ export const BEGLES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais d'intervention à Bègles ?",
-      a: "William se déplace à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique. Accès via A630 rocade sortie 20 ou tramway TBM lignes C et F.",
+      a: "Williams se déplace à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique. Accès via A630 rocade sortie 20 ou tramway TBM lignes C et F.",
     },
   ],
 };

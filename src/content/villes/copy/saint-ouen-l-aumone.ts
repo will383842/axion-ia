@@ -233,7 +233,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps pour une intervention sur site à Saint-Ouen-l'Aumône ?",
-      a: "William et l'équipe Axion-IA se déplacent à Saint-Ouen-l'Aumône sous 5 jours ouvrés en moyenne après validation du devis, via l'A15, la Francilienne ou les lignes Transilien H et J.",
+      a: "Williams et l'équipe Axion-IA se déplacent à Saint-Ouen-l'Aumône sous 5 jours ouvrés en moyenne après validation du devis, via l'A15, la Francilienne ou les lignes Transilien H et J.",
     },
     {
       q: "Comment Axion-IA respecte le RGPD à Saint-Ouen-l'Aumône ?",

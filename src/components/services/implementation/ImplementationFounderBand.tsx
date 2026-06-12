@@ -1,10 +1,10 @@
 /**
- * ImplementationFounderBand — bandeau « William » adapté à /implementation.
+ * ImplementationFounderBand — bandeau « Williams » adapté à /implementation.
  *
  * Calqué sur FounderTrustSection (home) mais avec une copie propre à
  * l'implémentation : ce qui compte, c'est VOTRE satisfaction — des échanges
  * directs, un état d'esprit travailleur, professionnel et sympa, pour des
- * performances et un résultat optimum. Réutilise le portrait William existant.
+ * performances et un résultat optimum. Réutilise le portrait Williams existant.
  *
  * Server Component pur, zéro JS. Tokens uniquement. Aucun prix. FR canonique —
  * EN = miroir (locale 301→FR, règle Will 2026-05-16).
@@ -65,8 +65,8 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
             </h2>
             <p className="text-fg-soft mt-7 text-lg leading-relaxed">
               {isFr
-                ? "Avec William et son équipe, votre solution se construit dans des échanges directs et réguliers — un état d'esprit travailleur, professionnel et sympa. L'exigence dans le code, la bonne humeur dans la relation : c'est comme ça qu'on obtient des performances et un résultat optimum. Pas d'intermédiaire, pas de jargon — vous parlez à ceux qui construisent."
-                : "With William and his team, your solution is built through direct, regular exchanges — a hardworking, professional and friendly mindset. Rigour in the code, good vibes in the relationship: that's how we reach real performance and an optimal result. No middleman, no jargon — you talk to the people who build it."}
+                ? "Avec Williams et son équipe, votre solution se construit dans des échanges directs et réguliers — un état d'esprit travailleur, professionnel et sympa. L'exigence dans le code, la bonne humeur dans la relation : c'est comme ça qu'on obtient des performances et un résultat optimum. Pas d'intermédiaire, pas de jargon — vous parlez à ceux qui construisent."
+                : "With Williams and his team, your solution is built through direct, regular exchanges — a hardworking, professional and friendly mindset. Rigour in the code, good vibes in the relationship: that's how we reach real performance and an optimal result. No middleman, no jargon — you talk to the people who build it."}
             </p>
             <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
               <span
@@ -101,8 +101,8 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
                   src="/illustrations/william-fondateur-axion-ia.webp"
                   alt={
                     isFr
-                      ? "Portrait de William, fondateur et CEO d'Axion-IA — pilote les implémentations IA avec une exigence technique et une relation directe et humaine."
-                      : "Portrait of William, Axion-IA founder and CEO — drives AI implementations with technical rigour and a direct, human relationship."
+                      ? "Portrait de Williams, fondateur et CEO d'Axion-IA — pilote les implémentations IA avec une exigence technique et une relation directe et humaine."
+                      : "Portrait of Williams, Axion-IA founder and CEO — drives AI implementations with technical rigour and a direct, human relationship."
                   }
                   width={1000}
                   height={1000}
@@ -113,7 +113,7 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
                 />
               </figure>
               <div className="mt-4 text-center">
-                <p className="text-fg text-lg font-semibold">William</p>
+                <p className="text-fg text-lg font-semibold">Williams</p>
                 <p className="text-fg-muted text-sm">
                   {isFr ? "Fondateur & CEO · Axion-IA" : "Founder & CEO · Axion-IA"}
                 </p>

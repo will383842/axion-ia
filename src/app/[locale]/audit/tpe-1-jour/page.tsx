@@ -68,11 +68,11 @@ export default async function AuditFlashPage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, auditeur Flash IA"
-          : "William — Axion-IA founder, Flash AI auditor",
+          ? "Williams — Fondateur Axion-IA, auditeur Flash IA"
+          : "Williams — Axion-IA founder, Flash AI auditor",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Conduit personnellement les audits Flash IA pour dirigeants TPE et PME — diagnostic accéléré, priorisation des cas d'usage IA, recommandations actionnables."
-          : "Portrait of William, Axion-IA founder. Personally conducts Flash AI audits for small business and SME executives — accelerated diagnosis, AI use case prioritization, actionable recommendations.",
+          ? "Portrait de Williams, fondateur d'Axion-IA. Conduit personnellement les audits Flash IA pour dirigeants TPE et PME — diagnostic accéléré, priorisation des cas d'usage IA, recommandations actionnables."
+          : "Portrait of Williams, Axion-IA founder. Personally conducts Flash AI audits for small business and SME executives — accelerated diagnosis, AI use case prioritization, actionable recommendations.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",

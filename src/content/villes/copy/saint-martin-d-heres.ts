@@ -233,7 +233,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Martin-d'Hères ?",
-      a: "William se déplace sur Saint-Martin-d'Hères sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes peuvent démarrer plus rapidement selon disponibilités.",
+      a: "Williams se déplace sur Saint-Martin-d'Hères sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
       q: "Quelles communes autour de Saint-Martin-d'Hères sont couvertes ?",

@@ -11,9 +11,9 @@ export const GAGNY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Gagny, commune de Seine-Saint-Denis située à 10 km à l'est de Paris (42 313 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Intégrée à la Métropole du Grand Paris et desservie par le RER E (gares de Gagny et Le Chénay-Gagny), la ville héberge un tissu économique de commerces de proximité, artisans du bâtiment, restaurateurs et services aux entreprises. Notre cabinet code en custom, sans no-code, pour les dirigeants gabiniens.",
   directAnswerFr:
-    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. William se déplace en moins d'une heure depuis Paris.",
+    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris.",
   directAnswerEn:
-    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. William se déplace en moins d'une heure depuis Paris.",
+    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris.",
   seoHook: "commerce détail, BTP & services aux entreprises",
   ecosystemFr:
     "Gagny est intégrée à la Métropole du Grand Paris et bénéficie d'une desserte RER E avec deux gares (Gagny et Le Chénay-Gagny) reliant Paris-Est en environ 20 minutes. Le tissu économique gabinien est dominé par les commerces de proximité, l'artisanat du bâtiment (héritage de l'exploitation historique du plâtre de Paris jusqu'aux années 1950), la restauration, les services à la personne et l'enseignement. La ville accueille également l'Arena Léon-Yves Bohain pour les événements sportifs et culturels.",
@@ -37,8 +37,8 @@ export const GAGNY_COPY: VilleCopy = {
       en: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
-      en: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
+      fr: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement Williams depuis Paris.",
+      en: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement Williams depuis Paris.",
     },
     implementation: {
       fr: "Implémentation IA à Gagny pour TPE/PME du commerce ou du BTP — code custom intégré à vos outils (CRM, ERP, devis), dès {{price:impl-poc|entry}}.",
@@ -233,7 +233,7 @@ export const GAGNY_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps avant une intervention à Gagny ?",
-      a: "William se déplace à Gagny dans les 5 jours ouvrés suivant la signature du devis, depuis Paris (10 km, environ 20 minutes par le RER E).",
+      a: "Williams se déplace à Gagny dans les 5 jours ouvrés suivant la signature du devis, depuis Paris (10 km, environ 20 minutes par le RER E).",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD à Gagny ?",
