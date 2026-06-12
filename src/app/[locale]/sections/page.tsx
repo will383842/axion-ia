@@ -208,7 +208,7 @@ export default function SectionsPage() {
           items={[
             {
               id: "1",
-              question: "Quelle est la durée d'une intervention Essentielle ?",
+              question: "Quelle est la durée d'une formation collective ?",
               answer: "Une journée sur site avec livraison d'un plan d'action.",
             },
             {

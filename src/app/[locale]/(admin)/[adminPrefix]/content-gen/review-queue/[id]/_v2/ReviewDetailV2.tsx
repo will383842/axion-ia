@@ -244,7 +244,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
               maxLength={5000}
               required
               className="admin-input"
-              placeholder="Ex. « Réécrire la section H2 #2 en restant AxionIA-centric, ajouter 200 mots sur l'intervention Essentielle. »"
+              placeholder="Ex. « Réécrire la section H2 #2 en restant AxionIA-centric, ajouter 200 mots sur la formation collective. »"
             />
           </div>
           <button type="submit" className="admin-button-ghost">

@@ -171,7 +171,7 @@ export default function ComponentsPage() {
           items={[
             {
               id: "duration",
-              question: "Combien de temps dure une intervention Essentielle ?",
+              question: "Combien de temps dure une formation collective ?",
               answer: "Une journée complète sur site, avec livraison d'un plan d'action concret.",
             },
             {
