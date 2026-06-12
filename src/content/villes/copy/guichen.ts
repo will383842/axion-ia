@@ -65,7 +65,7 @@ export const GUICHEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Guichen ?",
-      a: "Nos consultants viennent de Rennes centre (20 min via N137 ou TER gare Guichen-Bourg-des-Comptes). Possibilité visio pour les sessions courtes. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (20 min via N137 ou TER gare Guichen-Bourg-des-Comptes). Possibilité visio pour les sessions courtes.",
     },
   ],
 };

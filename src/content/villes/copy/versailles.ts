@@ -136,7 +136,7 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tarification transparente, devis à partir de 24-48 h selon la complexité, frais de déplacement facturés séparément. Hébergement dans l'Union européenne par défaut, conformité RGPD, DPO sur demande. UX/UI, version mobile, e-commerce multi-CMS et brique IA inclus dans notre périmètre. Aucun verrou éditeur : le code, les contenus et les accès vous appartiennent, votre plateforme reste maintenable en interne ou par tout prestataire des Yvelines. Pour les acteurs de Satory soumis à des contraintes de souveraineté, modèles et infrastructures sont choisis en conséquence dès la conception.",
+          "Tarification transparente, devis à partir de 24-48 h selon la complexité. Hébergement dans l'Union européenne par défaut, conformité RGPD, DPO sur demande. UX/UI, version mobile, e-commerce multi-CMS et brique IA inclus dans notre périmètre. Aucun verrou éditeur : le code, les contenus et les accès vous appartiennent, votre plateforme reste maintenable en interne ou par tout prestataire des Yvelines. Pour les acteurs de Satory soumis à des contraintes de souveraineté, modèles et infrastructures sont choisis en conséquence dès la conception.",
       },
       en: {
         hero: "Versailles combines two economies few cities hold at once: world-class heritage tourism — 8.4 million visitors to the Palace in 2024, nearly 80% international, with luxury hospitality, events and incoming agencies around the estate — and, at Satory-Ouest, a leading defense, automotive and autonomous-vehicle cluster (Nexter/KNDS, Arquus, Citroën Racing, the VEDECOM institute and its mobiLAB headquarters). Axion-IA designs AI-augmented websites and SaaS platforms for this fabric: from high-end multilingual sites for the tourism sector to technical applications under sovereignty constraints for mobility-defense players, and business tools for companies near UVSQ and Saint-Quentin-en-Yvelines.",
@@ -222,7 +222,7 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Transparent pricing, quote from 24-48 hours depending on complexity, travel costs billed separately. Hosting in the European Union by default, GDPR compliance, DPO on request. UX/UI, mobile version, multi-CMS e-commerce and AI layer are all within our scope. No vendor lock-in: the code, content and access are yours, your platform stays maintainable in-house or by any Yvelines provider. For Satory players subject to sovereignty constraints, models and infrastructure are chosen accordingly from the design stage.",
+          "Transparent pricing, quote from 24-48 hours depending on complexity. Hosting in the European Union by default, GDPR compliance, DPO on request. UX/UI, mobile version, multi-CMS e-commerce and AI layer are all within our scope. No vendor lock-in: the code, content and access are yours, your platform stays maintainable in-house or by any Yvelines provider. For Satory players subject to sovereignty constraints, models and infrastructure are chosen accordingly from the design stage.",
       },
     },
   },
@@ -246,7 +246,7 @@ export const VERSAILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Versailles est à 12 minutes de Paris par le RER C, 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Versailles est à 12 minutes de Paris par le RER C, 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly. Nos consultants se déplacent sur site.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Nuits-Saint-Georges ?",
-      a: "Nos consultants se déplacent à Nuits-Saint-Georges (25 min depuis Dijon, 15 min depuis Beaune). Interventions dans vos locaux domaine, caveau ou bureau. Visio possible pour le suivi. Frais déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent à Nuits-Saint-Georges (25 min depuis Dijon, 15 min depuis Beaune). Interventions dans vos locaux domaine, caveau ou bureau. Visio possible pour le suivi.",
     },
   ],
 };

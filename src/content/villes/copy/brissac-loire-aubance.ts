@@ -65,7 +65,7 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Brissac Loire Aubance ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Brissac Loire Aubance. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (20 min) facturés en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Brissac Loire Aubance. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

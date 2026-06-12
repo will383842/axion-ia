@@ -65,7 +65,7 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Montlouis-sur-Loire ?",
-      a: "Nos consultants interviennent sur site à Montlouis-sur-Loire (Tours à 15 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants interviennent sur site à Montlouis-sur-Loire (Tours à 15 min).",
     },
   ],
 };

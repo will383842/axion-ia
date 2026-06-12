@@ -65,7 +65,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Saint-Victoret ?",
-      a: "Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

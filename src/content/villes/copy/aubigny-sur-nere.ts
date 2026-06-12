@@ -65,7 +65,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bourges ou Orléans ?",
-      a: "Bourges (45 min) ou Orléans (1h15). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Bourges (45 min) ou Orléans (1h15).",
     },
   ],
 };

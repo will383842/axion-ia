@@ -65,7 +65,7 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (50 min A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

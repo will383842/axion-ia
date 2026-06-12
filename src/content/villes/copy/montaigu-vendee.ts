@@ -248,7 +248,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Montaigu-Vendée ?",
-      a: "Oui, nos consultants se rendent directement dans vos locaux à Montaigu, Boufféré, La Guyonnière, Saint-Georges-de-Montaigu ou Saint-Hilaire-de-Loulay, sans frais de déplacement supplémentaires en Vendée.",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Montaigu, Boufféré, La Guyonnière, Saint-Georges-de-Montaigu ou Saint-Hilaire-de-Loulay.",
     },
   ],
 };

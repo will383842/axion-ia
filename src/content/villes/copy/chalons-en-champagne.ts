@@ -241,9 +241,5 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
       q: "Travaillez-vous avec les services préfectoraux et administrations ?",
       a: "Oui, nous accompagnons les administrations à Châlons sur leurs cas IA opérationnels : automatisation traitement dossiers, classification documents, assistants conversationnels internes. Conformité RGPD et hébergement UE garantis, code restant votre propriété.",
     },
-    {
-      q: "Y a-t-il des frais de déplacement à prévoir ?",
-      a: "Pour les interventions à Châlons-en-Champagne, les frais de déplacement (TGV Paris-Champagne-Ardenne ou TER, repas, hébergement si multi-jours) sont facturés à part du forfait journée. Les tarifs forfait restent publics et transparents.",
-    },
   ],
 };

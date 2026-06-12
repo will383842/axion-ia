@@ -65,7 +65,7 @@ export const VENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Vence ?",
-      a: "Nos consultants se déplacent sur site à Vence depuis Nice (20 min) ou Sophia Antipolis (30 min). Aucun frais de déplacement intra-agglomération niçoise. Tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Vence depuis Nice (20 min) ou Sophia Antipolis (30 min). Tarifs publics.",
     },
   ],
 };

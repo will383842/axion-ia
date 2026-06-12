@@ -65,7 +65,7 @@ export const BENFELD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Benfeld ?",
-      a: "Nos consultants se déplacent via autoroute A35 (accès direct 5 min) ou gares SNCF. Bassin rural et agricole du Ried, entre Strasbourg (35 min) et Sélestat (15 min). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A35 (accès direct 5 min) ou gares SNCF. Bassin rural et agricole du Ried, entre Strasbourg (35 min) et Sélestat (15 min).",
     },
   ],
 };

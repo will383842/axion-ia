@@ -65,7 +65,7 @@ export const CHANGE_53_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Changé depuis Laval ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Laval à 5 km, accès A81 direct. Frais de déplacement inclus en agglomération lavalloise. Tarifs publics.",
+      a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Laval à 5 km, accès A81 direct. Tarifs publics.",
     },
   ],
 };

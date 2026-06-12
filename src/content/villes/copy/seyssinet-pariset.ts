@@ -65,7 +65,7 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Grenoble ou Lyon ?",
-      a: "Nos consultants viennent de Grenoble (10 min tramway A) ou Lyon (1h15 voiture A48) pour les missions sur site à Seyssinet-Pariset. Pour les multi-jours, hébergement local possible. Frais de déplacement (tram/voiture, repas, hébergement) facturés à part du forfait journée.",
+      a: "Nos consultants viennent de Grenoble (10 min tramway A) ou Lyon (1h15 voiture A48) pour les missions sur site à Seyssinet-Pariset. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

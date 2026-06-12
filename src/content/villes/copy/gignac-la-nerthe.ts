@@ -65,7 +65,7 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gignac-la-Nerthe ?",
-      a: "Nos consultants interviennent sur site à Gignac-la-Nerthe sous 5 jours ouvrés. Marseille à 30 min, Martigues à 10 min. Frais de déplacement inclus sud étang de Berre.",
+      a: "Nos consultants interviennent sur site à Gignac-la-Nerthe sous 5 jours ouvrés. Marseille à 30 min, Martigues à 10 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VERNOUILLET_78_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vernouillet ?",
-      a: "Nos consultants rejoignent Vernouillet depuis Paris Saint-Lazare (Transilien J, 40 min) ou par l'A13. Frais de déplacement Île-de-France inclus ou facturés selon forfait. Intervention sur site ou en visio.",
+      a: "Nos consultants rejoignent Vernouillet depuis Paris Saint-Lazare (Transilien J, 40 min) ou par l'A13. Intervention sur site ou en visio.",
     },
   ],
 };

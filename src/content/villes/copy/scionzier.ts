@@ -65,7 +65,7 @@ export const SCIONZIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Scionzier ?",
-      a: "Nos consultants se déplacent dans vos locaux à Scionzier (usine, atelier, commerce). Format intervention 1 à 3 jours selon le périmètre. Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants se déplacent dans vos locaux à Scionzier (usine, atelier, commerce). Format intervention 1 à 3 jours selon le périmètre.",
     },
   ],
 };

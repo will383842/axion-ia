@@ -65,7 +65,7 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",
-      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (1h). Pour les multi-jours, hébergement local possible. Frais de déplacement (voiture, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (1h). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

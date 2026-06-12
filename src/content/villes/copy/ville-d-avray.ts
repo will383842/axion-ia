@@ -65,7 +65,7 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Ville-d'Avray ?",
-      a: "Nos consultants se déplacent dans vos locaux à Ville-d'Avray pour une journée de formation pratique. Vos équipes manipulent les outils IA sur leurs cas métier réels et repartent autonomes. Frais de déplacement inclus dans le forfait zone Île-de-France.",
+      a: "Nos consultants se déplacent dans vos locaux à Ville-d'Avray pour une journée de formation pratique. Vos équipes manipulent les outils IA sur leurs cas métier réels et repartent autonomes.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CHABEUIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15 A7) ou Paris (TGV Valence 2h15 + 15 min voiture). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15 A7) ou Paris (TGV Valence 2h15 + 15 min voiture). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

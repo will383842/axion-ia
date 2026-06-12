@@ -65,7 +65,7 @@ export const BREUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Breuillet depuis Paris ?",
-      a: "Nos consultants accèdent à Breuillet en 50 min via le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants accèdent à Breuillet en 50 min via le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

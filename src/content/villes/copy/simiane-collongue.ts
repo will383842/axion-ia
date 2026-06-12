@@ -67,7 +67,7 @@ export const SIMIANE_COLLONGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Simiane-Collongue ?",
-      a: "Simiane-Collongue est à 15 min d'Aix-en-Provence centre via A51, 30 min de Marseille et 20 min de la gare TGV Aix. Nos consultants se déplacent dans vos cabinets ou locaux. Frais de déplacement facturés à part, tarifs publics sans surcoût caché.",
+      a: "Simiane-Collongue est à 15 min d'Aix-en-Provence centre via A51, 30 min de Marseille et 20 min de la gare TGV Aix. Nos consultants se déplacent dans vos cabinets ou locaux.",
     },
   ],
 };

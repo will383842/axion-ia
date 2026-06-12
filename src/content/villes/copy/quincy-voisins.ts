@@ -65,7 +65,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Meaux et alentours ?",
-      a: "Oui, nous couvrons Quincy-Voisins, Meaux, Crégy-lès-Meaux, Trilport et tout le bassin meldois. Déplacements facturés séparément, tarifs publics.",
+      a: "Oui, nous couvrons Quincy-Voisins, Meaux, Crégy-lès-Meaux, Trilport et tout le bassin meldois.",
     },
   ],
 };

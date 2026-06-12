@@ -246,7 +246,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission aux Mureaux ?",
-      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré. Frais de déplacement transparents distincts du forfait.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",

@@ -65,7 +65,7 @@ export const VESOUL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vesoul ?",
-      a: "Nos consultants interviennent à Vesoul depuis Besançon (45 min) ou Dijon (1 h 15). Gare SNCF Vesoul sur la ligne Paris-Belfort. Intervention sur site dans vos locaux, frais de déplacement facturés séparément, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Vesoul depuis Besançon (45 min) ou Dijon (1 h 15). Gare SNCF Vesoul sur la ligne Paris-Belfort. Intervention sur site dans vos locaux.",
     },
   ],
 };

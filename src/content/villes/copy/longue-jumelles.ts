@@ -65,7 +65,7 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans le Baugeois ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Longué-Jumelles. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (35 min) ou Saumur (25 min) en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Longué-Jumelles. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Oléron ?",
-      a: "Nos consultants accèdent à l'île d'Oléron par le pont (Rochefort 35 min). Mission sur site dans votre parc ostréicole, hôtel ou commerce. Frais de déplacement (incluant trajet insulaire) facturés à part du forfait.",
+      a: "Nos consultants accèdent à l'île d'Oléron par le pont (Rochefort 35 min). Mission sur site dans votre parc ostréicole, hôtel ou commerce.",
     },
   ],
 };

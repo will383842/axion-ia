@@ -65,7 +65,7 @@ export const TRIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trignac ?",
-      a: "Nos consultants se déplacent sur site à Trignac (55 min depuis Nantes, 5 min depuis Saint-Nazaire). Hébergement local pour les missions multi-jours. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants se déplacent sur site à Trignac (55 min depuis Nantes, 5 min depuis Saint-Nazaire). Hébergement local pour les missions multi-jours.",
     },
   ],
 };

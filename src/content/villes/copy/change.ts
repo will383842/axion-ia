@@ -65,7 +65,7 @@ export const CHANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Changé depuis Le Mans ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Le Mans à 7 km (55 min Paris). Accès A11 et A28. Frais déplacement inclus en agglomération mancelle.",
+      a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Le Mans à 7 km (55 min Paris). Accès A11 et A28.",
     },
   ],
 };

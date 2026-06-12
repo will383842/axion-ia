@@ -65,7 +65,7 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (20 min voiture ou TER via Armentières). Missions sur site à Erquinghem-Lys ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Lille (20 min voiture ou TER via Armentières). Missions sur site à Erquinghem-Lys ou en visio.",
     },
   ],
 };

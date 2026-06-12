@@ -65,7 +65,7 @@ export const BISCARROSSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Biscarrosse depuis Bordeaux ?",
-      a: "Nos consultants se déplacent depuis Bordeaux (1h15 voiture A63+D652). Pour les missions multi-jours, hébergement local (hôtels Biscarrosse-Bourg ou Biscarrosse-Plage). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Bordeaux (1h15 voiture A63+D652). Pour les missions multi-jours, hébergement local (hôtels Biscarrosse-Bourg ou Biscarrosse-Plage). Tarifs publics.",
     },
   ],
 };

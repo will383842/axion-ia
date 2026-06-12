@@ -65,7 +65,7 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Jouy-en-Josas ?",
-      a: "Nos consultants interviennent à Jouy-en-Josas depuis Paris ou Versailles (10-35 min). Gare Petit Jouy — Les Loges sur le RER C. Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Jouy-en-Josas depuis Paris ou Versailles (10-35 min). Gare Petit Jouy — Les Loges sur le RER C.",
     },
   ],
 };

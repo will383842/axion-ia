@@ -65,7 +65,7 @@ export const AVRILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Avrillé ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Avrillé. Diagnostic initial, ateliers pratiques avec vos équipes, livraison d'outils IA configurés métier. Frais déplacement depuis Angers inclus (10 min).",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Avrillé. Diagnostic initial, ateliers pratiques avec vos équipes, livraison d'outils IA configurés métier.",
     },
   ],
 };

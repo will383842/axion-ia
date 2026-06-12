@@ -65,7 +65,7 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Lyon ?",
-      a: "Nos consultants viennent de Grenoble (50 min A49) ou Lyon (1h15 voiture). Pour les multi-jours, hébergement local possible (hôtels Sud Grésivaudan). Frais de déplacement (TER/voiture, repas, hébergement) facturés à part du forfait journée.",
+      a: "Nos consultants viennent de Grenoble (50 min A49) ou Lyon (1h15 voiture). Pour les multi-jours, hébergement local possible (hôtels Sud Grésivaudan).",
     },
   ],
 };

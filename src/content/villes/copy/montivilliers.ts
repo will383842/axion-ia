@@ -65,7 +65,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TGV Le Havre (2h15) puis Montivilliers à 10 min du centre-ville. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris via TGV Le Havre (2h15) puis Montivilliers à 10 min du centre-ville.",
     },
   ],
 };

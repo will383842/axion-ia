@@ -65,7 +65,7 @@ export const GERZAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (10 min). Aéroport Clermont à 15 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (10 min). Aéroport Clermont à 15 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye à 5 min) ou Rouen (35 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye à 5 min) ou Rouen (35 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

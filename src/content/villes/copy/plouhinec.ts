@@ -65,7 +65,7 @@ export const PLOUHINEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Plouhinec depuis Lorient ?",
-      a: "Nos consultants viennent de Lorient (20 min voiture). Pour les multi-jours, hébergement local possible (campings, gîtes littoraux Plouhinec/Étel). Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Lorient (20 min voiture). Pour les multi-jours, hébergement local possible (campings, gîtes littoraux Plouhinec/Étel).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maizières-lès-Metz ?",
-      a: "Nos consultants se déplacent via gare SNCF Maizières-lès-Metz (ligne Metz–Thionville) ou autoroute A31. Position stratégique pays messin nord, Metz à 15 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Maizières-lès-Metz (ligne Metz–Thionville) ou autoroute A31. Position stratégique pays messin nord, Metz à 15 min.",
     },
   ],
 };

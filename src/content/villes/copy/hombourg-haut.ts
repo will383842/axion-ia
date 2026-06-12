@@ -65,7 +65,7 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hombourg-Haut ?",
-      a: "Nos consultants se déplacent via gare SNCF Hombourg-Haut ou autoroute A4. Freyming-Merlebach à 5 min, Saint-Avold à 10 min, Metz à 50 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Hombourg-Haut ou autoroute A4. Freyming-Merlebach à 5 min, Saint-Avold à 10 min, Metz à 50 min.",
     },
   ],
 };

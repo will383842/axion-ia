@@ -54,7 +54,7 @@ export const PERONNAS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Péronnas ?",
-      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Lyon ou Paris.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles bressois ?",

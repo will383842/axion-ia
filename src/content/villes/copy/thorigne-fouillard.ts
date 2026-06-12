@@ -65,7 +65,7 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Thorigné-Fouillard ?",
-      a: "Nos consultants viennent de Rennes centre (15 min). Thorigné-Fouillard est desservie par le réseau bus STAR (métro ligne B à Cesson-Sévigné proche). Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (15 min). Thorigné-Fouillard est desservie par le réseau bus STAR (métro ligne B à Cesson-Sévigné proche).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const HEILLECOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Heillecourt ?",
-      a: "Nos consultants se déplacent via autoroute A330 ou gare SNCF Nancy (10 min). Position stratégique au sud immédiat de Nancy. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A330 ou gare SNCF Nancy (10 min). Position stratégique au sud immédiat de Nancy.",
     },
   ],
 };

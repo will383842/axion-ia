@@ -63,7 +63,7 @@ export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Saint-Cyr-sur-Mer ?",
-      a: "Intervention sous 5 jours ouvrés. Toulon à 30 min, Marseille à 35 min, Gare TGV Marseille à 40 min (Paris 3h05). Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés. Toulon à 30 min, Marseille à 35 min, Gare TGV Marseille à 40 min (Paris 3h05). Nos consultants se déplacent sur site.",
     },
   ],
 };

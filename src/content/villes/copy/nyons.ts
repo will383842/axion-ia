@@ -65,7 +65,7 @@ export const NYONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Avignon ?",
-      a: "Nos consultants viennent de Lyon (2h A7) ou Avignon (1h). Pour les multi-jours, hébergement local possible (gîtes Drôme provençale). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (2h A7) ou Avignon (1h). Pour les multi-jours, hébergement local possible (gîtes Drôme provençale).",
     },
   ],
 };

@@ -69,7 +69,7 @@ export const CANEJAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Canéjan ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Accès rapide depuis Bordeaux centre (15 min) et l'aéroport de Mérignac (15 min). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Accès rapide depuis Bordeaux centre (15 min) et l'aéroport de Mérignac (15 min).",
     },
   ],
 };

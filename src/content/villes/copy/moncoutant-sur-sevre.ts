@@ -65,7 +65,7 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans le Bocage depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Nantes 2h15 puis 1h30 route, ou Poitiers 1h40 puis 1h30 route). Pour les multi-jours, hébergement local possible (Bressuire). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV (Nantes 2h15 puis 1h30 route, ou Poitiers 1h40 puis 1h30 route). Pour les multi-jours, hébergement local possible (Bressuire).",
     },
   ],
 };

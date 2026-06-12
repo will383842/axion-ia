@@ -65,7 +65,7 @@ export const AUBIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 25 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 25 min. Tarifs publics.",
     },
   ],
 };

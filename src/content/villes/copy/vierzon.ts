@@ -246,7 +246,7 @@ export const VIERZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Bourges ?",
-      a: "Vierzon est à 1 h 40 de Paris-Austerlitz, 20 minutes de Bourges et sur l'A71. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Vierzon est à 1 h 40 de Paris-Austerlitz, 20 minutes de Bourges et sur l'A71. Nos consultants se déplacent sur site.",
     },
   ],
 };

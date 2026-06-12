@@ -65,7 +65,7 @@ export const LANDIVISIAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Landivisiau ?",
-      a: "Nos consultants arrivent depuis Brest (35 min N12) ou par TER gare de Landivisiau. Pour les multi-jours, hébergement local possible (hôtels Landivisiau ou Morlaix). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants arrivent depuis Brest (35 min N12) ou par TER gare de Landivisiau. Pour les multi-jours, hébergement local possible (hôtels Landivisiau ou Morlaix).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min).",
     },
   ],
 };

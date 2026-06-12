@@ -65,7 +65,7 @@ export const LOUVROIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Louvroil ?",
-      a: "Nos consultants viennent via gare de Louvroil (TER Maubeuge-Jeumont sur place) ou gare Maubeuge (TER Lille/Paris, 5 min). Valenciennes à 25 min, Mons (Belgique) à 25 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent via gare de Louvroil (TER Maubeuge-Jeumont sur place) ou gare Maubeuge (TER Lille/Paris, 5 min). Valenciennes à 25 min, Mons (Belgique) à 25 min.",
     },
   ],
 };

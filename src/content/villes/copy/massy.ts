@@ -246,7 +246,7 @@ export const MASSY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou le plateau de Saclay ?",
-      a: "Massy est à une trentaine de minutes de Paris en RER et à quelques minutes du plateau de Saclay. Nous couvrons tout l'ouest de l'Essonne. Les frais de mission éventuels suivent une grille tarifaire publique.",
+      a: "Massy est à une trentaine de minutes de Paris en RER et à quelques minutes du plateau de Saclay. Nous couvrons tout l'ouest de l'Essonne.",
     },
   ],
 };

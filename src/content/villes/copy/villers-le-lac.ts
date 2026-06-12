@@ -65,7 +65,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA depuis Besançon ou la Suisse ?",
-      a: "Nos consultants se déplacent depuis Besançon (1h10) ou peuvent intervenir depuis la zone transfrontalière suisse. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Besançon (1h10) ou peuvent intervenir depuis la zone transfrontalière suisse. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

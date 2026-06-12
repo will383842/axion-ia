@@ -65,7 +65,7 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Saint-Mitre-les-Remparts ?",
-      a: "Saint-Mitre est à 10 min d'Istres et 45 min de Marseille par A55. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Saint-Mitre est à 10 min d'Istres et 45 min de Marseille par A55. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

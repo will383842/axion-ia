@@ -13,9 +13,8 @@
 //
 // Doctrine copies :
 //   - Aucun délai chiffré (durée relative uniquement).
-//   - Aucune mention « frais de déplacement intégrés ».
 //   - Durée minimale = 1 journée (pas de demi-journée).
-//   - « frais de logement, repas et forfait trajet en sus » sur interventions.
+//   - Aucune mention de frais de déplacement, logement, repas ou trajet.
 //   - Aucun prix en dur (vient de pricing.ts via le rendu page).
 //   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024.
@@ -35,16 +34,16 @@ export const BORDEAUX_COPY: VilleCopy = {
       en: "Operational AI audit in Bordeaux: we map what can be automated at your company — from aerospace supply-chain to wine-trade processes — and quantify the 12-24 month ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
-      fr: "Interventions IA à Bordeaux : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Bordeaux: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Bordeaux : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel.",
+      en: "AI sessions in Bordeaux: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Bordeaux : on déploie l'IA dans vos outils existants (ERP, CRM, mails, outil de gestion viticole, logiciels métier aéronautique) avec un ROI chiffré contractuellement. Aucune dépendance créée, vos équipes gardent la main.",
       en: "AI implementation in Bordeaux: we deploy AI into your existing tools (ERP, CRM, email, viticulture management software, aerospace-specific systems) with contractually-costed ROI. No dependency created, your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA individuel 1-to-1 à Bordeaux : séances sur mesure pour dirigeants et cadres de l'aéronautique/spatial, du viti-vinicole, de la French Tech Bordeaux et des ETI de Gironde. Ancré sur les réalités des filières aéronautique (Aerospace Valley), viticole et numérique. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
-      en: "1-to-1 AI coaching in Bordeaux: bespoke sessions for executives and managers in aerospace/space, wine, French Tech Bordeaux and Gironde mid-caps. Grounded in the realities of Bordeaux's aerospace (Aerospace Valley), viticulture and digital sectors. Lodging, meals and travel allowance billed separately for on-site sessions.",
+      fr: "Coaching IA individuel 1-to-1 à Bordeaux : séances sur mesure pour dirigeants et cadres de l'aéronautique/spatial, du viti-vinicole, de la French Tech Bordeaux et des ETI de Gironde. Ancré sur les réalités des filières aéronautique (Aerospace Valley), viticole et numérique.",
+      en: "1-to-1 AI coaching in Bordeaux: bespoke sessions for executives and managers in aerospace/space, wine, French Tech Bordeaux and Gironde mid-caps. Grounded in the realities of Bordeaux's aerospace (Aerospace Valley), viticulture and digital sectors.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI girondines — site vitrine premium pour viticulture et négoce export, espace client B2B pour sous-traitants Aerospace Valley, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -295,7 +294,7 @@ export const BORDEAUX_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Bordeaux se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient ingénieur chez un sous-traitant Aerospace Valley, chargé de clientèle dans un négoce viticole ou développeur dans une startup H7. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Bordeaux se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient ingénieur chez un sous-traitant Aerospace Valley, chargé de clientèle dans un négoce viticole ou développeur dans une startup H7.",
         whyHere: [
           "Bordeaux et sa Métropole sont un terrain d'intervention Axion-IA en croissance : filière aéronautique, négoce de vin, services B2B, numérique et santé représentent des profils de collaborateurs très différents que nous savons adresser.",
           "Tous les territoires de la Métropole couverts en présentiel : Bordeaux intra-muros, Mérignac (Aéroparc, Bordeaux Technowest), Pessac, Talence (campus), Le Bouscat, Bègles (Cité Numérique), Lormont, Cenon.",
@@ -401,7 +400,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur bordelais, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Bordeaux come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether they are an engineer at an Aerospace Valley sub-contractor, an account manager at a wine merchant, or a developer at an H7 startup. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Bordeaux come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether they are an engineer at an Aerospace Valley sub-contractor, an account manager at a wine merchant, or a developer at an H7 startup.",
         whyHere: [
           "Bordeaux and its Métropole are a growing Axion-IA engagement ground: the aerospace supply chain, wine trade, B2B services, digital and health represent very different staff profiles that we know how to address.",
           "All Métropole territories covered in person: central Bordeaux, Mérignac (Aéroparc, Bordeaux Technowest), Pessac, Talence (campus), Le Bouscat, Bègles (Cité Numérique), Lormont, Cenon.",
@@ -802,7 +801,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Bordeaux ?",
-            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Bordeaux, Mérignac, Pessac, Bègles, Euratlantique ou ailleurs dans la Métropole bordelaise. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Bordeaux, Mérignac, Pessac, Bègles, Euratlantique ou ailleurs dans la Métropole bordelaise.",
           },
           {
             q: "Quelle est la fréquence des séances ?",
@@ -826,7 +825,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Bordeaux individually supports executives and managers in aerospace/space (Aerospace Valley), wine trade, French Tech Bordeaux and Gironde mid-caps. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — aerospace RFP qualification, wine-sector documentation, digital product development, mid-cap commercial management. You progress at your own pace, without superfluous theory.",
@@ -908,7 +907,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         faq: [
           {
             q: "What is the format of 1-to-1 coaching sessions in Bordeaux?",
-            a: "Sessions take place by video or in person at your offices in Bordeaux, Mérignac, Pessac, Bègles, Euratlantique or elsewhere in the Bordeaux Métropole. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Sessions take place by video or in person at your offices in Bordeaux, Mérignac, Pessac, Bègles, Euratlantique or elsewhere in the Bordeaux Métropole.",
           },
           {
             q: "How often are the sessions?",
@@ -932,7 +931,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
     sitesWeb: {

@@ -65,7 +65,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carhaix-Plouguer ?",
-      a: "Nos consultants viennent de Brest (1h N164) ou Quimper (55 min). Gare TER Carhaix accessible (ligne vers Guingamp). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Brest (1h N164) ou Quimper (55 min). Gare TER Carhaix accessible (ligne vers Guingamp). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

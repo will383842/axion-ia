@@ -65,7 +65,7 @@ export const DINAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Dinan ?",
-      a: "Nos consultants rejoignent Dinan via la gare SNCF (TER depuis Saint-Brieuc ou Dol-de-Bretagne) ou par la RN176 (axe Saint-Malo — Saint-Brieuc). Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Dinan via la gare SNCF (TER depuis Saint-Brieuc ou Dol-de-Bretagne) ou par la RN176 (axe Saint-Malo — Saint-Brieuc).",
     },
   ],
 };

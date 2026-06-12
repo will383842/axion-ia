@@ -65,7 +65,7 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Château-Thierry ?",
-      a: "Nos consultants se déplacent via gare SNCF Château-Thierry (ligne Paris-Est–Reims, 45 min Paris) ou A4 sortie 20. Reims à 45 min, Soissons à 40 min, Meaux à 35 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Château-Thierry (ligne Paris-Est–Reims, 45 min Paris) ou A4 sortie 20. Reims à 45 min, Soissons à 40 min, Meaux à 35 min.",
     },
   ],
 };

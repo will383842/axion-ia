@@ -65,7 +65,7 @@ export const ALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Algrange ?",
-      a: "Nos consultants se déplacent via gare SNCF Hayange (ligne Metz–Luxembourg) ou autoroute A30. Hayange à 5 min, Thionville à 15 min, Luxembourg à 30 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Hayange (ligne Metz–Luxembourg) ou autoroute A30. Hayange à 5 min, Thionville à 15 min, Luxembourg à 30 min.",
     },
   ],
 };

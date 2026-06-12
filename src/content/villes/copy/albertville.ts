@@ -65,7 +65,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",
-      a: "Chambéry (50 min). Aéroport Lyon-Saint-Exupéry (1h30). Gare TGV Albertville directe. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Chambéry (50 min). Aéroport Lyon-Saint-Exupéry (1h30). Gare TGV Albertville directe.",
     },
   ],
 };

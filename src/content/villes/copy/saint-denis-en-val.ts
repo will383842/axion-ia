@@ -65,7 +65,7 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Saint-Denis-en-Val ?",
-      a: "Nos consultants se déplacent à Saint-Denis-en-Val depuis Orléans (15 min) ou Paris (1h20 train + navette). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus du forfait, tarifs publics transparents.",
+      a: "Nos consultants se déplacent à Saint-Denis-en-Val depuis Orléans (15 min) ou Paris (1h20 train + navette). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

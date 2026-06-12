@@ -65,7 +65,7 @@ export const VALLEIRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Valleiry ?",
-      a: "Nos consultants interviennent à Valleiry depuis Genève (20 min) ou Annecy (35 min). Intervention sur site dans vos locaux, cabinet ou atelier. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Valleiry depuis Genève (20 min) ou Annecy (35 min). Intervention sur site dans vos locaux, cabinet ou atelier.",
     },
   ],
 };

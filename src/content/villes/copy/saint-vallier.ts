@@ -65,7 +65,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chalon ?",
-      a: "Le Creusot-TGV à 20 min de Saint-Vallier. Lyon à 1h30, Chalon-sur-Saône à 40 min. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Le Creusot-TGV à 20 min de Saint-Vallier. Lyon à 1h30, Chalon-sur-Saône à 40 min.",
     },
   ],
 };

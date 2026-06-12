@@ -65,7 +65,7 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (15 min). Aéroport Clermont à 25 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Clermont-Ferrand (15 min). Aéroport Clermont à 25 min.",
     },
   ],
 };

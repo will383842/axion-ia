@@ -65,7 +65,7 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Chelles et Vaires-sur-Marne ?",
-      a: "Oui, nous couvrons Brou-sur-Chantereine, Chelles, Vaires-sur-Marne, Courtry et toute l'agglomération chelloise. Déplacements facturés séparément, tarifs publics.",
+      a: "Oui, nous couvrons Brou-sur-Chantereine, Chelles, Vaires-sur-Marne, Courtry et toute l'agglomération chelloise.",
     },
   ],
 };

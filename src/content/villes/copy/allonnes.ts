@@ -65,7 +65,7 @@ export const ALLONNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Allonnes depuis Le Mans ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Allonnes. Gare TGV Le Mans à 8 km (55 min Paris). Accès A11 direct. Frais déplacement inclus en agglomération mancelle.",
+      a: "Nos consultants interviennent directement dans vos locaux à Allonnes. Gare TGV Le Mans à 8 km (55 min Paris). Accès A11 direct.",
     },
   ],
 };

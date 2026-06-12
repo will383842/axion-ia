@@ -246,7 +246,7 @@ export const BRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Bron étant dans la Métropole, nos consultants sont sur place en 15 min depuis le centre de Lyon. Les frais de déplacement sont facturés séparément, selon nos tarifs publics.",
+      a: "Bron étant dans la Métropole, nos consultants sont sur place en 15 min depuis le centre de Lyon.",
     },
   ],
 };

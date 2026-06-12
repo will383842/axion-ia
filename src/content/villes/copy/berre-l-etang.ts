@@ -65,7 +65,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Berre-l'Étang ?",
-      a: "Nos consultants interviennent sur site à Berre-l'Étang sous 5 jours ouvrés. Aéroport Marseille Provence à 10 min, Aix à 30 min. Frais de déplacement inclus pourtour étang de Berre.",
+      a: "Nos consultants interviennent sur site à Berre-l'Étang sous 5 jours ouvrés. Aéroport Marseille Provence à 10 min, Aix à 30 min.",
     },
   ],
 };

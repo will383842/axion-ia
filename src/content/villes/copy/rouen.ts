@@ -32,8 +32,8 @@ export const ROUEN_COPY: VilleCopy = {
       en: "Operational AI audit in Rouen: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Rouen practices to industrial mid-caps across the Seine Métropole.",
     },
     interventions: {
-      fr: "Interventions IA à Rouen : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Rouen: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Rouen : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Rouen: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Rouen : on déploie l'IA dans vos outils existants (CRM, ERP, systèmes logistiques, LIMS) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -320,7 +320,7 @@ export const ROUEN_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Rouen se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine, à quai, en laboratoire, au bureau ou en clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Rouen se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine, à quai, en laboratoire, au bureau ou en clientèle.",
         whyHere: [
           "Rouen est l'un de nos terrains d'intervention normands : entreprises industrielles et portuaires, PME pharmaceutiques, cabinets tertiaires Vatine et startups numériques Madrillet représentent une part significative de nos sessions.",
           "Tous les arrondissements et communes de la Métropole couverts en présentiel : Madrillet, Vatine, Petit-Quevilly, Grand-Quevilly, Mont-Saint-Aignan, Saint-Étienne-du-Rouvray, Sotteville-lès-Rouen, Bois-Guillaume, Canteleu.",
@@ -426,7 +426,7 @@ export const ROUEN_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur rouennais — logistique portuaire, chimie/pharma, automobile, assurance, numérique — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Rouen come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the factory floor, at the quay, in the lab, at the office or in the field. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Rouen come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the factory floor, at the quay, in the lab, at the office or in the field.",
         whyHere: [
           "Rouen is one of our Norman engagement grounds: industrial and port companies, pharma SMEs, Vatine tertiary firms and Madrillet digital startups represent a significant share of our sessions.",
           "All arrondissements and Métropole communes covered in person: Madrillet, Vatine, Petit-Quevilly, Grand-Quevilly, Mont-Saint-Aignan, Saint-Étienne-du-Rouvray, Sotteville-lès-Rouen, Bois-Guillaume, Canteleu.",
@@ -748,7 +748,7 @@ export const ROUEN_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "L'accompagnement individuel Axion-IA à Rouen est un coaching 1-to-1 sur vos cas métier personnels — dirigeant ETI logistique, cadre pharmaceutique, responsable assurance ou manager numérique. Format flexible, rythme calé sur vos contraintes rouennaises, démos sur vos propres données. Frais de logement, repas et forfait trajet en sus pour les séances présentielles.",
+        hero: "L'accompagnement individuel Axion-IA à Rouen est un coaching 1-to-1 sur vos cas métier personnels — dirigeant ETI logistique, cadre pharmaceutique, responsable assurance ou manager numérique. Format flexible, rythme calé sur vos contraintes rouennaises, démos sur vos propres données.",
         whyHere: [
           "Rouen concentre des profils de cadres et dirigeants dans des secteurs à forte spécificité : logistique portuaire (HAROPA, axe Seine), industrie (Renault, Safran), pharmaceutique (Janssen-Cilag), assurance (Matmut) — nos coachings s'ancrent dans ces réalités métier.",
           "Format 1-to-1 : vous progressez à votre rythme, sans vous adapter à un groupe. Les sessions s'organisent selon vos disponibilités, en présentiel à Rouen ou à distance.",
@@ -854,7 +854,7 @@ export const ROUEN_COPY: VilleCopy = {
           "Confidentialité garantie par Confidentialité stricte dès la première session. Aucun engagement de durée : vous choisissez le nombre de sessions selon votre rythme et vos besoins. Outils opérationnels dès la première session : si vous ne repartez pas avec au moins un outil configuré sur vos données, session remboursée. Coaching ancré dans votre secteur rouennais — logistique, pharma, assurance, numérique, industrie — aucune session générique.",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Rouen is a 1-to-1 engagement on your personal business cases — logistics mid-cap executive, pharma manager, insurance director or digital manager. Flexible format, pace set to your Rouen constraints, demos on your own data. Lodging, meals and travel allowance billed separately for in-person sessions.",
+        hero: "Axion-IA's individual AI coaching in Rouen is a 1-to-1 engagement on your personal business cases — logistics mid-cap executive, pharma manager, insurance director or digital manager. Flexible format, pace set to your Rouen constraints, demos on your own data.",
         whyHere: [
           "Rouen concentrates senior profiles in highly specific sectors: port logistics (HAROPA, Seine axis), industry (Renault, Safran), pharma (Janssen-Cilag), insurance (Matmut) — our coaching is grounded in these business realities.",
           "1-to-1 format: you progress at your own pace, without adapting to a group. Sessions are scheduled to your availability, in person in Rouen or remotely.",

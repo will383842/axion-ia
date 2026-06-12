@@ -250,7 +250,7 @@ export const BIARRITZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Biarritz ?",
-      a: "Nos consultants se déplacent dans vos locaux du BAB après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos locaux du BAB après un premier échange.",
     },
   ],
 };

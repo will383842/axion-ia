@@ -65,7 +65,7 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Gisors ?",
-      a: "Nos consultants viennent de Paris (1h20 train via gare Gisors) ou de Gisors (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h20 train via gare Gisors) ou de Gisors (10 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

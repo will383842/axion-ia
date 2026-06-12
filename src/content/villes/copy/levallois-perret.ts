@@ -58,7 +58,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           "Tissu de services premium ultra-dense : conseil de gestion, agences de communication, activités des sièges sociaux et programmation informatique dominent — exactement les métiers où un site web et une plateforme SaaS qui qualifient, briefent et convertissent en continu font la différence face à une clientèle parisienne exigeante.",
           "Voisinage de grands donneurs d'ordre (Devoteam et ses entités groupe rue Anatole France, L'Oréal rue d'Alsace, Alstom avenue André Malraux, Saft) qui irriguent un écosystème de sous-traitants, agences et freelances — autant de TPE/PME pour qui un portail client, un espace devis ou un configurateur IA-native devient un argument commercial.",
           "Densité de création d'entreprises (plus de 2 000 nouveaux établissements en 2024, dont des centaines en activités scientifiques/techniques et en information-communication) : des structures jeunes qui ont besoin d'un site vitrine ou e-commerce crédible et d'outils SaaS dès le lancement.",
-          "Ville sans logistique lourde, à 5 minutes de La Défense et desservie par le métro 3 et le Transilien : nos ateliers de cadrage UX/UI se tiennent sur site, dans vos locaux du quartier Eiffel ou du front de Seine, sans frais de déplacement disproportionnés.",
+          "Ville sans logistique lourde, à 5 minutes de La Défense et desservie par le métro 3 et le Transilien : nos ateliers de cadrage UX/UI se tiennent sur site, dans vos locaux du quartier Eiffel ou du front de Seine.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur site à Levallois-Perret pour la conception ?",
-            a: "Oui. La centralité de Levallois — métro 3, Transilien à quelques minutes de Saint-Lazare, La Défense à 5 minutes — nous permet de tenir les ateliers UX/UI et les points de recette directement dans vos locaux, sans logistique lourde ni frais de déplacement disproportionnés.",
+            a: "Oui. La centralité de Levallois — métro 3, Transilien à quelques minutes de Saint-Lazare, La Défense à 5 minutes — nous permet de tenir les ateliers UX/UI et les points de recette directement dans vos locaux, sans logistique lourde.",
           },
           {
             q: "Comment garantissez-vous la conformité RGPD pour mon site ou ma plateforme ?",

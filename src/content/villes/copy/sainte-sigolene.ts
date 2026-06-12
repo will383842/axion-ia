@@ -65,7 +65,7 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Saint-Étienne (40 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Saint-Étienne (40 min).",
     },
   ],
 };

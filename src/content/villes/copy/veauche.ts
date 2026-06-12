@@ -65,7 +65,7 @@ export const VEAUCHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

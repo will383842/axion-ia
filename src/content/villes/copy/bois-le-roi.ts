@@ -65,7 +65,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bois-le-Roi ?",
-      a: "Nos consultants interviennent à Bois-le-Roi depuis Paris Gare de Lyon (45 min via Transilien R, gare de Bois-le-Roi) ou en voiture via A6. Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Bois-le-Roi depuis Paris Gare de Lyon (45 min via Transilien R, gare de Bois-le-Roi) ou en voiture via A6. Tarifs publics.",
     },
   ],
 };

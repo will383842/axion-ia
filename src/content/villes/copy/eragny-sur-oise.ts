@@ -65,7 +65,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min).",
     },
   ],
 };

@@ -32,8 +32,8 @@ export const MONTREUIL_COPY: VilleCopy = {
       en: "Operational AI audit in Montreuil: we map automatable use cases in your organisation and quantify the ROI. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Bas-Montreuil studios to large digital and financial leadership teams.",
     },
     interventions: {
-      fr: "Interventions IA à Montreuil : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Montreuil: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Montreuil : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel.",
+      en: "AI sessions in Montreuil: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations, configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Montreuil : on déploie l'IA dans vos outils existants (CRM, ERP, outils métier jeu vidéo, banque) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance Axion-IA.",
@@ -89,7 +89,7 @@ export const MONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Comment rejoindre Montreuil pour une intervention depuis Paris ou la banlieue ?",
-      a: "Le centre-ville et le Bas-Montreuil sont directement desservis par le métro ligne 9 (Croix de Chavaux, Robespierre, Mairie de Montreuil). Depuis Paris intra-muros, le trajet est court. Nos consultants gèrent leur déplacement — frais de logement, repas et forfait trajet facturés à part.",
+      a: "Le centre-ville et le Bas-Montreuil sont directement desservis par le métro ligne 9 (Croix de Chavaux, Robespierre, Mairie de Montreuil). Depuis Paris intra-muros, le trajet est court. Nos consultants gèrent leur déplacement",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Montreuil ?",
@@ -321,7 +321,7 @@ export const MONTREUIL_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Montreuil se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — dans un studio jeu vidéo, une direction financière, une équipe conseil ou un back-office IT. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Montreuil se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — dans un studio jeu vidéo, une direction financière, une équipe conseil ou un back-office IT.",
         whyHere: [
           "Montreuil est un terrain d'intervention régulier pour Axion-IA en banlieue est de Paris : équipes numériques Bas-Montreuil, directions financières, équipes IT et structures ESS représentent une part significative de nos sessions.",
           "Toute la commune et les communes limitrophes couvertes en présentiel : Bas-Montreuil, Croix de Chavaux, Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois.",
@@ -427,7 +427,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur montreuillois — jeu vidéo, finance, numérique, ESS — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Montreuil come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in a gaming studio, a financial directorate, a consulting team or an IT back-office. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Montreuil come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in a gaming studio, a financial directorate, a consulting team or an IT back-office.",
         whyHere: [
           "Montreuil is a regular intervention ground for Axion-IA in Paris eastern suburbs: Bas-Montreuil digital teams, financial directorates, IT teams and social economy structures represent a significant share of our sessions.",
           "Full commune and neighbouring areas covered in person: Bas-Montreuil, Croix de Chavaux, Bagnolet, Vincennes, Romainville, Rosny-sous-Bois, Fontenay-sous-Bois.",
@@ -755,7 +755,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
           "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
-          "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence. Frais de logement, repas et forfait trajet en sus si présentiel souhaité.",
+          "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
           "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
         ],
         methodology: [
@@ -840,7 +840,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Peut-on faire les sessions en présentiel à Montreuil ou à distance ?",
-            a: "Les deux sont possibles. Présentiel dans vos locaux montreuillois (frais de logement, repas et forfait trajet en sus) ou visio selon votre préférence. Certains parcours alternent les deux formats.",
+            a: "Les deux sont possibles. Présentiel dans vos locaux montreuillois ou visio selon votre préférence. Certains parcours alternent les deux formats.",
           },
           {
             q: "Ce format est-il adapté aux indépendants et créateurs montreuillois ?",
@@ -861,7 +861,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
           "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
-          "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference. Lodging, meals and travel allowance billed separately if in-person preferred.",
+          "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference.",
           "Entry price accessible to freelancers and micro-businesses — not reserved for large organisations.",
         ],
         methodology: [
@@ -946,7 +946,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Can sessions be in-person in Montreuil or remote?",
-            a: "Both are possible. In-person at your Montreuil offices (lodging, meals and travel allowance billed separately) or video call depending on your preference. Some pathways alternate both formats.",
+            a: "Both are possible. In-person at your Montreuil offices or video call depending on your preference. Some pathways alternate both formats.",
           },
           {
             q: "Is this format suitable for Montreuil freelancers and creators?",

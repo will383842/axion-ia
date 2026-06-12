@@ -65,7 +65,7 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Château-Arnoux-Saint-Auban ?",
-      a: "Nos consultants se déplacent sur site depuis Aix-en-Provence (1h20 A51) ou Digne-les-Bains (25 min). Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site depuis Aix-en-Provence (1h20 A51) ou Digne-les-Bains (25 min). Hébergement local possible.",
     },
   ],
 };

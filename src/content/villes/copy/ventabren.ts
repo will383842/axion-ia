@@ -65,7 +65,7 @@ export const VENTABREN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ventabren ?",
-      a: "Nos consultants interviennent sur site à Ventabren sous 5 jours ouvrés. Gare TGV Aix à 5 min, Aix centre à 15 min, technopôle Arbois à 10 min. Frais de déplacement inclus ouest aixois.",
+      a: "Nos consultants interviennent sur site à Ventabren sous 5 jours ouvrés. Gare TGV Aix à 5 min, Aix centre à 15 min, technopôle Arbois à 10 min.",
     },
   ],
 };

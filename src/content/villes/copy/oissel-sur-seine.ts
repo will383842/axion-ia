@@ -65,7 +65,7 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Rouen (15 min, gare d'Oissel TER direct) ou Paris (TGV Rouen 1h15 + TER 10 min). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rouen (15 min, gare d'Oissel TER direct) ou Paris (TGV Rouen 1h15 + TER 10 min).",
     },
   ],
 };

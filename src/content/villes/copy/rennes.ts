@@ -38,16 +38,16 @@ export const RENNES_COPY: VilleCopy = {
       en: "Operational AI audit in Rennes: we identify your real use cases across digital (Atalante), agri-food (Valorial, SPACE) or industry (Stellantis, Safran) and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
-      fr: "Interventions IA à Rennes : formats sur site d'une à plusieurs journées dans vos locaux (Atalante Beaulieu, ViaSilva, centre-ville, La Janais). Vos collaborateurs repartent autonomes sur les outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Rennes: on-site formats from one to several days at your offices (Atalante Beaulieu, ViaSilva, city centre, La Janais). Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Rennes : formats sur site d'une à plusieurs journées dans vos locaux (Atalante Beaulieu, ViaSilva, centre-ville, La Janais). Vos collaborateurs repartent autonomes sur les outils IA installés sur leur poste.",
+      en: "AI sessions in Rennes: on-site formats from one to several days at your offices (Atalante Beaulieu, ViaSilva, city centre, La Janais). Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Rennes : on déploie l'IA dans vos outils existants (CRM, ERP, plateformes agronomiques, MES industriel) avec ROI chiffré contractuel. Kick-off sur site obligatoire, itérations à distance ensuite. Vos équipes gardent la main.",
       en: "AI implementation in Rennes: we deploy AI into your existing tools (CRM, ERP, agronomy platforms, industrial MES) with contractually-costed ROI. Mandatory on-site kick-off, remote iterations thereafter. Your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
-      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+      fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI rennaises — site vitrine premium pour scale-ups French Tech Atalante, espace client interactif numérique/agroalimentaire, dashboard métier connecté à votre CRM/ERP ou MES industriel (La Janais, Valorial). Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -303,7 +303,7 @@ export const RENNES_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Rennes se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur activité réelle — numérique, agroalimentaire, industrie ou services. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Rennes se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur activité réelle — numérique, agroalimentaire, industrie ou services.",
         whyHere: [
           "Rennes couvre un tissu diversifié que nous animons régulièrement : ingénieurs Atalante, équipes industrielles La Janais, commerciaux Crédit Mutuel Arkéa, chercheurs Canon CRF, agronomes Valorial.",
           "Tous les sites du bassin rennais sont couverts en présentiel : Atalante Beaulieu et ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz), La Janais (Chartres-de-Bretagne), centre historique et enceinte universitaire.",
@@ -409,7 +409,7 @@ export const RENNES_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur (numérique, agroalimentaire, industrie, banque), aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Rennes come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real activity — digital, agri-food, industry or services. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Rennes come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real activity — digital, agri-food, industry or services.",
         whyHere: [
           "Rennes covers a diverse fabric we regularly animate: Atalante engineers, La Janais industrial teams, Crédit Mutuel Arkéa commercial staff, Canon CRF researchers, Valorial agronomists.",
           "All Rennes basin sites covered in person: Atalante Beaulieu and ViaSilva (Cesson-Sévigné), Ker-Lann (Bruz), La Janais (Chartres-de-Bretagne), historic centre and university precinct.",
@@ -733,7 +733,7 @@ export const RENNES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Rennes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux ingénieurs, managers et dirigeants des secteurs numérique, agroalimentaire, industrie et télécoms du bassin rennais. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Rennes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux ingénieurs, managers et dirigeants des secteurs numérique, agroalimentaire, industrie et télécoms du bassin rennais.",
         whyHere: [
           "Rennes concentre des profils très spécialisés — développeur ou chef de projet à Atalante, directrice qualité chez Valorial, responsable de produit dans une scale-up French Tech — qui ont besoin d'un coaching ancré dans leurs contraintes sectorielles précises, pas d'un cours généraliste.",
           "L'écosystème IRISA/Inria produit des profils deep-tech qui veulent maîtriser les intégrations avancées (fine-tuning, RAG, agents) : le 1-to-1 adapte le niveau de complexité séance par séance.",
@@ -820,7 +820,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux rennais ?",
-            a: "Oui. Séances sur site dans vos locaux (Atalante, ViaSilva, La Janais, centre-ville) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+            a: "Oui. Séances sur site dans vos locaux (Atalante, ViaSilva, La Janais, centre-ville) ou en visio selon votre disponibilité.",
           },
           {
             q: "Mes données industrielles ou agronomiques restent-elles confidentielles ?",
@@ -836,10 +836,10 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur (IFS Food, ISO 27001 sur demande). Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur (IFS Food, ISO 27001 sur demande). Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin.",
         whyHere: [
           "Rennes brings together highly specialised profiles — a developer or project manager at Atalante, a quality director at Valorial, a product manager at a French Tech scale-up — who need coaching rooted in their precise sector constraints, not a generic course.",
           "The IRISA/Inria ecosystem produces deep-tech profiles seeking to master advanced integrations (fine-tuning, RAG, agents): 1-to-1 adapts the complexity level session by session.",
@@ -926,7 +926,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Can coaching sessions be held at my Rennes premises?",
-            a: "Yes. On-site sessions at your offices (Atalante, ViaSilva, La Janais, city centre) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Yes. On-site sessions at your offices (Atalante, ViaSilva, La Janais, city centre) or via video depending on availability.",
           },
           {
             q: "Does my industrial or agronomic data stay confidential?",
@@ -942,7 +942,7 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance and sector (IFS Food, ISO 27001 on request). Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance and sector (IFS Food, ISO 27001 on request). If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
     sitesWeb: {

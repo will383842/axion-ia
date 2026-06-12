@@ -65,7 +65,7 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Gond-Pontouvre ?",
-      a: "Nos consultants accèdent à Gond-Pontouvre via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux, bureau ou commerce. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Gond-Pontouvre via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux, bureau ou commerce.",
     },
   ],
 };

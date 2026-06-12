@@ -65,7 +65,7 @@ export const LILLERS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Lillers ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lillers (TER Béthune-Lille). Nos consultants se déplacent depuis Lille (50 min). Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lillers (TER Béthune-Lille). Nos consultants se déplacent depuis Lille (50 min).",
     },
   ],
 };

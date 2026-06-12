@@ -65,7 +65,7 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Canet-en-Roussillon ?",
-      a: "Nos consultants interviennent depuis Perpignan (12 min). Missions sur site dans votre établissement, commerce ou bureau. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent depuis Perpignan (12 min). Missions sur site dans votre établissement, commerce ou bureau. Visio possible.",
     },
   ],
 };

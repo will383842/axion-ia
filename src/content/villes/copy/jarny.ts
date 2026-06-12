@@ -65,7 +65,7 @@ export const JARNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Jarny ?",
-      a: "Nos consultants interviennent depuis Metz (30 min) ou Nancy (45 min). Missions sur site dans vos ateliers, entrepôts logistiques, chantiers ou commerces. Frais de déplacement en sus du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Metz (30 min) ou Nancy (45 min). Missions sur site dans vos ateliers, entrepôts logistiques, chantiers ou commerces.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SORGUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Sorgues ?",
-      a: "Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

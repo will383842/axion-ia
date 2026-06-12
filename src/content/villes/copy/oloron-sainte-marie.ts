@@ -65,7 +65,7 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Oloron-Sainte-Marie ?",
-      a: "Nos consultants accèdent à Oloron-Sainte-Marie par TER (35 min Pau) ou voiture. Mission sur site dans vos ateliers, fromageries, hébergements ou commerces. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Oloron-Sainte-Marie par TER (35 min Pau) ou voiture. Mission sur site dans vos ateliers, fromageries, hébergements ou commerces.",
     },
   ],
 };

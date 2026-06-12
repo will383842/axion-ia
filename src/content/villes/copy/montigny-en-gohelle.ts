@@ -65,7 +65,7 @@ export const MONTIGNY_EN_GOHELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Montigny-en-Gohelle ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 5 min, Lille à 35 min A1. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 5 min, Lille à 35 min A1. Nos consultants se déplacent sur site.",
     },
   ],
 };

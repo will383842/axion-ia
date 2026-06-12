@@ -65,7 +65,7 @@ export const PLESSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Plessé ?",
-      a: "Nos consultants se déplacent depuis Nantes (55 min) ou Rennes (1h10). Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés en sus du forfait journée, tarifs transparents communiqués dès le devis.",
+      a: "Nos consultants se déplacent depuis Nantes (55 min) ou Rennes (1h10). Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const COGNIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cognin ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
     },
   ],
 };

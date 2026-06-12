@@ -65,7 +65,7 @@ export const BANNALEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Quimper ou Lorient ?",
-      a: "Nos consultants viennent de Quimper (45 min voiture) ou Lorient (40 min). Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Quimper (45 min voiture) ou Lorient (40 min). Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé).",
     },
   ],
 };

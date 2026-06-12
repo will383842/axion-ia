@@ -65,7 +65,7 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lys-lez-Lannoy ?",
-      a: "Nos consultants interviennent à Lys-lez-Lannoy depuis Lille (20 min) ou directement depuis Roubaix (5 min). Intervention sur site dans votre commerce, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Roubaix. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Lys-lez-Lannoy depuis Lille (20 min) ou directement depuis Roubaix (5 min). Intervention sur site dans votre commerce, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Roubaix.",
     },
   ],
 };

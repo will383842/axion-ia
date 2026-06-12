@@ -242,7 +242,7 @@ export const ALES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les Cévennes autour d'Alès ?",
-      a: "Oui, nous couvrons le bassin alésien et les Cévennes : Saint-Christol-lès-Alès, Saint-Privat-des-Vieux, La Grand-Combe et les communes du Gard nord. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons le bassin alésien et les Cévennes : Saint-Christol-lès-Alès, Saint-Privat-des-Vieux, La Grand-Combe et les communes du Gard nord. Tarifs publics.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

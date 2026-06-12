@@ -65,7 +65,7 @@ export const SARREBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sarrebourg ?",
-      a: "Nos consultants se déplacent via gare SNCF Sarrebourg (TGV ligne Paris–Strasbourg, Paris à 2h) ou autoroute A4. Position carrefour stratégique Metz/Nancy/Strasbourg. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Sarrebourg (TGV ligne Paris–Strasbourg, Paris à 2h) ou autoroute A4. Position carrefour stratégique Metz/Nancy/Strasbourg.",
     },
   ],
 };

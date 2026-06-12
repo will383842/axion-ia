@@ -65,7 +65,7 @@ export const ESTAIRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Estaires ?",
-      a: "Nos consultants viennent via gare d'Estaires (TER Lille-Hazebrouck-Calais sur place) ou A25. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants viennent via gare d'Estaires (TER Lille-Hazebrouck-Calais sur place) ou A25. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min.",
     },
   ],
 };

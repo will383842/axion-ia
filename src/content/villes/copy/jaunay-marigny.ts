@@ -65,7 +65,7 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Futuroscope (1h30, sortie au pied de la technopole). Pour les multi-jours, hébergement hôtels du Futuroscope. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV direct gare Futuroscope (1h30, sortie au pied de la technopole). Pour les multi-jours, hébergement hôtels du Futuroscope.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MARIGNIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Genève ou Annecy ?",
-      a: "Nos consultants rejoignent Marignier via A40 (Genève 50 min, Annecy 50 min). Gare SNCF Marignier (Léman Express). Multi-jours : hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Marignier via A40 (Genève 50 min, Annecy 50 min). Gare SNCF Marignier (Léman Express). Multi-jours : hébergement local possible.",
     },
   ],
 };

@@ -61,7 +61,7 @@ export const FENAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fenain depuis Lille ou Douai ?",
-      a: "Nos consultants rejoignent Fenain en 15 min depuis Douai ou 45 min depuis Lille via A21/A1. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Fenain en 15 min depuis Douai ou 45 min depuis Lille via A21/A1. Pour les missions multi-jours, hébergement local possible.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Fenain ?",

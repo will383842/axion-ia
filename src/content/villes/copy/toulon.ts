@@ -28,8 +28,8 @@ export const TOULON_COPY: VilleCopy = {
       en: "Operational AI audit in Toulon: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Var micro-businesses as well as large maritime-defence primes.",
     },
     interventions: {
-      fr: "Interventions IA à Toulon : sessions sur site d'une à plusieurs journées. Vos équipes repartent avec des outils IA installés et configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Toulon: on-site formats from one to several days. Your teams leave with AI tools installed and configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Toulon : sessions sur site d'une à plusieurs journées. Vos équipes repartent avec des outils IA installés et configurés pour leur travail réel.",
+      en: "AI sessions in Toulon: on-site formats from one to several days. Your teams leave with AI tools installed and configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Toulon : déploiement de vos cas IA en production, ROI chiffré contractuellement. Kick-off obligatoire sur site, itérations à distance. Vos équipes gardent la main, aucun lock-in technologique.",
@@ -288,7 +288,7 @@ export const TOULON_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Toulon se déclinent en formats sur site d'une à plusieurs journées. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez une PME de services, une ETI du nautisme ou une équipe d'ingénieurs dans la défense maritime. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Les interventions IA Axion-IA à Toulon se déclinent en formats sur site d'une à plusieurs journées. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez une PME de services, une ETI du nautisme ou une équipe d'ingénieurs dans la défense maritime.",
         whyHere: [
           "Toulon et l'agglomération TPM (La Seyne-sur-Mer, La Garde, La Valette-du-Var, Hyères, Six-Fours) sont couverts en présentiel par nos consultants.",
           "Nous adaptons le contenu et les démos à votre secteur spécifique : ingénierie navale, économie maritime, tourisme côte d'Azur, commerce, services aux entreprises, cybersécurité.",
@@ -394,7 +394,7 @@ export const TOULON_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur et aux spécificités toulonnaises, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Toulon come in on-site formats from one to several days. Your teams don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether you're a services SME, a boating industry mid-cap or a maritime-defence engineering team. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Toulon come in on-site formats from one to several days. Your teams don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether you're a services SME, a boating industry mid-cap or a maritime-defence engineering team.",
         whyHere: [
           "Toulon and the TPM agglomeration (La Seyne-sur-Mer, La Garde, La Valette-du-Var, Hyères, Six-Fours) are covered in person by our consultants.",
           "We adapt content and demos to your specific sector: naval engineering, maritime economy, Côte d'Azur tourism, trade, professional services, cybersecurity.",
@@ -716,14 +716,14 @@ export const TOULON_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Toulon est un accompagnement individuel conçu pour les dirigeants, cadres et managers du Var qui veulent maîtriser l'IA à leur rythme, en partant de leur réalité métier concrète. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels — que vous soyez à la tête d'une PME du centre-ville, cadre dans l'écosystème Naval Group / DCNS, responsable R&D à Toulon Var Technologie ou enseignant-chercheur à l'UTLN. Tarif d'entrée à {{price:intervention-dirigeants|flat}}. Frais de déplacement en sus pour les séances en présentiel.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Toulon est un accompagnement individuel conçu pour les dirigeants, cadres et managers du Var qui veulent maîtriser l'IA à leur rythme, en partant de leur réalité métier concrète. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels — que vous soyez à la tête d'une PME du centre-ville, cadre dans l'écosystème Naval Group / DCNS, responsable R&D à Toulon Var Technologie ou enseignant-chercheur à l'UTLN. Tarif d'entrée à {{price:intervention-dirigeants|flat}}.",
         whyHere: [
           "Toulon concentre des profils de dirigeants et cadres à très haute valeur : ingénieurs de la défense maritime, managers de PME du Var, responsables innovation des pôles technologiques — autant de personnes pour qui l'IA représente un levier stratégique individuel immédiat.",
           "L'écosystème Naval Group / DCNS et ses sous-traitants génère des milliers de cadres techniques et de managers de projet qui ont tout à gagner à intégrer l'IA dans leur pratique quotidienne (rédaction de spécifications, comptes-rendus, analyse documentaire, gestion de projet).",
           "Toulon Var Technologie (TVT Innovation) et le Pôle Mer Méditerranée regroupent des dirigeants de start-up et de PME innovantes pour qui une montée en compétence IA rapide et personnalisée est souvent plus pertinente qu'un programme collectif.",
           "L'Université de Toulon (UTLN), SeaTech et l'ISEN Méditerranée forment des profils techniques qui, une fois en poste, cherchent à approfondir leur pratique IA au-delà des cours académiques — le coaching 1-to-1 est le format idéal.",
           "Aucun group dynamics : vous progressez à votre rythme, sur vos vraies questions, sans devoir attendre les autres participants ou vous adapter à un niveau collectif qui n'est pas le vôtre.",
-          "Séances à Toulon (intra-muros, TVT Châteauvallon, campus UTLN / ISEN) ou à distance selon vos contraintes d'agenda. Frais de déplacement consultant facturés en sus pour les séances en présentiel hors Toulon centre.",
+          "Séances à Toulon (intra-muros, TVT Châteauvallon, campus UTLN / ISEN) ou à distance selon vos contraintes d'agenda.",
         ],
         methodology: [
           {
@@ -757,7 +757,7 @@ export const TOULON_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
-              "Entrée accessible pour indépendants, artisans, gérants de TPE du Var souhaitant un parcours court sur 2-3 séances focalisées sur leurs cas d'usage prioritaires. Frais de déplacement en sus pour le présentiel.",
+              "Entrée accessible pour indépendants, artisans, gérants de TPE du Var souhaitant un parcours court sur 2-3 séances focalisées sur leurs cas d'usage prioritaires.",
           },
           {
             sizeLabel: "PME",
@@ -799,11 +799,11 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée pour un coaching 1-to-1 à Toulon ?",
-            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court (2-3 séances). Les frais de déplacement du consultant sont facturés en sus pour les séances en présentiel hors Toulon intra-muros. Le programme complet est défini après l'entretien de positionnement.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court (2-3 séances). Le programme complet est défini après l'entretien de positionnement.",
           },
           {
             q: "Les séances se déroulent-elles en présentiel ou à distance ?",
-            a: "Les deux sont possibles selon vos préférences. À distance en visio (souplesse agenda), en présentiel dans vos locaux à Toulon ou dans l'agglomération TPM (frais de déplacement en sus), ou en format hybride. Le choix est fixé à l'entretien de positionnement.",
+            a: "Les deux sont possibles selon vos préférences. À distance en visio (souplesse agenda), en présentiel dans vos locaux à Toulon ou dans l'agglomération TPM, ou en format hybride. Le choix est fixé à l'entretien de positionnement.",
           },
           {
             q: "Combien de séances sont nécessaires pour des résultats tangibles ?",
@@ -819,17 +819,17 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entretien de positionnement inclus : si à l'issue de cet entretien le coaching ne correspond pas à vos besoins, aucune facturation. Programme remis avant tout engagement financier. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Frais de déplacement détaillés et validés avec vous avant chaque séance en présentiel. Aucun lock-in : les outils et méthodes appris sont utilisables en autonomie totale sans dépendance à Axion-IA. Remboursement de la dernière séance si vous estimez ne pas avoir progressé sur l'objectif fixé en début de séance.",
+          "Entretien de positionnement inclus : si à l'issue de cet entretien le coaching ne correspond pas à vos besoins, aucune facturation. Programme remis avant tout engagement financier. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Aucun lock-in : les outils et méthodes appris sont utilisables en autonomie totale sans dépendance à Axion-IA. Remboursement de la dernière séance si vous estimez ne pas avoir progressé sur l'objectif fixé en début de séance.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Toulon is an individual accompaniment designed for Var executives, managers and senior professionals who want to master AI at their own pace, starting from their concrete business reality. No group, no generic programme: each session is built around your real challenges — whether you lead a city-centre SME, work within the Naval Group / DCNS ecosystem, manage R&D at Toulon Var Technologie or research at UTLN. Entry price from {{price:intervention-dirigeants|compact}} excl. VAT. Travel expenses billed separately for in-person sessions.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Toulon is an individual accompaniment designed for Var executives, managers and senior professionals who want to master AI at their own pace, starting from their concrete business reality. No group, no generic programme: each session is built around your real challenges — whether you lead a city-centre SME, work within the Naval Group / DCNS ecosystem, manage R&D at Toulon Var Technologie or research at UTLN. Entry price from {{price:intervention-dirigeants|compact}} excl. VAT.",
         whyHere: [
           "Toulon concentrates high-value executive and managerial profiles: maritime defence engineers, Var SME managers, innovation leads at technology clusters — people for whom AI represents an immediate individual strategic lever.",
           "The Naval Group / DCNS ecosystem and its sub-contractors generates thousands of technical managers and project managers who stand to gain directly from integrating AI into their daily practice (spec writing, meeting minutes, document analysis, project management).",
           "Toulon Var Technologie (TVT Innovation) and Pôle Mer Méditerranée gather start-up founders and innovative SME leaders for whom a fast, personalised AI upskilling is often more relevant than a collective programme.",
           "The University of Toulon (UTLN), SeaTech and ISEN Méditerranée train technical profiles who, once in post, seek to deepen their AI practice beyond academic coursework — 1-to-1 coaching is the ideal format.",
           "No group dynamics: you progress at your own pace, on your real questions, without waiting for others or adapting to a collective level that is not yours.",
-          "Sessions in Toulon (city centre, TVT Châteauvallon, UTLN / ISEN campus) or remote depending on your schedule. Consultant travel expenses billed separately for in-person sessions outside central Toulon.",
+          "Sessions in Toulon (city centre, TVT Châteauvallon, UTLN / ISEN campus) or remote depending on your schedule.",
         ],
         methodology: [
           {
@@ -863,7 +863,7 @@ export const TOULON_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
-              "Accessible entry for Var independents, tradespeople and micro-business owners wanting a short programme of 2-3 sessions focused on their priority use cases. Travel expenses billed separately for in-person.",
+              "Accessible entry for Var independents, tradespeople and micro-business owners wanting a short programme of 2-3 sessions focused on their priority use cases.",
           },
           {
             sizeLabel: "SME",
@@ -905,11 +905,11 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "What is the entry price for 1-to-1 coaching in Toulon?",
-            a: "The entry price is {{price:intervention-dirigeants|compact}} excl. VAT for a short programme (2-3 sessions). Consultant travel expenses are billed separately for in-person sessions outside Toulon city centre. The full programme is defined after the positioning interview.",
+            a: "The entry price is {{price:intervention-dirigeants|compact}} excl. VAT for a short programme (2-3 sessions). The full programme is defined after the positioning interview.",
           },
           {
             q: "Are sessions in person or remote?",
-            a: "Both are available depending on your preferences. Remote by video (schedule flexibility), in person at your Toulon or TPM agglomeration offices (travel expenses billed separately), or hybrid. The choice is agreed at the positioning interview.",
+            a: "Both are available depending on your preferences. Remote by video (schedule flexibility), in person at your Toulon or TPM agglomeration offices, or hybrid. The choice is agreed at the positioning interview.",
           },
           {
             q: "How many sessions are needed for tangible results?",

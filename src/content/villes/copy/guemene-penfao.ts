@@ -65,7 +65,7 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA depuis Nantes ou Rennes ?",
-      a: "Nos consultants viennent de Nantes (1h via N137) ou Rennes (1h10). La gare TER de Redon est à 20 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés en sus, tarifs transparents.",
+      a: "Nos consultants viennent de Nantes (1h via N137) ou Rennes (1h10). La gare TER de Redon est à 20 min. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

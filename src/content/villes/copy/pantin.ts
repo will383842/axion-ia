@@ -228,7 +228,7 @@ export const PANTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Pantin ?",
-      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou accompagnement 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France, sans frais de déplacement caché.",
+      a: "Tarifs publics : Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou accompagnement 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France.",
     },
     {
       q: "Quels délais pour une intervention à Pantin ?",

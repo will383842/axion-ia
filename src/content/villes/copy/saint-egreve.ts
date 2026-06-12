@@ -65,7 +65,7 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Lyon ?",
-      a: "Nos consultants viennent de Paris (TGV Grenoble 3h + tram E) ou Lyon (1h15 voiture A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Saint-Égrève). Frais de déplacement (TGV/voiture, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (TGV Grenoble 3h + tram E) ou Lyon (1h15 voiture A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Saint-Égrève).",
     },
   ],
 };

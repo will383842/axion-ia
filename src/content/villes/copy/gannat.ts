@@ -74,7 +74,7 @@ export const GANNAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants viennent de Clermont-Ferrand par l'A71 (45 min, 51 km). Frais de déplacement facturés en réel selon barème URSSAF, tarifs publics. Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
+      a: "Nos consultants viennent de Clermont-Ferrand par l'A71 (45 min, 51 km). Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
     },
   ],
 };

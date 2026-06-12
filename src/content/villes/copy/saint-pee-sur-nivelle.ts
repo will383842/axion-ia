@@ -65,7 +65,7 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pée ?",
-      a: "Nos consultants accèdent à Saint-Pée-sur-Nivelle par la route (10 min Saint-Jean-de-Luz, 25 min Bayonne). Mission sur site dans votre exploitation, gîte ou commerce. Frais de déplacement facturés à part.",
+      a: "Nos consultants accèdent à Saint-Pée-sur-Nivelle par la route (10 min Saint-Jean-de-Luz, 25 min Bayonne). Mission sur site dans votre exploitation, gîte ou commerce.",
     },
   ],
 };

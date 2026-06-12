@@ -65,7 +65,7 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Baume-les-Dames ?",
-      a: "Nos consultants se déplacent depuis Besançon (30 min) ou Montbéliard (40 min). Gare TER de Baume-les-Dames sur la ligne Besançon-Montbéliard. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Besançon (30 min) ou Montbéliard (40 min). Gare TER de Baume-les-Dames sur la ligne Besançon-Montbéliard. Tarifs publics et transparents.",
     },
   ],
 };

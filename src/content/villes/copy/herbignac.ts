@@ -65,7 +65,7 @@ export const HERBIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les zones rurales du nord Brière ?",
-      a: "Oui, nos consultants se déplacent directement dans votre exploitation, commerce ou bureau à Herbignac et communes environnantes. Frais de déplacement inclus depuis Saint-Nazaire.",
+      a: "Oui, nos consultants se déplacent directement dans votre exploitation, commerce ou bureau à Herbignac et communes environnantes.",
     },
   ],
 };

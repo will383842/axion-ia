@@ -65,7 +65,7 @@ export const BRIANCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Briançon en altitude ?",
-      a: "Nos consultants se déplacent sur site à Briançon depuis Gap (1h15) ou Grenoble (2h). Toute saison, hiver comme été. Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Briançon depuis Gap (1h15) ou Grenoble (2h). Toute saison, hiver comme été. Hébergement local possible.",
     },
   ],
 };

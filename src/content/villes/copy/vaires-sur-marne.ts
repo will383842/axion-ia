@@ -65,7 +65,7 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Vaires-sur-Marne depuis Paris ?",
-      a: "Nos consultants rejoignent Vaires-sur-Marne en 25 min depuis Paris Est (Transilien P, gare Vaires-Torcy) ou via RER A station Torcy à 5 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants rejoignent Vaires-sur-Marne en 25 min depuis Paris Est (Transilien P, gare Vaires-Torcy) ou via RER A station Torcy à 5 min.",
     },
   ],
 };

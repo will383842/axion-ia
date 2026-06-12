@@ -136,7 +136,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Code et données vous appartiennent : aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA, sites repris par n'importe quel prestataire francilien ou en interne. Hébergement Union européenne RGPD par défaut, sauvegardes et plan de reprise documentés. UX/UI, version mobile et accessibilité inclus dans chaque projet. Devis à partir de 24 à 48 h selon la complexité ; performances Web Vitals contrôlées avant mise en ligne. Frais de déplacement depuis Paris indiqués séparément, en toute transparence.",
+          "Code et données vous appartiennent : aucun verrou éditeur, aucune dépendance contractuelle à Axion-IA, sites repris par n'importe quel prestataire francilien ou en interne. Hébergement Union européenne RGPD par défaut, sauvegardes et plan de reprise documentés. UX/UI, version mobile et accessibilité inclus dans chaque projet. Devis à partir de 24 à 48 h selon la complexité ; performances Web Vitals contrôlées avant mise en ligne.",
       },
       en: {
         hero: "In Ris-Orangis (91), Axion-IA builds AI-augmented websites and SaaS platforms for a very concrete local economy: hauliers and logistics operators in the Orme Pomponne and Terres Saint-Lazare business zones (L4 Logistics, Bansard International, ULS Transports, Lidl), data back-offices such as the PMU site at Bois de l'Hôtel-Dieu, retailers and construction trades across the southern Paris region, and cultural venues around Le Plan. Freight-tracking portals, B2B customer areas, RAG-powered business sites, chatbots and semantic search — custom code, European Union GDPR hosting, zero vendor lock-in. UX/UI, mobile and multi-CMS e-commerce included.",

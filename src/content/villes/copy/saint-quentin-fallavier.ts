@@ -65,7 +65,7 @@ export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (35 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
     },
   ],
 };

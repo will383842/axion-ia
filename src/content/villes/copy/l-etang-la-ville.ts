@@ -65,7 +65,7 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à L'Étang-la-Ville ?",
-      a: "Nos consultants rejoignent L'Étang-la-Ville via le Transilien L (gare Saint-Nom-la-Bretèche, 35 min Paris Saint-Lazare) ou par l'A13. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent L'Étang-la-Ville via le Transilien L (gare Saint-Nom-la-Bretèche, 35 min Paris Saint-Lazare) ou par l'A13.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Romilly-sur-Seine depuis Paris ?",
-      a: "TER direct Paris-Est à Romilly en 1 h 30. Autoroute A5 puis N19 en 1 h 30 en voiture. Aéroport CDG à 2 h. Frais de déplacement facturés à part.",
+      a: "TER direct Paris-Est à Romilly en 1 h 30. Autoroute A5 puis N19 en 1 h 30 en voiture. Aéroport CDG à 2 h.",
     },
   ],
 };

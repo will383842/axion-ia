@@ -61,7 +61,7 @@ export const VIROFLAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Viroflay ?",
-      a: "Nos consultants viennent sur site à Viroflay (gare Viroflay-Rive-Gauche, Transilien N depuis Paris-Montparnasse, 15 min). Format journée ou demi-journée adapté. Frais de déplacement inclus Île-de-France, tarifs publics et transparents.",
+      a: "Nos consultants viennent sur site à Viroflay (gare Viroflay-Rive-Gauche, Transilien N depuis Paris-Montparnasse, 15 min). Format journée ou demi-journée adapté.",
     },
     {
       q: "Quels services IA pour les PME de conseil proches de Vélizy-Saclay ?",

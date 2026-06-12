@@ -65,7 +65,7 @@ export const VENELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Venelles ?",
-      a: "Venelles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A51. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Venelles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A51. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

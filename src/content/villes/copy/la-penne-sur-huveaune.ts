@@ -65,7 +65,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Penne-sur-Huveaune ?",
-      a: "La Penne est à 20 min de Marseille par A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "La Penne est à 20 min de Marseille par A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

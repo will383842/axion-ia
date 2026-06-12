@@ -246,7 +246,7 @@ export const MILLAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Montpellier ou Rodez ?",
-      a: "Millau est à environ 110 km de Montpellier et à une heure de Rodez, accessible par l'A75 et le Viaduc. Nous couvrons les grands causses. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
+      a: "Millau est à environ 110 km de Montpellier et à une heure de Rodez, accessible par l'A75 et le Viaduc. Nous couvrons les grands causses.",
     },
   ],
 };

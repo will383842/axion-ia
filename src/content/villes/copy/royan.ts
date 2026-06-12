@@ -65,7 +65,7 @@ export const ROYAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Royan ?",
-      a: "Nos consultants accèdent à Royan par TER via Saintes (35 min) ou voiture (La Rochelle 1h10, Bordeaux 1h40). Mission sur site dans votre hôtel, restaurant ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Royan par TER via Saintes (35 min) ou voiture (La Rochelle 1h10, Bordeaux 1h40). Mission sur site dans votre hôtel, restaurant ou commerce.",
     },
   ],
 };

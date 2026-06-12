@@ -65,7 +65,7 @@ export const VITRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rennes ?",
-      a: "Nos consultants viennent de Rennes (30 min TGV ou route). Pour les multi-jours, hébergement local possible. Paris direct en 1h30 TGV. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes (30 min TGV ou route). Pour les multi-jours, hébergement local possible. Paris direct en 1h30 TGV.",
     },
   ],
 };

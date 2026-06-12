@@ -65,7 +65,7 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Alban-Leysse ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
     },
   ],
 };

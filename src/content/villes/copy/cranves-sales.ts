@@ -65,7 +65,7 @@ export const CRANVES_SALES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cranves-Sales ?",
-      a: "Nos consultants interviennent à Cranves-Sales depuis Genève (15 min) ou Annecy (40 min). Intervention sur site dans vos locaux, cabinet ou atelier. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Cranves-Sales depuis Genève (15 min) ou Annecy (40 min). Intervention sur site dans vos locaux, cabinet ou atelier.",
     },
   ],
 };

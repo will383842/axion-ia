@@ -65,7 +65,7 @@ export const LA_FLECHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à La Flèche ?",
-      a: "Nos consultants se déplacent à La Flèche (45 min Le Mans, 50 min Angers via D323). Format mixte sur site + visio pour optimiser le temps. Frais déplacement facturés à part. Tarifs publics.",
+      a: "Nos consultants se déplacent à La Flèche (45 min Le Mans, 50 min Angers via D323). Format mixte sur site + visio pour optimiser le temps. Tarifs publics.",
     },
   ],
 };

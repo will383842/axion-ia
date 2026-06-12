@@ -242,7 +242,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER E récent (35 min Mantes-la-Jolie) ou Transilien J/N pour les missions sur site à Mantes-la-Ville. Pour les multi-jours, hébergement local possible. Frais de déplacement (train, repas, hébergement) facturés à part du forfait journée.",
+      a: "Nos consultants viennent de Paris en RER E récent (35 min Mantes-la-Jolie) ou Transilien J/N pour les missions sur site à Mantes-la-Ville. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

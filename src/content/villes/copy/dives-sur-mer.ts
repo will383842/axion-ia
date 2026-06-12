@@ -65,7 +65,7 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nos consultants viennent de Caen (25 min) ou Paris (2h A13). Pour les multi-jours, hébergement local possible sur la Côte Fleurie. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (25 min) ou Paris (2h A13). Pour les multi-jours, hébergement local possible sur la Côte Fleurie.",
     },
   ],
 };

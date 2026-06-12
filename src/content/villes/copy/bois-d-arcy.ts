@@ -61,11 +61,11 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Bois-d'Arcy ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Bois-d'Arcy. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone Versailles/SQY.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Bois-d'Arcy. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
       q: "Intervenez-vous aussi à Saint-Quentin-en-Yvelines ?",
-      a: "Oui, Axion-IA couvre tout le périmètre SQY et Versailles : Montigny-le-Bretonneux, Guyancourt, Trappes, Élancourt, Villepreux, Fontenay-le-Fleury. Déplacement inclus dans le forfait pour les missions locales.",
+      a: "Oui, Axion-IA couvre tout le périmètre SQY et Versailles : Montigny-le-Bretonneux, Guyancourt, Trappes, Élancourt, Villepreux, Fontenay-le-Fleury.",
     },
   ],
 };

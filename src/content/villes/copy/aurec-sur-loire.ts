@@ -53,7 +53,7 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aurec-sur-Loire ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Aurec-sur-Loire et du nord Haute-Loire (Firminy à 10 min, Monistrol à 15 min, Bas-en-Basset). Nous intervenons depuis le bassin stéphanois. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Aurec-sur-Loire et du nord Haute-Loire (Firminy à 10 min, Monistrol à 15 min, Bas-en-Basset). Nous intervenons depuis le bassin stéphanois. Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles aurécoises ?",
@@ -69,7 +69,7 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Nous intervenons depuis le bassin stéphanois, à environ 25 min d'Aurec-sur-Loire. Déplacement sur site ou sessions en visio possibles. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nous intervenons depuis le bassin stéphanois, à environ 25 min d'Aurec-sur-Loire. Déplacement sur site ou sessions en visio possibles. Tarifs publics.",
     },
   ],
 };

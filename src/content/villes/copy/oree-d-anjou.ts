@@ -65,7 +65,7 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Orée d'Anjou depuis Nantes ou Angers ?",
-      a: "Nos consultants se déplacent depuis Nantes (35 min A11) ou Angers (50 min). La gare TER d'Ancenis est à 5 min (pont de Loire). Frais de déplacement facturés en sus du forfait journée, tarifs transparents dès le devis.",
+      a: "Nos consultants se déplacent depuis Nantes (35 min A11) ou Angers (50 min). La gare TER d'Ancenis est à 5 min (pont de Loire).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const EMBRUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Embrun ?",
-      a: "Nos consultants se déplacent sur site à Embrun depuis Gap (45 min) ou Briançon (50 min). Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Embrun depuis Gap (45 min) ou Briançon (50 min). Hébergement local possible.",
     },
   ],
 };

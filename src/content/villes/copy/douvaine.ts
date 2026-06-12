@@ -65,7 +65,7 @@ export const DOUVAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Douvaine ?",
-      a: "Nos consultants interviennent à Douvaine depuis Genève (20 min) ou Annecy. Intervention sur site dans votre domaine viticole, exploitation, cabinet ou commerce. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Douvaine depuis Genève (20 min) ou Annecy. Intervention sur site dans votre domaine viticole, exploitation, cabinet ou commerce.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Pernes-les-Fontaines ?",
-      a: "Pernes-les-Fontaines est à 10 min de Carpentras et 25 min d'Avignon via D938. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Pernes-les-Fontaines est à 10 min de Carpentras et 25 min d'Avignon via D938. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

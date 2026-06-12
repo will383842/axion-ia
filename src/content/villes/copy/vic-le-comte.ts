@@ -65,7 +65,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (25 min). Aéroport Clermont à 30 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (25 min). Aéroport Clermont à 30 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ORTHEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Orthez ?",
-      a: "Nos consultants accèdent à Orthez par TER (30 min Pau, 45 min Bayonne) ou voiture (A64). Mission sur site dans vos locaux, atelier ou exploitation. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Orthez par TER (30 min Pau, 45 min Bayonne) ou voiture (A64). Mission sur site dans vos locaux, atelier ou exploitation.",
     },
   ],
 };

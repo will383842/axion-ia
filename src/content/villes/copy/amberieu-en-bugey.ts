@@ -65,7 +65,7 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "TER Lyon 40 min ou voiture 50 min. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "TER Lyon 40 min ou voiture 50 min.",
     },
   ],
 };

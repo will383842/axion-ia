@@ -65,7 +65,7 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Digne-les-Bains ?",
-      a: "Nos consultants se déplacent sur site à Digne-les-Bains depuis Aix-en-Provence (1h30 A51) ou Gap (1h). Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Digne-les-Bains depuis Aix-en-Provence (1h30 A51) ou Gap (1h). Hébergement local possible.",
     },
   ],
 };

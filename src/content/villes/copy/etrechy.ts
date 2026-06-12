@@ -65,7 +65,7 @@ export const ETRECHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Paris centre (50 min RER C). Massy TGV (25 min). Étampes (10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris centre (50 min RER C). Massy TGV (25 min). Étampes (10 min).",
     },
   ],
 };

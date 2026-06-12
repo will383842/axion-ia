@@ -65,7 +65,7 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (20 min A23), Douai (20 min) ou Orchies (10 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lille (20 min A23), Douai (20 min) ou Orchies (10 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

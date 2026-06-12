@@ -3,10 +3,8 @@
 // Doctrine stricte (identique paris.ts / lyon.ts) :
 //   - Aucun « basé en UE ».
 //   - Aucun délai concret chiffré (« 5 jours », « 7 jours », etc.).
-//   - Aucun « frais de déplacement intégrés » — les frais sont en sus,
-//     calculés au cas par cas selon la zone.
-//   - Durée minimale = 1 journée. Mention systématique
-//     « frais de logement, repas et forfait trajet en sus » sur interventions.
+//   - Aucune mention de frais de déplacement, logement, repas ou trajet.
+//   - Durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
 //   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
@@ -32,8 +30,8 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
       en: "Operational AI audit in Boulogne-Billancourt: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Boulogne practices to large groups at Trapèze or Quai du Point-du-Jour.",
     },
     interventions: {
-      fr: "Interventions IA à Boulogne-Billancourt : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Boulogne-Billancourt: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Boulogne-Billancourt : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Boulogne-Billancourt: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Boulogne-Billancourt : on déploie l'IA dans vos outils existants (CRM, ERP, mails, plateformes médias ou systèmes automobiles) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -294,7 +292,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Boulogne-Billancourt se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en agence, en studio, au bureau ou en déplacement clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Boulogne-Billancourt se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en agence, en studio, au bureau ou en déplacement clientèle.",
         whyHere: [
           "Boulogne-Billancourt est un terrain d'intervention prioritaire en proche couronne : grands groupes du Trapèze, équipes médias du Quai du Point-du-Jour, PME conseil et cabinets numériques représentent une part significative de nos sessions.",
           "Toute la commune et les communes du bassin couvertes en présentiel : Trapèze, Île Seguin, Quai du Point-du-Jour, centre-ville, Issy-les-Moulineaux, Vanves, Sèvres, Meudon, Saint-Cloud.",
@@ -400,7 +398,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur boulonnais — médias, automobile, finance, conseil, numérique — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Boulogne-Billancourt come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in agencies, studios, offices or in the field. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Boulogne-Billancourt come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in agencies, studios, offices or in the field.",
         whyHere: [
           "Boulogne-Billancourt is a priority engagement ground in the Paris inner ring: Trapèze large groups, Quai du Point-du-Jour media teams and western-Paris consulting SMEs represent a significant share of our sessions.",
           "Full municipality and basin communes covered in person: Trapèze, Île Seguin, Quai du Point-du-Jour, town centre, Issy-les-Moulineaux, Vanves, Sèvres, Meudon, Saint-Cloud.",

@@ -65,7 +65,7 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Bonchamp-lès-Laval ?",
-      a: "Nos consultants interviennent directement dans vos locaux. Gare TGV Laval à 5 km, sortie A81 directe. Frais de déplacement inclus en agglomération lavalloise. Format mixte sur site + visio.",
+      a: "Nos consultants interviennent directement dans vos locaux. Gare TGV Laval à 5 km, sortie A81 directe. Format mixte sur site + visio.",
     },
   ],
 };

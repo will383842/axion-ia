@@ -37,8 +37,8 @@ export const LE_MANS_COPY: VilleCopy = {
       en: "Operational AI audit in Le Mans: we map your automatable workflows and quantify the ROI. Four tiers from Sur place to Mid-cap Strategic, calibrated for local SMEs as well as insurance and mobility mid-caps in the basin.",
     },
     interventions: {
-      fr: "Interventions IA au Mans : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent avec des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Le Mans: on-site formats from one to several days depending on your teams. Your staff leave with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA au Mans : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent avec des outils IA installés sur leur poste.",
+      en: "AI sessions in Le Mans: on-site formats from one to several days depending on your teams. Your staff leave with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA au Mans : déploiement dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Secteurs prioritaires : assurance, automobile, industrie, recherche. Aucun lock-in, vos équipes gardent la main.",
@@ -296,7 +296,7 @@ export const LE_MANS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA au Mans se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans les secteurs assurance, automobile, industrie et services. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA au Mans se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans les secteurs assurance, automobile, industrie et services.",
         whyHere: [
           "Le Mans regroupe des équipes opérationnelles à fort potentiel d'adoption IA : gestionnaires sinistres MMA/Covéa, techniciens et ingénieurs Renault ACI, commerciaux PME de services, équipes administratives des structures universitaires et de recherche.",
           "Le format collectif (1 journée) est calibré pour les PME et ETI du bassin (quelques personnes à une centaine de collaborateurs) : sessions ciblées sur les cas métier réels du secteur assurance ou automobile.",
@@ -399,10 +399,10 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur sarthois, aucune session générique recyclée. Frais de logement, repas et forfait trajet facturés séparément sur devis préalable.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur sarthois, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Le Mans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in insurance, automotive, manufacturing and services. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Le Mans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in insurance, automotive, manufacturing and services.",
         whyHere: [
           "Le Mans brings together operational teams with strong AI adoption potential: MMA/Covéa claims managers, Renault ACI engineers and technicians, service SME sales teams, administrative staff in university and research institutions.",
           "The one-day format is calibrated for basin SMEs and mid-caps (a few people to about a hundred staff): sessions focused on real business use cases in insurance or automotive.",
@@ -504,7 +504,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your Sarthe sector, no recycled generic session. Lodging, meals and travel allowance billed separately on prior quote.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your Sarthe sector, no recycled generic session.",
       },
     },
     implementation: {
@@ -724,7 +724,7 @@ export const LE_MANS_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA au Mans s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux manceaux — Novaxis, sites industriels ou PME sarthoises. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA au Mans s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux manceaux — Novaxis, sites industriels ou PME sarthoises.",
         whyHere: [
           "Le Mans concentre des dirigeants de PME et ETI assurance (MMA/Covéa, courtiers régionaux) dont la confidentialité des données sinistres et contrats rend le format collectif inadapté — le coaching individuel est la seule option viable.",
           "Les responsables techniques et ingénieurs de la filière automobile (Renault ACI, fournisseurs iD4CAR) traitent des données de production propriétaires (bons de commande, PPAP, données qualité) trop sensibles pour un cadre collectif.",
@@ -818,19 +818,15 @@ export const LE_MANS_COPY: VilleCopy = {
             a: "Non. Le coaching s'adapte à votre niveau — débutant ou praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
           },
           {
-            q: "Les frais de déplacement sont-ils inclus ?",
-            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
-          },
-          {
             q: "Peut-on organiser plusieurs coachings individuels pour différents managers ?",
             a: "Oui. Certaines ETI sarthoises organisent plusieurs sessions individuelles pour leurs managers ou responsables clés plutôt qu'une formation collective. Tarif dégressif possible selon le volume — à préciser en cadrage.",
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
+          "Confidentialité stricte : vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Le Mans is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Mans premises — Novaxis, industrial sites or Sarthe SMEs. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Le Mans is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Mans premises — Novaxis, industrial sites or Sarthe SMEs.",
         whyHere: [
           "Le Mans hosts insurance SME and mid-cap executives (MMA/Covéa, regional brokers) whose claims and contract data confidentiality makes the collective format unsuitable — individual coaching is the only viable option.",
           "Technical managers and engineers in the automotive sector (Renault ACI, iD4CAR suppliers) handle proprietary production data (purchase orders, PPAP, quality data) too sensitive for a group setting.",
@@ -925,7 +921,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
           {
             q: "Are travel costs included?",
-            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+            a: "No. These costs are communicated on a prior quote before confirmation.",
           },
           {
             q: "Can we organise several individual coachings for different managers?",
@@ -933,7 +929,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your insurance, automotive or industrial data does not leave your Le Mans premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
+          "Strict confidentiality: your insurance, automotive or industrial data does not leave your Le Mans premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
       },
     },
     sitesWeb: {

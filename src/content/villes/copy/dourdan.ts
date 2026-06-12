@@ -65,7 +65,7 @@ export const DOURDAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "RER C Dourdan terminus direct depuis Paris (50 min). Arpajon à 20 min. Orly à 35 min. Nos consultants se déplacent sur site. Déplacements facturés séparément, tarifs publics.",
+      a: "RER C Dourdan terminus direct depuis Paris (50 min). Arpajon à 20 min. Orly à 35 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

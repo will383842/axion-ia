@@ -65,7 +65,7 @@ export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fleury-sur-Orne ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, commerce, cabinet). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, commerce, cabinet).",
     },
   ],
 };

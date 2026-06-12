@@ -65,7 +65,7 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Georges ?",
-      a: "Nos consultants accèdent à Saint-Georges-de-Didonne par TER via Royan/Saintes ou voiture (La Rochelle 1h15). Mission sur site dans votre hôtel, camping ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Saint-Georges-de-Didonne par TER via Royan/Saintes ou voiture (La Rochelle 1h15). Mission sur site dans votre hôtel, camping ou commerce.",
     },
   ],
 };

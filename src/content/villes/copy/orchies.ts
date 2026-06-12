@@ -65,7 +65,7 @@ export const ORCHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Orchies ?",
-      a: "Nos consultants interviennent à Orchies depuis Lille (30 min, A23). Intervention sur site dans votre exploitation, unité de transformation, commerce ou en visio. Pour missions multi-jours, hébergement à Lille ou Douai (20 min). Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Orchies depuis Lille (30 min, A23). Intervention sur site dans votre exploitation, unité de transformation, commerce ou en visio. Pour missions multi-jours, hébergement à Lille ou Douai (20 min).",
     },
   ],
 };

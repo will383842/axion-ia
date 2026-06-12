@@ -65,7 +65,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bayonne ou Bordeaux ?",
-      a: "Nos consultants se déplacent facilement : Bayonne à 45 min par A63, Bordeaux à 1h30 par A63. Gare TGV Dax à 5 min. Pour les multi-jours, hébergement local Grand Dax. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants se déplacent facilement : Bayonne à 45 min par A63, Bordeaux à 1h30 par A63. Gare TGV Dax à 5 min. Pour les multi-jours, hébergement local Grand Dax.",
     },
   ],
 };

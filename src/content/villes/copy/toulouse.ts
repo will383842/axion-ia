@@ -32,7 +32,7 @@ export const TOULOUSE_COPY: VilleCopy = {
     },
     interventions: {
       fr: "Interventions IA à Toulouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — aéronautique sous-traitance Blagnac, IoT Labège, agro-industriel ou tech Toulouse centre.",
-      en: "AI sessions in Toulouse: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      en: "AI sessions in Toulouse: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Toulouse : on déploie l'IA dans vos outils existants (PLM, ERP, mails, documentation technique) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
@@ -40,7 +40,7 @@ export const TOULOUSE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
+      en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Sites web et plateformes SaaS IA sur mesure à Toulouse : conception de plateformes IA-native pour ETI aéronautiques sous-traitantes d'Aerospace Valley (Blagnac, Colomiers, Labège), scale-ups French Tech Toulouse, PME agro-industrielles. Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
@@ -396,7 +396,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur — aérospatial, numérique, agroalimentaire, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Toulouse come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Toulouse come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "Toulouse is a priority engagement hub for Axion-IA: aerospace, digital and agri-food industries generate specific needs our sessions address directly.",
           "The entire metro covered in person — Toulouse proper, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — as well as suburban industrial sites.",
@@ -479,7 +479,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Can you run sessions at Blagnac and Labège industrial sites?",
-            a: "Yes. We operate across the greater Toulouse basin: Toulouse proper, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille and Muret. Lodging, meals and travel allowance billed separately.",
+            a: "Yes. We operate across the greater Toulouse basin: Toulouse proper, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille and Muret.",
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",
@@ -806,7 +806,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée et comment est facturé le coaching ?",
-            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court (2-3 séances). Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Toulouse intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court (2-3 séances). Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
           },
           {
             q: "Les séances se déroulent-elles en présentiel à Toulouse ou à distance ?",
@@ -825,7 +825,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants Airbus, CNES et ONERA exposés à des contraintes ITAR ou défense. Les compétences acquises sont utilisables en autonomie totale, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Toulouse is for executives, engineers and managers in aerospace (Airbus, CNES, Thales Alenia Space, ONERA), Aerospace Valley SMEs and mid-caps, French Tech Toulouse scale-up leaders and Toulouse industrial firms. No group programme: each session starts from your real files, your real decisions, your actual business reality. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Toulouse is for executives, engineers and managers in aerospace (Airbus, CNES, Thales Alenia Space, ONERA), Aerospace Valley SMEs and mid-caps, French Tech Toulouse scale-up leaders and Toulouse industrial firms. No group programme: each session starts from your real files, your real decisions, your actual business reality. Entry rate from €990 excl. VAT.",
         whyHere: [
           "Toulouse concentrates an exceptional density of aerospace engineers and technical managers (Airbus, CNES, Thales Alenia Space, ATR, ONERA) who need to integrate AI into their practice without going through group training unsuited to their level.",
           "The French Tech Toulouse and IoT Valley at Labège-Innopole ecosystem generates scale-up founders and technical leaders for whom fast, personalised AI upskilling is often more relevant than a group programme.",
@@ -866,7 +866,7 @@ export const TOULOUSE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "from €990 excl. VAT",
             detail:
-              "For Toulouse freelancers, engineering offices and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases. Lodging, meals and travel allowance billed separately outside central Toulouse.",
+              "For Toulouse freelancers, engineering offices and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases.",
           },
           {
             sizeLabel: "SME",
@@ -912,11 +912,11 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "What is the entry rate and how is coaching invoiced?",
-            a: "The entry rate is €990 excl. VAT for a short programme (2-3 sessions). Lodging, meals and travel allowance are billed separately for on-site sessions outside central Toulouse. The full programme is defined after the positioning interview, no blind commitment.",
+            a: "The entry rate is €990 excl. VAT for a short programme (2-3 sessions). The full programme is defined after the positioning interview, no blind commitment.",
           },
           {
             q: "Are sessions on-site in Toulouse or remote?",
-            a: "Both are available per your preferences. On-site at your offices (Toulouse centre, Blagnac, Labège, Colomiers) or remote by video. Lodging, meals and travel allowance billed separately for on-site sessions outside central Toulouse.",
+            a: "Both are available per your preferences. On-site at your offices (Toulouse centre, Blagnac, Labège, Colomiers) or remote by video.",
           },
           {
             q: "What is the difference from group AI training in Toulouse?",
@@ -928,7 +928,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Strict confidentiality from the outset, no reference published without written consent. Lodging, meals and travel allowance billed separately and validated before each on-site session outside centre. No lock-in: skills acquired are usable in full autonomy.",
+          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Strict confidentiality from the outset, no reference published without written consent. No lock-in: skills acquired are usable in full autonomy.",
       },
     },
     sitesWeb: {

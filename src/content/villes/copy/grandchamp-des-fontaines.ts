@@ -65,7 +65,7 @@ export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Frais de déplacement inclus dans le périmètre nord métropole nantaise. Formats demi-journée ou journée complète.",
+      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète.",
     },
   ],
 };

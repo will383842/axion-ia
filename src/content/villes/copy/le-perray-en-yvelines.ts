@@ -65,7 +65,7 @@ export const LE_PERRAY_EN_YVELINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Perray-en-Yvelines ?",
-      a: "Nos consultants rejoignent Le Perray-en-Yvelines via le Transilien N (gare du Perray, 45 min Paris-Montparnasse) ou par l'A10/N10. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Le Perray-en-Yvelines via le Transilien N (gare du Perray, 45 min Paris-Montparnasse) ou par l'A10/N10.",
     },
   ],
 };

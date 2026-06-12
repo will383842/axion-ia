@@ -65,7 +65,7 @@ export const TRELAZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Trélazé ?",
-      a: "Nos consultants seniors se déplacent directement dans vos locaux à Trélazé. Diagnostic initial, ateliers pratiques avec vos équipes, livraison d'outils IA configurés. Frais de déplacement depuis Angers inclus dans le forfait.",
+      a: "Nos consultants seniors se déplacent directement dans vos locaux à Trélazé. Diagnostic initial, ateliers pratiques avec vos équipes, livraison d'outils IA configurés.",
     },
   ],
 };

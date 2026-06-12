@@ -65,7 +65,7 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Dombasle-sur-Meurthe ?",
-      a: "Nos consultants interviennent depuis Nancy (15 min). Missions sur site dans vos locaux industriels, bureau ou commerce. Frais de déplacement en sus du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Nancy (15 min). Missions sur site dans vos locaux industriels, bureau ou commerce.",
     },
   ],
 };

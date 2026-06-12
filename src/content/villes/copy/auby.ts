@@ -65,7 +65,7 @@ export const AUBY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (30 min A21), Douai (10 min) ou Valenciennes (30 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lille (30 min A21), Douai (10 min) ou Valenciennes (30 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

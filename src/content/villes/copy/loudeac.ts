@@ -65,7 +65,7 @@ export const LOUDEAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Loudéac ?",
-      a: "Nos consultants rejoignent Loudéac via la gare SNCF (TER depuis Saint-Brieuc) ou par la RN164 (axe Rennes — Châteaulin). Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Loudéac via la gare SNCF (TER depuis Saint-Brieuc) ou par la RN164 (axe Rennes — Châteaulin).",
     },
   ],
 };

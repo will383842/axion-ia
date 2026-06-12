@@ -65,7 +65,7 @@ export const FLORANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Florange ?",
-      a: "Nos consultants se déplacent via autoroutes A30/A31 ou gares SNCF de Hayange/Thionville. Position stratégique vallée Fensch, Luxembourg à 30 min, Metz à 30 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroutes A30/A31 ou gares SNCF de Hayange/Thionville. Position stratégique vallée Fensch, Luxembourg à 30 min, Metz à 30 min.",
     },
   ],
 };

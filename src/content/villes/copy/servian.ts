@@ -74,7 +74,7 @@ export const SERVIAN_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils à Servian ?",
-      a: "Oui, depuis Montpellier (1 h A75 sortie 62) ou Béziers (15 min). Frais de déplacement facturés au réel selon barème URSSAF, tarifs publics. Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
+      a: "Oui, depuis Montpellier (1 h A75 sortie 62) ou Béziers (15 min). Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ROMAGNAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité directe Beaumont et Ceyrat. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité directe Beaumont et Ceyrat.",
     },
   ],
 };

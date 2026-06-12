@@ -61,7 +61,7 @@ export const VILLENOY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Villenoy ?",
-      a: "Nos consultants viennent sur site à Villenoy (gare de Meaux, Transilien ligne P depuis Paris-Est, 25 min). Format journée ou demi-journée adapté à votre activité. Frais de déplacement inclus Île-de-France, tarifs publics et transparents.",
+      a: "Nos consultants viennent sur site à Villenoy (gare de Meaux, Transilien ligne P depuis Paris-Est, 25 min). Format journée ou demi-journée adapté à votre activité.",
     },
     {
       q: "Quels services IA pour les professions libérales à Villenoy ?",

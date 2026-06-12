@@ -65,7 +65,7 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Balme-de-Sillingy ?",
-      a: "Nos consultants interviennent à La Balme-de-Sillingy depuis Annecy (15 min). Intervention sur site dans vos locaux, bureau, exploitation ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à La Balme-de-Sillingy depuis Annecy (15 min). Intervention sur site dans vos locaux, bureau, exploitation ou cabinet.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const GAILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye) ou Rouen (35 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye) ou Rouen (35 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

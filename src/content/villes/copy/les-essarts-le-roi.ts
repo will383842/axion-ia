@@ -65,7 +65,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission aux Essarts-le-Roi ?",
-      a: "Nos consultants interviennent aux Essarts-le-Roi via N10 (45 min depuis Paris) ou Transilien N (gare des Essarts-le-Roi, ~45 min Paris Montparnasse). Frais de déplacement sud Yvelines facturés selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent aux Essarts-le-Roi via N10 (45 min depuis Paris) ou Transilien N (gare des Essarts-le-Roi, ~45 min Paris Montparnasse).",
     },
   ],
 };

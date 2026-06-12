@@ -132,11 +132,11 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nos consultants viennent de Lyon (Part-Dieu à ~10 min) et se déplacent dans vos locaux à Caluire — centre-ville, Perica ou Poumeyrol. Frais de mission en sus, grille tarifaire publique.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nos consultants viennent de Lyon (Part-Dieu à ~10 min) et se déplacent dans vos locaux à Caluire — centre-ville, Perica ou Poumeyrol.",
           },
         ],
         guarantees:
-          "Code sur mesure dont vous restez propriétaire, hébergement en Union européenne et conformité RGPD par défaut (consentement, registre, hébergement de données de santé pour les professions médicales). Aucun verrou éditeur : votre site, votre plateforme SaaS et vos données sont transférables à tout prestataire ou repris en interne après notre mission. UX/UI et mobile-first systématiques, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et briques IA intégrées. Devis à partir de 24 à 48 h selon la complexité, grille tarifaire publique, frais de mission en sus.",
+          "Code sur mesure dont vous restez propriétaire, hébergement en Union européenne et conformité RGPD par défaut (consentement, registre, hébergement de données de santé pour les professions médicales). Aucun verrou éditeur : votre site, votre plateforme SaaS et vos données sont transférables à tout prestataire ou repris en interne après notre mission. UX/UI et mobile-first systématiques, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et briques IA intégrées. Devis à partir de 24 à 48 h selon la complexité, grille tarifaire publique.",
       },
       en: {
         hero: "Caluire-et-Cuire, an affluent residential commune in the northern Lyon Métropole, blends a services and liberal-health-professions fabric with a focused activity core on the Perica industrial estate (258 ha, ~5,000 jobs shared with Rillieux-la-Pape) and the Parc de Poumeyrol: technical rubber and automotive equipment manufacturing (ContiTech Anoflex), remote security (Securitas Alert Services), facility management (ISS), alongside the Dr Dugoujon geriatric hospital (HCL) and a dense neighbourhood retail base. Axion-IA builds AI-augmented websites and SaaS platforms for these organisations — custom code, EU/GDPR hosting, zero vendor lock-in.",
@@ -218,11 +218,11 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we get a quote?",
-            a: "From 24 to 48 hours depending on complexity, after an initial discussion. Our consultants come from Lyon (Part-Dieu ~10 min away) and travel to your premises in Caluire — town centre, Perica or Poumeyrol. Travel costs billed separately, public pricing grid.",
+            a: "From 24 to 48 hours depending on complexity, after an initial discussion. Our consultants come from Lyon (Part-Dieu ~10 min away) and travel to your premises in Caluire — town centre, Perica or Poumeyrol.",
           },
         ],
         guarantees:
-          "Custom code that you own, EU hosting and GDPR compliance by default (consent, register, health-data hosting for medical professions). No vendor lock-in: your site, your SaaS platform and your data are transferable to any provider or taken in-house after our mission. UX/UI and mobile-first as standard, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and integrated AI building blocks. Quote from 24 to 48 hours depending on complexity, public pricing grid, travel costs billed separately.",
+          "Custom code that you own, EU hosting and GDPR compliance by default (consent, register, health-data hosting for medical professions). No vendor lock-in: your site, your SaaS platform and your data are transferable to any provider or taken in-house after our mission. UX/UI and mobile-first as standard, multi-CMS e-commerce (Shopify, WooCommerce, PrestaShop) and integrated AI building blocks. Quote from 24 to 48 hours depending on complexity, public pricing grid.",
       },
     },
   },
@@ -250,7 +250,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Caluire-et-Cuire ?",
-      a: "Nos consultants viennent de Lyon (10 min) et se déplacent dans vos locaux après un premier échange. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (10 min) et se déplacent dans vos locaux après un premier échange.",
     },
   ],
 };

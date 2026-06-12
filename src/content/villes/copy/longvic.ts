@@ -65,7 +65,7 @@ export const LONGVIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Dijon ou Paris ?",
-      a: "Dijon centre à 15 min (tram T2). Paris-Bercy à 1h30 en TGV via Dijon. Beaune à 30 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Dijon centre à 15 min (tram T2). Paris-Bercy à 1h30 en TGV via Dijon. Beaune à 30 min.",
     },
   ],
 };

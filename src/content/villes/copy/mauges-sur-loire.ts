@@ -65,7 +65,7 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Angers ou Nantes ?",
-      a: "Nos consultants viennent d'Angers (50 min) ou de Nantes (45 min via A11). La gare TER d'Ancenis est à 10 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés en sus, tarifs transparents.",
+      a: "Nos consultants viennent d'Angers (50 min) ou de Nantes (45 min via A11). La gare TER d'Ancenis est à 10 min. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

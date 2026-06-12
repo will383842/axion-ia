@@ -235,7 +235,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes limitrophes de Vénissieux ?",
-      a: "Oui — nous couvrons Lyon (notamment 7e et 8e), Saint-Fons, Saint-Priest, Corbas, Feyzin, Bron et l'ensemble de la Métropole de Lyon. Au-delà, frais de déplacement chiffrés transparemment dans le devis.",
+      a: "Oui — nous couvrons Lyon (notamment 7e et 8e), Saint-Fons, Saint-Priest, Corbas, Feyzin, Bron et l'ensemble de la Métropole de Lyon.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD pour un industriel de Vénissieux ?",

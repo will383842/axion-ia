@@ -65,7 +65,7 @@ export const QUESTEMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Questembert ?",
-      a: "Nos consultants interviennent à Questembert depuis Vannes (25 min), Rennes (1h) ou Nantes (1h10). Intervention sur site dans vos locaux, exploitation, cabinet ou atelier. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Questembert depuis Vannes (25 min), Rennes (1h) ou Nantes (1h10). Intervention sur site dans vos locaux, exploitation, cabinet ou atelier.",
     },
   ],
 };

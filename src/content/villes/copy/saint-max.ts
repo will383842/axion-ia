@@ -65,7 +65,7 @@ export const SAINT_MAX_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Saint-Max depuis Paris ?",
-      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 10 min. Nancy centre à 10 min. Frais de déplacement facturés à part.",
+      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 10 min. Nancy centre à 10 min.",
     },
   ],
 };

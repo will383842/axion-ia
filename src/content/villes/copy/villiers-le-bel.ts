@@ -133,7 +133,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Nous concevons des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile-first, e-commerce multi-CMS — pour les entreprises de Villiers-le-Bel et de Roissy Pays de France. Devis à partir de 24-48 h selon la complexité. Hébergement en Union européenne, conformité RGPD et AI Act, DPA contractuel. Code, contenus et accès vous appartiennent : aucun verrou éditeur, reprise possible en interne ou par tout prestataire. Frais de mission en sus selon la zone.",
+          "Nous concevons des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile-first, e-commerce multi-CMS — pour les entreprises de Villiers-le-Bel et de Roissy Pays de France. Devis à partir de 24-48 h selon la complexité. Hébergement en Union européenne, conformité RGPD et AI Act, DPA contractuel. Code, contenus et accès vous appartiennent : aucun verrou éditeur, reprise possible en interne ou par tout prestataire.",
       },
       en: {
         hero: "Villiers-le-Bel (95400, 30,053 residents, Roissy Pays de France) concentrates a fabric of very small businesses — wholesale trade, transport and logistics directly tied to Roissy-CDG, plus local trades and services — spread between the Technopolitain Val de France business park (20.26 ha, ~254 companies, in an Urban Free Zone) and the ZAC des Tissonvilliers III developed by Grand Paris Aménagement. Axion-IA designs AI-augmented websites and SaaS platforms for them, from a Technopolitain wholesaler's e-commerce to a carrier's logistics portal on Avenue des Entrepreneurs.",
@@ -219,7 +219,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "We design AI-augmented websites and SaaS platforms — UX/UI, mobile-first, multi-CMS e-commerce — for businesses in Villiers-le-Bel and Roissy Pays de France. Quote from 24-48h depending on complexity. European Union hosting, GDPR and AI Act compliance, contractual DPA. Code, content and access belong to you: no vendor lock-in, takeover possible in-house or by any provider. Travel costs billed separately by zone.",
+          "We design AI-augmented websites and SaaS platforms — UX/UI, mobile-first, multi-CMS e-commerce — for businesses in Villiers-le-Bel and Roissy Pays de France. Quote from 24-48h depending on complexity. European Union hosting, GDPR and AI Act compliance, contractual DPA. Code, content and access belong to you: no vendor lock-in, takeover possible in-house or by any provider.",
       },
     },
   },
@@ -231,7 +231,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Villiers-le-Bel ?",
-      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villiers-le-Bel ?",

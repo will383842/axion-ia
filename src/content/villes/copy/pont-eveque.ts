@@ -65,7 +65,7 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (35 min A7) ou Saint-Étienne (40 min A47). Pour les multi-jours, hébergement local possible (hôtels Vienne). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (35 min A7) ou Saint-Étienne (40 min A47). Pour les multi-jours, hébergement local possible (hôtels Vienne).",
     },
   ],
 };

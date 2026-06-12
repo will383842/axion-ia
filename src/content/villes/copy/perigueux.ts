@@ -134,7 +134,7 @@ export const PERIGUEUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites web et plateformes SaaS développés en code custom (TypeScript/Next.js, Python), hébergés en Union européenne, conformes RGPD et AI Act. Devis à partir de 24-48 h selon la complexité. Vous conservez la propriété intégrale du code, des modèles IA et des intégrations : le produit est repris en interne ou par tout prestataire de l'écosystème Digital Valley / Cap@cités, sans lock-in Axion-IA. Web Vitals soignés (performance mobile), UX/UI et e-commerce multi-CMS inclus. Frais de déplacement, de logement et forfait trajet en sus, calculés selon la zone.",
+          "Sites web et plateformes SaaS développés en code custom (TypeScript/Next.js, Python), hébergés en Union européenne, conformes RGPD et AI Act. Devis à partir de 24-48 h selon la complexité. Vous conservez la propriété intégrale du code, des modèles IA et des intégrations : le produit est repris en interne ou par tout prestataire de l'écosystème Digital Valley / Cap@cités, sans lock-in Axion-IA. Web Vitals soignés (performance mobile), UX/UI et e-commerce multi-CMS inclus.",
       },
       en: {
         hero: "In Périgueux, capital of the Dordogne and seat of the Grand Périgueux (43 communes), Axion-IA builds AI-augmented websites and SaaS platforms for a very specific fabric: shops and hoteliers of the medieval-Renaissance conservation area around Saint-Front Cathedral (UNESCO), Périgord foie gras and truffle producers selling online, and software project founders from the emerging Digital Valley ecosystem. From the incubator launched in 2024 at the Espace Aliénor with Bordeaux Technowest to the Cré@vallée Nord business park (e-commerce and ICT cluster), we develop in custom code — UX/UI, mobile, multi-CMS e-commerce and embedded AI — hosted in the European Union and GDPR-compliant.",
@@ -220,7 +220,7 @@ export const PERIGUEUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Websites and SaaS platforms developed in custom code (TypeScript/Next.js, Python), hosted in the European Union, GDPR and AI Act compliant. Quote from 24-48 h depending on complexity. You retain full ownership of the code, AI models and integrations: the product is taken over in-house or by any provider of the Digital Valley / Cap@cités ecosystem, with no Axion-IA lock-in. Polished Web Vitals (mobile performance), UX/UI and multi-CMS e-commerce included. Travel, lodging and travel-time costs billed separately, calculated by zone.",
+          "Websites and SaaS platforms developed in custom code (TypeScript/Next.js, Python), hosted in the European Union, GDPR and AI Act compliant. Quote from 24-48 h depending on complexity. You retain full ownership of the code, AI models and integrations: the product is taken over in-house or by any provider of the Digital Valley / Cap@cités ecosystem, with no Axion-IA lock-in. Polished Web Vitals (mobile performance), UX/UI and multi-CMS e-commerce included.",
       },
     },
   },

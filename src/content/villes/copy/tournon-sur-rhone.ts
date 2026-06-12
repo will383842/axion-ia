@@ -65,7 +65,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (1h A7) ou Valence (20 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Lyon (1h A7) ou Valence (20 min).",
     },
   ],
 };

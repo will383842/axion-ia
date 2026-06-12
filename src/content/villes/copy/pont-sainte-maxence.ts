@@ -61,7 +61,7 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Pont-Sainte-Maxence ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Pont-Sainte-Maxence. Senlis à 10 min, Creil à 10 min, Paris à 45 min via TER. Frais de déplacement facturés à part.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Pont-Sainte-Maxence. Senlis à 10 min, Creil à 10 min, Paris à 45 min via TER.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Pont-Sainte-Maxence ?",

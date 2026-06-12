@@ -65,7 +65,7 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Roque-d'Anthéron ?",
-      a: "La Roque-d'Anthéron est à 30 min d'Aix-en-Provence et 25 min de Salon-de-Provence. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "La Roque-d'Anthéron est à 30 min d'Aix-en-Provence et 25 min de Salon-de-Provence. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

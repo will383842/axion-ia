@@ -65,7 +65,7 @@ export const RUELLE_SUR_TOUVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Ruelle-sur-Touvre ?",
-      a: "Nos consultants accèdent à Ruelle-sur-Touvre via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux industriels, bureau ou atelier. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Ruelle-sur-Touvre via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux industriels, bureau ou atelier.",
     },
   ],
 };

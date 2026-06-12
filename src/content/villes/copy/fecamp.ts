@@ -65,7 +65,7 @@ export const FECAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Le Havre ou Paris ?",
-      a: "Nos consultants viennent du Havre (40 min) ou de Paris (2h30 voiture, ou TGV Le Havre + voiture). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent du Havre (40 min) ou de Paris (2h30 voiture, ou TGV Le Havre + voiture).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const HERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Héricourt ?",
-      a: "Nos consultants se déplacent sur site à Héricourt (atelier, bureau, commerce). Format journée ou demi-journée. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent sur site à Héricourt (atelier, bureau, commerce). Format journée ou demi-journée. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MOUGINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mougins ?",
-      a: "Nos consultants se déplacent sur site à Mougins, central entre Cannes (10 min), Sophia Antipolis (10 min) et Nice (30 min). Aucun frais de déplacement intra-agglomération Côte d'Azur. Tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Mougins, central entre Cannes (10 min), Sophia Antipolis (10 min) et Nice (30 min). Tarifs publics.",
     },
   ],
 };

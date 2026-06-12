@@ -65,7 +65,7 @@ export const AMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20. Déplacements facturés séparément, tarifs publics.",
+      a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20.",
     },
   ],
 };

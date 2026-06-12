@@ -65,7 +65,7 @@ export const VALDOIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Belfort ?",
-      a: "Belfort centre (5 min) ou TGV Belfort-Montbéliard (15 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Belfort centre (5 min) ou TGV Belfort-Montbéliard (15 min).",
     },
   ],
 };

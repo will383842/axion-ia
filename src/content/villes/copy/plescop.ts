@@ -65,7 +65,7 @@ export const PLESCOP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Plescop ?",
-      a: "Nos consultants se déplacent dans vos locaux à Plescop ou interviennent en visio. Vannes centre est à 10 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement transparents en sus du forfait.",
+      a: "Nos consultants se déplacent dans vos locaux à Plescop ou interviennent en visio. Vannes centre est à 10 min. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

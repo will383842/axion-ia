@@ -246,7 +246,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Orly ?",
-      a: "Vigneux-sur-Seine est à 25 minutes de Paris-Gare de Lyon par le RER D et 10 minutes d'Orly. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Vigneux-sur-Seine est à 25 minutes de Paris-Gare de Lyon par le RER D et 10 minutes d'Orly. Nos consultants se déplacent sur site.",
     },
   ],
 };

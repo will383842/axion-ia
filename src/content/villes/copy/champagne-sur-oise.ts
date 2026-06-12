@@ -65,7 +65,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",
-      a: "L'Isle-Adam (3 min). Persan-Beaumont (5 min). Cergy-Pontoise (25 min). Paris Gare du Nord (45 min). CDG (35 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "L'Isle-Adam (3 min). Persan-Beaumont (5 min). Cergy-Pontoise (25 min). Paris Gare du Nord (45 min). CDG (35 min).",
     },
   ],
 };

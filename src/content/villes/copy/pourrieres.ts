@@ -65,7 +65,7 @@ export const POURRIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Pourrières ?",
-      a: "Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines. Déplacements facturés séparément, tarifs publics.",
+      a: "Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines.",
     },
   ],
 };

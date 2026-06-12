@@ -65,7 +65,7 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à La Chapelle-Saint-Luc depuis Paris ?",
-      a: "TGV Paris-Est à Troyes en 1 h 30, puis 5 min en voiture. Autoroute A5 directe en 1 h 45. Aéroport CDG à 1 h 45. Frais de déplacement facturés à part.",
+      a: "TGV Paris-Est à Troyes en 1 h 30, puis 5 min en voiture. Autoroute A5 directe en 1 h 45. Aéroport CDG à 1 h 45.",
     },
   ],
 };

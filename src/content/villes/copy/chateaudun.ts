@@ -65,7 +65,7 @@ export const CHATEAUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Chartres ou Orléans ?",
-      a: "Chartres (45 min) ou Orléans (50 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Chartres (45 min) ou Orléans (50 min).",
     },
   ],
 };

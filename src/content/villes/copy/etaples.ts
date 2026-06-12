@@ -65,7 +65,7 @@ export const ETAPLES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission IA à Étaples ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Étaples-Le Touquet accessible TER depuis Lille. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare Étaples-Le Touquet accessible TER depuis Lille. Nos consultants se déplacent sur site.",
     },
   ],
 };

@@ -29,16 +29,16 @@ export const NIMES_COPY: VilleCopy = {
       en: "Operational AI audit in Nîmes: we map what can be automated in your Gard organisation and quantify the ROI. From Sur place micro-business to Mid-cap Strategic, four tiers cover every profile.",
     },
     interventions: {
-      fr: "Interventions IA à Nîmes : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Nîmes: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Nîmes : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel.",
+      en: "AI sessions in Nîmes: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Nîmes : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, aucun lock-in technologique.",
       en: "AI implementation in Nîmes: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Nîmes : accompagnement 1-to-1 ancré dans votre réalité gardoise — BTP, logistique, agroalimentaire ou services. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
-      en: "Individual AI coaching in Nîmes: 1-to-1 support rooted in your Gard reality — construction, logistics, agri-food or services. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+      fr: "Coaching IA individuel à Nîmes : accompagnement 1-to-1 ancré dans votre réalité gardoise — BTP, logistique, agroalimentaire ou services. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Individual AI coaching in Nîmes: 1-to-1 support rooted in your Gard reality — construction, logistics, agri-food or services. From €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI gardoises — site vitrine premium pour acteurs BTP, ingénierie eau (BRL Groupe) et agroalimentaire (Royal Canin, Perrier), espace client B2B pour structures tertiaires Parc Georges Besse, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -81,7 +81,7 @@ export const NIMES_COPY: VilleCopy = {
           "La présence de BRL Groupe (siège social) et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des besoins réels en automatisation documentaire et en pilotage de données opérationnelles.",
           "Le CHU Carémeau et les structures médico-sociales du Gard représentent un terrain fertile pour l'IA appliquée à la gestion administrative et à la coordination de soins.",
           "Le Parc Georges Besse concentre des structures tertiaires et numériques où les cas IA (qualification de leads, génération de contenus, analyse contractuelle) sont immédiatement activables.",
-          "Tarifs publics, aucun supplément géographique : le tarif Nîmes est le même que partout en France. Frais de déplacement et hébergement facturés séparément.",
+          "Tarifs publics, aucun supplément géographique : le tarif Nîmes est le même que partout en France.",
           "Restitution toujours en présentiel à Nîmes dans vos locaux : atelier livrable en main propre avec votre direction ou comité de pilotage.",
         ],
         methodology: [
@@ -187,7 +187,7 @@ export const NIMES_COPY: VilleCopy = {
           "The presence of BRL Groupe (HQ) and agri-food supply chains (Royal Canin Aimargues, Perrier Vergèze) creates real demand for document automation and operational data management.",
           "CHU Carémeau and Gard medico-social structures represent fertile ground for AI applied to administrative management and care coordination.",
           "Parc Georges Besse concentrates tertiary and digital structures where AI use cases (lead qualification, content generation, contract analysis) are immediately activatable.",
-          "Public pricing, no geographic surcharge: Nîmes rate is the same as anywhere in France. Travel and lodging billed separately.",
+          "Public pricing, no geographic surcharge: Nîmes rate is the same as anywhere in France.",
           "Read-out always in person at your Nîmes premises: deliverable workshop handed face-to-face to your leadership or steering committee.",
         ],
         methodology: [
@@ -290,7 +290,7 @@ export const NIMES_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Nîmes se déclinent en formats sur site d'une à plusieurs journées. Vos collaborateurs gardois ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — BTP, commerce, services, ingénierie, agroalimentaire. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Nîmes se déclinent en formats sur site d'une à plusieurs journées. Vos collaborateurs gardois ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — BTP, commerce, services, ingénierie, agroalimentaire.",
         whyHere: [
           "Nîmes est une ville de TPE et PME actives : le format collectif (1 journée) est le plus calibré pour les structures de quelques personnes à une centaine de collaborateurs.",
           "Le tissu commercial (centre-ville, zones Grézan et Parc Georges Besse) concentre des équipes qui gagnent directement à automatiser devis, emails commerciaux, suivi client et reporting.",
@@ -396,7 +396,7 @@ export const NIMES_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation prévue. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur nîmois, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Nîmes come in on-site formats from one to several days. Your Gard staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — construction, trade, services, engineering, agri-food. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Nîmes come in on-site formats from one to several days. Your Gard staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — construction, trade, services, engineering, agri-food.",
         whyHere: [
           "Nîmes is a city of active micro-businesses and SMEs: the one-day format (one day) is best calibrated for structures from a few people to about a hundred staff.",
           "The commercial fabric (city centre, Grézan and Parc Georges Besse zones) concentrates teams that gain directly from automating quotes, commercial emails, client follow-up and reporting.",
@@ -720,7 +720,7 @@ export const NIMES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Nîmes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier gardois, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de PME BTP, gérants de négoce, responsables logistique et experts agroalimentaires du Gard. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Nîmes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier gardois, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de PME BTP, gérants de négoce, responsables logistique et experts agroalimentaires du Gard.",
         whyHere: [
           "Nîmes est un bassin de TPE et PME indépendantes où le dirigeant porte souvent plusieurs casquettes : le coaching 1-to-1 s'adapte à votre agenda chargé, à votre rythme réel et à vos cas opérationnels immédiats.",
           "Le BTP et les services aux entreprises nîmois génèrent un volume documentaire quotidien élevé (devis, bons de commande, comptes-rendus de chantier) : chaque séance travaille sur vos vrais documents pour des gains immédiats.",
@@ -807,7 +807,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux nîmois ?",
-            a: "Oui. Séances sur site dans vos locaux (Parc Georges Besse, centre-ville, zone Grézan) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+            a: "Oui. Séances sur site dans vos locaux (Parc Georges Besse, centre-ville, zone Grézan) ou en visio selon votre disponibilité.",
           },
           {
             q: "Mes données et documents restent-ils confidentiels ?",
@@ -823,10 +823,10 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD. Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Nîmes is an individual, bespoke engagement: you progress at your own pace, on your own Gard business cases, with a dedicated consultant. From €990 excl. VAT. Suited to SME executives in construction, logistics, agri-food and services across the Gard. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Nîmes is an individual, bespoke engagement: you progress at your own pace, on your own Gard business cases, with a dedicated consultant. From €990 excl. VAT. Suited to SME executives in construction, logistics, agri-food and services across the Gard.",
         whyHere: [
           "Nîmes is a basin of independent micro-businesses and SMEs where the executive often wears several hats: 1-to-1 coaching adapts to your busy schedule, your real pace and your immediate operational cases.",
           "Nîmes construction and business services generate high daily document volumes (quotes, purchase orders, site meeting minutes): each session works on your real documents for immediate gains.",
@@ -912,7 +912,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Can coaching sessions be held at my Nîmes premises?",
-            a: "Yes. On-site sessions at your offices (Parc Georges Besse, city centre, Grézan zone) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Yes. On-site sessions at your offices (Parc Georges Besse, city centre, Grézan zone) or via video depending on availability.",
           },
           {
             q: "Does my data stay confidential?",
@@ -928,7 +928,7 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance. Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
     sitesWeb: {
@@ -1110,7 +1110,7 @@ export const NIMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nîmes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France. Frais de déplacement et hébergement facturés séparément.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France.",
     },
     {
       q: "Quels secteurs nîmois sont les plus concernés par l'IA ?",
@@ -1122,7 +1122,7 @@ export const NIMES_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site dans nos locaux à Nîmes ?",
-      a: "Oui. Toutes nos interventions nîmoises sont par défaut sur site dans vos bureaux ou ateliers. Nos consultants couvrent Nîmes centre, le Parc Georges Besse, la zone Grézan, et le bassin nîmois (Marguerittes, Bouillargues, Manduel, Beaucaire). Frais de déplacement et hébergement facturés à part.",
+      a: "Oui. Toutes nos interventions nîmoises sont par défaut sur site dans vos bureaux ou ateliers. Nos consultants couvrent Nîmes centre, le Parc Georges Besse, la zone Grézan, et le bassin nîmois (Marguerittes, Bouillargues, Manduel, Beaucaire).",
     },
     {
       q: "Axion-IA peut-il intervenir pour des entreprises liées au tourisme ou à la Féria de Nîmes ?",

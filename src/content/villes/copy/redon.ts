@@ -65,7 +65,7 @@ export const REDON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Redon ?",
-      a: "Nos consultants arrivent par TER depuis Rennes (50 min) ou Nantes (50 min) — gare de Redon sur le noeud TGV Rennes-Nantes-Quimper. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants arrivent par TER depuis Rennes (50 min) ou Nantes (50 min) — gare de Redon sur le noeud TGV Rennes-Nantes-Quimper.",
     },
   ],
 };

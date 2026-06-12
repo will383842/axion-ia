@@ -65,7 +65,7 @@ export const BAYEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bayeux ?",
-      a: "Nos consultants viennent de Caen (30 min N13). Déplacement direct sur site (musée, hôtel, commerce, cabinet). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants viennent de Caen (30 min N13). Déplacement direct sur site (musée, hôtel, commerce, cabinet). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

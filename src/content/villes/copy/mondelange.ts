@@ -65,7 +65,7 @@ export const MONDELANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mondelange ?",
-      a: "Nos consultants se déplacent via gare SNCF Hagondange (ligne Metz–Luxembourg–TGV) ou autoroute A31. Metz à 20 min, Thionville à 15 min, Luxembourg à 45 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Hagondange (ligne Metz–Luxembourg–TGV) ou autoroute A31. Metz à 20 min, Thionville à 15 min, Luxembourg à 45 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site au Malesherbois ?",
-      a: "Nos consultants se déplacent au Malesherbois depuis Paris (1h15 RER D) ou Orléans (50 min A19). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus du forfait, tarifs publics transparents.",
+      a: "Nos consultants se déplacent au Malesherbois depuis Paris (1h15 RER D) ou Orléans (50 min A19). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

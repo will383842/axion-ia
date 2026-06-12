@@ -65,7 +65,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV gare Poitiers (1h40) puis 50 min route vers Montmorillon. Alternative : Limoges (1h15 route). Pour les multi-jours, hébergement local. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Paris en TGV gare Poitiers (1h40) puis 50 min route vers Montmorillon. Alternative : Limoges (1h15 route). Pour les multi-jours, hébergement local.",
     },
   ],
 };

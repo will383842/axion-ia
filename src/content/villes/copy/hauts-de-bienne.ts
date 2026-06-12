@@ -65,7 +65,7 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Hauts de Bienne ?",
-      a: "Nos consultants interviennent à Hauts de Bienne depuis Besançon (1 h 30) ou Genève (50 min). Intervention sur site dans vos ateliers, commerces ou hébergements. Frais de déplacement facturés séparément, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Hauts de Bienne depuis Besançon (1 h 30) ou Genève (50 min). Intervention sur site dans vos ateliers, commerces ou hébergements.",
     },
   ],
 };

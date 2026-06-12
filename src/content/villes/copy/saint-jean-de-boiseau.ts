@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Frais de déplacement inclus dans le périmètre Nantes Métropole. Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

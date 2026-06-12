@@ -246,7 +246,7 @@ export const YERRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Yerres est à 25 minutes de Paris-Gare de Lyon par le RER D et à 15 minutes d'Orly. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Yerres est à 25 minutes de Paris-Gare de Lyon par le RER D et à 15 minutes d'Orly. Nos consultants se déplacent sur site.",
     },
   ],
 };

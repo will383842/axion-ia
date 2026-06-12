@@ -65,7 +65,7 @@ export const GUINGAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Guingamp ?",
-      a: "TGV Paris-Guingamp en 3h (direct, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Hébergement local disponible. Déplacements facturés séparément, tarifs publics.",
+      a: "TGV Paris-Guingamp en 3h (direct, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Hébergement local disponible.",
     },
   ],
 };

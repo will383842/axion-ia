@@ -65,7 +65,7 @@ export const PERENCHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Pérenchies ?",
-      a: "Nos consultants interviennent à Pérenchies depuis Lille (15 min). Intervention sur site dans votre commerce, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Armentières (10 min). Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Pérenchies depuis Lille (15 min). Intervention sur site dans votre commerce, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Armentières (10 min).",
     },
   ],
 };

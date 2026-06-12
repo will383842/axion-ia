@@ -236,7 +236,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de La Madeleine ?",
-      a: "Oui. Nous intervenons à Lille, Marcq-en-Barœul, Marquette-lez-Lille et Saint-André-lez-Lille au sein de la Métropole européenne de Lille, sans frais de déplacement supplémentaires intra-MEL.",
+      a: "Oui. Nous intervenons à Lille, Marcq-en-Barœul, Marquette-lez-Lille et Saint-André-lez-Lille au sein de la Métropole européenne de Lille.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à La Madeleine ?",

@@ -65,7 +65,7 @@ export const CHANVERRIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Chanverrie depuis Cholet ou Nantes ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Chanverrie. Cholet à 30 km, Nantes à 95 km. Accès A87 à 25 km. Frais déplacement inclus en bocage vendéen.",
+      a: "Nos consultants interviennent directement dans vos locaux à Chanverrie. Cholet à 30 km, Nantes à 95 km. Accès A87 à 25 km.",
     },
   ],
 };

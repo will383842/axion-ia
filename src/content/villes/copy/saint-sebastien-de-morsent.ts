@@ -65,7 +65,7 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h10 train gare Évreux-Normandie, puis 10 min) ou d'Évreux centre (5 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h10 train gare Évreux-Normandie, puis 10 min) ou d'Évreux centre (5 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

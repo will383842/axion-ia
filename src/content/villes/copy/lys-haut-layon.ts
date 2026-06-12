@@ -65,7 +65,7 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans le vignoble du Layon ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Lys-Haut-Layon. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (30 min) en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Lys-Haut-Layon. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

@@ -69,7 +69,7 @@ export const LE_TEIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants rejoignent Le Teil depuis Lyon (1h30) ou Valence (40 min). Frais de déplacement facturés séparément, grille tarifaire publique. Sessions sur site ou en visio.",
+      a: "Nos consultants rejoignent Le Teil depuis Lyon (1h30) ou Valence (40 min). Sessions sur site ou en visio.",
     },
   ],
 };

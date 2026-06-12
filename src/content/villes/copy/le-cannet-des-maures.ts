@@ -65,7 +65,7 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Cannet-des-Maures ?",
-      a: "Le Cannet-des-Maures est à 5 min du Luc et 25 min de Brignoles via A8. Nos consultants se déplacent dans vos locaux ou domaines. Frais de mission en sus, grille tarifaire publique.",
+      a: "Le Cannet-des-Maures est à 5 min du Luc et 25 min de Brignoles via A8. Nos consultants se déplacent dans vos locaux ou domaines.",
     },
   ],
 };

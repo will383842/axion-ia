@@ -65,7 +65,7 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sainghin-en-Weppes ?",
-      a: "Nos consultants interviennent à Sainghin-en-Weppes depuis Lille (20 min). Intervention sur site dans votre exploitation agricole, atelier, cabinet, commerce ou en visio. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents. Proximité de Lille pour toute logistique mission multi-jours.",
+      a: "Nos consultants interviennent à Sainghin-en-Weppes depuis Lille (20 min). Intervention sur site dans votre exploitation agricole, atelier, cabinet, commerce ou en visio. Proximité de Lille pour toute logistique mission multi-jours.",
     },
   ],
 };

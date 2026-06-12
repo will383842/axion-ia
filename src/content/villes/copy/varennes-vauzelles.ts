@@ -65,7 +65,7 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Varennes-Vauzelles ?",
-      a: "Nos consultants interviennent à Varennes-Vauzelles depuis Paris (2 h 15 A77) ou Nevers (5 min). Gare SNCF Nevers à 10 min, ligne Intercités Paris-Clermont. Intervention sur site, frais de déplacement facturés séparément, tarifs publics.",
+      a: "Nos consultants interviennent à Varennes-Vauzelles depuis Paris (2 h 15 A77) ou Nevers (5 min). Gare SNCF Nevers à 10 min, ligne Intercités Paris-Clermont. Intervention sur site.",
     },
   ],
 };

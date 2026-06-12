@@ -65,7 +65,7 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Saulve ?",
-      a: "Nos consultants se déplacent à Saint-Saulve via gare TGV Valenciennes (10 min) ou autoroutes A2/A23. Valenciennes centre à 5 min, Lille à 45 min. Intervention sur site ou en visio. Frais de déplacement facturés séparément, tarifs publics.",
+      a: "Nos consultants se déplacent à Saint-Saulve via gare TGV Valenciennes (10 min) ou autoroutes A2/A23. Valenciennes centre à 5 min, Lille à 45 min. Intervention sur site ou en visio.",
     },
   ],
 };

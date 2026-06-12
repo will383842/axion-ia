@@ -65,7 +65,7 @@ export const DEOLS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Déols ?",
-      a: "Nos consultants se déplacent via la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) ou par l'A20 depuis Paris (2h40) ou Limoges (1h30). Déols est à 5 minutes de Châteauroux centre. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent via la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) ou par l'A20 depuis Paris (2h40) ou Limoges (1h30). Déols est à 5 minutes de Châteauroux centre.",
     },
   ],
 };

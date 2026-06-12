@@ -134,7 +134,7 @@ export const PAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Périmètre et livrables définis à la signature, devis transparent à partir de 24 à 48 h selon la complexité. Code custom (TypeScript, Python, FastAPI) et UX/UI sur mesure, e-commerce multi-CMS et briques IA intégrés sans recours à plusieurs prestataires. Hébergement en Union européenne, conformité RGPD documentée. Aucun lock-in : code source, modèles et accès restent chez vous, repris en interne ou par tout intégrateur de la French Tech Pau Béarn. Frais de logement, repas et trajet en sus pour les interventions sur site.",
+          "Périmètre et livrables définis à la signature, devis transparent à partir de 24 à 48 h selon la complexité. Code custom (TypeScript, Python, FastAPI) et UX/UI sur mesure, e-commerce multi-CMS et briques IA intégrés sans recours à plusieurs prestataires. Hébergement en Union européenne, conformité RGPD documentée. Aucun lock-in : code source, modèles et accès restent chez vous, repris en interne ou par tout intégrateur de la French Tech Pau Béarn.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Pau, rooted in the real fabric of the Pau Béarn Pyrénées agglomeration: software publishers and startups from the Atelier Numérique and the La Banquiz accelerator at the Hélioparc technopole, aerospace subcontractors around Safran Helicopter Engines (Bordes), and energy engineering teams orbiting TotalEnergies' CSTJF — home to the Pangea supercomputer. We build IA-native platforms in custom code (TypeScript, Python, FastAPI): RAG chatbots, semantic search, conversational agents, e-commerce portals. EU hosting, GDPR compliance, zero vendor lock-in.",
@@ -220,7 +220,7 @@ export const PAU_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Scope and deliverables defined at signature, transparent quote from 24 to 48 hours depending on complexity. Custom code (TypeScript, Python, FastAPI) and bespoke UX/UI, multi-CMS e-commerce and AI building blocks integrated without juggling several providers. EU hosting, documented GDPR compliance. No lock-in: source code, models and accesses stay with you, taken over in-house or by any French Tech Pau Béarn integrator. Lodging, meals and travel billed separately for on-site work.",
+          "Scope and deliverables defined at signature, transparent quote from 24 to 48 hours depending on complexity. Custom code (TypeScript, Python, FastAPI) and bespoke UX/UI, multi-CMS e-commerce and AI building blocks integrated without juggling several providers. EU hosting, documented GDPR compliance. No lock-in: source code, models and accesses stay with you, taken over in-house or by any French Tech Pau Béarn integrator.",
       },
     },
   },

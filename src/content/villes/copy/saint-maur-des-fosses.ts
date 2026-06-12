@@ -236,7 +236,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Saint-Maur-des-Fossés ?",
-      a: "Oui, nous intervenons à Joinville-le-Pont, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Maisons-Alfort, Bonneuil-sur-Marne et Sucy-en-Brie, sans frais de déplacement supplémentaires en Val-de-Marne.",
+      a: "Oui, nous intervenons à Joinville-le-Pont, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Maisons-Alfort, Bonneuil-sur-Marne et Sucy-en-Brie.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Saint-Maur-des-Fossés ?",

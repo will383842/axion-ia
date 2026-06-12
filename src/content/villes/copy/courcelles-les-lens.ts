@@ -65,7 +65,7 @@ export const COURCELLES_LES_LENS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Courcelles-lès-Lens ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Hénin-Beaumont à 5 min, Lille à 30 min A1. Consultants sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare Hénin-Beaumont à 5 min, Lille à 30 min A1. Consultants sur site.",
     },
   ],
 };

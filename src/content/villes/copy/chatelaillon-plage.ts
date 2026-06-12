@@ -65,7 +65,7 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Châtelaillon-Plage ?",
-      a: "Nos consultants accèdent à Châtelaillon-Plage par TER (La Rochelle 15 min) ou voiture (N137). Mission sur site dans votre hôtel, restaurant ou commerce. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Châtelaillon-Plage par TER (La Rochelle 15 min) ou voiture (N137). Mission sur site dans votre hôtel, restaurant ou commerce.",
     },
   ],
 };

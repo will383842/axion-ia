@@ -65,7 +65,7 @@ export const WOIPPY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Woippy ?",
-      a: "Nos consultants se déplacent via gare Metz-Ville (10 min) ou autoroutes A31/A4. Metz centre à 10 min, Thionville à 25 min, Luxembourg à 50 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare Metz-Ville (10 min) ou autoroutes A31/A4. Metz centre à 10 min, Thionville à 25 min, Luxembourg à 50 min.",
     },
   ],
 };

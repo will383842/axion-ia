@@ -65,7 +65,7 @@ export const LUCCIANA_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis le continent ?",
-      a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent. Déplacements facturés séparément, tarifs publics.",
+      a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis le littoral ?",
-      a: "Nos consultants interviennent depuis Nice (30 min), Cagnes-sur-Mer (15 min) ou Sophia Antipolis (15 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement arrière-pays inclus.",
+      a: "Nos consultants interviennent depuis Nice (30 min), Cagnes-sur-Mer (15 min) ou Sophia Antipolis (15 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Antony ou Paris ?",
-      a: "Antony (5 min). Massy TGV (10 min). Paris centre (25 min). Aéroport Orly (15 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Antony (5 min). Massy TGV (10 min). Paris centre (25 min). Aéroport Orly (15 min).",
     },
   ],
 };

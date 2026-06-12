@@ -65,7 +65,7 @@ export const MARLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Marly ?",
-      a: "Nos consultants interviennent à Marly depuis Valenciennes centre (5 min). Intervention sur site dans votre commerce, cabinet, bureau ou en visio. Proximité immédiate du centre-ville valenciennois : aucun hébergement nécessaire. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Marly depuis Valenciennes centre (5 min). Intervention sur site dans votre commerce, cabinet, bureau ou en visio. Proximité immédiate du centre-ville valenciennois : aucun hébergement nécessaire.",
     },
   ],
 };

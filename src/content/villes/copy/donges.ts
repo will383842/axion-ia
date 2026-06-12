@@ -65,7 +65,7 @@ export const DONGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Donges depuis Nantes ?",
-      a: "Nos consultants se déplacent à Donges depuis Nantes (45 min) ou Saint-Nazaire (15 min). Gare TER Donges desservie. Hébergement local pour missions multi-jours. Frais de déplacement à part, tarifs transparents.",
+      a: "Nos consultants se déplacent à Donges depuis Nantes (45 min) ou Saint-Nazaire (15 min). Gare TER Donges desservie. Hébergement local pour missions multi-jours.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
     },
     {
       q: "Comment vos consultants se rendent-ils à Segré-en-Anjou Bleu ?",
-      a: "Nos consultants viennent d'Angers (45 min D775) ou de Laval (50 min). La gare TGV Angers Saint-Laud est à 45 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés en sus, tarifs transparents.",
+      a: "Nos consultants viennent d'Angers (45 min D775) ou de Laval (50 min). La gare TGV Angers Saint-Laud est à 45 min. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

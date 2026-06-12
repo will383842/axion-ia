@@ -65,7 +65,7 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Rambervillers ?",
-      a: "Nos consultants se déplacent via gare SNCF Rambervillers (ligne TER Lorraine) ou RN420/RD32. Épinal à 30 min, Saint-Dié à 35 min, Nancy à 1h. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Rambervillers (ligne TER Lorraine) ou RN420/RD32. Épinal à 30 min, Saint-Dié à 35 min, Nancy à 1h.",
     },
   ],
 };

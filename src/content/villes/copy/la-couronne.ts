@@ -65,7 +65,7 @@ export const LA_COURONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à La Couronne ?",
-      a: "Nos consultants accèdent à La Couronne via la gare TGV d'Angoulême (12 min, Paris 2h05 direct) ou la N10. Mission sur site dans vos locaux industriels, bureau ou commerce. Frais de déplacement facturés à part.",
+      a: "Nos consultants accèdent à La Couronne via la gare TGV d'Angoulême (12 min, Paris 2h05 direct) ou la N10. Mission sur site dans vos locaux industriels, bureau ou commerce.",
     },
   ],
 };

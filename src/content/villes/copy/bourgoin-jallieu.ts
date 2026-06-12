@@ -246,7 +246,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (35 min par l'A43). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Lyon (35 min par l'A43).",
     },
   ],
 };

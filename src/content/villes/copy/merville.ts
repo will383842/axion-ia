@@ -65,7 +65,7 @@ export const MERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Béthune ?",
-      a: "Nos consultants viennent de Lille (35 min A25), Béthune (15 min) ou Hazebrouck (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lille (35 min A25), Béthune (15 min) ou Hazebrouck (15 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

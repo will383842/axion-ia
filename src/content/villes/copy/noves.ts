@@ -65,7 +65,7 @@ export const NOVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Noves ?",
-      a: "Nos consultants interviennent sur site à Noves sous 5 jours ouvrés. Avignon à 15 min, accès A7. Frais de déplacement inclus Petite Crau et Vallée du Rhône sud.",
+      a: "Nos consultants interviennent sur site à Noves sous 5 jours ouvrés. Avignon à 15 min, accès A7.",
     },
   ],
 };

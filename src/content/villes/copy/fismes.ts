@@ -65,7 +65,7 @@ export const FISMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Reims ?",
-      a: "Reims à 30 min par route. Paris à 1 h 20 via A4. Gare SNCF Fismes sur ligne Reims-Laon. Déplacements facturés séparément, tarifs publics.",
+      a: "Reims à 30 min par route. Paris à 1 h 20 via A4. Gare SNCF Fismes sur ligne Reims-Laon.",
     },
   ],
 };

@@ -241,7 +241,7 @@ export const AUXERRE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches d'Auxerre ?",
-      a: "Oui, nous intervenons à Monéteau, Perrigny, Saint-Georges-sur-Baulche, Augy, Champs-sur-Yonne, Venoy, Villefargeau, Quenne, Chevannes et Villeneuve-Saint-Salves, sans frais de déplacement supplémentaires depuis Auxerre.",
+      a: "Oui, nous intervenons à Monéteau, Perrigny, Saint-Georges-sur-Baulche, Augy, Champs-sur-Yonne, Venoy, Villefargeau, Quenne, Chevannes et Villeneuve-Saint-Salves, au départ d'Auxerre.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Auxerre ?",

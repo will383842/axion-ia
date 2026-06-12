@@ -65,7 +65,7 @@ export const PORDIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Rennes ?",
-      a: "Paris-Saint-Brieuc en 2h45 (TGV direct), puis 15 min jusqu'à Pordic. Rennes à 1h10. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Saint-Brieuc en 2h45 (TGV direct), puis 15 min jusqu'à Pordic. Rennes à 1h10.",
     },
   ],
 };

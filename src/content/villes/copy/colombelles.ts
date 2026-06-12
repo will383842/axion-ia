@@ -65,7 +65,7 @@ export const COLOMBELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Colombelles ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, espace créatif, commerce). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, espace créatif, commerce).",
     },
   ],
 };

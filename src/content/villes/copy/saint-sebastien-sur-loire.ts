@@ -238,7 +238,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Saint-Sébastien. Frais de déplacement (TGV, repas, hébergement si multi-jours) facturés à part du forfait journée. Pour les TPE/PME, le forfait Sur place reste accessible.",
+      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Saint-Sébastien. Pour les TPE/PME, le forfait Sur place reste accessible.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets ?",

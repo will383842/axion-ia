@@ -65,7 +65,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Hague ?",
-      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 30). Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 30). Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg.",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Wasquehal ?",
-      a: "Nos consultants se déplacent sur site (parc de la Pilaterie, centre-ville) ou en visio. Accès rapide depuis Lille (15 min). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants se déplacent sur site (parc de la Pilaterie, centre-ville) ou en visio. Accès rapide depuis Lille (15 min).",
     },
   ],
 };

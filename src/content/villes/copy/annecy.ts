@@ -2,8 +2,6 @@
 //
 // Doctrine appliquée :
 //   - Aucun délai chiffré.
-//   - Aucun « frais de déplacement intégrés » : frais logement, repas et
-//     forfait trajet facturés en sus sur les interventions.
 //   - Aucun prix en dur : libellés contextuels uniquement (pricing.ts SSOT).
 //   - Durée minimale = 1 journée. Pas de demi-journée.
 //   - Tailles entreprises en langage INSEE : TPE / PME / ETI / GE.
@@ -37,16 +35,16 @@ export const ANNECY_COPY: VilleCopy = {
       en: "Operational AI audit in Annecy: we map your automatable workflows and quantify ROI for industrial SMEs, outdoor equipment makers and B2B service firms across the Annecy basin and cross-border area.",
     },
     interventions: {
-      fr: "Interventions IA à Annecy : formats sur site d'une à plusieurs journées adaptés aux équipes industrielles, R&D et commerciales. Vos collaborateurs repartent outillés pour leur réalité métier. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Annecy: on-site formats from one to several days tailored to industrial, R&D and commercial teams. Your staff leave equipped for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Annecy : formats sur site d'une à plusieurs journées adaptés aux équipes industrielles, R&D et commerciales. Vos collaborateurs repartent outillés pour leur réalité métier.",
+      en: "AI sessions in Annecy: on-site formats from one to several days tailored to industrial, R&D and commercial teams. Your staff leave equipped for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Annecy : déploiement de l'IA dans vos outils existants (ERP industriel, CRM, qualité, logistique) avec ROI chiffré contractuel. Vos équipes gardent la main, aucun lock-in technologique.",
       en: "AI implementation in Annecy: deploying AI into your existing tools (industrial ERP, CRM, quality, logistics) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel 1-to-1 à Annecy : séances sur mesure pour dirigeants et cadres de l'outdoor/sport, de la mécanique de précision, des PME de Haute-Savoie et du bassin lémanique. Ancré sur le tissu industriel annécien, Outdoor Sports Valley et la proximité Genève. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
-      en: "1-to-1 AI coaching in Annecy: bespoke sessions for executives and managers in outdoor/sport, precision mechanics, Haute-Savoie SMEs and the Lake Geneva basin. Grounded in Annecy's industrial fabric, Outdoor Sports Valley and Geneva proximity. Lodging, meals and travel allowance billed separately for on-site sessions.",
+      fr: "Coaching IA individuel 1-to-1 à Annecy : séances sur mesure pour dirigeants et cadres de l'outdoor/sport, de la mécanique de précision, des PME de Haute-Savoie et du bassin lémanique. Ancré sur le tissu industriel annécien, Outdoor Sports Valley et la proximité Genève.",
+      en: "1-to-1 AI coaching in Annecy: bespoke sessions for executives and managers in outdoor/sport, precision mechanics, Haute-Savoie SMEs and the Lake Geneva basin. Grounded in Annecy's industrial fabric, Outdoor Sports Valley and Geneva proximity.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI annéciennes — site vitrine premium pour marques outdoor (Outdoor Sports Valley) et mécanique de précision Mont-Blanc Industries, espace client interactif, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -299,7 +297,7 @@ export const ANNECY_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Annecy se déroulent en formats sur site d'une à plusieurs journées, adaptés aux réalités des équipes industrielles, outdoor, R&D et de service du bassin annécien. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Les interventions IA Axion-IA à Annecy se déroulent en formats sur site d'une à plusieurs journées, adaptés aux réalités des équipes industrielles, outdoor, R&D et de service du bassin annécien. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
           "Le bassin annécien concentre des secteurs à fort potentiel IA pratique : bureau d'études outdoor, ligne de production mécanique de précision, équipes commerciales export vers la Suisse.",
           "Nos consultants adaptent chaque session aux réalités métier locales — terminologie technique outdoor, culture Qualité industrie, enjeux transfrontaliers — sans session générique recyclée.",
@@ -398,14 +396,14 @@ export const ANNECY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous également sur les sites hors d'Annecy dans le bassin ?",
-            a: "Oui. Nos consultants couvrent l'ensemble du bassin annécien : Vallée de l'Arve, Rumilly, Faverges, Cluses, ainsi que les sites transfrontaliers côté franco-genevois. Frais de déplacement, logement et repas calculés selon la localisation.",
+            a: "Oui. Nos consultants couvrent l'ensemble du bassin annécien : Vallée de l'Arve, Rumilly, Faverges, Cluses, ainsi que les sites transfrontaliers côté franco-genevois.",
           },
         ],
         guarantees:
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Annecy come in on-site formats from one to several days, tailored to the realities of industrial, outdoor, R&D and service teams across the Annecy basin. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Annecy come in on-site formats from one to several days, tailored to the realities of industrial, outdoor, R&D and service teams across the Annecy basin. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "The Annecy basin concentrates sectors with strong practical AI potential: outdoor engineering teams, precision manufacturing lines, commercial teams exporting to Switzerland.",
           "Our consultants adapt each session to local professional realities — outdoor technical vocabulary, industrial quality culture, cross-border challenges — no recycled generic session.",
@@ -504,7 +502,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
           {
             q: "Do you also intervene at sites outside Annecy in the basin?",
-            a: "Yes. Our consultants cover the full Annecy basin: Vallée de l'Arve, Rumilly, Faverges, Cluses, and Franco-Genevan cross-border sites. Travel, lodging and meal expenses calculated according to location.",
+            a: "Yes. Our consultants cover the full Annecy basin: Vallée de l'Arve, Rumilly, Faverges, Cluses, and Franco-Genevan cross-border sites.",
           },
         ],
         guarantees:
@@ -807,7 +805,7 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Annecy ?",
-            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet ou dans la Vallée de l'Arve. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet ou dans la Vallée de l'Arve.",
           },
           {
             q: "Quelle est la fréquence des séances ?",
@@ -831,7 +829,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Annecy individually supports executives and managers at outdoor/sport SMEs, precision mechanics firms and the industrial fabric of Haute-Savoie. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — outdoor product catalogue management, precision technical documentation, key-account business development or HR management in an SME. You progress at your own pace, without superfluous theory.",
@@ -913,7 +911,7 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "What is the format of 1-to-1 coaching sessions in Annecy?",
-            a: "Sessions take place by video or in person at your offices in Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet or the Arve Valley. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Sessions take place by video or in person at your offices in Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet or the Arve Valley.",
           },
           {
             q: "How often are the sessions?",
@@ -937,7 +935,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
     sitesWeb: {
@@ -1123,7 +1121,7 @@ export const ANNECY_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans le bassin industriel d'Annecy et la Vallée de l'Arve ?",
-      a: "Oui. Nos consultants couvrent l'ensemble du Grand Annecy, la Vallée de l'Arve (décolletage, mécanique), Rumilly (Tefal/SEB) et les sites transfrontaliers côté Haute-Savoie. Frais de déplacement, logement et repas calculés selon la localisation, facturés en sus.",
+      a: "Oui. Nos consultants couvrent l'ensemble du Grand Annecy, la Vallée de l'Arve (décolletage, mécanique), Rumilly (Tefal/SEB) et les sites transfrontaliers côté Haute-Savoie.",
     },
     {
       q: "Quels secteurs B2B sont prioritaires à Annecy ?",

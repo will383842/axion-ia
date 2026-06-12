@@ -65,7 +65,7 @@ export const LANNILIS_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Lannilis depuis Brest ?",
-      a: "Lannilis est à 25 min de Brest en voiture (D788). Gare TGV Brest à 30 min, aéroport Brest-Bretagne à 25 min. Frais de déplacement facturés à part.",
+      a: "Lannilis est à 25 min de Brest en voiture (D788). Gare TGV Brest à 30 min, aéroport Brest-Bretagne à 25 min.",
     },
   ],
 };

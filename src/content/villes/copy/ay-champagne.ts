@@ -65,7 +65,7 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Reims ?",
-      a: "Reims à 25 min par route, Épernay à 5 min. Paris à 1 h 15 via A4. Gare SNCF Aÿ sur ligne Reims-Épernay. Frais de déplacement facturés à part.",
+      a: "Reims à 25 min par route, Épernay à 5 min. Paris à 1 h 15 via A4. Gare SNCF Aÿ sur ligne Reims-Épernay.",
     },
   ],
 };

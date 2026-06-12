@@ -65,7 +65,7 @@ export const MIMIZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Bordeaux ?",
-      a: "Nos consultants se déplacent depuis Bordeaux (1h30 par D626+A63). Pour les multi-jours, hébergement local (Mimizan-Bourg ou Mimizan-Plage). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Bordeaux (1h30 par D626+A63). Pour les multi-jours, hébergement local (Mimizan-Bourg ou Mimizan-Plage).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Limoges à Aixe-sur-Vienne ?",
-      a: "Nos consultants viennent de Limoges (15 min en voiture ou TER direct gare d'Aixe-sur-Vienne 10 min). Aucun frais de déplacement excessif pour les missions dans l'agglomération limougeaude. Visio également possible.",
+      a: "Nos consultants viennent de Limoges (15 min en voiture ou TER direct gare d'Aixe-sur-Vienne 10 min). Visio également possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const AVON_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Avon depuis Paris ?",
-      a: "Nos consultants rejoignent Avon en 40 min depuis Paris Gare de Lyon (Transilien R, gare Fontainebleau-Avon). Avon est la porte d'entrée ferroviaire du bassin Fontainebleau. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants rejoignent Avon en 40 min depuis Paris Gare de Lyon (Transilien R, gare Fontainebleau-Avon). Avon est la porte d'entrée ferroviaire du bassin Fontainebleau.",
     },
   ],
 };

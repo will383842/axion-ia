@@ -65,7 +65,7 @@ export const BORGO_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission en Corse depuis le continent ?",
-      a: "Nos consultants arrivent directement à l'aéroport Bastia-Poretta (sur la commune de Borgo, vols directs Paris/Lyon/Marseille/Nice). Borgo est à 5 min de l'aéroport. Frais de déplacement (vol, hébergement, repas) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants arrivent directement à l'aéroport Bastia-Poretta (sur la commune de Borgo, vols directs Paris/Lyon/Marseille/Nice). Borgo est à 5 min de l'aéroport.",
     },
   ],
 };

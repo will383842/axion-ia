@@ -65,7 +65,7 @@ export const LONGUEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels avantages de la proximité d'Amiens pour une mission IA ?",
-      a: "Longueau étant limitrophe d'Amiens (10 min centre-ville), nos consultants accèdent facilement à votre site. Pas de frais de déplacement excessifs. TGV Paris-Amiens en 1h15. L'agglomération concentre l'essentiel du tissu économique picard.",
+      a: "Longueau étant limitrophe d'Amiens (10 min centre-ville), nos consultants accèdent facilement à votre site. TGV Paris-Amiens en 1h15. L'agglomération concentre l'essentiel du tissu économique picard.",
     },
   ],
 };

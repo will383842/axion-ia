@@ -65,7 +65,7 @@ export const OSNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (35 min). Paris Saint-Lazare (40 min transilien J). CDG (45 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Cergy-Pontoise (5 min). Paris La Défense (35 min). Paris Saint-Lazare (40 min transilien J). CDG (45 min).",
     },
   ],
 };

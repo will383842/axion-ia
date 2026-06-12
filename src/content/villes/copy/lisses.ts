@@ -65,7 +65,7 @@ export const LISSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Nos consultants viennent de Paris (40 min A6/N104) ou Évry-Courcouronnes (10 min). Accès direct aux ZAE de Lisses. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris (40 min A6/N104) ou Évry-Courcouronnes (10 min). Accès direct aux ZAE de Lisses.",
     },
   ],
 };

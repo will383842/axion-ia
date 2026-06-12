@@ -242,7 +242,7 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris (30 min RER) pour les missions sur site à Montigny. Pour les multi-jours, repas et hébergement local possibles selon vos préférences. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris (30 min RER) pour les missions sur site à Montigny. Pour les multi-jours, repas et hébergement local possibles selon vos préférences.",
     },
   ],
 };

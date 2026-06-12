@@ -65,7 +65,7 @@ export const LUISANT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Luisant ?",
-      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse, puis 5 min Luisant). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse, puis 5 min Luisant).",
     },
   ],
 };

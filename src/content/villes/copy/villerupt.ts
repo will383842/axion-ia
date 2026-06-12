@@ -65,7 +65,7 @@ export const VILLERUPT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villerupt ?",
-      a: "Nos consultants se déplacent via A30/A31. Position frontalière Luxembourg à 25 min, Metz à 50 min, Nancy à 1h15. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants se déplacent via A30/A31. Position frontalière Luxembourg à 25 min, Metz à 50 min, Nancy à 1h15.",
     },
   ],
 };

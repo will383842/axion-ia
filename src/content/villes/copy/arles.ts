@@ -230,7 +230,7 @@ export const ARLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arles et en Camargue ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Arles et de son vaste territoire camarguais. Nous nous déplaçons sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Arles et de son vaste territoire camarguais. Nous nous déplaçons sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un hôtel ou un acteur culturel arlésien ?",

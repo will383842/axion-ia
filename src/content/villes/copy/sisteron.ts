@@ -65,7 +65,7 @@ export const SISTERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sisteron ?",
-      a: "Nos consultants se déplacent sur site à Sisteron depuis Aix-en-Provence (1h30 A51) ou Gap (50 min). Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Sisteron depuis Aix-en-Provence (1h30 A51) ou Gap (50 min). Hébergement local possible.",
     },
   ],
 };

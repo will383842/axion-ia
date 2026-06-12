@@ -3,10 +3,7 @@
 // Doctrine stricte (identique paris.ts / lyon.ts) :
 //   - Aucun « basé en UE ».
 //   - Aucun délai concret chiffré (« 5 jours », « 7 jours », etc.).
-//   - Aucun « frais de déplacement intégrés » — les frais sont en sus,
-//     calculés au cas par cas selon la zone.
-//   - Durée minimale = 1 journée. Mention systématique
-//     « frais de logement, repas et forfait trajet en sus » sur interventions.
+//   - Durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
 //   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
@@ -31,16 +28,16 @@ export const BESANCON_COPY: VilleCopy = {
       en: "Operational AI audit in Besançon: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Besançon practices to precision-tech or medical mid-caps at the TEMIS technopole.",
     },
     interventions: {
-      fr: "Interventions IA à Besançon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Besançon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Besançon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Besançon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Besançon : on déploie l'IA dans vos outils existants (CRM, ERP, LIMS, systèmes de précision) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
       en: "AI implementation in Besançon: we deploy AI into your existing tools (CRM, ERP, LIMS, precision systems) with contractually-costed ROI. Your teams stay in control, no Axion-IA dependency.",
     },
     unAUn: {
-      fr: "Accompagnement individuel IA à Besançon : sessions sur mesure pour dirigeants et décideurs bisontins — industrie de précision, santé, services — pour construire votre stratégie IA personnelle et passer à l'action. Frais de logement, repas et forfait trajet en sus.",
-      en: "One-to-one AI coaching in Besançon: bespoke sessions for Besançon executives and decision-makers — precision industry, health, services — to build your personal AI strategy and move to action. Lodging, meals and travel allowance billed separately.",
+      fr: "Accompagnement individuel IA à Besançon : sessions sur mesure pour dirigeants et décideurs bisontins — industrie de précision, santé, services — pour construire votre stratégie IA personnelle et passer à l'action.",
+      en: "One-to-one AI coaching in Besançon: bespoke sessions for Besançon executives and decision-makers — precision industry, health, services — to build your personal AI strategy and move to action.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI bisontines — site vitrine premium pour acteurs microtechniques (Pôle PMT, ENSMM/FEMTO-ST) et dispositifs médicaux TEMIS Santé, espace client interactif, dashboard métier connecté à votre CRM/ERP/LIMS. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -321,7 +318,7 @@ export const BESANCON_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Besançon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en atelier de précision, en laboratoire médical, au bureau ou en clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Besançon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en atelier de précision, en laboratoire médical, au bureau ou en clientèle.",
         whyHere: [
           "Besançon est un terrain d'intervention où la demande de formation IA est portée par des équipes aux profils techniques élevés : ingénieurs microtechniques (ENSMM, TEMIS Innovation), personnels médicaux (TEMIS Santé, CHRU), chercheurs (UFC, FEMTO-ST) et fonctions supports des ETI locales.",
           "Tous les quartiers et communes du Grand Besançon couverts en présentiel : TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, centre historique, École-Valentin, Chalezeule, Pirey et communes proches.",
@@ -427,7 +424,7 @@ export const BESANCON_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur bisontin — microtechniques, médical, industrie de précision, recherche — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Besançon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in the precision workshop, medical lab, office or in the field. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Besançon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in the precision workshop, medical lab, office or in the field.",
         whyHere: [
           "Besançon is an engagement ground where AI training demand is driven by high-technical profiles: precision engineers (ENSMM, TEMIS Innovation), medical staff (TEMIS Santé, CHRU), researchers (UFC, FEMTO-ST) and support functions of local mid-caps.",
           "All Grand Besançon districts and communes covered in person: TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, historic centre, École-Valentin, Chalezeule, Pirey and surrounding communes.",
@@ -749,7 +746,7 @@ export const BESANCON_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "L'accompagnement individuel IA Axion-IA à Besançon s'adresse aux dirigeants, décideurs et experts bisontins qui veulent construire leur stratégie IA personnelle et passer à l'action — industrie de précision, médical, recherche, services B2B. Sessions sur mesure, au rythme qui vous convient, en présentiel dans vos locaux bisontins ou à distance. Frais de logement, repas et forfait trajet facturés à part pour les sessions sur site.",
+        hero: "L'accompagnement individuel IA Axion-IA à Besançon s'adresse aux dirigeants, décideurs et experts bisontins qui veulent construire leur stratégie IA personnelle et passer à l'action — industrie de précision, médical, recherche, services B2B. Sessions sur mesure, au rythme qui vous convient, en présentiel dans vos locaux bisontins ou à distance.",
         whyHere: [
           "Besançon compte des dirigeants et décideurs à forte culture technique (microtechniques, médical, recherche) qui cherchent une approche IA rigoureuse et personnalisée, loin des formations génériques.",
           "L'accompagnement individuel est adapté aux profils techniques bisontins : ingénieurs devenus DG, directeurs R&D souhaitant cadrer leur stratégie IA, responsables médicaux évaluant les outils cliniques.",
@@ -832,7 +829,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Les sessions peuvent-elles se tenir à distance ?",
-            a: "Oui. Nous proposons des sessions en présentiel dans vos locaux bisontins (frais en sus) ou entièrement à distance selon votre préférence et votre agenda.",
+            a: "Oui. Nous proposons des sessions en présentiel dans vos locaux bisontins ou entièrement à distance selon votre préférence et votre agenda.",
           },
           {
             q: "Mes échanges et données restent-ils confidentiels ?",
@@ -855,7 +852,7 @@ export const BESANCON_COPY: VilleCopy = {
           "Confidentialité absolue : Confidentialité stricte, aucun partage de vos données ou stratégie. Contenu 100 % personnalisé sur vos cas d'usage bisontins réels — aucune session générique. Si après la première session vous estimez que le format ne vous convient pas, remboursement des sessions non réalisées. Vos outils et prompts vous appartiennent à l'issue de l'accompagnement.",
       },
       en: {
-        hero: "Axion-IA's one-to-one AI coaching in Besançon is for executives, decision-makers and experts who want to build their personal AI strategy and move to action — precision industry, medical, research, B2B services. Bespoke sessions at your pace, in person at your Besançon offices or remotely. Lodging, meals and travel allowance billed separately for on-site sessions.",
+        hero: "Axion-IA's one-to-one AI coaching in Besançon is for executives, decision-makers and experts who want to build their personal AI strategy and move to action — precision industry, medical, research, B2B services. Bespoke sessions at your pace, in person at your Besançon offices or remotely.",
         whyHere: [
           "Besançon has executives and decision-makers with strong technical backgrounds (microtechnologies, medical, research) who seek a rigorous, personalised AI approach far from generic training.",
           "One-to-one coaching is suited to Besançon technical profiles: engineers turned CEOs, R&D directors framing their AI strategy, medical managers evaluating clinical AI tools.",
@@ -938,7 +935,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Can sessions take place remotely?",
-            a: "Yes. We offer in-person sessions at your Besançon offices (travel costs billed separately) or fully remote depending on your preference and schedule.",
+            a: "Yes. We offer in-person sessions at your Besançon offices or fully remote depending on your preference and schedule.",
           },
           {
             q: "Do my exchanges and data remain confidential?",

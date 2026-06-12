@@ -246,7 +246,7 @@ export const MONTLUCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ou Moulins ?",
-      a: "Montluçon est à environ 100 km de Clermont-Ferrand et à 80 km de la gare TGV de Moulins. Nous intervenons sur tout le territoire. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
+      a: "Montluçon est à environ 100 km de Clermont-Ferrand et à 80 km de la gare TGV de Moulins. Nous intervenons sur tout le territoire.",
     },
   ],
 };

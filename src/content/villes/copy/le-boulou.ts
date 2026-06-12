@@ -65,7 +65,7 @@ export const LE_BOULOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Boulou ?",
-      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre dépôt, établissement ou commerce. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre dépôt, établissement ou commerce. Visio possible.",
     },
   ],
 };

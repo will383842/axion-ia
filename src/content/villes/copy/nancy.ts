@@ -33,8 +33,8 @@ export const NANCY_COPY: VilleCopy = {
       en: "Operational AI audit in Nancy: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Nancy city-centre micro-businesses, Lorraine basin industrial mid-caps and Brabois health organisations.",
     },
     interventions: {
-      fr: "Interventions IA à Nancy : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, adaptés à leur contexte — industrie, santé, recherche, tertiaire. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Nancy: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations, adapted to their context — industry, health, research, services. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Nancy : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, adaptés à leur contexte — industrie, santé, recherche, tertiaire.",
+      en: "AI sessions in Nancy: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations, adapted to their context — industry, health, research, services.",
     },
     implementation: {
       fr: "Implémentation IA à Nancy : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes de production ou cliniques) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -294,7 +294,7 @@ export const NANCY_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Nancy se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en industrie, en laboratoire, en milieu clinique ou en bureau. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Nancy se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en industrie, en laboratoire, en milieu clinique ou en bureau.",
         whyHere: [
           "Nancy est un terrain d'intervention multi-sectoriel : organisations de santé et de recherche (CHRU, Inria, CNRS), industrie lorraine (Saint-Gobain PAM, Materalia), enseignement supérieur (Mines Nancy, ICN, Polytech Nancy) et services tertiaires centre-ville.",
           "Tous les quartiers et communes du Grand Nancy couverts en présentiel : centre-ville, Brabois (Vandœuvre-lès-Nancy), campus Artem, Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
@@ -400,7 +400,7 @@ export const NANCY_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur nancéien — industrie, santé, recherche, services — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Nancy come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in industry, in the lab, in clinical settings or at the office. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Nancy come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in industry, in the lab, in clinical settings or at the office.",
         whyHere: [
           "Nancy is a multi-sector engagement ground: health and research organisations (CHRU, Inria, CNRS), Lorraine industry (Saint-Gobain PAM, Materalia), higher education (Mines Nancy, ICN, Polytech Nancy) and city-centre services.",
           "All Grand Nancy districts and communes covered in person: city centre, Brabois (Vandœuvre-lès-Nancy), Artem campus, Laxou, Villers-lès-Nancy, Maxéville, Tomblaine, Jarville-la-Malgrange, Saint-Max.",
@@ -726,7 +726,7 @@ export const NANCY_COPY: VilleCopy = {
         whyHere: [
           "Nancy est un terrain fertile pour le coaching individuel IA : dirigeants de PME industrielles, médecins-chercheurs du CHRU, ingénieurs Mines Nancy et chercheurs Inria cherchent un accompagnement ancré dans leur réalité sectorielle précise, pas une formation générique.",
           "Format ultra-personnalisé : le programme est construit autour de VOS cas d'usage, VOS outils, VOS contraintes réglementaires (santé, industrie, recherche publique) — aucun module préfabriqué.",
-          "Disponibilité Grand Nancy et distance : sessions en présentiel dans vos locaux nancéiens ou en distanciel selon vos préférences. Frais de logement, repas et forfait trajet en sus pour les sessions sur site.",
+          "Disponibilité Grand Nancy et distance : sessions en présentiel dans vos locaux nancéiens ou en distanciel selon vos préférences.",
           "Progression rapide : en quelques sessions, vous maîtrisez les outils IA opérationnels (Claude, GPT, Mistral, Perplexity) appliqués à votre métier réel, pas à des exemples génériques.",
           "Confidentiel et sans jugement : espace d'apprentissage sécurisé pour diriger, questionner, tester. Particulièrement apprécié par les cadres dirigeants qui ne veulent pas exposer leur niveau devant leurs équipes.",
           "Transfert durable : vous repartez avec des prompts, des workflows et des réflexes IA que vous continuez à utiliser après la fin de l'accompagnement — sans dépendance au consultant.",
@@ -805,7 +805,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Les séances se déroulent-elles en présentiel à Nancy ?",
-            a: "Les deux options sont disponibles : présentiel dans vos locaux nancéiens (Brabois, campus Artem, centre-ville, communes Grand Nancy) ou distanciel selon vos préférences. Frais de logement, repas et forfait trajet en sus pour les sessions sur site.",
+            a: "Les deux options sont disponibles : présentiel dans vos locaux nancéiens (Brabois, campus Artem, centre-ville, communes Grand Nancy) ou distanciel selon vos préférences.",
           },
           {
             q: "Le contenu est-il vraiment personnalisé à mon métier nancéien ?",
@@ -832,7 +832,7 @@ export const NANCY_COPY: VilleCopy = {
         whyHere: [
           "Nancy is fertile ground for individual AI coaching: industrial SME executives, CHRU clinician-researchers, Mines Nancy engineers and Inria researchers seek coaching rooted in their precise sector reality, not a generic training programme.",
           "Ultra-personalised format: the programme is built around YOUR use cases, YOUR tools, YOUR regulatory constraints (health, industry, public research) — no prefabricated modules.",
-          "Grand Nancy availability and remote: sessions in person at your Nancy offices or remotely per your preference. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          "Grand Nancy availability and remote: sessions in person at your Nancy offices or remotely per your preference.",
           "Fast progression: within a few sessions, you master operational AI tools (Claude, GPT, Mistral, Perplexity) applied to your real work, not generic examples.",
           "Confidential and non-judgmental: safe learning space to lead, question, test. Particularly valued by senior executives who don't want to expose their learning curve in front of their teams.",
           "Lasting transfer: you leave with prompts, workflows and AI reflexes you continue to use after coaching ends — no consultant dependency.",
@@ -911,7 +911,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Do sessions take place in person in Nancy?",
-            a: "Both options are available: in person at your Nancy offices (Brabois, Artem campus, city centre, Grand Nancy communes) or remotely per your preference. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Both options are available: in person at your Nancy offices (Brabois, Artem campus, city centre, Grand Nancy communes) or remotely per your preference.",
           },
           {
             q: "Is the content truly personalised to my Nancy work context?",

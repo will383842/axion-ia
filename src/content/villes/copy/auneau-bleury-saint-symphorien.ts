@@ -65,7 +65,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Auneau-Bleury-Saint-Symphorien ?",
-      a: "Nos consultants se déplacent depuis Paris (1h15 via A10/A11) ou Chartres (25 min). Gare d'Auneau-Aunay (TER vers Chartres). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (1h15 via A10/A11) ou Chartres (25 min). Gare d'Auneau-Aunay (TER vers Chartres).",
     },
   ],
 };

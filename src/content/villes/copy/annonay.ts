@@ -65,7 +65,7 @@ export const ANNONAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Lyon (1h15) ou Saint-Étienne (45 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h15) ou Saint-Étienne (45 min). Tarifs publics.",
     },
   ],
 };

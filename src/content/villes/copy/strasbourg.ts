@@ -38,16 +38,16 @@ export const STRASBOURG_COPY: VilleCopy = {
       en: "Operational AI audit in Strasbourg: we identify your automatable workflows and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for European institutions, PII biotech firms and Alsatian SMEs.",
     },
     interventions: {
-      fr: "Interventions IA à Strasbourg : formats sur site d'une à plusieurs journées pour vos équipes, dans vos locaux strasbourgeois. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Strasbourg: on-site formats from one to several days for your teams, at your Strasbourg premises. Your staff leave autonomous with AI tools configured for their work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Strasbourg : formats sur site d'une à plusieurs journées pour vos équipes, dans vos locaux strasbourgeois. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier.",
+      en: "AI sessions in Strasbourg: on-site formats from one to several days for your teams, at your Strasbourg premises. Your staff leave autonomous with AI tools configured for their work.",
     },
     implementation: {
       fr: "Implémentation IA à Strasbourg : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Spécificité transfrontalière : multilinguisme FR/DE/EN géré nativement. Vos équipes gardent la main.",
       en: "AI implementation in Strasbourg: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Cross-border specificity: FR/DE/EN multilingualism natively handled. Your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Strasbourg : accompagnement individuel pour dirigeants et managers des institutions européennes, du biotech PII et des ETI industrielles de l'Eurométropole. Sessions confidentielles en présentiel (Wacken, Presqu'île, Illkirch) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}. Frais de déplacement hors Strasbourg intra-muros en sus.",
-      en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Entry rate from €990 excl. VAT. Travel expenses outside central Strasbourg billed separately.",
+      fr: "Coaching IA 1-to-1 à Strasbourg : accompagnement individuel pour dirigeants et managers des institutions européennes, du biotech PII et des ETI industrielles de l'Eurométropole. Sessions confidentielles en présentiel (Wacken, Presqu'île, Illkirch) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
+      en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Entry rate from €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour institutions européennes, biotech Alsace BioValley et ETI industrielles strasbourgeoises — site multilingue FR/DE/EN, portail métier biotech, dashboard connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -302,7 +302,7 @@ export const STRASBOURG_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Strasbourg se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Strasbourg se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
           "Strasbourg est desservie en moins de 2h depuis Paris en TGV et en 1h15 depuis Francfort en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
           "Tous les secteurs du bassin strasbourgeois couverts en présentiel : Wacken-Europe, Presqu'île, Parc d'Innovation d'Illkirch (PII), Espace Européen de l'Entreprise à Schiltigheim, Port du Rhin, communes de l'Eurométropole.",
@@ -408,7 +408,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur (biotech, institutionnel, industriel, médias), aucune session générique recyclée. Gestion bilingue FR/DE disponible pour les organisations transfrontalières.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Strasbourg come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Strasbourg come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "Strasbourg is under 2h from Paris by TGV and 1h15 from Frankfurt by ICE: our consultants arrive in the morning and leave in the evening, minimising logistics costs for you.",
           "All Strasbourg basin sectors covered in person: Wacken-Europe, Presqu'île, Illkirch Innovation Park (PII), Espace Européen de l'Entreprise in Schiltigheim, Port du Rhin, Eurométropole communes.",
@@ -730,7 +730,7 @@ export const STRASBOURG_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Strasbourg s'adresse aux dirigeants, managers et experts des institutions européennes (Parlement, Conseil de l'Europe, CEDH), des structures biotech du Parc d'Innovation d'Illkirch et des ETI industrielles de l'Eurométropole. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels, dans votre langue de travail (FR, DE ou EN). Tarif d'entrée {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel hors Strasbourg intra-muros.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Strasbourg s'adresse aux dirigeants, managers et experts des institutions européennes (Parlement, Conseil de l'Europe, CEDH), des structures biotech du Parc d'Innovation d'Illkirch et des ETI industrielles de l'Eurométropole. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels, dans votre langue de travail (FR, DE ou EN). Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
         whyHere: [
           "Strasbourg concentre une densité unique de profils pour le coaching IA 1-to-1 : fonctionnaires et cadres des institutions européennes, directeurs R&D des biotech du PII, managers franco-allemands d'ETI industrielles transfrontalières — autant de profils qui ne trouvent pas leurs pairs pour parler IA librement.",
           "La dimension trilingue FR/DE/EN de l'Eurodistrict fait de Strasbourg un cas particulier : nous conduisons les séances dans la langue de travail du dirigeant, y compris en mode bilingue pour les profils franco-allemands de l'Eurodistrict Strasbourg-Ortenau.",
@@ -771,19 +771,19 @@ export const STRASBOURG_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "à partir de {{price:intervention-dirigeants|flat}}",
             detail:
-              "Pour indépendants, gérants de TPE et professions libérales strasbourgeoises. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel hors Strasbourg intra-muros.",
+              "Pour indépendants, gérants de TPE et professions libérales strasbourgeoises. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires.",
           },
           {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
-              "Pour dirigeants et managers de PME strasbourgeoises (biotech PII, IT, industrie, services B2B). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes bilingues, reporting, gestion de projet IA. Frais de logement, repas et forfait trajet en sus pour le présentiel hors intra-muros.",
+              "Pour dirigeants et managers de PME strasbourgeoises (biotech PII, IT, industrie, services B2B). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes bilingues, reporting, gestion de projet IA.",
           },
           {
             sizeLabel: "ETI",
             price: "Parcours ETI — sur devis",
             detail:
-              "Pour DG, DAF, DRH et directeurs d'ETI industrielles ou biotech de l'Eurométropole. Travail sur la gouvernance IA, la communication interne FR/DE/EN, la conduite du changement et la souveraineté des données. Frais de logement, repas et forfait trajet en sus pour le présentiel hors intra-muros.",
+              "Pour DG, DAF, DRH et directeurs d'ETI industrielles ou biotech de l'Eurométropole. Travail sur la gouvernance IA, la communication interne FR/DE/EN, la conduite du changement et la souveraineté des données.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -817,7 +817,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée et comment est facturé le coaching ?",
-            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court. Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Strasbourg intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
           },
           {
             q: "La confidentialité est-elle garantie pour les profils institutionnels ou biotech ?",
@@ -825,7 +825,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Les séances se déroulent-elles en présentiel à Strasbourg ou à distance ?",
-            a: "Les deux sont possibles selon vos préférences et contraintes d'agenda. Présentiel dans vos locaux strasbourgeois (Wacken, Presqu'île, PII d'Illkirch) ou à distance en visio sécurisée. Frais de logement, repas et forfait trajet en sus pour le présentiel hors Strasbourg intra-muros.",
+            a: "Les deux sont possibles selon vos préférences et contraintes d'agenda. Présentiel dans vos locaux strasbourgeois (Wacken, Presqu'île, PII d'Illkirch) ou à distance en visio sécurisée.",
           },
           {
             q: "Quelle différence avec une formation collective IA à Strasbourg ?",
@@ -833,10 +833,10 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Coaching disponible en FR, DE ou EN selon votre profil. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Frais de logement, repas et forfait trajet facturés en sus et validés avec vous avant chaque séance en présentiel. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
+          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Coaching disponible en FR, DE ou EN selon votre profil. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Strasbourg is for executives, managers and experts from European institutions (Parliament, Council of Europe, ECHR), Illkirch Innovation Park biotech firms and Eurométropole industrial mid-caps. No group, no generic programme: each session is built around your real challenges, in your working language (FR, DE or EN). Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately for on-site sessions outside central Strasbourg.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Strasbourg is for executives, managers and experts from European institutions (Parliament, Council of Europe, ECHR), Illkirch Innovation Park biotech firms and Eurométropole industrial mid-caps. No group, no generic programme: each session is built around your real challenges, in your working language (FR, DE or EN). Entry rate from €990 excl. VAT.",
         whyHere: [
           "Strasbourg concentrates a unique density of 1-to-1 AI coaching profiles: European institution officials and managers, PII R&D directors, Franco-German industrial mid-cap managers — people who find no peers to discuss AI freely.",
           "The trilingual FR/DE/EN dimension of the Eurodistrict makes Strasbourg a special case: we conduct sessions in the executive's working language, including bilingual mode for Franco-German profiles in the Strasbourg-Ortenau Eurodistrict.",
@@ -877,19 +877,19 @@ export const STRASBOURG_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "from €990 excl. VAT",
             detail:
-              "For Strasbourg freelancers, micro-business managers and independent professionals. Short programme of 2-3 sessions on your priority use cases. Lodging, meals and travel allowance billed separately for on-site sessions outside central Strasbourg.",
+              "For Strasbourg freelancers, micro-business managers and independent professionals. Short programme of 2-3 sessions on your priority use cases.",
           },
           {
             sizeLabel: "SME",
             price: "SME programme — on quote",
             detail:
-              "For Strasbourg SME managers and executives (PII biotech, IT, industry, B2B services). Programme calibrated over several months: decision-making, bilingual team management, reporting, AI project governance. Lodging, meals and travel allowance billed separately for on-site sessions outside centre.",
+              "For Strasbourg SME managers and executives (PII biotech, IT, industry, B2B services). Programme calibrated over several months: decision-making, bilingual team management, reporting, AI project governance.",
           },
           {
             sizeLabel: "Mid-cap",
             price: "Mid-cap programme — on quote",
             detail:
-              "For CEOs, CFOs, CHROs and directors at Eurométropole industrial or biotech mid-caps. Work on AI governance, FR/DE/EN internal communication, change management and data sovereignty. Lodging, meals and travel allowance billed separately for on-site sessions outside centre.",
+              "For CEOs, CFOs, CHROs and directors at Eurométropole industrial or biotech mid-caps. Work on AI governance, FR/DE/EN internal communication, change management and data sovereignty.",
           },
           {
             sizeLabel: "Large enterprise",
@@ -923,7 +923,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "What is the entry rate and how is coaching invoiced?",
-            a: "The entry rate is €990 excl. VAT for a short programme. Lodging, meals and travel allowance are billed separately for on-site sessions outside central Strasbourg. The full programme is defined after the positioning interview, no blind commitment.",
+            a: "The entry rate is €990 excl. VAT for a short programme. The full programme is defined after the positioning interview, no blind commitment.",
           },
           {
             q: "Is confidentiality guaranteed for institutional or biotech profiles?",
@@ -931,7 +931,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Are sessions on-site in Strasbourg or remote?",
-            a: "Both are available per your preferences and schedule. On-site at your Strasbourg offices (Wacken, Presqu'île, Illkirch PII) or remote via secure video. Lodging, meals and travel allowance billed separately for on-site sessions outside central Strasbourg.",
+            a: "Both are available per your preferences and schedule. On-site at your Strasbourg offices (Wacken, Presqu'île, Illkirch PII) or remote via secure video.",
           },
           {
             q: "What is the difference from group AI training in Strasbourg?",
@@ -939,7 +939,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Coaching available in FR, DE or EN per your profile. Strict confidentiality from the outset, no reference published without written consent. Lodging, meals and travel allowance billed separately and validated before each on-site session. No lock-in: skills acquired are usable in full autonomy.",
+          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Coaching available in FR, DE or EN per your profile. Strict confidentiality from the outset, no reference published without written consent. No lock-in: skills acquired are usable in full autonomy.",
       },
     },
     sitesWeb: {

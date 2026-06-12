@@ -65,7 +65,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rosny-sur-Seine ?",
-      a: "Nos consultants interviennent à Rosny-sur-Seine via A13 (45 min depuis La Défense) ou Transilien J (gare de Rosny-sur-Seine). Frais de déplacement Yvelines ouest facturés selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Rosny-sur-Seine via A13 (45 min depuis La Défense) ou Transilien J (gare de Rosny-sur-Seine).",
     },
   ],
 };

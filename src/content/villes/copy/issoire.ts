@@ -65,7 +65,7 @@ export const ISSOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",
-      a: "Clermont (35 min A75). Déplacements facturés séparément, tarifs publics.",
+      a: "Clermont (35 min A75).",
     },
   ],
 };

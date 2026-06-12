@@ -65,7 +65,7 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un déplacement à Port-Saint-Louis-du-Rhône ?",
-      a: "Nos consultants se déplacent dans vos locaux. Accès via A55 depuis Marseille (55 min) ou A54 depuis Arles (40 min). Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Nos consultants se déplacent dans vos locaux. Accès via A55 depuis Marseille (55 min) ou A54 depuis Arles (40 min).",
     },
   ],
 };

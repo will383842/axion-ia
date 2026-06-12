@@ -65,7 +65,7 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 10 min ouest. Alternative : vol direct aéroport Poitiers-Biard (sur la commune). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 10 min ouest. Alternative : vol direct aéroport Poitiers-Biard (sur la commune).",
     },
   ],
 };

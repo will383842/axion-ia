@@ -65,7 +65,7 @@ export const LINSELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Linselles ?",
-      a: "Nos consultants interviennent à Linselles depuis Lille (25 min) ou Tourcoing (10 min). Intervention sur site dans votre atelier textile, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Lille ou Tourcoing. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Linselles depuis Lille (25 min) ou Tourcoing (10 min). Intervention sur site dans votre atelier textile, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Lille ou Tourcoing.",
     },
   ],
 };

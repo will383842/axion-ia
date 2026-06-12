@@ -61,7 +61,7 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Loroux-Bottereau ?",
-      a: "Nos consultants se déplacent sur site au Loroux-Bottereau (25 min depuis Nantes). Pour les exploitants viticoles, interventions directement au domaine. Frais de déplacement facturés à part du forfait journée.",
+      a: "Nos consultants se déplacent sur site au Loroux-Bottereau (25 min depuis Nantes). Pour les exploitants viticoles, interventions directement au domaine.",
     },
     {
       q: "L'IA est-elle utile pour les PME agroalimentaires du vignoble ?",

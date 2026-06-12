@@ -65,7 +65,7 @@ export const LOUVECIENNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Louveciennes ?",
-      a: "Nos consultants rejoignent Louveciennes via le Transilien L (25 min Paris Saint-Lazare) ou par l'A13/A86. La Défense à 15 min. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Louveciennes via le Transilien L (25 min Paris Saint-Lazare) ou par l'A13/A86. La Défense à 15 min.",
     },
   ],
 };

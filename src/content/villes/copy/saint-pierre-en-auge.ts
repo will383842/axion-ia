@@ -65,7 +65,7 @@ export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",
-      a: "Nos consultants viennent de Caen (45 min N13) ou par train (gare SNCF Mézidon à 15 min). Déplacement sur site (fromagerie, laiterie, exploitation, commerce). Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants viennent de Caen (45 min N13) ou par train (gare SNCF Mézidon à 15 min). Déplacement sur site (fromagerie, laiterie, exploitation, commerce).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier).",
     },
   ],
 };

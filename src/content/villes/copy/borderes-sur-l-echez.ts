@@ -65,7 +65,7 @@ export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bordères-sur-l'Échez ?",
-      a: "Bordères est à 5 min de Tarbes centre et 20 min de l'aéroport Tarbes-Lourdes. Gare SNCF Tarbes à 8 min. Nos consultants interviennent sur site. Frais de déplacement inclus dans le forfait agglo Tarbes.",
+      a: "Bordères est à 5 min de Tarbes centre et 20 min de l'aéroport Tarbes-Lourdes. Gare SNCF Tarbes à 8 min. Nos consultants interviennent sur site.",
     },
   ],
 };

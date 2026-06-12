@@ -65,7 +65,7 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Nans-les-Pins ?",
-      a: "Nans-les-Pins est à 15 min de Saint-Maximin et 35 min d'Aix-en-Provence via A8. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nans-les-Pins est à 15 min de Saint-Maximin et 35 min d'Aix-en-Provence via A8. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

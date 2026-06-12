@@ -246,7 +246,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris en 25 minutes. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent depuis Paris en 25 minutes.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

@@ -65,7 +65,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Chartres ou Paris ?",
-      a: "Chartres (35 min) ou Paris Montparnasse (1h15 TER via Dreux). Frais de mission en sus, grille tarifaire publique.",
+      a: "Chartres (35 min) ou Paris Montparnasse (1h15 TER via Dreux).",
     },
   ],
 };

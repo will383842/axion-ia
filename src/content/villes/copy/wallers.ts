@@ -65,7 +65,7 @@ export const WALLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wallers ?",
-      a: "Nos consultants interviennent à Wallers depuis Valenciennes (15 min) ou Douai (20 min). Intervention sur site dans vos locaux industriels, bureau, commerce, site touristique ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Douai. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Wallers depuis Valenciennes (15 min) ou Douai (20 min). Intervention sur site dans vos locaux industriels, bureau, commerce, site touristique ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Douai.",
     },
   ],
 };

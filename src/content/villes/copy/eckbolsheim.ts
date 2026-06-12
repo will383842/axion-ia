@@ -65,7 +65,7 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Eckbolsheim ?",
-      a: "Nos consultants se déplacent via autoroute A35 (5 min) ou tram strasbourgeois. Proximité immédiate du centre de Strasbourg (10 min) et de la gare TGV (12 min). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A35 (5 min) ou tram strasbourgeois. Proximité immédiate du centre de Strasbourg (10 min) et de la gare TGV (12 min).",
     },
   ],
 };

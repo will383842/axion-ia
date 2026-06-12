@@ -65,7 +65,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Roissy ou Paris ?",
-      a: "Aéroport CDG (10 min). Fosses (5 min). Paris centre (40 min via A1). Luzarches (10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Aéroport CDG (10 min). Fosses (5 min). Paris centre (40 min via A1). Luzarches (10 min).",
     },
   ],
 };

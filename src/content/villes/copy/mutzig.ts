@@ -65,7 +65,7 @@ export const MUTZIG_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mutzig ?",
-      a: "Nos consultants se déplacent via autoroute A352 (5 min) ou gares SNCF de Molsheim. Bassin industriel et artisanal de la vallée de la Bruche, proximité de Strasbourg (30 min). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A352 (5 min) ou gares SNCF de Molsheim. Bassin industriel et artisanal de la vallée de la Bruche, proximité de Strasbourg (30 min).",
     },
   ],
 };

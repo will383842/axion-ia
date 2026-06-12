@@ -65,7 +65,7 @@ export const LANGRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Langres depuis Dijon ou Paris ?",
-      a: "Nos consultants viennent de Dijon (1h10) ou Paris (3h TGV via Chaumont). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Dijon (1h10) ou Paris (3h TGV via Chaumont).",
     },
   ],
 };

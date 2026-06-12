@@ -65,7 +65,7 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Yrieix ?",
-      a: "Nos consultants accèdent à Saint-Yrieix-sur-Charente via la gare TGV d'Angoulême (8 min, Paris 2h05 direct). Mission sur site dans vos locaux, cabinet ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Saint-Yrieix-sur-Charente via la gare TGV d'Angoulême (8 min, Paris 2h05 direct). Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

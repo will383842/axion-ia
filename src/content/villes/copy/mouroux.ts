@@ -65,7 +65,7 @@ export const MOUROUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Mouroux ?",
-      a: "Nos consultants interviennent à Mouroux depuis Paris Est (55 min via Transilien P, gare de Mouroux) ou en voiture via A4/N34. Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Mouroux depuis Paris Est (55 min via Transilien P, gare de Mouroux) ou en voiture via A4/N34.",
     },
   ],
 };

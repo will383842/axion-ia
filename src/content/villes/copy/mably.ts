@@ -65,7 +65,7 @@ export const MABLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne).",
     },
   ],
 };

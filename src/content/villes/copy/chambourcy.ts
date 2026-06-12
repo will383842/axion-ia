@@ -65,7 +65,7 @@ export const CHAMBOURCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chambourcy ?",
-      a: "Nos consultants rejoignent Chambourcy par l'A13 (sortie Poissy/Chambourcy) ou via la gare de Poissy (RER A, 25 min Paris). Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Chambourcy par l'A13 (sortie Poissy/Chambourcy) ou via la gare de Poissy (RER A, 25 min Paris).",
     },
   ],
 };

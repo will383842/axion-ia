@@ -61,7 +61,7 @@ export const RONCHIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ronchin ?",
-      a: "Nos consultants interviennent à Ronchin depuis Lille (10 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Lille centre. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Ronchin depuis Lille (10 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Lille centre.",
     },
     {
       q: "Proposez-vous des formations IA individuelles pour dirigeants à Ronchin ?",

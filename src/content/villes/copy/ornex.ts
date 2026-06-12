@@ -69,7 +69,7 @@ export const ORNEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Ornex est à un quart d'heure de Genève et à environ une heure trente de Lyon par l'autoroute. Nous couvrons tout le pays de Gex. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
+      a: "Ornex est à un quart d'heure de Genève et à environ une heure trente de Lyon par l'autoroute. Nous couvrons tout le pays de Gex.",
     },
   ],
 };

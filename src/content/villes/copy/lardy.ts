@@ -65,7 +65,7 @@ export const LARDY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (45 min Gare d'Austerlitz, gare de Lardy) ou en voiture par N20/A6 (50 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en RER C (45 min Gare d'Austerlitz, gare de Lardy) ou en voiture par N20/A6 (50 min).",
     },
   ],
 };

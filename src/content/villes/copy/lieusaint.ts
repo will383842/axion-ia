@@ -65,7 +65,7 @@ export const LIEUSAINT_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Lieusaint depuis Paris ?",
-      a: "Nos consultants rejoignent Lieusaint en 40 min depuis Paris Gare de Lyon (RER D, station Lieusaint-Moissy). Accès direct A5 et Francilienne N104. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants rejoignent Lieusaint en 40 min depuis Paris Gare de Lyon (RER D, station Lieusaint-Moissy). Accès direct A5 et Francilienne N104.",
     },
   ],
 };

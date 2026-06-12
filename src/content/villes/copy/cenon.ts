@@ -231,7 +231,7 @@ export const CENON_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Cenon ?",
-      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique disponible sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique disponible sur axion-ia.com/tarifs.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Cenon ?",

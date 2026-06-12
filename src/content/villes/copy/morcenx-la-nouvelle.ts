@@ -65,7 +65,7 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Morcenx-la-Nouvelle ?",
-      a: "Nos consultants se déplacent depuis Mont-de-Marsan (25 min) ou Dax (40 min). Gare SNCF Morcenx sur la ligne Bordeaux-Hendaye. Mission sur site dans votre établissement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Mont-de-Marsan (25 min) ou Dax (40 min). Gare SNCF Morcenx sur la ligne Bordeaux-Hendaye. Mission sur site dans votre établissement.",
     },
   ],
 };

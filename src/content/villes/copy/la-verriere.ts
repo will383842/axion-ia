@@ -65,7 +65,7 @@ export const LA_VERRIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à La Verrière ?",
-      a: "Nos consultants rejoignent La Verrière via le Transilien N ou U (gare de La Verrière, 40 min Paris-Montparnasse) ou par l'A12/N10. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent La Verrière via le Transilien N ou U (gare de La Verrière, 40 min Paris-Montparnasse) ou par l'A12/N10.",
     },
   ],
 };

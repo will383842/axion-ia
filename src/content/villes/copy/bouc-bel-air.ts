@@ -65,7 +65,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bouc-Bel-Air ?",
-      a: "Nos consultants interviennent sur site à Bouc-Bel-Air sous 5 jours ouvrés. Position centrale entre Aix (15 min) et Marseille (25 min). Frais de déplacement inclus métropole Aix-Marseille.",
+      a: "Nos consultants interviennent sur site à Bouc-Bel-Air sous 5 jours ouvrés. Position centrale entre Aix (15 min) et Marseille (25 min).",
     },
   ],
 };

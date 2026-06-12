@@ -363,11 +363,6 @@ function ReserveBigCta({
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
           </div>
-          <p className="text-fg-muted mt-6 text-xs">
-            {isFr
-              ? "★ Frais de déplacement et hébergement au forfait journalier · pas de justificatifs"
-              : "★ Travel and lodging at a flat daily rate · no receipts"}
-          </p>
         </div>
       </Container>
     </section>

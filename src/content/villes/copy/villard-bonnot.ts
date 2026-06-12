@@ -65,7 +65,7 @@ export const VILLARD_BONNOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (25 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Grenoble (25 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

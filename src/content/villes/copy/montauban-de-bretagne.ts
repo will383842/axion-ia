@@ -65,7 +65,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montauban-de-Bretagne ?",
-      a: "Nos consultants viennent de Rennes centre (30 min via N12). TER possible gare de Montauban-de-Bretagne. Intervention sur site ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (30 min via N12). TER possible gare de Montauban-de-Bretagne. Intervention sur site ou en visio.",
     },
   ],
 };

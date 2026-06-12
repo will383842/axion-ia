@@ -65,7 +65,7 @@ export const FOURMIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fourmies ?",
-      a: "Nos consultants se déplacent à Fourmies via la RN2 ou le TER (Aulnoye-Aymeries). Maubeuge à 30 min, Avesnes-sur-Helpe à 15 min. Intervention sur site ou en visio. Frais de déplacement facturés séparément, tarifs publics.",
+      a: "Nos consultants se déplacent à Fourmies via la RN2 ou le TER (Aulnoye-Aymeries). Maubeuge à 30 min, Avesnes-sur-Helpe à 15 min. Intervention sur site ou en visio.",
     },
   ],
 };

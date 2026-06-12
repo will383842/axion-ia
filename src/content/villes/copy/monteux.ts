@@ -65,7 +65,7 @@ export const MONTEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Monteux ?",
-      a: "Monteux est à 20 min d'Avignon et 10 min de Carpentras via D942. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Monteux est à 20 min d'Avignon et 10 min de Carpentras via D942. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

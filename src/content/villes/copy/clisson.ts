@@ -65,7 +65,7 @@ export const CLISSON_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site dans les domaines viticoles ?",
-      a: "Oui, nos consultants se déplacent directement dans votre domaine, chai, commerce ou bureau à Clisson. Pour les multi-jours, hébergement local possible. Frais de déplacement inclus depuis Nantes.",
+      a: "Oui, nos consultants se déplacent directement dans votre domaine, chai, commerce ou bureau à Clisson. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

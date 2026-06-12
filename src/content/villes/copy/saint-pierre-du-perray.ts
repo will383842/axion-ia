@@ -65,7 +65,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Évry-Courcouronnes à 10 min. Paris centre à 40 min (A6 direct). Orly à 25 min. Gare RER D Lieusaint-Moissy à 10 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Évry-Courcouronnes à 10 min. Paris centre à 40 min (A6 direct). Orly à 25 min. Gare RER D Lieusaint-Moissy à 10 min.",
     },
   ],
 };

@@ -61,7 +61,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sucé-sur-Erdre ?",
-      a: "Nos consultants se déplacent sur site à Sucé-sur-Erdre (20 min depuis Nantes centre). Pour les missions multi-jours, hébergement local en bords d'Erdre. Frais de déplacement à part, tarifs transparents.",
+      a: "Nos consultants se déplacent sur site à Sucé-sur-Erdre (20 min depuis Nantes centre). Pour les missions multi-jours, hébergement local en bords d'Erdre.",
     },
     {
       q: "L'audit sur place est-il adapté aux petites structures ?",

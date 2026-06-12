@@ -246,7 +246,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Montpellier ?",
-      a: "Nos consultants rejoignent Frontignan en 25 min depuis Montpellier. Déplacements facturés séparément, grille tarifaire publique. Sessions sur site ou en visio selon votre préférence.",
+      a: "Nos consultants rejoignent Frontignan en 25 min depuis Montpellier. Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

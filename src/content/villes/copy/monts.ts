@@ -65,7 +65,7 @@ export const MONTS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Monts ?",
-      a: "Nos consultants viennent depuis Tours centre (15 min voiture) ou gare de Monts (TER). Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre). Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent depuis Tours centre (15 min voiture) ou gare de Monts (TER). Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
     },
   ],
 };

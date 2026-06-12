@@ -65,7 +65,7 @@ export const ELNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Elne ?",
-      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre exploitation, cave ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre exploitation, cave ou commerce. Visio possible.",
     },
   ],
 };

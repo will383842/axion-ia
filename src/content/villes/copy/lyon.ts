@@ -34,7 +34,7 @@ export const LYON_COPY: VilleCopy = {
     },
     interventions: {
       fr: "Interventions IA à Lyon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — chimie industrielle, biotech, banque Part-Dieu, équipementiers ou services tertiaires.",
-      en: "AI sessions in Lyon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      en: "AI sessions in Lyon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Lyon : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes de production) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -400,7 +400,7 @@ export const LYON_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur lyonnais — industrie, pharma, finance, numérique — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Lyon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the factory floor, in the lab, at the office or with clients. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Lyon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the factory floor, in the lab, at the office or with clients.",
         whyHere: [
           "Lyon is one of our top engagement grounds: industrial firms, biotech companies, Part-Dieu financial services and Villeurbanne digital SMEs represent a significant share of our sessions.",
           "All arrondissements and Métropole communes covered in person: Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise, Écully, Bron, Saint-Priest, Vénissieux, Caluire.",
@@ -828,7 +828,7 @@ export const LYON_COPY: VilleCopy = {
           "Engagement séance par séance : vous arrêtez le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité stricte, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants biotech Gerland et banque Part-Dieu sensibles aux fuites stratégiques. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, séance de diagnostic offerte pour recadrer le parcours.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Lyon is designed for executives and managers steering a transformation, restructuring or AI skills upgrade without wanting to expose their questions in a group setting. Confidential sessions at your Lyon offices — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — or remote depending on your schedule. We work on your real practice: your emails, your reports, your decisions, your relationship with your teams. The goal is not a certification: it is that you are operational with AI as a leadership lever within your first 90 days. No lock-in, no follow-up imposed beyond what you validate. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Lyon is designed for executives and managers steering a transformation, restructuring or AI skills upgrade without wanting to expose their questions in a group setting. Confidential sessions at your Lyon offices — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — or remote depending on your schedule. We work on your real practice: your emails, your reports, your decisions, your relationship with your teams. The goal is not a certification: it is that you are operational with AI as a leadership lever within your first 90 days. No lock-in, no follow-up imposed beyond what you validate.",
         whyHere: [
           "Lyon concentrates industrial mid-cap executives (Vallée de la Chimie, Renault Trucks, equipment suppliers) and biotech SME leaders (Gerland, Lyonbiopôle) who find no peers to discuss AI in full confidence — our 1-to-1 coaching addresses exactly that need.",
           "The EM Lyon and INSA ecosystem produces Lyon senior managers every year who take leadership positions without operational AI training — 1-to-1 coaching bridges that gap within a few sessions.",
@@ -869,25 +869,25 @@ export const LYON_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "from €990 excl. VAT",
             detail:
-              "For freelancers, managers and micro-business leaders in Lyon (Presqu'île, Vieux Lyon, residential districts). Short programme with targeted working sessions — email, quotes, competitive watch, admin management. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
+              "For freelancers, managers and micro-business leaders in Lyon (Presqu'île, Vieux Lyon, residential districts). Short programme with targeted working sessions — email, quotes, competitive watch, admin management.",
           },
           {
             sizeLabel: "SME",
             price: "SME programme — on quote",
             detail:
-              "For SME leaders and managers in Lyon (Villeurbanne IT, Vaise, Presqu'île). Programme calibrated over several months: decision-making, team management, reporting, AI project leadership. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
+              "For SME leaders and managers in Lyon (Villeurbanne IT, Vaise, Presqu'île). Programme calibrated over several months: decision-making, team management, reporting, AI project leadership.",
           },
           {
             sizeLabel: "Mid-cap",
             price: "Mid-cap programme — on quote",
             detail:
-              "For CEOs, CFOs, CHROs and directors at Lyon industrial or biotech mid-caps. Work on AI governance, internal and external communication, investor relations and change management. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
+              "For CEOs, CFOs, CHROs and directors at Lyon industrial or biotech mid-caps. Work on AI governance, internal and external communication, investor relations and change management.",
           },
           {
             sizeLabel: "Large enterprise",
             price: "Large accounts programme — on quote",
             detail:
-              "For large enterprise and group executives in the Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Confidential senior format, schedule adapted to executive constraints. Lodging, meals and travel allowance billed separately.",
+              "For large enterprise and group executives in the Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Confidential senior format, schedule adapted to executive constraints.",
           },
         ],
         testimonials: [
@@ -931,7 +931,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: you can stop the programme at any time without penalty beyond sessions already completed. Contractual confidentiality: Strict confidentiality, no reference published without written consent. Practice-oriented results: if after three sessions you have not noticed a concrete gain in your daily practice, a diagnostic session is offered to reframe the programme. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
+          "No lock-in: you can stop the programme at any time without penalty beyond sessions already completed. Contractual confidentiality: Strict confidentiality, no reference published without written consent. Practice-oriented results: if after three sessions you have not noticed a concrete gain in your daily practice, a diagnostic session is offered to reframe the programme.",
       },
     },
     sitesWeb: {

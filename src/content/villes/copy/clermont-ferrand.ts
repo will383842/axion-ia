@@ -36,8 +36,8 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       en: "Operational AI audit in Clermont-Ferrand: we map automatable workflows in your Auvergne organisation and quantify the ROI — manufacturing, agri-food, services or research. 4 tiers from Sur place to Mid-cap Strategic.",
     },
     interventions: {
-      fr: "Interventions IA à Clermont-Ferrand : formats sur site d'une à plusieurs journées, de vos locaux du Technopôle La Pardieu aux sites industriels du bassin. Vos équipes repartent autonomes sur des outils IA installés. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Clermont-Ferrand: on-site formats from one to several days, from your Technopôle La Pardieu offices to industrial sites across the basin. Your staff leave autonomous with AI tools installed. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Clermont-Ferrand : formats sur site d'une à plusieurs journées, de vos locaux du Technopôle La Pardieu aux sites industriels du bassin. Vos équipes repartent autonomes sur des outils IA installés.",
+      en: "AI sessions in Clermont-Ferrand: on-site formats from one to several days, from your Technopôle La Pardieu offices to industrial sites across the basin. Your staff leave autonomous with AI tools installed.",
     },
     implementation: {
       fr: "Implémentation IA à Clermont-Ferrand : on déploie l'IA dans vos outils existants (ERP industrie, CRM, emails, GPAO) avec ROI chiffré contractuel. Vos équipes gardent la main, aucun lock-in.",
@@ -300,7 +300,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Clermont-Ferrand se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient ingénieurs bureau d'études chez un équipementier, techniciens qualité d'une PME agro ou chargés de clientèle d'un cabinet de services. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Les interventions IA Axion-IA à Clermont-Ferrand se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient ingénieurs bureau d'études chez un équipementier, techniciens qualité d'une PME agro ou chargés de clientèle d'un cabinet de services.",
         whyHere: [
           "Clermont-Ferrand concentre des profils de collaborateurs particulièrement adaptés aux interventions IA pratiques : ingénieurs industriels, techniciens agro, chercheurs UCA-ISIMA, commerciaux PME services — tous producteurs de documents structurés que l'IA traite avec un gain immédiat.",
           "Déplacement sur site dans l'ensemble du bassin clermontois : Technopôle La Pardieu, campus des Cézeaux, sites industriels de Cournon-d'Auvergne, zones d'activité de Chamalières, Aubière, Riom.",
@@ -406,7 +406,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur clermontois (industrie, agro, biotech, services), aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Clermont-Ferrand come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether they are R&D engineers at a tier-1 supplier, quality technicians at an agri-food SME or account managers at a services firm. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Clermont-Ferrand come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether they are R&D engineers at a tier-1 supplier, quality technicians at an agri-food SME or account managers at a services firm.",
         whyHere: [
           "Clermont-Ferrand hosts staff profiles particularly well-suited to hands-on AI sessions: industrial engineers, agri-food technicians, UCA-ISIMA researchers, service-sector account managers — all heavy producers of structured documents that AI processes with immediate gains.",
           "On-site delivery across the entire Clermont basin: Technopôle La Pardieu, campus des Cézeaux, Cournon-d'Auvergne industrial sites, Chamalières, Aubière, Riom business parks.",
@@ -730,7 +730,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Clermont-Ferrand s'adresse au dirigeant, manager ou expert technique qui veut progresser sur l'IA à son rythme, sur ses propres cas métier — sans partager sa session avec d'autres participants. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux du Technopôle La Pardieu, d'un site industriel ou d'un cabinet du bassin clermontois. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Clermont-Ferrand s'adresse au dirigeant, manager ou expert technique qui veut progresser sur l'IA à son rythme, sur ses propres cas métier — sans partager sa session avec d'autres participants. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux du Technopôle La Pardieu, d'un site industriel ou d'un cabinet du bassin clermontois.",
         whyHere: [
           "Clermont-Ferrand compte de nombreux dirigeants de PME et ETI (sous-traitance Michelin, agroalimentaire AOP, biotech) qui préfèrent une montée en compétences privée, centrée sur leurs propres données et processus industriels, sans exposer leurs enjeux stratégiques à un groupe.",
           "Les ingénieurs et responsables R&D du campus des Cézeaux et du Biopôle Clermont-Limagne bénéficient d'un accompagnement individuel calibré sur leur niveau technique élevé — loin d'une session pédagogique standardisée.",
@@ -824,19 +824,15 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             a: "Non. Le coaching s'adapte à votre niveau, du débutant absolu au praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
           },
           {
-            q: "Les frais de déplacement sont-ils inclus ?",
-            a: "Non. Les frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable avant la confirmation.",
-          },
-          {
             q: "Puis-je organiser plusieurs sessions individuelles pour différents collaborateurs ?",
             a: "Oui. Certaines entreprises clérmontoise organisent plusieurs coachings individuels successifs pour leurs managers ou experts clés plutôt qu'une session collective. Tarif dégressif possible selon le volume — à préciser en cadrage.",
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux clermontois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée).",
+          "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux clermontois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Clermont-Ferrand is for the executive, manager or technical expert who wants to progress on AI at their own pace, on their own business cases — without sharing the session with other participants. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Technopôle La Pardieu, industrial basin or practice premises. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Clermont-Ferrand is for the executive, manager or technical expert who wants to progress on AI at their own pace, on their own business cases — without sharing the session with other participants. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Technopôle La Pardieu, industrial basin or practice premises.",
         whyHere: [
           "Clermont-Ferrand has many SME and mid-cap executives (Michelin subcontracting, AOP agri-food, biotech) who prefer private skills development, focused on their own data and industrial processes, without exposing their strategic challenges to a group.",
           "R&D engineers and managers at campus des Cézeaux and Biopôle Clermont-Limagne benefit from individual coaching calibrated to their high technical level — far from a standardised pedagogical session.",
@@ -931,7 +927,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Are travel costs included?",
-            a: "No. Lodging, meals and travel allowance are billed separately, in line with Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+            a: "No. These costs are communicated on a prior quote before confirmation.",
           },
           {
             q: "Can I organise several individual sessions for different staff members?",
@@ -939,7 +935,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your data and your challenges do not leave your Clermont premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered).",
+          "Strict confidentiality: your data and your challenges do not leave your Clermont premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered).",
       },
     },
     sitesWeb: {

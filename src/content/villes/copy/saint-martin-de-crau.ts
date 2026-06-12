@@ -65,7 +65,7 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Martin-de-Crau ?",
-      a: "Nos consultants interviennent sur site à Saint-Martin-de-Crau sous 5 jours ouvrés. Déplacement depuis Marseille (55 min) ou Aix-en-Provence (40 min). Frais de déplacement inclus bassin craurais.",
+      a: "Nos consultants interviennent sur site à Saint-Martin-de-Crau sous 5 jours ouvrés. Déplacement depuis Marseille (55 min) ou Aix-en-Provence (40 min).",
     },
   ],
 };

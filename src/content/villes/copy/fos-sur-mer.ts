@@ -65,7 +65,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Fos-sur-Mer ?",
-      a: "Fos-sur-Mer est à 30 min de l'aéroport Marseille-Provence et 50 min de Marseille via A55. Nos consultants se déplacent dans vos locaux ou sur site portuaire. Déplacements facturés séparément, tarifs publics.",
+      a: "Fos-sur-Mer est à 30 min de l'aéroport Marseille-Provence et 50 min de Marseille via A55. Nos consultants se déplacent dans vos locaux ou sur site portuaire.",
     },
   ],
 };

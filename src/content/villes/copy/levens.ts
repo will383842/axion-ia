@@ -65,7 +65,7 @@ export const LEVENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Levens depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (30 min M19 via Plan-du-Var). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement moyen-pays inclus depuis Nice.",
+      a: "Nos consultants interviennent depuis Nice centre (30 min M19 via Plan-du-Var). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

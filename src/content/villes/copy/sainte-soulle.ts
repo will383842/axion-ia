@@ -65,7 +65,7 @@ export const SAINTE_SOULLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Sainte-Soulle ?",
-      a: "Nos consultants accèdent à Sainte-Soulle via la gare TGV de La Rochelle (15 min, Paris 2h50 direct) ou la N11. Mission sur site dans vos locaux, exploitation ou commerce. Frais de déplacement facturés à part.",
+      a: "Nos consultants accèdent à Sainte-Soulle via la gare TGV de La Rochelle (15 min, Paris 2h50 direct) ou la N11. Mission sur site dans vos locaux, exploitation ou commerce.",
     },
   ],
 };

@@ -73,7 +73,7 @@ export const BEYNOST_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min) et se déplacent dans vos locaux après un premier échange. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (20 min) et se déplacent dans vos locaux après un premier échange.",
     },
   ],
 };

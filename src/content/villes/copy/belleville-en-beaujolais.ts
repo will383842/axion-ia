@@ -65,7 +65,7 @@ export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (50 min A6). Pour les multi-jours, hébergement local possible (gîtes vignoble). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (50 min A6). Pour les multi-jours, hébergement local possible (gîtes vignoble).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Niort ou Poitiers ?",
-      a: "Nos consultants viennent de Niort (30 min) ou Poitiers (50 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Niort (30 min) ou Poitiers (50 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

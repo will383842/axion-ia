@@ -65,7 +65,7 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Moëlan-sur-Mer ?",
-      a: "Nos consultants se déplacent depuis Quimperlé (15 min) ou Lorient (35 min). Gare TGV de Lorient sur la ligne Paris-Quimper. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Quimperlé (15 min) ou Lorient (35 min). Gare TGV de Lorient sur la ligne Paris-Quimper.",
     },
   ],
 };

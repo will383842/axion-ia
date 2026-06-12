@@ -69,7 +69,7 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Clermont ou Lyon ?",
-      a: "Nos consultants rejoignent Bellerive depuis Clermont-Ferrand (1h) ou Lyon (2h). Frais de déplacement facturés séparément, grille tarifaire publique. Sessions sur site ou en visio.",
+      a: "Nos consultants rejoignent Bellerive depuis Clermont-Ferrand (1h) ou Lyon (2h). Grille tarifaire publique. Sessions sur site ou en visio.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Chaumes-en-Retz ?",
-      a: "Nos consultants se déplacent directement dans votre exploitation, commerce ou bureau à Chaumes-en-Retz. Frais de déplacement depuis Nantes inclus. Formats demi-journée ou journée complète.",
+      a: "Nos consultants se déplacent directement dans votre exploitation, commerce ou bureau à Chaumes-en-Retz. Formats demi-journée ou journée complète.",
     },
   ],
 };

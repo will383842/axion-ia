@@ -65,7 +65,7 @@ export const CEBAZAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
     },
   ],
 };

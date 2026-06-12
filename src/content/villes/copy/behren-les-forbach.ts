@@ -65,7 +65,7 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Behren-lès-Forbach ?",
-      a: "Nos consultants se déplacent via gare SNCF Forbach (TER + ICE vers Sarrebruck) ou autoroute A320. Forbach à 3 min, Sarrebruck à 15 min, Metz à 55 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Forbach (TER + ICE vers Sarrebruck) ou autoroute A320. Forbach à 3 min, Sarrebruck à 15 min, Metz à 55 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Nord (1h05 via TGV Lille-Europe puis 20 min route). Frontière belge à 5 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Paris-Nord (1h05 via TGV Lille-Europe puis 20 min route). Frontière belge à 5 min.",
     },
   ],
 };

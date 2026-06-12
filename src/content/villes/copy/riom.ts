@@ -65,7 +65,7 @@ export const RIOM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",
-      a: "Clermont (15 min). Aéroport Clermont à 10 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Clermont (15 min). Aéroport Clermont à 10 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Farébersviller ?",
-      a: "Nos consultants se déplacent via autoroute A4 ou gare SNCF Freyming-Merlebach (à 5 min). Saint-Avold à 10 min, Metz à 50 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A4 ou gare SNCF Freyming-Merlebach (à 5 min). Saint-Avold à 10 min, Metz à 50 min.",
     },
   ],
 };

@@ -233,7 +233,7 @@ export const CACHAN_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour intervenir à Cachan ?",
-      a: "Williams se déplace à Cachan dans un délai de 5 jours ouvrés après confirmation. La gare Arcueil-Cachan est à 15 minutes en RER B de Paris, ce qui permet une intervention demi-journée ou journée sans frais de déplacement.",
+      a: "Williams se déplace à Cachan dans un délai de 5 jours ouvrés après confirmation. La gare Arcueil-Cachan est à 15 minutes en RER B de Paris, ce qui permet une intervention demi-journée ou journée.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Cachan ?",

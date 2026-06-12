@@ -61,7 +61,7 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Saint-Chamas ?",
-      a: "Nos consultants se déplacent dans vos locaux à Saint-Chamas. Format demi-journée ou journée complète, atelier pratique mains sur clavier. Frais de déplacement depuis Marseille ou Aix facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent dans vos locaux à Saint-Chamas. Format demi-journée ou journée complète, atelier pratique mains sur clavier.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD pour les données agricoles et commerciales ?",

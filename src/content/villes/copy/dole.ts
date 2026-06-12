@@ -246,7 +246,7 @@ export const DOLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Dole ?",
-      a: "Nos consultants se déplacent sur site ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent sur site ou en visio.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

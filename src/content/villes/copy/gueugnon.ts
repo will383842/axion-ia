@@ -65,7 +65,7 @@ export const GUEUGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Gueugnon ?",
-      a: "Nos consultants se déplacent depuis Lyon (2h15) ou via gare TGV Le Creusot (50 min). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants se déplacent depuis Lyon (2h15) ou via gare TGV Le Creusot (50 min).",
     },
   ],
 };

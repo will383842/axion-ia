@@ -50,7 +50,7 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Bourg-Saint-Andéol ?",
-      a: "Le format collectif (1 journée) débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Lyon (2h) ou Valence (1h) sont facturés en sus, de manière transparente. Tarifs publics détaillés sur notre site.",
+      a: "Le format collectif (1 journée) débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Bourg-Saint-Andéol ?",

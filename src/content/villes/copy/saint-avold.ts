@@ -65,7 +65,7 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Avold ?",
-      a: "Nos consultants se déplacent via gare SNCF Saint-Avold (ligne Metz–Forbach) ou autoroute A4. Metz à 45 min, Forbach à 20 min, Sarrebruck à 35 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Saint-Avold (ligne Metz–Forbach) ou autoroute A4. Metz à 45 min, Forbach à 20 min, Sarrebruck à 35 min.",
     },
   ],
 };

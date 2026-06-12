@@ -228,7 +228,7 @@ export const SCEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Sceaux ?",
-      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Sceaux (RER B, 9,8 km de Paris) inclus dans le devis.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Quels délais pour une intervention sur site à Sceaux ?",

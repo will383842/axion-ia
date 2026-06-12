@@ -65,7 +65,7 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Thonon ou Annemasse ?",
-      a: "Nos consultants rejoignent Bons-en-Chablais depuis Thonon (15 min D903) ou Annemasse (20 min). Genève à 30 min via A40. Multi-jours : hébergement local possible. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants rejoignent Bons-en-Chablais depuis Thonon (15 min D903) ou Annemasse (20 min). Genève à 30 min via A40. Multi-jours : hébergement local possible.",
     },
   ],
 };

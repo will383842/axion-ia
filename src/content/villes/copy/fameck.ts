@@ -65,7 +65,7 @@ export const FAMECK_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fameck ?",
-      a: "Nos consultants se déplacent via gare SNCF Fameck (ligne Metz–Luxembourg) ou autoroute A30. Thionville à 8 min, Metz à 30 min, Luxembourg à 35 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Fameck (ligne Metz–Luxembourg) ou autoroute A30. Thionville à 8 min, Metz à 30 min, Luxembourg à 35 min.",
     },
   ],
 };

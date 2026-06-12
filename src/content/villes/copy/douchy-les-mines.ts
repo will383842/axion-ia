@@ -65,7 +65,7 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (50 min). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lille (50 min).",
     },
   ],
 };

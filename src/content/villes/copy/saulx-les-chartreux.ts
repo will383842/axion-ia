@@ -65,7 +65,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Massy ou Paris ?",
-      a: "Massy TGV (10 min). Paris centre (30 min par N20 ou A6). Orly (15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Massy TGV (10 min). Paris centre (30 min par N20 ou A6). Orly (15 min).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LES_SORINIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants sont aux Sorinières en 12 min depuis Nantes centre via le périphérique sud. Première couronne, accès très rapide. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants sont aux Sorinières en 12 min depuis Nantes centre via le périphérique sud. Première couronne, accès très rapide.",
     },
   ],
 };

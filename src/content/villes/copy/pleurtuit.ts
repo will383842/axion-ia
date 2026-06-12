@@ -65,7 +65,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     },
     {
       q: "L'aéroport Dinard-Bretagne facilite-t-il vos déplacements ?",
-      a: "L'aéroport Dinard-Bretagne est sur la commune de Pleurtuit, mais nos consultants interviennent principalement depuis Rennes (1h RN176) ou la gare TGV Saint-Malo (15 min). Frais de déplacement zone Côte d'Émeraude facturés à part.",
+      a: "L'aéroport Dinard-Bretagne est sur la commune de Pleurtuit, mais nos consultants interviennent principalement depuis Rennes (1h RN176) ou la gare TGV Saint-Malo (15 min).",
     },
   ],
 };

@@ -235,7 +235,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches sont couvertes depuis Limeil-Brévannes ?",
-      a: "Nous couvrons les communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres, sans frais de déplacement supplémentaires.",
+      a: "Nous couvrons les communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
     },
     {
       q: "Comment Axion-IA respecte-t-il le RGPD à Limeil-Brévannes ?",

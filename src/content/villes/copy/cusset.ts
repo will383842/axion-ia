@@ -65,7 +65,7 @@ export const CUSSET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ou Lyon ?",
-      a: "Clermont-Ferrand (1h) ou Lyon (2h). Déplacements facturés séparément, tarifs publics.",
+      a: "Clermont-Ferrand (1h) ou Lyon (2h).",
     },
   ],
 };

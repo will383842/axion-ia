@@ -65,7 +65,7 @@ export const DIGOIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Lyon à 1h45 via A6, Roanne à 45 min. Le Creusot-TGV à 50 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Lyon à 1h45 via A6, Roanne à 45 min. Le Creusot-TGV à 50 min.",
     },
   ],
 };

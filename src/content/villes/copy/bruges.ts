@@ -242,7 +242,7 @@ export const BRUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Bordeaux Saint-Jean + 20 min tramway) pour les missions sur site à Bruges. Pour les multi-jours, hébergement local possible (hôtels Bordeaux Lac à proximité). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV (2h Bordeaux Saint-Jean + 20 min tramway) pour les missions sur site à Bruges. Pour les multi-jours, hébergement local possible (hôtels Bordeaux Lac à proximité).",
     },
   ],
 };

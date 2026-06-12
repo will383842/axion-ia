@@ -65,7 +65,7 @@ export const SAINT_OMER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Calais ?",
-      a: "Nos consultants viennent de Lille (1h TER direct ou A26) ou Calais (40 min A26). Gare TGV Calais-Fréthun à 35 min. Frais de déplacement facturés à part du forfait, tarifs publics. Hébergement local possible.",
+      a: "Nos consultants viennent de Lille (1h TER direct ou A26) ou Calais (40 min A26). Gare TGV Calais-Fréthun à 35 min. Hébergement local possible.",
     },
   ],
 };

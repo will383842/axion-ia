@@ -246,7 +246,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour démarrer une mission à Longjumeau ?",
-      a: "Le diagnostic peut être lancé sous quelques jours ouvrés. Les sessions clés se déroulent sur site à Longjumeau, le suivi se poursuit en visio. Les frais de déplacement depuis Paris sont indiqués de façon transparente.",
+      a: "Le diagnostic peut être lancé sous quelques jours ouvrés. Les sessions clés se déroulent sur site à Longjumeau, le suivi se poursuit en visio.",
     },
   ],
 };

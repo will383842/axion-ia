@@ -32,8 +32,8 @@ export const CAEN_COPY: VilleCopy = {
       en: "Operational AI audit in Caen: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Caen micro-businesses to industrial mid-caps across the Caen la Mer area (NXP, Bosch, Renault Trucks).",
     },
     interventions: {
-      fr: "Interventions IA à Caen : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Caen: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Caen : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Caen: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Caen : on déploie l'IA dans vos outils existants (CRM, ERP, systèmes industriels, LIMS) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -322,7 +322,7 @@ export const CAEN_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Caen se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en atelier électronique, en laboratoire de recherche, au bureau ou en clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Caen se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en atelier électronique, en laboratoire de recherche, au bureau ou en clientèle.",
         whyHere: [
           "Caen est un terrain d'intervention industriel et académique porteur : entreprises électroniques, équipes R&D ENSICAEN/UCN/GREYC, services financiers et PME numériques d'EffiScience représentent un profil de collaborateurs exigeants qui attendent des cas d'usage concrets.",
           "Tous les sites du bassin couverts en présentiel : hypercentre, plateau Nord (UCN/ENSICAEN/CHU), EffiScience, ZAC Presqu'île, Hérouville-Saint-Clair, Mondeville, Colombelles et communes limitrophes.",
@@ -428,7 +428,7 @@ export const CAEN_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur caennais — électronique, automobile, santé, numérique — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Caen come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the electronics assembly floor, in the research lab, at the office or with clients. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Caen come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the electronics assembly floor, in the research lab, at the office or with clients.",
         whyHere: [
           "Caen is a compelling industrial and academic engagement ground: electronics firms, R&D teams at ENSICAEN/UCN/GREYC, financial services and EffiScience digital SMEs represent demanding staff who expect concrete use cases.",
           "All basin sites covered in person: city centre, Plateau Nord (UCN/ENSICAEN/CHU), EffiScience, ZAC Presqu'île, Hérouville-Saint-Clair, Mondeville, Colombelles and surrounding communes.",
@@ -750,7 +750,7 @@ export const CAEN_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Caen accompagne individuellement les dirigeants, managers et experts qui veulent progresser sur l'IA à leur rythme. Sessions sur site dans vos locaux caennais ou à distance, cas d'usage construits autour de votre réalité sectorielle — électronique, automobile, santé, recherche, filière équine. Frais de logement, repas et forfait trajet facturés à part pour les sessions en présentiel.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Caen accompagne individuellement les dirigeants, managers et experts qui veulent progresser sur l'IA à leur rythme. Sessions sur site dans vos locaux caennais ou à distance, cas d'usage construits autour de votre réalité sectorielle — électronique, automobile, santé, recherche, filière équine.",
         whyHere: [
           "Caen concentre des profils techniques et académiques (ingénieurs ENSICAEN, chercheurs UCN/GANIL, managers ETI industrielles) pour qui un accompagnement individuel adapté à leur domaine est plus efficace qu'une session collective.",
           "L'écosystème caennais (EffiScience, CHU, Normandie Incubation) génère des dirigeants et experts qui veulent monter en compétence IA sans exposer leurs projets en formation collective.",
@@ -833,7 +833,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Les sessions se font-elles en présentiel ou à distance ?",
-            a: "Les deux. Sessions sur site à Caen dans vos locaux ou à distance selon votre préférence. Pour les sessions en présentiel, frais de logement, repas et forfait trajet facturés à part.",
+            a: "Les deux. Sessions sur site à Caen dans vos locaux ou à distance selon votre préférence.",
           },
           {
             q: "Le coaching est-il adapté à mon secteur (électronique, santé, recherche) ?",
@@ -856,7 +856,7 @@ export const CAEN_COPY: VilleCopy = {
           "Programme calibré sur vos objectifs dès le diagnostic initial. Si après la première séance le format ne vous convient pas, session remboursée intégralement. Confidentialité stricte, confidentialité absolue. Livrables concrets à chaque séance : vous ne repartez jamais les mains vides. Aucun lock-in Axion-IA — les outils et workflows livrés vous appartiennent.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Caen supports executives, managers and experts who want to build AI skills at their own pace. Sessions on site at your Caen offices or remote, use cases built around your sector reality — electronics, automotive, health, research, equine industry. Lodging, meals and travel allowance billed separately for in-person sessions.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Caen supports executives, managers and experts who want to build AI skills at their own pace. Sessions on site at your Caen offices or remote, use cases built around your sector reality — electronics, automotive, health, research, equine industry.",
         whyHere: [
           "Caen concentrates technical and academic profiles (ENSICAEN engineers, UCN/GANIL researchers, industrial mid-cap managers) for whom individual coaching tailored to their domain is more effective than a group session.",
           "The Caen ecosystem (EffiScience, CHU, Normandie Incubation) generates executives and experts who want to build AI skills without exposing their projects in group training.",
@@ -939,7 +939,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Are sessions in person or remote?",
-            a: "Both. On-site sessions in Caen at your offices or remote per your preference. For in-person sessions, lodging, meals and travel allowance billed separately.",
+            a: "Both. On-site sessions in Caen at your offices or remote per your preference.",
           },
           {
             q: "Is the coaching adapted to my sector (electronics, health, research)?",

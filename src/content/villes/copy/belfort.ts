@@ -132,7 +132,7 @@ export const BELFORT_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour un devis et où intervenez-vous ?",
-            a: "Devis à partir de 24-48 h selon la complexité, après un premier échange. Nous nous déplaçons sur site à Belfort, Techn'Hom, Montbéliard et dans tout le nord Franche-Comté pour le cadrage, la recette et la mise en ligne. Frais de mission en sus, grille tarifaire publique.",
+            a: "Devis à partir de 24-48 h selon la complexité, après un premier échange. Nous nous déplaçons sur site à Belfort, Techn'Hom, Montbéliard et dans tout le nord Franche-Comté pour le cadrage, la recette et la mise en ligne.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const BELFORT_COPY: VilleCopy = {
           },
           {
             q: "How long for a quote and where do you operate?",
-            a: "Quote from 24-48 h depending on complexity, after an initial exchange. We travel on site to Belfort, Techn'Hom, Montbéliard and across north Franche-Comté for kick-off, acceptance and go-live. Mission expenses billed separately, public pricing grid.",
+            a: "Quote from 24-48 h depending on complexity, after an initial exchange. We travel on site to Belfort, Techn'Hom, Montbéliard and across north Franche-Comté for kick-off, acceptance and go-live.",
           },
         ],
         guarantees:
@@ -250,7 +250,7 @@ export const BELFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Belfort ?",
-      a: "Nos consultants se déplacent dans vos locaux après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos locaux après un premier échange.",
     },
   ],
 };

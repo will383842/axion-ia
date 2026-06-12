@@ -65,7 +65,7 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges (40 min RN21) ou prennent le TER direct gare de Saint-Yrieix. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Limoges (40 min RN21) ou prennent le TER direct gare de Saint-Yrieix. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-André-lez-Lille ?",
-      a: "Nos consultants interviennent à Saint-André-lez-Lille depuis Lille centre (10 min). Intervention sur site dans votre cabinet, agence, commerce ou en visio. Proximité immédiate du centre-ville lillois : aucun hébergement nécessaire. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Saint-André-lez-Lille depuis Lille centre (10 min). Intervention sur site dans votre cabinet, agence, commerce ou en visio. Proximité immédiate du centre-ville lillois : aucun hébergement nécessaire.",
     },
   ],
 };

@@ -230,7 +230,7 @@ export const ANGLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Anglet et sur la Côte basque ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Anglet et de l'agglomération Bayonne-Anglet-Biarritz. Nous nous déplaçons sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Anglet et de l'agglomération Bayonne-Anglet-Biarritz. Nous nous déplaçons sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un hôtel ou une école de surf angloye ?",

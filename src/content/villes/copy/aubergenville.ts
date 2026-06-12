@@ -65,7 +65,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Mantes ou Paris ?",
-      a: "Mantes-la-Jolie (10 min). Poissy (15 min). Paris Saint-Lazare (45 min transilien J). A13 accès direct. Frais de mission en sus, grille tarifaire publique.",
+      a: "Mantes-la-Jolie (10 min). Poissy (15 min). Paris Saint-Lazare (45 min transilien J). A13 accès direct.",
     },
   ],
 };

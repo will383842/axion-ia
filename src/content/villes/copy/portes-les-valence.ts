@@ -65,7 +65,7 @@ export const PORTES_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence 2h15). Pour les multi-jours, hébergement local possible (hôtels Valence). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence 2h15). Pour les multi-jours, hébergement local possible (hôtels Valence).",
     },
   ],
 };

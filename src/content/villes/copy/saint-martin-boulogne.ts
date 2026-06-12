@@ -65,7 +65,7 @@ export const SAINT_MARTIN_BOULOGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Saint-Martin-Boulogne ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Nos consultants se déplacent depuis Lille (1h30) ou Paris (2h30 TGV+A16). Frais déplacement facturés à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nos consultants se déplacent depuis Lille (1h30) ou Paris (2h30 TGV+A16).",
     },
   ],
 };

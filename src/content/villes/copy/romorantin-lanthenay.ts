@@ -65,7 +65,7 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Romorantin-Lanthenay ?",
-      a: "Nos consultants se déplacent à Romorantin-Lanthenay (Blois 40 min, Tours 1h15). Pour les multi-jours, hébergement local en Sologne. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants se déplacent à Romorantin-Lanthenay (Blois 40 min, Tours 1h15). Pour les multi-jours, hébergement local en Sologne.",
     },
   ],
 };

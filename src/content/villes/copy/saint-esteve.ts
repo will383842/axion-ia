@@ -65,7 +65,7 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Estève ?",
-      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, cabinet ou atelier. Visio possible.",
     },
   ],
 };

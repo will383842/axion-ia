@@ -65,7 +65,7 @@ export const FORCALQUIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Forcalquier ?",
-      a: "Nos consultants se déplacent sur site à Forcalquier depuis Aix-en-Provence (1h15 via A51) ou Digne-les-Bains (50 min). Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Forcalquier depuis Aix-en-Provence (1h15 via A51) ou Digne-les-Bains (50 min). Hébergement local possible.",
     },
   ],
 };

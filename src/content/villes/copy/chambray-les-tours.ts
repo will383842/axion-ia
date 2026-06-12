@@ -65,7 +65,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Chambray-lès-Tours ?",
-      a: "Nos consultants interviennent sur site à Chambray-lès-Tours (Tours centre à 10 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants interviennent sur site à Chambray-lès-Tours (Tours centre à 10 min).",
     },
   ],
 };

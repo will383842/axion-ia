@@ -65,7 +65,7 @@ export const SAINT_ARNOULT_EN_YVELINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Arnoult-en-Yvelines ?",
-      a: "Nos consultants rejoignent Saint-Arnoult-en-Yvelines par l'A10 (sortie dédiée, axe Paris-Chartres) ou via la gare de Dourdan (RER C) à 10 min. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Saint-Arnoult-en-Yvelines par l'A10 (sortie dédiée, axe Paris-Chartres) ou via la gare de Dourdan (RER C) à 10 min.",
     },
   ],
 };

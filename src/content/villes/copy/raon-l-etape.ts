@@ -65,7 +65,7 @@ export const RAON_L_ETAPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Raon-l''Étape ?",
-      a: "Nos consultants se déplacent via gare SNCF Raon-l''Étape (ligne Lunéville–Saint-Dié) ou RN59. Saint-Dié à 15 min, Baccarat à 12 min, Nancy à 1h. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Raon-l''Étape (ligne Lunéville–Saint-Dié) ou RN59. Saint-Dié à 15 min, Baccarat à 12 min, Nancy à 1h.",
     },
   ],
 };

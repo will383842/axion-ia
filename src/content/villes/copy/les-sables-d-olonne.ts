@@ -222,7 +222,7 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Websites and SaaS platforms built on open standards (multi-CMS or custom code), hosted in Europe and GDPR-compliant, with customer-data analysis (bookings, payments, fish-market and yard contacts) from the design stage. You remain owner of everything — code, content, access — taken back in-house or by any integrator in the Sables agglomeration, with no vendor lock-in. Quote issued from 24-48 h depending on complexity, transparent travel costs billed separately from the package.",
+          "Websites and SaaS platforms built on open standards (multi-CMS or custom code), hosted in Europe and GDPR-compliant, with customer-data analysis (bookings, payments, fish-market and yard contacts) from the design stage. You remain owner of everything — code, content, access — taken back in-house or by any integrator in the Sables agglomeration, with no vendor lock-in. Quote issued from 24-48 h depending on complexity, transparent",
       },
     },
   },
@@ -250,7 +250,7 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission aux Sables-d'Olonne ?",
-      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré. Frais de déplacement transparents distincts du forfait.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
   ],
 };

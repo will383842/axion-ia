@@ -246,7 +246,7 @@ export const CHARTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Chartres est à environ 1h de Paris-Montparnasse en TER direct. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+      a: "Chartres est à environ 1h de Paris-Montparnasse en TER direct. Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

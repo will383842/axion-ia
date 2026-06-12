@@ -65,7 +65,7 @@ export const MEULAN_EN_YVELINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Meulan-en-Yvelines ?",
-      a: "Nos consultants rejoignent Meulan-en-Yvelines via le Transilien J (gare Meulan — Hardricourt, 50 min Paris Saint-Lazare) ou par l'A13. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Meulan-en-Yvelines via le Transilien J (gare Meulan — Hardricourt, 50 min Paris Saint-Lazare) ou par l'A13.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Lyon ?",
-      a: "Nos consultants viennent de Paris (TGV Valence 2h15 + 5 min) ou Lyon (1h A7). Pour les multi-jours, hébergement local possible (hôtels Valence). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Paris (TGV Valence 2h15 + 5 min) ou Lyon (1h A7). Pour les multi-jours, hébergement local possible (hôtels Valence).",
     },
   ],
 };

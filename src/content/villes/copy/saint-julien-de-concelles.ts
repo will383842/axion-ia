@@ -65,7 +65,7 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission sur une exploitation ?",
-      a: "Nos consultants se déplacent directement sur votre exploitation maraîchère ou domaine viticole à Saint-Julien-de-Concelles (20 min depuis Nantes). Intervention adaptée à votre rythme d'activité. Frais de déplacement à part.",
+      a: "Nos consultants se déplacent directement sur votre exploitation maraîchère ou domaine viticole à Saint-Julien-de-Concelles (20 min depuis Nantes). Intervention adaptée à votre rythme d'activité.",
     },
   ],
 };

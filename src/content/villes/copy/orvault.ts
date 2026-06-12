@@ -242,7 +242,7 @@ export const ORVAULT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Orvault. Frais de déplacement (TGV, repas, hébergement si multi-jours) facturés à part du forfait journée. Tarifs publics et transparents, pas de devis opaque.",
+      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Orvault. Tarifs publics et transparents, pas de devis opaque.",
     },
   ],
 };

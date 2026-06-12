@@ -65,7 +65,7 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Larmor-Plage ?",
-      a: "Nos consultants se déplacent depuis Lorient (5 km) ou Vannes (55 min). Mission type : audit sur place demi-journée, restitution sous 10 jours, puis intervention ou implémentation sur devis. Frais de déplacement inclus dans le périmètre Lorient Agglomération.",
+      a: "Nos consultants se déplacent depuis Lorient (5 km) ou Vannes (55 min). Mission type : audit sur place demi-journée, restitution sous 10 jours, puis intervention ou implémentation sur devis.",
     },
   ],
 };

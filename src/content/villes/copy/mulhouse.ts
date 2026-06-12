@@ -34,8 +34,8 @@ export const MULHOUSE_COPY: VilleCopy = {
       en: "Operational AI audit in Mulhouse: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Mulhouse practices to industrial mid-caps in the Haut-Rhin basin.",
     },
     interventions: {
-      fr: "Interventions IA à Mulhouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Mulhouse: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Mulhouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Mulhouse: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Mulhouse : on déploie l'IA dans vos outils existants (CRM, ERP, systèmes de production, outils ingénierie) avec ROI chiffré contractuel. Position trinationale prise en compte pour les contraintes RGPD et souveraineté données.",
@@ -328,7 +328,7 @@ export const MULHOUSE_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Mulhouse se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en atelier, en bureau d'études, en laboratoire ou sur le terrain transfrontalier. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Mulhouse se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en atelier, en bureau d'études, en laboratoire ou sur le terrain transfrontalier.",
         whyHere: [
           "Mulhouse est un terrain d'intervention industriel de premier plan pour Axion-IA : ETI et PME automobiles (Stellantis, équipementiers Île Napoléon), ingénieries (Clemessy), acteurs numérique (KMØ) et entreprises transfrontalières représentent une part significative de nos sessions.",
           "Toutes les zones du bassin couvertes en présentiel : centre-ville, Parc des Collines, Technoparc Bourtzwiller, Île Napoléon, Quartier DMC et communes (Riedisheim, Kingersheim, Illzach, Pfastatt).",
@@ -434,7 +434,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur mulhousien — automobile, industrie, chimie, numérique — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Mulhouse come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the shop floor, in the engineering office, in the laboratory or in cross-border fieldwork. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Mulhouse come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the shop floor, in the engineering office, in the laboratory or in cross-border fieldwork.",
         whyHere: [
           "Mulhouse is a prime industrial engagement ground for Axion-IA: automotive mid-caps and SMEs (Stellantis, Île Napoléon suppliers), engineering firms (Clemessy), digital players (KMØ) and cross-border companies represent a significant share of our sessions.",
           "All basin zones covered in person: city centre, Parc des Collines, Technoparc Bourtzwiller, Île Napoléon, Quartier DMC and communes (Riedisheim, Kingersheim, Illzach, Pfastatt).",

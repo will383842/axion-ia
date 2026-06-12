@@ -65,7 +65,7 @@ export const THIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (45 min). Aéroport Clermont à 55 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Clermont-Ferrand (45 min). Aéroport Clermont à 55 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h40) ou Genève (20 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h40) ou Genève (20 min).",
     },
   ],
 };

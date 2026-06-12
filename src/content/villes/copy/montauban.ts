@@ -228,7 +228,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Montauban ?",
-      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Montauban (Tarn-et-Garonne, 55 km de Toulouse) inclus dans le devis.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Quels délais pour une intervention sur site à Montauban ?",

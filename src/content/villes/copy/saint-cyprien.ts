@@ -65,7 +65,7 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Cyprien ?",
-      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, marina ou bureau. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, marina ou bureau. Visio possible.",
     },
   ],
 };

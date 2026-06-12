@@ -65,7 +65,7 @@ export const AMNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Metz ou Luxembourg ?",
-      a: "Nos consultants viennent de Metz (20 min A31), Nancy (50 min) ou Luxembourg-Ville (50 min). Pour les multi-jours, hébergement local possible (offre hôtelière dense pôle thermal). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Metz (20 min A31), Nancy (50 min) ou Luxembourg-Ville (50 min). Pour les multi-jours, hébergement local possible (offre hôtelière dense pôle thermal).",
     },
   ],
 };

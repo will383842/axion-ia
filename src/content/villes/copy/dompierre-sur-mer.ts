@@ -65,7 +65,7 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Dompierre-sur-Mer ?",
-      a: "Nos consultants accèdent à Dompierre-sur-Mer via la gare TGV de La Rochelle (15 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Dompierre-sur-Mer via la gare TGV de La Rochelle (15 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

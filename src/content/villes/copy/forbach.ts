@@ -228,7 +228,7 @@ export const FORBACH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Forbach ?",
-      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Forbach (Moselle) inclus dans le devis. Tarifs publics consultables sur axion-ia.com.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Quels délais pour une intervention sur site à Forbach ?",

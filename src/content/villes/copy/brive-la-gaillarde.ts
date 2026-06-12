@@ -136,7 +136,7 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité, avec grille tarifaire claire et scope défini avant signature. Sites et plateformes hébergés en UE, conformes RGPD. UX/UI sur mesure, version mobile, e-commerce multi-CMS et IA intégrée — jamais de thème recyclé. Vous conservez la propriété pleine du code et des accès, votre équipe est formée à l'administration, sans verrou éditeur ni dépendance technique. Frais de déplacement éventuels facturés en sus selon la zone.",
+          "Devis remis à partir de 24 à 48 h selon la complexité, avec grille tarifaire claire et scope défini avant signature. Sites et plateformes hébergés en UE, conformes RGPD. UX/UI sur mesure, version mobile, e-commerce multi-CMS et IA intégrée — jamais de thème recyclé. Vous conservez la propriété pleine du code et des accès, votre équipe est formée à l'administration, sans verrou éditeur ni dépendance technique.",
       },
       en: {
         hero: "In Brive-la-Gaillarde, Corrèze's leading economic hub, a website is not a decorative front: it is a sales and export tool for a regional food-processing fabric that exports (Silab, nearly €67M revenue with 60% international, from Saint-Viance), transforms and ships just-in-time (Bledina/Danone, Francep, Delvert, Fruinov, the Arcadie Sud-Ouest meat sector) from the A20/A89 crossroads. Axion-IA builds AI-augmented websites and SaaS platforms — regional e-shop, multilingual B2B catalogue, retail ordering portal, producer showcase — with bespoke UX/UI, mobile version, multi-CMS e-commerce and embedded AI (recommendation, quoting, semantic search). Code hosted in the EU, GDPR-compliant, no vendor lock-in.",
@@ -222,7 +222,7 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity, with clear pricing and scope defined before signature. Sites and platforms hosted in the EU, GDPR-compliant. Bespoke UX/UI, mobile version, multi-CMS e-commerce and embedded AI — never a recycled theme. You keep full ownership of the code and access, your team is trained to administer it, with no vendor lock-in or technical dependency. Any travel costs billed separately depending on the zone.",
+          "Quote delivered from 24 to 48 hours depending on complexity, with clear pricing and scope defined before signature. Sites and platforms hosted in the EU, GDPR-compliant. Bespoke UX/UI, mobile version, multi-CMS e-commerce and embedded AI — never a recycled theme. You keep full ownership of the code and access, your team is trained to administer it, with no vendor lock-in or technical dependency.",
       },
     },
   },

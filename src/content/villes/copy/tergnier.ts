@@ -65,7 +65,7 @@ export const TERGNIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Tergnier ?",
-      a: "Nos consultants se déplacent via gare SNCF Tergnier (nœud ferroviaire, 1h15 Paris) ou A26. Saint-Quentin à 25 min, Laon à 25 min, Chauny à 8 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Tergnier (nœud ferroviaire, 1h15 Paris) ou A26. Saint-Quentin à 25 min, Laon à 25 min, Chauny à 8 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LUDRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ludres ?",
-      a: "Nos consultants se déplacent via gare SNCF Ludres (ligne Nancy–Épinal) ou autoroutes A330/A33. Position stratégique au sud de Nancy (15 min centre). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Ludres (ligne Nancy–Épinal) ou autoroutes A330/A33. Position stratégique au sud de Nancy (15 min centre).",
     },
   ],
 };

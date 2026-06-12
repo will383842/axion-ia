@@ -65,7 +65,7 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cloyes-les-Trois-Rivières ?",
-      a: "Nos consultants se déplacent via la gare TER de Cloyes-sur-le-Loir (ligne Paris-Vendôme) ou par la route depuis Châteaudun (20 min), Vendôme (30 min) ou Chartres (50 min). Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent via la gare TER de Cloyes-sur-le-Loir (ligne Paris-Vendôme) ou par la route depuis Châteaudun (20 min), Vendôme (30 min) ou Chartres (50 min).",
     },
   ],
 };

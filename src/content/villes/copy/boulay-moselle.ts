@@ -65,7 +65,7 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Boulay-Moselle ?",
-      a: "Nos consultants se déplacent via gare SNCF Courcelles-Chaussy (15 min) ou autoroute A4. Metz à 30 min, Thionville à 35 min, Sarrebruck à 50 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Courcelles-Chaussy (15 min) ou autoroute A4. Metz à 30 min, Thionville à 35 min, Sarrebruck à 50 min.",
     },
   ],
 };

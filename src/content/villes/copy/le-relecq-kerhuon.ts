@@ -65,7 +65,7 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Relecq-Kerhuon ?",
-      a: "Nos consultants se déplacent depuis Brest (5 min) ou par TGV Paris-Brest (3h30). Hébergement possible à Brest centre. Le Relecq-Kerhuon est idéalement situé pour des missions multi-jours Brest Métropole. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants se déplacent depuis Brest (5 min) ou par TGV Paris-Brest (3h30). Hébergement possible à Brest centre. Le Relecq-Kerhuon est idéalement situé pour des missions multi-jours Brest Métropole.",
     },
   ],
 };

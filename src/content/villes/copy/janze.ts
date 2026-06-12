@@ -65,7 +65,7 @@ export const JANZE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Janzé depuis Rennes ?",
-      a: "Janzé est à 30 min de Rennes en voiture (D463 et D34). Gare TGV Rennes à 35 min, aéroport Rennes-Saint-Jacques à 25 min. Frais de déplacement facturés à part.",
+      a: "Janzé est à 30 min de Rennes en voiture (D463 et D34). Gare TGV Rennes à 35 min, aéroport Rennes-Saint-Jacques à 25 min.",
     },
   ],
 };

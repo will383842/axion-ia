@@ -32,8 +32,8 @@ export const LIMOGES_COPY: VilleCopy = {
       en: "Operational AI audit in Limoges: we map what can be automated at your company and quantify the ROI. From Sur place suited to artisan micro-firms to Mid-cap Strategic for large Legrand divisions or porcelain manufacturers.",
     },
     interventions: {
-      fr: "Interventions IA à Limoges : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Limoges: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Limoges : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Limoges: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Limoges : on déploie l'IA dans vos outils existants (CRM, ERP, MES, systèmes de production) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -322,7 +322,7 @@ export const LIMOGES_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Limoges se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine, en manufacture, au bureau ou en clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Limoges se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine, en manufacture, au bureau ou en clientèle.",
         whyHere: [
           "Limoges est un terrain d'intervention singulier : industrie électrique Legrand, manufactures de porcelaine, céramique technique ESTER et PME de services constituent des publics avec des attentes très concrètes en matière d'outils IA opérationnels.",
           "Tous les sites et communes du bassin couverts en présentiel : centre-ville, ESTER Technopole, zones industrielles Magré et Romanet, Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne.",
@@ -428,7 +428,7 @@ export const LIMOGES_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur limougeaud — industrie électrique, porcelaine, agroalimentaire, numérique, santé — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Limoges come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the factory floor, in the porcelain workshop, at the office or with clients. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Limoges come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on the factory floor, in the porcelain workshop, at the office or with clients.",
         whyHere: [
           "Limoges is a unique engagement ground: Legrand electrical industry, porcelain manufacturers, ESTER technical ceramics and services SMEs form audiences with very concrete expectations around operational AI tools.",
           "All sites and basin communes covered in person: city centre, ESTER Technopole, Magré and Romanet industrial zones, Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne.",
@@ -752,7 +752,7 @@ export const LIMOGES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Limoges accompagne les dirigeants, cadres et experts en face-à-face sur leurs enjeux IA personnels. Format confidentiel et sur mesure — adapté aux managers de manufactures, cadres dirigeants de Legrand, responsables R&D d'ESTER ou entrepreneurs de la French Tech Limoges. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Le coaching IA individuel Axion-IA à Limoges accompagne les dirigeants, cadres et experts en face-à-face sur leurs enjeux IA personnels. Format confidentiel et sur mesure — adapté aux managers de manufactures, cadres dirigeants de Legrand, responsables R&D d'ESTER ou entrepreneurs de la French Tech Limoges.",
         whyHere: [
           "Limoges réunit des profils de dirigeants atypiques — responsables de grandes manufactures patrimoniales, directeurs de filiales CAC 40, ingénieurs-chercheurs CNRS, entrepreneurs deeptech — pour lesquels un accompagnement individuel sur mesure est plus pertinent qu'une session collective.",
           "Le format 1-to-1 permet d'aborder des enjeux confidentiels : stratégie IA de manufacture, transformation digitale d'une filière patrimoniale (porcelaine), positionnement concurrentiel dans la filière électrique.",
@@ -858,7 +858,7 @@ export const LIMOGES_COPY: VilleCopy = {
           "Confidentialité totale garantie. Contenu 100 % sur mesure pour votre contexte limougeaud — aucun module générique recyclé. Si après la première séance vous estimez que le coaching ne correspond pas à vos attentes, remboursement intégral. Aucun engagement de durée minimale imposé.",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Limoges supports executives, managers and experts one-on-one on their personal AI challenges. Confidential and bespoke format — tailored to manufacture managers, Legrand executives, ESTER R&D managers or French Tech Limoges entrepreneurs. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Limoges supports executives, managers and experts one-on-one on their personal AI challenges. Confidential and bespoke format — tailored to manufacture managers, Legrand executives, ESTER R&D managers or French Tech Limoges entrepreneurs.",
         whyHere: [
           "Limoges brings together atypical executive profiles — managers of heritage manufacturers, CAC 40 subsidiary directors, CNRS researchers, deeptech entrepreneurs — for whom individual bespoke coaching is more relevant than a group session.",
           "The 1-to-1 format allows addressing confidential challenges: manufacture AI strategy, digital transformation of a heritage industry (porcelain), competitive positioning in the electrical supply chain.",

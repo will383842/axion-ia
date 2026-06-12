@@ -246,7 +246,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Aix-les-Bains ?",
-      a: "Nos consultants se déplacent sur le bassin du lac du Bourget, avec un accès TGV et l'aéroport de Chambéry à 8 km. Les frais de déplacement sont facturés séparément, selon nos tarifs publics.",
+      a: "Nos consultants se déplacent sur le bassin du lac du Bourget, avec un accès TGV et l'aéroport de Chambéry à 8 km.",
     },
   ],
 };

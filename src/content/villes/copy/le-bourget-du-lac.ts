@@ -57,7 +57,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Bourget-du-Lac ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme lacustre ?",

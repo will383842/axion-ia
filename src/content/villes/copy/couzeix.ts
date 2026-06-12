@@ -65,7 +65,7 @@ export const COUZEIX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Couzeix depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Couzeix est desservie par le réseau STLC. Aucun frais de déplacement supplémentaire pour les missions dans l'agglomération limougeaude. Visio également possible.",
+      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Couzeix est desservie par le réseau STLC. Visio également possible.",
     },
   ],
 };

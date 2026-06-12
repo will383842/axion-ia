@@ -61,7 +61,7 @@ export const WORMHOUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Wormhout depuis Dunkerque ou Lille ?",
-      a: "Nos consultants rejoignent Wormhout en 25 min depuis Dunkerque ou 1h depuis Lille via A25. Pour les missions multi-jours, hébergement local possible. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants rejoignent Wormhout en 25 min depuis Dunkerque ou 1h depuis Lille via A25. Pour les missions multi-jours, hébergement local possible.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wormhout ?",

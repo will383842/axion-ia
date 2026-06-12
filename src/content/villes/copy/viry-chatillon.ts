@@ -136,7 +136,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement clair : périmètre, livrables et calendrier fixés au devis, remis à partir de 24-48 h selon la complexité. Hébergement en UE par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur — code et CMS documentés, transférables à tout intégrateur de l'Essonne ou repris en interne. Votre équipe est formée à l'administration du site et des automatisations IA ; la maintenance reste optionnelle, jamais imposée. Les frais de déplacement sur site à Viry-Châtillon sont facturés en sus selon la zone.",
+          "Engagement clair : périmètre, livrables et calendrier fixés au devis, remis à partir de 24-48 h selon la complexité. Hébergement en UE par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur — code et CMS documentés, transférables à tout intégrateur de l'Essonne ou repris en interne. Votre équipe est formée à l'administration du site et des automatisations IA ; la maintenance reste optionnelle, jamais imposée.",
       },
       en: {
         hero: "In Viry-Châtillon, business digital is anything but abstract: it serves the RN7 automotive corridor (avenue du Général de Gaulle) with its car dealerships, garages and vehicle inspection centres, the construction and services micro-businesses, the Seine quayside port logistics, and the subcontracting ecosystem orbiting the Renault Sport / Alpine F1 Team engine site established in the town since 1987. Axion-IA designs AI-augmented websites and SaaS platforms — custom-built, EU-hosted, no vendor lock-in — that turn a quote request or a workshop appointment into a customer actually handled.",
@@ -246,7 +246,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Orly ?",
-      a: "Viry-Châtillon est à 30 minutes de Paris par le RER D, 10 minutes d'Orly et sur l'A6. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Viry-Châtillon est à 30 minutes de Paris par le RER D, 10 minutes d'Orly et sur l'A6. Nos consultants se déplacent sur site.",
     },
   ],
 };

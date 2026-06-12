@@ -30,16 +30,16 @@ export const MONTPELLIER_COPY: VilleCopy = {
       en: "Operational AI audit in Montpellier: we map your automatable processes and quantify the 12-24 month ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Cap Omega tech micro-businesses, Euromédecine health SMEs and Hérault industrial mid-caps.",
     },
     interventions: {
-      fr: "Interventions IA à Montpellier : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Montpellier: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Montpellier : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier réel.",
+      en: "AI sessions in Montpellier: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Montpellier : on intègre l'IA dans vos outils existants (CRM, ERP, mails, outils métier santé/biotech/IT) avec ROI chiffré contractuel. Vos équipes gardent la main — aucune dépendance créée.",
       en: "AI implementation in Montpellier: we integrate AI into your existing tools (CRM, ERP, email, health/biotech/IT business tools) with contractually-costed ROI. Your teams stay in control — no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Montpellier : accompagnement 1-to-1 ancré dans votre réalité — santé/biotech, IT, jeux vidéo ou agroalimentaire. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
-      en: "Individual AI coaching in Montpellier: 1-to-1 support rooted in your reality — health/biotech, IT, video games or agri-food. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+      fr: "Coaching IA individuel à Montpellier : accompagnement 1-to-1 ancré dans votre réalité — santé/biotech, IT, jeux vidéo ou agroalimentaire. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Individual AI coaching in Montpellier: 1-to-1 support rooted in your reality — health/biotech, IT, video games or agri-food. From €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI héraultaises — site vitrine premium pour acteurs santé-biotech (Euromédecine, Sanofi R&D), portail client B2B pour scale-ups French Tech Méditerranée (Cap Omega, Cap Alpha), dashboard métier pour studios jeux vidéo et agritech connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -296,7 +296,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Montpellier se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez dans la santé à Euromédecine, le numérique à Cap Omega ou l'industrie en Hérault. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Montpellier se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez dans la santé à Euromédecine, le numérique à Cap Omega ou l'industrie en Hérault.",
         whyHere: [
           "Montpellier est l'un de nos terrains d'intervention réguliers en Occitanie : secteurs santé, IT, jeux vidéo, agronomie et industrie y coexistent, ce qui nous donne une palette de cas d'usage très concrète à démontrer.",
           "Toute la métropole couverte en présentiel ainsi que les communes voisines (Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio) et les pôles d'activité périphériques.",
@@ -391,7 +391,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir dans les communes voisines de Montpellier ?",
-            a: "Oui. Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio et les zones d'activité périphériques (Parc Agropolis, technopôle de Sète) sont couvertes. Les frais de déplacement sont indiqués sur le devis selon la commune.",
+            a: "Oui. Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio et les zones d'activité périphériques (Parc Agropolis, technopôle de Sète) sont couvertes.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
@@ -402,7 +402,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur (santé, IT, jeux vidéo, agronomie), aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Montpellier come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether you are in health at Euromédecine, digital at Cap Omega or industry in the Hérault. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Montpellier come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether you are in health at Euromédecine, digital at Cap Omega or industry in the Hérault.",
         whyHere: [
           "Montpellier is one of our regular engagement grounds in Occitania: health, IT, video games, agronomy and industry sectors coexist, giving us a very concrete palette of use cases to demonstrate.",
           "The entire metropolis covered in person along with neighbouring communes (Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio) and peripheral business parks.",
@@ -726,7 +726,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Montpellier est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants, managers et experts des secteurs santé-biotech, IT, jeux vidéo et agronomie du bassin montpelliérain. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Montpellier est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants, managers et experts des secteurs santé-biotech, IT, jeux vidéo et agronomie du bassin montpelliérain.",
         whyHere: [
           "Montpellier concentre des profils très différents — médecin ou data scientist chez Sanofi, studio director chez Ubisoft, directeur technique dans une PME Cap Omega — qui n'ont ni le même rythme ni les mêmes cas d'usage : le 1-to-1 est la seule formule qui s'adapte à chacun.",
           "L'écosystème santé d'Euromédecine impose des contraintes réglementaires (HDS, RGPD santé, MDR) que seul un accompagnement individuel peut intégrer dans chaque exercice pratique.",
@@ -813,7 +813,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux montpelliérains ?",
-            a: "Oui. Séances sur site dans vos locaux (Cap Omega, Euromédecine, Agropolis, vos bureaux) ou en visio selon votre disponibilité. Le choix est fait au cadrage. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+            a: "Oui. Séances sur site dans vos locaux (Cap Omega, Euromédecine, Agropolis, vos bureaux) ou en visio selon votre disponibilité. Le choix est fait au cadrage.",
           },
           {
             q: "Mes données et documents restent-ils confidentiels pendant le coaching ?",
@@ -829,10 +829,10 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur santé (HDS sur demande). Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur santé (HDS sur demande). Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Montpellier is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to executives, managers and experts in health-biotech, IT, video games and agronomy across the Montpellier basin. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Montpellier is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to executives, managers and experts in health-biotech, IT, video games and agronomy across the Montpellier basin.",
         whyHere: [
           "Montpellier brings together very diverse profiles — a physician or data scientist at Sanofi, a studio director at Ubisoft, a technical lead at a Cap Omega SME — who have different paces and use cases: 1-to-1 is the only format that adapts to each.",
           "The Euromédecine health ecosystem imposes regulatory constraints (HDS, health GDPR, MDR) that only individual coaching can integrate into each practical exercise.",
@@ -919,7 +919,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Can coaching sessions be held at my Montpellier premises?",
-            a: "Yes. On-site sessions at your offices (Cap Omega, Euromédecine, Agropolis, your offices) or via video depending on availability. The choice is made at framing. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Yes. On-site sessions at your offices (Cap Omega, Euromédecine, Agropolis, your offices) or via video depending on availability. The choice is made at framing.",
           },
           {
             q: "Does my data stay confidential during coaching?",
@@ -935,7 +935,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance and health sector (HDS on request). Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance and health sector (HDS on request). If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
     sitesWeb: {

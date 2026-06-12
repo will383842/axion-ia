@@ -128,7 +128,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous sur place à Bagnolet et dans l'est parisien ?",
-            a: "Oui. Depuis Gallieni (ligne 3) et la porte de Bagnolet sur le périphérique, nous intervenons sur site à Bagnolet, Montreuil, Pantin, Les Lilas et Romainville. Le kick-off et la recette se font dans vos locaux ; les itérations peuvent se faire à distance. Frais de déplacement facturés à part.",
+            a: "Oui. Depuis Gallieni (ligne 3) et la porte de Bagnolet sur le périphérique, nous intervenons sur site à Bagnolet, Montreuil, Pantin, Les Lilas et Romainville. Le kick-off et la recette se font dans vos locaux ; les itérations peuvent se faire à distance.",
           },
           {
             q: "Sommes-nous dépendants d'Axion-IA après la livraison ?",
@@ -214,7 +214,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Bagnolet and eastern Paris?",
-            a: "Yes. From Gallieni (Line 3) and the porte de Bagnolet on the ring road, we work on site in Bagnolet, Montreuil, Pantin, Les Lilas and Romainville. Kick-off and acceptance happen at your premises; iterations can be remote. Travel costs billed separately.",
+            a: "Yes. From Gallieni (Line 3) and the porte de Bagnolet on the ring road, we work on site in Bagnolet, Montreuil, Pantin, Les Lilas and Romainville. Kick-off and acceptance happen at your premises; iterations can be remote.",
           },
           {
             q: "Are we dependent on Axion-IA after delivery?",
@@ -230,7 +230,7 @@ export const BAGNOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagnolet ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un studio créatif ou une agence bagnoletaise ?",

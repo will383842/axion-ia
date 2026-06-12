@@ -65,7 +65,7 @@ export const CRUSEILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cruseilles ?",
-      a: "Nos consultants interviennent à Cruseilles depuis Annecy (20 min) ou Genève (25 min). Intervention sur site dans vos locaux, cabinet ou atelier. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Cruseilles depuis Annecy (20 min) ou Genève (25 min). Intervention sur site dans vos locaux, cabinet ou atelier.",
     },
   ],
 };

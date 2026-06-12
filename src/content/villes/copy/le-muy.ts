@@ -63,7 +63,7 @@ export const LE_MUY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Muy ?",
-      a: "Intervention sous 5 jours ouvrés. Gare TGV Les Arcs-Draguignan à 10 min (Paris 4h00), aéroport Nice à 1h, axe A8. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés. Gare TGV Les Arcs-Draguignan à 10 min (Paris 4h00), aéroport Nice à 1h, axe A8. Nos consultants se déplacent sur site.",
     },
   ],
 };

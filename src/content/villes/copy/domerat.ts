@@ -69,7 +69,7 @@ export const DOMERAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?",
-      a: "Le diagnostic et les sessions clés se font sur site à Domérat ; le suivi peut se poursuivre en visio. Les frais de déplacement depuis Clermont (1h15) ou Lyon (2h30) sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se font sur site à Domérat ; le suivi peut se poursuivre en visio.",
     },
   ],
 };

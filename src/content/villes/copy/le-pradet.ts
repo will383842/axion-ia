@@ -63,7 +63,7 @@ export const LE_PRADET_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission au Pradet ?",
-      a: "Intervention sous 5 jours ouvrés. Gare TGV Toulon à 15 min (Paris 3h50), aéroport Toulon-Hyères à 15 min. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés. Gare TGV Toulon à 15 min (Paris 3h50), aéroport Toulon-Hyères à 15 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

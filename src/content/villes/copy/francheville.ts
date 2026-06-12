@@ -65,7 +65,7 @@ export const FRANCHEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

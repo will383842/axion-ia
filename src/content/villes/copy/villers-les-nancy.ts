@@ -65,7 +65,7 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villers-lès-Nancy ?",
-      a: "Nos consultants se déplacent via gare Nancy-Ville TGV Est (Paris 1h30). Couverture campus Brabois, zones d'activités et commune résidentielle. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare Nancy-Ville TGV Est (Paris 1h30). Couverture campus Brabois, zones d'activités et commune résidentielle.",
     },
   ],
 };

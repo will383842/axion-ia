@@ -65,7 +65,7 @@ export const LOCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Loches ?",
-      a: "Nos consultants viennent depuis Tours (45 min voiture D943 ou TER gare de Loches). Pour les missions multi-jours, hébergement local possible (hôtels cité royale). Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent depuis Tours (45 min voiture D943 ou TER gare de Loches). Pour les missions multi-jours, hébergement local possible (hôtels cité royale).",
     },
   ],
 };

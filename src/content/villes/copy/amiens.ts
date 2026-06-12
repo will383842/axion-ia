@@ -2,8 +2,6 @@
 //
 // Doctrine respectée (cf. paris.ts) :
 //   - Aucun délai chiffré en dur.
-//   - Aucun « frais de déplacement intégrés » — frais de logement, repas et
-//     forfait trajet facturés en sus pour toutes les interventions sur site.
 //   - Durée minimale = 1 journée. Aucune demi-journée.
 //   - Aucun prix hardcodé — libellés contextuels uniquement.
 //   - Tailles INSEE : TPE / PME / ETI / GE.
@@ -30,16 +28,16 @@ export const AMIENS_COPY: VilleCopy = {
       en: "Operational AI audit in Amiens: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size — from micro-businesses to large industrial sites like P&G and Valeo.",
     },
     interventions: {
-      fr: "Interventions IA à Amiens : formats sur site d'une à plusieurs journées selon vos équipes, adaptés au tissu industriel et tertiaire amiénois. Vos collaborateurs repartent avec des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Amiens: on-site formats from one to several days, tailored to Amiens' industrial and service business fabric. Your staff leave with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Amiens : formats sur site d'une à plusieurs journées selon vos équipes, adaptés au tissu industriel et tertiaire amiénois. Vos collaborateurs repartent avec des outils IA installés sur leur poste.",
+      en: "AI sessions in Amiens: on-site formats from one to several days, tailored to Amiens' industrial and service business fabric. Your staff leave with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Amiens : on déploie l'IA dans vos outils existants (CRM, ERP, mails, GMAO) avec ROI chiffré contractuel. Cas typiques amiénois : automatisation qualité sur lignes de production, gestion fournisseurs industriels, support R&D nutrition animale. Vos équipes gardent la main.",
       en: "AI implementation in Amiens: we deploy AI into your existing tools (CRM, ERP, email, CMMS) with contractually-costed ROI. Typical Amiens use cases: quality automation on production lines, industrial supplier management, pet nutrition R&D support. Your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA individuel 1-to-1 à Amiens : séances sur mesure pour dirigeants et cadres du tissu industriel, agroalimentaire et tertiaire de la Somme et des Hauts-de-France. Adapté aux PME manufacturières, à la logistique et aux ETI du bassin. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
-      en: "1-to-1 AI coaching in Amiens: bespoke sessions for executives and managers in manufacturing, agri-food and services businesses across the Somme and Hauts-de-France. Tailored to manufacturing SMEs, logistics and mid-caps in the basin. Lodging, meals and travel allowance billed separately for on-site sessions.",
+      fr: "Coaching IA individuel 1-to-1 à Amiens : séances sur mesure pour dirigeants et cadres du tissu industriel, agroalimentaire et tertiaire de la Somme et des Hauts-de-France. Adapté aux PME manufacturières, à la logistique et aux ETI du bassin.",
+      en: "1-to-1 AI coaching in Amiens: bespoke sessions for executives and managers in manufacturing, agri-food and services businesses across the Somme and Hauts-de-France. Tailored to manufacturing SMEs, logistics and mid-caps in the basin.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI du bassin amiénois — site vitrine premium pour industrie manufacturière, agroalimentaire et bioéconomie, portail fournisseurs et qualité, dashboard métier connecté à votre CRM/ERP/GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -292,7 +290,7 @@ export const AMIENS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Amiens se déclinent en formats sur site d'une à plusieurs journées selon vos équipes et votre secteur — industrie, commerce, services, R&D. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Amiens se déclinent en formats sur site d'une à plusieurs journées selon vos équipes et votre secteur — industrie, commerce, services, R&D. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
           "Amiens et son bassin concentrent un tissu d'entreprises manufacturières et de services où la montée en compétence IA génère des gains opérationnels immédiats : rédaction de rapports qualité, gestion documentaire fournisseurs, suivi de production.",
           "Nos consultants se déplacent sur site à Amiens — centre-ville, zone industrielle nord, Pôle Jules Verne, zones d'activités périphériques. Pas d'aléa logistique.",
@@ -398,7 +396,7 @@ export const AMIENS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur industriel ou tertiaire, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Amiens come in on-site formats from one to several days depending on your teams and sector — manufacturing, trade, services, R&D. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Amiens come in on-site formats from one to several days depending on your teams and sector — manufacturing, trade, services, R&D. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "Amiens and its basin concentrate manufacturing and service companies where AI upskilling delivers immediate operational gains: quality report writing, supplier document management, production tracking.",
           "Our consultants travel on site to Amiens — city centre, northern industrial zone, Pôle Jules Verne, surrounding business parks. No logistics uncertainty.",
@@ -799,7 +797,7 @@ export const AMIENS_COPY: VilleCopy = {
         faq: [
           {
             q: "Quel est le format des séances 1-to-1 à Amiens ?",
-            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Amiens (centre-ville, Pôle Jules Verne, zones industrielles). Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Amiens (centre-ville, Pôle Jules Verne, zones industrielles).",
           },
           {
             q: "À quelle fréquence se déroulent les séances ?",
@@ -807,7 +805,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
           {
             q: "Le coaching en présentiel est-il possible sur les zones industrielles d'Amiens ?",
-            a: "Oui. Nous intervenons sur l'ensemble du bassin amiénois : centre-ville, zone industrielle nord, Pôle Jules Verne, Longueau, Camon, Glisy, Rivery. Frais de trajet facturés en sus.",
+            a: "Oui. Nous intervenons sur l'ensemble du bassin amiénois : centre-ville, zone industrielle nord, Pôle Jules Verne, Longueau, Camon, Glisy, Rivery.",
           },
           {
             q: "Quels secteurs sont les plus adaptés au coaching 1-to-1 à Amiens ?",
@@ -823,7 +821,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Amiens individually supports executives and managers at manufacturing SMEs, logistics companies and service firms across Hauts-de-France. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme targets your real use cases — production management, supplier documentation, reporting, agri-food R&D. You progress at your own pace without halting your operations.",
@@ -905,7 +903,7 @@ export const AMIENS_COPY: VilleCopy = {
         faq: [
           {
             q: "What is the format of 1-to-1 sessions in Amiens?",
-            a: "Sessions take place by video or in person at your offices in Amiens (city centre, Pôle Jules Verne, industrial zones). Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Sessions take place by video or in person at your offices in Amiens (city centre, Pôle Jules Verne, industrial zones).",
           },
           {
             q: "How often are the sessions?",
@@ -913,7 +911,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
           {
             q: "Is on-site coaching possible at Amiens industrial zones?",
-            a: "Yes. We cover the full Amiens basin: city centre, northern industrial zone, Pôle Jules Verne, Longueau, Camon, Glisy, Rivery. Travel costs billed separately.",
+            a: "Yes. We cover the full Amiens basin: city centre, northern industrial zone, Pôle Jules Verne, Longueau, Camon, Glisy, Rivery.",
           },
           {
             q: "Which sectors are best suited to 1-to-1 coaching in Amiens?",
@@ -929,7 +927,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your action plans and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. No lock-in: you leave with your action plans and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
     sitesWeb: {

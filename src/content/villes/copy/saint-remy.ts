@@ -65,7 +65,7 @@ export const SAINT_REMY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Rémy ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min).",
     },
   ],
 };

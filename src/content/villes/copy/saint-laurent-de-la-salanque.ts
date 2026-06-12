@@ -65,7 +65,7 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Laurent-de-la-Salanque ?",
-      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre commerce, exploitation ou atelier. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre commerce, exploitation ou atelier. Visio possible.",
     },
   ],
 };

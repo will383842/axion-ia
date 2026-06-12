@@ -65,7 +65,7 @@ export const VALENTIGNEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Valentigney ?",
-      a: "Nos consultants se déplacent à Valentigney (gare TGV Belfort-Montbéliard à 20 min, A36 depuis Besançon 1h15). Interventions dans vos locaux usine ou atelier. Visio possible pour le suivi. Frais déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent à Valentigney (gare TGV Belfort-Montbéliard à 20 min, A36 depuis Besançon 1h15). Interventions dans vos locaux usine ou atelier. Visio possible pour le suivi.",
     },
   ],
 };

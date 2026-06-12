@@ -65,7 +65,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Saint-Rémy-de-Provence ?",
-      a: "Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

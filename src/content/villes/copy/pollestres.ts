@@ -65,7 +65,7 @@ export const POLLESTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pollestres ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible.",
     },
   ],
 };

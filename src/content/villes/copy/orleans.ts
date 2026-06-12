@@ -33,8 +33,8 @@ export const ORLEANS_COPY: VilleCopy = {
       en: "Operational AI audit in Orléans: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Saint-Jean-de-Braye pharma labs to Ormes cosmetics R&D centres.",
     },
     interventions: {
-      fr: "Interventions IA à Orléans : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Orléans: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Orléans : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Orléans: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Orléans : on déploie l'IA dans vos outils existants (CRM, ERP, LIMS, systèmes industriels) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -292,7 +292,7 @@ export const ORLEANS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Orléans se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en laboratoire, en bureau, en production ou en clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Orléans se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en laboratoire, en bureau, en production ou en clientèle.",
         whyHere: [
           "Orléans est un terrain d'intervention B2B diversifié : laboratoires cosmétiques et pharmaceutiques, direction industrielle John Deere, équipes R&D BRGM et INRAE, PME numériques du LAB'O et startups French Tech Loire Valley.",
           "Toutes les communes de l'agglomération couvertes en présentiel : centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet, Fleury-les-Aubrais et La Chapelle-Saint-Mesmin.",
@@ -398,7 +398,7 @@ export const ORLEANS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur orléanais — cosmétique, pharma, géosciences, industrie, numérique — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Orléans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in the lab, at the office, on the production floor or with clients. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Orléans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in the lab, at the office, on the production floor or with clients.",
         whyHere: [
           "Orléans is a diverse B2B engagement ground: cosmetics and pharma labs, John Deere industrial management, BRGM and INRAE R&D teams, LAB'O digital SMEs and French Tech Loire Valley startups.",
           "All agglomération communes covered in person: city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet, Fleury-les-Aubrais and La Chapelle-Saint-Mesmin.",
@@ -720,7 +720,7 @@ export const ORLEANS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "L'accompagnement individuel 1-to-1 Axion-IA à Orléans s'adresse aux dirigeants, managers et experts qui veulent s'approprier l'IA dans leur propre activité — à leur rythme, sur leurs vrais sujets. Format sur site ou hybride selon votre agenda. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "L'accompagnement individuel 1-to-1 Axion-IA à Orléans s'adresse aux dirigeants, managers et experts qui veulent s'approprier l'IA dans leur propre activité — à leur rythme, sur leurs vrais sujets. Format sur site ou hybride selon votre agenda.",
         whyHere: [
           "Les dirigeants d'ETI cosmétiques et pharmaceutiques orléanaises ont des besoins IA spécifiques (souveraineté data, compliance réglementaire, documentation R&D) que les formats collectifs ne couvrent pas assez finement.",
           "Les experts BRGM, INRAE et université d'Orléans cherchent à industrialiser l'IA dans leurs workflows de recherche — synthèse documentaire, requêtes bases de données, rédaction scientifique.",
@@ -826,7 +826,7 @@ export const ORLEANS_COPY: VilleCopy = {
           "Confidentialité absolue : Confidentialité stricte dès la première séance, données et échanges jamais partagés. Si après la première séance vous estimez que l'accompagnement n'est pas adapté à votre situation, remboursement intégral. Outils opérationnels sur votre poste à l'issue de chaque séance d'installation. Aucun engagement de durée : vous pilotez votre rythme.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 individual coaching in Orléans is aimed at executives, managers and experts who want to master AI in their own practice — at their own pace, on their real subjects. On-site or hybrid format depending on your schedule. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 individual coaching in Orléans is aimed at executives, managers and experts who want to master AI in their own practice — at their own pace, on their real subjects. On-site or hybrid format depending on your schedule.",
         whyHere: [
           "Orléans cosmetics and pharma mid-cap executives have specific AI needs (data sovereignty, regulatory compliance, R&D documentation) that group formats don't cover finely enough.",
           "BRGM, INRAE and University of Orléans experts seek to industrialise AI in their research workflows — document synthesis, database queries, scientific writing.",

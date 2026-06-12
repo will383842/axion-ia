@@ -65,7 +65,7 @@ export const WISSEMBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Wissembourg ?",
-      a: "Nos consultants se déplacent via gare SNCF Wissembourg (ligne Strasbourg–Neustadt) ou autoroute A35 puis D263. Strasbourg à 1h, Karlsruhe à 45 min, aéroport Karlsruhe-Baden-Baden à 35 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Wissembourg (ligne Strasbourg–Neustadt) ou autoroute A35 puis D263. Strasbourg à 1h, Karlsruhe à 45 min, aéroport Karlsruhe-Baden-Baden à 35 min.",
     },
   ],
 };

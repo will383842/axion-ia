@@ -65,7 +65,7 @@ export const VIF_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission rurale depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (25 min voiture N75). Pour les missions multi-jours en zone rurale, hébergement local possible (gîtes ou hôtels Grenoble). Frais de déplacement (voiture, repas, hébergement) facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Grenoble (25 min voiture N75). Pour les missions multi-jours en zone rurale, hébergement local possible (gîtes ou hôtels Grenoble).",
     },
   ],
 };

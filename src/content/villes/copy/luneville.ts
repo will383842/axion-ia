@@ -65,7 +65,7 @@ export const LUNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Lunéville depuis Nancy ?",
-      a: "Nos consultants viennent de Nancy (30 min TER direct). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Nancy (30 min TER direct).",
     },
   ],
 };

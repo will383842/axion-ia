@@ -65,7 +65,7 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lons-le-Saunier ?",
-      a: "Nos consultants se déplacent via la gare TER de Lons-le-Saunier (ligne Bourg-en-Bresse-Besançon) ou par l'A39 depuis Lyon (1h40) ou Dijon (1h20). Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent via la gare TER de Lons-le-Saunier (ligne Bourg-en-Bresse-Besançon) ou par l'A39 depuis Lyon (1h40) ou Dijon (1h20).",
     },
   ],
 };

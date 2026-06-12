@@ -65,7 +65,7 @@ export const CREST_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h30 A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible (hôtels Crest, gîtes vallée). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h30 A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible (hôtels Crest, gîtes vallée).",
     },
   ],
 };

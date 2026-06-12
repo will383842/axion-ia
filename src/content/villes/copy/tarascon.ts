@@ -65,7 +65,7 @@ export const TARASCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Tarascon ?",
-      a: "Nos consultants interviennent sur site à Tarascon sous 5 jours ouvrés. Déplacement depuis Avignon (25 min) ou Marseille (1h10). Frais de déplacement inclus bassin rhodanien.",
+      a: "Nos consultants interviennent sur site à Tarascon sous 5 jours ouvrés. Déplacement depuis Avignon (25 min) ou Marseille (1h10).",
     },
   ],
 };

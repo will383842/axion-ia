@@ -65,7 +65,7 @@ export const GORGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes (25 min A83) ou Cholet (35 min). La gare TER de Clisson est à 5 min de Gorges. Frais de déplacement facturés en sus du forfait journée, tarifs transparents dès le devis.",
+      a: "Nos consultants se déplacent depuis Nantes (25 min A83) ou Cholet (35 min). La gare TER de Clisson est à 5 min de Gorges.",
     },
   ],
 };

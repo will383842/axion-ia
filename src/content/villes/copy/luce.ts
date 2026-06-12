@@ -65,7 +65,7 @@ export const LUCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres. Déplacements facturés séparément, tarifs publics.",
+      a: "Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MOIRANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (20 min A48 ou TER). Pour les multi-jours, hébergement local possible (hôtels Voiron ou Grenoble). Frais de déplacement (TER/voiture, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (20 min A48 ou TER). Pour les multi-jours, hébergement local possible (hôtels Voiron ou Grenoble).",
     },
   ],
 };

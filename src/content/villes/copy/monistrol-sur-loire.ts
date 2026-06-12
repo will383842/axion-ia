@@ -65,7 +65,7 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ou Lyon ?",
-      a: "Saint-Étienne (40 min) ou Lyon (1h20). Déplacements facturés séparément, tarifs publics.",
+      a: "Saint-Étienne (40 min) ou Lyon (1h20).",
     },
   ],
 };

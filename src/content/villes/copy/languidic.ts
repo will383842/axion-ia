@@ -65,7 +65,7 @@ export const LANGUIDIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Languidic ?",
-      a: "Nos consultants interviennent à Languidic depuis Lorient (25 min), Vannes (50 min) ou Nantes (2h). Intervention sur site dans votre exploitation, atelier, locaux ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Languidic depuis Lorient (25 min), Vannes (50 min) ou Nantes (2h). Intervention sur site dans votre exploitation, atelier, locaux ou cabinet.",
     },
   ],
 };

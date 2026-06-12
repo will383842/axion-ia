@@ -246,7 +246,7 @@ export const CUGNAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Toulouse ?",
-      a: "Nos consultants se déplacent depuis Toulouse en 15 minutes. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent depuis Toulouse en 15 minutes.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

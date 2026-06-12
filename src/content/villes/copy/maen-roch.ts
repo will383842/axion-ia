@@ -65,7 +65,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Maen Roch depuis Rennes ?",
-      a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles. Déplacements facturés séparément, tarifs publics.",
+      a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles.",
     },
   ],
 };

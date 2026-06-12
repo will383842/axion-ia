@@ -65,7 +65,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Lille à 45 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Lille à 45 min.",
     },
   ],
 };

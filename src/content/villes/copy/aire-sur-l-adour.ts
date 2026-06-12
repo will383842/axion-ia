@@ -65,7 +65,7 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Aire-sur-l'Adour ?",
-      a: "Nos consultants se déplacent depuis Mont-de-Marsan (30 min) ou Pau (50 min via A65). Sortie autoroute A65 directe. Mission sur site dans votre établissement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Mont-de-Marsan (30 min) ou Pau (50 min via A65). Sortie autoroute A65 directe. Mission sur site dans votre établissement.",
     },
   ],
 };

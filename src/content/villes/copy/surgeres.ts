@@ -65,7 +65,7 @@ export const SURGERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Surgères ?",
-      a: "Nos consultants accèdent à Surgères par TER (La Rochelle 30 min, Niort 30 min) ou voiture (N11). Mission sur site dans votre laiterie, coopérative ou exploitation. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Surgères par TER (La Rochelle 30 min, Niort 30 min) ou voiture (N11). Mission sur site dans votre laiterie, coopérative ou exploitation.",
     },
   ],
 };

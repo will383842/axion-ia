@@ -61,7 +61,7 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Verneuil-sur-Seine ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Verneuil-sur-Seine. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone boucle de Seine.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Verneuil-sur-Seine. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
       q: "Intervenez-vous aussi à Poissy et Les Mureaux ?",

@@ -65,7 +65,7 @@ export const BLERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (25 min). Accès direct A85 ou D976 vallée du Cher. Pour les multi-jours, hébergement local possible (gîtes vallée du Cher). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants interviennent depuis Tours centre (25 min). Accès direct A85 ou D976 vallée du Cher. Pour les multi-jours, hébergement local possible (gîtes vallée du Cher).",
     },
   ],
 };

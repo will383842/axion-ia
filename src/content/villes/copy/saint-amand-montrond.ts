@@ -65,7 +65,7 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Amand-Montrond ?",
-      a: "Nos consultants viennent de Bourges (45 min) ou de Paris via A71 (2h45). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants viennent de Bourges (45 min) ou de Paris via A71 (2h45). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles.",
     },
   ],
 };

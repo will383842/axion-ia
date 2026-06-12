@@ -36,8 +36,8 @@ export const VILLEURBANNE_COPY: VilleCopy = {
       en: "Operational AI audit in Villeurbanne (69100): we map what can be automated at your company and quantify the ROI. From IT firms around Gratte-Ciel to industrial mid-caps at campus Doua, 4 tiers from Sur place to Mid-cap Strategic.",
     },
     interventions: {
-      fr: "Interventions IA à Villeurbanne : formats sur site d'une à plusieurs journées. Vos collaborateurs repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — IT, R&D, industrie, services. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Villeurbanne: on-site formats from one to several days. Your staff leave with AI tools installed on their workstations, configured for their real work — IT, R&D, industry, services. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Villeurbanne : formats sur site d'une à plusieurs journées. Vos collaborateurs repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — IT, R&D, industrie, services.",
+      en: "AI sessions in Villeurbanne: on-site formats from one to several days. Your staff leave with AI tools installed on their workstations, configured for their real work — IT, R&D, industry, services.",
     },
     implementation: {
       fr: "Implémentation IA à Villeurbanne : on déploie l'IA dans vos outils existants (CRM, ERP SAP, outils IT, systèmes R&D) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -329,7 +329,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Villeurbanne (69100) se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — ingénierie, IT, R&D, industrie matériaux, services. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Villeurbanne (69100) se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — ingénierie, IT, R&D, industrie matériaux, services.",
         whyHere: [
           "Villeurbanne est l'un de nos principaux terrains d'intervention IT et ingénierie en France : les équipes R&D du campus Doua (INSA, UCBL, Inria), les développeurs et intégrateurs IT de Gratte-Ciel et les collaborateurs industriels de FORVIA MATERI'ACT représentent des profils exigeants que nous accompagnons régulièrement.",
           "Tous les quartiers de Villeurbanne couverts en présentiel : Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie, Charpennes, Cusset, Bonnevay. Nous venons dans vos locaux — sans supplément de zone.",
@@ -435,7 +435,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur villeurbannais — IT, ingénierie, R&D, matériaux — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Villeurbanne (69100) come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — engineering, IT, R&D, materials industry, services. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Villeurbanne (69100) come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — engineering, IT, R&D, materials industry, services.",
         whyHere: [
           "Villeurbanne is one of our top IT and engineering engagement grounds in France: R&D teams at campus Doua (INSA, UCBL, Inria), IT developers and integrators around Gratte-Ciel, and industrial staff at FORVIA MATERI'ACT are demanding profiles we regularly support.",
           "All Villeurbanne districts covered in person: Gratte-Ciel, LyonTech-La Doua campus, Carré de Soie, Charpennes, Cusset, Bonnevay. We come to your offices — no zone surcharge.",

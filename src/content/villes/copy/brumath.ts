@@ -65,7 +65,7 @@ export const BRUMATH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Brumath ?",
-      a: "Nos consultants se déplacent via gare SNCF Brumath (ligne Strasbourg–Saverne) ou autoroute A4. Strasbourg à 20 min, Haguenau à 15 min, aéroport Entzheim à 35 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Brumath (ligne Strasbourg–Saverne) ou autoroute A4. Strasbourg à 20 min, Haguenau à 15 min, aéroport Entzheim à 35 min.",
     },
   ],
 };

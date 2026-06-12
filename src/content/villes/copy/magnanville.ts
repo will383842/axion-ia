@@ -65,7 +65,7 @@ export const MAGNANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Magnanville ?",
-      a: "Nos consultants rejoignent Magnanville via la gare de Mantes-la-Jolie (Transilien J, 45 min Paris Saint-Lazare) à 5 min. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Magnanville via la gare de Mantes-la-Jolie (Transilien J, 45 min Paris Saint-Lazare) à 5 min.",
     },
   ],
 };

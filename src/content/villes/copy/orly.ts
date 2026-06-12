@@ -246,7 +246,7 @@ export const ORLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou la gare Massy TGV ?",
-      a: "Orly est reliée à Paris par la ligne 14 en une vingtaine de minutes et à la gare Massy TGV en un quart d'heure. Nous couvrons tout le Grand Paris Sud-Est. Les frais de mission éventuels suivent une grille tarifaire publique.",
+      a: "Orly est reliée à Paris par la ligne 14 en une vingtaine de minutes et à la gare Massy TGV en un quart d'heure. Nous couvrons tout le Grand Paris Sud-Est.",
     },
   ],
 };

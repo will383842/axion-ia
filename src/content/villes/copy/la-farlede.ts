@@ -63,7 +63,7 @@ export const LA_FARLEDE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à La Farlède ?",
-      a: "Intervention sous 5 jours ouvrés. Gare TGV Toulon à 20 min (Paris 3h50), aéroport Toulon-Hyères à 20 min. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés. Gare TGV Toulon à 20 min (Paris 3h50), aéroport Toulon-Hyères à 20 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Cuges-les-Pins ?",
-      a: "Cuges-les-Pins est à 15 min d'Aubagne et 35 min de Marseille. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Cuges-les-Pins est à 15 min d'Aubagne et 35 min de Marseille. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

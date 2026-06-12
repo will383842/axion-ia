@@ -246,7 +246,7 @@ export const COLMAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Colmar ?",
-      a: "Colmar est accessible en TGV (gare en centre-ville) et nos consultants couvrent tout le centre-Alsace. Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
+      a: "Colmar est accessible en TGV (gare en centre-ville) et nos consultants couvrent tout le centre-Alsace.",
     },
   ],
 };

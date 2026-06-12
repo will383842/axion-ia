@@ -65,7 +65,7 @@ export const AUCHEL_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Auchel ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Béthune à 10 min, Lille à 50 min. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Béthune à 10 min, Lille à 50 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

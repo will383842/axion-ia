@@ -65,7 +65,7 @@ export const VALREAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Valréas ?",
-      a: "Valréas est à 45 min d'Orange et 1h d'Avignon via D941 et A7. Nos consultants se déplacent dans vos locaux malgré l'enclavement géographique. Frais de mission en sus, grille tarifaire publique.",
+      a: "Valréas est à 45 min d'Orange et 1h d'Avignon via D941 et A7. Nos consultants se déplacent dans vos locaux malgré l'enclavement géographique.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ISLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Isle depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Isle est proche de l'aéroport Bellegarde (10 min). Aucun frais de déplacement supplémentaire pour les missions dans l'agglomération limougeaude.",
+      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Isle est proche de l'aéroport Bellegarde (10 min).",
     },
   ],
 };

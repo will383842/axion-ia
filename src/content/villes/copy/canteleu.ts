@@ -65,7 +65,7 @@ export const CANTELEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TGV Rouen (1h15) puis Canteleu à 10 min de Rouen centre. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris via TGV Rouen (1h15) puis Canteleu à 10 min de Rouen centre.",
     },
   ],
 };

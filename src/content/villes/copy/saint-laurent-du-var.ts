@@ -242,7 +242,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention sur la Côte d'Azur ?",
-      a: "Nos consultants viennent de Paris (vol direct 1h30) ou par train (TGV 6h) pour les missions sur site à Saint-Laurent. Frais de déplacement (vol/train, repas, hébergement) facturés à part du forfait journée. Tarifs publics, pas de devis opaque.",
+      a: "Nos consultants viennent de Paris (vol direct 1h30) ou par train (TGV 6h) pour les missions sur site à Saint-Laurent. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

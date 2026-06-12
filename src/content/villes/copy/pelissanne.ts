@@ -65,7 +65,7 @@ export const PELISSANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Pélissanne ?",
-      a: "Nos consultants interviennent sur site à Pélissanne sous 5 jours ouvrés. Salon-de-Provence à 10 min, Aix à 25 min. Frais de déplacement inclus agglomération salonaise.",
+      a: "Nos consultants interviennent sur site à Pélissanne sous 5 jours ouvrés. Salon-de-Provence à 10 min, Aix à 25 min.",
     },
   ],
 };

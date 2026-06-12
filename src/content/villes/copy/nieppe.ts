@@ -65,7 +65,7 @@ export const NIEPPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nieppe ?",
-      a: "Nos consultants se déplacent via autoroute A25 (10 min) ou gare SNCF d'Armentières (7 min). Bassin de Flandre française sur les bords de la Lys, proximité immédiate de Lille (25 min) et de la frontière belge. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A25 (10 min) ou gare SNCF d'Armentières (7 min). Bassin de Flandre française sur les bords de la Lys, proximité immédiate de Lille (25 min) et de la frontière belge.",
     },
   ],
 };

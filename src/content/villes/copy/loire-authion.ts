@@ -65,7 +65,7 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
     },
     {
       q: "Comment vos consultants se rendent-ils à Loire-Authion ?",
-      a: "Nos consultants viennent d'Angers centre (15 min D347). La gare TGV Angers Saint-Laud est à 20 min. L'A11 est à 10 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés en sus, tarifs transparents.",
+      a: "Nos consultants viennent d'Angers centre (15 min D347). La gare TGV Angers Saint-Laud est à 20 min. L'A11 est à 10 min. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

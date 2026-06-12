@@ -65,7 +65,7 @@ export const LOUVIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (30 min A13) ou Paris (1h30 A13). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Rouen (30 min A13) ou Paris (1h30 A13). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

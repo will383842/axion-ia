@@ -65,7 +65,7 @@ export const LE_MENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Mené ?",
-      a: "Nos consultants se déplacent depuis Saint-Brieuc (40 min) ou Rennes (1h15). Gare TGV de Saint-Brieuc sur la ligne Paris-Brest, puis route vers Loudéac et Le Mené. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Saint-Brieuc (40 min) ou Rennes (1h15). Gare TGV de Saint-Brieuc sur la ligne Paris-Brest, puis route vers Loudéac et Le Mené.",
     },
   ],
 };

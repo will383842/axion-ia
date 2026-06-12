@@ -65,7 +65,7 @@ export const LE_PONTET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Pontet ?",
-      a: "Le Pontet est à 5 min d'Avignon via A7 et N7. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Le Pontet est à 5 min d'Avignon via A7 et N7. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

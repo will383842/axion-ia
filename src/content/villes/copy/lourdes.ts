@@ -65,7 +65,7 @@ export const LOURDES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Lourdes ?",
-      a: "Lourdes est accessible par aéroport Tarbes-Lourdes-Pyrénées (10 min), gare TGV Lourdes, ou A64 depuis Toulouse (1h50). Nos consultants interviennent sur site. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Lourdes est accessible par aéroport Tarbes-Lourdes-Pyrénées (10 min), gare TGV Lourdes, ou A64 depuis Toulouse (1h50). Nos consultants interviennent sur site.",
     },
   ],
 };

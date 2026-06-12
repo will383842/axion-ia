@@ -65,7 +65,7 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villers-Cotterêts ?",
-      a: "Nos consultants se déplacent via gare SNCF Villers-Cotterêts (ligne Paris-Nord–Laon, ~1h depuis Paris) ou autoroute A1 (sortie Vauciennes à 15 min). Soissons à 25 min, Compiègne à 30 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Villers-Cotterêts (ligne Paris-Nord–Laon, ~1h depuis Paris) ou autoroute A1 (sortie Vauciennes à 15 min). Soissons à 25 min, Compiègne à 30 min.",
     },
   ],
 };

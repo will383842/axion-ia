@@ -65,7 +65,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Entraigues-sur-la-Sorgue ?",
-      a: "Entraigues-sur-la-Sorgue est à 15 min d'Avignon centre et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Entraigues-sur-la-Sorgue est à 15 min d'Avignon centre et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

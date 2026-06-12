@@ -65,7 +65,7 @@ export const ELBEUF_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (25 min voiture) ou Paris (TGV Rouen 1h15 + 25 min voiture). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rouen (25 min voiture) ou Paris (TGV Rouen 1h15 + 25 min voiture).",
     },
   ],
 };

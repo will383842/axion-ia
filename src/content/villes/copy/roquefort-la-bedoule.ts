@@ -65,7 +65,7 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Roquefort-la-Bédoule ?",
-      a: "Nos consultants interviennent sur site à Roquefort-la-Bédoule sous 5 jours ouvrés. Aubagne à 10 min, Marseille à 25 min via A50. Frais de déplacement inclus sud-est marseillais.",
+      a: "Nos consultants interviennent sur site à Roquefort-la-Bédoule sous 5 jours ouvrés. Aubagne à 10 min, Marseille à 25 min via A50.",
     },
   ],
 };

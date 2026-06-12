@@ -65,7 +65,7 @@ export const GAUCHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Gauchy ?",
-      a: "Nos consultants se déplacent via gare TGV Saint-Quentin (Paris à 1h30) ou autoroutes A26 et A29 (accès direct). Saint-Quentin centre à 5 min, Cambrai à 35 min, Laon à 45 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare TGV Saint-Quentin (Paris à 1h30) ou autoroutes A26 et A29 (accès direct). Saint-Quentin centre à 5 min, Cambrai à 35 min, Laon à 45 min.",
     },
   ],
 };

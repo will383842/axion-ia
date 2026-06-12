@@ -65,7 +65,7 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Valence (50 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Valence (50 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

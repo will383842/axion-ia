@@ -30,8 +30,8 @@ export const DIJON_COPY: VilleCopy = {
       en: "Operational AI audit in Dijon: we map automatable processes in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size, from a Dijon practice to a Côte-d'Or industrial mid-cap.",
     },
     interventions: {
-      fr: "Interventions IA à Dijon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Dijon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Dijon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel.",
+      en: "AI sessions in Dijon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Dijon : déploiement dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance créée.",
@@ -298,7 +298,7 @@ export const DIJON_COPY: VilleCopy = {
     // ────────────────────────────────────────────────────────────
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Dijon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans votre secteur dijonnais. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Dijon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans votre secteur dijonnais.",
         whyHere: [
           "Dijon est une étape stratégique de nos déploiements régionaux : métropole bien desservie (LGV ~1h34 Paris), tissu B2B dense (14 946 établissements actifs) et secteurs IA-matures (agroalimentaire, pharma, viticulture).",
           "Tous les secteurs de la métropole couverts en présentiel : Dijon intra-muros, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
@@ -404,7 +404,7 @@ export const DIJON_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire et exemples ajustés à votre secteur dijonnais, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Dijon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in your Dijon sector. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Dijon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in your Dijon sector.",
         whyHere: [
           "Dijon is a strategic stop in our regional deployments: well-connected metropolitan area (LGV ~1h34 from Paris), dense B2B fabric (14,946 active establishments) and AI-mature sectors (agri-food, pharma, viticulture).",
           "All metropolitan sectors covered in person: Dijon city, Chenôve (URGO), Talant, Quetigny, Longvic, Fontaine-lès-Dijon, Saint-Apollinaire.",
@@ -731,7 +731,7 @@ export const DIJON_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Dijon s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux dijonnais — domaine viticole, cabinet de conseil, PME agroalimentaire ou ETI de Côte-d'Or. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Dijon s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux dijonnais — domaine viticole, cabinet de conseil, PME agroalimentaire ou ETI de Côte-d'Or.",
         whyHere: [
           "Dijon compte de nombreux dirigeants de domaines viticoles, coopératives agroalimentaires et cabinets de conseil qui préfèrent une montée en compétences IA privée, ancrée dans leurs propres données (fiches cuvées, notes de dégustation, spécifications produit).",
           "Les responsables de PME pharma-santé (URGO-type) et d'ETI industrielles de Côte-d'Or bénéficient d'un accompagnement individuel calibré sur leurs contraintes réglementaires et de confidentialité — sans partager leurs enjeux avec un groupe.",
@@ -825,19 +825,15 @@ export const DIJON_COPY: VilleCopy = {
             a: "Non. Le coaching s'adapte à votre niveau — débutant ou praticien avancé. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
           },
           {
-            q: "Les frais de déplacement sont-ils inclus dans le tarif de {{price:intervention-dirigeants|flat}} ?",
-            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, selon la doctrine tarifaire Axion-IA. Ces frais sont détaillés sur devis préalable à la confirmation.",
-          },
-          {
             q: "Puis-je organiser plusieurs coachings individuels pour différents managers ?",
             a: "Oui. Certaines ETI dijonnaises organisent plusieurs sessions individuelles pour leurs directeurs ou responsables clés plutôt qu'une session collective. Tarif dégressif selon le volume — à préciser en cadrage.",
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux dijonnais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
+          "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux dijonnais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Dijon is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Dijon premises — wine estate, consulting firm, agri-food SME or Côte-d'Or mid-cap. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Dijon is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Dijon premises — wine estate, consulting firm, agri-food SME or Côte-d'Or mid-cap.",
         whyHere: [
           "Dijon has many wine estate owners, agri-food co-op managers and consulting firm directors who prefer private AI skills development focused on their own data (cuvée sheets, tasting notes, product specifications).",
           "Pharma-healthcare SME managers (URGO-type) and Côte-d'Or industrial mid-cap executives benefit from individual coaching calibrated to their regulatory and confidentiality constraints — without sharing their challenges with a group.",
@@ -932,7 +928,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "Are travel costs included in the {{price:intervention-dirigeants|compact}} excl. VAT price?",
-            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are detailed on a prior quote before confirmation.",
+            a: "No. These costs are detailed on a prior quote before confirmation.",
           },
           {
             q: "Can I organise several individual coachings for different managers?",
@@ -940,7 +936,7 @@ export const DIJON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your data and your challenges do not leave your Dijon premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
+          "Strict confidentiality: your data and your challenges do not leave your Dijon premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
       },
     },
     sitesWeb: {

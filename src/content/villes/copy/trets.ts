@@ -65,7 +65,7 @@ export const TRETS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Trets ?",
-      a: "Nos consultants interviennent sur site à Trets sous 5 jours ouvrés. Aix-en-Provence à 25 min, Marseille à 40 min. Frais de déplacement inclus bassin est aixois.",
+      a: "Nos consultants interviennent sur site à Trets sous 5 jours ouvrés. Aix-en-Provence à 25 min, Marseille à 40 min.",
     },
   ],
 };

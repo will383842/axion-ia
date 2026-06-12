@@ -65,7 +65,7 @@ export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA en zone bocage ?",
-      a: "Nos consultants viennent de Caen (1h10 A84) ou Flers (15 min). Déplacement sur site (usine, atelier, exploitation, commerce). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part.",
+      a: "Nos consultants viennent de Caen (1h10 A84) ou Flers (15 min). Déplacement sur site (usine, atelier, exploitation, commerce). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

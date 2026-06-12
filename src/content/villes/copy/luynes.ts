@@ -65,7 +65,7 @@ export const LUYNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (15 min D952 bords de Loire). Cadre exceptionnel en surplomb de Loire. Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent depuis Tours centre (15 min D952 bords de Loire). Cadre exceptionnel en surplomb de Loire. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

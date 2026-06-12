@@ -246,7 +246,7 @@ export const MONTMORENCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Enghien-les-Bains ?",
-      a: "Montmorency est à environ 15 km de Paris et voisine d'Enghien-les-Bains, à une vingtaine de minutes du centre par le Transilien. Nous couvrons tout le nord du Val-d'Oise. Les frais de mission éventuels suivent une grille tarifaire publique.",
+      a: "Montmorency est à environ 15 km de Paris et voisine d'Enghien-les-Bains, à une vingtaine de minutes du centre par le Transilien. Nous couvrons tout le nord du Val-d'Oise.",
     },
   ],
 };

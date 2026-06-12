@@ -65,7 +65,7 @@ export const VENDIN_LE_VIEIL_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Vendin-le-Vieil ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 35 min. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 35 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

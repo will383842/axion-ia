@@ -65,7 +65,7 @@ export const LIFFRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Liffré ?",
-      a: "Nos consultants viennent de Rennes centre (20 min via D175). Possibilité visio pour les sessions courtes. Pour les interventions multi-jours, hébergement Rennes. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent de Rennes centre (20 min via D175). Possibilité visio pour les sessions courtes. Pour les interventions multi-jours, hébergement Rennes.",
     },
   ],
 };

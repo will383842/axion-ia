@@ -246,7 +246,7 @@ export const NEVERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ou Lyon ?",
-      a: "Le diagnostic et les sessions clés se déroulent sur site à Nevers ; le suivi se poursuit en visio. Les frais de déplacement depuis Clermont (1h30) ou Lyon (2h30) sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se déroulent sur site à Nevers ; le suivi se poursuit en visio.",
     },
   ],
 };

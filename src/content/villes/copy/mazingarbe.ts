@@ -65,7 +65,7 @@ export const MAZINGARBE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Mazingarbe ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 40 min. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 40 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

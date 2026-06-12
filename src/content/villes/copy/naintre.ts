@@ -65,7 +65,7 @@ export const NAINTRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Châtellerault (1h50) puis 5 min Naintré. Pour les multi-jours, hébergement Châtellerault ou Futuroscope. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Paris en TGV direct gare Châtellerault (1h50) puis 5 min Naintré. Pour les multi-jours, hébergement Châtellerault ou Futuroscope.",
     },
   ],
 };

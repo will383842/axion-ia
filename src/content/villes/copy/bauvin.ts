@@ -65,7 +65,7 @@ export const BAUVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (25 min voiture). Aéroport Lille-Lesquin à 15 min. Missions sur site à Bauvin ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Lille (25 min voiture). Aéroport Lille-Lesquin à 15 min. Missions sur site à Bauvin ou en visio.",
     },
   ],
 };

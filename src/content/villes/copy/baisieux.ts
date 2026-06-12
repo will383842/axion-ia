@@ -61,7 +61,7 @@ export const BAISIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Baisieux depuis Lille ?",
-      a: "Nos consultants rejoignent Baisieux en 20 min depuis Lille centre via A27. Aéroport Lille-Lesquin à 15 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Baisieux en 20 min depuis Lille centre via A27. Aéroport Lille-Lesquin à 15 min. Pour les missions multi-jours, hébergement local possible.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Baisieux ?",

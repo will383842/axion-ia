@@ -65,7 +65,7 @@ export const SECLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Seclin ?",
-      a: "Nos consultants interviennent à Seclin depuis Lille (15 min) ou directement sur site zone aéroportuaire Lesquin (5 min). Intervention dans votre établissement de santé, entrepôt, bureau ou en visio. Pour missions multi-jours, hébergement à Lille. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Seclin depuis Lille (15 min) ou directement sur site zone aéroportuaire Lesquin (5 min). Intervention dans votre établissement de santé, entrepôt, bureau ou en visio. Pour missions multi-jours, hébergement à Lille.",
     },
   ],
 };

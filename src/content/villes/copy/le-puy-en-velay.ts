@@ -65,7 +65,7 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Lyon (2h) ou Saint-Étienne (1h15 TER direct). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (2h) ou Saint-Étienne (1h15 TER direct).",
     },
   ],
 };

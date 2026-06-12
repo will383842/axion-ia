@@ -65,7 +65,7 @@ export const SANTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Santes ?",
-      a: "Nos consultants interviennent à Santes depuis Lille centre (15 min). Intervention sur site dans votre cabinet, bureau, commerce, entrepôt ou en visio. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents. Proximité immédiate de Lille pour toute logistique mission multi-jours.",
+      a: "Nos consultants interviennent à Santes depuis Lille centre (15 min). Intervention sur site dans votre cabinet, bureau, commerce, entrepôt ou en visio. Proximité immédiate de Lille pour toute logistique mission multi-jours.",
     },
   ],
 };

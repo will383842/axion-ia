@@ -65,7 +65,7 @@ export const BISCHHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bischheim ?",
-      a: "Nos consultants se déplacent via tramway B/F de l'Eurométropole, gare TER Bischheim, ou autoroutes A4 / A35 (accès immédiat). Strasbourg centre à 10 min, aéroport Strasbourg-Entzheim à 25 min, frontière allemande à 15 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via tramway B/F de l'Eurométropole, gare TER Bischheim, ou autoroutes A4 / A35 (accès immédiat). Strasbourg centre à 10 min, aéroport Strasbourg-Entzheim à 25 min, frontière allemande à 15 min.",
     },
   ],
 };

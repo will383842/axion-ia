@@ -65,7 +65,7 @@ export const L_HOPITAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à L'Hôpital ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 15 min) ou gares SNCF de Saint-Avold et Forbach. Position frontalière stratégique avec Sarrebruck (30 min) et Luxembourg (1h10). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A4 (accès 15 min) ou gares SNCF de Saint-Avold et Forbach. Position frontalière stratégique avec Sarrebruck (30 min) et Luxembourg (1h10).",
     },
   ],
 };

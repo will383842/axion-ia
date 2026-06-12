@@ -65,7 +65,7 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",
-      a: "Nos consultants viennent de Caen (50 min) ou par train (gare SNCF Lisieux à 25 min). Déplacement sur site (fromagerie, laiterie, cidrerie, exploitation). Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants viennent de Caen (50 min) ou par train (gare SNCF Lisieux à 25 min). Déplacement sur site (fromagerie, laiterie, cidrerie, exploitation).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BERCK_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Berck depuis Lille ou Boulogne ?",
-      a: "Nos consultants viennent de Boulogne-sur-Mer (30 min) ou Lille (1 h 30 A16). Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Boulogne-sur-Mer (30 min) ou Lille (1 h 30 A16). Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],
 };

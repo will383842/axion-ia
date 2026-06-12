@@ -65,7 +65,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Ensuès-la-Redonne ?",
-      a: "Ensuès-la-Redonne est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Ensuès-la-Redonne est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

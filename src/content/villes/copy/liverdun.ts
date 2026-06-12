@@ -65,7 +65,7 @@ export const LIVERDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Liverdun ?",
-      a: "Nos consultants se déplacent via gare SNCF Liverdun (ligne Nancy–Paris) ou autoroute A31. Position stratégique entre Nancy (20 min) et Toul (15 min). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Liverdun (ligne Nancy–Paris) ou autoroute A31. Position stratégique entre Nancy (20 min) et Toul (15 min).",
     },
   ],
 };

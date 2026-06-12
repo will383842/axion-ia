@@ -246,7 +246,7 @@ export const MERIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bordeaux centre ?",
-      a: "Mérignac est à 10 km de Bordeaux centre, relié par le tramway A et la rocade. Nous couvrons toute la métropole bordelaise. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
+      a: "Mérignac est à 10 km de Bordeaux centre, relié par le tramway A et la rocade. Nous couvrons toute la métropole bordelaise.",
     },
   ],
 };

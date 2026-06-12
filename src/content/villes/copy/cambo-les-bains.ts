@@ -65,7 +65,7 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Cambo-les-Bains ?",
-      a: "Nos consultants accèdent à Cambo-les-Bains par la route (20 min Bayonne, D932). Mission sur site dans vos thermes, hébergement ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Cambo-les-Bains par la route (20 min Bayonne, D932). Mission sur site dans vos thermes, hébergement ou commerce.",
     },
   ],
 };

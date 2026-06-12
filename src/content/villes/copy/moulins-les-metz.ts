@@ -65,7 +65,7 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Moulins-lès-Metz ?",
-      a: "Nos consultants se déplacent via gare TGV Metz-Ville (15 min), autoroute A31 ou A4. Centre Metz à 10 min, Thionville à 35 min, Luxembourg à 55 min, Nancy à 55 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare TGV Metz-Ville (15 min), autoroute A31 ou A4. Centre Metz à 10 min, Thionville à 35 min, Luxembourg à 55 min, Nancy à 55 min.",
     },
   ],
 };

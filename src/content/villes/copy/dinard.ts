@@ -65,7 +65,7 @@ export const DINARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dinard ?",
-      a: "Nos consultants interviennent à Dinard depuis Rennes (1h) ou via l'aéroport Dinard-Pleurtuit (5 min). Intervention sur site dans vos locaux, hôtel, commerce ou cabinet. Frais de déplacement facturés séparément du forfait.",
+      a: "Nos consultants interviennent à Dinard depuis Rennes (1h) ou via l'aéroport Dinard-Pleurtuit (5 min). Intervention sur site dans vos locaux, hôtel, commerce ou cabinet.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vezin-le-Coquet ?",
-      a: "Nos consultants viennent de Rennes centre (10 min via rocade ouest). Possibilité métro ligne b proximité Le Gast. Intervention sur site ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (10 min via rocade ouest). Possibilité métro ligne b proximité Le Gast. Intervention sur site ou en visio.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Enghien ou Paris ?",
-      a: "Enghien-les-Bains (5 min). Montmorency (5 min). Paris Gare du Nord (30 min transilien). CDG (30 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Enghien-les-Bains (5 min). Montmorency (5 min). Paris Gare du Nord (30 min transilien). CDG (30 min).",
     },
   ],
 };

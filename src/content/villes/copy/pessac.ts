@@ -236,7 +236,7 @@ export const PESSAC_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de Pessac ?",
-      a: "Oui. Nous intervenons à Bordeaux, Mérignac, Talence, Gradignan, Canéjan, Cestas et Saint-Jean-d'Illac au sein de Bordeaux Métropole, sans frais de déplacement supplémentaires intra-métropole.",
+      a: "Oui. Nous intervenons à Bordeaux, Mérignac, Talence, Gradignan, Canéjan, Cestas et Saint-Jean-d'Illac au sein de Bordeaux Métropole.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Pessac ?",

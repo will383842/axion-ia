@@ -65,7 +65,7 @@ export const UNIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CANOHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Canohès ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible.",
     },
   ],
 };

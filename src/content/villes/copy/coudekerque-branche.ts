@@ -246,7 +246,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Le diagnostic et les sessions clés se déroulent sur site à Coudekerque-Branche ; le suivi se poursuit en visio. Les frais de déplacement depuis Lille (1h) sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se déroulent sur site à Coudekerque-Branche ; le suivi se poursuit en visio.",
     },
   ],
 };

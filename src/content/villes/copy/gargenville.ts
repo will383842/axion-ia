@@ -61,7 +61,7 @@ export const GARGENVILLE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous en présentiel à Gargenville ?",
-      a: "Oui, nos consultants se déplacent à Gargenville depuis Paris (55 min Transilien J). Interventions sur site dans vos locaux ou en format hybride visio + présentiel. Frais de déplacement Île-de-France communiqués selon forfait, tarifs publics.",
+      a: "Oui, nos consultants se déplacent à Gargenville depuis Paris (55 min Transilien J). Interventions sur site dans vos locaux ou en format hybride visio + présentiel.",
     },
     {
       q: "Quels cas IA pour les PME de services du Mantois ?",

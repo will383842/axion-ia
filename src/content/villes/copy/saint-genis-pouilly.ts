@@ -65,7 +65,7 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min).",
     },
   ],
 };

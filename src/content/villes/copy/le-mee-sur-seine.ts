@@ -65,7 +65,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Melun ou Paris ?",
-      a: "Melun (5 min). Corbeil-Essonnes (20 min). Fontainebleau (25 min). Paris Gare de Lyon (45 min RER D). Orly (35 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Melun (5 min). Corbeil-Essonnes (20 min). Fontainebleau (25 min). Paris Gare de Lyon (45 min RER D). Orly (35 min).",
     },
   ],
 };

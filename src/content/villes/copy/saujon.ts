@@ -65,7 +65,7 @@ export const SAUJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saujon ?",
-      a: "Nos consultants accèdent à Saujon par TER (Royan 10 min, Saintes 20 min) ou voiture. Mission sur site dans votre établissement thermal, cabinet ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Saujon par TER (Royan 10 min, Saintes 20 min) ou voiture. Mission sur site dans votre établissement thermal, cabinet ou commerce.",
     },
   ],
 };

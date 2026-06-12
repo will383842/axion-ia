@@ -65,7 +65,7 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Tonnay-Charente ?",
-      a: "Nos consultants accèdent à Tonnay-Charente via la N137 (25 min La Rochelle, 10 min Rochefort). Mission sur site dans vos locaux, entrepôt ou exploitation. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Tonnay-Charente via la N137 (25 min La Rochelle, 10 min Rochefort). Mission sur site dans vos locaux, entrepôt ou exploitation.",
     },
   ],
 };

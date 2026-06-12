@@ -65,7 +65,7 @@ export const TARARE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Nos consultants viennent de Lyon (45 min A89) ou Roanne (40 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (45 min A89) ou Roanne (40 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

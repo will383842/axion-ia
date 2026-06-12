@@ -65,7 +65,7 @@ export const PENMARCH_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Penmarch depuis Quimper ?",
-      a: "Penmarch est à 30 min de Quimper en voiture (D785). Gare TGV Quimper à 35 min, aéroport Quimper-Cornouaille à 25 min. Frais de déplacement facturés à part.",
+      a: "Penmarch est à 30 min de Quimper en voiture (D785). Gare TGV Quimper à 35 min, aéroport Quimper-Cornouaille à 25 min.",
     },
   ],
 };

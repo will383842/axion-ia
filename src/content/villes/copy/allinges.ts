@@ -65,7 +65,7 @@ export const ALLINGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Allinges ?",
-      a: "Nos consultants interviennent à Allinges depuis Genève (40 min) ou Annemasse (30 min). Intervention sur site dans vos locaux, cabinet ou atelier. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Allinges depuis Genève (40 min) ou Annemasse (30 min). Intervention sur site dans vos locaux, cabinet ou atelier. Tarifs publics et transparents.",
     },
   ],
 };

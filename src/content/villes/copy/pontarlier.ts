@@ -65,7 +65,7 @@ export const PONTARLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pontarlier ?",
-      a: "Nos consultants se déplacent à Pontarlier (55 min depuis Besançon, gare SNCF TER). Interventions dans vos locaux usine, atelier ou commerce. Visio possible pour le suivi. Frais déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent à Pontarlier (55 min depuis Besançon, gare SNCF TER). Interventions dans vos locaux usine, atelier ou commerce. Visio possible pour le suivi.",
     },
   ],
 };

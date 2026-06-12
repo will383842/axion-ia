@@ -65,7 +65,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bully-les-Mines depuis Lille ?",
-      a: "Nos consultants viennent de Lille (30 min A21/A1) ou Arras (20 min). Lens et Liévin sont à 5 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (30 min A21/A1) ou Arras (20 min). Lens et Liévin sont à 5 min.",
     },
   ],
 };

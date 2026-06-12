@@ -65,7 +65,7 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 10 min nord-ouest. Pour les multi-jours, hébergement Poitiers centre. Frais de déplacement (TGV, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 10 min nord-ouest. Pour les multi-jours, hébergement Poitiers centre.",
     },
   ],
 };

@@ -134,7 +134,7 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24 à 48 h selon la complexité. Code sur mesure dont vous êtes intégralement propriétaire à la livraison — front, back, e-commerce multi-CMS, briques IA — avec documentation technique remise. Hébergement en Union européenne par défaut, conforme RGPD, adapté aux exigences de souveraineté des données de l'écosystème industriel et défense du Nord-Cotentin. Aucun verrou éditeur : votre site ou votre SaaS reste évolutif en interne ou avec tout intégrateur normand. Frais de déplacement sur les cinq communes déléguées et la zone portuaire facturés en sus selon la zone.",
+          "Devis remis à partir de 24 à 48 h selon la complexité. Code sur mesure dont vous êtes intégralement propriétaire à la livraison — front, back, e-commerce multi-CMS, briques IA — avec documentation technique remise. Hébergement en Union européenne par défaut, conforme RGPD, adapté aux exigences de souveraineté des données de l'écosystème industriel et défense du Nord-Cotentin. Aucun verrou éditeur : votre site ou votre SaaS reste évolutif en interne ou avec tout intégrateur normand.",
       },
       en: {
         hero: "In Cherbourg-en-Cotentin, digital is built around Normandy's most strategic industrial triangle: Naval Group's Barracuda submarine shipyard (around 3,400 staff), Orano's La Hague reprocessing plant, EDF's Flamanville EPR and the port's offshore wind hub (LM Wind Power factory, Haliade-X 14 MW blades). Axion-IA designs AI-augmented websites and SaaS platforms for the subcontractors of the Les Fourches industrial zone, marine-renewable-energy suppliers, cross-Channel port services and town-centre retailers — custom code, GDPR-compliant EU hosting, zero vendor lock-in.",
@@ -220,7 +220,7 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24 to 48 hours depending on complexity. Custom code that you fully own on delivery — front, back, multi-CMS e-commerce, AI building blocks — with technical documentation handed over. EU hosting by default, GDPR-compliant, suited to the data-sovereignty requirements of the Nord-Cotentin industrial and defence ecosystem. No vendor lock-in: your site or SaaS remains evolvable in-house or with any Normandy integrator. Travel costs to the five delegated communes and the port area billed separately depending on the zone.",
+          "Quote delivered from 24 to 48 hours depending on complexity. Custom code that you fully own on delivery — front, back, multi-CMS e-commerce, AI building blocks — with technical documentation handed over. EU hosting by default, GDPR-compliant, suited to the data-sovereignty requirements of the Nord-Cotentin industrial and defence ecosystem. No vendor lock-in: your site or SaaS remains evolvable in-house or with any Normandy integrator.",
       },
     },
   },

@@ -65,7 +65,7 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bonnières-sur-Seine ?",
-      a: "Nos consultants rejoignent Bonnières-sur-Seine via le Transilien J (gare de Bonnières, 60 min Paris Saint-Lazare) ou par l'A13 (sortie à 5 min). Frais de déplacement facturés selon forfait Île-de-France élargie.",
+      a: "Nos consultants rejoignent Bonnières-sur-Seine via le Transilien J (gare de Bonnières, 60 min Paris Saint-Lazare) ou par l'A13 (sortie à 5 min).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Vern-sur-Seiche depuis Rennes ?",
-      a: "Vern-sur-Seiche est à 15 min de Rennes en voiture (rocade sud-est). Gare TGV Rennes à 20 min, aéroport Rennes-Saint-Jacques à 15 min. Frais de déplacement facturés à part.",
+      a: "Vern-sur-Seiche est à 15 min de Rennes en voiture (rocade sud-est). Gare TGV Rennes à 20 min, aéroport Rennes-Saint-Jacques à 15 min.",
     },
   ],
 };

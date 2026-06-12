@@ -65,7 +65,7 @@ export const COMBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Combourg ?",
-      a: "Nos consultants viennent de Rennes (40 min via D137). TER possible gare de Combourg (ligne Rennes-Saint-Malo). Intervention sur site ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes (40 min via D137). TER possible gare de Combourg (ligne Rennes-Saint-Malo). Intervention sur site ou en visio.",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour démarrer une mission à Nogent-sur-Marne ?",
-      a: "Le diagnostic peut être lancé sous quelques jours ouvrés. Les sessions clés se déroulent sur site à Nogent-sur-Marne, le suivi se poursuit en visio. Les frais de déplacement depuis Paris sont indiqués de façon transparente.",
+      a: "Le diagnostic peut être lancé sous quelques jours ouvrés. Les sessions clés se déroulent sur site à Nogent-sur-Marne, le suivi se poursuit en visio.",
     },
   ],
 };

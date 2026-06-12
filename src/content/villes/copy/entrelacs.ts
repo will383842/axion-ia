@@ -65,7 +65,7 @@ export const ENTRELACS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Entrelacs ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (20 min voiture) ou Aix-les-Bains (10 min). Pour les missions multi-jours, hébergement sur place si nécessaire. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants seniors interviennent depuis Chambéry (20 min voiture) ou Aix-les-Bains (10 min). Pour les missions multi-jours, hébergement sur place si nécessaire.",
     },
   ],
 };

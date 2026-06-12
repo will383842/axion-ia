@@ -65,7 +65,7 @@ export const LANNEMEZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Lannemezan ?",
-      a: "Lannemezan est à 30 min de Tarbes (N117), 1h30 de Toulouse. Gare SNCF Lannemezan (ligne Toulouse-Bayonne). Nos consultants interviennent sur site. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Lannemezan est à 30 min de Tarbes (N117), 1h30 de Toulouse. Gare SNCF Lannemezan (ligne Toulouse-Bayonne). Nos consultants interviennent sur site.",
     },
   ],
 };

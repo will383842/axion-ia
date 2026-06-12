@@ -57,7 +57,7 @@ export const BASSENS_73_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bassens  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Quels services pour les TPE artisans BTP à Bassens ?",

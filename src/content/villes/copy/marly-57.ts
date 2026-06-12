@@ -65,7 +65,7 @@ export const MARLY_57_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Metz ou Nancy ?",
-      a: "Nos consultants viennent de Metz centre (10 min), Nancy (50 min) ou Luxembourg-Ville (1h). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Metz centre (10 min), Nancy (50 min) ou Luxembourg-Ville (1h). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

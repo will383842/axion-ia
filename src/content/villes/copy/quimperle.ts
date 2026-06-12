@@ -65,7 +65,7 @@ export const QUIMPERLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Quimperlé ?",
-      a: "Nos consultants arrivent par TGV gare de Quimperlé (3h40 Paris) ou depuis Lorient (20 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants arrivent par TGV gare de Quimperlé (3h40 Paris) ou depuis Lorient (20 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

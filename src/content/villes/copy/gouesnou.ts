@@ -65,7 +65,7 @@ export const GOUESNOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gouesnou ?",
-      a: "Nos consultants interviennent directement sur les zones d'activités de Gouesnou (Kergaradec). Brest centre à 10 min, gare TGV et aéroport à proximité. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants interviennent directement sur les zones d'activités de Gouesnou (Kergaradec). Brest centre à 10 min, gare TGV et aéroport à proximité.",
     },
   ],
 };

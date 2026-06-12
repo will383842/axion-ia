@@ -65,7 +65,7 @@ export const PLABENNEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Plabennec ?",
-      a: "Nos consultants interviennent depuis Brest (20 min) ou se déplacent directement. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants interviennent depuis Brest (20 min) ou se déplacent directement. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

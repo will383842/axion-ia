@@ -65,7 +65,7 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
     },
     {
       q: "Les interventions se font-elles sur site ou en visio ?",
-      a: "Les deux formats sont disponibles : intervention sur site dans vos locaux à Noyal-sur-Vilaine ou en visio. Format hybride possible. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Les deux formats sont disponibles : intervention sur site dans vos locaux à Noyal-sur-Vilaine ou en visio. Format hybride possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_JAMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-James ?",
-      a: "Nos consultants viennent de Rennes (50 min A84) ou Avranches (15 min). Gare d'Avranches (TER). Multi-jours : hébergement Avranches. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes (50 min A84) ou Avranches (15 min). Gare d'Avranches (TER). Multi-jours : hébergement Avranches.",
     },
   ],
 };

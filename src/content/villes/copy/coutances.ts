@@ -65,7 +65,7 @@ export const COUTANCES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Coutances ?",
-      a: "Nos consultants viennent de Caen (1 h 15) ou Saint-Lô (30 min). Gare de Coutances (TER Caen). Multi-jours : hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (1 h 15) ou Saint-Lô (30 min). Gare de Coutances (TER Caen). Multi-jours : hébergement local.",
     },
   ],
 };

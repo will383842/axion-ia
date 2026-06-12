@@ -2,9 +2,6 @@
 //
 // Doctrine Will (identique Paris gold standard) :
 //   - Aucun délai concret chiffré (pas de « 5-10 jours », « 48h », etc.).
-//   - Aucun « frais de déplacement intégrés » — les frais sont en sus.
-//   - Mention systématique « frais de logement, repas et forfait trajet en sus »
-//     sur les formats interventions.
 //   - Durée minimale = 1 journée (pas de demi-journée).
 //   - Aucun prix en dur : les tarifs viennent de `src/content/pricing.ts`.
 //   - Tailles d'entreprise INSEE : TPE / PME / ETI / GE.
@@ -37,16 +34,16 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
       en: "Operational AI audit in Aix-en-Provence: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Aix micro-businesses, basin industrial SMEs and large aerospace groups.",
     },
     interventions: {
-      fr: "Interventions IA à Aix-en-Provence : formats sur site d'une à plusieurs journées pour vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Aix-en-Provence: on-site formats from one to several days for your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Aix-en-Provence : formats sur site d'une à plusieurs journées pour vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel.",
+      en: "AI sessions in Aix-en-Provence: on-site formats from one to several days for your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Aix-en-Provence : nous déployons l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuellement. Vos équipes gardent la main, aucun lock-in technologique.",
       en: "AI implementation in Aix-en-Provence: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel 1-to-1 à Aix-en-Provence : séances sur mesure pour dirigeants et cadres des PME industrielles, cabinets d'ingénierie et ETI du bassin Aix-Marseille. Axe technopôle Aix-Marseille, Aix-en-Provence Tech et grandes entreprises du pays d'Aix. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
-      en: "1-to-1 AI coaching in Aix-en-Provence: bespoke sessions for executives and managers at industrial SMEs, engineering firms and mid-caps across the Aix-Marseille basin. Lodging, meals and travel allowance billed separately for on-site sessions.",
+      fr: "Coaching IA individuel 1-to-1 à Aix-en-Provence : séances sur mesure pour dirigeants et cadres des PME industrielles, cabinets d'ingénierie et ETI du bassin Aix-Marseille. Axe technopôle Aix-Marseille, Aix-en-Provence Tech et grandes entreprises du pays d'Aix.",
+      en: "1-to-1 AI coaching in Aix-en-Provence: bespoke sessions for executives and managers at industrial SMEs, engineering firms and mid-caps across the Aix-Marseille basin.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI du bassin Aix-Marseille — site vitrine premium pour sous-traitants aérospatial et cabinets d'ingénierie du Technopôle Arbois, espace client interactif, dashboard métier connecté à votre CRM/ERP/PLM. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -174,7 +171,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir à Marignane, Rousset ou dans le bassin ?",
-            a: "Oui. Nous intervenons sur l'ensemble du bassin Aix-Marseille : Aix-en-Provence centre, Technopôle Arbois, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. L'adresse précise d'intervention est confirmée en cadrage. Frais de trajet facturés en sus selon la distance.",
+            a: "Oui. Nous intervenons sur l'ensemble du bassin Aix-Marseille : Aix-en-Provence centre, Technopôle Arbois, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. L'adresse précise d'intervention est confirmée en cadrage.",
           },
           {
             q: "En quoi Axion-IA se distingue d'un cabinet de conseil traditionnel à Aix ?",
@@ -281,7 +278,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Can you intervene at Marignane, Rousset or elsewhere in the basin?",
-            a: "Yes. We cover the entire Aix-Marseille basin: Aix-en-Provence centre, Arbois technopole, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. Exact address confirmed at framing. Travel costs billed separately based on distance.",
+            a: "Yes. We cover the entire Aix-Marseille basin: Aix-en-Provence centre, Arbois technopole, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. Exact address confirmed at framing.",
           },
           {
             q: "How does Axion-IA differ from a traditional Aix consulting firm?",
@@ -298,7 +295,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Aix-en-Provence se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient ingénieurs chez un sous-traitant aérospatial, consultants à Arbois ou chargés de clientèle dans une PME de services. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Les interventions IA Axion-IA à Aix-en-Provence se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient ingénieurs chez un sous-traitant aérospatial, consultants à Arbois ou chargés de clientèle dans une PME de services.",
         whyHere: [
           "Aix-en-Provence est un pôle d'intervention dans le bassin sud-est : nous y déroulons des sessions pour les équipes d'ingénierie, de conseil, de services et d'administration.",
           "Toutes les zones d'activité couvertes : centre-ville aixois, Technopôle Arbois, Zone des Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air, Venelles.",
@@ -404,7 +401,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur métier aixois, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Aix-en-Provence come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether they are engineers at an aerospace subcontractor, consultants at Arbois or account managers at a services SME. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Aix-en-Provence come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether they are engineers at an aerospace subcontractor, consultants at Arbois or account managers at a services SME.",
         whyHere: [
           "Aix-en-Provence is an engagement hub in the south-east basin: we run sessions there for engineering, consulting, services and administration teams.",
           "All business zones covered: Aix city centre, Arbois technopole, Les Milles district, Marignane, Vitrolles, Rousset, Bouc-Bel-Air, Venelles.",
@@ -805,7 +802,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Aix-en-Provence ?",
-            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Aix-en-Provence, au Technopôle Arbois, à Les Milles ou dans le bassin selon votre préférence. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Aix-en-Provence, au Technopôle Arbois, à Les Milles ou dans le bassin selon votre préférence.",
           },
           {
             q: "Quelle est la fréquence des séances ?",
@@ -813,7 +810,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Le coaching en présentiel est-il possible à Marignane ou Rousset ?",
-            a: "Oui. Nous intervenons dans l'ensemble du bassin Aix-Marseille : Aix centre, Technopôle Arbois, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. Frais de trajet facturés en sus selon la distance.",
+            a: "Oui. Nous intervenons dans l'ensemble du bassin Aix-Marseille : Aix centre, Technopôle Arbois, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air.",
           },
           {
             q: "Quels secteurs sont concernés par le coaching 1-to-1 à Aix ?",
@@ -829,7 +826,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour le présentiel. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Aix-en-Provence individually supports executives and senior managers at industrial SMEs, aerospace mid-caps and consulting firms across the Aix-Marseille basin. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your specific business reality — Arbois technopole, Les Milles, Marignane, Rousset. You accelerate your AI proficiency without wasting time on non-applicable theory.",
@@ -912,7 +909,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         faq: [
           {
             q: "What is the format of 1-to-1 coaching sessions in Aix-en-Provence?",
-            a: "Sessions take place by video or in person at your premises in Aix-en-Provence, Arbois technopole, Les Milles or across the basin depending on your preference. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Sessions take place by video or in person at your premises in Aix-en-Provence, Arbois technopole, Les Milles or across the basin depending on your preference.",
           },
           {
             q: "How often are the sessions?",
@@ -920,7 +917,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Is on-site coaching possible at Marignane or Rousset?",
-            a: "Yes. We cover the entire Aix-Marseille basin: Aix centre, Arbois technopole, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. Travel costs billed separately based on distance.",
+            a: "Yes. We cover the entire Aix-Marseille basin: Aix centre, Arbois technopole, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air.",
           },
           {
             q: "Which sectors does 1-to-1 coaching cover in the Aix area?",
@@ -936,7 +933,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your action plans and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. No lock-in: you leave with your action plans and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
     sitesWeb: {
@@ -1130,7 +1127,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site à Aix-en-Provence et dans tout le bassin ?",
-      a: "Oui. Toutes nos interventions sont par défaut sur site. Nous couvrons Aix-en-Provence centre, le Technopôle Arbois, la Zone des Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air et Venelles. Frais de trajet facturés en sus selon la localisation.",
+      a: "Oui. Toutes nos interventions sont par défaut sur site. Nous couvrons Aix-en-Provence centre, le Technopôle Arbois, la Zone des Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air et Venelles.",
     },
     {
       q: "Pouvez-vous travailler avec des entreprises proches du CEA Cadarache ou d'ITER ?",

@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
-      a: "Oui. Williams arrive en TGV à Strasbourg (gare centrale) puis rejoint Illkirch-Graffenstaden en tram A ou E (15 min). Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A. Frais de déplacement intégrés.",
+      a: "Oui. Williams arrive en TGV à Strasbourg (gare centrale) puis rejoint Illkirch-Graffenstaden en tram A ou E (15 min). Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",
@@ -247,7 +247,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Illkirch-Graffenstaden ?",
-      a: "Axion-IA intervient aussi sur Strasbourg, Ostwald, Geispolsheim, Eschau, Fegersheim et plus largement l'Eurométropole. Frais de déplacement intra-Eurométropole intégrés au tarif public, sans surcoût.",
+      a: "Axion-IA intervient aussi sur Strasbourg, Ostwald, Geispolsheim, Eschau, Fegersheim et plus largement l'Eurométropole.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Illkirch-Graffenstaden ?",

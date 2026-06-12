@@ -65,7 +65,7 @@ export const POUZAUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Pouzauges depuis Cholet ou Nantes ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Cholet à 35 km, Nantes à 90 km. Accès A87 à 25 km. Frais déplacement inclus en bocage vendéen.",
+      a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Cholet à 35 km, Nantes à 90 km. Accès A87 à 25 km.",
     },
   ],
 };

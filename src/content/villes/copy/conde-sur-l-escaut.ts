@@ -65,7 +65,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Frontière belge à 5 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Frontière belge à 5 min.",
     },
   ],
 };

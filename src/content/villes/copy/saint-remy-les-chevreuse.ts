@@ -65,7 +65,7 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Rémy-lès-Chevreuse ?",
-      a: "Nos consultants interviennent à Saint-Rémy-lès-Chevreuse depuis Paris (45 min RER B terminus). Intervention dans vos locaux, en espace de coworking ou en visio. Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Saint-Rémy-lès-Chevreuse depuis Paris (45 min RER B terminus). Intervention dans vos locaux, en espace de coworking ou en visio.",
     },
   ],
 };

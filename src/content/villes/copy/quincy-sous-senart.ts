@@ -65,7 +65,7 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Quincy-sous-Sénart depuis Paris ?",
-      a: "Nos consultants accèdent à Quincy-sous-Sénart via le RER D (correspondance à Brunoy ou Yerres, 40 min depuis Paris Gare de Lyon). Zone Sénart à 10 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants accèdent à Quincy-sous-Sénart via le RER D (correspondance à Brunoy ou Yerres, 40 min depuis Paris Gare de Lyon). Zone Sénart à 10 min.",
     },
   ],
 };

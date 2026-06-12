@@ -65,7 +65,7 @@ export const TREGUNC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trégunc ?",
-      a: "Nos consultants viennent de Quimper (30 min) ou Concarneau (10 min). Gare la plus proche Rosporden à 20 min (TER). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants viennent de Quimper (30 min) ou Concarneau (10 min). Gare la plus proche Rosporden à 20 min (TER). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PONTCHARRA_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (25 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (25 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

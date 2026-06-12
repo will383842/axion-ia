@@ -65,7 +65,7 @@ export const DOUARNENEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Douarnenez ?",
-      a: "Nos consultants rejoignent Douarnenez via la gare de Quimper (TGV, 25 min de route) ou par la D765 depuis Brest (1 h 10). Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Douarnenez via la gare de Quimper (TGV, 25 min de route) ou par la D765 depuis Brest (1 h 10).",
     },
   ],
 };

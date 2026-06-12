@@ -65,7 +65,7 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Claude ?",
-      a: "Nos consultants se déplacent via la gare TER de Saint-Claude ou par la route depuis Oyonnax (30 min), Lons-le-Saunier (1h) ou Genève (1h15). Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent via la gare TER de Saint-Claude ou par la route depuis Oyonnax (30 min), Lons-le-Saunier (1h) ou Genève (1h15).",
     },
   ],
 };

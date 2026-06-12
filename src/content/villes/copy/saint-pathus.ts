@@ -65,7 +65,7 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Saint-Pathus ?",
-      a: "Nos consultants se déplacent à Saint-Pathus depuis Paris (50 min via N2) ou Roissy-CDG (20 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles. Frais de déplacement selon forfait.",
+      a: "Nos consultants se déplacent à Saint-Pathus depuis Paris (50 min via N2) ou Roissy-CDG (20 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
     },
   ],
 };

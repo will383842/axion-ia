@@ -246,7 +246,7 @@ export const DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bordeaux ou Bayonne ?",
-      a: "Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+      a: "Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

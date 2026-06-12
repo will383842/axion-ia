@@ -61,7 +61,7 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (10 min) ou arrivent par la gare TGV Saint-Pierre-des-Corps (5 min, Paris 1h05). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Tours centre (10 min) ou arrivent par la gare TGV Saint-Pierre-des-Corps (5 min, Paris 1h05). Pour les multi-jours, hébergement local possible.",
     },
     {
       q: "Respectez-vous le RGPD lors de vos interventions ?",

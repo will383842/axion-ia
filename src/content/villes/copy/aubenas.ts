@@ -65,7 +65,7 @@ export const AUBENAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (2h) ou Valence (1h). Déplacements facturés séparément, tarifs publics.",
+      a: "Lyon (2h) ou Valence (1h).",
     },
   ],
 };

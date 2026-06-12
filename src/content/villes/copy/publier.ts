@@ -65,7 +65,7 @@ export const PUBLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Publier depuis Genève ?",
-      a: "Nos consultants interviennent à Publier depuis Genève (40 min) ou Annecy. Pour les missions multi-jours, hébergement local sur la rive du Léman. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Publier depuis Genève (40 min) ou Annecy. Pour les missions multi-jours, hébergement local sur la rive du Léman.",
     },
   ],
 };

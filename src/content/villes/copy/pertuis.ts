@@ -65,7 +65,7 @@ export const PERTUIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Pertuis ?",
-      a: "Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51. Nos consultants se déplacent dans vos locaux ou exploitations. Frais de mission en sus, grille tarifaire publique.",
+      a: "Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51. Nos consultants se déplacent dans vos locaux ou exploitations.",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const VICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis l'extérieur de Vichy ?",
-      a: "Vichy est à 35 minutes de Clermont-Ferrand, 3 heures de Paris en train direct et reliée à l'A71 par l'A719. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Vichy est à 35 minutes de Clermont-Ferrand, 3 heures de Paris en train direct et reliée à l'A71 par l'A719. Nos consultants se déplacent sur site.",
     },
   ],
 };

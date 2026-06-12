@@ -230,7 +230,7 @@ export const AJACCIO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il en Corse, à Ajaccio ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Ajaccio et de la Corse-du-Sud. Nous nous déplaçons sur site et travaillons aussi en visio pour limiter les contraintes insulaires. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Ajaccio et de la Corse-du-Sud. Nous nous déplaçons sur site et travaillons aussi en visio pour limiter les contraintes insulaires. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un hôtel ou restaurant ajaccien saisonnier ?",

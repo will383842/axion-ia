@@ -65,7 +65,7 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Freyming-Merlebach ?",
-      a: "Nos consultants se déplacent via gare SNCF Freyming-Merlebach (ligne Metz–Forbach) ou autoroute A4. Forbach à 10 min, Sarrebruck à 25 min, Metz à 55 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Freyming-Merlebach (ligne Metz–Forbach) ou autoroute A4. Forbach à 10 min, Sarrebruck à 25 min, Metz à 55 min.",
     },
   ],
 };

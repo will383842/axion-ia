@@ -65,7 +65,7 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Neuville-en-Ferrain ?",
-      a: "Nos consultants interviennent à Neuville-en-Ferrain depuis Lille (20 min) ou Tourcoing (5 min). Intervention sur site dans votre entrepôt, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Tourcoing. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Neuville-en-Ferrain depuis Lille (20 min) ou Tourcoing (5 min). Intervention sur site dans votre entrepôt, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Tourcoing.",
     },
   ],
 };

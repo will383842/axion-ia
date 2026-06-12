@@ -250,7 +250,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Carcassonne ?",
-      a: "Nos consultants se déplacent dans vos locaux de l'Aude après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos locaux de l'Aude après un premier échange.",
     },
   ],
 };

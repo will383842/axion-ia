@@ -65,7 +65,7 @@ export const DOULLENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Doullens ?",
-      a: "Nos consultants se déplacent à Doullens depuis Amiens (30 min RN25) ou Arras (30 min). Mission sur site dans vos locaux ou exploitation. Frais de déplacement (voiture, repas, hébergement si multi-jours) facturés à part du forfait journée.",
+      a: "Nos consultants se déplacent à Doullens depuis Amiens (30 min RN25) ou Arras (30 min). Mission sur site dans vos locaux ou exploitation.",
     },
   ],
 };

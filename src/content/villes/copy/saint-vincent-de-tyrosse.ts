@@ -65,7 +65,7 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Vincent-de-Tyrosse ?",
-      a: "Nos consultants se déplacent facilement : Bayonne à 25 min, Dax à 25 min. Position centrale entre littoral et intérieur des Landes. Missions sur site dans votre établissement. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants se déplacent facilement : Bayonne à 25 min, Dax à 25 min. Position centrale entre littoral et intérieur des Landes. Missions sur site dans votre établissement.",
     },
   ],
 };

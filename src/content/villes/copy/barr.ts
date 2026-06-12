@@ -65,7 +65,7 @@ export const BARR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Barr ?",
-      a: "Nos consultants se déplacent via autoroute A35 (10 min) ou gares SNCF de Sélestat et Strasbourg. Bassin viticole stratégique sur la Route des Vins d'Alsace. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A35 (10 min) ou gares SNCF de Sélestat et Strasbourg. Bassin viticole stratégique sur la Route des Vins d'Alsace.",
     },
   ],
 };

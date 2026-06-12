@@ -65,7 +65,7 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans le Val de Loire ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Gennes-Val-de-Loire. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (30 min) ou Saumur (15 min) en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Gennes-Val-de-Loire. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

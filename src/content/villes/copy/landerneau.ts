@@ -65,7 +65,7 @@ export const LANDERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Landerneau ?",
-      a: "Nos consultants rejoignent Landerneau par la RN12 depuis Brest (20 min) ou via la gare SNCF de Landerneau (TER Brest-Quimper). Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Landerneau par la RN12 depuis Brest (20 min) ou via la gare SNCF de Landerneau (TER Brest-Quimper).",
     },
   ],
 };

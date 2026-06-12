@@ -65,7 +65,7 @@ export const MAULE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Maule ?",
-      a: "Nos consultants rejoignent Maule via la gare d'Épône — Mézières (Transilien J, 40 min Paris Saint-Lazare) à 10 min. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Maule via la gare d'Épône — Mézières (Transilien J, 40 min Paris Saint-Lazare) à 10 min.",
     },
   ],
 };

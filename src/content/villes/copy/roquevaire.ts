@@ -65,7 +65,7 @@ export const ROQUEVAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Roquevaire ?",
-      a: "Nos consultants interviennent sur site à Roquevaire sous 5 jours ouvrés. Aubagne à 10 min, Marseille à 25 min via A52. Frais de déplacement inclus vallée de l'Huveaune.",
+      a: "Nos consultants interviennent sur site à Roquevaire sous 5 jours ouvrés. Aubagne à 10 min, Marseille à 25 min via A52.",
     },
   ],
 };

@@ -121,7 +121,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir sur place, par exemple à La Gare Numérique de Carpentras ?",
-            a: "Oui. Le kick-off et la formation se font à Carpentras — dans vos locaux, sur la zone Bellecour / Carpensud, ou au tiers-lieu La Gare Numérique (coworking, fablab, studio) installé dans l'ancienne gare SNCF. Les frais de déplacement depuis Avignon (30 km, gare TGV) sont en sus, calculés selon la mission.",
+            a: "Oui. Le kick-off et la formation se font à Carpentras — dans vos locaux, sur la zone Bellecour / Carpensud, ou au tiers-lieu La Gare Numérique (coworking, fablab, studio) installé dans l'ancienne gare SNCF.",
           },
           {
             q: "Travaillez-vous avec les acteurs agroalimentaires de la zone Bellecour / Marché Gare ?",
@@ -207,7 +207,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Can you work on site, for example at La Gare Numérique in Carpentras?",
-            a: "Yes. Kick-off and training take place in Carpentras — at your offices, in the Bellecour / Carpensud zone, or at the La Gare Numérique third-place (coworking, fablab, studio) set up in the former SNCF station. Travel costs from Avignon (30 km, TGV station) are billed separately, per mission.",
+            a: "Yes. Kick-off and training take place in Carpentras — at your offices, in the Bellecour / Carpensud zone, or at the La Gare Numérique third-place (coworking, fablab, studio) set up in the former SNCF station.",
           },
           {
             q: "Do you work with the agrifood players of the Bellecour zone / Marché Gare?",
@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Carpentras ?",
-      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin. Frais de déplacement intégrés dans les forfaits publics.",
+      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Carpentras ?",
@@ -247,7 +247,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Carpentras ?",
-      a: "Axion-IA intervient aussi sur Monteux, Pernes-les-Fontaines, Aubignan, Mazan, Caromb, Loriol-du-Comtat et plus largement le Comtat Venaissin. Frais de déplacement intra-bassin négligeables, pas de surcoût par rapport au tarif public.",
+      a: "Axion-IA intervient aussi sur Monteux, Pernes-les-Fontaines, Aubignan, Mazan, Caromb, Loriol-du-Comtat et plus largement le Comtat Venaissin.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Carpentras ?",

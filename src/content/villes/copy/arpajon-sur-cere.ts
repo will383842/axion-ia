@@ -65,7 +65,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",
-      a: "Clermont-Ferrand (2h). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (2h). Tarifs publics.",
     },
   ],
 };

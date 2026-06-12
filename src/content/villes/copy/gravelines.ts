@@ -65,7 +65,7 @@ export const GRAVELINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gravelines ?",
-      a: "Nos consultants se déplacent à Gravelines via gare SNCF (TER Dunkerque–Calais) ou autoroute A16. Dunkerque à 15 min, Calais à 25 min. Intervention sur site ou en visio. Frais de déplacement facturés séparément, tarifs publics.",
+      a: "Nos consultants se déplacent à Gravelines via gare SNCF (TER Dunkerque–Calais) ou autoroute A16. Dunkerque à 15 min, Calais à 25 min. Intervention sur site ou en visio.",
     },
   ],
 };

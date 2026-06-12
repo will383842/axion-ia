@@ -136,7 +136,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites et plateformes hébergés en UE par défaut, conformité RGPD, DPO sur demande, code sur mesure dont vous restez propriétaire — aucun verrou éditeur ni dépendance contractuelle imposée. Devis chiffré à partir de 24-48 h selon la complexité, périmètre et livrables définis avant tout engagement, ateliers de conception en présentiel à Bois-Colombes et dans l'ouest francilien (frais de mission en sus). Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA intégrée. Documentation et transfert de compétences livrés en fin de mission : vos équipes ou votre prestataire reprennent la main, maintenance externalisable librement.",
+          "Sites et plateformes hébergés en UE par défaut, conformité RGPD, DPO sur demande, code sur mesure dont vous restez propriétaire — aucun verrou éditeur ni dépendance contractuelle imposée. Devis chiffré à partir de 24-48 h selon la complexité, périmètre et livrables définis avant tout engagement, ateliers de conception en présentiel à Bois-Colombes et dans l'ouest francilien. Nous revendiquons l'UX/UI, le mobile, l'e-commerce multi-CMS et l'IA intégrée. Documentation et transfert de compétences livrés en fin de mission : vos équipes ou votre prestataire reprennent la main, maintenance externalisable librement.",
       },
       en: {
         hero: 'In Bois-Colombes (92), Axion-IA builds AI-augmented websites and SaaS platforms for a distinctive fabric: the corporate headquarters of the ZAC des Bruyères — IBM France and its "Europe Avenue" campus on avenue de l\'Europe, Colgate-Palmolive France, Abeille Assurances (formerly Aviva), Coface, and the gas cluster GRTgaz/NaTran with Storengy and Elengy around the Cityzen buildings — alongside the service SMEs, liberal professions and shops of this residential town at the gates of La Défense. Client portals, partner extranets, AI-native business apps: custom code, EU hosting compliant with GDPR, no vendor lock-in. Quote from 24-48 h depending on complexity.',
@@ -222,7 +222,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites and platforms hosted in the EU by default, GDPR compliance, DPO on request, custom code that you own — no vendor lock-in or imposed contractual dependency. Costed quote from 24-48 h depending on complexity, scope and deliverables defined before any commitment, in-person design workshops in Bois-Colombes and western Île-de-France (travel costs billed separately). We deliver UX/UI, mobile, multi-CMS e-commerce and integrated AI. Documentation and skills transfer delivered at mission end: your teams or provider take over, maintenance freely outsourceable.",
+          "Sites and platforms hosted in the EU by default, GDPR compliance, DPO on request, custom code that you own — no vendor lock-in or imposed contractual dependency. Costed quote from 24-48 h depending on complexity, scope and deliverables defined before any commitment, in-person design workshops in Bois-Colombes and western Île-de-France. We deliver UX/UI, mobile, multi-CMS e-commerce and integrated AI. Documentation and skills transfer delivered at mission end: your teams or provider take over, maintenance freely outsourceable.",
       },
     },
   },
@@ -250,7 +250,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bois-Colombes ?",
-      a: "Nos consultants se déplacent dans vos bureaux après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos bureaux après un premier échange.",
     },
   ],
 };

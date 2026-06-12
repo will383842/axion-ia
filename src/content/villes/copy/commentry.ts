@@ -69,7 +69,7 @@ export const COMMENTRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants se déplacent depuis Clermont-Ferrand en 1h15, ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent depuis Clermont-Ferrand en 1h15, ou en visio.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

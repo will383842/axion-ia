@@ -65,7 +65,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Dijon ?",
-      a: "Dijon à 1h10 (TER). Paris à 2h30 par A5. Troyes à 1h. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Dijon à 1h10 (TER). Paris à 2h30 par A5. Troyes à 1h.",
     },
   ],
 };

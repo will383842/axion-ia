@@ -65,7 +65,7 @@ export const RIANTEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Riantec depuis Lorient ?",
-      a: "Nos consultants viennent de Lorient (15 min voiture). Pour les multi-jours, hébergement local possible (gîtes littoraux Riantec/Étel). Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Lorient (15 min voiture). Pour les multi-jours, hébergement local possible (gîtes littoraux Riantec/Étel).",
     },
   ],
 };

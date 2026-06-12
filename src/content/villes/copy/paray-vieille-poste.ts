@@ -65,7 +65,7 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Orly et Thiais ?",
-      a: "Oui, nous couvrons Paray-Vieille-Poste, Orly, Thiais, Choisy-le-Roi, Rungis et toute la zone sud francilienne. Frais de déplacement inclus zone Orly.",
+      a: "Oui, nous couvrons Paray-Vieille-Poste, Orly, Thiais, Choisy-le-Roi, Rungis et toute la zone sud francilienne.",
     },
   ],
 };

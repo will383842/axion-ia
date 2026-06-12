@@ -65,7 +65,7 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Moyeuvre-Grande ?",
-      a: "Nos consultants se déplacent via gare SNCF Moyeuvre-Grande (ligne Metz–Conflans) ou autoroute A4/A31. Metz à 25 min, Thionville à 20 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Moyeuvre-Grande (ligne Metz–Conflans) ou autoroute A4/A31. Metz à 25 min, Thionville à 20 min.",
     },
   ],
 };

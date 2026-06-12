@@ -65,7 +65,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Est à 1 h 30 via TGV ou autoroute A4. Gare SNCF Châlons-en-Champagne à 7 min de Saint-Memmie. Frais de déplacement facturés à part.",
+      a: "Paris-Est à 1 h 30 via TGV ou autoroute A4. Gare SNCF Châlons-en-Champagne à 7 min de Saint-Memmie.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
     },
   ],
 };

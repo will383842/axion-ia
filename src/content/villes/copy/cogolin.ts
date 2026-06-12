@@ -63,7 +63,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Cogolin ?",
-      a: "Intervention sous 5 jours ouvrés. Gare TGV Saint-Raphaël à 35 min, aéroport Toulon-Hyères à 50 min, Nice à 1h30. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés. Gare TGV Saint-Raphaël à 35 min, aéroport Toulon-Hyères à 50 min, Nice à 1h30. Nos consultants se déplacent sur site.",
     },
   ],
 };

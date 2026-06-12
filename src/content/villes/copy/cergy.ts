@@ -236,7 +236,7 @@ export const CERGY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de Cergy ?",
-      a: "Oui. Nous intervenons à Pontoise, Osny, Vauréal, Courdimanche, Éragny-sur-Oise, Neuville-sur-Oise et Puiseux-Pontoise au sein de la communauté d'agglomération de Cergy-Pontoise, sans frais de déplacement supplémentaires en Île-de-France.",
+      a: "Oui. Nous intervenons à Pontoise, Osny, Vauréal, Courdimanche, Éragny-sur-Oise, Neuville-sur-Oise et Puiseux-Pontoise au sein de la communauté d'agglomération de Cergy-Pontoise.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Cergy ?",

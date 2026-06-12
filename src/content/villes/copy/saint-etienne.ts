@@ -36,16 +36,16 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
       en: "Operational AI audit in Saint-Étienne: we map what can be automated in your structure and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, tailored to manufacturing, medical textiles, design and B2B services in the Loire.",
     },
     interventions: {
-      fr: "Interventions IA à Saint-Étienne : formats sur site d'une à plusieurs journées pour vos équipes. Vos collaborateurs repartent avec des outils IA configurés pour leur métier — industrie, design, commerce ou santé. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Saint-Étienne: on-site formats from one to several days for your teams. Your staff leave with AI tools configured for their profession — manufacturing, design, retail or healthcare. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Saint-Étienne : formats sur site d'une à plusieurs journées pour vos équipes. Vos collaborateurs repartent avec des outils IA configurés pour leur métier — industrie, design, commerce ou santé.",
+      en: "AI sessions in Saint-Étienne: on-site formats from one to several days for your teams. Your staff leave with AI tools configured for their profession — manufacturing, design, retail or healthcare.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Étienne : on intègre l'IA dans vos outils existants (ERP industriel, CRM, mails, GMAO) avec un ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Saint-Étienne: we integrate AI into your existing tools (industrial ERP, CRM, email, CMMS) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
-      en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+      fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. From €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI stéphanoises — site vitrine premium pour acteurs design (Cité du Design, UNESCO Creative City) et textile médical, espace client pour PME industrielles et distribution (Casino, Thuasne), dashboard métier connecté à votre ERP industriel ou GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -298,7 +298,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Saint-Étienne se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur activité réelle — industrie, design, commerce ou santé. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Saint-Étienne se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur activité réelle — industrie, design, commerce ou santé.",
         whyHere: [
           "Saint-Étienne est un bassin industriel en reconversion numérique accélérée — nos interventions s'adressent aux équipes qui n'ont jamais touché à l'IA autant qu'aux pionniers du design.",
           "Tous les secteurs stéphanois couverts : ateliers industriels (opérateurs, bureau d'études), agences design Cité du Design / ESADSE, équipes de vente Casino/distribution, équipes RH et support PME.",
@@ -389,7 +389,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir dans les communes du bassin stéphanois ?",
-            a: "Oui. Nous intervenons dans tout Saint-Étienne Métropole et le bassin : Saint-Chamond, Firminy, Le Chambon-Feugerolles, Roche-la-Molière, Andrézieux-Bouthéon. Frais de logement, repas et forfait trajet facturés à part.",
+            a: "Oui. Nous intervenons dans tout Saint-Étienne Métropole et le bassin : Saint-Chamond, Firminy, Le Chambon-Feugerolles, Roche-la-Molière, Andrézieux-Bouthéon.",
           },
           {
             q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
@@ -404,7 +404,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur stéphanois, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Saint-Étienne come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real activity — manufacturing, design, retail or healthcare. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Saint-Étienne come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real activity — manufacturing, design, retail or healthcare.",
         whyHere: [
           "Saint-Étienne is an industrial basin undergoing accelerated digital transformation — our sessions serve teams who have never touched AI as much as design pioneers.",
           "All Saint-Étienne sectors covered: industrial workshops (operators, engineering), design agencies at Cité du Design / ESADSE, Casino/distribution sales teams, HR and support teams in SMEs.",
@@ -495,7 +495,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Can you intervene in communes of the Saint-Étienne basin?",
-            a: "Yes. We operate across Saint-Étienne Métropole and the basin: Saint-Chamond, Firminy, Le Chambon-Feugerolles, Roche-la-Molière, Andrézieux-Bouthéon. Lodging, meals and travel allowance billed separately.",
+            a: "Yes. We operate across Saint-Étienne Métropole and the basin: Saint-Chamond, Firminy, Le Chambon-Feugerolles, Roche-la-Molière, Andrézieux-Bouthéon.",
           },
           {
             q: "Are your sessions eligible for training funds?",
@@ -728,7 +728,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Saint-Étienne est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants industriels, designers, responsables textile médical et managers de distribution de la Loire. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Saint-Étienne est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants industriels, designers, responsables textile médical et managers de distribution de la Loire.",
         whyHere: [
           "Saint-Étienne est la seule ville française UNESCO Creative City en design : les profils sont très spécialisés — ingénieur mécanique, designer industriel, responsable qualité textile médical — et ont besoin d'un coaching ancré dans leur réalité métier, pas d'un cours générique.",
           "Le tissu industriel stéphanois (mécanique de précision, aciers spéciaux, textile médical) génère des workflows documentaires denses (plans techniques, fiches qualité, bons de commande) : chaque séance travaille directement sur vos vrais documents.",
@@ -815,7 +815,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux stéphanois ?",
-            a: "Oui. Séances sur site dans vos locaux (Châteaucreux, Cité du Design, Technopôle, Molina-La-Chazotte) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+            a: "Oui. Séances sur site dans vos locaux (Châteaucreux, Cité du Design, Technopôle, Molina-La-Chazotte) ou en visio selon votre disponibilité.",
           },
           {
             q: "Mes données industrielles et plans techniques restent-ils confidentiels ?",
@@ -831,10 +831,10 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données et plans techniques restent dans votre environnement. Conformité RGPD. Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données et plans techniques restent dans votre environnement. Conformité RGPD. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Saint-Étienne is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to industrial executives, designers, medical textile managers and distribution leaders in the Loire. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Saint-Étienne is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to industrial executives, designers, medical textile managers and distribution leaders in the Loire.",
         whyHere: [
           "Saint-Étienne is France's only UNESCO Creative City for design: profiles are highly specialised — mechanical engineer, industrial designer, medical textile quality manager — and need coaching rooted in their real work, not a generic course.",
           "Saint-Étienne's industrial fabric (precision mechanics, specialty steels, medical textiles) generates dense document workflows (technical drawings, quality records, purchase orders): each session works directly on your real documents.",
@@ -921,7 +921,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Can coaching sessions be held at my Saint-Étienne premises?",
-            a: "Yes. On-site sessions at your offices (Châteaucreux, Cité du Design, Technopôle, Molina-La-Chazotte) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Yes. On-site sessions at your offices (Châteaucreux, Cité du Design, Technopôle, Molina-La-Chazotte) or via video depending on availability.",
           },
           {
             q: "Does my industrial data and technical drawings stay confidential?",
@@ -937,7 +937,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data and technical drawings stay in your environment. GDPR compliance. Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data and technical drawings stay in your environment. GDPR compliance. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
     sitesWeb: {
@@ -1123,7 +1123,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes du bassin stéphanois ?",
-      a: "Oui. Nous couvrons tout Saint-Étienne Métropole et les communes du bassin : Saint-Chamond, Firminy, Le Chambon-Feugerolles, Roche-la-Molière, La Ricamarie, Andrézieux-Bouthéon. Frais de logement, repas et forfait trajet facturés à part selon la distance.",
+      a: "Oui. Nous couvrons tout Saint-Étienne Métropole et les communes du bassin : Saint-Chamond, Firminy, Le Chambon-Feugerolles, Roche-la-Molière, La Ricamarie, Andrézieux-Bouthéon.",
     },
     {
       q: "Quels secteurs stéphanois bénéficient le plus de l'IA ?",

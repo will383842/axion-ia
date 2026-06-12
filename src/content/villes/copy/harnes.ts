@@ -65,7 +65,7 @@ export const HARNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Harnes depuis Lille ?",
-      a: "Nos consultants viennent de Lille (25 min A21/A1) ou Douai (15 min). Lens est à 5 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (25 min A21/A1) ou Douai (15 min). Lens est à 5 min.",
     },
   ],
 };

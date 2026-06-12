@@ -65,7 +65,7 @@ export const HIRSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hirson ?",
-      a: "Nos consultants se déplacent via gare SNCF Hirson (ligne Laon–Hirson) ou routes N2/D1043. Vervins à 30 min, Saint-Quentin à 1h, Charleville-Mézières à 1h. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Hirson (ligne Laon–Hirson) ou routes N2/D1043. Vervins à 30 min, Saint-Quentin à 1h, Charleville-Mézières à 1h.",
     },
   ],
 };

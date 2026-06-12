@@ -65,7 +65,7 @@ export const PONTCHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ou Saint-Nazaire ?",
-      a: "Nos consultants viennent de Nantes (35 min N165) ou Saint-Nazaire (20 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Nantes (35 min N165) ou Saint-Nazaire (20 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

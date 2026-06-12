@@ -65,7 +65,7 @@ export const HOUPLINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Houplines ?",
-      a: "Nos consultants interviennent à Houplines depuis Lille (25 min) ou Armentières (5 min). Intervention sur site dans votre atelier textile, usine, commerce, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Armentières. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Houplines depuis Lille (25 min) ou Armentières (5 min). Intervention sur site dans votre atelier textile, usine, commerce, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Armentières.",
     },
   ],
 };

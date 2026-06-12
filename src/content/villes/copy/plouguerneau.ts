@@ -65,7 +65,7 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Plouguerneau ?",
-      a: "Nos consultants se déplacent depuis Brest (30 min). Gare TGV de Brest sur la ligne Paris-Brest. Aéroport Brest-Bretagne à 40 min. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Brest (30 min). Gare TGV de Brest sur la ligne Paris-Brest. Aéroport Brest-Bretagne à 40 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const GUIDEL_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Guidel depuis Paris ?",
-      a: "Gare TGV de Lorient à 25 min (Paris-Montparnasse à 3 h en TGV direct). Aéroport Lorient Bretagne Sud à 15 min. Voie express RN 165 à 5 min. Frais de déplacement facturés à part.",
+      a: "Gare TGV de Lorient à 25 min (Paris-Montparnasse à 3 h en TGV direct). Aéroport Lorient Bretagne Sud à 15 min. Voie express RN 165 à 5 min.",
     },
   ],
 };

@@ -242,7 +242,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Bordeaux ?",
-      a: "Nos consultants viennent de Paris (TGV Agen 4h puis 30 min voiture) ou de Bordeaux (2h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen). Frais de déplacement (TGV/voiture, repas, hébergement) facturés à part du forfait.",
+      a: "Nos consultants viennent de Paris (TGV Agen 4h puis 30 min voiture) ou de Bordeaux (2h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Villeneuve ou Agen).",
     },
   ],
 };

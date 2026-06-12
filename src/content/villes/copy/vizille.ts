@@ -65,7 +65,7 @@ export const VIZILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min voiture N85, route Napoléon). Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (20 min voiture N85, route Napoléon). Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans).",
     },
   ],
 };

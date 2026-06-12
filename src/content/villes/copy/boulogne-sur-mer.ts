@@ -132,11 +132,11 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "Combien de temps pour recevoir un devis et démarrer ?",
-            a: "Le devis est établi à partir de 24-48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur site à Capécure ou dans vos locaux de la Côte d'Opale, frais de déplacement en sus, démarrage rapide après validation.",
+            a: "Le devis est établi à partir de 24-48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur site à Capécure ou dans vos locaux de la Côte d'Opale, démarrage rapide après validation.",
           },
         ],
         guarantees:
-          "Code sur mesure, hébergement en UE conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : la plateforme, son code et ses données restent intégralement chez vous, reprenables par vos équipes ou tout intégrateur des Hauts-de-France. Nous tenons les seuils de performance web (chargement rapide, mobile-first) et formons vos équipes — mareyage, transformation, e-commerce, accueil touristique — à piloter l'outil en autonomie. Devis public établi à partir de 24-48 h selon la complexité ; frais de déplacement sur Boulogne-sur-Mer et la Côte d'Opale facturés en sus.",
+          "Code sur mesure, hébergement en UE conforme RGPD par défaut, DPO sur demande. Aucun lock-in éditeur : la plateforme, son code et ses données restent intégralement chez vous, reprenables par vos équipes ou tout intégrateur des Hauts-de-France. Nous tenons les seuils de performance web (chargement rapide, mobile-first) et formons vos équipes — mareyage, transformation, e-commerce, accueil touristique — à piloter l'outil en autonomie. Devis public établi à partir de 24-48 h selon la complexité.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms for businesses in Boulogne-sur-Mer, France's leading fishing port and Europe's foremost seafood-processing hub. Our ground is the Capécure zone and its roughly 150 companies — fish wholesalers, filleting workshops, processors such as Findus or Demarne Frères, traders, cold-chain logisticians — plus coastal tourism around Nausicaá. Real-time catch catalogues tied to the fish auction, lot-by-lot traceability, B2B wholesaler/retail portals, chilled-fresh e-commerce and RAG chatbots: custom code, EU GDPR-compliant hosting, zero vendor lock-in. Quote from 24-48 h depending on complexity.",
@@ -218,11 +218,11 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
           },
           {
             q: "How long to get a quote and start?",
-            a: "The quote is issued from 24-48 h depending on complexity, after an initial framing exchange. Kick-off happens on site in Capécure or at your Côte d'Opale premises, travel costs billed separately, fast start after sign-off.",
+            a: "The quote is issued from 24-48 h depending on complexity, after an initial framing exchange. Kick-off happens on site in Capécure or at your Côte d'Opale premises, fast start after sign-off.",
           },
         ],
         guarantees:
-          "Custom code, EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: the platform, its code and its data stay entirely with you, recoverable by your teams or any Hauts-de-France integrator. We hold web performance thresholds (fast loading, mobile-first) and train your teams — wholesaling, processing, e-commerce, tourist reception — to run the tool autonomously. Public quote issued from 24-48 h depending on complexity; travel costs to Boulogne-sur-Mer and the Côte d'Opale billed separately.",
+          "Custom code, EU GDPR-compliant hosting by default, DPO on request. No vendor lock-in: the platform, its code and its data stay entirely with you, recoverable by your teams or any Hauts-de-France integrator. We hold web performance thresholds (fast loading, mobile-first) and train your teams — wholesaling, processing, e-commerce, tourist reception — to run the tool autonomously. Public quote issued from 24-48 h depending on complexity.",
       },
     },
   },
@@ -250,7 +250,7 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Boulogne-sur-Mer ?",
-      a: "Nos consultants se déplacent dans vos locaux de la Côte d'Opale après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos locaux de la Côte d'Opale après un premier échange. Grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

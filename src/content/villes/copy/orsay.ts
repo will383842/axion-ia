@@ -65,7 +65,7 @@ export const ORSAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Paris centre (30 min RER B). Massy TGV (10 min). Aéroport Orly (20 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Paris centre (30 min RER B). Massy TGV (10 min). Aéroport Orly (20 min).",
     },
   ],
 };

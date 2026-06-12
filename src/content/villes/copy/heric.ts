@@ -65,7 +65,7 @@ export const HERIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (25 min). Frais de déplacement inclus périmètre nord métropole nantaise. Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nos consultants se déplacent depuis Nantes centre (25 min). Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

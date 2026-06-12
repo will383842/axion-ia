@@ -65,7 +65,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (40 min).",
     },
   ],
 };

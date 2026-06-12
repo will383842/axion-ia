@@ -65,7 +65,7 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chartres-de-Bretagne ?",
-      a: "Nos consultants viennent de Rennes centre (10 min). Gare TER de Chartres-de-Bretagne sur la commune. Interventions directement dans vos locaux zone d'activités. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (10 min). Gare TER de Chartres-de-Bretagne sur la commune. Interventions directement dans vos locaux zone d'activités.",
     },
   ],
 };

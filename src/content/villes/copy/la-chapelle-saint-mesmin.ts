@@ -65,7 +65,7 @@ export const LA_CHAPELLE_SAINT_MESMIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Orléans ou Paris ?",
-      a: "Orléans (10 min), Paris (1h15). Gare TGV Orléans à 15 min, A10 à proximité. Frais de mission en sus, grille tarifaire publique.",
+      a: "Orléans (10 min), Paris (1h15). Gare TGV Orléans à 15 min, A10 à proximité.",
     },
   ],
 };

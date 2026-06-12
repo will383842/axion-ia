@@ -65,7 +65,7 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Quimper ou Brest ?",
-      a: "Nos consultants viennent de Quimper (25 min) ou Brest (1h15 voiture). Pour les multi-jours, hébergement local possible (hôtels Pont-l'Abbé ou littoral bigouden). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Quimper (25 min) ou Brest (1h15 voiture). Pour les multi-jours, hébergement local possible (hôtels Pont-l'Abbé ou littoral bigouden).",
     },
   ],
 };

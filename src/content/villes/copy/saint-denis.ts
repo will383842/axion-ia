@@ -134,7 +134,7 @@ const AUDIT_FR: VilleServiceCopyLocale = {
 
 // === INTERVENTIONS ===
 const INTERVENTIONS_FR: VilleServiceCopyLocale = {
-  hero: "Les interventions IA Axion-IA à Saint-Denis se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en entrepôt logistique, en studio audiovisuel, sur chantier Grand Paris ou en bureau de services. Frais de logement, repas et forfait trajet facturés à part.",
+  hero: "Les interventions IA Axion-IA à Saint-Denis se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en entrepôt logistique, en studio audiovisuel, sur chantier Grand Paris ou en bureau de services.",
   whyHere: [
     "Saint-Denis et sa Plaine concentrent des profils opérationnels très variés — logisticiens, techniciens de studio, conducteurs de travaux, agents ESS — pour lesquels un outillage IA immédiat sur leur poste génère un gain de temps mesurable dès le lendemain.",
     "Toute la commune et l'intercommunalité Plaine Commune couverts en présentiel : Plaine Saint-Denis, Stade de France, centre-ville, Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte.",
@@ -559,8 +559,8 @@ export const SAINT_DENIS_COPY: VilleCopy = {
       en: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
     },
     interventions: {
-      fr: "Interventions IA à Saint-Denis : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel — en entrepôt, en studio, sur chantier Grand Paris ou en bureau. Frais de logement, repas et forfait trajet en sus.",
-      en: "Interventions IA à Saint-Denis : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel — en entrepôt, en studio, sur chantier Grand Paris ou en bureau. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Interventions IA à Saint-Denis : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel — en entrepôt, en studio, sur chantier Grand Paris ou en bureau.",
+      en: "Interventions IA à Saint-Denis : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel — en entrepôt, en studio, sur chantier Grand Paris ou en bureau.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Denis : on déploie l'IA dans vos outils existants (CRM, ERP, outils logistique, plateformes audiovisuelles) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance Axion-IA.",
@@ -601,7 +601,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou sur des chantiers Grand Paris ?",
-      a: "Oui. Nos consultants s'adaptent aux environnements logistiques (entrepôts, postes mobiles, VLAN sécurisés) et aux chantiers Grand Paris (postes terrain, contraintes site). La préparation inclut un échange matériel/réseau préalable. Frais de logement, repas et forfait trajet facturés à part.",
+      a: "Oui. Nos consultants s'adaptent aux environnements logistiques (entrepôts, postes mobiles, VLAN sécurisés) et aux chantiers Grand Paris (postes terrain, contraintes site). La préparation inclut un échange matériel/réseau préalable.",
     },
     {
       q: "Avez-vous des références dans l'audiovisuel ou la production créative à Saint-Denis ?",
@@ -609,7 +609,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment rejoindre Saint-Denis pour une intervention depuis Paris ?",
-      a: "Saint-Denis est directement desservi par le RER D (Gare du Nord ~10 min), le RER B (La Plaine–Stade de France) et le métro ligne 13. Nos consultants gèrent leur déplacement — frais de logement, repas et forfait trajet facturés à part.",
+      a: "Saint-Denis est directement desservi par le RER D (Gare du Nord ~10 min), le RER B (La Plaine–Stade de France) et le métro ligne 13. Nos consultants gèrent leur déplacement",
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",

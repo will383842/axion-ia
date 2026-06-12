@@ -65,7 +65,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "RER D Épinay-sous-Sénart direct depuis Paris (30 min). Évry-Courcouronnes à 15 min. Orly à 20 min. Frais de déplacement facturés à part, tarifs publics et transparents.",
+      a: "RER D Épinay-sous-Sénart direct depuis Paris (30 min). Évry-Courcouronnes à 15 min. Orly à 20 min.",
     },
   ],
 };

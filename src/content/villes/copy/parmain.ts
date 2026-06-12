@@ -65,7 +65,7 @@ export const PARMAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "L'Isle-Adam (3 min). Beaumont-sur-Oise (10 min). Cergy-Pontoise (25 min). Paris centre (45 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "L'Isle-Adam (3 min). Beaumont-sur-Oise (10 min). Cergy-Pontoise (25 min). Paris centre (45 min).",
     },
   ],
 };

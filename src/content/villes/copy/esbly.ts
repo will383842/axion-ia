@@ -65,7 +65,7 @@ export const ESBLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Esbly ?",
-      a: "Nos consultants interviennent à Esbly depuis Paris Est (35 min via Transilien P, gare d'Esbly) ou en voiture via A4 (15 min). Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Esbly depuis Paris Est (35 min via Transilien P, gare d'Esbly) ou en voiture via A4 (15 min).",
     },
   ],
 };

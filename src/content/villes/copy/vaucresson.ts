@@ -65,7 +65,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe le déplacement pour une mission à Vaucresson ?",
-      a: "Nos consultants se déplacent à Vaucresson depuis Paris ou La Défense (10-25 min). Interventions dans vos locaux sur vos cas métier réels. Frais de déplacement inclus dans le forfait zone Île-de-France pour toutes nos prestations.",
+      a: "Nos consultants se déplacent à Vaucresson depuis Paris ou La Défense (10-25 min). Interventions dans vos locaux sur vos cas métier réels.",
     },
   ],
 };

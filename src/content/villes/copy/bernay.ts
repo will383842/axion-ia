@@ -65,7 +65,7 @@ export const BERNAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (50 min) ou Paris (1h40 train direct gare Bernay, ligne Paris-Cherbourg). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rouen (50 min) ou Paris (1h40 train direct gare Bernay, ligne Paris-Cherbourg). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon à 1h par A6. Gare TGV Mâcon-Loché à 10 min de Charnay. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Lyon à 1h par A6. Gare TGV Mâcon-Loché à 10 min de Charnay.",
     },
   ],
 };

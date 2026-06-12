@@ -65,7 +65,7 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bricquebec-en-Cotentin ?",
-      a: "Nos consultants viennent de Cherbourg (30 min) ou Valognes (15 min). Gare de Valognes (TER Paris 2 h 45). Multi-jours : hébergement Valognes ou Cherbourg. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Cherbourg (30 min) ou Valognes (15 min). Gare de Valognes (TER Paris 2 h 45). Multi-jours : hébergement Valognes ou Cherbourg.",
     },
   ],
 };

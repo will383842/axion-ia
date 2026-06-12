@@ -65,7 +65,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Rennes ou Paris ?",
-      a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min.",
     },
   ],
 };

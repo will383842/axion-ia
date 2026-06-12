@@ -65,7 +65,7 @@ export const LES_ANDELYS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (40 min) ou Paris (1h30 A13, gare Gaillon-Aubevoye à 15 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Rouen (40 min) ou Paris (1h30 A13, gare Gaillon-Aubevoye à 15 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

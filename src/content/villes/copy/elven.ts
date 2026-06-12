@@ -65,7 +65,7 @@ export const ELVEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Vannes ou Rennes ?",
-      a: "Vannes (20 min), Rennes (1h). Gare TGV Vannes à 20 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Vannes (20 min), Rennes (1h). Gare TGV Vannes à 20 min.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LE_THOR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Thor ?",
-      a: "Le Thor est à 20 min d'Avignon et 10 min de L'Isle-sur-la-Sorgue via N100. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Le Thor est à 20 min d'Avignon et 10 min de L'Isle-sur-la-Sorgue via N100. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

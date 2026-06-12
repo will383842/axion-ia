@@ -65,7 +65,7 @@ export const BARLIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Barlin ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Béthune à 10 min, Lille à 45 min. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Béthune à 10 min, Lille à 45 min. Nos consultants se déplacent sur site.",
     },
   ],
 };

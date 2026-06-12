@@ -65,7 +65,7 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chalonnes-sur-Loire ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Chalonnes-sur-Loire. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (25 min) en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Chalonnes-sur-Loire. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

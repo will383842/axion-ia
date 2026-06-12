@@ -65,7 +65,7 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA aux Ponts-de-Cé ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux aux Ponts-de-Cé. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés métier. Frais déplacement depuis Angers inclus (10 min).",
+      a: "Nos consultants seniors se déplacent dans vos locaux aux Ponts-de-Cé. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés métier.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CONTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Contes depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (25 min D2204 vallée du Paillon). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement moyen-pays inclus depuis Nice.",
+      a: "Nos consultants interviennent depuis Nice centre (25 min D2204 vallée du Paillon). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

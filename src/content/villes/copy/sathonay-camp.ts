@@ -65,7 +65,7 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min).",
     },
   ],
 };

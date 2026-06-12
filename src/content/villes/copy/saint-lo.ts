@@ -65,7 +65,7 @@ export const SAINT_LO_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Lô depuis Caen ou Rennes ?",
-      a: "Nos consultants viennent de Caen (60 min A84) ou Rennes (90 min A84). Pour les missions multi-jours, hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (60 min A84) ou Rennes (90 min A84). Pour les missions multi-jours, hébergement local.",
     },
   ],
 };

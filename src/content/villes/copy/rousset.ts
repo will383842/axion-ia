@@ -65,7 +65,7 @@ export const ROUSSET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Rousset ?",
-      a: "Rousset est à 15 min d'Aix-en-Provence et 40 min de Marseille via A8. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Rousset est à 15 min d'Aix-en-Provence et 40 min de Marseille via A8. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

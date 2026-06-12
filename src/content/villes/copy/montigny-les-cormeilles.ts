@@ -56,7 +56,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
           "Commerce de détail dense en cœur de ville et sur la ZAC La Tuilerie (11,16 ha, 64 entreprises, enseignes de bricolage et d'équipement type Leroy Merlin) : nous construisons des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et des parcours d'achat mobile-first calibrés pour des clientèles de proximité et le click-and-collect.",
           "Transport terrestre et logistique structurants dans le bassin Val Parisis, à 25 km de Paris et 35 km de Roissy-CDG, avec la ZAE RD 14 (8,77 ha, 88 établissements le long de la RD14) : nous automatisons devis, planning et suivi de tournées par des agents IA branchés sur vos outils existants, du formulaire de transport à l'ERP.",
           "Tissu majoritaire de TPE du BTP, des travaux spécialisés et du paysage (présents notamment sur la ZAE Les Taignies, orientée second œuvre et aménagement extérieur) : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse — chiffrage automatisé, espace client, génération de devis — plutôt qu'un chantier de plateforme inutile.",
-          "Transformation de l'entrée de ville engagée depuis 2024 (sélection nationale, ~2 M€ d'aides, près de 900 logements et commerces en pied d'immeuble d'ici 2030) et accès rapide par deux gares (Montigny-Beauchamp RER C / Transilien H, La Frette-Montigny Transilien J) et l'A15 : kick-off sur site sans frais de déplacement en Île-de-France, sites neufs et boutiques connectées prêts pour ces nouveaux flux, conformité RGPD et AI Act, hébergement UE strict.",
+          "Transformation de l'entrée de ville engagée depuis 2024 (sélection nationale, ~2 M€ d'aides, près de 900 logements et commerces en pied d'immeuble d'ici 2030) et accès rapide par deux gares (Montigny-Beauchamp RER C / Transilien H, La Frette-Montigny Transilien J) et l'A15 : kick-off sur site.",
         ],
         methodology: [
           {
@@ -142,7 +142,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
           "Commerce de détail dense en cœur de ville et sur la ZAC La Tuilerie (11,16 ha, 64 entreprises, enseignes de bricolage et d'équipement type Leroy Merlin) : nous construisons des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et des parcours d'achat mobile-first calibrés pour des clientèles de proximité et le click-and-collect.",
           "Transport terrestre et logistique structurants dans le bassin Val Parisis, à 25 km de Paris et 35 km de Roissy-CDG, avec la ZAE RD 14 (8,77 ha, 88 établissements le long de la RD14) : nous automatisons devis, planning et suivi de tournées par des agents IA branchés sur vos outils existants, du formulaire de transport à l'ERP.",
           "Tissu majoritaire de TPE du BTP, des travaux spécialisés et du paysage (présents notamment sur la ZAE Les Taignies, orientée second œuvre et aménagement extérieur) : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse — chiffrage automatisé, espace client, génération de devis — plutôt qu'un chantier de plateforme inutile.",
-          "Transformation de l'entrée de ville engagée depuis 2024 (sélection nationale, ~2 M€ d'aides, près de 900 logements et commerces en pied d'immeuble d'ici 2030) et accès rapide par deux gares (Montigny-Beauchamp RER C / Transilien H, La Frette-Montigny Transilien J) et l'A15 : kick-off sur site sans frais de déplacement en Île-de-France, sites neufs et boutiques connectées prêts pour ces nouveaux flux, conformité RGPD et AI Act, hébergement UE strict.",
+          "Transformation de l'entrée de ville engagée depuis 2024 (sélection nationale, ~2 M€ d'aides, près de 900 logements et commerces en pied d'immeuble d'ici 2030) et accès rapide par deux gares (Montigny-Beauchamp RER C / Transilien H, La Frette-Montigny Transilien J) et l'A15 : kick-off sur site.",
         ],
         methodology: [
           {
@@ -232,7 +232,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Montigny-lès-Cormeilles (95370) ?",
-      a: "Oui, nos consultants prennent le RER C ou le Transilien H jusqu'à Montigny-Beauchamp, ou le Transilien J jusqu'à La Frette-Montigny. Aucun frais de déplacement n'est facturé en Île-de-France.",
+      a: "Oui, nos consultants prennent le RER C ou le Transilien H jusqu'à Montigny-Beauchamp, ou le Transilien J jusqu'à La Frette-Montigny.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Montigny-lès-Cormeilles ?",

@@ -65,7 +65,7 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fontenay-Trésigny ?",
-      a: "Nos consultants interviennent à Fontenay-Trésigny depuis Paris (50 min via N4/A4) ou depuis Marne-la-Vallée (25 min). Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Fontenay-Trésigny depuis Paris (50 min via N4/A4) ou depuis Marne-la-Vallée (25 min).",
     },
   ],
 };

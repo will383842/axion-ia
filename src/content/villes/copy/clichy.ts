@@ -136,7 +136,7 @@ export const CLICHY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis détaillé à partir de 24 à 48 h selon la complexité, périmètre et livrables fixés par écrit avant tout démarrage. Conception UX/UI et mobile, e-commerce multi-CMS et briques IA développées sur mesure. Hébergement en Union européenne par défaut, conformité RGPD, propriété pleine du code et des données côté client. Kick-off et recette en présentiel à Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, incubateur Intencity) ou en proche couronne ; les frais de déplacement, réduits à cette distance de Paris, sont facturés en sus. À la livraison, votre équipe est formée et autonome — aucun verrou éditeur, aucune dépendance imposée.",
+          "Devis détaillé à partir de 24 à 48 h selon la complexité, périmètre et livrables fixés par écrit avant tout démarrage. Conception UX/UI et mobile, e-commerce multi-CMS et briques IA développées sur mesure. Hébergement en Union européenne par défaut, conformité RGPD, propriété pleine du code et des données côté client. Kick-off et recette en présentiel à Clichy (rue Martre, rue Marc Bloch, Écoquartier du Bac, incubateur Intencity) ou en proche couronne. À la livraison, votre équipe est formée et autonome — aucun verrou éditeur, aucune dépendance imposée.",
       },
       en: {
         hero: "Clichy holds a rare profile for inner-ring Paris: two head offices of international and national scale are physically based here — L'Oréal's world headquarters at 41 rue Martre (renovation led by architect Jean-Michel Wilmotte, plus 6,550 m² in the Link-It building) and Monoprix's head office at 14-16 rue Marc Bloch, which runs the Monop', Monoprix Maison and Naturalia banners. Around them sit Beaujon Hospital (AP-HP), a dense fabric of advertising and communication agencies, service micro-businesses and shops, and the conversion of former industrial land into new offices (Écoquartier du Bac, ZAC Bac d'Asnières). In Clichy, Axion-IA designs AI-augmented websites and SaaS platforms for this beauty-cosmetics, retail/distribution and communication hub, on site then remotely.",
@@ -246,7 +246,7 @@ export const CLICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",
-      a: "Clichy est à environ 15 min de Paris centre et de La Défense, et à 10 min de Paris-Saint-Lazare. Nous nous déplaçons sur site ; les frais de déplacement, réduits en proche couronne, sont facturés à part selon nos tarifs publics.",
+      a: "Clichy est à environ 15 min de Paris centre et de La Défense, et à 10 min de Paris-Saint-Lazare. Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

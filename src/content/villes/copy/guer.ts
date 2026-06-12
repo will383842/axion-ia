@@ -65,7 +65,7 @@ export const GUER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Guer ?",
-      a: "Nos consultants se déplacent dans vos locaux à Guer ou interviennent en visio. Gare de Guer accessible en TER depuis Rennes et Vannes. Pour les missions multi-jours, hébergement local possible. Frais de déplacement transparents en sus du forfait.",
+      a: "Nos consultants se déplacent dans vos locaux à Guer ou interviennent en visio. Gare de Guer accessible en TER depuis Rennes et Vannes. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

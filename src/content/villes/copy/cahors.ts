@@ -235,7 +235,7 @@ export const CAHORS_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans le vignoble de Cahors et les communes du Lot proches ?",
-      a: "Oui — outre Cahors intra-muros, nous couvrons Pradines, Mercuès, Cabrerets, Saint-Cirq-Lapopie et l'ensemble du Grand Cahors. Au-delà, les frais de déplacement sont chiffrés transparemment dans le devis.",
+      a: "Oui — outre Cahors intra-muros, nous couvrons Pradines, Mercuès, Cabrerets, Saint-Cirq-Lapopie et l'ensemble du Grand Cahors. Au-delà.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD pour une PME viticole de Cahors ?",

@@ -65,7 +65,7 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Xandre ?",
-      a: "Nos consultants accèdent à Saint-Xandre via la gare TGV de La Rochelle (15 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Saint-Xandre via la gare TGV de La Rochelle (15 min, Paris 2h50 direct). Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

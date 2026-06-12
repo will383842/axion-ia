@@ -65,7 +65,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Nemours et Fontainebleau ?",
-      a: "Oui, nous couvrons Saint-Pierre-lès-Nemours, Nemours, Fontainebleau, Moret-Loing-et-Orvanne et tout le Gâtinais. Frais de mission en sus, grille tarifaire publique.",
+      a: "Oui, nous couvrons Saint-Pierre-lès-Nemours, Nemours, Fontainebleau, Moret-Loing-et-Orvanne et tout le Gâtinais.",
     },
   ],
 };

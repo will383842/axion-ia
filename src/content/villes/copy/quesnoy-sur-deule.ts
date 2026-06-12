@@ -65,7 +65,7 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Quesnoy-sur-Deûle ?",
-      a: "Nos consultants viennent de Lille centre (15 min A25/A22) ou Wambrechies (5 min). Gare Lille Flandres à 15 min, gare TGV Lille Europe à 18 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille centre (15 min A25/A22) ou Wambrechies (5 min). Gare Lille Flandres à 15 min, gare TGV Lille Europe à 18 min.",
     },
   ],
 };

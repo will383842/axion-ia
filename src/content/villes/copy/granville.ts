@@ -65,7 +65,7 @@ export const GRANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Granville ?",
-      a: "Nos consultants viennent de Rennes (1 h 10) ou Caen (1 h 20). Gare de Granville (TER Paris-Montparnasse 3 h). Multi-jours : hébergement local. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Rennes (1 h 10) ou Caen (1 h 20). Gare de Granville (TER Paris-Montparnasse 3 h). Multi-jours : hébergement local.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min A480 ou via tramway A à Pont-de-Claix + voiture). Pour les multi-jours, hébergement local possible (hôtels Grenoble). Frais de déplacement (voiture, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (20 min A480 ou via tramway A à Pont-de-Claix + voiture). Pour les multi-jours, hébergement local possible (hôtels Grenoble).",
     },
   ],
 };

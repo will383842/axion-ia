@@ -65,7 +65,7 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min). Frais de déplacement (TER/voiture, repas, hébergement) facturés à part du forfait journée.",
+      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
     },
   ],
 };

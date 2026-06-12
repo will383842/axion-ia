@@ -65,7 +65,7 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bouchemaine ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Bouchemaine. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers inclus (10 min).",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Bouchemaine. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

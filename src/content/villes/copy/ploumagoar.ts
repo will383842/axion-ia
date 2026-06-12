@@ -65,7 +65,7 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ploumagoar ?",
-      a: "Nos consultants se déplacent via la gare TGV de Guingamp (5 min, ligne Paris-Brest). Saint-Brieuc à 30 min, Lannion à 35 min. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent via la gare TGV de Guingamp (5 min, ligne Paris-Brest). Saint-Brieuc à 30 min, Lannion à 35 min.",
     },
   ],
 };

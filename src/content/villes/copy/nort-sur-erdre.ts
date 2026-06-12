@@ -65,7 +65,7 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 25 min par TER (ligne Nantes-Châteaubriant) ou 30 min par route (D178). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nantes en 25 min par TER (ligne Nantes-Châteaubriant) ou 30 min par route (D178). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

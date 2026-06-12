@@ -69,7 +69,7 @@ export const CESSY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Lyon est à 1h30 par l'A40, Genève à 15 min. Nous nous déplaçons sur site à Cessy ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+      a: "Lyon est à 1h30 par l'A40, Genève à 15 min. Nous nous déplaçons sur site à Cessy.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

@@ -65,7 +65,7 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Évry ?",
-      a: "RER C Arpajon (5 min à pied) direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min. Frais de déplacement facturés à part, tarifs publics et transparents.",
+      a: "RER C Arpajon (5 min à pied) direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min.",
     },
   ],
 };

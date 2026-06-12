@@ -65,7 +65,7 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA depuis Caen ?",
-      a: "Nos consultants viennent de Caen (1h A84) ou Flers (25 min). Pour les missions multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Caen (1h A84) ou Flers (25 min). Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

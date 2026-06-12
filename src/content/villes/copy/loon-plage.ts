@@ -65,7 +65,7 @@ export const LOON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Loon-Plage ?",
-      a: "Nos consultants interviennent depuis Dunkerque (15 min) ou Lille (1h10 via A25). Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics sur notre site.",
+      a: "Nos consultants interviennent depuis Dunkerque (15 min) ou Lille (1h10 via A25). Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

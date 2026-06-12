@@ -65,7 +65,7 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Nos consultants viennent de Lyon (1h45) ou Roanne (45 min). Le Creusot-TGV à 50 min. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h45) ou Roanne (45 min). Le Creusot-TGV à 50 min.",
     },
   ],
 };

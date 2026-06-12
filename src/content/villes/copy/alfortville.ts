@@ -236,7 +236,7 @@ export const ALFORTVILLE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Alfortville ?",
-      a: "Oui, nous intervenons dans toutes les communes limitrophes : Maisons-Alfort, Charenton-le-Pont, Ivry-sur-Seine, Vitry-sur-Seine, Choisy-le-Roi et Créteil, sans frais de déplacement supplémentaires en Val-de-Marne.",
+      a: "Oui, nous intervenons dans toutes les communes limitrophes : Maisons-Alfort, Charenton-le-Pont, Ivry-sur-Seine, Vitry-sur-Seine, Choisy-le-Roi et Créteil, ainsi que dans l'ensemble du Val-de-Marne.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD pour les PME d'Alfortville ?",

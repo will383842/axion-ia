@@ -65,7 +65,7 @@ export const MEYREUIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Meyreuil ?",
-      a: "Meyreuil est à 10 min d'Aix et 35 min de Marseille par A52. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Meyreuil est à 10 min d'Aix et 35 min de Marseille par A52. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

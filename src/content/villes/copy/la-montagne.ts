@@ -65,7 +65,7 @@ export const LA_MONTAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (15 min). Frais de déplacement inclus dans le périmètre Nantes Métropole. Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nos consultants se déplacent depuis Nantes centre (15 min). Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

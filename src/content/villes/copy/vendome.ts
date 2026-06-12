@@ -65,7 +65,7 @@ export const VENDOME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vendôme ?",
-      a: "Nos consultants arrivent par TGV Vendôme-Villiers (42 min Paris) ou depuis Tours (45 min) et Blois (30 min). Pour les multi-jours, hébergement local bords du Loir. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants arrivent par TGV Vendôme-Villiers (42 min Paris) ou depuis Tours (45 min) et Blois (30 min). Pour les multi-jours, hébergement local bords du Loir.",
     },
   ],
 };

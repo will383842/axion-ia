@@ -65,7 +65,7 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Inzinzac-Lochrist ?",
-      a: "Nos consultants interviennent à Inzinzac-Lochrist depuis Lorient (20 min), Vannes (55 min) ou Nantes (2h). Intervention sur site dans vos locaux, atelier ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Inzinzac-Lochrist depuis Lorient (20 min), Vannes (55 min) ou Nantes (2h). Intervention sur site dans vos locaux, atelier ou cabinet.",
     },
   ],
 };

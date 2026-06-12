@@ -65,7 +65,7 @@ export const CERNAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Cernay ?",
-      a: "Nos consultants se déplacent via autoroute A36 (15 min) ou gare de Cernay-Ville. Position piémont vosgien stratégique entre Mulhouse, vallée de la Thur et route des Vins. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A36 (15 min) ou gare de Cernay-Ville. Position piémont vosgien stratégique entre Mulhouse, vallée de la Thur et route des Vins.",
     },
   ],
 };

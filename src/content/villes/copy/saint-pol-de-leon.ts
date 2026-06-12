@@ -65,7 +65,7 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Pol-de-Léon ?",
-      a: "Nos consultants se déplacent depuis Morlaix (20 min) ou Brest (55 min). Gare TGV de Morlaix sur la ligne Paris-Brest. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Morlaix (20 min) ou Brest (55 min). Gare TGV de Morlaix sur la ligne Paris-Brest.",
     },
   ],
 };

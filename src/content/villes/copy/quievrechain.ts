@@ -65,7 +65,7 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Quiévrechain ?",
-      a: "Nos consultants interviennent à Quiévrechain depuis Valenciennes (10 min) ou Lille (50 min). Intervention sur site dans vos locaux industriels, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Valenciennes. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Quiévrechain depuis Valenciennes (10 min) ou Lille (50 min). Intervention sur site dans vos locaux industriels, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Valenciennes.",
     },
   ],
 };

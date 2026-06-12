@@ -65,7 +65,7 @@ export const LOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Tours 1h15 puis 1h route, ou Poitiers 1h40 puis 1h route). Pour les multi-jours, hébergement local possible (hôtels Loudun ou Saumur). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV (Tours 1h15 puis 1h route, ou Poitiers 1h40 puis 1h route). Pour les multi-jours, hébergement local possible (hôtels Loudun ou Saumur).",
     },
   ],
 };

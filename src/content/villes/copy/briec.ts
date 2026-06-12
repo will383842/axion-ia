@@ -65,7 +65,7 @@ export const BRIEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Quimper ?",
-      a: "Nos consultants viennent de Quimper (20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Quimper ou gîtes ruraux). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Quimper (20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Quimper ou gîtes ruraux).",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const DOUAI_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants se déplacent depuis Lille en 35 minutes, ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent depuis Lille en 35 minutes, ou en visio.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

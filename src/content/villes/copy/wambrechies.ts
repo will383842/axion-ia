@@ -65,7 +65,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wambrechies ?",
-      a: "Nos consultants se déplacent à Wambrechies depuis Lille centre (10 min, A25). Gare Lille-Flandres et Lille-Europe TGV à 15 min. Intervention sur site ou en visio. Frais de déplacement inclus zone MEL.",
+      a: "Nos consultants se déplacent à Wambrechies depuis Lille centre (10 min, A25). Gare Lille-Flandres et Lille-Europe TGV à 15 min. Intervention sur site ou en visio.",
     },
   ],
 };

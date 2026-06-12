@@ -242,7 +242,7 @@ export const LAMBERSART_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (1h Lille-Europe) pour les missions sur site à Lambersart. Pour les multi-jours, hébergement local possible (hôtels MEL). Frais de déplacement (TGV, repas, hébergement) facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV (1h Lille-Europe) pour les missions sur site à Lambersart. Pour les multi-jours, hébergement local possible (hôtels MEL).",
     },
   ],
 };

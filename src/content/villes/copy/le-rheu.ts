@@ -65,7 +65,7 @@ export const LE_RHEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Rheu ?",
-      a: "Nos consultants interviennent au Rheu depuis Rennes (15 min via rocade ouest). Intervention sur site dans vos bureaux, atelier ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent au Rheu depuis Rennes (15 min via rocade ouest). Intervention sur site dans vos bureaux, atelier ou cabinet.",
     },
   ],
 };

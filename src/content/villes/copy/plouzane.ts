@@ -65,7 +65,7 @@ export const PLOUZANE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Plouzané ?",
-      a: "Nos consultants rejoignent Plouzané via la gare de Brest (TGV, 15 min de route) ou l'aéroport Brest-Bretagne (20 min). Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Plouzané via la gare de Brest (TGV, 15 min de route) ou l'aéroport Brest-Bretagne (20 min).",
     },
   ],
 };

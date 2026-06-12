@@ -65,7 +65,7 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à La Ferté-Bernard ?",
-      a: "Nos consultants arrivent depuis Le Mans (45 min A11) ou par TER direct Paris. Intervention dans vos locaux. Format mixte sur site + visio. Frais déplacement facturés à part. Tarifs publics.",
+      a: "Nos consultants arrivent depuis Le Mans (45 min A11) ou par TER direct Paris. Intervention dans vos locaux. Format mixte sur site + visio. Tarifs publics.",
     },
   ],
 };

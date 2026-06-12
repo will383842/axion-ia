@@ -61,7 +61,7 @@ export const BEYNES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous en présentiel à Beynes ?",
-      a: "Oui, nos consultants se déplacent à Beynes depuis Paris (45 min) ou Versailles (20 min). Interventions sur site dans vos locaux ou en format hybride visio + présentiel. Frais de déplacement Île-de-France communiqués selon forfait, tarifs publics.",
+      a: "Oui, nos consultants se déplacent à Beynes depuis Paris (45 min) ou Versailles (20 min). Interventions sur site dans vos locaux ou en format hybride visio + présentiel. Tarifs publics.",
     },
     {
       q: "Quels cas IA pour les services à la personne à Beynes ?",

@@ -65,7 +65,7 @@ export const LA_GAUDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Gaude ?",
-      a: "Nos consultants interviennent depuis Nice (15 min) ou Cagnes-sur-Mer (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement moyen-pays inclus depuis Nice.",
+      a: "Nos consultants interviennent depuis Nice (15 min) ou Cagnes-sur-Mer (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

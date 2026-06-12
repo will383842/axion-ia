@@ -246,7 +246,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille centre ?",
-      a: "Mons-en-Barœul est limitrophe de Lille et reliée par la ligne 2 du métro en quelques minutes. Nous couvrons tout l'est de la métropole. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
+      a: "Mons-en-Barœul est limitrophe de Lille et reliée par la ligne 2 du métro en quelques minutes. Nous couvrons tout l'est de la métropole.",
     },
   ],
 };

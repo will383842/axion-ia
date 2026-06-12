@@ -65,7 +65,7 @@ export const AVALLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Dijon ?",
-      a: "Paris-Bercy à 2h en train (gare Avallon). Dijon à 1h15 par A6. Auxerre à 50 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Bercy à 2h en train (gare Avallon). Dijon à 1h15 par A6. Auxerre à 50 min.",
     },
   ],
 };

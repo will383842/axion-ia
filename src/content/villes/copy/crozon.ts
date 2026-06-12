@@ -65,7 +65,7 @@ export const CROZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Crozon ?",
-      a: "Nos consultants viennent de Brest (50 min D791) ou Quimper (55 min). Pas de gare directe, accès voiture ou maritime. Pour les multi-jours, hébergement local possible (Morgat, Camaret). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Brest (50 min D791) ou Quimper (55 min). Pas de gare directe, accès voiture ou maritime. Pour les multi-jours, hébergement local possible (Morgat, Camaret).",
     },
   ],
 };

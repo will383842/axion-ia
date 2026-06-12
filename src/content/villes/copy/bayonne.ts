@@ -132,11 +132,11 @@ export const BAYONNE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site à Bayonne ?",
-            a: "Un devis vous est remis à partir de 24-48 h selon la complexité, après un premier échange. La grille tarifaire est publique ; les frais de déplacement sur le BAB sont en sus, calculés selon la zone.",
+            a: "Un devis vous est remis à partir de 24-48 h selon la complexité, après un premier échange. La grille tarifaire est publique.",
           },
         ],
         guarantees:
-          "Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande — essentiel pour le e-commerce des producteurs basques et les données du négoce portuaire. Aucun verrou éditeur : code, données et comptes restent intégralement chez vous, transférables à tout prestataire du Pays basque ou repris en interne. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et l'intégration IA. Devis remis à partir de 24-48 h selon la complexité, grille tarifaire publique, frais de déplacement BAB en sus.",
+          "Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande — essentiel pour le e-commerce des producteurs basques et les données du négoce portuaire. Aucun verrou éditeur : code, données et comptes restent intégralement chez vous, transférables à tout prestataire du Pays basque ou repris en interne. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et l'intégration IA. Devis remis à partir de 24-48 h selon la complexité, grille tarifaire publique.",
       },
       en: {
         hero: "Bayonne and the BAB area (Bayonne-Anglet-Biarritz) has a fabric like no other: the Adour port, France's 9th, exports corn from the Maïsica silos by rail and hosts the Boucau-Tarnos steel industry (Celsa, Laminoir des Landes), TIMAC AGRO fertilizers and the CHANE bitumen terminal; the Technocité aeronautics-composites cluster (Pika Composites, Dassault in Anglet, Turbomeca subcontracting) accounts for 10,000 jobs; the Basque coast forms the world's 3rd surf-industry hub (Olatu incubator, Eurosima); and local agri-food lives off Jambon de Bayonne PGI and chocolate. Axion-IA builds AI-augmented websites and SaaS platforms for these businesses — from Basque producers' e-commerce to Izarbel software publishers.",
@@ -218,11 +218,11 @@ export const BAYONNE_COPY: VilleCopy = {
           },
           {
             q: "How fast do we get a quote for a site in Bayonne?",
-            a: "A quote is provided from 24-48 h depending on complexity, after a first exchange. Pricing is public; travel costs across the BAB are billed separately, calculated by zone.",
+            a: "A quote is provided from 24-48 h depending on complexity, after a first exchange. Pricing is public.",
           },
         ],
         guarantees:
-          "EU hosting by default, GDPR compliance, DPO on request — essential for Basque producers' e-commerce and port-trade data. No vendor lock-in: code, data and accounts remain fully yours, transferable to any Basque Country provider or taken in-house. We cover UX/UI, mobile-first, multi-CMS e-commerce (WooCommerce, Shopify, PrestaShop) and AI integration. Quote provided from 24-48 h depending on complexity, public pricing, BAB travel costs billed separately.",
+          "EU hosting by default, GDPR compliance, DPO on request — essential for Basque producers' e-commerce and port-trade data. No vendor lock-in: code, data and accounts remain fully yours, transferable to any Basque Country provider or taken in-house. We cover UX/UI, mobile-first, multi-CMS e-commerce (WooCommerce, Shopify, PrestaShop) and AI integration. Quote provided from 24-48 h depending on complexity, public pricing.",
       },
     },
   },
@@ -250,7 +250,7 @@ export const BAYONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bayonne ?",
-      a: "Nos consultants se déplacent dans vos locaux du BAB après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos locaux du BAB après un premier échange. Grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MENUCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min).",
     },
   ],
 };

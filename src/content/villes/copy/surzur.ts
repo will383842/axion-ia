@@ -65,7 +65,7 @@ export const SURZUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Surzur depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (15 min voiture). Pour les multi-jours, hébergement local possible (gîtes presqu'île de Rhuys). Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Vannes (15 min voiture). Pour les multi-jours, hébergement local possible (gîtes presqu'île de Rhuys).",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const BETHUNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Lille ou Paris ?",
-      a: "Nos consultants rejoignent Béthune depuis Lille (40 min) ou Paris (TGV 2h15). Déplacements facturés séparément, grille tarifaire publique. Sessions sur site ou en visio.",
+      a: "Nos consultants rejoignent Béthune depuis Lille (40 min) ou Paris (TGV 2h15). Sessions sur site ou en visio.",
     },
   ],
 };

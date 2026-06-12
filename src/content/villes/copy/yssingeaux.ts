@@ -65,7 +65,7 @@ export const YSSINGEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Saint-Étienne (50 min) ou Lyon (1h30). Frais de mission en sus, grille tarifaire publique.",
+      a: "Saint-Étienne (50 min) ou Lyon (1h30).",
     },
   ],
 };

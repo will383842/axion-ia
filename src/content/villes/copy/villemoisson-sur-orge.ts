@@ -65,7 +65,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Nos consultants viennent de Paris (35 min A6) ou Massy (15 min). Accès rapide via RER C ou A6. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris (35 min A6) ou Massy (15 min). Accès rapide via RER C ou A6.",
     },
   ],
 };

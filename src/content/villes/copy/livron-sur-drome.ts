@@ -65,7 +65,7 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

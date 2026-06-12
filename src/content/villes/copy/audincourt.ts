@@ -65,7 +65,7 @@ export const AUDINCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Audincourt ?",
-      a: "Nos consultants se déplacent à Audincourt (gare TGV Belfort-Montbéliard à 15 min, A36 depuis Besançon 1h10). Interventions dans vos locaux usine ou atelier. Visio possible pour le suivi. Frais déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent à Audincourt (gare TGV Belfort-Montbéliard à 15 min, A36 depuis Besançon 1h10). Interventions dans vos locaux usine ou atelier. Visio possible pour le suivi.",
     },
   ],
 };

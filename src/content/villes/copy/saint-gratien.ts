@@ -246,7 +246,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris (15-20 min en RER C ou Transilien H). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (15-20 min en RER C ou Transilien H).",
     },
   ],
 };

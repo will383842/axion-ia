@@ -65,7 +65,7 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mont-Saint-Martin ?",
-      a: "Nos consultants interviennent depuis Metz (1h) ou Nancy (1h20). Missions sur site dans vos locaux commerciaux, bureau ou entrepôt. Frais de déplacement en sus du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Metz (1h) ou Nancy (1h20). Missions sur site dans vos locaux commerciaux, bureau ou entrepôt.",
     },
   ],
 };

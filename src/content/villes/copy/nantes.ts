@@ -37,16 +37,16 @@ export const NANTES_COPY: VilleCopy = {
       en: "Operational AI audit in Nantes: we map what can be automated in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Nantes industry, digital, agri-food and services.",
     },
     interventions: {
-      fr: "Interventions IA à Nantes : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Nantes: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Nantes : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Nantes: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Nantes : on déploie l'IA dans vos outils existants (CRM, ERP, mails, PLM industriel) avec ROI chiffré contractuel. Vos équipes gardent la main, aucun lock-in technologique.",
       en: "AI implementation in Nantes: we deploy AI into your existing tools (CRM, ERP, email, industrial PLM) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Nantes : accompagnement 1-to-1 ancré dans votre réalité — aéronautique, agroalimentaire, numérique ou biotech. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
-      en: "Individual AI coaching in Nantes: 1-to-1 support rooted in your reality — aeronautics, agri-food, digital or biotech. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+      fr: "Coaching IA individuel à Nantes : accompagnement 1-to-1 ancré dans votre réalité — aéronautique, agroalimentaire, numérique ou biotech. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Individual AI coaching in Nantes: 1-to-1 support rooted in your reality — aeronautics, agri-food, digital or biotech. From €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI du Grand Ouest — site vitrine premium pour acteurs aéronautiques et agroalimentaires (Airbus, LU), portail client pour scale-ups French Tech Île de Nantes, dashboard métier connecté à votre CRM/ERP/PLM. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -307,7 +307,7 @@ export const NANTES_COPY: VilleCopy = {
     // ──────────────────────────────────────────────────────────
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Nantes se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Nantes se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
           "Nantes est un terrain d'intervention clé pour Axion-IA : diversité sectorielle unique — industrie aéronautique, agroalimentaire, numérique French Tech, biotech — qui nécessite des sessions calibrées par métier.",
           "Toute la métropole couverte en présentiel : Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais, Rezé, Orvault, Saint-Sébastien-sur-Loire.",
@@ -413,7 +413,7 @@ export const NANTES_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur nantais, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Nantes come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Nantes come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "Nantes is a key engagement ground for Axion-IA: unique sector diversity — aeronautics, agri-food, French Tech digital, biotech — requiring sector-calibrated sessions.",
           "Whole metropolis covered in person: Île de Nantes, Euronantes Gare, La Chantrerie, Saint-Herblain, Bouguenais, Rezé, Orvault, Saint-Sébastien-sur-Loire.",
@@ -740,7 +740,7 @@ export const NANTES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Nantes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants, managers et experts des secteurs aéronautique, agroalimentaire, numérique et biotech du Grand Ouest. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Nantes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants, managers et experts des secteurs aéronautique, agroalimentaire, numérique et biotech du Grand Ouest.",
         whyHere: [
           "Nantes concentre des profils très hétérogènes — ingénieur aéronautique chez Airbus, directeur qualité dans une PME agroalimentaire, CTO d'une scale-up French Tech — qui n'ont ni le même rythme ni les mêmes cas : le 1-to-1 est la seule formule qui s'adapte à chacun.",
           "L'industrie aéronautique (Airbus Bouguenais, IRT Jules Verne, sous-traitants pôle EMC2) impose des contraintes qualité et réglementaires spécifiques que seul un coaching individuel peut intégrer dans chaque exercice pratique.",
@@ -827,7 +827,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux nantais ?",
-            a: "Oui. Séances sur site dans vos locaux (Île de Nantes, Euronantes, La Chantrerie, Bouguenais) ou en visio selon votre disponibilité. Le choix est fait au cadrage. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+            a: "Oui. Séances sur site dans vos locaux (Île de Nantes, Euronantes, La Chantrerie, Bouguenais) ou en visio selon votre disponibilité. Le choix est fait au cadrage.",
           },
           {
             q: "Mes données et documents restent-ils confidentiels pendant le coaching ?",
@@ -843,10 +843,10 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD. Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Nantes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to executives, managers and experts in aeronautics, agri-food, digital and biotech across the Greater West. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Nantes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to executives, managers and experts in aeronautics, agri-food, digital and biotech across the Greater West.",
         whyHere: [
           "Nantes brings together very diverse profiles — an aeronautics engineer at Airbus, a quality director in an agri-food SME, a CTO at a French Tech scale-up — who have different paces and use cases: 1-to-1 is the only format that adapts to each.",
           "The aeronautics industry (Airbus Bouguenais, IRT Jules Verne, EMC2 subcontractors) imposes specific quality and regulatory constraints that only individual coaching can integrate into each practical exercise.",
@@ -933,7 +933,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Can coaching sessions be held at my Nantes premises?",
-            a: "Yes. On-site sessions at your offices (Île de Nantes, Euronantes, La Chantrerie, Bouguenais) or via video depending on availability. The choice is made at framing. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Yes. On-site sessions at your offices (Île de Nantes, Euronantes, La Chantrerie, Bouguenais) or via video depending on availability. The choice is made at framing.",
           },
           {
             q: "Does my data stay confidential during coaching?",
@@ -949,7 +949,7 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance. Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
     sitesWeb: {
@@ -1154,7 +1154,7 @@ export const NANTES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans le bassin Saint-Nazaire pour l'industrie navale ?",
-      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles depuis notre base nantaise. Les frais de logement, repas et forfait trajet sont facturés à part selon la localisation précise.",
+      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles depuis notre base nantaise.",
     },
   ],
 };

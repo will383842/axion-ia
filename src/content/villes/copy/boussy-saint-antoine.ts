@@ -65,7 +65,7 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Brunoy et Yerres ?",
-      a: "Oui, nous couvrons Boussy-Saint-Antoine, Brunoy, Yerres, Épinay-sous-Sénart, Quincy-sous-Sénart et tout le secteur forêt de Sénart. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons Boussy-Saint-Antoine, Brunoy, Yerres, Épinay-sous-Sénart, Quincy-sous-Sénart et tout le secteur forêt de Sénart. Tarifs publics.",
     },
   ],
 };

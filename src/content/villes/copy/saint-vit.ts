@@ -65,7 +65,7 @@ export const SAINT_VIT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Vit ?",
-      a: "Nos consultants se déplacent depuis Besançon (20 min) ou Dole (25 min). Gare TER de Saint-Vit sur la ligne Besançon-Dole. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Besançon (20 min) ou Dole (25 min). Gare TER de Saint-Vit sur la ligne Besançon-Dole.",
     },
   ],
 };

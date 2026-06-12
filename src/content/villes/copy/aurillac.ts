@@ -228,7 +228,7 @@ export const AURILLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Aurillac ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour la formation collective et {{price:intervention-dirigeants|flat}} pour l'implémentation ou les sessions un-à-un. Frais de déplacement à Aurillac (Cantal) inclus dans le devis.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour la formation collective et {{price:intervention-dirigeants|flat}} pour l'implémentation ou les sessions un-à-un.",
     },
     {
       q: "Quels délais pour une intervention sur site à Aurillac ?",

@@ -65,7 +65,7 @@ export const APT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Apt ?",
-      a: "Apt est à 55 min d'Avignon et 50 min d'Aix-en-Provence via N100. Nos consultants se déplacent dans vos locaux malgré la ruralité du Luberon. Déplacements facturés séparément, tarifs publics.",
+      a: "Apt est à 55 min d'Avignon et 50 min d'Aix-en-Provence via N100. Nos consultants se déplacent dans vos locaux malgré la ruralité du Luberon.",
     },
   ],
 };

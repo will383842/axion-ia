@@ -65,7 +65,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min.",
     },
   ],
 };

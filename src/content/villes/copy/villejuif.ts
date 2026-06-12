@@ -246,7 +246,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Villejuif est à 20 minutes de Paris-centre, 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave Roussy). Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Villejuif est à 20 minutes de Paris-centre, 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave Roussy). Nos consultants se déplacent sur site.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Champagnole ?",
-      a: "Nos consultants interviennent à Champagnole depuis Besançon (1 h) ou Lons-le-Saunier (30 min). Intervention sur site dans vos locaux industriels, commerce ou cabinet. Frais de déplacement facturés séparément, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Champagnole depuis Besançon (1 h) ou Lons-le-Saunier (30 min). Intervention sur site dans vos locaux industriels, commerce ou cabinet.",
     },
   ],
 };

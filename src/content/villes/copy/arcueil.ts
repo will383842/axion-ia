@@ -230,7 +230,7 @@ export const ARCUEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arcueil et dans le Val-de-Marne sud ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Arcueil et du sud parisien. Très bien desservis par le RER B, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Arcueil et du sud parisien. Très bien desservis par le RER B, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un éditeur logiciel ou une agence arcueillaise ?",

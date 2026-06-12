@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Villenave-d'Ornon ?",
-      a: "Oui. Williams arrive en TGV à Bordeaux-Saint-Jean puis rejoint Villenave-d'Ornon en tram C (8 km, environ 20 min) ou en TER (gare de Villenave-d'Ornon). Frais de déplacement intégrés au tarif public.",
+      a: "Oui. Williams arrive en TGV à Bordeaux-Saint-Jean puis rejoint Villenave-d'Ornon en tram C (8 km, environ 20 min) ou en TER (gare de Villenave-d'Ornon).",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Villenave-d'Ornon ?",
@@ -247,7 +247,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Villenave-d'Ornon ?",
-      a: "Axion-IA intervient aussi sur Bègles, Talence, Gradignan, Cadaujac, Léognan, Latresne et Camblanes-et-Meynac, et plus largement Bordeaux Métropole sud. Frais de déplacement intra-métropole intégrés au tarif public.",
+      a: "Axion-IA intervient aussi sur Bègles, Talence, Gradignan, Cadaujac, Léognan, Latresne et Camblanes-et-Meynac, et plus largement Bordeaux Métropole sud.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Villenave-d'Ornon ?",

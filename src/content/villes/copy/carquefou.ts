@@ -250,7 +250,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Carquefou ?",
-      a: "Nos consultants se déplacent dans vos locaux après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
+      a: "Nos consultants se déplacent dans vos locaux après un premier échange.",
     },
   ],
 };

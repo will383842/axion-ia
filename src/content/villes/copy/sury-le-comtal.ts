@@ -65,7 +65,7 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

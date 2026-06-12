@@ -65,7 +65,7 @@ export const BEAUCOUZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Beaucouzé ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Beaucouzé (zones d'activités, parc technologique). Accès facile via rocade angevine et A11. Frais de déplacement inclus en agglomération angevine.",
+      a: "Nos consultants interviennent directement dans vos locaux à Beaucouzé (zones d'activités, parc technologique). Accès facile via rocade angevine et A11.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture) pour les missions sur site à Villefontaine. Pour les multi-jours, hébergement local possible (hôtels CAPI). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture) pour les missions sur site à Villefontaine. Pour les multi-jours, hébergement local possible (hôtels CAPI).",
     },
   ],
 };

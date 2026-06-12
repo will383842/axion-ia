@@ -65,7 +65,7 @@ export const ORGEVAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Orgeval ?",
-      a: "Nos consultants interviennent à Orgeval via A13 (30 min depuis La Défense, échangeur direct). Gare de Villennes-sur-Seine (Transilien J) à 8 min. Frais de déplacement Yvelines ouest facturés selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Orgeval via A13 (30 min depuis La Défense, échangeur direct). Gare de Villennes-sur-Seine (Transilien J) à 8 min.",
     },
   ],
 };

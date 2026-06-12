@@ -65,7 +65,7 @@ export const LE_PELLERIN_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous au Pellerin pour vos interventions ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min D723) ou via le bac de Loire depuis Couëron. L'aéroport Nantes Atlantique est à 15 min. Frais de déplacement facturés en sus, tarifs transparents dès le devis.",
+      a: "Nos consultants se déplacent depuis Nantes centre (20 min D723) ou via le bac de Loire depuis Couëron. L'aéroport Nantes Atlantique est à 15 min.",
     },
   ],
 };

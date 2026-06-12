@@ -65,7 +65,7 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Saint-Julien-les-Villas depuis Paris ?",
-      a: "Paris-Est à 1 h 30 (TER + TGV via Troyes). Autoroute A5 accessible en 5 min. Reims à 1 h 20. Frais de déplacement facturés à part.",
+      a: "Paris-Est à 1 h 30 (TER + TGV via Troyes). Autoroute A5 accessible en 5 min. Reims à 1 h 20.",
     },
   ],
 };

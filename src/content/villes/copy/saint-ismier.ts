@@ -65,7 +65,7 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min A41). Pour les multi-jours, hébergement local possible (hôtels Grenoble). Frais de déplacement (voiture, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (20 min A41). Pour les multi-jours, hébergement local possible (hôtels Grenoble).",
     },
   ],
 };

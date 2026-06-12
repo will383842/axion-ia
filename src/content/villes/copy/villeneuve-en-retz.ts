@@ -65,7 +65,7 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Comment vos consultants accèdent-ils à Villeneuve-en-Retz ?",
-      a: "Nos consultants se déplacent depuis Nantes (45 min via D751) ou Pornic (15 min). L'aéroport Nantes Atlantique est à 35 min. Frais de déplacement facturés en sus du forfait journée, tarifs transparents dès le devis.",
+      a: "Nos consultants se déplacent depuis Nantes (45 min via D751) ou Pornic (15 min). L'aéroport Nantes Atlantique est à 35 min.",
     },
   ],
 };

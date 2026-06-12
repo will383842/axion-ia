@@ -65,7 +65,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Melun ou Paris ?",
-      a: "Melun (20 min). Créteil (20 min). Paris centre (35 min A5/Francilienne). Orly (20 min). RER D Combs-la-Ville (10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Melun (20 min). Créteil (20 min). Paris centre (35 min A5/Francilienne). Orly (20 min). RER D Combs-la-Ville (10 min).",
     },
   ],
 };

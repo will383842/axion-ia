@@ -65,7 +65,7 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Pont-à-Mousson ?",
-      a: "Nos consultants se déplacent via gare SNCF Pont-à-Mousson (ligne Nancy–Metz) ou autoroute A31. Position stratégique entre Nancy (30 min) et Metz (25 min). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Pont-à-Mousson (ligne Nancy–Metz) ou autoroute A31. Position stratégique entre Nancy (30 min) et Metz (25 min).",
     },
   ],
 };

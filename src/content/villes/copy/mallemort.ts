@@ -65,7 +65,7 @@ export const MALLEMORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Mallemort ?",
-      a: "Mallemort est à 15 min de Salon et 35 min d'Aix via A7. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Mallemort est à 15 min de Salon et 35 min d'Aix via A7. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (50 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (50 min).",
     },
   ],
 };

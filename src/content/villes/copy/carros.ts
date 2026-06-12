@@ -65,7 +65,7 @@ export const CARROS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carros depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice (20 min voie rapide vallée du Var) ou directement sur site en ZI Carros-Le Broc. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement inclus depuis Nice.",
+      a: "Nos consultants interviennent depuis Nice (20 min voie rapide vallée du Var) ou directement sur site en ZI Carros-Le Broc. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

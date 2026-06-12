@@ -65,7 +65,7 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TGV Rouen (1h15) puis Bois-Guillaume à 10 min du centre-ville. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris via TGV Rouen (1h15) puis Bois-Guillaume à 10 min du centre-ville.",
     },
   ],
 };

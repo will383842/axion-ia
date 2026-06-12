@@ -65,7 +65,7 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Perros-Guirec ?",
-      a: "TGV Paris-Lannion (3h20 via Plouaret) puis 15 min. Aéroport Lannion à 10 min (vols saisonniers). Hébergement local disponible. Déplacements facturés séparément, tarifs publics.",
+      a: "TGV Paris-Lannion (3h20 via Plouaret) puis 15 min. Aéroport Lannion à 10 min (vols saisonniers). Hébergement local disponible.",
     },
   ],
 };

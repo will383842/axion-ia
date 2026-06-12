@@ -65,7 +65,7 @@ export const VALDALLIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA en zone rurale bocage ?",
-      a: "Nos consultants viennent de Caen (1h10 A84) ou Vire (15 min). Déplacement sur site (exploitation, laiterie, atelier, commerce). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part.",
+      a: "Nos consultants viennent de Caen (1h10 A84) ou Vire (15 min). Déplacement sur site (exploitation, laiterie, atelier, commerce). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

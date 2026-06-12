@@ -65,7 +65,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Doulchard ?",
-      a: "Nos consultants interviennent directement dans vos locaux zones d'activités de Saint-Doulchard (10 min de Bourges centre). Également accessible depuis Paris via A71 (2h15). Visio possible. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants interviennent directement dans vos locaux zones d'activités de Saint-Doulchard (10 min de Bourges centre). Également accessible depuis Paris via A71 (2h15). Visio possible.",
     },
   ],
 };

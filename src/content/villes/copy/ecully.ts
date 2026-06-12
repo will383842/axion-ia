@@ -65,7 +65,7 @@ export const ECULLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

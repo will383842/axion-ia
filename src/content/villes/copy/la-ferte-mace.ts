@@ -61,7 +61,7 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nos consultants viennent de Caen (1h15 voiture via Flers) ou Paris (TGV Caen 2h + voiture). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Caen (1h15 voiture via Flers) ou Paris (TGV Caen 2h + voiture).",
     },
     {
       q: "Quel budget prévoir pour un audit IA à La Ferté-Macé ?",

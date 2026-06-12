@@ -65,7 +65,7 @@ export const COURTHEZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Courthézon ?",
-      a: "Courthézon est à 10 min d'Orange et 25 min d'Avignon via A7 et D907. Nos consultants se déplacent dans vos domaines et locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Courthézon est à 10 min d'Orange et 25 min d'Avignon via A7 et D907. Nos consultants se déplacent dans vos domaines et locaux.",
     },
   ],
 };

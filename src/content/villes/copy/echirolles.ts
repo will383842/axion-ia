@@ -236,7 +236,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes proches d'Échirolles ?",
-      a: "Oui, nous couvrons Grenoble, Eybens, Pont-de-Claix, Seyssins, Seyssinet-Pariset et l'ensemble de la métropole grenobloise depuis Échirolles, sans frais de déplacement supplémentaires.",
+      a: "Oui, nous couvrons Grenoble, Eybens, Pont-de-Claix, Seyssins, Seyssinet-Pariset et l'ensemble de la métropole grenobloise depuis Échirolles.",
     },
     {
       q: "Comment Axion-IA respecte-t-il le RGPD pour les PME industrielles d'Échirolles ?",

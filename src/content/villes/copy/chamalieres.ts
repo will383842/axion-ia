@@ -69,7 +69,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?",
-      a: "Le diagnostic et les sessions clés se font sur site à Chamalières ; le suivi se poursuit en visio. Les frais de déplacement depuis Clermont (5 min) ou Lyon (2h) sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se font sur site à Chamalières ; le suivi se poursuit en visio.",
     },
   ],
 };

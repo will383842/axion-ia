@@ -65,7 +65,7 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Port-Marly ?",
-      a: "Nos consultants rejoignent Le Port-Marly via le Transilien L (gare Marly-le-Roi, 30 min Paris Saint-Lazare) ou par l'A13. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Le Port-Marly via le Transilien L (gare Marly-le-Roi, 30 min Paris Saint-Lazare) ou par l'A13.",
     },
   ],
 };

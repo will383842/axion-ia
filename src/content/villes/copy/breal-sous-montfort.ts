@@ -65,7 +65,7 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bréal-sous-Montfort ?",
-      a: "Nos consultants viennent de Rennes centre (20 min via N24 ou rocade sud-ouest). Intervention sur site dans vos locaux, bureau ou atelier. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (20 min via N24 ou rocade sud-ouest). Intervention sur site dans vos locaux, bureau ou atelier. Tarifs publics et transparents.",
     },
   ],
 };

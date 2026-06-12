@@ -65,7 +65,7 @@ export const AURIOL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Auriol ?",
-      a: "Nos consultants interviennent sur site à Auriol sous 5 jours ouvrés. Déplacement depuis Marseille (30 min) ou Aix-en-Provence (35 min). Frais de déplacement inclus vallée de l'Huveaune.",
+      a: "Nos consultants interviennent sur site à Auriol sous 5 jours ouvrés. Déplacement depuis Marseille (30 min) ou Aix-en-Provence (35 min).",
     },
   ],
 };

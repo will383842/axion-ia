@@ -65,7 +65,7 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Beausoleil ?",
-      a: "Nos consultants interviennent depuis Nice (30 min A8) ou Monaco (à pied). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement minimaux sur la Riviera Monaco-Beausoleil.",
+      a: "Nos consultants interviennent depuis Nice (30 min A8) ou Monaco (à pied). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

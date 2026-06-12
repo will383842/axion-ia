@@ -65,7 +65,7 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ploufragan ?",
-      a: "Nos consultants rejoignent Ploufragan via la gare de Saint-Brieuc (TGV Paris 2 h 40) à 10 min ou par la RN12. Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Ploufragan via la gare de Saint-Brieuc (TGV Paris 2 h 40) à 10 min ou par la RN12.",
     },
   ],
 };

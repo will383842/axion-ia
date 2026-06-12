@@ -61,7 +61,7 @@ export const LA_GORGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Gorgue depuis Lille ?",
-      a: "Nos consultants rejoignent La Gorgue en 45 min depuis Lille via A25. Pour les missions multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants rejoignent La Gorgue en 45 min depuis Lille via A25. Pour les missions multi-jours, hébergement local possible.",
     },
     {
       q: "Quels secteurs accompagnez-vous à La Gorgue ?",

@@ -65,7 +65,7 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges (30 min RN141) ou prennent le TER direct gare de Saint-Junien. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Limoges (30 min RN141) ou prennent le TER direct gare de Saint-Junien. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

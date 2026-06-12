@@ -65,7 +65,7 @@ export const AMBILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Genève ?",
-      a: "Nos consultants rejoignent Ambilly depuis Genève en 15 min (Léman Express ou voiture via douane Thônex). Gare Annemasse à 5 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants rejoignent Ambilly depuis Genève en 15 min (Léman Express ou voiture via douane Thônex). Gare Annemasse à 5 min.",
     },
   ],
 };

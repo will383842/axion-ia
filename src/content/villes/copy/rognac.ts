@@ -65,7 +65,7 @@ export const ROGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Rognac ?",
-      a: "Nos consultants interviennent sur site à Rognac sous 5 jours ouvrés. Aéroport Marseille Provence à 10 min, Aix à 25 min. Frais de déplacement inclus nord étang de Berre.",
+      a: "Nos consultants interviennent sur site à Rognac sous 5 jours ouvrés. Aéroport Marseille Provence à 10 min, Aix à 25 min.",
     },
   ],
 };

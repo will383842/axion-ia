@@ -65,7 +65,7 @@ export const MOULINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Clermont ?",
-      a: "Lyon (2h) ou Clermont-Ferrand (1h30). TER Paris gare Moulins 2h30. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (2h) ou Clermont-Ferrand (1h30). TER Paris gare Moulins 2h30.",
     },
   ],
 };

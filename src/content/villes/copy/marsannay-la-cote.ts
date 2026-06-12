@@ -65,7 +65,7 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",
-      a: "Dijon centre (10 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Dijon centre (10 min).",
     },
   ],
 };

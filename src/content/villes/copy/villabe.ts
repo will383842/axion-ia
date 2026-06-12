@@ -65,7 +65,7 @@ export const VILLABE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en voiture par A6/N7 (40 min) ou en RER D via Corbeil-Essonnes. Accès direct A6 et Francilienne N104. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en voiture par A6/N7 (40 min) ou en RER D via Corbeil-Essonnes. Accès direct A6 et Francilienne N104.",
     },
   ],
 };

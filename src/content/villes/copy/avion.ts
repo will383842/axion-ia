@@ -65,7 +65,7 @@ export const AVION_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Paris ?",
-      a: "Nos consultants viennent de Lille (45 min A21/A26) ou Paris (1h10 TGV direct Lens + 5 min). Déplacements facturés séparément, grille tarifaire publique. Hébergement local possible (hôtels Lens).",
+      a: "Nos consultants viennent de Lille (45 min A21/A26) ou Paris (1h10 TGV direct Lens + 5 min). Hébergement local possible (hôtels Lens).",
     },
   ],
 };

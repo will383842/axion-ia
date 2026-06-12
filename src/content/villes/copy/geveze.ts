@@ -65,7 +65,7 @@ export const GEVEZE_COPY: VilleCopy = {
     },
     {
       q: "Les interventions se font-elles sur site ou à distance ?",
-      a: "Les deux formats sont proposés : intervention sur site dans vos locaux à Gévezé ou en visio. Format hybride possible selon vos contraintes. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Les deux formats sont proposés : intervention sur site dans vos locaux à Gévezé ou en visio. Format hybride possible selon vos contraintes.",
     },
   ],
 };

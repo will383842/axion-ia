@@ -65,7 +65,7 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Jean-d'Angély ?",
-      a: "Nos consultants accèdent à Saint-Jean-d'Angély par voiture (Saintes 30 min, La Rochelle 50 min). Mission sur site dans vos locaux, exploitation ou commerce. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Saint-Jean-d'Angély par voiture (Saintes 30 min, La Rochelle 50 min). Mission sur site dans vos locaux, exploitation ou commerce.",
     },
   ],
 };

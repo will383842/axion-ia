@@ -246,7 +246,7 @@ export const THIONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Thionville ?",
-      a: "Nos consultants couvrent tout le nord mosellan, avec Metz et Luxembourg à 20 min par le rail. Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
+      a: "Nos consultants couvrent tout le nord mosellan, avec Metz et Luxembourg à 20 min par le rail.",
     },
   ],
 };

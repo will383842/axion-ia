@@ -65,7 +65,7 @@ export const LEVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lèves ?",
-      a: "Nos consultants se déplacent via la gare de Chartres (Intercités Paris-Montparnasse 1h) ou par l'A11 depuis Paris (1h20). Lèves est à 5 minutes de Chartres. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent via la gare de Chartres (Intercités Paris-Montparnasse 1h) ou par l'A11 depuis Paris (1h20). Lèves est à 5 minutes de Chartres.",
     },
   ],
 };

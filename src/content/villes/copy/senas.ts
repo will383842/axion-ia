@@ -65,7 +65,7 @@ export const SENAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Sénas ?",
-      a: "Nos consultants se déplacent dans vos locaux. Sénas est sur l'axe A7, à 15 min de Salon-de-Provence et 35 min d'Aix. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Nos consultants se déplacent dans vos locaux. Sénas est sur l'axe A7, à 15 min de Salon-de-Provence et 35 min d'Aix.",
     },
   ],
 };

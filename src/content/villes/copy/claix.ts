@@ -65,7 +65,7 @@ export const CLAIX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (15 min A480/N532) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Vercors). Frais de déplacement (voiture, repas, hébergement) facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Grenoble (15 min A480/N532) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Vercors).",
     },
   ],
 };

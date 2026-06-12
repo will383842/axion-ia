@@ -61,7 +61,7 @@ export const FLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Flers depuis Paris ?",
-      a: "Nos consultants viennent de Paris (TGV Caen 2h + voiture 1h) ou de Caen (1h). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris (TGV Caen 2h + voiture 1h) ou de Caen (1h).",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Flers ?",

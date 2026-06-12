@@ -65,7 +65,7 @@ export const MENDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Mende ?",
-      a: "Mende est accessible via A75 (Montpellier 2h, Clermont-Ferrand 2h30). Gare SNCF Mende (ligne Clermont-Nîmes). Missions possibles sur site ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Mende est accessible via A75 (Montpellier 2h, Clermont-Ferrand 2h30). Gare SNCF Mende (ligne Clermont-Nîmes). Missions possibles sur site ou en visio.",
     },
   ],
 };

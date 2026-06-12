@@ -65,7 +65,7 @@ export const MONTDIDIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Montdidier ?",
-      a: "Nos consultants se déplacent à Montdidier depuis Amiens (40 min) ou Paris (1h30). Mission sur site dans vos locaux ou exploitation. Frais de déplacement (voiture, repas, hébergement si multi-jours) facturés à part du forfait journée.",
+      a: "Nos consultants se déplacent à Montdidier depuis Amiens (40 min) ou Paris (1h30). Mission sur site dans vos locaux ou exploitation.",
     },
   ],
 };

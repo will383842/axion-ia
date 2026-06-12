@@ -246,7 +246,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants rejoignent Beauvais en 1h15 (A16). Déplacements facturés séparément, grille tarifaire publique. Sessions sur site ou en visio selon votre préférence.",
+      a: "Nos consultants rejoignent Beauvais en 1h15 (A16). Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

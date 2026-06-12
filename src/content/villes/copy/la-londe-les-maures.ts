@@ -63,7 +63,7 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à La Londe-les-Maures ?",
-      a: "Intervention sous 5 jours ouvrés. Aéroport Toulon-Hyères à 20 min, Gare TGV Toulon à 40 min (Paris 3h50). Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés. Aéroport Toulon-Hyères à 20 min, Gare TGV Toulon à 40 min (Paris 3h50). Nos consultants se déplacent sur site.",
     },
   ],
 };

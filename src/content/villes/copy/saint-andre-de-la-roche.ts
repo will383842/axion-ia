@@ -65,7 +65,7 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Frais de déplacement inclus dans le périmètre Métropole Nice.",
+      a: "Nos consultants interviennent depuis Nice centre (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

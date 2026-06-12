@@ -65,7 +65,7 @@ export const HAYANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hayange ?",
-      a: "Nos consultants se déplacent via gare SNCF Hayange (ligne Metz–Luxembourg) ou autoroute A30. Thionville à 10 min, Metz à 30 min, Luxembourg à 35 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Hayange (ligne Metz–Luxembourg) ou autoroute A30. Thionville à 10 min, Metz à 30 min, Luxembourg à 35 min.",
     },
   ],
 };

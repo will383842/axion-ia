@@ -242,7 +242,7 @@ export const CANNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nice ou Sophia Antipolis ?",
-      a: "Nice (30 min A8) ou Sophia Antipolis (15 min). Frais de déplacement facturés à part, tarifs publics. Possibilité de combiner Cannes + Antibes + Mougins en une journée.",
+      a: "Nice (30 min A8) ou Sophia Antipolis (15 min). Possibilité de combiner Cannes + Antibes + Mougins en une journée.",
     },
   ],
 };

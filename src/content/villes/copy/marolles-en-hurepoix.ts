@@ -65,7 +65,7 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (40 min Gare d'Austerlitz, gare de Marolles) ou en voiture par N20/A6 (45 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en RER C (40 min Gare d'Austerlitz, gare de Marolles) ou en voiture par N20/A6 (45 min).",
     },
   ],
 };

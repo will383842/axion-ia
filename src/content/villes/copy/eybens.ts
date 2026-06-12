@@ -65,7 +65,7 @@ export const EYBENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Paris ?",
-      a: "Nos consultants viennent de Grenoble (10 min tramway A) ou Paris (TGV Grenoble 3h + tram). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Eybens). Frais de déplacement (TGV/tram, repas, hébergement) facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (10 min tramway A) ou Paris (TGV Grenoble 3h + tram). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Eybens).",
     },
   ],
 };

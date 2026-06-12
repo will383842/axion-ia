@@ -65,7 +65,7 @@ export const OSTWALD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ostwald ?",
-      a: "Nos consultants se déplacent via tram CTS, autoroute A35 ou gare de Strasbourg (TGV Paris 1h46). Strasbourg centre à 10 min, aéroport Entzheim à 10 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via tram CTS, autoroute A35 ou gare de Strasbourg (TGV Paris 1h46). Strasbourg centre à 10 min, aéroport Entzheim à 10 min.",
     },
   ],
 };

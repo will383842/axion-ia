@@ -61,7 +61,7 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Marly-le-Roi ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Marly-le-Roi. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Marly-le-Roi. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
       q: "Intervenez-vous aussi à Saint-Germain-en-Laye et Versailles ?",

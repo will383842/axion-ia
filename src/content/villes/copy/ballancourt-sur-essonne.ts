@@ -65,7 +65,7 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Mennecy et La Ferté-Alais ?",
-      a: "Oui, nous couvrons Ballancourt-sur-Essonne, Mennecy, La Ferté-Alais, Corbeil-Essonnes et toute la vallée de l'Essonne. Frais de mission en sus, grille tarifaire publique.",
+      a: "Oui, nous couvrons Ballancourt-sur-Essonne, Mennecy, La Ferté-Alais, Corbeil-Essonnes et toute la vallée de l'Essonne.",
     },
   ],
 };

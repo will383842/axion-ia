@@ -65,7 +65,7 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

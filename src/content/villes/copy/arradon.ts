@@ -65,7 +65,7 @@ export const ARRADON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Arradon depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (5 min voiture). Pour les multi-jours, hébergement local possible (hôtels de charme Arradon/golfe). Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Vannes (5 min voiture). Pour les multi-jours, hébergement local possible (hôtels de charme Arradon/golfe).",
     },
   ],
 };

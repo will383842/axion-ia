@@ -65,7 +65,7 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (TGV Grenoble 3h + tram/voiture) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible. Frais de déplacement (TGV/voiture, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (TGV Grenoble 3h + tram/voiture) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

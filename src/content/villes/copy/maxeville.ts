@@ -65,7 +65,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maxéville ?",
-      a: "Nos consultants se déplacent via gare Nancy-Ville TGV Est (Paris 1h30, 12 min de Maxéville). Couverture zones commerciales, pôle Zénith et commune. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare Nancy-Ville TGV Est (Paris 1h30, 12 min de Maxéville). Couverture zones commerciales, pôle Zénith et commune.",
     },
   ],
 };

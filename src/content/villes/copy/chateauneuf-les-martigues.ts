@@ -65,7 +65,7 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Châteauneuf-les-Martigues ?",
-      a: "Châteauneuf-les-Martigues est à 15 min de l'aéroport Marseille-Provence et 35 min de Marseille via A55. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Châteauneuf-les-Martigues est à 15 min de l'aéroport Marseille-Provence et 35 min de Marseille via A55. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

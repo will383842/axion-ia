@@ -65,7 +65,7 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Marennes ?",
-      a: "Nos consultants accèdent à Marennes-Hiers-Brouage via Rochefort (20 min) ou La Rochelle (40 min). Mission sur site dans votre parc ostréicole, commerce ou bureau. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Marennes-Hiers-Brouage via Rochefort (20 min) ou La Rochelle (40 min). Mission sur site dans votre parc ostréicole, commerce ou bureau.",
     },
   ],
 };

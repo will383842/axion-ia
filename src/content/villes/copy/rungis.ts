@@ -65,7 +65,7 @@ export const RUNGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min.",
     },
   ],
 };

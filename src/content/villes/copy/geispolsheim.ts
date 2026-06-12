@@ -65,7 +65,7 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Geispolsheim ?",
-      a: "Nos consultants se déplacent via gare TER Geispolsheim (ligne Strasbourg–Sélestat) ou autoroute A35. Strasbourg centre à 15 min, aéroport Entzheim à 10 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare TER Geispolsheim (ligne Strasbourg–Sélestat) ou autoroute A35. Strasbourg centre à 15 min, aéroport Entzheim à 10 min.",
     },
   ],
 };

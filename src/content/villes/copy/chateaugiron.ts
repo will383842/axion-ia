@@ -65,7 +65,7 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châteaugiron ?",
-      a: "Nos consultants interviennent à Châteaugiron depuis Rennes (20 min). Intervention sur site dans vos locaux, bureau, atelier ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Châteaugiron depuis Rennes (20 min). Intervention sur site dans vos locaux, bureau, atelier ou cabinet.",
     },
   ],
 };

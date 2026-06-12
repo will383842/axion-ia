@@ -65,7 +65,7 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Meung-sur-Loire ?",
-      a: "Nos consultants se déplacent depuis Orléans (20 min voiture ou TER). Gare de Meung-sur-Loire desservie par le TER Orléans-Blois-Tours. Pour les multi-jours, hébergement local ou Orléans. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Orléans (20 min voiture ou TER). Gare de Meung-sur-Loire desservie par le TER Orléans-Blois-Tours. Pour les multi-jours, hébergement local ou Orléans.",
     },
   ],
 };

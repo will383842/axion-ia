@@ -65,7 +65,7 @@ export const ARGENTAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Caen ?",
-      a: "Nos consultants viennent de Caen (50 min voiture) ou Paris (TGV Caen 2h + voiture 50 min). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Caen (50 min voiture) ou Paris (TGV Caen 2h + voiture 50 min).",
     },
   ],
 };

@@ -246,7 +246,7 @@ export const NARBONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Montpellier, Toulouse ou Perpignan ?",
-      a: "Montpellier 95 km via A9, Toulouse 150 km via A61, Perpignan 60 km via A9. Frais de déplacement facturés à part, tarifs publics. Possibilité de combiner Narbonne + Béziers + Carcassonne ou Narbonne + Perpignan en une journée.",
+      a: "Montpellier 95 km via A9, Toulouse 150 km via A61, Perpignan 60 km via A9. Possibilité de combiner Narbonne + Béziers + Carcassonne ou Narbonne + Perpignan en une journée.",
     },
   ],
 };

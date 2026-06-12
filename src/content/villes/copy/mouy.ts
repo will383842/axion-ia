@@ -65,7 +65,7 @@ export const MOUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Beauvais ?",
-      a: "Nos consultants viennent de Paris (50 min TER via Creil) ou Beauvais (25 min). Pour les multi-jours, hébergement local possible (hôtels Beauvais ou Creil). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (50 min TER via Creil) ou Beauvais (25 min). Pour les multi-jours, hébergement local possible (hôtels Beauvais ou Creil).",
     },
   ],
 };

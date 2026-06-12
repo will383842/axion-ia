@@ -246,7 +246,7 @@ export const ACHERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou La Défense ?",
-      a: "Achères est à 35 minutes de Paris-centre et 25 minutes de La Défense par le RER A. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
+      a: "Achères est à 35 minutes de Paris-centre et 25 minutes de La Défense par le RER A. Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],
 };

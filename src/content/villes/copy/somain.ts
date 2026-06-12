@@ -65,7 +65,7 @@ export const SOMAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Somain ?",
-      a: "Nos consultants se déplacent à Somain via gare SNCF (TER Lille–Valenciennes) ou autoroute A21. Douai à 15 min, Valenciennes à 20 min. Intervention sur site ou en visio. Frais de déplacement facturés séparément, tarifs publics.",
+      a: "Nos consultants se déplacent à Somain via gare SNCF (TER Lille–Valenciennes) ou autoroute A21. Douai à 15 min, Valenciennes à 20 min. Intervention sur site ou en visio.",
     },
   ],
 };

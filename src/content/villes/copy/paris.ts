@@ -3,12 +3,8 @@
 // Corrections Will 2026-05-08 :
 //   - Aucun « basé en UE » (mention supprimée partout).
 //   - Aucun délai concret (« 5-10 jours », « 7 jours », etc. supprimés).
-//   - Aucun « frais de déplacement intégrés » (les frais sont en plus,
-//     calculés au cas par cas selon la zone).
 //   - Aucune demi-journée : durée minimale = 1 journée. Formats vont
 //     de 1 journée à plusieurs semaines selon le besoin.
-//   - Mention systématique « frais de logement, repas et forfait trajet
-//     en sus » sur les formats interventions.
 //   - Aucun prix hardcodé : tous les tarifs viennent de `src/content/pricing.ts`
 //     (source de vérité unique, futur admin Sprint 20).
 //   - Pas de mention de métier-type (plombier, comptable, etc.) — on parle
@@ -39,7 +35,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     interventions: {
       fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — finance, conseil, tech, médias, luxe ou tourisme premium.",
-      en: "AI sessions in Paris: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      en: "AI sessions in Paris: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Paris : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, on ne crée pas de dépendance.",
@@ -47,7 +43,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business — finance, conseil, scale-up tech ou maison de luxe.",
-      en: "Individual AI coaching in Paris: 1-to-1 sessions on site at your Paris office or by video. Executives, managers and entrepreneurs across all 20 arrondissements and La Défense who want to build AI competence at their own pace, on their own business cases. Lodging, meals and travel allowance billed separately.",
+      en: "Individual AI coaching in Paris: 1-to-1 sessions on site at your Paris office or by video. Executives, managers and entrepreneurs across all 20 arrondissements and La Défense who want to build AI competence at their own pace, on their own business cases.",
     },
     sitesWeb: {
       fr: "Sites web et plateformes SaaS IA sur mesure à Paris : conception et déploiement de plateformes IA-native (chatbot RAG, search sémantique, agents conversationnels) pour PME tech parisiennes, scale-ups du Sentier et Station F, ou refonte IA pour ETI franciliennes. Code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
@@ -406,7 +402,7 @@ export const PARIS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Paris come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Paris come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "Paris is our top engagement ground: a significant share of our sessions take place there each month.",
           "All arrondissements covered in person plus the inner suburbs (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -806,7 +802,7 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Les sessions se déroulent-elles en présentiel ou en visio ?",
-            a: "Les deux formats sont disponibles. En présentiel, nous nous déplaçons dans vos bureaux parisiens (tous arrondissements, La Défense, première couronne) — frais de logement, repas et forfait trajet facturés en sus. En visio, aucun frais annexe. Le choix dépend de votre préférence et de votre type de cas.",
+            a: "Les deux formats sont disponibles. En présentiel, nous nous déplaçons dans vos bureaux parisiens (tous arrondissements, La Défense, première couronne) ; sinon en visio. Le choix dépend de votre préférence et de votre type de cas.",
           },
           {
             q: "À quelle fréquence se déroulent les sessions ?",
@@ -833,7 +829,7 @@ export const PARIS_COPY: VilleCopy = {
           "Engagement séance par séance : vous interrompez le programme quand vous voulez sans pénalité contractuelle. Confidentialité stricte dès le démarrage, documents jamais exportés hors de vos systèmes sans accord explicite. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Paris is designed for executives, managers and entrepreneurs who want to progress on AI at their own pace, on their real business cases — not on generic exercises. Sessions on site at your Paris offices (Station F, 8th/9th SMEs, La Défense mid-caps, Sentier startups) or by video depending on your schedule. No lock-in, no jargon, results applicable the next day. Lodging, meals and travel allowance billed separately for on-site sessions.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Paris is designed for executives, managers and entrepreneurs who want to progress on AI at their own pace, on their real business cases — not on generic exercises. Sessions on site at your Paris offices (Station F, 8th/9th SMEs, La Défense mid-caps, Sentier startups) or by video depending on your schedule. No lock-in, no jargon, results applicable the next day.",
         whyHere: [
           "Paris is France's decision-making epicentre: 8th-arrondissement SME executives, Sentier startup CEOs, La Défense mid-cap leaders — all our 1-to-1 profiles are over-represented there.",
           "Unmatched multi-sector Paris B2B fabric: every session is calibrated to your real sector (finance, consulting, tech, fashion, retail) and your own data.",
@@ -912,7 +908,7 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Do sessions take place in person or by video?",
-            a: "Both formats are available. In person, we travel to your Paris offices (all arrondissements, La Défense, inner suburbs) — lodging, meals and travel allowance billed separately. By video, no ancillary costs. The choice depends on your preference and the type of case.",
+            a: "Both formats are available. In person, we travel to your Paris offices (all arrondissements, La Défense, inner suburbs); otherwise by video. The choice depends on your preference and the type of case.",
           },
           {
             q: "How often do sessions take place?",
@@ -936,7 +932,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed recurring contract, you can stop after each session. Strict confidentiality ensured from kick-off. Results-oriented sessions with immediate applicability: if after the first session you feel you have nothing directly usable, session fully refunded. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          "No lock-in: no imposed recurring contract, you can stop after each session. Strict confidentiality ensured from kick-off. Results-oriented sessions with immediate applicability: if after the first session you feel you have nothing directly usable, session fully refunded.",
       },
     },
     sitesWeb: {

@@ -232,7 +232,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Garges-lès-Gonesse (95140) ?",
-      a: "Oui, nos consultants prennent le RER D jusqu'à la gare Garges-Sarcelles ou le tramway T5. Aucun frais de déplacement n'est facturé en Île-de-France.",
+      a: "Oui, nos consultants prennent le RER D jusqu'à la gare Garges-Sarcelles ou le tramway T5.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Garges-lès-Gonesse ?",

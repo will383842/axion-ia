@@ -65,7 +65,7 @@ export const BONDUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Bruxelles ?",
-      a: "Nos consultants viennent de Lille-Centre (15 min A22), Tourcoing (10 min) ou Bruxelles (1h10 A22/E19). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lille-Centre (15 min A22), Tourcoing (10 min) ou Bruxelles (1h10 A22/E19). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -242,7 +242,7 @@ export const AGEN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous autour d'Agen, à Boé ou Le Passage ?",
-      a: "Oui, nous nous déplaçons dans toute l'agglomération agenaise : Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes et les communes du Lot-et-Garonne. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous nous déplaçons dans toute l'agglomération agenaise : Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes et les communes du Lot-et-Garonne. Tarifs publics.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

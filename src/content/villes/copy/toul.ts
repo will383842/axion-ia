@@ -65,7 +65,7 @@ export const TOUL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Toul depuis Nancy ?",
-      a: "Nos consultants viennent de Nancy (25 min A31 ou TER direct). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Nancy (25 min A31 ou TER direct).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les zones industrielles et portuaires ?",
-      a: "Oui, nos consultants se déplacent directement dans votre atelier, entrepôt ou bureau sur les zones industrielles et portuaires de Montoir-de-Bretagne. Frais de déplacement depuis Nantes inclus.",
+      a: "Oui, nos consultants se déplacent directement dans votre atelier, entrepôt ou bureau sur les zones industrielles et portuaires de Montoir-de-Bretagne.",
     },
   ],
 };

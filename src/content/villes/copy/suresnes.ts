@@ -229,7 +229,7 @@ export const SURESNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Suresnes ?",
-      a: "Le format collectif (1 journée) débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Paris (15 min via Transilien L) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
+      a: "Le format collectif (1 journée) débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Suresnes ?",

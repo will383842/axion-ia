@@ -65,7 +65,7 @@ export const PORT_DE_BOUC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Port-de-Bouc ?",
-      a: "Nos consultants interviennent sur site à Port-de-Bouc sous 5 jours ouvrés. Déplacement depuis Marseille (50 min) ou Aix-en-Provence (45 min). Frais de déplacement inclus dans le forfait golfe de Fos.",
+      a: "Nos consultants interviennent sur site à Port-de-Bouc sous 5 jours ouvrés. Déplacement depuis Marseille (50 min) ou Aix-en-Provence (45 min).",
     },
   ],
 };

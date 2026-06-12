@@ -65,7 +65,7 @@ export const GEMENOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Gémenos ?",
-      a: "Gémenos est à 30 min de Marseille par A52/A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Gémenos est à 30 min de Marseille par A52/A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

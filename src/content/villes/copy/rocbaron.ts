@@ -65,7 +65,7 @@ export const ROCBARON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Rocbaron ?",
-      a: "Rocbaron est à 15 min de Brignoles et 40 min de Toulon via A57. Nos consultants se déplacent dans vos locaux ou domaines. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Rocbaron est à 15 min de Brignoles et 40 min de Toulon via A57. Nos consultants se déplacent dans vos locaux ou domaines.",
     },
   ],
 };

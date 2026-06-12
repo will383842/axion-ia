@@ -65,7 +65,7 @@ export const MONTESSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",
-      a: "Le Vésinet (5 min). Sartrouville (5 min). Paris La Défense (15 min). Paris Saint-Lazare (20 min). RER A Le Vésinet–Le Pecq à 10 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Le Vésinet (5 min). Sartrouville (5 min). Paris La Défense (15 min). Paris Saint-Lazare (20 min). RER A Le Vésinet–Le Pecq à 10 min.",
     },
   ],
 };

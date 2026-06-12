@@ -236,7 +236,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de Villiers-sur-Marne ?",
-      a: "Oui. Nous intervenons à Bry-sur-Marne, Champigny-sur-Marne, Noisy-le-Grand et Le Plessis-Trévise au sein de l'établissement public territorial Paris-Est-Marne et Bois, sans frais de déplacement supplémentaires en Île-de-France.",
+      a: "Oui. Nous intervenons à Bry-sur-Marne, Champigny-sur-Marne, Noisy-le-Grand et Le Plessis-Trévise au sein de l'établissement public territorial Paris-Est-Marne et Bois.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Villiers-sur-Marne ?",

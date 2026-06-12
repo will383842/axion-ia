@@ -65,7 +65,7 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Paris (1h30 A6) ou TER depuis Paris-Bercy. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris (1h30 A6) ou TER depuis Paris-Bercy.",
     },
   ],
 };

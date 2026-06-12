@@ -65,7 +65,7 @@ export const PLOUAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Plouay depuis Lorient ?",
-      a: "Nos consultants viennent de Lorient (25 min voiture N24). Pour les multi-jours, hébergement local possible (gîtes centre Morbihan). Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants viennent de Lorient (25 min voiture N24). Pour les multi-jours, hébergement local possible (gîtes centre Morbihan).",
     },
   ],
 };

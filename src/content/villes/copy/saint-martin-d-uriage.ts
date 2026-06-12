@@ -65,7 +65,7 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min D524). Pour les multi-jours, hébergement local possible (hôtels Uriage). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (20 min D524). Pour les multi-jours, hébergement local possible (hôtels Uriage).",
     },
   ],
 };

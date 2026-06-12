@@ -33,8 +33,8 @@ export const PERPIGNAN_COPY: VilleCopy = {
       en: "Operational AI audit in Perpignan: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Saint-Charles trading micro-businesses to agri-food or energy mid-caps at Tecnosud.",
     },
     interventions: {
-      fr: "Interventions IA à Perpignan : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Perpignan: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Perpignan : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Perpignan: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Perpignan : on déploie l'IA dans vos outils existants (CRM, ERP, TMS, systèmes logistiques) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -323,7 +323,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Perpignan se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en entrepôt logistique, sur la plateforme Saint-Charles, en bureau ou sur le terrain. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Perpignan se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en entrepôt logistique, sur la plateforme Saint-Charles, en bureau ou sur le terrain.",
         whyHere: [
           "Perpignan cumule des profils d'entreprises très variés, tous à fort besoin de montée en compétence IA : négociants fruits-légumes Saint-Charles, producteurs viticoles Roussillon, PME BTP Pyrénées-Orientales, TPE services Polygone Nord et équipes Tecnosud.",
           "Toutes les communes de la Perpignan Méditerranée Métropole couvertes en présentiel : centre-ville, Saint-Charles, Tecnosud, Agrosud, Polygone Nord, Saint-Estève, Cabestany, Bompas, Rivesaltes.",
@@ -429,7 +429,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur perpignanais — logistique, agroalimentaire, viticulture, énergies renouvelables — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Perpignan come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in logistics warehouses, on the Saint-Charles platform, in the office or in the field. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Perpignan come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in logistics warehouses, on the Saint-Charles platform, in the office or in the field.",
         whyHere: [
           "Perpignan combines very varied business profiles, all with strong AI upskilling needs: Saint-Charles fruit-vegetable traders, Roussillon wine producers, Pyrénées-Orientales construction SMEs, Polygone Nord service micro-businesses and Tecnosud teams.",
           "All Perpignan Méditerranée Métropole communes covered in person: city centre, Saint-Charles, Tecnosud, Agrosud, Polygone Nord, Saint-Estève, Cabestany, Bompas, Rivesaltes.",

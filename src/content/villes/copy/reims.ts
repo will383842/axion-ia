@@ -32,16 +32,16 @@ export const REIMS_COPY: VilleCopy = {
       en: "Operational AI audit in Reims: we identify what can be automated in your Champagne house, agri-food SME or services mid-cap and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
-      fr: "Interventions IA à Reims : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Reims: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Reims : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Reims: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Reims : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes viti-vini) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Reims: we deploy AI into your existing tools (CRM, ERP, email, winery systems) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Reims : accompagnement 1-to-1 ancré dans votre réalité — Champagne, bioéconomie, agroalimentaire ou tertiaire académique. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
-      en: "Individual AI coaching in Reims: 1-to-1 support rooted in your reality — Champagne, bioeconomy, agri-food or academic tertiary. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+      fr: "Coaching IA individuel à Reims : accompagnement 1-to-1 ancré dans votre réalité — Champagne, bioéconomie, agroalimentaire ou tertiaire académique. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Individual AI coaching in Reims: 1-to-1 support rooted in your reality — Champagne, bioeconomy, agri-food or academic tertiary. From €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour maisons de Champagne, PME bioéconomie et ETI rémoise — site vitrine premium pour Champagne et agroalimentaire, espace distributeur international, dashboard connecté à votre CRM/ERP et systèmes viti-vini. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -292,7 +292,7 @@ export const REIMS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Reims se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient dans une maison de Champagne, une ETI agroalimentaire ou une école de management. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Reims se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient dans une maison de Champagne, une ETI agroalimentaire ou une école de management.",
         whyHere: [
           "Reims est desservie par la gare TGV Champagne-Ardenne à ~45 min de Paris — nos consultants y interviennent en journée sans nuit contrainte, et couvrent aussi le bassin Champagne jusqu'à Épernay, Châlons et Troyes.",
           "Le tissu économique rémois est multi-sectoriel : maisons de Champagne export-intensives, industries bioéconomie, structures académiques (NEOMA, Sciences Po, URCA) — chaque session est calibrée sur votre vocabulaire métier.",
@@ -398,7 +398,7 @@ export const REIMS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur (Champagne, bioéconomie, services), aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Reims come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether in a Champagne house, an agri-food mid-cap or a business school. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Reims come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether in a Champagne house, an agri-food mid-cap or a business school.",
         whyHere: [
           "Reims is served by Champagne-Ardenne TGV station, ~45 min from Paris — our consultants intervene there for day visits without overnight constraints and cover the Champagne basin to Épernay, Châlons and Troyes.",
           "Reims' economic fabric is multi-sectoral: export-intensive Champagne houses, bioeconomy industries, academic structures (NEOMA, Sciences Po, URCA) — each session is calibrated to your sector vocabulary.",
@@ -721,7 +721,7 @@ export const REIMS_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Reims est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de maisons de Champagne, experts bioéconomie, managers agroalimentaires et responsables académiques du bassin rémois. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Reims est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de maisons de Champagne, experts bioéconomie, managers agroalimentaires et responsables académiques du bassin rémois.",
         whyHere: [
           "Reims concentre des profils très spécialisés — responsable export d'une maison de Champagne, directeur qualité en bioéconomie (Pomacle-Bazancourt), directeur de programme à NEOMA — qui ont besoin d'un coaching ancré dans leurs contraintes sectorielles précises.",
           "Le secteur Champagne impose des workflows multilingues (fiches export, étiquetage AOC, certificats d'origine) que seul un coaching individuel permet d'intégrer dans chaque exercice pratique.",
@@ -808,7 +808,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux rémois ou dans le bassin Champagne ?",
-            a: "Oui. Séances sur site à Reims ou dans le bassin Champagne (Épernay, Châlons, Troyes) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+            a: "Oui. Séances sur site à Reims ou dans le bassin Champagne (Épernay, Châlons, Troyes) ou en visio selon votre disponibilité.",
           },
           {
             q: "Mes données et fiches techniques Champagne restent-elles confidentielles ?",
@@ -824,10 +824,10 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données, recettes et fiches techniques restent dans votre environnement. Conformité RGPD. Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données, recettes et fiches techniques restent dans votre environnement. Conformité RGPD. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Reims is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to Champagne house executives, bioeconomy experts, agri-food managers and academic leaders across the Reims basin. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Reims is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to Champagne house executives, bioeconomy experts, agri-food managers and academic leaders across the Reims basin.",
         whyHere: [
           "Reims brings together highly specialised profiles — export manager at a Champagne house, quality director in bioeconomy (Pomacle-Bazancourt), programme director at NEOMA — who need coaching rooted in their precise sector constraints.",
           "The Champagne sector imposes multilingual workflows (export sheets, AOC labelling, certificates of origin) that only individual coaching can integrate into each practical exercise.",
@@ -914,7 +914,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Can coaching sessions be held at my Reims premises or in the Champagne basin?",
-            a: "Yes. On-site sessions in Reims or the Champagne basin (Épernay, Châlons, Troyes) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Yes. On-site sessions in Reims or the Champagne basin (Épernay, Châlons, Troyes) or via video depending on availability.",
           },
           {
             q: "Does my Champagne data and technical sheets stay confidential?",
@@ -930,7 +930,7 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data, recipes and technical sheets stay in your environment. GDPR compliance. Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data, recipes and technical sheets stay in your environment. GDPR compliance. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
     sitesWeb: {

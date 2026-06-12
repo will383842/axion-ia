@@ -65,7 +65,7 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Grégoire ?",
-      a: "Nos consultants interviennent à Saint-Grégoire depuis Rennes (10 min via rocade nord). Intervention sur site dans vos bureaux, cabinet ou commerce. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Saint-Grégoire depuis Rennes (10 min via rocade nord). Intervention sur site dans vos bureaux, cabinet ou commerce.",
     },
   ],
 };

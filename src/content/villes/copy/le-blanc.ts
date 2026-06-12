@@ -65,7 +65,7 @@ export const LE_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Blanc ?",
-      a: "Nos consultants se déplacent par la route depuis Châteauroux (1h), Poitiers (1h) ou Tours (1h45). La gare du Blanc offre une desserte limitée ; la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) est la connexion principale. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent par la route depuis Châteauroux (1h), Poitiers (1h) ou Tours (1h45). La gare du Blanc offre une desserte limitée ; la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) est la connexion principale.",
     },
   ],
 };

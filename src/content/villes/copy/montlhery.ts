@@ -65,7 +65,7 @@ export const MONTLHERY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Montlhéry depuis Paris ?",
-      a: "Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min. Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min.",
     },
   ],
 };

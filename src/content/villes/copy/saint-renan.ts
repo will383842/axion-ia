@@ -65,7 +65,7 @@ export const SAINT_RENAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Renan ?",
-      a: "Nos consultants interviennent depuis Brest (15 min) ou se déplacent directement dans vos locaux. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants interviennent depuis Brest (15 min) ou se déplacent directement dans vos locaux. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry). Frais de déplacement (voiture/train, repas, hébergement) facturés à part du forfait journée.",
+      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
     },
   ],
 };

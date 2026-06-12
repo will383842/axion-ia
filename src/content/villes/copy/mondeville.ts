@@ -65,7 +65,7 @@ export const MONDEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Êtes-vous accessibles en transport depuis Mondeville ?",
-      a: "Oui, Mondeville est desservie par le tramway T2 depuis Caen centre. Nos consultants se déplacent directement sur site. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Oui, Mondeville est desservie par le tramway T2 depuis Caen centre. Nos consultants se déplacent directement sur site.",
     },
   ],
 };

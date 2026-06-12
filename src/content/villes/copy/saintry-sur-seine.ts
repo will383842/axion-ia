@@ -65,7 +65,7 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER D via Corbeil-Essonnes (40 min Gare de Lyon) ou en voiture par A6/N7 (45 min). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Paris en RER D via Corbeil-Essonnes (40 min Gare de Lyon) ou en voiture par A6/N7 (45 min).",
     },
   ],
 };

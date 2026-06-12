@@ -65,7 +65,7 @@ export const LIBERCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Libercourt ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Libercourt (TER Lille), A1 directe. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Libercourt (TER Lille), A1 directe. Nos consultants se déplacent sur site.",
     },
   ],
 };

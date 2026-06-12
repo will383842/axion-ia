@@ -235,7 +235,7 @@ export const NIORT_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Niort ?",
-      a: "Oui — nous couvrons Chauray, Aiffres, Bessines, Magné, Coulon, Échiré, Saint-Gelais, Vouillé et l'ensemble de la Communauté d'Agglomération du Niortais. Au-delà, frais de déplacement chiffrés transparemment.",
+      a: "Oui — nous couvrons Chauray, Aiffres, Bessines, Magné, Coulon, Échiré, Saint-Gelais, Vouillé et l'ensemble de la Communauté d'Agglomération du Niortais.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD pour un acteur assurantiel à Niort ?",

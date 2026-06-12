@@ -132,7 +132,7 @@ export const CREIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : périmètre et livrables définis au devis, livraison dans les délais convenus à la signature. UX/UI desktop et mobile, e-commerce multi-CMS et briques IA inclus selon le scope retenu. Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur : code, contenus et briques IA vous appartiennent et sont reprenables en interne ou par tout intégrateur de l'Oise. Les frais de déplacement consultant dans le bassin creillois (trajet, repas, hébergement si multi-jours) sont facturés en sus du forfait, au cas par cas selon la zone.",
+          "Engagement contractuel : périmètre et livrables définis au devis, livraison dans les délais convenus à la signature. UX/UI desktop et mobile, e-commerce multi-CMS et briques IA inclus selon le scope retenu. Hébergement en Union européenne par défaut, conformité RGPD, DPO sur demande. Aucun verrou éditeur : code, contenus et briques IA vous appartiennent et sont reprenables en interne ou par tout intégrateur de l'Oise.",
       },
       en: {
         hero: "Creil, sub-prefecture of the Oise and central town of the Creil Sud Oise agglomeration (ACSO), carries a fabric of more than 6,000 businesses across 26 activity zones, heir to a heavy industrial past — Marinoni then Goss printing presses, ArcelorMittal Montataire steelmaking, plastics processing and mechanics — now shifting fast toward logistics and services. Axion-IA designs and deploys AI-augmented websites and SaaS platforms for the manufacturers, logistics operators and SMEs of the Creil basin: custom code, multi-CMS e-commerce, RAG conversational agents, European Union hosting compliant with GDPR, no vendor lock-in.",
@@ -239,10 +239,6 @@ export const CREIL_COPY: VilleCopy = {
     {
       q: "Quels secteurs accompagnez-vous spécifiquement à Creil ?",
       a: "À Creil et dans le sud-Oise, nous accompagnons principalement les industriels aéronautiques et leurs sous-traitants, les opérateurs logistiques et e-commerce, les PME tertiaires (banques, assurances), et les entreprises de services aux entreprises.",
-    },
-    {
-      q: "Les frais de déplacement depuis Paris sont-ils inclus ?",
-      a: "Pour les interventions à Creil, le déplacement consultant (train TER ou voiture, repas, hébergement si multi-jours) est facturé en sus du forfait journée. Tarifs publics, pas de devis opaque. Creil est à 35 min de Gare du Nord donc fréquence d'aller-retour facile.",
     },
   ],
 };

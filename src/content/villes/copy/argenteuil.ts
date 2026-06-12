@@ -3,10 +3,8 @@
 // Doctrine stricte (identique lyon.ts) :
 //   - Aucun « basé en UE ».
 //   - Aucun délai concret chiffré (« 5 jours », « 7 jours », etc.).
-//   - Aucun « frais de déplacement intégrés » — les frais sont en sus,
-//     calculés au cas par cas selon la zone.
-//   - Durée minimale = 1 journée. Mention systématique
-//     « frais de logement, repas et forfait trajet en sus » sur interventions.
+//   - Aucune mention de frais annexes (déplacement, logement, repas, trajet).
+//   - Durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
 //   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
@@ -35,8 +33,8 @@ export const ARGENTEUIL_COPY: VilleCopy = {
       en: "Operational AI audit in Argenteuil: we map what can be automated at your business and quantify the ROI. From Sur place for a local trader to Mid-cap Strategic for a services SME or Val-d'Oise construction firm.",
     },
     interventions: {
-      fr: "Interventions IA à Argenteuil : formats sur site d'une à plusieurs journées. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Argenteuil: on-site formats from one to several days. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Argenteuil : formats sur site d'une à plusieurs journées. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Argenteuil: on-site formats from one to several days. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Argenteuil : on déploie l'IA dans vos outils existants (CRM, ERP, mails, outils BTP) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
@@ -323,7 +321,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Argenteuil se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en chantier, en boutique, au bureau ou en déplacement clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Argenteuil se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en chantier, en boutique, au bureau ou en déplacement clientèle.",
         whyHere: [
           "Le tissu TPE/PME argenteuillais est l'environnement idéal pour les interventions IA : entreprises de taille humaine où chaque collaborateur formé multiplie immédiatement l'impact sur la productivité collective.",
           "Tous les quartiers et zones d'activités couverts en présentiel : centre-ville, Parc du Val d'Argent, zone industrielle, quartiers résidentiels et communes du bassin (Bezons, Sartrouville, Colombes).",
@@ -429,7 +427,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur — commerce, BTP, logistique, services — aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Argenteuil come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on a building site, in a shop, at the office or with clients. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Argenteuil come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on a building site, in a shop, at the office or with clients.",
         whyHere: [
           "Argenteuil's SME and micro-business fabric is the ideal environment for AI sessions: human-scale firms where every trained staff member immediately multiplies the impact on collective productivity.",
           "All districts and business zones covered in person: town centre, Val d'Argent business park, industrial zone, residential areas and basin communes (Bezons, Sartrouville, Colombes).",

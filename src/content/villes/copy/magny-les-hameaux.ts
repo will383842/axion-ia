@@ -65,7 +65,7 @@ export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Magny-les-Hameaux ?",
-      a: "Nos consultants rejoignent Magny-les-Hameaux via le RER B (terminus Saint-Rémy-lès-Chevreuse à 5 min) ou par l'A12/N10. Frais de déplacement Île-de-France inclus ou facturés selon forfait. Intervention sur site ou en visio.",
+      a: "Nos consultants rejoignent Magny-les-Hameaux via le RER B (terminus Saint-Rémy-lès-Chevreuse à 5 min) ou par l'A12/N10. Intervention sur site ou en visio.",
     },
   ],
 };

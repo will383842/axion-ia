@@ -65,7 +65,7 @@ export const WISSOUS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Massy ?",
-      a: "Paris centre (25 min par A6 ou RER C). Massy TGV (10 min). Orly (5 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Paris centre (25 min par A6 ou RER C). Massy TGV (10 min). Orly (5 min).",
     },
   ],
 };

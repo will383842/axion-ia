@@ -65,7 +65,7 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (25 min A13) ou Paris (1h20 train direct gare Val-de-Reuil). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rouen (25 min A13) ou Paris (1h20 train direct gare Val-de-Reuil). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

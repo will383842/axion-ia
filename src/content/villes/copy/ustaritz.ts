@@ -65,7 +65,7 @@ export const USTARITZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Ustaritz ?",
-      a: "Nos consultants accèdent à Ustaritz par la route (15 min Bayonne, D932). Mission sur site dans votre exploitation, atelier ou commerce. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Ustaritz par la route (15 min Bayonne, D932). Mission sur site dans votre exploitation, atelier ou commerce.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PUILBOREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Puilboreau ?",
-      a: "Nos consultants accèdent à Puilboreau via la gare TGV de La Rochelle (12 min, Paris 2h50 direct). Mission sur site dans vos locaux commerciaux, bureau ou entrepôt. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants accèdent à Puilboreau via la gare TGV de La Rochelle (12 min, Paris 2h50 direct). Mission sur site dans vos locaux commerciaux, bureau ou entrepôt.",
     },
   ],
 };

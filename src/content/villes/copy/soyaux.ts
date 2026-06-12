@@ -65,7 +65,7 @@ export const SOYAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Soyaux ?",
-      a: "Nos consultants accèdent à Soyaux via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux, bureau ou commerce. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Soyaux via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux, bureau ou commerce.",
     },
   ],
 };

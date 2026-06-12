@@ -65,7 +65,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",
-      a: "Chatou (3 min). Nanterre (5 min). Paris La Défense (10 min). Paris Saint-Lazare (15 min transilien J/L). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Chatou (3 min). Nanterre (5 min). Paris La Défense (10 min). Paris Saint-Lazare (15 min transilien J/L).",
     },
   ],
 };

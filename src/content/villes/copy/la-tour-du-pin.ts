@@ -65,7 +65,7 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon, Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Lyon (1h A43), Grenoble (1h voiture) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin). Frais de déplacement (TER/voiture, repas, hébergement) facturés à part du forfait.",
+      a: "Nos consultants viennent de Lyon (1h A43), Grenoble (1h voiture) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou La Tour-du-Pin).",
     },
   ],
 };

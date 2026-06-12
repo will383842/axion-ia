@@ -65,7 +65,7 @@ export const PANAZOL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Limoges centre ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Panazol est directement desservie par le réseau STLC. Aucun frais de déplacement supplémentaire pour les missions dans l'agglomération limougeaude.",
+      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Panazol est directement desservie par le réseau STLC.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montceau-les-Mines ?",
-      a: "Nos consultants arrivent par TGV Le Creusot-Montchanin (1h20 Paris) puis 15 min route. Interventions sur site (atelier, commerce, bureau). Formats journée ou demi-journée. Frais de déplacement facturés à part.",
+      a: "Nos consultants arrivent par TGV Le Creusot-Montchanin (1h20 Paris) puis 15 min route. Interventions sur site (atelier, commerce, bureau). Formats journée ou demi-journée.",
     },
   ],
 };

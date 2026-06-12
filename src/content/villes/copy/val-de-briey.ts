@@ -65,7 +65,7 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Val de Briey ?",
-      a: "Nos consultants interviennent depuis Nancy (50 min) ou Metz (35 min). Missions sur site dans vos ateliers industriels, chantiers, commerces ou bureaux. Frais de déplacement en sus du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Nancy (50 min) ou Metz (35 min). Missions sur site dans vos ateliers industriels, chantiers, commerces ou bureaux.",
     },
   ],
 };

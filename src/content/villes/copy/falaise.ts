@@ -65,7 +65,7 @@ export const FALAISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Falaise ?",
-      a: "Nos consultants viennent de Caen (35 min N158). Déplacement direct sur site (usine, atelier, commerce, cabinet). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants viennent de Caen (35 min N158). Déplacement direct sur site (usine, atelier, commerce, cabinet). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

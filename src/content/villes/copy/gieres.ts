@@ -65,7 +65,7 @@ export const GIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble centre (15 min tramway B/D) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Grenoble centre (15 min tramway B/D) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble).",
     },
   ],
 };

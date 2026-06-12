@@ -65,7 +65,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Gare de Lyon (35 min RER A via Sucy-Bonneuil). Aéroport Orly à 25 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Gare de Lyon (35 min RER A via Sucy-Bonneuil). Aéroport Orly à 25 min.",
     },
   ],
 };

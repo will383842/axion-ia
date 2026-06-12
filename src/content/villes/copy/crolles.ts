@@ -65,7 +65,7 @@ export const CROLLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible. Frais de déplacement (voiture/TER, repas, hébergement) facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

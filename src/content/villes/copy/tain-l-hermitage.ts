@@ -65,7 +65,7 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (25 min). Pour les multi-jours, hébergement local possible (gîtes domaines). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (25 min). Pour les multi-jours, hébergement local possible (gîtes domaines).",
     },
   ],
 };

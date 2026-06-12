@@ -65,7 +65,7 @@ export const MOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Molsheim ?",
-      a: "Nos consultants se déplacent via gare SNCF Molsheim (ligne Strasbourg–Saint-Dié) ou autoroute A352. Strasbourg à 25 min, aéroport Entzheim à 20 min. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Molsheim (ligne Strasbourg–Saint-Dié) ou autoroute A352. Strasbourg à 25 min, aéroport Entzheim à 20 min.",
     },
   ],
 };

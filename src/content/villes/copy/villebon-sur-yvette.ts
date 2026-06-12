@@ -65,7 +65,7 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Villebon-sur-Yvette depuis Paris ?",
-      a: "Nos consultants interviennent à Villebon-sur-Yvette (35 min depuis Paris via A6/A10, Massy TGV à 10 min). Aéroport Orly à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent à Villebon-sur-Yvette (35 min depuis Paris via A6/A10, Massy TGV à 10 min). Aéroport Orly à 20 min.",
     },
   ],
 };

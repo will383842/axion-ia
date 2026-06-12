@@ -65,7 +65,7 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Roanne (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Roanne (30 min).",
     },
   ],
 };

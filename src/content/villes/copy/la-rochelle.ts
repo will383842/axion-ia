@@ -250,7 +250,7 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à La Rochelle ?",
-      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, puis un audit suivi d'un plan d'action chiffré. Frais de déplacement transparents distincts du forfait.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, puis un audit suivi d'un plan d'action chiffré.",
     },
   ],
 };

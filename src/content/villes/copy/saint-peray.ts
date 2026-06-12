@@ -65,7 +65,7 @@ export const SAINT_PERAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (1h) ou Valence (10 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Lyon (1h) ou Valence (10 min).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Thibault-des-Vignes ?",
-      a: "Nos consultants se déplacent à Saint-Thibault-des-Vignes depuis Paris (40 min via Transilien P ou A4). Gare de Lagny–Thorigny à 5 min. Intervention dans vos locaux ou en visio. Frais de déplacement Île-de-France selon forfait.",
+      a: "Nos consultants se déplacent à Saint-Thibault-des-Vignes depuis Paris (40 min via Transilien P ou A4). Gare de Lagny–Thorigny à 5 min. Intervention dans vos locaux ou en visio.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const TARNOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Tarnos depuis Bayonne ?",
-      a: "Tarnos est à 10 min de Bayonne centre. Nos consultants interviennent facilement sur site (zone industrielle ou bureau). Gare Bayonne à 15 min, aéroport Biarritz à 20 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Tarnos est à 10 min de Bayonne centre. Nos consultants interviennent facilement sur site (zone industrielle ou bureau). Gare Bayonne à 15 min, aéroport Biarritz à 20 min.",
     },
   ],
 };

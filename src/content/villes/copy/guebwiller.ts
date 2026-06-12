@@ -65,7 +65,7 @@ export const GUEBWILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Guebwiller ?",
-      a: "Nos consultants se déplacent via autoroute A35 (15 min) ou gare de Bollwiller (TER Mulhouse-Colmar, 10 min). Position centrale Mulhouse/Colmar, accès Suisse-Allemagne via aéroport Bâle-Mulhouse. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A35 (15 min) ou gare de Bollwiller (TER Mulhouse-Colmar, 10 min). Position centrale Mulhouse/Colmar, accès Suisse-Allemagne via aéroport Bâle-Mulhouse.",
     },
   ],
 };

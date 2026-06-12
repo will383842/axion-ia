@@ -65,7 +65,7 @@ export const SEYSSINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (10-15 min tramway A via Seyssinet) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible. Frais de déplacement (tram/voiture, repas, hébergement) facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Grenoble (10-15 min tramway A via Seyssinet) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

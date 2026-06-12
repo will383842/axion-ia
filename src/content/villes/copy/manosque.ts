@@ -246,7 +246,7 @@ export const MANOSQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Manosque ?",
-      a: "Nos consultants se déplacent depuis Aix-en-Provence ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent depuis Aix-en-Provence ou en visio.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

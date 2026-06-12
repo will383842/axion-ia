@@ -65,7 +65,7 @@ export const DOMENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (15 min A41). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (15 min A41). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

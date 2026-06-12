@@ -65,7 +65,7 @@ export const MENNECY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Évry ou Paris ?",
-      a: "Évry-Courcouronnes (15 min). Corbeil-Essonnes (10 min). Paris centre (45 min). Aéroport Orly (25 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Évry-Courcouronnes (15 min). Corbeil-Essonnes (10 min). Paris centre (45 min). Aéroport Orly (25 min).",
     },
   ],
 };

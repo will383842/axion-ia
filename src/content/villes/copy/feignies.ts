@@ -65,7 +65,7 @@ export const FEIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission transfrontalière depuis Feignies ?",
-      a: "Nos consultants viennent via gare de Maubeuge (TER Lille/Paris, 5 min) ou N2/A2. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants viennent via gare de Maubeuge (TER Lille/Paris, 5 min) ou N2/A2. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse.",
     },
   ],
 };

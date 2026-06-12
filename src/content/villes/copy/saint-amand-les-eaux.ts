@@ -61,7 +61,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Amand-les-Eaux ?",
-      a: "Nos consultants interviennent à Saint-Amand-les-Eaux depuis Lille (45 min) ou Valenciennes (20 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Saint-Amand-les-Eaux. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Saint-Amand-les-Eaux depuis Lille (45 min) ou Valenciennes (20 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Saint-Amand-les-Eaux.",
     },
     {
       q: "Proposez-vous des solutions IA pour l'artisanat faïencier ?",

@@ -65,7 +65,7 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans les zones d'activités ?",
-      a: "Nos consultants seniors se déplacent directement dans vos locaux de zone d'activités à Saint-Barthélemy-d'Anjou. Diagnostic, ateliers pratiques, livraison outils IA configurés. Frais déplacement Angers inclus (10 min).",
+      a: "Nos consultants seniors se déplacent directement dans vos locaux de zone d'activités à Saint-Barthélemy-d'Anjou. Diagnostic, ateliers pratiques, livraison outils IA configurés.",
     },
   ],
 };

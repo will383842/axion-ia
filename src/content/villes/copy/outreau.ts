@@ -65,7 +65,7 @@ export const OUTREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Calais ?",
-      a: "Nos consultants viennent de Lille (1h40 TER ou A16) ou Calais (30 min A16). Gare TGV Calais-Fréthun à 30 min. Déplacements facturés séparément, grille tarifaire publique. Hébergement local possible (hôtels Boulogne).",
+      a: "Nos consultants viennent de Lille (1h40 TER ou A16) ou Calais (30 min A16). Gare TGV Calais-Fréthun à 30 min. Hébergement local possible (hôtels Boulogne).",
     },
   ],
 };

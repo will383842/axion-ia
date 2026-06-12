@@ -65,7 +65,7 @@ export const VEDENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Vedène ?",
-      a: "Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

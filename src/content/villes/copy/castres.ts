@@ -246,7 +246,7 @@ export const CASTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Toulouse ?",
-      a: "Toulouse est à environ 1h15 par l'autoroute Castres-Toulouse. Nous nous déplaçons sur site à Castres ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+      a: "Toulouse est à environ 1h15 par l'autoroute Castres-Toulouse. Nous nous déplaçons sur site à Castres.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

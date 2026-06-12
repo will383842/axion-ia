@@ -65,7 +65,7 @@ export const ORAISON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Oraison ?",
-      a: "Nos consultants se déplacent sur site à Oraison depuis Aix-en-Provence (1h15 A51) ou Digne-les-Bains (30 min). Hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Oraison depuis Aix-en-Provence (1h15 A51) ou Digne-les-Bains (30 min). Hébergement local possible.",
     },
   ],
 };

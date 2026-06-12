@@ -65,7 +65,7 @@ export const BASSE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants sont à Basse-Goulaine en 10 min depuis Nantes centre via le périphérique sud-est. Première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
+      a: "Nos consultants sont à Basse-Goulaine en 10 min depuis Nantes centre via le périphérique sud-est. Première couronne de Nantes Métropole. Tarifs publics et transparents.",
     },
   ],
 };

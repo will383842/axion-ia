@@ -65,7 +65,7 @@ export const DONZERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (45 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (45 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

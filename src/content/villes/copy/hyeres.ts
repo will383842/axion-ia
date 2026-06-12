@@ -136,7 +136,7 @@ export const HYERES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis transparent envoyé à partir de 24-48 h selon la complexité, sans montant caché. Sites web et plateformes SaaS hébergés en UE, conformes RGPD dès la conception. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et couche IA. Vous restez propriétaire du code, des contenus et des intégrations (caisse, PMS, channel manager, flux SICA) — aucune dépendance Axion-IA, reprise possible en interne ou par tout intégrateur de la Métropole Toulon Provence Méditerranée. Frais de déplacement et de logement éventuels facturés en sus selon la zone.",
+          "Devis transparent envoyé à partir de 24-48 h selon la complexité, sans montant caché. Sites web et plateformes SaaS hébergés en UE, conformes RGPD dès la conception. Nous couvrons UX/UI, mobile, e-commerce multi-CMS et couche IA. Vous restez propriétaire du code, des contenus et des intégrations (caisse, PMS, channel manager, flux SICA) — aucune dépendance Axion-IA, reprise possible en interne ou par tout intégrateur de la Métropole Toulon Provence Méditerranée.",
       },
       en: {
         hero: "Hyères-les-Palmiers concentrates an economy found nowhere else in France: the country's leading farming commune by number of growers, ~70% of national cut-flower output sold through the SICA Marché aux Fleurs (~400 growers, ~30M€ turnover), regulated island tourism to Porquerolles, Port-Cros and Le Levant, and Toulon-Hyères airport (Le Palyvestre). Axion-IA designs AI-augmented websites and SaaS platforms on site for this fabric: bassin horticulturists and nurseries, hotels and campsites, Côtes de Provence estates and Golden Islands ferry operators.",

@@ -34,7 +34,7 @@ export const NICE_COPY: VilleCopy = {
     },
     interventions: {
       fr: "Interventions IA à Nice : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — tourisme d'affaires, hôtellerie premium, tech Sophia, santé/biotech ou services.",
-      en: "AI sessions in Nice: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      en: "AI sessions in Nice: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA à Nice : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main — pas de dépendance créée.",
@@ -42,7 +42,7 @@ export const NICE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Entry rate from €990 excl. VAT. On-site travel expenses billed separately.",
+      en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Entry rate from €990 excl. VAT.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI niçoises — site vitrine premium pour scale-ups Sophia Antipolis et acteurs du tourisme d'affaires Côte d'Azur, espace client interactif, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -397,7 +397,7 @@ export const NICE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, sessions en français, anglais ou bilingue selon votre équipe.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Nice come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Nice come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
           "Nice and the Côte d'Azur cover a B2B fabric of 16,327 active businesses: hotels, agencies, practices, IT and biotech firms — all eligible for our on-site sessions.",
           "The Sophia Antipolis basin concentrates R&D teams from Amadeus, IBM, SAP and over a hundred tech companies: we run dedicated IT/AI sessions there.",
@@ -719,7 +719,7 @@ export const NICE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Nice et Sophia Antipolis est un accompagnement individuel intensif conçu pour les dirigeants, managers et experts métiers qui veulent maîtriser l'IA dans leur pratique quotidienne — sans passer par une formation de groupe. Chaque séance est centrée sur VOS dossiers, VOS données, VOS workflows. Présentiel à Nice, Grand Arénas, Sophia Antipolis ou à distance selon votre agenda. Frais de déplacement pour les séances sur site en sus. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Nice et Sophia Antipolis est un accompagnement individuel intensif conçu pour les dirigeants, managers et experts métiers qui veulent maîtriser l'IA dans leur pratique quotidienne — sans passer par une formation de groupe. Chaque séance est centrée sur VOS dossiers, VOS données, VOS workflows. Présentiel à Nice, Grand Arénas, Sophia Antipolis ou à distance selon votre agenda. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
         whyHere: [
           "Nice et le bassin Sophia Antipolis concentrent une densité exceptionnelle de dirigeants et experts exposés à la transformation IA : PDG de scale-ups tech, CTO de R&D Amadeus/IBM/SAP, directeurs d'ETI hôtelières, partners de cabinets conseil.",
           "Le coaching 1-to-1 s'adapte à des profils très spécifiques : dirigeant anglophone d'une filiale internationale à Sophia, DAF d'une ETI touristique qui veut dérisquer son P&L, DG de PME niçoise qui veut passer à l'action sans équipe dédiée.",
@@ -760,7 +760,7 @@ export const NICE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Séance découverte — à partir de {{price:intervention-dirigeants|flat}}",
             detail:
-              "Pour indépendants, professions libérales et dirigeants de micro-structures niçoises : une séance intensive sur site ou distance pour débloquer un cas IA concret. Frais de déplacement en sus pour le présentiel.",
+              "Pour indépendants, professions libérales et dirigeants de micro-structures niçoises : une séance intensive sur site ou distance pour débloquer un cas IA concret.",
           },
           {
             sizeLabel: "PME",
@@ -806,7 +806,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Les séances sont-elles en présentiel à Nice / Sophia ou à distance ?",
-            a: "Les deux sont disponibles. Présentiel dans vos locaux à Nice, Grand Arénas, Sophia Antipolis, Antibes ou Cannes (frais de déplacement en sus). Distance en visio sécurisée. Le mix est défini en fonction de votre agenda et de votre préférence de travail.",
+            a: "Les deux sont disponibles. Présentiel dans vos locaux à Nice, Grand Arénas, Sophia Antipolis, Antibes ou Cannes. Distance en visio sécurisée. Le mix est défini en fonction de votre agenda et de votre préférence de travail.",
           },
           {
             q: "Mes données et mes dossiers restent-ils confidentiels pendant le coaching ?",
@@ -825,7 +825,7 @@ export const NICE_COPY: VilleCopy = {
           "Tarif d'entrée fixe à {{price:intervention-dirigeants|flat}} pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage, particulièrement adaptée aux dirigeants tourisme d'affaires et tech Sophia sensibles aux fuites stratégiques. À l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. On-site travel expenses billed separately. Entry rate from €990 excl. VAT.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. Entry rate from €990 excl. VAT.",
         whyHere: [
           "Nice and the Sophia Antipolis basin concentrate an exceptional density of executives and experts facing AI transformation: scale-up CEOs, Amadeus/IBM/SAP R&D CTOs, hospitality mid-cap directors, consulting firm partners.",
           "1-to-1 coaching adapts to highly specific profiles: an English-speaking director of an international subsidiary at Sophia, a CFO of a tourism mid-cap wanting to de-risk their P&L, a Nice SME MD wanting to act without a dedicated AI team.",
@@ -866,7 +866,7 @@ export const NICE_COPY: VilleCopy = {
             sizeLabel: "Micro-business",
             price: "Discovery session — from €990 excl. VAT",
             detail:
-              "For Nice freelancers, independent professionals and micro-business owners: an intensive on-site or remote session to unblock one concrete AI use case. On-site travel expenses billed separately.",
+              "For Nice freelancers, independent professionals and micro-business owners: an intensive on-site or remote session to unblock one concrete AI use case.",
           },
           {
             sizeLabel: "SME",
@@ -912,7 +912,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Are sessions on-site in Nice / Sophia or remote?",
-            a: "Both are available. On-site at your offices in Nice, Grand Arénas, Sophia Antipolis, Antibes or Cannes (travel expenses billed separately). Remote via secure video. The mix is set based on your agenda and working preference.",
+            a: "Both are available. On-site at your offices in Nice, Grand Arénas, Sophia Antipolis, Antibes or Cannes. Remote via secure video. The mix is set based on your agenda and working preference.",
           },
           {
             q: "Does my data and my files remain confidential during coaching?",

@@ -240,9 +240,5 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
       q: "Comment se passe une intervention pour un cabinet professionnel ?",
       a: "Pour les cabinets professionnels (juridiques, expertise-comptable, conseil) à Herblay, nous démarrons par un audit ciblé sur vos workflows, puis une intervention sur site (1-2 journées) pour installer et configurer les outils IA sur vos données réelles. RGPD garanti.",
     },
-    {
-      q: "Les frais de déplacement depuis Paris sont-ils élevés ?",
-      a: "Non, Herblay est à 30 min de Paris (Transilien J ou voiture). Les frais de déplacement (train ou voiture, repas si journée complète) sont facturés à part du forfait journée, tarifs publics. Pour les TPE/PME, l'audit sur place {{price:audit-flash|compact}} reste accessible.",
-    },
   ],
 };

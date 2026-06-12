@@ -65,7 +65,7 @@ export const LONGUYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Longuyon ?",
-      a: "Nos consultants se déplacent via gare SNCF Longuyon (axe Paris–Luxembourg) ou autoroute A30 (15 min). Position stratégique aux portes du Luxembourg (45 min) et de la Belgique (25 min). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Longuyon (axe Paris–Luxembourg) ou autoroute A30 (15 min). Position stratégique aux portes du Luxembourg (45 min) et de la Belgique (25 min).",
     },
   ],
 };

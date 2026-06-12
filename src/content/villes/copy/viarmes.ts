@@ -65,7 +65,7 @@ export const VIARMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Roissy ?",
-      a: "Luzarches (5 min). Beaumont-sur-Oise (10 min). Aéroport CDG (20 min). Paris Gare du Nord (40 min via ligne H). Déplacements facturés séparément, tarifs publics.",
+      a: "Luzarches (5 min). Beaumont-sur-Oise (10 min). Aéroport CDG (20 min). Paris Gare du Nord (40 min via ligne H).",
     },
   ],
 };

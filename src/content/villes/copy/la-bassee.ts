@@ -65,7 +65,7 @@ export const LA_BASSEE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Bassée ?",
-      a: "Nos consultants viennent via gare La Bassée-Violaines (TER Lille-Béthune sur place) ou autoroute A1/A26. Lille à 25 min, Lens à 20 min, Béthune à 15 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent via gare La Bassée-Violaines (TER Lille-Béthune sur place) ou autoroute A1/A26. Lille à 25 min, Lens à 20 min, Béthune à 15 min.",
     },
   ],
 };

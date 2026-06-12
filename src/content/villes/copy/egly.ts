@@ -65,7 +65,7 @@ export const EGLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Nos consultants viennent de Paris (40 min A6/RN20) ou Massy (20 min). Accès rapide via RER C Brétigny ou route RN20. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris (40 min A6/RN20) ou Massy (20 min). Accès rapide via RER C Brétigny ou route RN20.",
     },
   ],
 };

@@ -136,7 +136,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Plateformes hébergées en UE par défaut, conformes RGPD, DPO sur demande — un atout dans une commune où le data center Equinix PA13x ancre l'hébergement européen. Vous gardez l'intégralité du code, des modèles et des accès : tout est transférable à un autre intégrateur du Grand Paris Seine Ouest ou repris en interne, sans verrou éditeur ni dépendance Axion-IA. UX/UI, mobile, e-commerce multi-CMS et IA livrés ensemble. Les frais de déplacement depuis Paris sont facturés en sus selon nos tarifs publics.",
+          "Plateformes hébergées en UE par défaut, conformes RGPD, DPO sur demande — un atout dans une commune où le data center Equinix PA13x ancre l'hébergement européen. Vous gardez l'intégralité du code, des modèles et des accès : tout est transférable à un autre intégrateur du Grand Paris Seine Ouest ou repris en interne, sans verrou éditeur ni dépendance Axion-IA. UX/UI, mobile, e-commerce multi-CMS et IA livrés ensemble.",
       },
       en: {
         hero: "Axion-IA designs AI-augmented websites and SaaS platforms in Meudon, a town that has become a digital outpost of Grand Paris Seine Ouest: the Equinix PA13x data center (opened February 2025, €350M, halls calibrated for intensive AI workloads) sits next to Thales's future largest site in the world at Meudon-la-Forêt, the Dassault Systèmes campus (Terre Europa building) and Bouygues Telecom's head office. Alongside this tertiary and digital hub, ONERA and the Paris-Meudon Observatory feed a dense fabric of engineering offices, service SMEs and professional practices. We build bespoke AI-native platforms — client portals, semantic search, conversational agents, document automation — hosted in the EU, GDPR-compliant, with no vendor lock-in.",
@@ -222,7 +222,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Platforms hosted in the EU by default, GDPR-compliant, DPO on request — an asset in a town where the Equinix PA13x data center anchors European hosting. You keep all the code, models and access: everything is transferable to another Grand Paris Seine Ouest integrator or taken in-house, with no vendor lock-in and no Axion-IA dependency. UX/UI, mobile, multi-CMS e-commerce and AI delivered together. Travel costs from Paris are billed separately per our public rates.",
+          "Platforms hosted in the EU by default, GDPR-compliant, DPO on request — an asset in a town where the Equinix PA13x data center anchors European hosting. You keep all the code, models and access: everything is transferable to another Grand Paris Seine Ouest integrator or taken in-house, with no vendor lock-in and no Axion-IA dependency. UX/UI, mobile, multi-CMS e-commerce and AI delivered together.",
       },
     },
   },
@@ -246,7 +246,7 @@ export const MEUDON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris (15 min en Transilien). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (15 min en Transilien).",
     },
   ],
 };

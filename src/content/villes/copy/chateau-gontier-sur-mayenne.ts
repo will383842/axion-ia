@@ -65,7 +65,7 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Château-Gontier ?",
-      a: "Nos consultants interviennent directement dans vos locaux. Gare TER Château-Gontier (30 min Laval, 50 min Angers). Format mixte sur site + visio. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants interviennent directement dans vos locaux. Gare TER Château-Gontier (30 min Laval, 50 min Angers). Format mixte sur site + visio.",
     },
   ],
 };

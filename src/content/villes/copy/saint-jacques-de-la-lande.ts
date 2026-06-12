@@ -65,7 +65,7 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à vos consultants depuis Saint-Jacques ?",
-      a: "Saint-Jacques-de-la-Lande est directement connectée au centre de Rennes par le métro ligne B (10 min). Nos consultants interviennent sur site dans vos locaux. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Saint-Jacques-de-la-Lande est directement connectée au centre de Rennes par le métro ligne B (10 min). Nos consultants interviennent sur site dans vos locaux.",
     },
   ],
 };

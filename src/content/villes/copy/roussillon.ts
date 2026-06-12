@@ -65,7 +65,7 @@ export const ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais). Frais de déplacement (TER/voiture, repas, hébergement) facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais).",
     },
   ],
 };

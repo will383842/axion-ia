@@ -65,7 +65,7 @@ export const EYGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Eyguières ?",
-      a: "Nos consultants se déplacent dans vos locaux. Eyguières est à 15 min de Salon-de-Provence et 40 min d'Aix via A7. Frais de déplacement facturés à part, tarifs publics transparents.",
+      a: "Nos consultants se déplacent dans vos locaux. Eyguières est à 15 min de Salon-de-Provence et 40 min d'Aix via A7.",
     },
   ],
 };

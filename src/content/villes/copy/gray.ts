@@ -65,7 +65,7 @@ export const GRAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gray ?",
-      a: "Nos consultants se déplacent à Gray depuis Dijon (45 min) ou Besançon (50 min). Interventions sur site (commerce, atelier, bureau). Formats journée ou demi-journée. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants se déplacent à Gray depuis Dijon (45 min) ou Besançon (50 min). Interventions sur site (commerce, atelier, bureau). Formats journée ou demi-journée.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BLAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 40 min via la D164. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Nantes en 40 min via la D164. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest).",
     },
   ],
 };

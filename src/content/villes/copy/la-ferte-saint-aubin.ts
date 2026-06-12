@@ -65,7 +65,7 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à La Ferté-Saint-Aubin ?",
-      a: "Nos consultants se déplacent à La Ferté-Saint-Aubin depuis Orléans (20 min RN20 ou 15 min TER) ou Paris (1h30 train + TER). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus, tarifs publics transparents.",
+      a: "Nos consultants se déplacent à La Ferté-Saint-Aubin depuis Orléans (20 min RN20 ou 15 min TER) ou Paris (1h30 train + TER). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

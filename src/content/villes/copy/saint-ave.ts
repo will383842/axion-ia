@@ -65,7 +65,7 @@ export const SAINT_AVE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Saint-Avé depuis Paris ou Nantes ?",
-      a: "Gare TGV de Vannes à 15 min (Paris-Montparnasse à 2 h 30 en TGV direct). Nantes à 1 h 30 via RN 165. Aéroport Lorient à 50 min. Frais de déplacement facturés à part.",
+      a: "Gare TGV de Vannes à 15 min (Paris-Montparnasse à 2 h 30 en TGV direct). Nantes à 1 h 30 via RN 165. Aéroport Lorient à 50 min.",
     },
   ],
 };

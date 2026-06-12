@@ -65,7 +65,7 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Machecoul-Saint-Même ?",
-      a: "Nos consultants se déplacent sur site à Machecoul-Saint-Même (50 min depuis Nantes). Hébergement local pour missions multi-jours. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent sur site à Machecoul-Saint-Même (50 min depuis Nantes). Hébergement local pour missions multi-jours.",
     },
   ],
 };

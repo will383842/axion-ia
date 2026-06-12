@@ -65,7 +65,7 @@ export const PERIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Périgny ?",
-      a: "Nos consultants accèdent à Périgny via la gare TGV de La Rochelle (12 min, Paris 2h50 direct). Mission sur site dans vos locaux, bureau ou cabinet. Frais de déplacement facturés à part du forfait mission.",
+      a: "Nos consultants accèdent à Périgny via la gare TGV de La Rochelle (12 min, Paris 2h50 direct). Mission sur site dans vos locaux, bureau ou cabinet.",
     },
   ],
 };

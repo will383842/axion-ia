@@ -246,7 +246,7 @@ export const MARIGNANE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Marseille ou Aix-en-Provence ?",
-      a: "Marseille centre est à 25 km et Aix-en-Provence à 30 km de Marignane. Nous intervenons sur tout le secteur. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
+      a: "Marseille centre est à 25 km et Aix-en-Provence à 30 km de Marignane. Nous intervenons sur tout le secteur.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PRIVAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (1h45) ou Valence (40 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h45) ou Valence (40 min).",
     },
   ],
 };

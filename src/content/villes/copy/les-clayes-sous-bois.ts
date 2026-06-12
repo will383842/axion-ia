@@ -61,7 +61,7 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site aux Clayes-sous-Bois ?",
-      a: "Nos consultants viennent sur site aux Clayes-sous-Bois (gare Villepreux-Les Clayes, Transilien N depuis Paris-Montparnasse, 35 min). Format journée ou demi-journée adapté. Frais de déplacement inclus Île-de-France.",
+      a: "Nos consultants viennent sur site aux Clayes-sous-Bois (gare Villepreux-Les Clayes, Transilien N depuis Paris-Montparnasse, 35 min). Format journée ou demi-journée adapté.",
     },
     {
       q: "Quels services IA pour les commerçants des Clayes-sous-Bois ?",

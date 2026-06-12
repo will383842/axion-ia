@@ -65,7 +65,7 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montfort-sur-Meu ?",
-      a: "Nos consultants viennent de Rennes centre (25 min via N24). TER possible gare de Montfort-sur-Meu. Intervention sur site ou en visio. Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Rennes centre (25 min via N24). TER possible gare de Montfort-sur-Meu. Intervention sur site ou en visio.",
     },
   ],
 };

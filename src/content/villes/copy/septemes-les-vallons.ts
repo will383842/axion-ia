@@ -65,7 +65,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Septèmes-les-Vallons ?",
-      a: "Nos consultants interviennent sur site à Septèmes-les-Vallons sous 5 jours ouvrés. Marseille centre à 20 min, Aix à 25 min. Frais de déplacement inclus métropole Aix-Marseille.",
+      a: "Nos consultants interviennent sur site à Septèmes-les-Vallons sous 5 jours ouvrés. Marseille centre à 20 min, Aix à 25 min.",
     },
   ],
 };

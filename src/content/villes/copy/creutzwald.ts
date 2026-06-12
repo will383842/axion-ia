@@ -65,7 +65,7 @@ export const CREUTZWALD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Creutzwald ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 20 min) ou gares SNCF de Forbach. Position frontalière stratégique avec Sarrebruck (25 min) et Luxembourg (1h). Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A4 (accès 20 min) ou gares SNCF de Forbach. Position frontalière stratégique avec Sarrebruck (25 min) et Luxembourg (1h).",
     },
   ],
 };

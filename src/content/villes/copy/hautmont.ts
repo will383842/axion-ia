@@ -61,7 +61,7 @@ export const HAUTMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Hautmont ?",
-      a: "Nos consultants interviennent à Hautmont depuis Maubeuge (5 min) ou Valenciennes (35 min). Intervention sur site dans votre atelier, usine ou bureau. Pour missions multi-jours, hébergement à Maubeuge. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Hautmont depuis Maubeuge (5 min) ou Valenciennes (35 min). Intervention sur site dans votre atelier, usine ou bureau. Pour missions multi-jours, hébergement à Maubeuge.",
     },
     {
       q: "Proposez-vous des solutions IA pour la transition industrielle du Sambre-Avesnois ?",

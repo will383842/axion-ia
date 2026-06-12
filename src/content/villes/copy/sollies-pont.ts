@@ -73,7 +73,7 @@ export const SOLLIES_PONT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Solliès-Pont ?",
-      a: "Nous démarrons généralement sous quelques jours ouvrés. La gare TGV de Toulon est à 25 min (Paris 3h50) et l'aéroport Toulon-Hyères à 20 min. Frais de déplacement facturés à part, grille publique.",
+      a: "Nous démarrons généralement sous quelques jours ouvrés. La gare TGV de Toulon est à 25 min (Paris 3h50) et l'aéroport Toulon-Hyères à 20 min.",
     },
   ],
 };

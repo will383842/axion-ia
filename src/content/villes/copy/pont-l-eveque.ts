@@ -65,7 +65,7 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Pont-l'Évêque ?",
-      a: "Nos consultants viennent de Caen (40 min A13) ou par train (gare SNCF Lisieux à 15 min). Déplacement sur site (fromagerie, hôtel, restaurant, commerce). Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants viennent de Caen (40 min A13) ou par train (gare SNCF Lisieux à 15 min). Déplacement sur site (fromagerie, hôtel, restaurant, commerce).",
     },
   ],
 };

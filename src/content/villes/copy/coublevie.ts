@@ -65,7 +65,7 @@ export const COUBLEVIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron).",
     },
   ],
 };

@@ -242,7 +242,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris jusqu'au bassin ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Bordeaux + 35 min TER). Pour les missions multi-jours, hébergement local possible (hôtels bassin d'Arcachon). Frais de déplacement (TGV/TER, repas, hébergement) facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV (2h Bordeaux + 35 min TER). Pour les missions multi-jours, hébergement local possible (hôtels bassin d'Arcachon).",
     },
   ],
 };

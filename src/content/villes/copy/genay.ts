@@ -69,7 +69,7 @@ export const GENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Lyon ?",
-      a: "Nos consultants rejoignent Genay depuis Lyon (25 min). Déplacements facturés séparément, grille tarifaire publique. Sessions sur site ou en visio selon votre préférence.",
+      a: "Nos consultants rejoignent Genay depuis Lyon (25 min). Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

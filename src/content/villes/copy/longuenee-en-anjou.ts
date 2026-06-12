@@ -65,7 +65,7 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Longuenée-en-Anjou ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Longuenée-en-Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers inclus (15 min).",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Longuenée-en-Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

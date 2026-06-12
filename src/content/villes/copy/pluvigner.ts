@@ -65,7 +65,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pluvigner ?",
-      a: "Nos consultants interviennent à Pluvigner depuis Vannes (35 min), Lorient (40 min) ou Nantes (1h45). Intervention sur site dans votre exploitation, atelier, locaux ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Pluvigner depuis Vannes (35 min), Lorient (40 min) ou Nantes (1h45). Intervention sur site dans votre exploitation, atelier, locaux ou cabinet.",
     },
   ],
 };

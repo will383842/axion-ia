@@ -65,7 +65,7 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Pré-Saint-Gervais ?",
-      a: "Nos consultants se déplacent dans vos locaux au Pré-Saint-Gervais, accessibles en 20 min depuis Paris centre (métro ligne 11). Intervention sur vos cas métier réels, équipes autonomes en fin de journée. Frais de déplacement inclus dans le forfait zone Île-de-France.",
+      a: "Nos consultants se déplacent dans vos locaux au Pré-Saint-Gervais, accessibles en 20 min depuis Paris centre (métro ligne 11). Intervention sur vos cas métier réels, équipes autonomes en fin de journée.",
     },
   ],
 };

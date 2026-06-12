@@ -65,7 +65,7 @@ export const PIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pia ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre atelier, exploitation ou bureau. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre atelier, exploitation ou bureau. Visio possible.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const CHINON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Chinon ?",
-      a: "Nos consultants viennent depuis Tours (50 min TER ou voiture D751). Pour les missions multi-jours, hébergement local possible (hôtels Chinon ou bords de Vienne). Frais de déplacement facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent depuis Tours (50 min TER ou voiture D751). Pour les missions multi-jours, hébergement local possible (hôtels Chinon ou bords de Vienne).",
     },
   ],
 };

@@ -61,7 +61,7 @@ export const EGUILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Éguilles depuis Aix ou Marseille ?",
-      a: "Éguilles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A8. Nos consultants se déplacent dans vos locaux ou votre domicile professionnel. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Éguilles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A8. Nos consultants se déplacent dans vos locaux ou votre domicile professionnel.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD pour les données de cabinets libéraux ?",

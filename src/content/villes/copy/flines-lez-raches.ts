@@ -65,7 +65,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Flines-lez-Râches ?",
-      a: "Nos consultants interviennent à Flines-lez-Râches depuis Lille (35 min) ou Douai (15 min). Intervention sur site dans votre exploitation, atelier, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Douai ou Orchies. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Flines-lez-Râches depuis Lille (35 min) ou Douai (15 min). Intervention sur site dans votre exploitation, atelier, bureau, commerce ou en visio. Pour missions multi-jours, hébergement à Douai ou Orchies.",
     },
   ],
 };

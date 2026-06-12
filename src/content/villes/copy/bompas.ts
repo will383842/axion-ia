@@ -65,7 +65,7 @@ export const BOMPAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bompas ?",
-      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, atelier ou commerce. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, atelier ou commerce. Visio possible.",
     },
   ],
 };

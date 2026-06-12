@@ -65,7 +65,7 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Vienne ?",
-      a: "Nos consultants viennent de Lyon (30 min A7) ou Vienne (10 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (30 min A7) ou Vienne (10 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

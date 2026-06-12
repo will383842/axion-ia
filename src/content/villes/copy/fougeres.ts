@@ -246,7 +246,7 @@ export const FOUGERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rennes ?",
-      a: "Le diagnostic et les sessions clés se déroulent sur site à Fougères ; le suivi se poursuit en visio. Les frais de déplacement depuis Rennes (1h) sont indiqués séparément, en toute transparence.",
+      a: "Le diagnostic et les sessions clés se déroulent sur site à Fougères ; le suivi se poursuit en visio.",
     },
   ],
 };

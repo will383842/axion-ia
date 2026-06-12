@@ -65,7 +65,7 @@ export const BETTON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Betton ?",
-      a: "Nos consultants viennent de Rennes centre (10 min route D175). Intervention sur site dans vos locaux ou en visio selon vos préférences. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Rennes centre (10 min route D175). Intervention sur site dans vos locaux ou en visio selon vos préférences.",
     },
   ],
 };

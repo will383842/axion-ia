@@ -65,7 +65,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Carentan-les-Marais ?",
-      a: "Nos consultants viennent de Caen (1 h N13) ou Cherbourg (45 min). Gare de Carentan (TER Paris 2 h 30 via Caen). Multi-jours : hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (1 h N13) ou Cherbourg (45 min). Gare de Carentan (TER Paris 2 h 30 via Caen). Multi-jours : hébergement local.",
     },
   ],
 };

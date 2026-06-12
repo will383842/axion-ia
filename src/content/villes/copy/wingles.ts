@@ -65,7 +65,7 @@ export const WINGLES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Wingles ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 30 min A1. Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare de Lens à 10 min, Lille à 30 min A1. Nos consultants se déplacent sur site.",
     },
   ],
 };

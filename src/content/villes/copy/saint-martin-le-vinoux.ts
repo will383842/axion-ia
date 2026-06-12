@@ -65,7 +65,7 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (10 min tramway E). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (10 min tramway E). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

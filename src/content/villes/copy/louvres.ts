@@ -65,7 +65,7 @@ export const LOUVRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (30 min RER D Gare du Nord → Louvres ou voiture A1). Proximité directe Roissy-CDG (10 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (30 min RER D Gare du Nord → Louvres ou voiture A1). Proximité directe Roissy-CDG (10 min).",
     },
   ],
 };

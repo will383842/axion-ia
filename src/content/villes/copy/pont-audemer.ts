@@ -65,7 +65,7 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Le Havre ?",
-      a: "Nos consultants viennent de Rouen (50 min) ou Le Havre (40 min). Pour les multi-jours, hébergement local possible Venise normande. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rouen (50 min) ou Le Havre (40 min). Pour les multi-jours, hébergement local possible Venise normande.",
     },
   ],
 };

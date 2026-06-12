@@ -65,7 +65,7 @@ export const GLEIZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min A6). Frais de mission facturés en sus, selon tarifs publics.",
+      a: "Nos consultants viennent de Lyon (35 min A6).",
     },
   ],
 };

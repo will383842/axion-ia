@@ -65,7 +65,7 @@ export const PRADES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Prades ?",
-      a: "Nos consultants viennent de Perpignan (45 min). Pour les multi-jours, hébergement local possible. Visio privilégiée pour le suivi. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Perpignan (45 min). Pour les multi-jours, hébergement local possible. Visio privilégiée pour le suivi.",
     },
   ],
 };

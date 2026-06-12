@@ -65,7 +65,7 @@ export const MERIEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",
-      a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min).",
     },
   ],
 };

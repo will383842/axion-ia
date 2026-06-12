@@ -65,7 +65,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Peyrolles-en-Provence ?",
-      a: "Peyrolles-en-Provence est à 25 min d'Aix-en-Provence et 50 min de Marseille via A51. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Peyrolles-en-Provence est à 25 min d'Aix-en-Provence et 50 min de Marseille via A51. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

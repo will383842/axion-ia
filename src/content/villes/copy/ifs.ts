@@ -65,7 +65,7 @@ export const IFS_COPY: VilleCopy = {
     },
     {
       q: "Êtes-vous accessibles en transport en commun depuis Ifs ?",
-      a: "Oui, Ifs est desservie par le tramway T1 (arrêt Ifs–Jean Vilar) depuis Caen centre. Nos consultants se déplacent directement sur site. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Oui, Ifs est desservie par le tramway T1 (arrêt Ifs–Jean Vilar) depuis Caen centre. Nos consultants se déplacent directement sur site.",
     },
   ],
 };

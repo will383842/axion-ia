@@ -65,7 +65,7 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Douvres-la-Délivrande ?",
-      a: "Nos consultants viennent de Caen (15 min D7). Déplacement direct sur site (site touristique, bureau, commerce, cabinet). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Caen (15 min D7). Déplacement direct sur site (site touristique, bureau, commerce, cabinet).",
     },
   ],
 };

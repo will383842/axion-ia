@@ -236,7 +236,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Maisons-Alfort ?",
-      a: "Oui, nous intervenons à Charenton-le-Pont, Saint-Maurice, Joinville-le-Pont, Saint-Maur-des-Fossés, Créteil et Alfortville, sans frais de déplacement supplémentaires en Val-de-Marne.",
+      a: "Oui, nous intervenons à Charenton-le-Pont, Saint-Maurice, Joinville-le-Pont, Saint-Maur-des-Fossés, Créteil et Alfortville.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD pour les structures santé de Maisons-Alfort ?",

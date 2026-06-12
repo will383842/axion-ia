@@ -136,7 +136,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne. Frais de déplacement facturés à part, tarifs publics.",
+          "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surcoût « saison Festival ». Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et test de charge contrôlés à la livraison, en particulier pour absorber le pic de juillet. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, transférable à tout prestataire du Vaucluse ou repris en interne.",
       },
       en: {
         hero: "In Avignon, Axion-IA designs and augments websites, applications and SaaS platforms with built-in AI: bespoke UX/UI, RAG chatbot grounded in your content, semantic search, agents and automations. Two local realities drive the spec — the summer peak of the Festival (In and Off) and the food/natural-ingredients cluster of Agroparc. Quote from 24-48 h depending on project complexity, EU hosting, code and data yours. On-site Avignon kick-off, remote iterations.",
@@ -222,7 +222,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house. Travel costs billed separately, public rates.",
+          "Firm fixed-price quote (from 24-48 h depending on complexity): no hidden hourly drift, no 'Festival season' surcharge. Release with no downtime when augmenting the existing site. Web Vitals, accessibility and load testing checked at delivery, in particular to absorb the July peak. Source code, databases and models delivered into your infrastructure (EU hosting available), GDPR- and AI-Act-compliant: full ownership, no imposed subscription, transferable to any Vaucluse provider or brought in-house.",
       },
     },
   },
@@ -230,7 +230,7 @@ export const AVIGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avignon et dans le Vaucluse ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Avignon et de l'agglomération vauclusienne. Nous nous déplaçons sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Avignon et de l'agglomération vauclusienne. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Comment l'IA aide pendant le Festival d'Avignon et le Off ?",

@@ -69,7 +69,7 @@ export const REYRIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon en 30 minutes. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+      a: "Nos consultants se déplacent depuis Lyon en 30 minutes.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

@@ -61,7 +61,7 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Loireauxence ?",
-      a: "Nos consultants se déplacent sur site à Loireauxence (40 min depuis Nantes, gare Ancenis TER à 10 min). Hébergement local pour missions multi-jours. Frais de déplacement facturés à part, tarifs transparents.",
+      a: "Nos consultants se déplacent sur site à Loireauxence (40 min depuis Nantes, gare Ancenis TER à 10 min). Hébergement local pour missions multi-jours.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux petites structures ?",

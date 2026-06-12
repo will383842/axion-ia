@@ -65,7 +65,7 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Villennes-sur-Seine ?",
-      a: "Nos consultants rejoignent Villennes-sur-Seine via le Transilien J (gare de Villennes, 35 min Paris Saint-Lazare) ou par l'A13. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Villennes-sur-Seine via le Transilien J (gare de Villennes, 35 min Paris Saint-Lazare) ou par l'A13.",
     },
   ],
 };

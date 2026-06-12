@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Ozoir-la-Ferrière ?",
-      a: "Oui. Williams prend le RER E depuis Paris (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière, environ 35 min depuis Magenta) pour intervenir sur site auprès des TPE et PME ozoiriennes. Frais de déplacement intégrés au tarif public.",
+      a: "Oui. Williams prend le RER E depuis Paris (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière, environ 35 min depuis Magenta) pour intervenir sur site auprès des TPE et PME ozoiriennes.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Ozoir-la-Ferrière ?",
@@ -247,7 +247,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Ozoir-la-Ferrière ?",
-      a: "Axion-IA intervient aussi sur Pontault-Combault, Roissy-en-Brie, Lésigny, Pontcarré, Férolles-Attilly, Chevry-Cossigny et Gretz-Armainvilliers, ainsi que plus largement l'est seine-et-marnais. Frais de déplacement intra-bassin négligeables.",
+      a: "Axion-IA intervient aussi sur Pontault-Combault, Roissy-en-Brie, Lésigny, Pontcarré, Férolles-Attilly, Chevry-Cossigny et Gretz-Armainvilliers, ainsi que plus largement l'est seine-et-marnais.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Ozoir-la-Ferrière ?",

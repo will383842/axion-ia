@@ -35,8 +35,8 @@ export const LE_HAVRE_COPY: VilleCopy = {
       en: "Operational AI audit in Le Havre: we identify profitable automations in your organisation — supply chain, production, predictive maintenance, documentation — and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
-      fr: "Interventions IA au Havre : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Le Havre: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA au Havre : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Le Havre: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "Implémentation IA au Havre : on intègre l'IA dans vos outils existants (ERP industriel, TMS, CRM, emails) avec ROI chiffré contractuel. Vos équipes gardent la main, sans dépendance technologique.",
@@ -297,7 +297,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA au Havre se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — gestion documentaire portuaire, rédaction d'offres logistiques, comptes-rendus de réunion, qualification de leads. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA au Havre se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — gestion documentaire portuaire, rédaction d'offres logistiques, comptes-rendus de réunion, qualification de leads.",
         whyHere: [
           "Le Havre est un pôle industriel B2B à fort potentiel IA : les équipes logistiques, opérationnelles et administratives des entreprises de la ZIP et du tissu PME havrais sont régulièrement sollicitées sur des tâches documentaires chronophages (CMR, manifestes, offres de prix, reporting ERP).",
           "Toutes les zones couvertes en présentiel : ville du Havre, Zone Industrialo-Portuaire, Gonfreville-l'Orcher, Montivilliers, Harfleur, Octeville-sur-Mer, Sainte-Adresse, Saint-Romain-de-Colbosc.",
@@ -403,7 +403,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur industriel havrais, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Le Havre come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — port document management, logistics tender writing, meeting minutes, lead qualification. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Le Havre come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — port document management, logistics tender writing, meeting minutes, lead qualification.",
         whyHere: [
           "Le Havre is a high-potential B2B industrial hub for AI: logistics, operational and administrative teams in ZIP enterprises and the Le Havre SME fabric regularly face time-consuming document tasks (CMR, manifests, price offers, ERP reporting).",
           "All zones covered in person: Le Havre city, Port Industrial Zone, Gonfreville-l'Orcher, Montivilliers, Harfleur, Octeville-sur-Mer, Sainte-Adresse, Saint-Romain-de-Colbosc.",
@@ -727,7 +727,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA au Havre s'adresse au dirigeant, directeur technique ou responsable logistique qui veut progresser sur l'IA à son rythme, sur ses propres données portuaires et industrielles — sans session collective. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux havrais ou de la Zone Industrialo-Portuaire. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA au Havre s'adresse au dirigeant, directeur technique ou responsable logistique qui veut progresser sur l'IA à son rythme, sur ses propres données portuaires et industrielles — sans session collective. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux havrais ou de la Zone Industrialo-Portuaire.",
         whyHere: [
           "Le Havre concentre des dirigeants et directeurs techniques d'ETI industrielles (logistique, pétrochimie, aéronautique) dont les contraintes de confidentialité (secret industriel, données de fret, contrats d'affrètement) rendent le format collectif inadapté.",
           "Les responsables de PME logistiques portuaires (Nov@log, commissionnaires de transport) traitent des données propriétaires — manifestes de cargaison, liasses douanières, CMR — qui ne peuvent pas être partagées dans un cadre collectif.",
@@ -821,19 +821,15 @@ export const LE_HAVRE_COPY: VilleCopy = {
             a: "Non. Le coaching s'adapte à votre niveau — du débutant au praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
           },
           {
-            q: "Les frais de déplacement sont-ils inclus ?",
-            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
-          },
-          {
             q: "Peut-on organiser plusieurs coachings pour différents managers d'une même ETI havraise ?",
             a: "Oui. Certaines ETI de la ZIP organisent plusieurs sessions individuelles pour leurs directeurs ou responsables clés. Tarif dégressif possible selon le volume — à préciser en cadrage.",
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données industrielles et portuaires ne quittent pas vos locaux havrais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions Normandie).",
+          "Confidentialité stricte : vos données industrielles et portuaires ne quittent pas vos locaux havrais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions Normandie).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Le Havre is for the executive, technical director or logistics manager who wants to progress on AI at their own pace, on their own port and industrial data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Havre or Port Industrial Zone premises. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Le Havre is for the executive, technical director or logistics manager who wants to progress on AI at their own pace, on their own port and industrial data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Havre or Port Industrial Zone premises.",
         whyHere: [
           "Le Havre hosts industrial mid-cap executives and technical directors (logistics, petrochemicals, aeronautics) whose confidentiality constraints (trade secrets, freight data, charter contracts) make the collective format unsuitable.",
           "Port logistics SME managers (Nov@log members, freight forwarders) handle proprietary data — cargo manifests, customs dossiers, CMR — that cannot be shared in a group setting.",
@@ -928,7 +924,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
           {
             q: "Are travel costs included?",
-            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+            a: "No. These costs are communicated on a prior quote before confirmation.",
           },
           {
             q: "Can we organise several coachings for different managers at the same Le Havre mid-cap?",
@@ -936,7 +932,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your industrial and port data does not leave your Le Havre premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Normandy missions).",
+          "Strict confidentiality: your industrial and port data does not leave your Le Havre premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Normandy missions).",
       },
     },
     sitesWeb: {

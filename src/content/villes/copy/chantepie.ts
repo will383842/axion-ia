@@ -65,7 +65,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chantepie ?",
-      a: "Nos consultants interviennent à Chantepie depuis Rennes (10 min, métro ligne b ou rocade). Intervention sur site dans vos bureaux, atelier ou cabinet. Frais de déplacement facturés séparément du forfait, tarifs publics et transparents.",
+      a: "Nos consultants interviennent à Chantepie depuis Rennes (10 min, métro ligne b ou rocade). Intervention sur site dans vos bureaux, atelier ou cabinet.",
     },
   ],
 };

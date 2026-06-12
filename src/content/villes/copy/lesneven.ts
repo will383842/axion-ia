@@ -65,7 +65,7 @@ export const LESNEVEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lesneven ?",
-      a: "Nos consultants viennent de Brest (30 min D788). Pour les multi-jours, hébergement local possible (hôtels Lesneven ou côte des Abers). Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Brest (30 min D788). Pour les multi-jours, hébergement local possible (hôtels Lesneven ou côte des Abers).",
     },
   ],
 };

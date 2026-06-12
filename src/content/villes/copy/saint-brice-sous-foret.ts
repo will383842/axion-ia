@@ -65,7 +65,7 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (25 min Transilien H Gare du Nord → Saint-Brice ou voiture A1/A115). Frais de déplacement facturés à part du forfait, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Paris (25 min Transilien H Gare du Nord → Saint-Brice ou voiture A1/A115).",
     },
   ],
 };

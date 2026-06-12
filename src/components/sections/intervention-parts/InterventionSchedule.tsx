@@ -25,7 +25,7 @@ interface Props {
   hideTravelNote?: boolean;
 }
 
-export function InterventionSchedule({ items, isFr, hideTravelNote = false }: Props) {
+export function InterventionSchedule({ items, isFr }: Props) {
   return (
     <>
       <ol className="border-border/60 mx-auto max-w-3xl border-l-2 pl-6">
@@ -53,13 +53,6 @@ export function InterventionSchedule({ items, isFr, hideTravelNote = false }: Pr
           </li>
         ))}
       </ol>
-      {!hideTravelNote ? (
-        <p className="text-fg-muted mx-auto mt-6 max-w-3xl text-[12.5px] leading-relaxed">
-          {isFr
-            ? "Frais de logement, repas et forfait trajet en sus, facturés au cas par cas selon la distance et la durée. Devis transparent fourni avant signature."
-            : "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature."}
-        </p>
-      ) : null}
     </>
   );
 }

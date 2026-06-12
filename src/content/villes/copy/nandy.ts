@@ -65,7 +65,7 @@ export const NANDY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Nandy ?",
-      a: "Nos consultants interviennent à Nandy depuis Paris (45 min via RER D, gare de Cesson) ou en voiture via A5/Francilienne. Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent à Nandy depuis Paris (45 min via RER D, gare de Cesson) ou en voiture via A5/Francilienne.",
     },
   ],
 };

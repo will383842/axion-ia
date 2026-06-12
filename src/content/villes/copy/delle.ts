@@ -65,7 +65,7 @@ export const DELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Belfort ou Bâle ?",
-      a: "Belfort à 25 min en train (ligne Belfort-Delle). Montbéliard à 30 min. Bâle à 45 min. EuroAirport à 50 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Belfort à 25 min en train (ligne Belfort-Delle). Montbéliard à 30 min. Bâle à 45 min. EuroAirport à 50 min.",
     },
   ],
 };

@@ -56,7 +56,7 @@ export const BEZONS_COPY: VilleCopy = {
           "L'écosystème IT de Bezons est notre terrain naturel : autour d'Atos, d'Eviden et de Bull, un tissu dense de sous-traitants, d'éditeurs logiciels et de prestataires de services numériques a besoin de portails clients, d'espaces SaaS et de sites métiers fiables — exactement ce que nous construisons en code custom.",
           "La restructuration en cours d'Atos (projet « All In Pacific », consolidation du campus de Bezons d'ici fin 2025) libère un vivier de talents et d'anciens prestataires qui montent leurs propres structures : ces nouvelles PME numériques bezonnaises ont besoin d'une plateforme web crédible dès le premier jour.",
           "Le bassin « Rives de Seine » Argenteuil-Bezons (3M, Spie, Valeo, Johnson Controls, BP France, Air France) et l'héritage industriel reconverti (Rhône-Poulenc, Hispano-Suiza, Le Joint Français) génèrent une demande de sites vitrines techniques, de configurateurs et de catalogues e-commerce B2B robustes.",
-          "Le renouvellement urbain (ZAC Cœur de Ville, ZAC Bords de Seine, projet Bus Entre Seine) fait émerger commerces, professions libérales et services de proximité au pied du tramway T2 : pour eux, nous livrons des sites mobiles-first et des boutiques e-commerce multi-CMS, sans surfacturation de déplacement depuis La Défense.",
+          "Le renouvellement urbain (ZAC Cœur de Ville, ZAC Bords de Seine, projet Bus Entre Seine) fait émerger commerces, professions libérales et services de proximité au pied du tramway T2 : pour eux, nous livrons des sites mobiles-first et des boutiques e-commerce multi-CMS.",
         ],
         methodology: [
           {
@@ -130,11 +130,11 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous sur site à Bezons et dans les communes voisines ?",
-            a: "Oui. Nous intervenons à Bezons via le tramway T2 (terminus Pont de Bezons, douze minutes de La Défense) et couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui partagent le même tissu de PME et de sous-traitants. Les frais de déplacement sont calculés au cas par cas selon la zone.",
+            a: "Oui. Nous intervenons à Bezons via le tramway T2 (terminus Pont de Bezons, douze minutes de La Défense) et couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui partagent le même tissu de PME et de sous-traitants.",
           },
         ],
         guarantees:
-          "Plateforme livrée en code custom, sans verrou éditeur : vous gardez l'intégralité du code source, des modèles IA et des accès, transférables à tout intégrateur d'Île-de-France ou repris en interne. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un cadre adapté aux exigences de souveraineté de l'écosystème IT bezonnais (Atos, Eviden, Bull et leurs sous-traitants). Périmètre et livrables figés au démarrage, devis remis à partir de 24 à 48 h selon la complexité, frais de déplacement calculés au cas par cas. Aucune dépendance contractuelle continue imposée.",
+          "Plateforme livrée en code custom, sans verrou éditeur : vous gardez l'intégralité du code source, des modèles IA et des accès, transférables à tout intégrateur d'Île-de-France ou repris en interne. Hébergement en Union européenne par défaut, conformité RGPD et AI Act, DPO sur demande — un cadre adapté aux exigences de souveraineté de l'écosystème IT bezonnais (Atos, Eviden, Bull et leurs sous-traitants). Périmètre et livrables figés au démarrage, devis remis à partir de 24 à 48 h selon la complexité. Aucune dépendance contractuelle continue imposée.",
       },
       en: {
         hero: "Bezons (Val-d'Oise, 95870) is no generic office suburb: it is the address of Atos SE's and Eviden's world headquarters, housed together in the River Ouest building at 80 quai Voltaire, at the heart of a dense IT cluster where Bull and Dell occupy the Z.I. EST activity zone (24.63 hectares, nearly 329 companies). Axion-IA designs AI-augmented websites and SaaS platforms for the micro-businesses, SMEs and subcontractors orbiting this ecosystem of software publishers and corporate headquarters, twelve minutes from La Défense on the T2 tram. Custom code, European Union hosting compliant with GDPR, zero vendor lock-in — for Bezons leaders who want a platform they own, not a rental.",
@@ -142,7 +142,7 @@ export const BEZONS_COPY: VilleCopy = {
           "Bezons' IT ecosystem is our natural ground: around Atos, Eviden and Bull sits a dense fabric of subcontractors, software publishers and digital service providers needing reliable client portals, SaaS spaces and business websites — exactly what we build in custom code.",
           "Atos' ongoing restructuring (the 'All In Pacific' project consolidating the Bezons campus by end of 2025) frees a pool of talent and former providers launching their own structures: these new Bezons digital SMEs need a credible web platform from day one.",
           "The 'Rives de Seine' Argenteuil-Bezons basin (3M, Spie, Valeo, Johnson Controls, BP France, Air France) and the reconverted industrial heritage (Rhône-Poulenc, Hispano-Suiza, Le Joint Français) drive demand for technical showcase sites, configurators and robust B2B e-commerce catalogues.",
-          "Urban renewal (ZAC Cœur de Ville, ZAC Bords de Seine, Bus Entre Seine project) is bringing out shops, independent professionals and local services at the foot of the T2 tram: for them we deliver mobile-first sites and multi-CMS e-commerce stores, with no travel surcharge from La Défense.",
+          "Urban renewal (ZAC Cœur de Ville, ZAC Bords de Seine, Bus Entre Seine project) is bringing out shops, independent professionals and local services at the foot of the T2 tram: for them we deliver mobile-first sites and multi-CMS e-commerce stores.",
         ],
         methodology: [
           {
@@ -216,11 +216,11 @@ export const BEZONS_COPY: VilleCopy = {
           },
           {
             q: "Do you travel on site to Bezons and neighbouring communes?",
-            a: "Yes. We work in Bezons via the T2 tram (Pont de Bezons terminus, twelve minutes from La Défense) and cover Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes and Nanterre, which share the same fabric of SMEs and subcontractors. Travel costs are calculated case by case depending on the zone.",
+            a: "Yes. We work in Bezons via the T2 tram (Pont de Bezons terminus, twelve minutes from La Défense) and cover Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes and Nanterre, which share the same fabric of SMEs and subcontractors.",
           },
         ],
         guarantees:
-          "Platform delivered in custom code, no vendor lock-in: you keep all source code, AI models and access, transferable to any Île-de-France integrator or brought in-house. EU hosting by default, GDPR and AI Act compliance, DPO on request — a framework suited to the sovereignty requirements of the Bezons IT ecosystem (Atos, Eviden, Bull and their subcontractors). Scope and deliverables fixed at the start, quote delivered from 24 to 48 hours depending on complexity, travel costs calculated case by case. No mandatory ongoing contractual dependency.",
+          "Platform delivered in custom code, no vendor lock-in: you keep all source code, AI models and access, transferable to any Île-de-France integrator or brought in-house. EU hosting by default, GDPR and AI Act compliance, DPO on request — a framework suited to the sovereignty requirements of the Bezons IT ecosystem (Atos, Eviden, Bull and their subcontractors). Scope and deliverables fixed at the start, quote delivered from 24 to 48 hours depending on complexity. No mandatory ongoing contractual dependency.",
       },
     },
   },
@@ -232,7 +232,7 @@ export const BEZONS_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Bezons (Val-d'Oise) ?",
-      a: "Oui, nos consultants se rendent à Bezons via le tramway T2 depuis La Défense (12 minutes) ou les autoroutes A14, A15 et A86. Aucun frais de déplacement n'est facturé en Île-de-France.",
+      a: "Oui, nos consultants se rendent à Bezons via le tramway T2 depuis La Défense (12 minutes) ou les autoroutes A14, A15 et A86.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Bezons ?",

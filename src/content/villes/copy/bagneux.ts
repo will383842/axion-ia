@@ -230,7 +230,7 @@ export const BAGNEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagneux ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagneux et du sud des Hauts-de-Seine. Desservis par la ligne 4 prolongée et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagneux et du sud des Hauts-de-Seine. Desservis par la ligne 4 prolongée et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un artisan BTP ou un commerce balnéolais ?",

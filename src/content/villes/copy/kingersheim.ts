@@ -65,7 +65,7 @@ export const KINGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Kingersheim ?",
-      a: "Nos consultants se déplacent via autoroute A36 (accès direct) ou gare de Mulhouse-Ville (15 min). Position stratégique au croisement Alsace-Suisse-Allemagne. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A36 (accès direct) ou gare de Mulhouse-Ville (15 min). Position stratégique au croisement Alsace-Suisse-Allemagne.",
     },
   ],
 };

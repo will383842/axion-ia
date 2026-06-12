@@ -65,7 +65,7 @@ export const FAULQUEMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Faulquemont ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 15 min) ou gare SNCF Faulquemont (ligne Metz-Strasbourg). Position centrale entre Metz (35 min) et la Sarre. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via autoroute A4 (accès 15 min) ou gare SNCF Faulquemont (ligne Metz-Strasbourg). Position centrale entre Metz (35 min) et la Sarre.",
     },
   ],
 };

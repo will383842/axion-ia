@@ -65,7 +65,7 @@ export const BUC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Buc ?",
-      a: "Nos consultants rejoignent Buc par la D938 depuis Versailles ou via la gare de Versailles-Chantiers (Transilien N/U, RER C) à 10 min. Frais de déplacement Île-de-France inclus ou facturés selon forfait.",
+      a: "Nos consultants rejoignent Buc par la D938 depuis Versailles ou via la gare de Versailles-Chantiers (Transilien N/U, RER C) à 10 min.",
     },
   ],
 };

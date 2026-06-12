@@ -65,7 +65,7 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Sausset-les-Pins ?",
-      a: "Nos consultants se déplacent dans vos locaux. Sausset-les-Pins est accessible en TER (35 min depuis Marseille) ou par A55 (35 min). Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants se déplacent dans vos locaux. Sausset-les-Pins est accessible en TER (35 min depuis Marseille) ou par A55 (35 min).",
     },
   ],
 };

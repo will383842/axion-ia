@@ -65,7 +65,7 @@ export const AMBAZAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Ambazac ?",
-      a: "Nos consultants se déplacent à Ambazac depuis Limoges (20 min N20). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants se déplacent à Ambazac depuis Limoges (20 min N20). Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
     },
   ],
 };

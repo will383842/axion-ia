@@ -65,7 +65,7 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans le Beaufortais ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Beaufort-en-Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (25 min) en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Beaufort-en-Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

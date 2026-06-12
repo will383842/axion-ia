@@ -65,7 +65,7 @@ export const SASSENAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Lyon ?",
-      a: "Nos consultants viennent de Grenoble (15 min tramway A) ou Lyon (1h15 voiture A48). Pour les multi-jours, hébergement local possible (hôtels Vercors). Frais de déplacement (tram/voiture, repas, hébergement) facturés à part du forfait journée, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (15 min tramway A) ou Lyon (1h15 voiture A48). Pour les multi-jours, hébergement local possible (hôtels Vercors).",
     },
   ],
 };

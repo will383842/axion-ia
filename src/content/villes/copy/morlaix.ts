@@ -65,7 +65,7 @@ export const MORLAIX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Morlaix ?",
-      a: "Nos consultants rejoignent Morlaix par TGV direct (3 h 15 depuis Paris) ou par la RN12 depuis Brest (45 min). Frais de déplacement Bretagne facturés selon forfait.",
+      a: "Nos consultants rejoignent Morlaix par TGV direct (3 h 15 depuis Paris) ou par la RN12 depuis Brest (45 min).",
     },
   ],
 };

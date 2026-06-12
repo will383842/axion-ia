@@ -65,7 +65,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ballan-Miré ?",
-      a: "Nos consultants interviennent sur site à Ballan-Miré (Tours centre à 12 min). Frais de mission en sus, grille tarifaire publique.",
+      a: "Nos consultants interviennent sur site à Ballan-Miré (Tours centre à 12 min).",
     },
   ],
 };

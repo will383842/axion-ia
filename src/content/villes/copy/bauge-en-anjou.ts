@@ -65,7 +65,7 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans le Baugeois ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Baugé-en-Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (40 min) facturés en transparence, tarifs publics.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Baugé-en-Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

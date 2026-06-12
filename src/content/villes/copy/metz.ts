@@ -33,8 +33,8 @@ export const METZ_COPY: VilleCopy = {
       en: "Operational AI audit in Metz: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Metz micro-businesses to automotive and steel industrial mid-caps in the EuromÃ©tropole.",
     },
     interventions: {
-      fr: "Interventions IA Ã  Metz : formats sur site d'une Ã  plusieurs journÃ©es selon vos Ã©quipes. Vos collaborateurs repartent autonomes sur des outils IA installÃ©s sur leur poste. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Metz: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA Ã  Metz : formats sur site d'une Ã  plusieurs journÃ©es selon vos Ã©quipes. Vos collaborateurs repartent autonomes sur des outils IA installÃ©s sur leur poste.",
+      en: "AI sessions in Metz: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
       fr: "ImplÃ©mentation IA Ã  Metz : on dÃ©ploie l'IA dans vos outils existants (CRM, ERP, systÃ¨mes industriels, mails) avec ROI chiffrÃ© contractuel. Vos Ã©quipes gardent la main, pas de dÃ©pendance Axion-IA.",
@@ -295,7 +295,7 @@ export const METZ_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA Ã  Metz se dÃ©clinent en formats sur site d'une Ã  plusieurs journÃ©es selon vos Ã©quipes. Vos collaborateurs repartent avec des outils IA installÃ©s sur leur poste, configurÃ©s pour leur travail rÃ©el â€” en usine, au bureau, en clientÃ¨le ou dans le contexte transfrontalier Metz-Luxembourg. Frais de logement, repas et forfait trajet facturÃ©s Ã  part.",
+        hero: "Les interventions IA Axion-IA Ã  Metz se dÃ©clinent en formats sur site d'une Ã  plusieurs journÃ©es selon vos Ã©quipes. Vos collaborateurs repartent avec des outils IA installÃ©s sur leur poste, configurÃ©s pour leur travail rÃ©el â€” en usine, au bureau, en clientÃ¨le ou dans le contexte transfrontalier Metz-Luxembourg.",
         whyHere: [
           "Metz est l'un de nos principaux terrains d'intervention en Grand Est : entreprises industrielles, services bancaires, PME numÃ©riques du TechnopÃ´le et structures publiques reprÃ©sentent une part significative de nos sessions messines.",
           "Toutes les zones de l'EuromÃ©tropole couvertes en prÃ©sentiel : Metz centre, TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy, Marly, Longeville-lÃ¨s-Metz.",
@@ -401,7 +401,7 @@ export const METZ_COPY: VilleCopy = {
           "CrÃ©neau garanti dÃ¨s la confirmation de rÃ©servation. En cas de problÃ¨me technique de notre fait, session reportÃ©e et compensation. Outils opÃ©rationnels le soir mÃªme : si vos collaborateurs ne sont pas autonomes le lendemain, sÃ©ance de remÃ©diation offerte. Vocabulaire et dÃ©mos ajustÃ©s Ã  votre secteur messin â€” industrie, finance, numÃ©rique, collectivitÃ©s.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Metz come in on-site formats from one to several days depending on your teams. Your staff leave with AI tools installed on their workstations, configured for their real work â€” on the factory floor, at the office, with clients or in the cross-border Metz-Luxembourg context. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Metz come in on-site formats from one to several days depending on your teams. Your staff leave with AI tools installed on their workstations, configured for their real work â€” on the factory floor, at the office, with clients or in the cross-border Metz-Luxembourg context.",
         whyHere: [
           "Metz is one of our top engagement grounds in Grand Est: industrial firms, banking services, TechnopÃ´le digital SMEs and public administration represent a significant share of our Metz sessions.",
           "All EuromÃ©tropole zones covered in person: Metz city centre, TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy, Marly, Longeville-lÃ¨s-Metz.",

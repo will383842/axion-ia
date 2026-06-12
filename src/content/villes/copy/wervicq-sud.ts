@@ -61,7 +61,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Wervicq-Sud depuis Lille ?",
-      a: "Nos consultants rejoignent Wervicq-Sud en 30 min depuis Lille centre via A22. Aéroport Lille-Lesquin à 35 min. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Wervicq-Sud en 30 min depuis Lille centre via A22. Aéroport Lille-Lesquin à 35 min. Pour les missions multi-jours, hébergement local possible.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wervicq-Sud ?",

@@ -65,7 +65,7 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Carry-le-Rouet ?",
-      a: "Carry-le-Rouet est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Carry-le-Rouet est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

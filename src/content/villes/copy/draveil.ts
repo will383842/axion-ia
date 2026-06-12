@@ -246,7 +246,7 @@ export const DRAVEIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris (25 min par le RER D via Juvisy). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (25 min par le RER D via Juvisy).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

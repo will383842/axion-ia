@@ -65,7 +65,7 @@ export const BONDOUFLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bondoufle depuis Paris ?",
-      a: "Nos consultants interviennent à Bondoufle (40 min depuis Paris via A6, Évry-Courcouronnes RER D à 10 min). Aéroport Orly à 20 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants interviennent à Bondoufle (40 min depuis Paris via A6, Évry-Courcouronnes RER D à 10 min). Aéroport Orly à 20 min.",
     },
   ],
 };

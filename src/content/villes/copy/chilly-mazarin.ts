@@ -246,7 +246,7 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Chilly-Mazarin est à environ 30 min de Paris centre par l'A6 ou le RER, et la gare TGV de Massy est à 10 min. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+      a: "Chilly-Mazarin est à environ 30 min de Paris centre par l'A6 ou le RER, et la gare TGV de Massy est à 10 min. Nous nous déplaçons sur site.",
     },
     {
       q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",

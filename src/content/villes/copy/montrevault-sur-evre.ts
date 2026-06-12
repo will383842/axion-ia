@@ -65,7 +65,7 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans les Mauges ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Montrevault-sur-Èvre et alentours. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (45 min) facturés en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Montrevault-sur-Èvre et alentours. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

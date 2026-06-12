@@ -69,7 +69,7 @@ export const MONTLUEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (30 min). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Lyon (30 min).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PONTIVY_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Pontivy depuis Rennes ou Vannes ?",
-      a: "Gare SNCF de Pontivy (TER). Rennes à 1 h 30 via RN 24, Vannes à 50 min via RN 24, Lorient à 50 min. Aéroport Lorient à 1 h. Frais de déplacement facturés à part.",
+      a: "Gare SNCF de Pontivy (TER). Rennes à 1 h 30 via RN 24, Vannes à 50 min via RN 24, Lorient à 50 min. Aéroport Lorient à 1 h.",
     },
   ],
 };

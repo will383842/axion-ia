@@ -65,7 +65,7 @@ export const TOURVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Tourves ?",
-      a: "Tourves est à 10 min de Brignoles et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Tourves est à 10 min de Brignoles et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines.",
     },
   ],
 };

@@ -28,8 +28,8 @@ export const GRENOBLE_COPY: VilleCopy = {
       en: "Operational AI audit in Grenoble: we identify priority use cases for your R&D teams, support functions and production lines, then quantify ROI specific to your sector — micro-electronics, energy, software or alpine industry.",
     },
     interventions: {
-      fr: "Interventions IA à Grenoble : formats sur site d'une à plusieurs journées pour ingénieurs, chercheurs et équipes de direction. Vos collaborateurs repartent autonomes avec des outils IA installés et configurés. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Grenoble: on-site formats from one to several days for engineers, researchers and management teams. Your staff leave autonomous with AI tools installed and configured. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Grenoble : formats sur site d'une à plusieurs journées pour ingénieurs, chercheurs et équipes de direction. Vos collaborateurs repartent autonomes avec des outils IA installés et configurés.",
+      en: "AI sessions in Grenoble: on-site formats from one to several days for engineers, researchers and management teams. Your staff leave autonomous with AI tools installed and configured.",
     },
     implementation: {
       fr: "Implémentation IA à Grenoble : déploiement de cas d'usage IA dans vos outils existants (PLM, ERP, outils R&D, SI métier) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance fournisseur.",
@@ -291,7 +291,7 @@ export const GRENOBLE_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Grenoble se déclinent en formats sur site d'une à plusieurs journées, adaptés aux profils spécifiques du bassin grenoblois : ingénieurs R&D, équipes de production industrielle, cadres deep-tech et directions de PME. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Grenoble se déclinent en formats sur site d'une à plusieurs journées, adaptés aux profils spécifiques du bassin grenoblois : ingénieurs R&D, équipes de production industrielle, cadres deep-tech et directions de PME. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés pour leur travail réel.",
         whyHere: [
           "Grenoble présente un profil de participants unique en province : ingénieurs issus de l'Ensimag, de Phelma ou de Grenoble INP, chercheurs CEA-Leti et Inria, équipes produit de start-ups Minalogic. Nos sessions sont calibrées pour ce niveau technique élevé.",
           "Couverture complète du bassin : Presqu'île scientifique, Inovallée à Meylan, campus UGA Saint-Martin-d'Hères, zones industrielles d'Échirolles et de Fontaine, Sassenage, Crolles.",
@@ -397,7 +397,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur grenoblois, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Grenoble come in on-site formats from one to several days, tailored to the Grenoble basin's specific profiles: R&D engineers, industrial production teams, deep-tech managers and SME leadership. Your staff don't leave with slides: they leave with AI tools installed and configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Grenoble come in on-site formats from one to several days, tailored to the Grenoble basin's specific profiles: R&D engineers, industrial production teams, deep-tech managers and SME leadership. Your staff don't leave with slides: they leave with AI tools installed and configured for their real work.",
         whyHere: [
           "Grenoble presents a unique provincial participant profile: engineers from Ensimag, Phelma or Grenoble INP, CEA-Leti and Inria researchers, Minalogic start-up product teams. Our sessions are calibrated for this high technical level.",
           "Full basin coverage: Science Peninsula, Inovallée in Meylan, UGA campus Saint-Martin-d'Hères, Échirolles and Fontaine industrial zones, Sassenage, Crolles.",
@@ -720,7 +720,7 @@ export const GRENOBLE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Grenoble s'adresse à l'ingénieur, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser sur l'IA à son rythme, sur ses propres données techniques — sans session collective. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux de la Presqu'île scientifique, d'Inovallée, de Meylan ou du bassin grenoblois. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Grenoble s'adresse à l'ingénieur, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser sur l'IA à son rythme, sur ses propres données techniques — sans session collective. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux de la Presqu'île scientifique, d'Inovallée, de Meylan ou du bassin grenoblois.",
         whyHere: [
           "Grenoble héberge une forte densité d'ingénieurs et chercheurs (CEA-Leti, Ensimag, Phelma, Inria) dont le niveau technique est trop élevé pour une session collective standardisée — le coaching individuel est calibré sur leur expertise.",
           "Les spin-offs de la Presqu'île scientifique et de Minalogic traitent souvent des données industrielles propriétaires (spécifications semi-conducteurs, brevets, rapports ESRF) trop sensibles pour un cadre collectif.",
@@ -814,19 +814,15 @@ export const GRENOBLE_COPY: VilleCopy = {
             a: "Non. Le coaching s'adapte à votre niveau — du débutant au praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
           },
           {
-            q: "Les frais de déplacement sont-ils inclus ?",
-            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, selon la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
-          },
-          {
             q: "Peut-on organiser plusieurs coachings individuels pour une équipe R&D ?",
             a: "Oui. Certaines ETI et spin-offs grenobloises organisent plusieurs sessions individuelles pour leurs ingénieurs ou chercheurs clés plutôt qu'une session collective. Tarif dégressif selon le volume — à préciser en cadrage.",
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données techniques et enjeux stratégiques ne quittent pas vos locaux grenoblois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions grenobloises).",
+          "Confidentialité stricte : vos données techniques et enjeux stratégiques ne quittent pas vos locaux grenoblois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions grenobloises).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Grenoble is for the engineer, researcher, R&D director or spin-off founder who wants to progress on AI at their own pace, on their own technical data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Science Peninsula, Inovallée, Meylan or Grenoble basin premises. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Grenoble is for the engineer, researcher, R&D director or spin-off founder who wants to progress on AI at their own pace, on their own technical data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Science Peninsula, Inovallée, Meylan or Grenoble basin premises.",
         whyHere: [
           "Grenoble hosts a high density of engineers and researchers (CEA-Leti, Ensimag, Phelma, Inria) whose technical level is too high for a standardised group session — individual coaching is calibrated to their expertise.",
           "Science Peninsula and Minalogic spin-offs often handle proprietary industrial data (semiconductor specifications, patents, ESRF reports) too sensitive for a group setting.",
@@ -921,7 +917,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
           {
             q: "Are travel costs included?",
-            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+            a: "No. These costs are communicated on a prior quote before confirmation.",
           },
           {
             q: "Can we organise several individual coachings for an R&D team?",
@@ -929,7 +925,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your technical data and strategic challenges do not leave your Grenoble premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Grenoble missions).",
+          "Strict confidentiality: your technical data and strategic challenges do not leave your Grenoble premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Grenoble missions).",
       },
     },
     sitesWeb: {

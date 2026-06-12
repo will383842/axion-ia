@@ -65,7 +65,7 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bohain-en-Vermandois ?",
-      a: "Nos consultants se déplacent via gare SNCF Bohain (ligne Paris-Nord–Maubeuge) ou autoroute A26. Saint-Quentin à 25 min, Cambrai à 30 min, Lille à 1h15. Frais de déplacement facturés à part.",
+      a: "Nos consultants se déplacent via gare SNCF Bohain (ligne Paris-Nord–Maubeuge) ou autoroute A26. Saint-Quentin à 25 min, Cambrai à 30 min, Lille à 1h15.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BEZANNES_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Bezannes depuis Paris ?",
-      a: "Gare TGV Champagne-Ardenne sur place, Paris-Est à 45 min en TGV direct. Autoroute A4 à 5 min. Aéroport CDG à 1 h 30. Frais de déplacement facturés à part.",
+      a: "Gare TGV Champagne-Ardenne sur place, Paris-Est à 45 min en TGV direct. Autoroute A4 à 5 min. Aéroport CDG à 1 h 30.",
     },
   ],
 };

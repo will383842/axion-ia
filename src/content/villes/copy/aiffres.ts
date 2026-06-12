@@ -65,7 +65,7 @@ export const AIFFRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Poitiers ou La Rochelle ?",
-      a: "Nos consultants viennent de Poitiers (1h10) ou La Rochelle (1h). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants viennent de Poitiers (1h10) ou La Rochelle (1h). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

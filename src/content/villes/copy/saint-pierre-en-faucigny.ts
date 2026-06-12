@@ -65,7 +65,7 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Annecy ou Genève ?",
-      a: "Nos consultants se déplacent dans vos locaux à Saint-Pierre-en-Faucigny (atelier, chantier, commerce). Annecy à 30 min, Genève à 35 min. Frais de déplacement facturés à part du forfait, tarifs publics transparents.",
+      a: "Nos consultants se déplacent dans vos locaux à Saint-Pierre-en-Faucigny (atelier, chantier, commerce). Annecy à 30 min, Genève à 35 min.",
     },
   ],
 };

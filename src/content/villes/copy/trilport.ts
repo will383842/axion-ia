@@ -61,7 +61,7 @@ export const TRILPORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Trilport ?",
-      a: "Nos consultants viennent sur site à Trilport (Transilien ligne P depuis Paris-Est, 45 min). Format journée ou demi-journée adapté à votre activité. Frais de déplacement inclus Île-de-France, tarifs publics et transparents.",
+      a: "Nos consultants viennent sur site à Trilport (Transilien ligne P depuis Paris-Est, 45 min). Format journée ou demi-journée adapté à votre activité.",
     },
     {
       q: "Quels services IA pour les commerces et professions libérales à Trilport ?",

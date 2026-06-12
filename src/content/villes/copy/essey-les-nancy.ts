@@ -65,7 +65,7 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Essey-lès-Nancy depuis Paris ?",
-      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 5 min. Nancy centre à 10 min. Frais de déplacement facturés à part.",
+      a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 5 min. Nancy centre à 10 min.",
     },
   ],
 };

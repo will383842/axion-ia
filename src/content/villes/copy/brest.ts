@@ -2,8 +2,7 @@
 //
 // Doctrine Will (miroir Paris gold standard) :
 //   - Aucun délai chiffré concret.
-//   - Aucun « frais de déplacement intégrés » — frais de logement, repas et
-//     forfait trajet systématiquement mentionnés en sus sur les interventions.
+//   - Aucun « frais de déplacement intégrés »
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
 //   - Tailles INSEE : TPE / PME / ETI / GE — jamais de métier-type.
@@ -37,16 +36,16 @@ export const BREST_COPY: VilleCopy = {
       en: "Operational AI audit in Brest: we identify automation opportunities in your organisation and quantify ROI for your sector — maritime defence, marine science, digital, port logistics or construction.",
     },
     interventions: {
-      fr: "Interventions IA à Brest : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Brest: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Brest : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel.",
+      en: "AI sessions in Brest: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Brest : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes de gestion) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Brest: we deploy AI into your existing tools (CRM, ERP, email, management systems) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
     unAUn: {
-      fr: "Coaching IA individuel 1-to-1 à Brest : séances sur mesure pour dirigeants et cadres des technologies marines, du Technopôle Brest-Iroise et des PME du Finistère. Ancré sur l'écosystème Naval Group, IFREMER et l'économie maritime brestoise. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
-      en: "1-to-1 AI coaching in Brest: bespoke sessions for executives and managers in marine technologies, Technopôle Brest-Iroise and Finistère SMEs. Grounded in the Naval Group, IFREMER and Brest maritime economy ecosystem. Lodging, meals and travel allowance billed separately for on-site sessions.",
+      fr: "Coaching IA individuel 1-to-1 à Brest : séances sur mesure pour dirigeants et cadres des technologies marines, du Technopôle Brest-Iroise et des PME du Finistère. Ancré sur l'écosystème Naval Group, IFREMER et l'économie maritime brestoise.",
+      en: "1-to-1 AI coaching in Brest: bespoke sessions for executives and managers in marine technologies, Technopôle Brest-Iroise and Finistère SMEs. Grounded in the Naval Group, IFREMER and Brest maritime economy ecosystem.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI bretonnes — site vitrine premium pour défense maritime, sciences de la mer et énergies marines (Naval Group, IFREMER, Pôle Mer), espace client interactif Technopôle Brest-Iroise, dashboard métier connecté à votre CRM/ERP ou systèmes embarqués. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -177,7 +176,7 @@ export const BREST_COPY: VilleCopy = {
           },
           {
             q: "Vos consultants se déplacent-ils jusqu'au Technopôle Brest-Iroise ou à Guipavas ?",
-            a: "Oui. Nous intervenons en présentiel sur l'ensemble de Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — ainsi que dans le Finistère. Les frais de logement, repas et forfait trajet sont facturés séparément.",
+            a: "Oui. Nous intervenons en présentiel sur l'ensemble de Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — ainsi que dans le Finistère.",
           },
           {
             q: "Différence avec un audit Big Four ou un cabinet de conseil traditionnel ?",
@@ -283,7 +282,7 @@ export const BREST_COPY: VilleCopy = {
           },
           {
             q: "Do your consultants travel to Technopôle Brest-Iroise or Guipavas?",
-            a: "Yes. We intervene in person across all of Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — and across Finistère. Lodging, meals and travel allowance billed separately.",
+            a: "Yes. We intervene in person across all of Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — and across Finistère.",
           },
           {
             q: "Difference with a Big Four audit or traditional consulting?",
@@ -301,7 +300,7 @@ export const BREST_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Brest se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — rédaction technique, gestion documentaire, analyse de données, relation client selon votre secteur. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Brest se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — rédaction technique, gestion documentaire, analyse de données, relation client selon votre secteur.",
         whyHere: [
           "Brest et le Finistère sont couverts en présentiel : Brest Métropole, Technopôle Brest-Iroise (Plouzané), Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — ainsi que tout le Finistère sur demande.",
           "Le tissu brestois combine des grandes structures (Naval Group, Thales, IFREMER, Marine nationale) et un tissu dense de PME de sous-traitance, logistique et services. Nos formats couvrent tous les profils, du comité de direction à l'atelier technique.",
@@ -392,7 +391,7 @@ export const BREST_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir sur des sites distants comme le Technopôle Brest-Iroise ou Guipavas ?",
-            a: "Oui. Nous couvrons l'ensemble de Brest Métropole et du Finistère en présentiel. Les frais de logement, repas et forfait trajet sont facturés séparément et détaillés au devis.",
+            a: "Oui. Nous couvrons l'ensemble de Brest Métropole et du Finistère en présentiel.",
           },
           {
             q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
@@ -407,7 +406,7 @@ export const BREST_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur brestois, aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Brest come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — technical writing, document management, data analysis, client relations per your sector. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Brest come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — technical writing, document management, data analysis, client relations per your sector.",
         whyHere: [
           "Brest and Finistère are covered in person: Brest Métropole, Technopôle Brest-Iroise (Plouzané), Guipavas, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas — plus all of Finistère on request.",
           "The Brest fabric combines large structures (Naval Group, Thales, IFREMER, French Navy) and a dense SME fabric in sub-contracting, logistics and services. Our formats cover all profiles, from executive committee to technical workshop.",
@@ -498,7 +497,7 @@ export const BREST_COPY: VilleCopy = {
           },
           {
             q: "Can you come to remote sites like Technopôle Brest-Iroise or Guipavas?",
-            a: "Yes. We cover all of Brest Métropole and Finistère in person. Lodging, meals and travel allowance are billed separately and detailed in the quote.",
+            a: "Yes. We cover all of Brest Métropole and Finistère in person.",
           },
           {
             q: "Are your sessions eligible for training funds?",
@@ -809,7 +808,7 @@ export const BREST_COPY: VilleCopy = {
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Brest ?",
-            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Brest, Plouzané, Guipavas ou au Technopôle Brest-Iroise. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Brest, Plouzané, Guipavas ou au Technopôle Brest-Iroise.",
           },
           {
             q: "Quelle est la fréquence des séances ?",
@@ -833,7 +832,7 @@ export const BREST_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Brest individually supports executives and managers in marine technologies, maritime defence, Technopôle Brest-Iroise and Finistère SMEs. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — maritime technical documentation, oceanic data processing, engineering bureau reporting or commercial management for a Brest SME. You progress at your own pace, without superfluous theory.",
@@ -915,7 +914,7 @@ export const BREST_COPY: VilleCopy = {
         faq: [
           {
             q: "What is the format of 1-to-1 coaching sessions in Brest?",
-            a: "Sessions take place by video or in person at your offices in Brest, Plouzané, Guipavas or Technopôle Brest-Iroise. Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Sessions take place by video or in person at your offices in Brest, Plouzané, Guipavas or Technopôle Brest-Iroise.",
           },
           {
             q: "How often are the sessions?",
@@ -939,7 +938,7 @@ export const BREST_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
     sitesWeb: {
@@ -1125,7 +1124,7 @@ export const BREST_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il sur site à Brest et dans le Finistère ?",
-      a: "Oui. Toutes nos interventions à Brest sont par défaut sur site, dans vos bureaux ou locaux industriels. Nos consultants couvrent l'ensemble de Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon — ainsi que l'ensemble du Finistère. Frais de logement, repas et forfait trajet facturés séparément.",
+      a: "Oui. Toutes nos interventions à Brest sont par défaut sur site, dans vos bureaux ou locaux industriels. Nos consultants couvrent l'ensemble de Brest Métropole — Plouzané, Guipavas, Gouesnou, Le Relecq-Kerhuon — ainsi que l'ensemble du Finistère.",
     },
     {
       q: "Quels secteurs sont prioritaires à Brest pour l'IA ?",

@@ -65,7 +65,7 @@ export const LONGUENESSE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Longuenesse ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Saint-Omer accessible TER depuis Lille (50 min). Nos consultants se déplacent sur site. Frais déplacement à part.",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare Saint-Omer accessible TER depuis Lille (50 min). Nos consultants se déplacent sur site.",
     },
   ],
 };

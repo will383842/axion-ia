@@ -65,7 +65,7 @@ export const LES_ACHARDS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA aux Achards depuis La Roche ou Nantes ?",
-      a: "Nos consultants interviennent directement dans vos locaux aux Achards. La Roche-sur-Yon à 22 km, Les Sables-d'Olonne à 20 km, Nantes à 80 km. Accès A87 à 25 km. Frais déplacement inclus en bocage vendéen.",
+      a: "Nos consultants interviennent directement dans vos locaux aux Achards. La Roche-sur-Yon à 22 km, Les Sables-d'Olonne à 20 km, Nantes à 80 km. Accès A87 à 25 km.",
     },
   ],
 };

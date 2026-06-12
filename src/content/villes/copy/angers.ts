@@ -2,8 +2,7 @@
 //
 // Doctrine appliquée (identique Paris gold standard) :
 //   - Aucun délai chiffré en dur.
-//   - Aucun « frais de déplacement intégrés » — mention systématique
-//     « frais de logement, repas et forfait trajet en sus ».
+//   - Aucune mention de frais de déplacement, logement, repas ou trajet.
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : libellés seuls, tarifs depuis pricing.ts.
 //   - Tailles d'entreprise INSEE uniquement : TPE / PME / ETI / GE.
@@ -38,16 +37,16 @@ export const ANGERS_COPY: VilleCopy = {
       en: "Operational AI audit in Angers: we identify your priority use cases — plant industry, manufacturing, services, agri-food — and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
-      fr: "Interventions IA à Angers : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
-      en: "AI sessions in Angers: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work. Lodging, meals and travel allowance billed separately.",
+      fr: "Interventions IA à Angers : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel.",
+      en: "AI sessions in Angers: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their real work.",
     },
     implementation: {
       fr: "Implémentation IA à Angers : on déploie l'IA dans vos outils existants (ERP, CRM, PLM, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Angers: we deploy AI into your existing tools (ERP, CRM, PLM, email) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel 1-to-1 à Angers : séances sur mesure pour dirigeants et cadres de la filière végétale, des PME industrielles et du tissu tertiaire Maine-et-Loire. Axe Végépolys, Quartz technopôle et PME Anjou. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
-      en: "1-to-1 AI coaching in Angers: bespoke sessions for executives and managers in the plant industry, industrial SMEs and service businesses across Maine-et-Loire. Focused on Vegepolys Valley, Quartz technopole and Anjou SMEs. Lodging, meals and travel allowance billed separately for on-site sessions.",
+      fr: "Coaching IA individuel 1-to-1 à Angers : séances sur mesure pour dirigeants et cadres de la filière végétale, des PME industrielles et du tissu tertiaire Maine-et-Loire. Axe Végépolys, Quartz technopôle et PME Anjou.",
+      en: "1-to-1 AI coaching in Angers: bespoke sessions for executives and managers in the plant industry, industrial SMEs and service businesses across Maine-et-Loire. Focused on Vegepolys Valley, Quartz technopole and Anjou SMEs.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI angevines — site vitrine premium pour filière végétale, industrie et HPC (Vegepolys Valley, Scania, Eviden/Atos, Thales), espace client interactif French Tech Angers, dashboard métier connecté à votre ERP/CRM, PLM ou systèmes industriels. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -82,7 +81,7 @@ export const ANGERS_COPY: VilleCopy = {
 
   // === SERVICES LONG-FORM ANGERS ===
   // Aucun prix en dur, aucun délai chiffré, aucune mention « frais inclus »,
-  // aucune demi-journée, frais de déplacement systématiquement en sus.
+  // aucune demi-journée, aucune mention de frais de déplacement.
   services: {
     audit: {
       fr: {
@@ -301,7 +300,7 @@ export const ANGERS_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Angers se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans la filière végétale, l'industrie, l'agroalimentaire ou le tertiaire angevin. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Angers se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans la filière végétale, l'industrie, l'agroalimentaire ou le tertiaire angevin.",
         whyHere: [
           "Angers couvre des secteurs variés avec des besoins IA très différents : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, commerciaux TPE tertiaire, équipes viticulture Anjou. Nos sessions sont calibrées pour chacun de ces profils — pas de format générique recyclé.",
           "L'ensemble de la métropole Angers Loire Métropole est couvert en présentiel : centre-ville, Belle-Beille (Eviden/Atos, ESEO), Saint-Barthélemy-d'Anjou (Cointreau, ESAIP), Beaucouzé, zone Scania, et les communes du bassin.",
@@ -407,7 +406,7 @@ export const ANGERS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur angevin (végétal, industriel, numérique, agroalimentaire), aucune session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA's AI sessions in Angers come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in Angers' plant industry, manufacturing, agri-food or services sector. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Angers come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in Angers' plant industry, manufacturing, agri-food or services sector.",
         whyHere: [
           "Angers spans diverse sectors with very different AI needs: Vegepolys Valley R&D engineers, Scania/Eviden/Thales technicians, micro-business services staff, Anjou viticulture teams. Our sessions are calibrated for each profile — no recycled generic format.",
           "The full Angers Loire Métropole is covered on site: city centre, Belle-Beille (Eviden/Atos, ESEO), Saint-Barthélemy-d'Anjou (Cointreau, ESAIP), Beaucouzé, Scania zone, and surrounding municipalities.",
@@ -809,7 +808,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Angers ?",
-            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Angers (centre-ville, Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé). Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Angers (centre-ville, Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé).",
           },
           {
             q: "Quelle est la fréquence des séances ?",
@@ -833,7 +832,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Angers individually supports executives and managers in the plant industry, manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau) and French Tech Angers startups. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — plant R&D reports, industrial data, Anjou commercial management. You progress at your own pace, without superfluous theory.",
@@ -915,7 +914,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "What is the format of 1-to-1 coaching sessions in Angers?",
-            a: "Sessions take place by video or in person at your offices in Angers (city centre, Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé). Lodging, meals and travel allowance billed separately for on-site sessions.",
+            a: "Sessions take place by video or in person at your offices in Angers (city centre, Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé).",
           },
           {
             q: "How often are the sessions?",
@@ -939,7 +938,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
     sitesWeb: {

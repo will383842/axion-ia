@@ -65,7 +65,7 @@ export const CABRIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Cabriès ?",
-      a: "Cabriès est à 15 min de l'aéroport Marseille-Provence, 20 min de Marseille et 15 min d'Aix via A51. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
+      a: "Cabriès est à 15 min de l'aéroport Marseille-Provence, 20 min de Marseille et 15 min d'Aix via A51. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

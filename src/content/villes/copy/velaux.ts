@@ -65,7 +65,7 @@ export const VELAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Velaux ?",
-      a: "Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
+      a: "Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8. Nos consultants se déplacent dans vos locaux.",
     },
   ],
 };

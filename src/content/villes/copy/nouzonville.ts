@@ -65,7 +65,7 @@ export const NOUZONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Nouzonville depuis Paris ?",
-      a: "TGV Paris-Est à Charleville-Mézières en 2 h, puis 10 min en voiture. Autoroute A34 via Reims. Aéroport CDG à 2 h 30. Frais de déplacement facturés à part.",
+      a: "TGV Paris-Est à Charleville-Mézières en 2 h, puis 10 min en voiture. Autoroute A34 via Reims. Aéroport CDG à 2 h 30.",
     },
   ],
 };

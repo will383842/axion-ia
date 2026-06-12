@@ -65,7 +65,7 @@ export const HONFLEUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Honfleur ?",
-      a: "Nos consultants viennent de Caen (1h A13) ou Le Havre (25 min pont de Normandie). Déplacement direct sur site (hôtel, restaurant, galerie, commerce). Frais de déplacement facturés à part du forfait.",
+      a: "Nos consultants viennent de Caen (1h A13) ou Le Havre (25 min pont de Normandie). Déplacement direct sur site (hôtel, restaurant, galerie, commerce).",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission dans l'Anjou bleu ?",
-      a: "Nos consultants seniors se déplacent dans vos locaux à Ombrée d'Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés. Frais déplacement depuis Angers (1h) facturés en transparence.",
+      a: "Nos consultants seniors se déplacent dans vos locaux à Ombrée d'Anjou. Diagnostic initial, ateliers pratiques, livraison d'outils IA configurés.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const GIBERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nos consultants viennent de Caen (10 min) ou Paris (2h15 TGV gare Caen). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (10 min) ou Paris (2h15 TGV gare Caen). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

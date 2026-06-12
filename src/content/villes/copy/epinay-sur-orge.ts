@@ -65,7 +65,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Épinay-sur-Orge depuis Paris ?",
-      a: "Nos consultants interviennent via RER C (35 min Paris centre, gare Épinay-sur-Orge directe). Massy TGV à 10 min. Aéroport Orly à 20 min. Déplacements facturés séparément, tarifs publics.",
+      a: "Nos consultants interviennent via RER C (35 min Paris centre, gare Épinay-sur-Orge directe). Massy TGV à 10 min. Aéroport Orly à 20 min.",
     },
   ],
 };

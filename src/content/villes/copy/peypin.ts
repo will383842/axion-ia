@@ -67,7 +67,7 @@ export const PEYPIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Peypin depuis Aubagne ou Marseille ?",
-      a: "Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Nos consultants viennent sur chantier ou en atelier dans vos locaux. Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Nos consultants viennent sur chantier ou en atelier dans vos locaux. Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session.",
     },
   ],
 };

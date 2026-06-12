@@ -65,7 +65,7 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Mesnil-Saint-Denis ?",
-      a: "Nos consultants interviennent au Mesnil-Saint-Denis via A12/N10 (40 min depuis Paris). Gare de La Verrière (RER C) à 10 min. Frais de déplacement Yvelines sud facturés selon forfait, tarifs publics.",
+      a: "Nos consultants interviennent au Mesnil-Saint-Denis via A12/N10 (40 min depuis Paris). Gare de La Verrière (RER C) à 10 min.",
     },
   ],
 };

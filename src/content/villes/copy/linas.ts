@@ -65,7 +65,7 @@ export const LINAS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à La Ville-du-Bois et Ballainvilliers ?",
-      a: "Oui, nous couvrons Linas, Montlhéry, La Ville-du-Bois, Ballainvilliers, Longjumeau et tout le Hurepoix essonnien. Déplacements facturés séparément, tarifs publics.",
+      a: "Oui, nous couvrons Linas, Montlhéry, La Ville-du-Bois, Ballainvilliers, Longjumeau et tout le Hurepoix essonnien.",
     },
   ],
 };

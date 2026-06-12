@@ -65,7 +65,7 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ploudalmézeau ?",
-      a: "Nos consultants se déplacent depuis Brest (30 min) ou Saint-Renan (15 min). Gare TGV de Brest sur la ligne Paris-Brest. Frais de déplacement facturés à part du forfait journée, tarifs publics et transparents.",
+      a: "Nos consultants se déplacent depuis Brest (30 min) ou Saint-Renan (15 min). Gare TGV de Brest sur la ligne Paris-Brest.",
     },
   ],
 };

@@ -61,7 +61,7 @@ export const LE_VESINET_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA au Vésinet ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
       q: "Comment se rendre au Vésinet depuis Paris ?",
