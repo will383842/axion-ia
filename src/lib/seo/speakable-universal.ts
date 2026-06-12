@@ -33,6 +33,11 @@ export const DEFAULT_SPEAKABLE_SELECTORS: ReadonlyArray<string> = [
   '[itemprop="text"]',
   ".speakable",
   ".direct-answer",
+  // Pages éditoriales (villes, hubs) : la réponse directe porte l'id
+  // `#axion-direct-answer` et/ou `[data-answer]` (pas la classe .direct-answer,
+  // réservée au content-gen). On cible les deux pour éviter un sélecteur fantôme.
+  "#axion-direct-answer",
+  "[data-answer]",
 ];
 
 /**

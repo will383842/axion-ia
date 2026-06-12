@@ -482,6 +482,15 @@ export function buildOrganizationJsonLd({
         addressLocality: "Paris",
       },
     },
+    // Fondateur — E-E-A-T : un humain nommé identifiable derrière l'entité
+    // (Williams, LinkedIn réel). Renforce la confiance Google + la citabilité LLM.
+    founder: {
+      "@type": "Person",
+      name: "Williams",
+      jobTitle: isFr ? "Fondateur · lead consultant IA" : "Founder · lead AI consultant",
+      url: `${SITE_URL}/${isFr ? "fr/a-propos" : "en/about"}#will`,
+      sameAs: ["https://www.linkedin.com/in/williamsjullin/"],
+    },
     areaServed: ["FR", "EU"],
     knowsLanguage: ["fr", "en"],
     contactPoint: {
@@ -584,10 +593,10 @@ const PERSONA_SLUGS = new Set(["manon"]);
 export function buildPersonJsonLd({
   locale,
   slug = "will",
-  name = "Will",
+  name = "Williams",
   jobTitle,
   image,
-  sameAs = ["https://www.linkedin.com/in/will-axion-ia"],
+  sameAs = ["https://www.linkedin.com/in/williamsjullin/"],
 }: PersonJsonLdInput) {
   if (PERSONA_SLUGS.has(slug)) {
     throw new Error(
@@ -702,7 +711,7 @@ export function buildArticleJsonLd({
   dateModified,
   articleBody,
   authorSlug = "will",
-  authorName = "Will",
+  authorName = "Williams",
   image,
   keywords,
   articleSection,

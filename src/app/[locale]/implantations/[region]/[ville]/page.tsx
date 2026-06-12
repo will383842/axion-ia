@@ -767,6 +767,7 @@ export default async function VilleHubPage({ params }: Props) {
             <p
               id="axion-direct-answer"
               data-speakable-hero
+              data-answer
               className="text-fg-soft mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:text-base"
             >
               {isFr ? (copy.directAnswerFr ?? copy.pitchFr) : (copy.directAnswerEn ?? copy.pitchEn)}
