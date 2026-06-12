@@ -1171,12 +1171,6 @@ export default async function FormationsHub({ params }: Props) {
                         "4 h pour découvrir l'IA ou cadrer 1 cas d'usage. 1 jour pour une découverte opérationnelle. 1 jour productivité pour des automatisations métier ciblées. 2 jours pour aller en profondeur. 3 jours+ pour multi-sites ou contenus ultra-spécifiques.",
                     },
                     {
-                      id: "frais-deplacement",
-                      question: "Frais de déplacement inclus ?",
-                      answer:
-                        "Non. Logement, repas et forfait trajet sont facturés en sus, calculés au cas par cas selon distance/durée. Devis transparent fourni avant signature.",
-                    },
-                    {
                       id: "outils",
                       question: "Quels outils IA utilisés en formation ?",
                       answer:
@@ -1193,7 +1187,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "couverture-france",
                       question: "Intervenez-vous dans toute la France métropolitaine ?",
                       answer:
-                        "Oui. 12 régions métropolitaines couvertes, plus de 2 100 communes éligibles. Nos formateurs IA experts sont mobiles : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes, Rouen, Dijon, Orléans, Ajaccio. Aucun surcoût géographique sur le tarif formation — seuls les frais de déplacement (transport, logement, repas) sont facturés en sus.",
+                        "Oui. 12 régions métropolitaines couvertes, plus de 2 100 communes éligibles. Nos formateurs IA experts sont mobiles : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes, Rouen, Dijon, Orléans, Ajaccio. Aucun surcoût géographique sur le tarif formation.",
                     },
                     {
                       id: "couverture-formation-vs-organisme",
@@ -1206,7 +1200,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "couverture-international",
                       question: "Intervenez-vous à l'international ou seulement en France ?",
                       answer:
-                        "France métropolitaine systématiquement. À l'international, nous intervenons dans les sociétés francophones (Belgique, Suisse, Luxembourg, Québec, Maghreb francophone, etc.) sur des missions d'une semaine minimum — pour rentabiliser le déplacement et garantir un transfert d'autonomie complet à votre équipe. Devis sur mesure incluant les frais de voyage et hébergement.",
+                        "France métropolitaine systématiquement. À l'international, nous intervenons dans les sociétés francophones (Belgique, Suisse, Luxembourg, Québec, Maghreb francophone, etc.) sur des missions d'une semaine minimum — pour garantir un transfert d'autonomie complet à votre équipe. Devis sur mesure.",
                     },
                     {
                       id: "remboursement",
@@ -1229,12 +1223,6 @@ export default async function FormationsHub({ params }: Props) {
                         "4 h to discover AI or frame 1 use case. 1 day for operational discovery. 1 day productivity for targeted business automations. 2 days for depth. 3+ days for multi-site or ultra-specific content.",
                     },
                     {
-                      id: "travel-fees",
-                      question: "Travel expenses included?",
-                      answer:
-                        "No. Lodging, meals and travel allowance billed separately, calculated case by case based on distance/duration. Transparent quote provided before signature.",
-                    },
-                    {
                       id: "tools",
                       question: "Which AI tools are used in training?",
                       answer:
@@ -1250,7 +1238,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "coverage-france",
                       question: "Do you cover all metropolitan France?",
                       answer:
-                        "Yes. 12 metropolitan regions covered, 2,100+ eligible communes. Our expert AI trainers are mobile: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes, Rouen, Dijon, Orléans, Ajaccio. No geographic surcharge on the training rate — only travel costs (transport, lodging, meals) are billed separately.",
+                        "Yes. 12 metropolitan regions covered, 2,100+ eligible communes. Our expert AI trainers are mobile: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes, Rouen, Dijon, Orléans, Ajaccio. No geographic surcharge on the training rate.",
                     },
                     {
                       id: "coverage-formation-vs-organisme",

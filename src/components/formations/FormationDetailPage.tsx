@@ -67,8 +67,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         title: s.titre,
       })),
     })),
-    logisticsNote:
-      "Frais de déplacement, hébergement et repas facturés en sus, au forfait selon distance et durée. Devis transparent avant signature.",
   };
 
   // ── Bénéfices — « ce que chacun saura faire » (objectifs pédagogiques) ───────

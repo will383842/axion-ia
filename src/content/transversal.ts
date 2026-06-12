@@ -143,7 +143,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui. Nos consultants se déplacent dans toutes les capitales régionales : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement toute ville française. Frais de déplacement inclus.",
+        "Oui. Nos consultants se déplacent dans toutes les capitales régionales : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement toute ville française.",
     },
     en: {
       question:

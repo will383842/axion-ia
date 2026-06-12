@@ -50,7 +50,7 @@ Produis un comparatif structuré. Règles absolues :
 - Conclusion : recommandation motivée par taille entreprise + cas d'usage (PME, ETI, etc.)
 - 100 % factuel : pas de superlatif sans preuve concrète.
 - Le keyword principal DOIT apparaître textuellement dans le H1.
-- 0 délai chiffré, 0 frais de déplacement, 0 prix en dur.
+- 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Minimum 700 mots de contenu substantiel.
 - 4 à 6 questions FAQ réelles (People-Also-Ask comparatif) avec réponses directes ≥ 2 lignes.

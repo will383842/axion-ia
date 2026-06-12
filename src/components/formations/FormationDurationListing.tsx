@@ -59,12 +59,6 @@ const FAQ_BY_DUREE: Record<
       answer:
         "Pour la plupart des formats 4 h, aucun pré-requis : on démarre tous les postes en même temps. L'Art du Prompt (niveau 2) demande en revanche d'utiliser déjà l'IA au quotidien.",
     },
-    {
-      id: "4h-frais",
-      question: "Frais de déplacement inclus ?",
-      answer:
-        "Non. Logement (si nécessaire), repas et forfait trajet sont facturés en sus, calculés selon distance et durée. Devis transparent fourni avant signature.",
-    },
   ],
   "1j": [
     {
@@ -111,12 +105,6 @@ const FAQ_BY_DUREE: Record<
       answer:
         "De 2 à 30 personnes pour les formats IA, avec tarif dégressif. Les formats Agents & Automatisations et Claude sont en petits groupes pour maximiser la pratique.",
     },
-    {
-      id: "2j-frais",
-      question: "Frais de déplacement inclus en formation 2 jours ?",
-      answer:
-        "Non. Logement (2 nuits sur site), repas et forfait trajet facturés en sus. Devis transparent avant signature.",
-    },
   ],
   "3j": [
     {
@@ -136,12 +124,6 @@ const FAQ_BY_DUREE: Record<
       question: "Combien de participants en 3 jours ?",
       answer:
         "Selon le format et la gamme. Les formats Agents et Claude restent en petits groupes pour que chaque participant reparte avec son propre outil construit, pas avec des notes.",
-    },
-    {
-      id: "3j-frais",
-      question: "Frais de déplacement inclus en formation 3 jours ?",
-      answer:
-        "Non. Logement, repas et forfait trajet facturés en sus, calculés selon distance et durée. Devis transparent avant signature.",
     },
   ],
 };

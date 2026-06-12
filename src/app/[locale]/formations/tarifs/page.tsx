@@ -92,9 +92,9 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
             <h1 className="display-editorial text-fg mt-5">Tarifs des formations</h1>
             <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed sm:text-xl">
               Tarifs HT <strong className="text-fg">par groupe</strong> (pas par personne), en
-              intra-entreprise dans vos locaux, hors frais de déplacement. Exemple : une journée
-              pour 10 salariés revient à moins cher qu&apos;une formation catalogue en salle
-              extérieure, sans déplacer vos équipes.
+              intra-entreprise dans vos locaux. Exemple : une journée pour 10 salariés revient à
+              moins cher qu&apos;une formation catalogue en salle extérieure, sans déplacer vos
+              équipes.
             </p>
           </div>
         </Container>

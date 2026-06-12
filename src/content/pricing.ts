@@ -87,17 +87,6 @@ export interface PricingTier {
   groupSizeEn?: string;
 }
 
-/**
- * Note universelle frais annexes pour les interventions et formations sur site.
- * Affichée systématiquement sous la grille tarifaire des formats interventions.
- * Décision Will 2026-05-08 : les frais de déplacement ne sont JAMAIS inclus
- * dans le forfait, ils sont facturés en sus selon la zone et la durée.
- */
-export const INTERVENTION_FEES_NOTE = {
-  fr: "Frais de logement, repas et forfait trajet en sus, facturés au cas par cas selon la distance et la durée. Devis transparent fourni avant signature.",
-  en: "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature.",
-} as const;
-
 // ============================================================================
 // AUDIT IA — 4 niveaux pyramide
 // ============================================================================

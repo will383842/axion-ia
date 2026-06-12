@@ -22,7 +22,6 @@ import {
   formatPrice,
   formatAmount,
   getTierById,
-  INTERVENTION_FEES_NOTE,
   type PricingTier,
 } from "@/content/pricing";
 
@@ -119,8 +118,8 @@ export default async function PricingPage({ params }: Props) {
   const heroTitle = isFr ? "Nos tarifs IA en" : "Our AI pricing in";
   const heroTitleEm = isFr ? "clair" : "plain sight";
   const heroDesc = isFr
-    ? "Audits, Formations, Implémentations, 1-to-1 et Plateforme web — tous nos prix publics HT, sans étoile, sans surprise. Frais de déplacement facturés en sus, devis transparent avant signature."
-    : "Audits, Trainings, Implementations, 1-to-1 and Web platform — all our public prices excl. VAT, no asterisk, no surprise. Travel billed separately, transparent quote before signature.";
+    ? "Audits, Formations, Implémentations, 1-to-1 et Plateforme web — tous nos prix publics HT, sans étoile, sans surprise."
+    : "Audits, Trainings, Implementations, 1-to-1 and Web platform — all our public prices excl. VAT, no asterisk, no surprise.";
 
   // 5 modules tarifés. Plateforme web/SaaS = section custom (sur devis pur).
   const sections: ReadonlyArray<PricingSectionDef> = [
@@ -141,11 +140,10 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Montée en compétence" : "Upskilling",
       title: t("nav.formations"),
       description: isFr
-        ? "Formats 4 h, 1, 2 ou 3+ jours. Démos live sur vos vrais documents, vos vrais cas. Frais déplacement en sus."
-        : "Formats 4 h, 1, 2 or 3+ days. Live demos on your real documents, your real cases. Travel billed separately.",
+        ? "Formats 4 h, 1, 2 ou 3+ jours. Démos live sur vos vrais documents, vos vrais cas."
+        : "Formats 4 h, 1, 2 or 3+ days. Live demos on your real documents, your real cases.",
       tiers: INTERVENTION_TIERS,
       ctaLabel: isFr ? "Voir tous les formats" : "See all formats",
-      note: isFr ? INTERVENTION_FEES_NOTE.fr : INTERVENTION_FEES_NOTE.en,
     },
     {
       id: "un-a-un",
@@ -203,12 +201,6 @@ export default async function PricingPage({ params }: Props) {
             "Parce que la transparence accélère le bon match. Si nos tarifs ne correspondent pas à votre budget, vous le savez en 30 secondes — pas après 3 calls et un devis. Plus de respect du temps de chacun.",
         },
         {
-          id: "frais-deplacement",
-          question: "Que coûtent les frais de déplacement ?",
-          answer:
-            "Logement, repas et forfait trajet sont facturés en sus, calculés au cas par cas selon la distance et la durée. Devis transparent fourni avant signature — aucune mauvaise surprise.",
-        },
-        {
           id: "tva",
           question: "Les tarifs incluent-ils la TVA ?",
           answer:
@@ -233,12 +225,6 @@ export default async function PricingPage({ params }: Props) {
           question: "Why are your prices public?",
           answer:
             "Because transparency speeds up the right match. If our prices don't match your budget, you know in 30 seconds — not after 3 calls and a quote. More respect for everyone's time.",
-        },
-        {
-          id: "frais-deplacement",
-          question: "What are travel expenses?",
-          answer:
-            "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature — no nasty surprise.",
         },
         {
           id: "tva",

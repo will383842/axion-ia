@@ -64,7 +64,7 @@ Règles absolues :
 - Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les PME françaises") — angle conseil.
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les PME dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
-- 0 délai chiffré, 0 frais de déplacement, 0 prix en dur.
+- 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - Minimum 450 mots de contenu substantiel (article d'actualité = plus court que guide).
 - 4 à 6 questions FAQ réelles avec réponses directes ≥ 2 lignes.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"

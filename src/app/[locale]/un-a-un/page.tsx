@@ -937,12 +937,6 @@ export default async function UnAUnHubPage({ params }: Props) {
                         "Ceux qui correspondent à votre poste : ChatGPT, Mistral, Microsoft Copilot, Perplexity pour le texte et la recherche ; Midjourney pour le visuel ; les automatisations (Make, Zapier) et les agents IA pour les tâches récurrentes. On travaille uniquement sur vos vrais outils, vos vrais documents, vos vrais workflows.",
                     },
                     {
-                      id: "frais-deplacement",
-                      question: "Les frais de déplacement sont-ils inclus ?",
-                      answer:
-                        "Non. Logement, repas et forfait trajet sont facturés en sus, calculés au cas par cas selon distance et durée. Devis transparent fourni avant signature.",
-                    },
-                    {
                       id: "couverture",
                       question: "Intervenez-vous partout en France ?",
                       answer:
@@ -991,12 +985,6 @@ export default async function UnAUnHubPage({ params }: Props) {
                       question: "Which AI tools do you use in coaching?",
                       answer:
                         "Those that fit your role: ChatGPT, Mistral, Microsoft Copilot, Perplexity for text and research; Midjourney for visuals; automations (Make, Zapier) and AI agents for recurring tasks. We work only on your real tools, real documents, real workflows.",
-                    },
-                    {
-                      id: "travel-fees",
-                      question: "Are travel expenses included?",
-                      answer:
-                        "No. Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature.",
                     },
                     {
                       id: "coverage",

@@ -36,7 +36,7 @@ const SYSTEM_PROMPT =
 Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues :
 - 100 % centré Axion-IA : chaque paragraphe ancre une valeur ou preuve concrète.
 - Angle opérationnel : cas d'usage réels, bénéfices mesurables, retour terrain.
-- 0 délai chiffré, 0 frais de déplacement intégrés dans le prix, 0 prix en dur.
+- 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Anti-doorway HCU 2024 : minimum 600 mots de contenu substantiel.
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.

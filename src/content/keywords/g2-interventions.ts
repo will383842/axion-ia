@@ -1586,7 +1586,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
         "Axion-IA intervient dans toute la France : Paris, Lyon, Bordeaux, Marseille, Nantes, Toulouse. Formation IA sur site pour vos équipes. Devis en 24h.",
       h2Variants: [
         "Villes couvertes par Axion-IA pour les formations IA sur site",
-        "Frais de déplacement et modalités d'intervention en régions",
+        "Modalités d'intervention en régions",
         "Comment réserver une session IA dans votre ville",
       ],
     },

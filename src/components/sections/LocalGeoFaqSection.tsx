@@ -233,7 +233,7 @@ const FAQS_BY_SERVICE: Record<
       id: "unauun-regions",
       fr: {
         q: "L'accompagnement 1-to-1 est-il disponible en régions ?",
-        a: "Oui, partout en France métropolitaine. Les séances régulières sont conduites à distance ; des séances intensives sur site sont possibles dans toutes les régions, sur devis incluant les frais de déplacement.",
+        a: "Oui, partout en France métropolitaine. Les séances régulières sont conduites à distance ; des séances intensives sur site sont possibles dans toutes les régions, sur devis.",
       },
       en: {
         q: "Is 1-to-1 coaching available in regional areas?",
