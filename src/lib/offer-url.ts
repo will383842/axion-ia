@@ -49,16 +49,19 @@ const OFFER_FR_PATH: Readonly<Record<string, string>> = {
   "audit-strategique-eti": "/audit/strategique-eti",
 
   // — Interventions / formations collectives & 1-to-1 —
-  "intervention-4h": "/interventions/collectives/4h",
-  "intervention-essentielle": "/interventions/essentielle",
-  "intervention-temps": "/interventions/gagner-du-temps",
-  "intervention-approfondie": "/interventions/approfondie",
-  // Conférence : pas de page propre → /interventions/collectives (cible 301 vérifiée).
-  "intervention-conference": "/interventions/collectives",
+  // Refonte Formations V2 (2026-06-12) : les anciennes offres collectives (4h /
+  // essentielle / gagner-du-temps / approfondie / conférence / claude) n'ont plus
+  // de page dédiée → elles pointent vers le hub /formations (route vivante ; les
+  // anciennes URL /interventions/* sont 301 → /formations via next.config.ts).
+  "intervention-4h": "/formations",
+  "intervention-essentielle": "/formations",
+  "intervention-temps": "/formations",
+  "intervention-approfondie": "/formations",
+  "intervention-conference": "/formations",
   "intervention-dirigeants": "/interventions/dirigeants",
   // Membre d'équipe (890 €) : pas de page /interventions/membre-equipe → hub 1-to-1 (D-MEMBRE-EQUIPE 🔒).
   "intervention-membre-equipe": "/un-a-un",
-  "intervention-claude": "/interventions/intervention-claude",
+  "intervention-claude": "/formations",
   "intervention-dirigeant-vision": "/interventions/dirigeant-vision-strategique",
   "intervention-claude-dirigeant": "/interventions/claude-dirigeant",
   // Sur demande : pas de page propre → demande de devis.

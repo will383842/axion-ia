@@ -3,6 +3,7 @@
 import { signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import { DashboardV2 } from "./DashboardV2";
 
 function startOfDay(d: Date): Date {
@@ -234,25 +235,25 @@ export async function DashboardV2Wrapper({
       readyToValidate={readyToValidate.map((b) => ({
         id: b.id,
         href: `${base}/reservations/${b.id}`,
-        primary: `${customerName(b)} — ${b.interventionType} — ${fmtDate(b.bookingDate)}`,
+        primary: `${customerName(b)} — ${interventionTypeLabel(b.interventionType)} — ${fmtDate(b.bookingDate)}`,
         secondary: `· acompte payé ${fmtRelative(b.depositPaidAt)}`,
       }))}
       pendingOptionRows={pendingOptionRows.map((o) => ({
         id: o.id,
         href: `${base}/options`,
-        primary: `${o.companyName} — ${o.interventionType}`,
+        primary: `${o.companyName} — ${interventionTypeLabel(o.interventionType)}`,
         secondary: `· slot ${fmtDate(o.slot?.slotDate ?? null)} · reçue ${fmtRelative(o.createdAt)}`,
       }))}
       waitingClientRows={waitingClientRows.map((b) => ({
         id: b.id,
         href: `${base}/reservations/${b.id}`,
-        primary: `${customerName(b)} — ${b.interventionType} — ${fmtDate(b.bookingDate)}`,
+        primary: `${customerName(b)} — ${interventionTypeLabel(b.interventionType)} — ${fmtDate(b.bookingDate)}`,
         secondary: `· envoyé ${fmtRelative(b.updatedAt)}`,
       }))}
       cadrageRows={cadrageRows.map((b) => ({
         id: b.id,
         href: `${base}/reservations/${b.id}`,
-        primary: `${customerName(b)} — ${b.interventionType}`,
+        primary: `${customerName(b)} — ${interventionTypeLabel(b.interventionType)}`,
         secondary: `· ${fmtDate(b.cadrageMeeting?.scheduledAt ?? null)}`,
       }))}
       activityRows={activityRows.map((a) => ({

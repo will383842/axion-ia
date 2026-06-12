@@ -9,6 +9,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { InvoiceActions } from "./InvoiceActions";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import type {
   InvoiceStatus,
   InvoiceType,
@@ -250,7 +251,9 @@ export default async function FactureDetailPage({ params }: PageProps) {
             <h2 className="admin-h2">Booking lié</h2>
             <dl className="admin-dl">
               <dt className="admin-dt">Intervention</dt>
-              <dd className="admin-dd">{invoice.booking.interventionType}</dd>
+              <dd className="admin-dd">
+                {interventionTypeLabel(invoice.booking.interventionType)}
+              </dd>
               <dt className="admin-dt">Date</dt>
               <dd className="admin-dd">{formatDate(invoice.booking.bookingDate)}</dd>
               <dt className="admin-dt">Status</dt>

@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { QuoteActions } from "./QuoteActions";
 import type { QuoteStatus } from "../../../../../../../prisma/generated/client";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 
 export const dynamic = "force-dynamic";
 
@@ -132,7 +133,7 @@ export default async function DevisDetailPage({ params }: PageProps) {
           <h2 className="admin-h2">Booking lié</h2>
           <dl className="admin-dl">
             <dt className="admin-dt">Intervention</dt>
-            <dd className="admin-dd">{quote.booking.interventionType}</dd>
+            <dd className="admin-dd">{interventionTypeLabel(quote.booking.interventionType)}</dd>
             <dt className="admin-dt">Date</dt>
             <dd className="admin-dd">{formatDate(quote.booking.bookingDate)}</dd>
             <dt className="admin-dt">Status booking</dt>

@@ -34,34 +34,11 @@ export const routing = defineRouting({
     // Module 1 — Interventions entreprise (1-to-1 conservé ; collectif → /formations)
     "/interventions": { fr: "/interventions", en: "/interventions" },
 
-    // Sprint 14.10.7 (2026-05-11) — refonte taxonomique en 3 blocs famille.
-    // Hub famille « Formations équipe » + 4 paliers durée.
-    "/interventions/collectives": {
-      fr: "/interventions/collectives",
-      en: "/interventions/team-trainings",
-    },
-    "/interventions/collectives/4h": {
-      fr: "/interventions/collectives/4h",
-      en: "/interventions/team-trainings/4h",
-    },
-    "/interventions/collectives/1-jour": {
-      fr: "/interventions/collectives/1-jour",
-      en: "/interventions/team-trainings/1-day",
-    },
-    "/interventions/collectives/2-jours": {
-      fr: "/interventions/collectives/2-jours",
-      en: "/interventions/team-trainings/2-days",
-    },
-    "/interventions/collectives/3-jours-plus": {
-      fr: "/interventions/collectives/3-jours-plus",
-      en: "/interventions/team-trainings/3-days-plus",
-    },
-    // Page détail indexable de l'unique formation 4 h (Sprint 14.10.7 fix).
-    // Atelier IA ciblé supprimé le 2026-06-03 (Will) — 301 via next.config.ts.
-    "/interventions/demarrage-ia-express": {
-      fr: "/interventions/demarrage-ia-express",
-      en: "/interventions/ai-express-kickoff",
-    },
+    // Anciennes routes collectives (`/interventions/collectives/*`) +
+    // `demarrage-ia-express` RETIRÉES (2026-06-12) : remplacées par /formations/*
+    // et redirigées en 301 permanent via next.config.ts. Plus aucune page React
+    // ni lien interne ne les vise — on les sort du pathnames pour clarifier la
+    // carte des routes vivantes (le 301 reste géré au niveau redirects()).
     // Page dédiée formulaire interventions (pattern miroir de /audit/demande).
     // Sprint 14.10.7 — Will exige une page indexable, pas un scroll anchor.
     "/interventions/demande": {
@@ -79,14 +56,8 @@ export const routing = defineRouting({
       en: "/interventions/discovery-coaching",
     },
 
-    "/interventions/essentielle": {
-      fr: "/interventions/essentielle",
-      en: "/interventions/essential",
-    },
-    "/interventions/approfondie": {
-      fr: "/interventions/approfondie",
-      en: "/interventions/deep-dive",
-    },
+    // `essentielle` / `approfondie` (anciennes collectives) retirées 2026-06-12
+    // → /formations (301 next.config.ts).
     "/interventions/dirigeants": {
       fr: "/interventions/dirigeants",
       en: "/interventions/executives",
@@ -103,14 +74,8 @@ export const routing = defineRouting({
       fr: "/interventions/claude-implementation-individuel",
       en: "/interventions/claude-implementation-individual",
     },
-    "/interventions/gagner-du-temps": {
-      fr: "/interventions/gagner-du-temps",
-      en: "/interventions/save-time",
-    },
-    "/interventions/intervention-claude": {
-      fr: "/interventions/intervention-claude",
-      en: "/interventions/intervention-claude",
-    },
+    // `gagner-du-temps` / `intervention-claude` (anciennes collectives) retirées
+    // 2026-06-12 → /formations (301 next.config.ts).
 
     // Module 2 — Audit & optimisation (pyramide 4 niveaux 2026-05-07)
     "/audit": { fr: "/audit", en: "/audit" },

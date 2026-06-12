@@ -1,26 +1,53 @@
 // Server Component — fiche détail d'UNE formation du catalogue V2.
-// Rend le MÊME design que les anciennes fiches collectives (essentielle…) :
-// ProductPageTemplate (hero + déroulé + bénéfices + process + métriques + FAQ),
-// + DetailHeroSchema (visuel hero), + section tranches de prix, + FormationContactBand,
-// + maillage (formations sœurs + couverture nationale + KB).
+//
+// Mise en page CALQUÉE sur les pages détail un-à-un (`InterventionDetailPage`,
+// ex. /interventions/dirigeant-vision-strategique) — décision Will 2026-06-12 :
+// même grammaire visuelle (Hero halo-warm → Programme → Objectifs → 4 bénéfices
+// → ContactBand → FAQ → CTA dark), mêmes sous-composants partagés
+// (`InterventionSchedule`, `InterventionBenefitsGrid`, `InterventionFaqList`).
+//
+// Spécificités FORMATION conservées (que le un-à-un n'a pas) :
+//   1. Programme MULTI-JOURS (une timeline par journée du `programme`).
+//   2. Tranches de PRIX par effectif (un même programme, tarif dégressif).
 //
 // Alimentée par `FormationV2` (catalog-v2). Contenu 100 % FR. AUCUN prix en dur
 // (matrice pricing.ts). ZÉRO mention Qualiopi côté public (décision Will 2026-06-11).
 
 import type { ReactNode } from "react";
-import { ArrowRight, Compass, FlaskConical, Lightbulb, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  Clock,
+  GraduationCap,
+  Mail,
+  Phone,
+  Sparkles,
+  Target,
+  Users,
+} from "lucide-react";
 
 import type { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
-import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
-import { FormationContactBand } from "@/components/services/formation/FormationContactBand";
+import { ContactBand } from "@/components/sections/ContactBand";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import {
+  InterventionBenefitsGrid,
+  type InterventionBenefit,
+} from "@/components/sections/intervention-parts/InterventionBenefitsGrid";
+import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
+import {
+  InterventionSchedule,
+  type InterventionScheduleItem,
+} from "@/components/sections/intervention-parts/InterventionSchedule";
 import {
   type FormationV2,
   FORMATIONS_V2,
@@ -33,8 +60,11 @@ import {
   getDureeMeta,
   getGammeMeta,
 } from "@/content/formations/catalog-v2-meta";
+import { findBookableBySlug } from "@/content/booking-catalog";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { buildCourseJsonLd, buildFaqJsonLd, buildHowToJsonLd, buildServiceJsonLd } from "@/lib/seo";
+
+const TIGHT_X = "lg:px-6 xl:px-10";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
 function bracketLabel(b: FormationBracket): string {
@@ -57,126 +87,77 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const entryPrice = getFormationV2EntryPrice(f);
   const brackets = getFormationV2Brackets(f);
 
-  // ── Déroulé (timeline) — dérivé du programme structuré du catalogue ──────────
-  const daySchedule = {
-    title: f.programme.length > 1 ? "Le programme de la formation" : "Le déroulé de la formation",
-    days: f.programme.map((section) => ({
-      label: section.titreFr,
-      items: section.steps.map((s) => ({
-        time: s.temps ?? "",
-        title: s.titre,
-      })),
-    })),
-  };
+  // ── Réservabilité calendrier — dérivée du SSOT booking-catalog (même logique
+  //    que les pages détail un-à-un). Les formations 4h/1j/2j sont réservables
+  //    directement (deep-link `?intervention=<slug>` → calendrier pré-sélectionné) ;
+  //    les 3 jours sont « sur devis » (bookable:false) → on bascule sur l'appel.
+  const isBookable = Boolean(findBookableBySlug(f.slugFr));
+  const reserveHref = `/reserver?intervention=${f.slugFr}`;
 
-  // ── Bénéfices — « ce que chacun saura faire » (objectifs pédagogiques) ───────
-  const benefits = f.objectifsFr.map((o) => ({ title: o, description: "" }));
+  // ── Bandeau prix + effectif (hero) ───────────────────────────────────────────
+  const priceLabel =
+    typeof entryPrice === "number"
+      ? `À partir de ${formatAmount(entryPrice, "fr")} HT`
+      : "Sur devis";
+  const los = brackets
+    .map((b) => Number.parseInt(b.split("-")[0] ?? "", 10))
+    .filter((n) => Number.isFinite(n));
+  const his = brackets
+    .map((b) => Number.parseInt(b.split("-")[1] ?? "", 10))
+    .filter((n) => Number.isFinite(n));
+  const minLo = los.length ? Math.min(...los) : 0;
+  const maxHi = his.length ? Math.max(...his) : 0;
+  const groupSizeLabel =
+    maxHi > 0 ? `${minLo} à ${maxHi} personnes · intra-entreprise` : "Intra-entreprise, sur site";
 
-  // ── Métriques — 3 chiffres parlants, vrais pour toutes les formations ────────
-  const groupMax =
-    brackets
-      .map((b) => Number.parseInt(b.split("-")[1] ?? "", 10))
-      .filter((n) => Number.isFinite(n))
-      .reduce((a, b) => Math.max(a, b), 0) || 0;
-  const metrics = [
-    {
-      number: String(f.objectifsFr.length),
-      suffix: "",
-      label: "compétences clés acquises et pratiquées en séance",
-    },
-    {
-      number: groupMax > 0 ? String(groupMax) : "—",
-      suffix: groupMax > 0 ? " pers." : "",
-      label: "par session maximum, tarif dégressif selon l'effectif",
-    },
-    { number: "J+1", suffix: "", label: "vos équipes opérationnelles dès le lendemain" },
+  // 3 chips ROI — vrais pour toutes les formations (parité hero un-à-un).
+  const heroChips = [
+    "Sur vos vrais outils",
+    "Intra-entreprise, sur site",
+    "Opérationnel·le dès le lendemain",
   ];
 
-  // ── Copy ProductPageTemplate ─────────────────────────────────────────────────
-  const copy = {
-    eyebrow: `${gamme.labelFr} · ${duree.heuresFr}`,
-    title: f.h1Fr,
-    answer: f.accrocheFr,
-    ...(typeof entryPrice === "number" ? { priceEur: entryPrice } : {}),
-    ctaPrimary: "Réserver un appel",
-    ctaSecondary: "Nous écrire",
-    benefitsTitle: "Ce que chacun saura faire",
-    benefits,
-    processTitle: "Comment réserver votre formation",
-    processEyebrow: "Réservation",
-    processSteps: [
-      {
-        title: "Vous nous contactez",
-        description:
-          "Par appel ou message : on comprend votre contexte, vos équipes et vos objectifs.",
-      },
-      {
-        title: "On prépare votre journée",
-        description:
-          "Programme calibré sur votre secteur, vos outils et vos cas réels — pas de scénario théorique.",
-      },
-      {
-        title: "Intervention sur site",
-        description:
-          "Le formateur intervient le jour J dans vos locaux. Vos équipes produisent dès la séance.",
-      },
-    ],
-    metricsTitle: "Le retour sur investissement",
-    metricsEyebrow: "Bénéfices",
-    metrics,
-    faqTitle: "Questions fréquentes",
-    faqs: f.faqs.map((q, i) => ({ id: `faq-${i}`, question: q.question, answer: q.reponse })),
-    ctaBlockTitle: "Former vos équipes à l'IA",
-    ctaBlockDescription:
-      "Un formateur IA expert intervient sur votre site, sur vos vrais outils. Vos équipes gagnent des heures dès la première session.",
-    daySchedule,
-    why: {
-      title: "Pour vous,",
-      titleEm: "concrètement",
-      intro: f.beneficeDirigeantFr,
-      points: [
-        { title: "Public visé", description: f.publicViseFr },
-        { title: "L'équation temps", description: f.equationTempsFr },
-        ...(f.prerequisFr
-          ? [{ title: "Pré-requis", description: f.prerequisFr }]
-          : [{ title: "Pré-requis", description: "Aucun — la formation démarre à votre niveau." }]),
-      ],
+  // ── Bénéfices — 4 cartes dérivées des champs formation (parité « 4 bénéfices ») ─
+  const benefits: ReadonlyArray<InterventionBenefit> = [
+    {
+      icon: Users,
+      titleFr: "Pour qui",
+      titleEn: "Who it's for",
+      bodyFr: f.publicViseFr,
+      bodyEn: f.publicViseFr,
     },
-  };
+    {
+      icon: Clock,
+      titleFr: "Le temps que vous gagnez",
+      titleEn: "Time you save",
+      bodyFr: f.equationTempsFr,
+      bodyEn: f.equationTempsFr,
+    },
+    {
+      icon: Target,
+      titleFr: "Le bénéfice direct",
+      titleEn: "Direct benefit",
+      bodyFr: f.beneficeDirigeantFr,
+      bodyEn: f.beneficeDirigeantFr,
+    },
+    {
+      icon: GraduationCap,
+      titleFr: "Pré-requis",
+      titleEn: "Prerequisites",
+      bodyFr: f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.",
+      bodyEn: f.prerequisFr ?? "None — the training starts at your level.",
+    },
+  ];
 
-  // ── Hero schema — 3 blocs thématiques (parité visuelle fiches collectives) ───
-  const heroSchema = (
-    <DetailHeroSchema
-      eyebrow="Comment ça se passe"
-      title={`Une formation ${duree.shortFr}, sur vos cas réels`}
-      accent="primary"
-      blocks={[
-        {
-          icon: Compass,
-          prefix: "Avant",
-          label: "On cadre avec vous",
-          detail:
-            "Objectifs, niveau de l'équipe et cas réels à traiter — défini ensemble en amont.",
-        },
-        {
-          icon: FlaskConical,
-          prefix: "Pendant",
-          label: "Atelier pratique",
-          detail:
-            "Chaque participant produit sur ses propres tâches, pas sur des exemples théoriques.",
-        },
-        {
-          icon: Lightbulb,
-          prefix: "Après",
-          label: "Repartez équipé·e",
-          detail: "Des usages applicables et un livrable terminé, opérationnels dès le lendemain.",
-        },
-      ]}
-      ariaLabel={`Schéma : déroulé d'une formation ${duree.labelFr} Axion-IA — cadrage en amont, atelier pratique sur vos cas, usages applicables dès le lendemain.`}
-    />
-  );
+  // ── FAQ — mappée au sous-composant partagé ───────────────────────────────────
+  const faqItems = f.faqs.map((q) => ({
+    qFr: q.question,
+    qEn: q.question,
+    aFr: q.reponse,
+    aEn: q.reponse,
+  }));
 
-  // ── JSON-LD ──────────────────────────────────────────────────────────────────
+  // ── JSON-LD (inchangé — Course + Service + FAQ + HowTo) ───────────────────────
   const serviceJsonLd = buildServiceJsonLd({
     locale,
     path,
@@ -200,9 +181,6 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const faqJsonLd = buildFaqJsonLd({
     items: f.faqs.map((q) => ({ question: q.question, answer: q.reponse })),
   });
-  // HowTo JSON-LD — signal AEO « comment se déroule cette formation » dérivé du
-  // programme (distinct par formation → pas de duplicate). Speakable + Breadcrumb
-  // sont déjà émis (buildServiceJsonLd/buildFaqJsonLd + <Breadcrumbs>).
   const programmeSteps = f.programme.flatMap((s) => s.steps).filter((st) => st.titre !== "Pause");
   const howToJsonLd =
     programmeSteps.length > 0
@@ -226,25 +204,158 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     { href: path, label: f.titreFr },
   ];
 
+  const multiDay = f.programme.length > 1;
+
   return (
     <>
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      <ProductPageTemplate
-        isFr={isFr}
-        accent="primary"
-        copy={copy}
-        ctaPrimaryHref="/appel"
-        ctaSecondaryHref="/contact"
-        heroSchema={heroSchema}
-        midBand={<FormationContactBand isFr={isFr} />}
-        jsonLd={[serviceJsonLd, courseJsonLd, faqJsonLd, ...(howToJsonLd ? [howToJsonLd] : [])]}
-        hideReserveCta
-      />
+      {/* HERO — calqué sur InterventionDetailPage (halo-warm, prix chip, chips ROI). */}
+      <section className="bg-halo-warm relative overflow-hidden py-12 sm:py-16 lg:py-20">
+        <Container className={cn("relative", TIGHT_X)}>
+          <div className="max-w-3xl">
+            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+              <span
+                aria-hidden="true"
+                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              />
+              {gamme.labelFr} · {duree.heuresFr}
+            </p>
 
-      {/* Tranches de prix — un même programme, tarif selon l'effectif. */}
+            <h1 className="display-editorial text-fg mt-5">{f.h1Fr}</h1>
+
+            <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              {f.accrocheFr}
+            </p>
+
+            {/* Bandeau prix + effectif */}
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <span className="bg-terracotta text-mocha-fg rounded-full px-4 py-1.5 text-base font-bold tracking-tight tabular-nums shadow-[0_4px_12px_-4px_rgba(0,0,0,0.15)]">
+                {priceLabel}
+              </span>
+              <span className="text-fg-soft text-[13px]">{groupSizeLabel}</span>
+            </div>
+
+            {/* 3 chips bénéfice ROI */}
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {heroChips.map((chip) => (
+                <li
+                  key={chip}
+                  className="bg-terracotta-soft text-terracotta-deep border-terracotta/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+                >
+                  <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
+                  {chip}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              {isBookable ? (
+                <>
+                  <Cta
+                    href={reserveHref}
+                    size="lg"
+                    className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+                  >
+                    <CalendarDays aria-hidden="true" className="h-4 w-4" />
+                    Poser une option sur le calendrier
+                  </Cta>
+                  <Cta href="/appel" variant="outline" size="lg">
+                    <Phone aria-hidden="true" className="h-4 w-4" />
+                    Réserver un appel
+                  </Cta>
+                </>
+              ) : (
+                <>
+                  <Cta
+                    href="/appel"
+                    size="lg"
+                    className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+                  >
+                    <Phone aria-hidden="true" className="h-4 w-4" />
+                    Réserver un appel
+                  </Cta>
+                  <Cta href="/contact" variant="outline" size="lg">
+                    <Mail aria-hidden="true" className="h-4 w-4" />
+                    Nous écrire
+                  </Cta>
+                </>
+              )}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* PROGRAMME — juste après le hero (parité un-à-un). Multi-jours : une
+          timeline par journée. */}
+      <Section
+        tone="paper"
+        eyebrow={multiDay ? `Programme · ${duree.heuresFr}` : `Programme type · ${duree.heuresFr}`}
+        title={multiDay ? "Le programme" : "Le détail"}
+        titleEm={multiDay ? "de la formation" : "de votre journée"}
+        description="Programme cadré en amont par appel. La trame reste celle-ci, le contenu s'adapte à vos outils, votre secteur et vos cas réels."
+        contentClassName={TIGHT_X}
+      >
+        <div className="space-y-12">
+          {f.programme.map((sectionDay, idx) => {
+            const items: ReadonlyArray<InterventionScheduleItem> = sectionDay.steps.map((s) => ({
+              time: s.temps ?? "",
+              titleFr: s.titre,
+              titleEn: s.titre,
+            }));
+            return (
+              <div key={idx}>
+                {multiDay ? (
+                  <p className="text-terracotta-deep mb-5 text-center text-[13px] font-bold tracking-[0.16em] uppercase">
+                    {sectionDay.titreFr}
+                  </p>
+                ) : null}
+                <InterventionSchedule items={items} isFr={isFr} />
+              </div>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* OBJECTIFS PÉDAGOGIQUES — checklist (cœur formation, valeur SEO/pédago). */}
+      {f.objectifsFr.length > 0 ? (
+        <Section
+          eyebrow="Ce que vous obtenez"
+          title="Ce que chacun"
+          titleEm="saura faire"
+          description="À l'issue de la formation, voici les compétences acquises et pratiquées en séance."
+          contentClassName={TIGHT_X}
+        >
+          <ul className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+            {f.objectifsFr.map((o) => (
+              <li key={o} className="flex items-start gap-3">
+                <CheckCircle2
+                  aria-hidden="true"
+                  className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
+                  strokeWidth={2}
+                />
+                <span className="text-fg-soft text-[15px] leading-relaxed">{o}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
+      {/* 4 BÉNÉFICES — grille partagée un-à-un. */}
+      <Section
+        tone="sand"
+        eyebrow="Pour vous, concrètement"
+        title="4 bénéfices"
+        titleEm="concrets"
+        description="Pourquoi cette formation, et pour qui — en clair."
+        contentClassName={TIGHT_X}
+      >
+        <InterventionBenefitsGrid items={benefits} isFr={isFr} />
+      </Section>
+
+      {/* TRANCHES DE PRIX — spécificité formation : un programme, tarif par effectif. */}
       {brackets.length > 0 ? (
         <Section
           tone="paper"
@@ -286,8 +397,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                         {duree.heuresFr} sur site, dans vos locaux. {f.accrocheFr}
                       </p>
                       <div className="mt-auto pt-6">
-                        <Cta href="/appel" size="lg" className="w-full justify-center">
-                          Réserver un appel
+                        <Cta
+                          href={isBookable ? reserveHref : "/appel"}
+                          size="lg"
+                          className="w-full justify-center"
+                        >
+                          {isBookable ? "Poser une option" : "Réserver un appel"}
                           <ArrowRight aria-hidden="true" className="h-4 w-4" />
                         </Cta>
                       </div>
@@ -300,7 +415,30 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
-      {/* Maillage — autres formations + couverture nationale + KB. */}
+      {/* BANDEAU CONTACT — orientation (parité un-à-un). */}
+      <ContactBand
+        isFr={isFr}
+        eyebrow="Une question sur cette formation ?"
+        title="On vous oriente,"
+        titleEm="à votre rythme"
+        description="Un échange pour comprendre vos équipes et vos objectifs, et vous dire le format qui vous correspond. Sans engagement."
+        track="-formation-detail"
+      />
+
+      {/* FAQ — accordion partagé un-à-un. */}
+      {faqItems.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow="FAQ"
+          title="Questions"
+          titleEm="fréquentes"
+          contentClassName={TIGHT_X}
+        >
+          <InterventionFaqList items={faqItems} isFr={isFr} />
+        </Section>
+      ) : null}
+
+      {/* MAILLAGE — autres formations. */}
       {siblings.length > 0 ? (
         <Section tone="paper" eyebrow="Autres formations" title="Pour aller" titleEm="plus loin">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -324,6 +462,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         </Section>
       ) : null}
 
+      {/* COUVERTURE FRANCE + KB — maillage national. */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr={`La formation « ${f.titreFr} »`}
@@ -333,6 +472,34 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       />
 
       <RelatedKnowledge service="interventions-formations" />
+
+      {/* CTA FINAL — bandeau dark (parité un-à-un). */}
+      <CtaBlock
+        eyebrow="Démarrer"
+        title="Former vos équipes"
+        titleEm="à l'IA"
+        description="Un formateur IA expert intervient sur votre site, sur vos vrais outils. Vos équipes gagnent des heures dès la première session. Aucun engagement avant signature."
+        cta={
+          <Cta
+            href={isBookable ? reserveHref : "/appel"}
+            size="lg"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+          >
+            {isBookable ? (
+              <CalendarDays aria-hidden="true" className="h-4 w-4" />
+            ) : (
+              <Phone aria-hidden="true" className="h-4 w-4" />
+            )}
+            {isBookable ? "Poser une option sur le calendrier" : "Réserver un appel"}
+          </Cta>
+        }
+        tone="dark"
+      />
+
+      <JsonLd data={serviceJsonLd} />
+      <JsonLd data={courseJsonLd} />
+      <JsonLd data={faqJsonLd} />
+      {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
     </>
   );
 }

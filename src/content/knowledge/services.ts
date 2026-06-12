@@ -66,7 +66,10 @@ export const SERVICE_DEFS: readonly ServiceDef[] = [
   {
     slug: "interventions-formations",
     verticales: ["interventions_formations"],
-    pageHref: "/interventions",
+    // `/interventions` (nu) redirige 301 → `/formations` (next.config.ts) ; on
+    // pointe directement sur la cible canonique pour éviter le hop sur le bloc
+    // « Connaissances liées » des fiches formations.
+    pageHref: "/formations",
     labelFr: "Formations & interventions IA",
     tagNameFr: "Service : Interventions & accompagnement",
     tagNameEn: "Service: Interventions & enablement",

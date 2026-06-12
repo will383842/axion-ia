@@ -9,6 +9,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { NewQuoteForm } from "./NewQuoteForm";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 
 export const dynamic = "force-dynamic";
 
@@ -83,7 +84,7 @@ export default async function NewQuotePage({ params, searchParams }: PageProps) 
     <AdminPageShell width="narrow">
       <AdminPageHeader
         title="Créer un devis"
-        description={`Pour ${sub?.companyName ?? "—"} · ${booking.interventionType} · ${booking.bookingDate.toISOString().slice(0, 10)}`}
+        description={`Pour ${sub?.companyName ?? "—"} · ${interventionTypeLabel(booking.interventionType)} · ${booking.bookingDate.toISOString().slice(0, 10)}`}
         breadcrumbs={
           <Link
             href={`/fr/${adminPrefix}/reservations/${booking.id}`}

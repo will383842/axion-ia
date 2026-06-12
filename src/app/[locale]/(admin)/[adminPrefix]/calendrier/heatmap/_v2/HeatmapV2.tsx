@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { distanceAndBufferFromHub, distanceKm } from "@/lib/haversine";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 
 const CONFLICT_THRESHOLD_KM = 600;
 const WARN_THRESHOLD_KM = 300;
@@ -218,7 +219,7 @@ export function HeatmapV2({
                                   href={`/fr/${adminPrefix}/reservations/${b.id}`}
                                   className="admin-link"
                                 >
-                                  {customerName(b)} — {b.interventionType}
+                                  {customerName(b)} — {interventionTypeLabel(b.interventionType)}
                                 </Link>{" "}
                                 · {formatDate(b.bookingDate)} · {b.status}
                               </li>

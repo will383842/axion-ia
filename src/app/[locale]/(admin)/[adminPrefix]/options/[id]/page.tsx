@@ -8,6 +8,7 @@ import { auth } from "@/auth";
 import { getOptionDetailAction } from "@/features/admin-options/actions";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { OptionActions } from "./OptionActions";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 
 export const dynamic = "force-dynamic";
 
@@ -83,7 +84,7 @@ export default async function OptionDetailPage({ params }: PageProps) {
             <dt className="admin-dt">Date</dt>
             <dd className="admin-dd">{opt.slot.slotDate.toISOString().slice(0, 10)}</dd>
             <dt className="admin-dt">Intervention</dt>
-            <dd className="admin-dd">{opt.interventionType}</dd>
+            <dd className="admin-dd">{interventionTypeLabel(opt.interventionType)}</dd>
             <dt className="admin-dt">Participants</dt>
             <dd className="admin-dd">{opt.participantsCount}</dd>
             <dt className="admin-dt">Locale</dt>

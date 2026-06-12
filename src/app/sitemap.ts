@@ -160,20 +160,11 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // et glossaire.xml. On retire de pages.xml — il reste émis depuis glossaire.xml
   // (sub-sitemap dédié : hub + 60 termes) où il est canonique.
   "/glossaire",
-  // Refonte /formations 2026-06-11 — les anciennes routes collectives /interventions/*
-  // sont 301-redirigées vers /formations (next.config). On les exclut de pages.xml
-  // pour ne pas lister d'URL 301 dans le sitemap (cohérence GSC). Les pathnames
-  // restent déclarés (next-intl) le temps de la transition SEO ; les 301 font le SEO.
-  "/interventions/collectives",
-  "/interventions/collectives/4h",
-  "/interventions/collectives/1-jour",
-  "/interventions/collectives/2-jours",
-  "/interventions/collectives/3-jours-plus",
-  "/interventions/demarrage-ia-express",
-  "/interventions/essentielle",
-  "/interventions/approfondie",
-  "/interventions/gagner-du-temps",
-  "/interventions/intervention-claude",
+  // Refonte /formations 2026-06-11 — les anciennes routes collectives
+  // /interventions/* sont 301-redirigées vers /formations (next.config). Leurs
+  // `pathnames` ont été RETIRÉS de routing.ts (2026-06-12), donc elles ne peuvent
+  // plus apparaître dans le sitemap : plus besoin de les exclure ici. Les 301
+  // (next.config.ts) continuent de porter le SEO.
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {

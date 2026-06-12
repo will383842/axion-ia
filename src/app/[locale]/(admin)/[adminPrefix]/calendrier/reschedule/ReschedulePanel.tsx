@@ -10,6 +10,7 @@ import { useActionState, useState } from "react";
 import { DndContext, useDraggable, useDroppable, type DragEndEvent } from "@dnd-kit/core";
 import { rescheduleBookingFormAction } from "@/features/booking/reschedule-form-actions";
 import { RESCHEDULE_FORM_INITIAL } from "@/features/booking/reschedule-form-state";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 
 interface BookingItem {
   id: string;
@@ -186,7 +187,7 @@ function DraggableBookingCard({ booking }: { booking: BookingItem }) {
       className={`admin-reschedule-booking ${isDragging ? "admin-reschedule-booking-dragging" : ""}`}
     >
       <strong>{booking.companyName}</strong>
-      <div className="admin-meta-small">{booking.interventionType}</div>
+      <div className="admin-meta-small">{interventionTypeLabel(booking.interventionType)}</div>
       <div className="admin-meta-small">
         Actuelle : {formatDate(booking.bookingDate)} · {booking.status}
       </div>

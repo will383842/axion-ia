@@ -12,6 +12,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
@@ -141,7 +142,7 @@ export async function SubmissionDetailContent({
                 {submission.bookings.map((b) => (
                   <tr key={b.id}>
                     <td>{b.bookingDate.toISOString().slice(0, 10)}</td>
-                    <td>{b.interventionType}</td>
+                    <td>{interventionTypeLabel(b.interventionType)}</td>
                     <td>{b.participantsCount}</td>
                     <td>
                       {b.pricePaidCents != null

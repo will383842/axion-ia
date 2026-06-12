@@ -14,6 +14,7 @@ import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { BookingActions } from "./BookingActions";
 import { BookingFormateurSelect, type TrainerOption } from "./BookingFormateurSelect";
 import { REGIONS } from "@/content/regions";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import type { BookingStatus } from "../../../../../../../prisma/generated/client";
 
 const REGION_LABELS: Record<string, string> = Object.fromEntries(
@@ -248,7 +249,7 @@ export default async function ReservationDetailPage({ params }: PageProps) {
           <h2 className="admin-h2">Intervention</h2>
           <dl className="admin-dl">
             <dt className="admin-dt">Type</dt>
-            <dd className="admin-dd">{booking.interventionType}</dd>
+            <dd className="admin-dd">{interventionTypeLabel(booking.interventionType)}</dd>
             <dt className="admin-dt">Date</dt>
             <dd className="admin-dd">{formatDate(booking.bookingDate)}</dd>
             <dt className="admin-dt">Participants</dt>

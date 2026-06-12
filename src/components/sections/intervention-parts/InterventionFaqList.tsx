@@ -35,7 +35,7 @@ export function InterventionFaqList({ items, isFr }: Props) {
               +
             </span>
           </summary>
-          <p data-faq-a className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
+          <p data-faq-a data-answer className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
             {isFr ? f.aFr : f.aEn}
           </p>
         </details>

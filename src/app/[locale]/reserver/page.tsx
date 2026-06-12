@@ -13,7 +13,7 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { prisma } from "@/lib/prisma";
 import { enumToSlug } from "@/lib/intervention-type";
-import { BOOKABLE_FORMATS } from "@/content/booking-catalog";
+import { BOOKABLE_FORMATS, findBookableBySlug } from "@/content/booking-catalog";
 
 // Types d'intervention affichés en social proof sur le calendrier public.
 // SSOT : dérivé des formats réservables du catalogue (booking-catalog.ts) pour
@@ -77,7 +77,9 @@ async function loadDbBookedSlots(): Promise<BookedSlot[]> {
         det && typeof det["companySector"] === "string" ? (det["companySector"] as string) : null;
       const sector = sectorFromDetails ?? b.submission?.sector ?? "—";
       const size = b.submission?.employeesCount ?? bracketParticipants(b.participantsCount);
-      const duration: 1 | 2 = slug === "approfondie" ? 2 : 1;
+      // Durée dérivée du SSOT booking-catalog (corrige le hardcode legacy
+      // `approfondie?2:1` qui affichait les formations V2 « 2 jours » en 1 jour).
+      const duration: 1 | 2 = findBookableBySlug(slug)?.durationDays ?? 1;
       out.push({
         date: iso,
         intervention: slug as BookedSlot["intervention"],

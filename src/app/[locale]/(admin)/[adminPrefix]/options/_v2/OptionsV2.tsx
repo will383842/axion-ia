@@ -2,6 +2,7 @@
 
 import { listOptionsAction } from "@/features/admin-options/actions";
 import { AdminFilterTabs, AdminStatusBadge } from "@/components/admin/ui";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -62,7 +63,7 @@ export async function OptionsV2({ adminPrefix, searchParams }: Props): Promise<R
           {o.contactEmail}
         </div>
       </span>,
-      o.interventionType,
+      interventionTypeLabel(o.interventionType),
       String(o.participantsCount),
       <AdminStatusBadge
         key="status"

@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import type { QuoteStatus } from "../../../../../../../prisma/generated/client";
 import { AdminFilterTabs, AdminStatusBadge } from "@/components/admin/ui";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 
 const STATUS_LABELS: Record<QuoteStatus, string> = {
@@ -91,7 +92,7 @@ export async function DevisV2({ adminPrefix, searchParams }: Props): Promise<Rea
         <code key="number">{q.number}</code>,
         sub?.companyName ?? "—",
         sub?.contactName ?? "—",
-        q.booking.interventionType,
+        interventionTypeLabel(q.booking.interventionType),
         fmtEur(q.amountTtcCents),
         <AdminStatusBadge
           key="status"

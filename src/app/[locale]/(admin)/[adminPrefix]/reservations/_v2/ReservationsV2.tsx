@@ -6,6 +6,7 @@
 import { prisma } from "@/lib/prisma";
 import type { BookingStatus } from "../../../../../../../prisma/generated/client";
 import { AdminFilterTabs, AdminStatusBadge } from "@/components/admin/ui";
+import { interventionTypeLabel } from "@/lib/intervention-label";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 
 const STATUS_FILTERS: { value: string; label: string }[] = [
@@ -144,7 +145,7 @@ export async function ReservationsV2({
           </div>
         </span>,
         <span key="intervention" className="block">
-          <div>{b.interventionType}</div>
+          <div>{interventionTypeLabel(b.interventionType)}</div>
           <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             {b.participantsCount} participant(s)
           </div>

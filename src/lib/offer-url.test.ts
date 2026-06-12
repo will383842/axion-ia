@@ -48,15 +48,16 @@ describe("T-34 offer-url — zéro lien mort", () => {
     }
   });
 
-  it("les 3 offres sans page propre résolvent vers une route live (pas un 404/301)", () => {
+  it("les offres sans page propre résolvent vers une route live (pas un 404/301)", () => {
     expect(resolveOfferUrl("intervention-membre-equipe")).toBe("/fr/un-a-un");
     expect(resolveOfferUrl("intervention-sur-demande")).toBe("/fr/demande-devis");
-    expect(resolveOfferUrl("intervention-conference")).toBe("/fr/interventions/collectives");
+    // Conférence : ancienne offre collective sans page → hub /formations (post-refonte V2).
+    expect(resolveOfferUrl("intervention-conference")).toBe("/fr/formations");
   });
 
   it("couvre les 5+ verticales", () => {
     expect(resolveOfferUrl("audit-cible")).toBe("/fr/audit/cible");
-    expect(resolveOfferUrl("intervention-claude")).toBe("/fr/interventions/intervention-claude");
+    expect(resolveOfferUrl("intervention-claude")).toBe("/fr/formations");
     expect(resolveOfferUrl("impl-ia-custom")).toBe("/fr/implementation/ia-custom");
     expect(resolveOfferUrl("codage-web")).toBe("/fr/sites-web-augmentes");
     expect(resolveOfferUrl("un-a-un-recurrent")).toBe("/fr/un-a-un");
