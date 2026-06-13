@@ -77,3 +77,48 @@ export async function deleteRecipientAction(
   });
   return { ok: true };
 }
+
+/**
+ * Importe les formateurs ACTIFS (fiches Qualiopi → Formateurs) dans l'annuaire
+ * de notification, en rôle « formateur ». Dédoublonné par `trainerId` : un
+ * ré-import n'ajoute que les nouveaux. La base Formateurs reste la source riche ;
+ * cet annuaire ne stocke que ce qu'il faut pour notifier (e-mail + nom).
+ */
+export async function importTrainersAction(): Promise<{
+  ok: boolean;
+  imported?: number;
+  skipped?: number;
+  error?: string;
+}> {
+  const session = await requireAdminWrite();
+  const trainers = await prisma.trainer.findMany({
+    where: { actif: true },
+    select: { id: true, nom: true, prenom: true, email: true },
+  });
+  let imported = 0;
+  let skipped = 0;
+  for (const t of trainers) {
+    const exists = await prisma.documentRecipient.findFirst({ where: { trainerId: t.id } });
+    if (exists) {
+      skipped++;
+      continue;
+    }
+    await prisma.documentRecipient.create({
+      data: {
+        email: t.email,
+        nom: `${t.prenom} ${t.nom}`.trim(),
+        role: "formateur",
+        trainerId: t.id,
+        actif: true,
+      },
+    });
+    imported++;
+  }
+  await logActivity({
+    action: "documents-interventions.recipient.import-trainers",
+    targetType: "DocumentRecipient",
+    changes: { imported, skipped },
+    session,
+  });
+  return { ok: true, imported, skipped };
+}

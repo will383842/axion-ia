@@ -273,7 +273,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/documents-interventions/destinataires`,
-      label: "Listes destinataires",
+      label: "Annuaire équipe",
       icon: "✉️",
       group: "documents-interventions",
     },

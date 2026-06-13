@@ -38,7 +38,7 @@ export default async function DocumentsInterventionsLayout({
     { id: "formations", label: "Formations", href: `${base}/formations` },
     { id: "un-a-un", label: "1-to-1", href: `${base}/un-a-un` },
     { id: "audit", label: "Audits", href: `${base}/audit` },
-    { id: "destinataires", label: "Listes destinataires", href: `${base}/destinataires` },
+    { id: "destinataires", label: "Annuaire équipe", href: `${base}/destinataires` },
   ];
 
   return (
