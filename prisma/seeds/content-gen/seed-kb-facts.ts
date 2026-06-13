@@ -11,7 +11,9 @@
  * Idempotent : upsert sur le slug unique. Run 2× = même résultat.
  */
 
+import { randomUUID } from "node:crypto";
 import type { PrismaClient } from "../../generated/client";
+import { generateEmbedding, buildEmbeddingInput } from "../../../src/lib/knowledge/embeddings";
 import { KB_AUDITS } from "../../../src/server/content-gen/kb/audits";
 import { KB_INTERVENTIONS_FORMATIONS } from "../../../src/server/content-gen/kb/interventions-formations";
 import { KB_UN_A_UN } from "../../../src/server/content-gen/kb/un-a-un";
@@ -28,6 +30,45 @@ const ALL_KB_FACTS: readonly KbFact[] = [
   ...KB_IMPLEMENTATIONS,
   ...KB_SITES_WEB_AUGMENTES,
 ];
+
+/**
+ * Embeddings KB activés uniquement si une vraie clé Voyage est présente.
+ * Sans clé : on n'écrit aucun vecteur (la retrieval reste FTS lexical).
+ */
+const embeddingsEnabled = !!process.env.VOYAGE_API_KEY;
+
+/**
+ * Upsert idempotent d'un embedding 1024-dim dans `knowledge_embeddings`.
+ * La colonne `embedding vector(1024)` est de type `Unsupported` côté Prisma →
+ * écriture via raw SQL (littéral pgvector inline, valeurs numériques sûres).
+ * Skip silencieux si l'embedding produit est un stub (pas de clé Voyage).
+ */
+async function upsertEmbedding(
+  prisma: PrismaClient,
+  translationId: string,
+  input: { title: string; excerpt?: string | null; bodyText?: string | null },
+): Promise<void> {
+  const result = await generateEmbedding(buildEmbeddingInput(input), "public");
+  if (result.modelVersion.endsWith("-stub")) return; // garde-fou : jamais de vecteur stub en base
+  const vecLiteral = `[${result.embedding.map((x) => (Number.isFinite(x) ? x : 0)).join(",")}]`;
+  await prisma.$executeRawUnsafe(
+    `
+    INSERT INTO knowledge_embeddings (id, translation_id, embedding, model, model_version, dimensionality, embedded_at)
+    VALUES ($1::uuid, $2::uuid, '${vecLiteral}'::vector, $3, $4, $5, NOW())
+    ON CONFLICT (translation_id) DO UPDATE SET
+      embedding = '${vecLiteral}'::vector,
+      model = $3,
+      model_version = $4,
+      dimensionality = $5,
+      embedded_at = NOW();
+    `,
+    randomUUID(),
+    translationId,
+    result.model,
+    result.modelVersion,
+    result.dimensionality,
+  );
+}
 
 async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   const entrySlug = `kb-fact-${fact.id}`;
@@ -57,7 +98,7 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   const bodyHtml = `<p>${fact.text}</p><p><em>Source : <a href="${fact.sourceUrl}" rel="noopener noreferrer">${fact.source}</a></em></p>`;
   const bodyText = `${fact.text} Source : ${fact.source}.`;
 
-  await prisma.knowledgeTranslation.upsert({
+  const translation = await prisma.knowledgeTranslation.upsert({
     where: { locale_slug: { locale: "fr", slug: translationSlug } },
     update: {
       title,
@@ -81,6 +122,18 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       wordCount: bodyText.split(/\s+/).length,
     },
   });
+
+  // KB-21 — Embedding vectoriel (RAG sémantique). N'écrit QUE des vecteurs réels
+  // (Voyage AI) : si `VOYAGE_API_KEY` est absente, generateEmbedding renvoie un
+  // stub SHA-256 non sémantique qu'on n'enregistre pas (la table reste vide →
+  // la retrieval reste FTS). Idempotent (ON CONFLICT translation_id).
+  if (embeddingsEnabled) {
+    await upsertEmbedding(prisma, translation.id, {
+      title,
+      excerpt: fact.text.slice(0, 300),
+      bodyText,
+    });
+  }
 
   // KB V4.1 Service Binding — tags `service:*` + bindings dérivés de
   // `fact.verticales`. Rend la KB requêtable par service (reader
@@ -123,6 +176,12 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
 
 export async function seedKbFacts(prisma: PrismaClient): Promise<number> {
   let upserted = 0;
+
+  console.log(
+    embeddingsEnabled
+      ? "[seed-kb-facts] VOYAGE_API_KEY présente → embeddings vectoriels seedés (RAG sémantique actif)."
+      : "[seed-kb-facts] VOYAGE_API_KEY absente → embeddings non seedés (RAG reste FTS lexical). Re-run après pose de la clé pour activer le vectoriel.",
+  );
 
   for (const fact of ALL_KB_FACTS) {
     await upsertFact(prisma, fact);

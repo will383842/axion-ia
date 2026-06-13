@@ -13,7 +13,14 @@
  *
  * Activation : feature flag MULTI_JUDGE_ENABLED (default off). Reste sur judge
  * single existant tant que désactivé (zero régression).
+ *
+ * KB-P0 2026-06-13 : `runMultiJudge()` productionise le pattern — quand le flag
+ * est actif, il lance le VRAI juge LLM (`reviewArticle`, Claude Sonnet) en plus
+ * de l'heuristique et calcule un consensus. Désactivé = comportement single
+ * judge inchangé.
  */
+
+import { reviewArticle, type ArticleForReview } from "../reviewer/llm-judge";
 
 export interface JudgeResult {
   readonly judgeName: string;
@@ -117,3 +124,49 @@ export function composeMultiJudge(
     tieBreakerUsed: true,
   };
 }
+
+/**
+ * Lance un ensemble multi-juges RÉEL et calcule le consensus.
+ *
+ * - `MULTI_JUDGE_ENABLED` ≠ "true" → retourne le juge interne tel quel (single
+ *   judge, zéro régression, zéro coût LLM additionnel).
+ * - Sinon → lance le vrai juge LLM (`reviewArticle`, Claude Sonnet) en parallèle
+ *   de l'heuristique fournie, normalise son score 0-10 → 0-100, et compose un
+ *   consensus. En cas de désaccord ≥ 15, le juge LLM (plus fiable que
+ *   l'heuristique) arbitre. Si l'appel LLM échoue, on retombe proprement sur le
+ *   juge interne (fail-soft, pas de blocage de la génération).
+ *
+ * Le coût du juge LLM est déjà tracké par le provider (CostLedger) ; on ne le
+ * recompte pas ici (`costUsd: 0`) pour éviter le double comptage.
+ */
+export async function runMultiJudge(
+  article: ArticleForReview,
+  internalJudge: JudgeResult,
+): Promise<MultiJudgeEnsembleResult> {
+  if (!isMultiJudgeEnabled()) {
+    return composeMultiJudge([internalJudge]);
+  }
+
+  let llmJudge: JudgeResult;
+  try {
+    const review = await reviewArticle(article);
+    llmJudge = {
+      judgeName: `llm-${JUDGE_MODEL_LABEL}`,
+      score: Math.max(0, Math.min(100, Math.round(review.globalScore * 10))), // 0-10 → 0-100
+      feedback: review.reasoning.slice(0, 500),
+      costUsd: 0, // déjà tracké par le provider (CostLedger)
+      tokens: 0,
+    };
+  } catch (err) {
+    console.warn(
+      "[multi-judge] juge LLM indisponible, fallback heuristique :",
+      (err as Error).message,
+    );
+    return composeMultiJudge([internalJudge]);
+  }
+
+  // Consensus heuristique + LLM ; le juge LLM arbitre en cas de fort désaccord.
+  return composeMultiJudge([internalJudge, llmJudge], llmJudge);
+}
+
+const JUDGE_MODEL_LABEL = "claude-sonnet-4-6" as const;

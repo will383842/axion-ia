@@ -25,6 +25,7 @@ import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
 import { checkPlagiarism } from "@/server/content-gen/quality/plagiarism";
 import { validateIntentAlignment } from "@/server/content-gen/quality/search-intent-validator";
+import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import {
@@ -249,10 +250,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         ? inputPayload["primaryKeyword"]
         : undefined;
     if (!resolvedKeyword && contentType !== "blog_from_rss") {
-      const campaignSector =
-        typeof (dbJob as Record<string, unknown>)["campaignSector"] === "string"
-          ? ((dbJob as Record<string, unknown>)["campaignSector"] as string)
-          : "transversal";
+      // P1 2026-06-13 — Fix bug : le vertical était lu sur un champ INEXISTANT
+      // (`dbJob.campaignSector` via cast) → toujours "transversal", donc les
+      // pools par vertical (audits/formations/…) n'étaient jamais ciblés. On le
+      // dérive désormais du `serviceSector` de la campagne (CoverageCampaign).
+      let campaignSector = "transversal";
+      if (dbJob.campaignId) {
+        const campaign = await prisma.coverageCampaign.findUnique({
+          where: { id: dbJob.campaignId },
+          select: { serviceSector: true },
+        });
+        if (campaign?.serviceSector) campaignSector = campaign.serviceSector;
+      }
       // P1-8 — Passer campaignId pour log structuré keyword_select_exhausted
       // et préparer l'isolation future des pools par campagne.
       // Note: spread conditionnel requis (exactOptionalPropertyTypes: true).
@@ -494,9 +503,46 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     );
     const outlineBlockingFail = outlineDedup.verdict === "duplicate_template";
 
-    // Tier final : downgrade tier_3 si plagiat OR intent hardFails OR outline dup.
-    // Sinon on garde l'indexationTier issu du generator (tier_2 default).
-    const blockingFail = !plagiarism.passed || !intent.aligned || outlineBlockingFail;
+    // P0 2026-06-13 (décision Will) — Gate « fautes DURES » : un contenu avec une
+    // donnée fausse ne doit PAS être publié (même en noindex), car une donnée
+    // fausse indexée érode la confiance SEO du domaine entier. On RETIENT
+    // l'article pour correction humaine (needs_review) au lieu de le publier.
+    //
+    // Fautes dures retenues :
+    //   - SIREN/SIRET/RCS : un identifiant légal inventé est un problème de
+    //     conformité/confiance (le vrai n'est qu'un placeholder). Quasi zéro
+    //     faux-positif (9/14 chiffres consécutifs en prose = rare).
+    //   - Prix non-SSOT : DÉSACTIVÉ par défaut (`hard_fault_gate.retainNonSsotPrice`)
+    //     car `findNonSsotPrices` extrait le chiffre de TOUT montant € (ex.
+    //     « 35 millions d'euros » → 35), omniprésent en contenu RGPD/AI Act →
+    //     faux-positifs massifs. Ces prix restent en tier_3 noindex (non publié
+    //     à l'index) via le generator. Flippable par Will si besoin.
+    // Les autres écarts doctrine (naming, ratio, hype) gardent le comportement
+    // actuel (downgrade tier, publication normale).
+    const hardFaultGate = await readContentGenConfig<{ retainNonSsotPrice?: boolean }>(
+      "hard_fault_gate",
+      {},
+    );
+    const doctrine = await checkDoctrine(output.bodyText);
+    const doctrineHardFaults = doctrine.blockingViolations.filter(
+      (v) =>
+        v.pattern === "SIREN/SIRET/RCS" ||
+        (hardFaultGate.retainNonSsotPrice === true && v.pattern.startsWith("prix-non-SSOT:")),
+    );
+    const doctrineHardFail = doctrineHardFaults.length > 0;
+    await logStep(
+      contentGenJobId,
+      "doctrine_check",
+      doctrineHardFail
+        ? `Doctrine HARD FAULT → retenu pour correction : ${doctrineHardFaults.map((v) => v.pattern).join(", ")}`
+        : "Doctrine hard-fault OK (SIREN/prix)",
+      { hard_fault: doctrineHardFail, faults: doctrineHardFaults.map((v) => v.pattern) },
+    );
+
+    // Tier final : downgrade tier_3 si plagiat OR intent hardFails OR outline dup
+    // OR faute dure doctrine. Sinon on garde l'indexationTier issu du generator.
+    const blockingFail =
+      !plagiarism.passed || !intent.aligned || outlineBlockingFail || doctrineHardFail;
     const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
 
     // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert).
@@ -521,6 +567,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       outlineSimhash: outlineDedup.outlineSimhash,
       outlineDedupVerdict: outlineDedup.verdict,
       outlineDedupMatchedArticleId: outlineDedup.matchedArticleId,
+      // P0 2026-06-13 — Traçabilité des fautes dures (SIREN/prix non-SSOT) ayant
+      // retenu l'article pour correction humaine.
+      doctrineHardFaults: doctrineHardFaults.map((v) => ({
+        pattern: v.pattern,
+        reason: v.reason,
+      })),
     };
 
     // 5bis. Décision orchestration post-gen (§ 14 + § 27 + § 14.2 master prompt) :

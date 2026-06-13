@@ -5,14 +5,17 @@
  * Originality.ai (https://originality.ai). Renforce les checks anti-doorway
  * HCU 2024-2026 + signal AI Act art. 50 (transparence sur la part IA).
  *
- * V1 squelette stub. API key gérée via env ORIGINALITY_AI_API_KEY :
- *   - Absente : gate désactivé, fallback warning loggé (non-bloquant)
- *   - Présente : appel API réel (productionisation Sessions 11+ avec retry +
- *     circuit breaker pattern aligné providers-router.ts existant)
+ * API key gérée via env ORIGINALITY_AI_API_KEY :
+ *   - Absente : gate désactivé honnêtement, warning loggé (non-bloquant)
+ *   - Présente : appel HTTP réel /scan/ai (fail-open si erreur réseau/API)
+ *   ⚠️ Contrat API à valider contre une vraie clé lors de l'activation.
  *
  * Coût : ~$0.01 par 1k mots scannés. Sur 30 articles/jour × 1500 mots = ~$13/mois.
  * Activable en Phase D (mois 13+) après stabilisation Quality Loop V1.
  */
+
+/** Endpoint AI-detection Originality.ai (v1). */
+const ORIGINALITY_API_URL = "https://api.originality.ai/api/v1/scan/ai";
 
 function getApiKey(): string | undefined {
   return process.env.ORIGINALITY_AI_API_KEY;
@@ -63,19 +66,62 @@ export async function scanWithOriginalityAi(
     throw new Error("originality_min_length:content_text must be ≥ 100 chars");
   }
 
-  // V1 stub : retourne data fake mais structure attendue.
-  // Sessions 11+ : appel HTTP réel.
-  console.log("[originality-ai] V1 stub — HTTP API call reportée Sessions 11+");
+  const apiKey = getApiKey()!; // garanti présent (early-return ci-dessus si absent)
   const wordCount = input.contentText.split(/\s+/).filter((w) => w.length > 0).length;
   const estimatedCost = (wordCount / 1000) * 0.01;
-  return {
-    originalityScore: 95, // stub neutre haut
-    aiDetectedScore: 50, // stub neutre (peut être IA-assisté → AI Act art. 50 OK)
-    plagiarismScore: 5, // stub neutre bas
-    scannedAt: new Date().toISOString(),
-    fallback: false,
-    costUsd: estimatedCost,
-  };
+
+  // Appel HTTP réel Originality.ai — endpoint AI-detection v1.
+  // ⚠️ À valider contre une vraie clé lors de l'activation (le contrat exact de
+  // l'API peut évoluer) ; en cas d'erreur on fail-open (non-bloquant) pour ne
+  // jamais geler la génération sur une dépendance externe.
+  try {
+    const res = await fetch(ORIGINALITY_API_URL, {
+      method: "POST",
+      headers: {
+        "X-OAI-API-KEY": apiKey,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        content: input.contentText,
+        title: input.contentUrl ?? input.contentType ?? "axion-ia",
+        aiModelVersion: "1",
+        storeScan: "false",
+      }),
+    });
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      throw new Error(`originality HTTP ${res.status} ${res.statusText} ${detail}`.trim());
+    }
+    const json = (await res.json()) as {
+      score?: { ai?: number; original?: number };
+      // L'endpoint /scan/ai ne renvoie pas le plagiat (crédits séparés /scan/plag).
+    };
+    const aiFraction = json.score?.ai ?? 0; // 0..1
+    const originalFraction = json.score?.original ?? 1 - aiFraction; // 0..1
+    return {
+      originalityScore: Math.round(originalFraction * 100),
+      aiDetectedScore: Math.round(aiFraction * 100),
+      plagiarismScore: 0, // non couvert par l'endpoint AI ; gate plagiat = no-op
+      scannedAt: new Date().toISOString(),
+      fallback: false,
+      costUsd: estimatedCost,
+    };
+  } catch (err) {
+    // Fail-open : on ne bloque jamais la publication sur une panne Originality.ai.
+    console.warn(
+      "[originality-ai] scan échoué, fail-open (non-bloquant) :",
+      (err as Error).message,
+    );
+    return {
+      originalityScore: 100,
+      aiDetectedScore: 0,
+      plagiarismScore: 0,
+      scannedAt: new Date().toISOString(),
+      fallback: true,
+      costUsd: 0,
+    };
+  }
 }
 
 /**

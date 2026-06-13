@@ -37,16 +37,25 @@ import type {
 
 const QUEUE_NAME = "content-orchestrator";
 
+// P1 2026-06-13 — Couverture des 6 verticales (avant : un_a_un /
+// sites_web_augmentes / transversal retombaient à tort sur « formation
+// intelligence artificielle »). Termes alignés doctrine (1-to-1 =
+// « accompagnement », pas « coaching »).
+const BLOG_KEYWORD_BASE: Partial<Record<ServiceSector, string>> = {
+  audits: "audit IA",
+  implementations: "implémentation IA",
+  interventions_formations: "formation intelligence artificielle",
+  un_a_un: "accompagnement IA",
+  sites_web_augmentes: "site web IA",
+};
+
 function deriveBlogKeyword(
   serviceSector: ServiceSector | null | undefined,
   anchorVilleSlug?: string,
 ): string {
-  const base =
-    serviceSector === "audits"
-      ? "audit IA"
-      : serviceSector === "implementations"
-        ? "implémentation IA"
-        : "formation intelligence artificielle";
+  const base = serviceSector
+    ? (BLOG_KEYWORD_BASE[serviceSector] ?? "intelligence artificielle entreprise")
+    : "intelligence artificielle entreprise";
   const ville = anchorVilleSlug ? ` ${anchorVilleSlug.replace(/-/g, " ")}` : "";
   return `${base}${ville}`;
 }
@@ -550,10 +559,17 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     }
     totalEnqueued += enqueued;
 
-    await prisma.coverageCampaign.update({
-      where: { id: campaign.id },
-      data: { generatedCount: { increment: toEnqueue } },
-    });
+    // P1 2026-06-13 — Fix dérive : incrémenter du nombre RÉELLEMENT enqueué
+    // (`enqueued`), pas du nombre visé (`toEnqueue`). En mode séquentiel, une
+    // ville en cours retourne 0 ; l'ancien `toEnqueue` gonflait `generatedCount`
+    // et marquait la campagne `completed` (remaining<=0) sans avoir atteint la
+    // cible réelle. Skip l'update si rien n'a été produit (évite un write inutile).
+    if (enqueued > 0) {
+      await prisma.coverageCampaign.update({
+        where: { id: campaign.id },
+        data: { generatedCount: { increment: enqueued } },
+      });
+    }
   }
 
   console.log(

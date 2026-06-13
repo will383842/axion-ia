@@ -188,8 +188,14 @@ Si quelque chose foire :
 
 ## Maintenance
 
-- **Auto-deploy** : ✅ déjà actif via `.github/workflows/deploy-coolify.yml`
-  → push main → CI → POST API Coolify déclenche redeploy worker aussi
+- **Auto-deploy** : ⚠️ depuis ADR 0026 (2026-05-16), `deploy-coolify.yml` ne
+  POST que sur l'app **web** (`COOLIFY_APP_UUID`). Le worker a sa propre étape
+  `POST /api/v1/deploy (worker BullMQ)` ajoutée le 2026-06-13, **conditionnée au
+  secret `COOLIFY_WORKER_APP_UUID`**. Tant que ce secret n'est pas posé, un push
+  main NE redéploie PAS le worker → le code worker reste figé en prod.
+  **Action requise** : `gh secret set COOLIFY_WORKER_APP_UUID --body "<uuid>"`
+  (UUID de l'app Coolify `axion-ia-worker`). Une fois posé : push main →
+  redeploy web **et** worker.
 - **Mise à jour deps BullMQ** : Dependabot auto-PR — review breaking changes
   release notes BullMQ v5.x
 - **Rotation Redis password** : worker redémarre auto à chaque change env via
