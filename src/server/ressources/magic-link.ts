@@ -24,6 +24,10 @@ export async function createRessourcesMagicLink(
 ): Promise<string> {
   const token = await signMagicToken({ scope: "ressources_login", resourceId: recipientId });
   const tokenHash = await sha256Hex(token);
+  // Purge opportuniste des liens consommés/expirés de ce destinataire.
+  await prisma.ressourcesMagicLink.deleteMany({
+    where: { recipientId, OR: [{ usedAt: { not: null } }, { expiresAt: { lt: new Date() } }] },
+  });
   await prisma.ressourcesMagicLink.create({
     data: {
       recipientId,

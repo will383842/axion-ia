@@ -42,7 +42,7 @@ export async function GET(
     return NextResponse.redirect(failureUrl);
   }
 
-  const sessionToken = await signFormateurSession(trainer.id);
+  const sessionToken = await signFormateurSession(trainer.id, "formateur");
   await setFormateurCookie(sessionToken);
   await prisma.trainer.update({
     where: { id: trainer.id },

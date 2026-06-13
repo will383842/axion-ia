@@ -12,16 +12,26 @@
 //
 // Format compact : `<payload-b64url>.<sig-b64url>` — même schéma que magic-token.
 // Secret = AUTH_SECRET (commune à l'app).
+//
+// Le module est générique (espace formateur ET espace ressources) : un claim
+// d'AUDIENCE (`aud`) lie le jeton à son espace, pour qu'un cookie d'un espace
+// ne puisse pas être présenté à l'autre (défense en profondeur, en plus de la
+// disjonction des espaces d'identifiants).
 
 const ENCODER = new TextEncoder();
 const DECODER = new TextDecoder();
 
-/** Durée de vie d'une session formateur : 30 jours (réaligné sur l'admin). */
+/** Durée de vie d'une session : 30 jours (réaligné sur l'admin). */
 export const FORMATEUR_SESSION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;
 
+/** Audiences possibles d'une session passwordless. */
+export type SessionAudience = "formateur" | "ressources";
+
 interface SessionPayload {
-  /** trainerId. */
+  /** Identifiant du sujet (trainerId pour formateur, recipientId pour ressources). */
   sub: string;
+  /** Audience : espace auquel ce jeton donne accès. */
+  aud: SessionAudience;
   /** Expiration (unix ms). */
   exp: number;
 }
@@ -60,15 +70,17 @@ async function hmacKey(): Promise<CryptoKey> {
 }
 
 /**
- * Signe un jeton de session formateur pour `trainerId`.
+ * Signe un jeton de session pour `subjectId`, lié à une `audience`.
  * TTL par défaut = {@link FORMATEUR_SESSION_MAX_AGE_SECONDS}.
  */
 export async function signFormateurSession(
-  trainerId: string,
+  subjectId: string,
+  audience: SessionAudience,
   ttlSeconds: number = FORMATEUR_SESSION_MAX_AGE_SECONDS,
 ): Promise<string> {
   const payload: SessionPayload = {
-    sub: trainerId,
+    sub: subjectId,
+    aud: audience,
     exp: Date.now() + ttlSeconds * 1000,
   };
   const payloadBytes = ENCODER.encode(JSON.stringify(payload));
@@ -82,14 +94,18 @@ export async function signFormateurSession(
 
 export type FormateurSessionResult =
   | { ok: true; trainerId: string }
-  | { ok: false; reason: "malformed" | "invalid_signature" | "expired" };
+  | { ok: false; reason: "malformed" | "invalid_signature" | "expired" | "wrong_audience" };
 
 /**
- * Vérifie un jeton de session formateur (signature + expiration).
+ * Vérifie un jeton de session (signature + expiration + audience).
  * Edge-safe (Web Crypto uniquement) — utilisable dans proxy.ts.
- * NE vérifie PAS `Trainer.actif` (relookup DB → côté Node `requireFormateur`).
+ * NE vérifie PAS `actif` (relookup DB → côté Node `requireFormateur/requireRecipient`).
+ * `trainerId` dans le résultat = le sujet (trainerId OU recipientId selon l'audience).
  */
-export async function verifyFormateurSession(token: string): Promise<FormateurSessionResult> {
+export async function verifyFormateurSession(
+  token: string,
+  expectedAudience: SessionAudience,
+): Promise<FormateurSessionResult> {
   const parts = token.split(".");
   if (parts.length !== 2) return { ok: false, reason: "malformed" };
   const [payloadB64, sigB64] = parts as [string, string];
@@ -120,6 +136,9 @@ export async function verifyFormateurSession(token: string): Promise<FormateurSe
   }
   if (typeof payload.sub !== "string" || !payload.sub) {
     return { ok: false, reason: "malformed" };
+  }
+  if (payload.aud !== expectedAudience) {
+    return { ok: false, reason: "wrong_audience" };
   }
   if (typeof payload.exp !== "number" || payload.exp < Date.now()) {
     return { ok: false, reason: "expired" };

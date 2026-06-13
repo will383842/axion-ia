@@ -28,7 +28,7 @@ export async function GET(
   });
   if (!recipient || !recipient.actif) return NextResponse.redirect(failureUrl);
 
-  const sessionToken = await signFormateurSession(recipient.id);
+  const sessionToken = await signFormateurSession(recipient.id, "ressources");
   await setRessourcesCookie(sessionToken);
   await prisma.documentRecipient.update({
     where: { id: recipient.id },

@@ -96,7 +96,9 @@ export default auth(async (req) => {
       const isConnexion = sub === "/connexion" || sub.startsWith("/connexion/");
       if (!isConnexion) {
         const token = req.cookies.get(FORMATEUR_COOKIE_NAME)?.value;
-        const session = token ? await verifyFormateurSession(token) : { ok: false as const };
+        const session = token
+          ? await verifyFormateurSession(token, "formateur")
+          : { ok: false as const };
         if (!session.ok) {
           const dest = new URL(`/${m[1]}/espace-formateur/connexion`, req.url);
           return NextResponse.redirect(dest);
@@ -115,7 +117,9 @@ export default auth(async (req) => {
       const isConnexion = sub === "/connexion" || sub.startsWith("/connexion/");
       if (!isConnexion) {
         const token = req.cookies.get(RESSOURCES_COOKIE_NAME)?.value;
-        const session = token ? await verifyFormateurSession(token) : { ok: false as const };
+        const session = token
+          ? await verifyFormateurSession(token, "ressources")
+          : { ok: false as const };
         if (!session.ok) {
           const dest = new URL(`/${m[1]}/espace-ressources/connexion`, req.url);
           return NextResponse.redirect(dest);

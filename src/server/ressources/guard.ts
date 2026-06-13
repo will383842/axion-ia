@@ -21,7 +21,7 @@ export interface RecipientSession {
 export async function getRecipientSession(): Promise<RecipientSession | null> {
   const token = await getRessourcesToken();
   if (!token) return null;
-  const result = await verifyFormateurSession(token);
+  const result = await verifyFormateurSession(token, "ressources");
   if (!result.ok) return null;
   // `trainerId` ici = l'identifiant opaque du sujet = recipientId.
   const r = await prisma.documentRecipient.findUnique({

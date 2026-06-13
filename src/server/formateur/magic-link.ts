@@ -37,6 +37,11 @@ export async function createFormateurMagicLink(
 ): Promise<string> {
   const token = await signMagicToken({ scope: "formateur_login", resourceId: trainerId });
   const tokenHash = await sha256Hex(token);
+  // Purge opportuniste des liens consommés/expirés de ce formateur (borne la
+  // croissance de la table sans tâche planifiée).
+  await prisma.formateurMagicLink.deleteMany({
+    where: { trainerId, OR: [{ usedAt: { not: null } }, { expiresAt: { lt: new Date() } }] },
+  });
   await prisma.formateurMagicLink.create({
     data: {
       trainerId,

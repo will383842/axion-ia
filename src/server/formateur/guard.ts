@@ -30,7 +30,7 @@ export async function getFormateurSession(): Promise<FormateurSession | null> {
   const token = await getFormateurToken();
   if (!token) return null;
 
-  const result = await verifyFormateurSession(token);
+  const result = await verifyFormateurSession(token, "formateur");
   if (!result.ok) return null;
 
   const trainer = await prisma.trainer.findUnique({
