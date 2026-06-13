@@ -32,11 +32,11 @@ export function ImportTrainersButton(): React.ReactElement {
         type="button"
         onClick={run}
         disabled={pending}
-        className="rounded-md border border-[#c24a1b] px-3 py-1.5 text-xs font-medium text-[#c24a1b] hover:bg-[#fbeae2] disabled:opacity-50"
+        className="border-terracotta text-terracotta hover:bg-terracotta-soft rounded-md border px-3 py-1.5 text-xs font-medium disabled:opacity-50"
       >
         {pending ? "Import en cours…" : "⬇ Importer les formateurs (fiches Qualiopi)"}
       </button>
-      {msg ? <span className="text-xs text-[#6b635b]">{msg}</span> : null}
+      {msg ? <span className="text-fg-muted text-xs">{msg}</span> : null}
     </div>
   );
 }

@@ -12,8 +12,8 @@ export default async function AnnuaireEquipePage(): Promise<React.ReactElement> 
   const recipients = await getRecipients();
   return (
     <div>
-      <h1 className="mb-1 text-xl font-semibold text-[#2a2520]">Annuaire équipe</h1>
-      <p className="mb-4 text-sm text-[#6b635b]">
+      <h1 className="text-mocha mb-1 text-xl font-semibold">Annuaire équipe</h1>
+      <p className="text-fg-muted mb-4 text-sm">
         Les personnes notifiées à chaque nouvelle version publiée. Importe tes{" "}
         <strong>formateurs</strong> depuis leurs fiches Qualiopi en un clic ; ajoute tes{" "}
         <strong>commerciaux</strong> à la main. Le <strong>périmètre</strong> limite les

@@ -52,64 +52,62 @@ export default async function InterventionDocumentsPage({
 
   return (
     <div>
-      <Link href={base} className="text-xs text-[#c24a1b] hover:underline">
+      <Link href={base} className="text-terracotta text-xs hover:underline">
         ← Retour à la liste
       </Link>
-      <h1 className="mt-2 mb-1 text-xl font-semibold text-[#2a2520]">{intervention.labelFr}</h1>
-      <p className="mb-6 font-mono text-xs text-[#6b635b]">{intervention.slug}</p>
+      <h1 className="text-mocha mt-2 mb-1 text-xl font-semibold">{intervention.labelFr}</h1>
+      <p className="text-fg-muted mb-6 font-mono text-xs">{intervention.slug}</p>
 
       {groups.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-[#e7e0d6] bg-[#faf8f3] p-6 text-sm text-[#6b635b]">
+        <div className="border-border bg-bg text-fg-muted rounded-lg border border-dashed p-6 text-sm">
           Le modèle de documents de cette famille n&apos;est pas encore configuré.
         </div>
       ) : (
         <div className="space-y-8">
           {groups.map(({ categorie, slots }) => (
             <section key={categorie.key}>
-              <h2 className="mb-3 border-b-2 border-[#c24a1b] pb-1 text-base font-semibold text-[#2a2520]">
+              <h2 className="border-terracotta text-mocha mb-3 border-b-2 pb-1 text-base font-semibold">
                 {categorie.titre}
               </h2>
               <ul className="space-y-3">
                 {slots.map((slot) => {
                   const state = states.get(slot.key) ?? null;
                   return (
-                    <li key={slot.key} className="rounded-lg border border-[#e7e0d6] bg-white p-3">
+                    <li key={slot.key} className="border-border rounded-lg border bg-white p-3">
                       <div className="mb-2">
-                        <span className="block text-sm font-medium text-[#2a2520]">
-                          {slot.titre}
-                        </span>
+                        <span className="text-mocha block text-sm font-medium">{slot.titre}</span>
                         <div className="mt-1 flex flex-wrap gap-1.5 text-[11px]">
-                          <span className="rounded bg-[#faf8f3] px-1.5 py-0.5 text-[#6b635b]">
+                          <span className="bg-bg text-fg-muted rounded px-1.5 py-0.5">
                             {VISIBILITE_LABEL[slot.visibilite]}
                           </span>
                           {slot.formats.map((f) => (
                             <span
                               key={f}
-                              className="rounded bg-[#faf8f3] px-1.5 py-0.5 font-mono text-[#6b635b]"
+                              className="bg-bg text-fg-muted rounded px-1.5 py-0.5 font-mono"
                             >
                               {FORMAT_LABEL[f]}
                             </span>
                           ))}
                           {slot.generatedOnly ? (
-                            <span className="rounded bg-[#eef3ff] px-1.5 py-0.5 text-[#1a4dd9]">
+                            <span className="bg-primary-soft text-primary rounded px-1.5 py-0.5">
                               Généré par le Formation Engine
                             </span>
                           ) : slot.qualiopiDocType ? (
-                            <span className="rounded bg-[#eef3ff] px-1.5 py-0.5 text-[#1a4dd9]">
+                            <span className="bg-primary-soft text-primary rounded px-1.5 py-0.5">
                               Aussi généré (Qualiopi)
                             </span>
                           ) : null}
                         </div>
                         {slot.note ? (
-                          <p className="mt-1 text-xs text-[#6b635b]">{slot.note}</p>
+                          <p className="text-fg-muted mt-1 text-xs">{slot.note}</p>
                         ) : null}
                       </div>
 
                       {slot.generatedOnly ? (
-                        <p className="text-xs text-[#6b635b]">
+                        <p className="text-fg-muted text-xs">
                           Ce document est généré au niveau de chaque session (vraies données, QR,
                           rétention).{" "}
-                          <Link href={sessionsHref} className="text-[#c24a1b] hover:underline">
+                          <Link href={sessionsHref} className="text-terracotta hover:underline">
                             Voir Qualiopi → Sessions
                           </Link>
                         </p>

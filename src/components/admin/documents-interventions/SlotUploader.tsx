@@ -138,39 +138,39 @@ export function SlotUploader({
       <div className="flex flex-wrap items-center justify-between gap-2">
         {current ? (
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="rounded bg-[#eaf6ec] px-1.5 py-0.5 font-medium text-[#1e7d34]">
+            <span className="bg-sage-soft text-success rounded px-1.5 py-0.5 font-medium">
               v{current.version} publiée
             </span>
             {current.sourceUrl ? (
-              <a href={current.sourceUrl} className="text-[#c24a1b] hover:underline">
+              <a href={current.sourceUrl} className="text-terracotta hover:underline">
                 Source
               </a>
             ) : null}
             {current.pdfUrl ? (
-              <a href={current.pdfUrl} className="text-[#c24a1b] hover:underline">
+              <a href={current.pdfUrl} className="text-terracotta hover:underline">
                 PDF
               </a>
             ) : null}
           </div>
         ) : (
-          <span className="text-xs text-[#6b635b]">Aucun document déposé.</span>
+          <span className="text-fg-muted text-xs">Aucun document déposé.</span>
         )}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="rounded-md border border-[#c24a1b] px-3 py-1.5 text-xs font-medium text-[#c24a1b] hover:bg-[#fbeae2]"
+          className="border-terracotta text-terracotta hover:bg-terracotta-soft rounded-md border px-3 py-1.5 text-xs font-medium"
         >
           {open ? "Annuler" : current ? "Nouvelle version" : "Déposer"}
         </button>
       </div>
 
       {open ? (
-        <div className="mt-3 space-y-2 rounded-lg border border-[#e7e0d6] bg-[#faf8f3] p-3">
-          <label className="block text-xs font-medium text-[#2a2520]">
+        <div className="border-border bg-bg mt-3 space-y-2 rounded-lg border p-3">
+          <label className="text-mocha block text-xs font-medium">
             Source éditable (.docx / .pptx)
             <input ref={sourceRef} type="file" className="mt-1 block w-full text-xs" />
           </label>
-          <label className="block text-xs font-medium text-[#2a2520]">
+          <label className="text-mocha block text-xs font-medium">
             PDF figé (optionnel)
             <input
               ref={pdfRef}
@@ -179,14 +179,14 @@ export function SlotUploader({
               className="mt-1 block w-full text-xs"
             />
           </label>
-          <label className="block text-xs font-medium text-[#2a2520]">
+          <label className="text-mocha block text-xs font-medium">
             Quoi de neuf (note de version)
             <input
               type="text"
               value={changeNote}
               onChange={(e) => setChangeNote(e.target.value)}
               placeholder="Ex. mise à jour des prompts, correction page 4…"
-              className="mt-1 block w-full rounded border border-[#e7e0d6] px-2 py-1 text-xs"
+              className="border-border mt-1 block w-full rounded border px-2 py-1 text-xs"
             />
           </label>
           <div className="flex items-center gap-3">
@@ -194,24 +194,24 @@ export function SlotUploader({
               type="button"
               disabled={pending}
               onClick={handlePublish}
-              className="rounded-md bg-[#c24a1b] px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+              className="bg-terracotta rounded-md px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
             >
               {pending ? "En cours…" : "Publier la version"}
             </button>
-            {status ? <span className="text-xs text-[#6b635b]">{status}</span> : null}
+            {status ? <span className="text-fg-muted text-xs">{status}</span> : null}
           </div>
-          {error ? <p className="text-xs text-[#b3261e]">{error}</p> : null}
+          {error ? <p className="text-error text-xs">{error}</p> : null}
         </div>
       ) : null}
 
       {history.length > 1 ? (
         <details className="mt-2">
-          <summary className="cursor-pointer text-xs text-[#6b635b]">
+          <summary className="text-fg-muted cursor-pointer text-xs">
             Historique ({history.length} versions)
           </summary>
           <ul className="mt-1 space-y-1">
             {history.map((h) => (
-              <li key={h.version} className="text-xs text-[#6b635b]">
+              <li key={h.version} className="text-fg-muted text-xs">
                 v{h.version} · {h.statut}
                 {h.publishedAt ? ` · ${h.publishedAt.slice(0, 10)}` : ""}
                 {h.changeNote ? ` — ${h.changeNote}` : ""}

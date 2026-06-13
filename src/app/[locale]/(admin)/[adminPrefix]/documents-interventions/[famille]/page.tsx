@@ -27,8 +27,8 @@ export default async function FamillePage({ params }: PageProps): Promise<React.
 
   return (
     <div>
-      <h1 className="mb-1 text-xl font-semibold text-[var(--admin-fg,#2a2520)]">{familleTitre}</h1>
-      <p className="mb-6 text-sm text-[var(--admin-muted,#6b635b)]">
+      <h1 className="text-mocha mb-1 text-xl font-semibold">{familleTitre}</h1>
+      <p className="text-fg-muted mb-6 text-sm">
         {interventions.length} prestation{interventions.length > 1 ? "s" : ""}
         {slotsCount === 0
           ? " · modèle de documents à configurer pour cette famille"
@@ -37,19 +37,17 @@ export default async function FamillePage({ params }: PageProps): Promise<React.
       </p>
 
       {interventions.length === 0 ? (
-        <p className="text-sm text-[var(--admin-muted,#6b635b)]">
-          Aucune prestation dans cette famille.
-        </p>
+        <p className="text-fg-muted text-sm">Aucune prestation dans cette famille.</p>
       ) : (
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {interventions.map((it) => (
             <li key={it.slug}>
               <Link
                 href={`${base}/${it.slug}`}
-                className="block rounded-lg border border-[#e7e0d6] bg-white p-4 transition hover:border-[#c24a1b] hover:shadow-sm"
+                className="border-border hover:border-terracotta block rounded-lg border bg-white p-4 transition hover:shadow-sm"
               >
-                <span className="block text-sm font-semibold text-[#2a2520]">{it.labelFr}</span>
-                <span className="mt-1 block font-mono text-xs text-[#6b635b]">{it.slug}</span>
+                <span className="text-mocha block text-sm font-semibold">{it.labelFr}</span>
+                <span className="text-fg-muted mt-1 block font-mono text-xs">{it.slug}</span>
               </Link>
             </li>
           ))}
