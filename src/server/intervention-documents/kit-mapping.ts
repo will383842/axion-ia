@@ -3,8 +3,12 @@
  *
  * Convertit l'arborescence d'un kit (1 dossier/formation × Documents_DOCX +
  * Documents_PDF + 00_Presentation) vers (interventionSlug × slot × kind).
- * Module PUR (aucune I/O) → partagé par l'import worker ET le script CLI, et
- * testable sans base ni R2.
+ * Module PUR (aucune I/O).
+ *
+ * ⚠️ Ce module ne définit QUE la correspondance fichier→clé de slot. Le titre,
+ * la catégorie et la VISIBILITÉ sont la propriété du catalogue SSOT
+ * (intervention-documents-catalog.ts, via getSlot) — kit-import.ts les y lit
+ * pour ne JAMAIS diverger de l'UI manuelle (déterminisme garanti).
  */
 
 /** Dossier de formation (dans le ZIP) → slug d'intervention (booking-catalog). */
@@ -18,72 +22,23 @@ export const FOLDER_TO_SLUG: Readonly<Record<string, string>> = {
   IA_Securite: "ia-securite",
 };
 
-export interface SlotConfig {
-  slot: string;
-  titre: string;
-  categorie: "stagiaires" | "formateur" | "cadre" | "evaluation";
-  visibilite: "stagiaire" | "formateur" | "commercial" | "interne";
-}
-
 /**
- * Préfixe de fichier numéroté (NN_) → slot catalogue.
- * Visibilité : `programme` = commercial (les commerciaux le voient) ; le reste
- * = formateur (les formateurs le voient dans l'espace ressources).
+ * Préfixe de fichier numéroté (NN_) → CLÉ de slot du catalogue.
  * Les slots 08/09/10 (test/éval/satisfaction/attestation) sont EXCLUS : générés
  * par le Formation Engine (pas d'upload statique).
  */
-export const FILE_TO_SLOT: Readonly<Record<string, SlotConfig>> = {
-  "01": {
-    slot: "livret_apprenant",
-    titre: "Livret apprenant",
-    categorie: "stagiaires",
-    visibilite: "formateur",
-  },
-  "02": {
-    slot: "guide_animation",
-    titre: "Guide d'animation formateur",
-    categorie: "formateur",
-    visibilite: "formateur",
-  },
-  "03": {
-    slot: "cahier_exercices",
-    titre: "Cahier d'exercices / TP",
-    categorie: "stagiaires",
-    visibilite: "formateur",
-  },
-  "04": {
-    slot: "corriges",
-    titre: "Corrigés (formateur uniquement)",
-    categorie: "formateur",
-    visibilite: "formateur",
-  },
-  "05": {
-    slot: "ressources",
-    titre: "Ressources & aller plus loin",
-    categorie: "stagiaires",
-    visibilite: "formateur",
-  },
-  "06": {
-    slot: "programme",
-    titre: "Programme de formation détaillé",
-    categorie: "cadre",
-    visibilite: "commercial",
-  },
-  "07": {
-    slot: "scenario_pedagogique",
-    titre: "Scénario pédagogique / déroulé minuté",
-    categorie: "formateur",
-    visibilite: "formateur",
-  },
+export const FILE_TO_SLOT: Readonly<Record<string, string>> = {
+  "01": "livret_apprenant",
+  "02": "guide_animation",
+  "03": "cahier_exercices",
+  "04": "corriges",
+  "05": "ressources",
+  "06": "programme",
+  "07": "scenario_pedagogique",
 };
 
 /** Slot diaporama (depuis 00_Presentation : .pptx source + slides .pdf). */
-export const DIAPORAMA_SLOT: SlotConfig = {
-  slot: "diaporama",
-  titre: "Diaporama formateur",
-  categorie: "formateur",
-  visibilite: "formateur",
-};
+export const DIAPORAMA_SLOT_KEY = "diaporama";
 
 export const SKIP_PREFIXES: ReadonlySet<string> = new Set(["08", "09", "10"]);
 
@@ -93,7 +48,8 @@ export function slugifyFolder(folder: string): string {
     .replace(/^Formation_/i, "")
     .replace(/_/g, "-")
     .toLowerCase()
-    .replace(/[^a-z0-9-]/g, "");
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/^-+|-+$/g, "");
 }
 
 /** Résout le slug d'intervention pour un dossier (map explicite, sinon slugify). */
@@ -104,8 +60,8 @@ export function resolveSlug(folder: string): string {
 export interface ClassifiedEntry {
   slug: string;
   folder: string;
+  /** Clé de slot du catalogue (le titre/catégorie/visibilité s'y lisent). */
   slot: string;
-  config: SlotConfig;
   kind: "source" | "pdf";
   ext: string;
 }
@@ -119,7 +75,7 @@ export interface ClassifiedEntry {
  *   <Formation>/Documents_DOCX/NN_*.docx      → source
  *   <Formation>/Documents_PDF/NN_*.pdf        → pdf
  *   <Formation>/00_Presentation/*.pptx        → diaporama source
- *   <Formation>/00_Presentation/*SLIDES*.pdf  → diaporama pdf
+ *   <Formation>/00_Presentation/*SLIDES*.pdf  → diaporama pdf (priorité aux *SLIDES*)
  */
 export function classifyEntry(path: string): ClassifiedEntry | null {
   const parts = path.split("/").filter(Boolean);
@@ -130,20 +86,12 @@ export function classifyEntry(path: string): ClassifiedEntry | null {
   const lower = filename.toLowerCase();
   const ext = (lower.split(".").pop() ?? "").toLowerCase();
   const slug = resolveSlug(folder);
+  if (!slug) return null;
 
   // Diaporama
   if (sub === "00_Presentation") {
-    if (ext === "pptx")
-      return {
-        slug,
-        folder,
-        slot: DIAPORAMA_SLOT.slot,
-        config: DIAPORAMA_SLOT,
-        kind: "source",
-        ext,
-      };
-    if (ext === "pdf")
-      return { slug, folder, slot: DIAPORAMA_SLOT.slot, config: DIAPORAMA_SLOT, kind: "pdf", ext };
+    if (ext === "pptx") return { slug, folder, slot: DIAPORAMA_SLOT_KEY, kind: "source", ext };
+    if (ext === "pdf") return { slug, folder, slot: DIAPORAMA_SLOT_KEY, kind: "pdf", ext };
     return null;
   }
 
@@ -152,14 +100,18 @@ export function classifyEntry(path: string): ClassifiedEntry | null {
   if (!m) return null;
   const prefix = m[1]!;
   if (SKIP_PREFIXES.has(prefix)) return null;
-  const config = FILE_TO_SLOT[prefix];
-  if (!config) return null;
+  const slot = FILE_TO_SLOT[prefix];
+  if (!slot) return null;
 
   if (sub === "Documents_DOCX" && ext === "docx")
-    return { slug, folder, slot: config.slot, config, kind: "source", ext };
-  if (sub === "Documents_PDF" && ext === "pdf")
-    return { slug, folder, slot: config.slot, config, kind: "pdf", ext };
+    return { slug, folder, slot, kind: "source", ext };
+  if (sub === "Documents_PDF" && ext === "pdf") return { slug, folder, slot, kind: "pdf", ext };
   return null;
+}
+
+/** Vrai si le fichier 00_Presentation/*.pdf est bien le diaporama (préfère *SLIDES*). */
+export function isDiaporamaSlidesPdf(filename: string): boolean {
+  return /slides/i.test(filename) || filename.toLowerCase().endsWith(".pdf");
 }
 
 /** Clé R2 canonique (alignée sur keys.ts). */

@@ -12,7 +12,6 @@
 
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSignedUploadUrlR2 } from "@/lib/r2-storage";
 import { enqueueKitImport } from "@/server/queue/queues";
@@ -73,6 +72,7 @@ export async function startKitImportAction(
     select: { id: true },
   });
   await enqueueKitImport(run.id);
-  revalidatePath(`/fr/admin/documents-interventions/import`);
+  // Pas de revalidatePath : le préfixe admin est secret ([adminPrefix]) ; le
+  // client rafraîchit la liste lui-même (router.refresh).
   return { ok: true, runId: run.id };
 }

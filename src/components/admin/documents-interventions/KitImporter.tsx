@@ -34,41 +34,43 @@ export function KitImporter(): React.ReactElement {
       return;
     }
     startTransition(async () => {
-      // 1. URL d'upload présignée
-      setPhase("upload");
-      const prep = await prepareKitUploadAction({ fileName: file.name });
-      if (!prep.ok || !prep.uploadUrl || !prep.tempKey) {
-        setPhase("idle");
-        setError(prep.error ?? "Préparation de l'upload échouée.");
-        return;
-      }
-      // 2. Upload direct du ZIP sur R2
       try {
+        // 1. URL d'upload présignée
+        setPhase("upload");
+        const prep = await prepareKitUploadAction({ fileName: file.name });
+        if (!prep.ok || !prep.uploadUrl || !prep.tempKey) {
+          setError(prep.error ?? "Préparation de l'upload échouée.");
+          return;
+        }
+        // 2. Upload direct du ZIP sur R2
         const res = await fetch(prep.uploadUrl, {
           method: "PUT",
           body: file,
           headers: { "Content-Type": "application/zip" },
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          setError("Échec de l'envoi du fichier. Réessaie.");
+          return;
+        }
+        // 3. Déclenche l'import (job en arrière-plan)
+        setPhase("start");
+        const started = await startKitImportAction({ tempKey: prep.tempKey, fileName: file.name });
+        if (!started.ok) {
+          setError(started.error ?? "Lancement de l'import échoué.");
+          return;
+        }
+        setFile(null);
+        if (inputRef.current) inputRef.current.value = "";
+        setMessage(
+          "Import lancé ✓ — les documents se rangent en arrière-plan. Le récap apparaît ci-dessous dans quelques secondes.",
+        );
+        refreshSoon();
       } catch {
+        setError("Une erreur est survenue. Réessaie.");
+      } finally {
+        // Toujours réinitialiser la phase, même si une action a levé une exception.
         setPhase("idle");
-        setError("Échec de l'envoi du fichier. Réessaie.");
-        return;
       }
-      // 3. Déclenche l'import (job en arrière-plan)
-      setPhase("start");
-      const started = await startKitImportAction({ tempKey: prep.tempKey, fileName: file.name });
-      setPhase("idle");
-      if (!started.ok) {
-        setError(started.error ?? "Lancement de l'import échoué.");
-        return;
-      }
-      setFile(null);
-      if (inputRef.current) inputRef.current.value = "";
-      setMessage(
-        "Import lancé ✓ — les documents se rangent en arrière-plan. Le récap apparaît ci-dessous dans quelques secondes.",
-      );
-      refreshSoon();
     });
   }
 
@@ -76,7 +78,11 @@ export function KitImporter(): React.ReactElement {
 
   return (
     <div className="border-border bg-cream space-y-3 rounded-lg border p-4">
+      <label htmlFor="kit-zip" className="text-mocha block text-sm font-medium">
+        Fichier du kit (.zip)
+      </label>
       <input
+        id="kit-zip"
         ref={inputRef}
         type="file"
         accept=".zip,application/zip"
@@ -98,8 +104,19 @@ export function KitImporter(): React.ReactElement {
         </button>
         {file ? <span className="text-fg-muted text-xs">{file.name}</span> : null}
       </div>
-      {message ? <p className="text-success text-sm">{message}</p> : null}
-      {error ? <p className="text-error text-sm">{error}</p> : null}
+      <p aria-live="polite" className="sr-only">
+        {phase !== "idle" ? "Traitement en cours" : ""}
+      </p>
+      {message ? (
+        <p aria-live="polite" className="text-success text-sm">
+          {message}
+        </p>
+      ) : null}
+      {error ? (
+        <p aria-live="assertive" className="text-error text-sm">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

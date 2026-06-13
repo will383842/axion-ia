@@ -11,6 +11,7 @@ import * as Sentry from "@sentry/nextjs";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { deleteFromR2 } from "@/lib/r2-storage";
 import { importKitFromR2Key } from "@/server/intervention-documents/kit-import";
 
 export type KitImportJobData = { runId: string };
@@ -43,6 +44,8 @@ export function startKitImportWorker(): Worker<KitImportJobData, void, string> {
 
       try {
         const summary = await importKitFromR2Key(run.tempKey);
+        // Statut final AVANT de supprimer le ZIP : si cet update échoue, le
+        // ZIP reste présent → un retry re-télécharge et re-importe (idempotent).
         await prisma.kitImportRun.update({
           where: { id: runId },
           data: {
@@ -52,6 +55,12 @@ export function startKitImportWorker(): Worker<KitImportJobData, void, string> {
             finishedAt: new Date(),
           },
         });
+        // Nettoyage du ZIP temporaire APRÈS le statut final (best-effort).
+        try {
+          await deleteFromR2(run.tempKey);
+        } catch {
+          /* le ZIP temporaire sera nettoyé plus tard ; non bloquant */
+        }
         console.log(
           `[kit-import] run=${runId} OK : +${summary.created} maj ${summary.updated} inchangés ${summary.unchanged}`,
         );
