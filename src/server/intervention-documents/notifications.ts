@@ -61,6 +61,7 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
   };
   const sourceUrl = await sign(version.sourceKey);
   const pdfUrl = await sign(version.pdfKey);
+  const portalUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com"}/fr/espace-ressources`;
 
   let enqueued = 0;
   for (const r of recipients) {
@@ -78,6 +79,7 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
           sourceUrl,
           pdfUrl,
           sourceFormat: version.sourceFormat ?? undefined,
+          portalUrl,
         },
         { jobId: `doc-version-${versionId}-${r.id}` },
       );

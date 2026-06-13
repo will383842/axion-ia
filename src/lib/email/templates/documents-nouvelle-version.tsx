@@ -18,6 +18,8 @@ interface Payload {
   sourceUrl?: string;
   pdfUrl?: string;
   sourceFormat?: string;
+  /** URL de l'espace ressources passwordless (consultation permanente). */
+  portalUrl?: string;
 }
 
 export const documentsNouvelleVersionSubject = (
@@ -98,6 +100,16 @@ export function DocumentsNouvelleVersionEmail({
           Le document est disponible auprès de l&apos;administration.
         </Text>
       )}
+
+      {p.portalUrl ? (
+        <Text style={emailStyles.paragraphStyle}>
+          Retrouvez à tout moment <strong>tous vos documents à jour</strong> dans votre{" "}
+          <Link href={p.portalUrl} style={{ color: emailStyles.COLORS.textMuted }}>
+            espace ressources
+          </Link>{" "}
+          (connexion par e-mail, sans mot de passe).
+        </Text>
+      ) : null}
 
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         Pensez à utiliser la dernière version pour vos prochaines interventions. Cette notification
