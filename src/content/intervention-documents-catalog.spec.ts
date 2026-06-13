@@ -10,6 +10,7 @@ import {
   getSlotsByFamille,
   getSlotsByCategorie,
   getSlot,
+  getInterventionsSousGroupes,
   type InterventionFamille,
 } from "./intervention-documents-catalog";
 
@@ -32,6 +33,46 @@ describe("intervention-documents-catalog — dérivation booking-catalog", () =>
     const slugs = getAllInterventions().map((i) => i.slug);
     expect(slugs.every((s) => s.length > 0)).toBe(true);
     expect(new Set(slugs).size).toBe(slugs.length);
+  });
+});
+
+describe("intervention-documents-catalog — sous-groupes d'affichage", () => {
+  it("formations : 4 groupes par durée couvrant les 17, ordre 4 h → 1 j → 2 j → 3 j", () => {
+    const groups = getInterventionsSousGroupes("formation");
+    expect(groups).not.toBeNull();
+    const total = groups!.reduce((n, g) => n + g.interventions.length, 0);
+    expect(total).toBe(17);
+    expect(groups!.every((g) => g.interventions.length > 0)).toBe(true);
+    expect(groups!.map((g) => g.titre)).toEqual(["4 heures", "1 jour", "2 jours", "3 jours"]);
+    const slugs = groups!.flatMap((g) => g.interventions.map((i) => i.slug));
+    expect(new Set(slugs).size).toBe(17);
+  });
+
+  it("formations : IA Express rangé dans « 4 heures »", () => {
+    const g4h = getInterventionsSousGroupes("formation")!.find((g) => g.key === "4h");
+    expect(g4h?.interventions.some((i) => i.slug === "ia-express")).toBe(true);
+  });
+
+  it("1-to-1 : groupé par public (Dirigeant / Collaborateur / Suivi régulier), couvre les 5", () => {
+    const groups = getInterventionsSousGroupes("un_a_un");
+    expect(groups).not.toBeNull();
+    expect(groups!.map((g) => g.titre)).toEqual(["Dirigeant", "Collaborateur", "Suivi régulier"]);
+    const byKey = (k: string) => groups!.find((g) => g.key === k)?.interventions.length ?? 0;
+    expect(byKey("dirigeant")).toBe(2);
+    expect(byKey("collaborateur")).toBe(2);
+    expect(byKey("recurrent")).toBe(1);
+    const total = groups!.reduce((n, g) => n + g.interventions.length, 0);
+    expect(total).toBe(5);
+  });
+
+  it("audit : pas de sous-groupe (liste à plat → null)", () => {
+    expect(getInterventionsSousGroupes("audit")).toBeNull();
+  });
+
+  it("formations : chaque prestation porte une durée ; 1-to-1 et audits non", () => {
+    expect(getInterventionsByFamille("formation").every((i) => i.duree != null)).toBe(true);
+    expect(getInterventionsByFamille("un_a_un").every((i) => i.duree == null)).toBe(true);
+    expect(getInterventionsByFamille("audit").every((i) => i.duree == null)).toBe(true);
   });
 });
 

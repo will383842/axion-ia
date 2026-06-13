@@ -405,6 +405,17 @@ const FORMATION_DEFS: ReadonlyArray<FormationDef> = [
   },
 ];
 
+/**
+ * Durée (`4h`/`1j`/`2j`/`3j`) par slug de formation — dérivée de FORMATION_DEFS (SSOT).
+ * Sert à grouper les formations par durée (ex. console admin « Documents interventions »).
+ * Les slugs hors famille formation n'y figurent pas → lookup `undefined`.
+ */
+export const FORMATION_DUREE_BY_SLUG: Readonly<Record<string, FormationDuree>> =
+  Object.fromEntries(FORMATION_DEFS.map((f) => [f.slug, f.duree]));
+
+/** Ré-export du type durée pour les consommateurs (ex. intervention-documents-catalog). */
+export type { FormationDuree };
+
 const FORMATION_BOOKING_FORMATS: ReadonlyArray<BookingFormat> = FORMATION_DEFS.map((f) => {
   const d = FORMATION_DUREE_BOOKING[f.duree];
   const price = d.bookable ? fromFormation(f.gamme, f.duree) : surDevis;

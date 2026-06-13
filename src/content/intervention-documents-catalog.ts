@@ -25,7 +25,12 @@
 // La famille Prisma (`un_a_un`) diffère du BookingCategoryId (`un-a-un`) :
 // cf. FAMILLE_TO_BOOKING / BOOKING_TO_FAMILLE.
 
-import { BOOKING_CATALOG, type BookingCategoryId } from "@/content/booking-catalog";
+import {
+  BOOKING_CATALOG,
+  FORMATION_DUREE_BY_SLUG,
+  type BookingCategoryId,
+  type FormationDuree,
+} from "@/content/booking-catalog";
 
 // ============================================================================
 // Types
@@ -495,6 +500,8 @@ export interface InterventionRef {
   labelFr: string;
   labelEn: string;
   famille: InterventionFamille;
+  /** Durée (`4h`/`1j`/`2j`/`3j`) — uniquement pour la famille formation. */
+  duree?: FormationDuree;
 }
 
 /** Liste des prestations d'une famille, dérivée du booking-catalog (SSOT). */
@@ -504,12 +511,107 @@ export function getInterventionsByFamille(
   const bookingId = FAMILLE_TO_BOOKING[famille];
   const cat = BOOKING_CATALOG.find((c) => c.id === bookingId);
   if (!cat) return [];
-  return cat.formats.map((f) => ({
-    slug: f.slug,
-    labelFr: f.labelFr,
-    labelEn: f.labelEn,
-    famille,
+  return cat.formats.map((f) => {
+    // La durée n'existe que pour les formations ; on n'ajoute la clé que si elle
+    // est résolue (exactOptionalPropertyTypes : pas de clé à `undefined`).
+    const duree = famille === "formation" ? FORMATION_DUREE_BY_SLUG[f.slug] : undefined;
+    return {
+      slug: f.slug,
+      labelFr: f.labelFr,
+      labelEn: f.labelEn,
+      famille,
+      ...(duree ? { duree } : {}),
+    };
+  });
+}
+
+// ============================================================================
+// Sous-groupes d'affichage (console mieux organisée)
+// ----------------------------------------------------------------------------
+// Pour éviter des listes à plat trop longues, certaines familles s'affichent en
+// sections : Formations → par durée (4 h / 1 j / 2 j / 3 j), 1-to-1 → par public
+// (Dirigeant / Collaborateur / Suivi régulier). Audit reste en liste à plat
+// (4 prestations, aucun axe propre → null). Tout élément non classé tombe dans
+// un groupe « Autres » final ; les groupes vides sont omis.
+// ============================================================================
+
+export interface InterventionSousGroupe {
+  /** Identifiant stable (durée, public, ou « autres ») — sert de clé React. */
+  key: string;
+  titre: string;
+  interventions: ReadonlyArray<InterventionRef>;
+}
+
+const FORMATION_DUREE_ORDER: ReadonlyArray<FormationDuree> = ["4h", "1j", "2j", "3j"];
+const FORMATION_DUREE_LABEL: Record<FormationDuree, string> = {
+  "4h": "4 heures",
+  "1j": "1 jour",
+  "2j": "2 jours",
+  "3j": "3 jours",
+};
+
+export type UnAUnPublic = "dirigeant" | "collaborateur" | "recurrent";
+/** Public d'une prestation 1-to-1, par slug (axe d'organisation de la console). */
+const UN_A_UN_PUBLIC_BY_SLUG: Readonly<Record<string, UnAUnPublic | undefined>> = {
+  "dirigeant-vision-strategique": "dirigeant",
+  "claude-dirigeant": "dirigeant",
+  "coaching-decouverte": "collaborateur",
+  "claude-implementation-individuel": "collaborateur",
+  "un-a-un-recurrent": "recurrent",
+};
+const UN_A_UN_PUBLIC_ORDER: ReadonlyArray<UnAUnPublic> = ["dirigeant", "collaborateur", "recurrent"];
+const UN_A_UN_PUBLIC_LABEL: Record<UnAUnPublic, string> = {
+  dirigeant: "Dirigeant",
+  collaborateur: "Collaborateur",
+  recurrent: "Suivi régulier",
+};
+
+/** Regroupe selon un ordre de clés + libellés ; non-classés → groupe « Autres » final. */
+function buildSousGroupes<K extends string>(
+  items: ReadonlyArray<InterventionRef>,
+  keyOf: (i: InterventionRef) => K | undefined,
+  order: ReadonlyArray<K>,
+  label: Record<K, string>,
+  autresTitre: string,
+): ReadonlyArray<InterventionSousGroupe> {
+  const groups: InterventionSousGroupe[] = order.map((k) => ({
+    key: k,
+    titre: label[k],
+    interventions: items.filter((i) => keyOf(i) === k),
   }));
+  const autres = items.filter((i) => keyOf(i) === undefined);
+  if (autres.length > 0) {
+    groups.push({ key: "autres", titre: autresTitre, interventions: autres });
+  }
+  return groups.filter((g) => g.interventions.length > 0);
+}
+
+/**
+ * Sous-groupes d'affichage d'une famille. `null` = pas de sous-groupe → la
+ * famille s'affiche en liste à plat (cas Audit : trop peu de prestations).
+ */
+export function getInterventionsSousGroupes(
+  famille: InterventionFamille,
+): ReadonlyArray<InterventionSousGroupe> | null {
+  if (famille === "formation") {
+    return buildSousGroupes(
+      getInterventionsByFamille("formation"),
+      (i) => i.duree,
+      FORMATION_DUREE_ORDER,
+      FORMATION_DUREE_LABEL,
+      "Personnalisées",
+    );
+  }
+  if (famille === "un_a_un") {
+    return buildSousGroupes(
+      getInterventionsByFamille("un_a_un"),
+      (i) => UN_A_UN_PUBLIC_BY_SLUG[i.slug],
+      UN_A_UN_PUBLIC_ORDER,
+      UN_A_UN_PUBLIC_LABEL,
+      "Autres",
+    );
+  }
+  return null;
 }
 
 /** Toutes les prestations, toutes familles confondues. */
