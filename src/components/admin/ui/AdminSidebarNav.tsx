@@ -122,6 +122,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
   content: Newspaper,
   qualiopi: GraduationCap,
+  "documents-interventions": FolderOpen,
   "image-bank": Images,
   chatbot: Bot,
   engagement: Megaphone,

@@ -140,6 +140,32 @@ export async function getSignedUrlR2(
   });
 }
 
+/**
+ * Génère une URL signée temporaire pour un UPLOAD direct navigateur → R2
+ * (HTTP PUT). Permet de déposer de gros fichiers (.pptx 30-50 Mo) sans les
+ * faire transiter par le serveur Next (limite bodySizeLimit). Le navigateur
+ * fait `fetch(url, { method: "PUT", body: file })`.
+ *
+ * ⚠️ Côté plateforme : le bucket R2 doit autoriser le CORS PUT depuis l'origine
+ * admin (AllowedMethods PUT, AllowedHeaders content-type, AllowedOrigins).
+ *
+ * @param key — clé d'objet R2 (ex: `interventions/ia-express/livret_apprenant/v2/source.docx`)
+ * @param contentType — mime type exact que le client enverra (doit matcher le PUT)
+ * @param expiresInSeconds — TTL de l'URL signée (défaut 15 min)
+ */
+export async function getSignedUploadUrlR2(
+  key: string,
+  contentType: string,
+  expiresInSeconds: number = 15 * 60,
+): Promise<string> {
+  const client = getClient();
+  return getSignedUrl(
+    client,
+    new PutObjectCommand({ Bucket: getBucketName(), Key: key, ContentType: contentType }),
+    { expiresIn: expiresInSeconds },
+  );
+}
+
 /** True si l'objet existe (utilisé pour idempotence upload). */
 export async function existsInR2(key: string): Promise<boolean> {
   try {
