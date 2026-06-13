@@ -81,7 +81,9 @@ export type EmailJobName =
   | "qualiopi-attestation-disponible"
   | "qualiopi-alerte-interne"
   // Documents interventions — notification de nouvelle version publiée
-  | "documents-nouvelle-version";
+  | "documents-nouvelle-version"
+  // Espace formateur — lien de connexion passwordless (magic-link)
+  | "formateur-magic-link";
 
 export interface EmailJobData {
   template: EmailJobName;
