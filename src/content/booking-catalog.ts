@@ -410,8 +410,9 @@ const FORMATION_DEFS: ReadonlyArray<FormationDef> = [
  * Sert à grouper les formations par durée (ex. console admin « Documents interventions »).
  * Les slugs hors famille formation n'y figurent pas → lookup `undefined`.
  */
-export const FORMATION_DUREE_BY_SLUG: Readonly<Record<string, FormationDuree>> =
-  Object.fromEntries(FORMATION_DEFS.map((f) => [f.slug, f.duree]));
+export const FORMATION_DUREE_BY_SLUG: Readonly<Record<string, FormationDuree>> = Object.fromEntries(
+  FORMATION_DEFS.map((f) => [f.slug, f.duree]),
+);
 
 /** Ré-export du type durée pour les consommateurs (ex. intervention-documents-catalog). */
 export type { FormationDuree };

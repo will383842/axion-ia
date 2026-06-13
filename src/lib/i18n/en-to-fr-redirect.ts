@@ -54,10 +54,7 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/interventions/executives", "/fr/interventions/dirigeants"],
   // Formats Claude 1-to-1 retirés (2026-06-13) → page 1-to-1 équivalente.
   ["/en/interventions/claude-executive", "/fr/interventions/dirigeant-vision-strategique"],
-  [
-    "/en/interventions/claude-implementation-individual",
-    "/fr/interventions/coaching-decouverte",
-  ],
+  ["/en/interventions/claude-implementation-individual", "/fr/interventions/coaching-decouverte"],
   ["/en/interventions/save-time", "/fr/interventions/gagner-du-temps"],
 
   // Audit — sous-routes (cible/strategique-pme/strategique-eti/demande)

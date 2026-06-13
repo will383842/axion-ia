@@ -253,20 +253,32 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
 ] as const;
 
 /**
- * 1-TO-1 (coaching individuel). Structure cadrée 2026-06-13.
- * NB : pas de doc Qualiopi généré (coaching non Qualiopi-éligible pour l'instant) ;
- * « attestation_suivi » est un emplacement réservé (optionnel, vide en attendant
- * l'agrément).
+ * 1-TO-1 (coaching individuel) — cadré en AFEST (Action de Formation En Situation
+ * de Travail), Qualiopi/OPCO-finançable (décision Will 2026-06-13). La méthode :
+ * cartographier le fonctionnement actuel (= analyse de l'activité AFEST), mises en
+ * situation, phases réflexives, plan d'optimisation. Documents Qualiopi générés par
+ * le Formation Engine (positionnement, émargement, attestation) comme les formations.
+ * ⚠️ Financement effectif conditionné au périmètre de l'agrément (à confirmer au
+ * certificateur).
  */
 const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
   // Cadre & objectifs
   {
     key: "cadrage_objectifs",
-    titre: "Cadrage / contrat d'objectifs",
+    titre: "Cadrage / convention AFEST & contrat d'objectifs",
     categorie: "cadre",
     visibilite: "stagiaire",
     formats: ["docx"],
     ordre: 1,
+  },
+  {
+    key: "analyse_activite",
+    titre: "Grille de cartographie / analyse de l'activité (AFEST)",
+    categorie: "cadre",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 2,
+    note: "Cœur AFEST : cartographie du fonctionnement actuel (tâches, temps, irritants) en ouverture de journée.",
   },
   {
     key: "positionnement_individuel",
@@ -274,15 +286,17 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "cadre",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 2,
+    ordre: 3,
+    qualiopiDocType: "positionnement",
+    note: "Modèle. Les instances par bénéficiaire sont générées par le Formation Engine.",
   },
   {
     key: "guide_coach",
-    titre: "Guide du coach (déroulé, posture)",
+    titre: "Trame de journée & guide du coach (déroulé AFEST, posture)",
     categorie: "cadre",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 3,
+    ordre: 4,
   },
   // Documents bénéficiaire
   {
@@ -291,7 +305,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "stagiaires",
     visibilite: "stagiaire",
     formats: ["docx"],
-    ordre: 4,
+    ordre: 5,
   },
   {
     key: "fiches_exercices",
@@ -299,7 +313,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "stagiaires",
     visibilite: "stagiaire",
     formats: ["docx"],
-    ordre: 5,
+    ordre: 6,
   },
   {
     key: "ressources_perso",
@@ -307,7 +321,16 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "stagiaires",
     visibilite: "stagiaire",
     formats: ["docx", "lien"],
-    ordre: 6,
+    ordre: 7,
+  },
+  {
+    key: "plan_optimisation",
+    titre: "Plan d'optimisation personnalisé (livrable)",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 8,
+    note: "Livrable de fin : ce qu'on peut automatiser/optimiser + gains de temps et d'argent estimés.",
   },
   // Documents coach (confidentiel)
   {
@@ -316,7 +339,16 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "formateur",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 7,
+    ordre: 9,
+  },
+  {
+    key: "phase_reflexive",
+    titre: "Trame de phase réflexive (AFEST)",
+    categorie: "formateur",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 10,
+    note: "Obligatoire AFEST : alterner mise en situation de travail et débrief réflexif.",
   },
   {
     key: "corriges_1to1",
@@ -324,7 +356,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "formateur",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 8,
+    ordre: 11,
   },
   // Suivi & évaluation
   {
@@ -333,7 +365,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "evaluation",
     visibilite: "stagiaire",
     formats: ["docx"],
-    ordre: 9,
+    ordre: 12,
   },
   {
     key: "evaluation_progression",
@@ -341,7 +373,8 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "evaluation",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 10,
+    ordre: 13,
+    qualiopiDocType: "grille_evaluation",
   },
   {
     key: "satisfaction_1to1",
@@ -349,17 +382,19 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "evaluation",
     visibilite: "interne",
     formats: ["docx"],
-    ordre: 11,
+    ordre: 14,
+    qualiopiDocType: "satisfaction",
   },
   {
-    key: "attestation_suivi",
-    titre: "Attestation de suivi",
+    key: "attestation_emargement",
+    titre: "Attestation de réalisation + émargement",
     categorie: "evaluation",
-    visibilite: "stagiaire",
+    visibilite: "interne",
     formats: ["pdf"],
-    ordre: 12,
-    optionnel: true,
-    note: "Emplacement réservé — à remplir quand le coaching sera Qualiopi-éligible (agrément).",
+    ordre: 15,
+    qualiopiDocType: "attestation",
+    generatedOnly: true,
+    note: "Généré par le Formation Engine (vraies données, QR, rétention 5 ans). Lien seul, pas d'upload.",
   },
 ];
 
@@ -559,7 +594,11 @@ const UN_A_UN_PUBLIC_BY_SLUG: Readonly<Record<string, UnAUnPublic | undefined>> 
   "coaching-optimisation-2j": "collaborateur",
   "un-a-un-recurrent": "recurrent",
 };
-const UN_A_UN_PUBLIC_ORDER: ReadonlyArray<UnAUnPublic> = ["dirigeant", "collaborateur", "recurrent"];
+const UN_A_UN_PUBLIC_ORDER: ReadonlyArray<UnAUnPublic> = [
+  "dirigeant",
+  "collaborateur",
+  "recurrent",
+];
 const UN_A_UN_PUBLIC_LABEL: Record<UnAUnPublic, string> = {
   dirigeant: "Dirigeant",
   collaborateur: "Collaborateur",

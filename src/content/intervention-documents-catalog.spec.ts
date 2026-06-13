@@ -151,18 +151,27 @@ describe("intervention-documents-catalog — slots AUDIT", () => {
   });
 });
 
-describe("intervention-documents-catalog — slots 1-to-1", () => {
-  it("12 slots répartis sur 4 rayons, clés uniques", () => {
+describe("intervention-documents-catalog — slots 1-to-1 (AFEST/Qualiopi)", () => {
+  it("15 slots répartis sur 4 rayons, clés uniques", () => {
     const slots = getSlotsByFamille("un_a_un");
-    expect(slots.length).toBe(12);
-    expect(new Set(slots.map((s) => s.key)).size).toBe(12);
+    expect(slots.length).toBe(15);
+    expect(new Set(slots.map((s) => s.key)).size).toBe(15);
     expect(getSlotsByCategorie("un_a_un").length).toBe(4);
   });
 
-  it("attestation de suivi = emplacement réservé (optionnel, vide en attendant agrément)", () => {
-    const att = getSlot("un_a_un", "attestation_suivi");
-    expect(att?.optionnel).toBe(true);
-    expect(att?.generatedOnly).toBeUndefined();
+  it("AFEST : analyse d'activité (cartographie) + phase réflexive + plan d'optimisation présents", () => {
+    expect(getSlot("un_a_un", "analyse_activite")).toBeDefined();
+    expect(getSlot("un_a_un", "phase_reflexive")).toBeDefined();
+    expect(getSlot("un_a_un", "plan_optimisation")?.visibilite).toBe("stagiaire");
+  });
+
+  it("Qualiopi : positionnement/évaluation/satisfaction taggés + attestation-émargement générée", () => {
+    expect(getSlot("un_a_un", "positionnement_individuel")?.qualiopiDocType).toBe("positionnement");
+    expect(getSlot("un_a_un", "evaluation_progression")?.qualiopiDocType).toBe("grille_evaluation");
+    expect(getSlot("un_a_un", "satisfaction_1to1")?.qualiopiDocType).toBe("satisfaction");
+    const att = getSlot("un_a_un", "attestation_emargement");
+    expect(att?.generatedOnly).toBe(true);
+    expect(att?.qualiopiDocType).toBe("attestation");
   });
 
   it("rayons 1-to-1 affichés avec le vocabulaire coaching", () => {
