@@ -137,7 +137,8 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
     key: "livret_apprenant",
     titre: "Livret apprenant",
     categorie: "stagiaires",
-    visibilite: "stagiaire",
+    // Accessible aux formateurs dans l'espace ressources (choix Will 2026-06-13).
+    visibilite: "formateur",
     formats: ["docx"],
     ordre: 1,
   },
@@ -145,7 +146,8 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
     key: "cahier_exercices",
     titre: "Cahier d'exercices / TP",
     categorie: "stagiaires",
-    visibilite: "stagiaire",
+    // Accessible aux formateurs dans l'espace ressources (choix Will 2026-06-13).
+    visibilite: "formateur",
     formats: ["docx"],
     ordre: 3,
   },
@@ -153,7 +155,8 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
     key: "ressources",
     titre: "Ressources & aller plus loin",
     categorie: "stagiaires",
-    visibilite: "stagiaire",
+    // Accessible aux formateurs dans l'espace ressources (choix Will 2026-06-13).
+    visibilite: "formateur",
     formats: ["docx", "lien"],
     ordre: 5,
   },
