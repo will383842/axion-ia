@@ -30,6 +30,7 @@ import { startContentGenSchedulerWorker } from "./workers/content-gen-scheduler-
 import { startContentDeadlineCheckerWorker } from "./workers/content-gen-deadline-checker";
 import { startImageBankEnrichWorker } from "./workers/image-bank-enrich-worker";
 import { startImageBankImportWorker } from "./workers/image-bank-import-worker";
+import { startKitImportWorker } from "./workers/kit-import-worker";
 import { startImageBankTranslateWorker } from "./workers/image-bank-translate-worker";
 import { startImageBankCronsWorker } from "./workers/image-bank-crons-worker";
 import { startImageBankAutoConvertWorker } from "./workers/image-bank-auto-convert-worker";
@@ -97,6 +98,7 @@ async function main() {
     // initial, désactivable par opérateur via BULLMQ_DISABLED=true.
     startImageBankEnrichWorker(),
     startImageBankImportWorker(),
+    startKitImportWorker(), // import en masse kit formation (ZIP → documents-interventions)
     startImageBankTranslateWorker(),
     startImageBankCronsWorker(),
     startImageBankAutoConvertWorker(), // 2026-05-20 — conversion slug-based PNG→WebP/AVIF (public/images/)

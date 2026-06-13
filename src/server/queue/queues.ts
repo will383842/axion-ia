@@ -28,6 +28,7 @@ import type { ImageBankImportJobData } from "./workers/image-bank-import-worker"
 import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-worker";
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
+import type { KitImportJobData } from "./workers/kit-import-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 import type { FormationEngineJobData } from "./workers/qualiopi-formation-engine-worker";
 import type {
@@ -416,6 +417,21 @@ export const imageBankImportQueue: Queue<ImageBankImportJobData, void, string> |
       defaultJobOptions: { ...IMAGE_BANK_JOB_OPTIONS, attempts: 2 },
     })
   : null;
+
+// Import en masse de kit de formation (ZIP → documents-interventions).
+export const kitImportQueue: Queue<KitImportJobData, void, string> | null = connection
+  ? new Queue<KitImportJobData, void, string>("kit-import", { connection, defaultJobOptions })
+  : null;
+
+export async function enqueueKitImport(runId: string): Promise<void> {
+  if (!kitImportQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(`[bullmq] no connection, skipping enqueueKitImport(${runId})`);
+    }
+    return;
+  }
+  await kitImportQueue.add(`kit-import-${runId}`, { runId }, { jobId: `kit-import-${runId}` });
+}
 
 export const imageBankAutoConvertQueue: Queue<
   ImageBankAutoConvertJobData,

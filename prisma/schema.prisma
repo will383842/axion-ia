@@ -6026,6 +6026,36 @@ model RessourceTelechargement {
   @@map("ressource_telechargements")
 }
 
+/// Statut d'un import de kit de formation.
+enum KitImportStatut {
+  en_attente
+  en_cours
+  termine
+  erreur
+}
+
+/// Exécution d'un import en masse de kit (ZIP) → documents-interventions.
+/// Trace le statut + le récapitulatif (créés/mis à jour/inchangés) pour l'UI.
+model KitImportRun {
+  id          String          @id @default(uuid()) @db.Uuid
+  statut      KitImportStatut @default(en_attente)
+  /// Clé R2 temporaire du ZIP uploadé (supprimée après traitement).
+  tempKey     String?         @map("temp_key") @db.Text
+  fileName    String?         @map("file_name") @db.VarChar(300)
+  /// Récapitulatif (KitImportSummary) : created/updated/unchanged/items/errors.
+  summary     Json?
+  error       String?         @db.Text
+  /// AdminUser.id de l'auteur (audit, sans FK pour rester additif).
+  startedById String?         @map("started_by_id") @db.Uuid
+  startedAt   DateTime?       @map("started_at")
+  finishedAt  DateTime?       @map("finished_at")
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  @@index([statut])
+  @@index([createdAt])
+  @@map("kit_import_runs")
+}
+
 // ============================================================
 // QUALIOPI — T14 : Portail stagiaire + appréciations multi-parties (off.30)
 // Token 90 j révocable → cookie HttpOnly. Espace stagiaire (attestations,

@@ -102,7 +102,9 @@ export type WorkerName =
   // Sprint v7 Phase 13 — Content refresh monthly cron
   | "content-refresh"
   // Qualiopi T6 — auto-transitions formation crons
-  | "formation-crons";
+  | "formation-crons"
+  // Import en masse kit formation (ZIP → documents-interventions) 2026-06-13
+  | "kit-import";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
