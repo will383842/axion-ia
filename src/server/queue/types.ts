@@ -79,7 +79,9 @@ export type EmailJobName =
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
   | "qualiopi-attestation-disponible"
-  | "qualiopi-alerte-interne";
+  | "qualiopi-alerte-interne"
+  // Documents interventions — notification de nouvelle version publiée
+  | "documents-nouvelle-version";
 
 export interface EmailJobData {
   template: EmailJobName;

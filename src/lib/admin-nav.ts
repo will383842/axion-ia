@@ -26,6 +26,7 @@ export type AdminNavGroup =
   | "main"
   | "content"
   | "qualiopi"
+  | "documents-interventions"
   | "image-bank"
   | "chatbot"
   | "engagement"
@@ -47,6 +48,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   content: "Contenu",
   qualiopi: "Formation / Qualiopi",
+  "documents-interventions": "Documents interventions",
   "image-bank": "Banque d'images",
   chatbot: "Chatbot",
   engagement: "Engagement",
@@ -58,6 +60,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "content",
   "qualiopi",
+  "documents-interventions",
   "image-bank",
   "chatbot",
   "engagement",
@@ -242,6 +245,37 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Alertes",
       icon: "🔔",
       group: "qualiopi",
+    },
+    // ── Documents interventions (bibliothèque pédagogique par prestation) ──
+    {
+      href: `${base}/documents-interventions`,
+      label: "Documents interventions",
+      icon: "📂",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/formations`,
+      label: "Formations",
+      icon: "📘",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/un-a-un`,
+      label: "1-to-1",
+      icon: "👤",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/audit`,
+      label: "Audits",
+      icon: "🔍",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/destinataires`,
+      label: "Annuaire équipe",
+      icon: "✉️",
+      group: "documents-interventions",
     },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
     { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },

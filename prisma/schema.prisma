@@ -5845,6 +5845,140 @@ model SupportFormation {
 }
 
 // ============================================================
+// Documents d'intervention — Bibliothèque admin (chantier "Documents
+// interventions"). Centralise les documents pédagogiques PAR PRESTATION
+// (famille formation / 1-to-1 / audit, dérivée du SSOT booking-catalog +
+// intervention-documents-catalog). Upload manuel DOUBLE-FORMAT (source
+// éditable .docx/.pptx + PDF figé sur R2), VERSIONS IMMUABLES + pointeur
+// courant + note « Quoi de neuf », visibilité par audience.
+// Les slots déjà produits par le Formation Engine (attestation, émargement,
+// satisfaction…) sont AGRÉGÉS en lecture (source = qualiopi_genere), JAMAIS
+// dupliqués ici. Notifications = e-mail (listes document_recipients), aucun
+// compte utilisateur requis (scale 200+ commerciaux/formateurs). ADDITIF.
+// ============================================================
+
+/// Famille de prestation (miroir de BookingCategoryId du booking-catalog).
+enum InterventionFamille {
+  formation
+  un_a_un
+  audit
+}
+
+/// Catégorie de document = 4 sections du kit (structure dossier de formation).
+enum InterventionDocCategorie {
+  stagiaires
+  formateur
+  cadre
+  evaluation
+}
+
+/// Audience de diffusion — gouverne l'envoi/export, PAS l'accès admin
+/// (tout admin voit tout). Ex. corrigés/guide = formateur.
+enum InterventionDocVisibilite {
+  stagiaire
+  formateur
+  commercial
+  interne
+}
+
+/// Statut d'une version de document.
+enum InterventionDocStatut {
+  brouillon
+  publie
+  archive
+}
+
+/// Origine : upload manuel OU agrégé (lecture) depuis le Formation Engine.
+enum InterventionDocSource {
+  upload
+  qualiopi_genere
+}
+
+/// Rôle d'un destinataire de notification (liste e-mail gérée en admin).
+enum DocumentRecipientRole {
+  formateur
+  commercial
+}
+
+/// Slot logique de document pour une prestation (identité stable).
+/// `slot` = clé du catalogue SSOT (intervention-documents-catalog.ts).
+model InterventionDocument {
+  id               String                       @id @default(uuid()) @db.Uuid
+  /// Slug de la prestation (booking-catalog : ia-express, audit-flash-onsite…).
+  interventionSlug String                       @map("intervention_slug") @db.VarChar(80)
+  famille          InterventionFamille
+  categorie        InterventionDocCategorie
+  /// Clé du slot SSOT (livret_apprenant, guide_animation, programme…).
+  slot             String                       @db.VarChar(80)
+  titre            String                       @db.VarChar(300)
+  visibilite       InterventionDocVisibilite    @default(stagiaire)
+  source           InterventionDocSource        @default(upload)
+  /// Pointeur vers la version COURANTE (publiée). Null si aucune version.
+  currentVersionId String?                      @unique @map("current_version_id") @db.Uuid
+  currentVersion   InterventionDocumentVersion? @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+  versions         InterventionDocumentVersion[] @relation("DocVersions")
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
+
+  @@unique([interventionSlug, slot])
+  @@index([famille, categorie])
+  @@index([interventionSlug])
+  @@map("intervention_documents")
+}
+
+/// Version IMMUABLE d'un document (source éditable + PDF figé, sur R2).
+/// On ne modifie jamais une version en place : toute modif = nouvelle version
+/// + note de changement. C'est ce qui permet « voir les changements ».
+model InterventionDocumentVersion {
+  id              String                @id @default(uuid()) @db.Uuid
+  documentId      String                @map("document_id") @db.Uuid
+  document        InterventionDocument  @relation("DocVersions", fields: [documentId], references: [id], onDelete: Cascade)
+  version         Int
+  /// Source éditable (clé R2) : .docx / .pptx — adaptation par les formateurs.
+  sourceKey       String?               @map("source_key") @db.Text
+  sourceFormat    String?               @map("source_format") @db.VarChar(10)
+  sourceSizeBytes Int                   @default(0) @map("source_size_bytes")
+  /// PDF figé (clé R2) : livrable stagiaire / archive.
+  pdfKey          String?               @map("pdf_key") @db.Text
+  pdfSizeBytes    Int                   @default(0) @map("pdf_size_bytes")
+  hashSha256      String?               @map("hash_sha256") @db.VarChar(64)
+  /// « Quoi de neuf » — résumé du changement de cette version.
+  changeNote      String?               @map("change_note") @db.Text
+  statut          InterventionDocStatut @default(brouillon)
+  publishedAt     DateTime?             @map("published_at")
+  /// AdminUser.id de l'auteur (champ d'audit, sans FK pour rester additif).
+  publishedById   String?               @map("published_by_id") @db.Uuid
+  createdAt       DateTime              @default(now()) @map("created_at")
+
+  currentOf       InterventionDocument? @relation("CurrentVersion")
+
+  @@unique([documentId, version])
+  @@index([documentId])
+  @@map("intervention_document_versions")
+}
+
+/// Destinataire de notification e-mail (liste gérée en admin, aucun compte).
+/// À chaque nouvelle version publiée → e-mail à la bonne liste. Scope :
+/// famille (null = toutes) + interventionSlug (null = toute la famille).
+model DocumentRecipient {
+  id               String                @id @default(uuid()) @db.Uuid
+  email            String                @db.Citext
+  nom              String?               @db.VarChar(200)
+  role             DocumentRecipientRole
+  famille          InterventionFamille?
+  interventionSlug String?               @map("intervention_slug") @db.VarChar(80)
+  /// Lien optionnel vers une fiche Trainer (déduction auto best-effort).
+  trainerId        String?               @map("trainer_id") @db.Uuid
+  actif            Boolean               @default(true)
+  createdAt        DateTime              @default(now()) @map("created_at")
+  updatedAt        DateTime              @updatedAt @map("updated_at")
+
+  @@index([role])
+  @@index([famille])
+  @@map("document_recipients")
+}
+
+// ============================================================
 // QUALIOPI — T14 : Portail stagiaire + appréciations multi-parties (off.30)
 // Token 90 j révocable → cookie HttpOnly. Espace stagiaire (attestations,
 // satisfaction, handicap, RGPD export/suppression). Appréciations stagiaire/

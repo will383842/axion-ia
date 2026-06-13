@@ -72,6 +72,10 @@ import {
   QualiopiAlerteInterneEmail,
   qualiopiAlerteInterneSubject,
 } from "./qualiopi-alerte-interne";
+import {
+  DocumentsNouvelleVersionEmail,
+  documentsNouvelleVersionSubject,
+} from "./documents-nouvelle-version";
 // Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
 import {
   contractVersionUpdated,
@@ -239,6 +243,10 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-alerte-interne": {
     subject: qualiopiAlerteInterneSubject,
     component: QualiopiAlerteInterneEmail,
+  },
+  "documents-nouvelle-version": {
+    subject: documentsNouvelleVersionSubject,
+    component: DocumentsNouvelleVersionEmail,
   },
   // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
   "contract-version-updated": contractVersionUpdated,
