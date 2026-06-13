@@ -138,7 +138,10 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
     // Sprint X.2 — `https://api.stripe.com` requis pour Stripe.js (publishable
     // key client) + côté serveur indirect via Checkout redirect. `https://checkout.stripe.com`
     // frame-src pour 3DS challenges si on bascule un jour à Stripe Elements (V1.5+).
-    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com",
+    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com",
+    // `*.r2.cloudflarestorage.com` : upload présigné direct navigateur→R2
+    // (import de kit + uploads admin documents-interventions). Sans ça, la CSP
+    // bloque le PUT du fichier vers le stockage (fix 2026-06-13).
     // `plausible.axion-ia.com` autorisé pour l'embed dashboard dans
     // /fr/{prefix}/analytics (Plausible "Shared link" iframe).
     // `calendly.com` + `*.calendly.com` autorisés pour l'embed booking inline
