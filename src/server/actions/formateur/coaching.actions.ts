@@ -12,8 +12,14 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import type { Prisma } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { requireFormateurAction } from "@/server/formateur/guard";
+
+/** Cast un tableau d'objets validé Zod vers le type JSON attendu par Prisma. */
+function asJson(rows: Array<Record<string, unknown>>): Prisma.InputJsonValue {
+  return rows as unknown as Prisma.InputJsonValue;
+}
 
 export interface ActionResult {
   readonly ok: boolean;
@@ -109,7 +115,7 @@ export async function upsertCartographieAction(
   const { sessionId, taches, ...rest } = parsed.data;
   await assertOwnership(sessionId);
   const data = {
-    taches,
+    taches: asJson(taches),
     chronophages: rest.chronophages || null,
     irritants: rest.irritants || null,
     donneesSensibles: rest.donneesSensibles || null,
@@ -211,8 +217,8 @@ export async function upsertPlanAction(input: z.input<typeof planSchema>): Promi
   await assertOwnership(sessionId);
   const data = {
     objectifs: rest.objectifs || null,
-    optimisationsRetenues: rest.optimisationsRetenues,
-    prochainesEtapes: rest.prochainesEtapes,
+    optimisationsRetenues: asJson(rest.optimisationsRetenues),
+    prochainesEtapes: asJson(rest.prochainesEtapes),
     pointsVigilance: rest.pointsVigilance || null,
     gainTempsHSemaine: rest.gainTempsHSemaine ?? null,
     suiviPropose: rest.suiviPropose || null,
@@ -253,8 +259,8 @@ export async function addCompteRenduAction(
       dateSeance: new Date(rest.dateSeance),
       dureeMinutes: rest.dureeMinutes ?? null,
       objectifs: rest.objectifs || null,
-      misesEnSituation: rest.misesEnSituation,
-      phasesReflexives: rest.phasesReflexives,
+      misesEnSituation: asJson(rest.misesEnSituation),
+      phasesReflexives: asJson(rest.phasesReflexives),
       planRemis: rest.planRemis,
       suite: rest.suite || null,
       notesConfidentielles: rest.notesConfidentielles || null,
