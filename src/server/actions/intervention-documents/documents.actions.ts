@@ -15,7 +15,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getSignedUploadUrlR2, deleteFromR2, isR2Configured } from "@/lib/r2-storage";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
+import { logActivity } from "@/server/intervention-documents/activity-log";
 import { buildR2Key } from "@/server/intervention-documents/keys";
 import { notifyNewVersion } from "@/server/intervention-documents/notifications";
 import { getSlot, type InterventionFamille } from "@/content/intervention-documents-catalog";

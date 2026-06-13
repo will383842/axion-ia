@@ -1,4 +1,5 @@
 "use client";
+// use-client: bouton d'action interactif (useTransition + router.refresh).
 
 // Bouton « Importer les formateurs » : pré-remplit l'annuaire de notification
 // avec les formateurs actifs des fiches Qualiopi (dédoublonné). Évite la

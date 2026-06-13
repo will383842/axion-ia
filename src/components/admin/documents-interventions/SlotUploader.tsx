@@ -1,4 +1,5 @@
 "use client";
+// use-client: upload de fichiers vers R2 + état d'envoi (useState/useTransition/useRouter).
 
 // Uploader d'un slot de document : dépôt d'une nouvelle version (source
 // éditable .docx/.pptx + PDF figé), upload DIRECT navigateur → R2 (presigned

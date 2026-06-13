@@ -6,7 +6,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
+import { logActivity } from "@/server/intervention-documents/activity-log";
 import { requireAdminWrite } from "./_guards";
 
 const FAMILLES = ["formation", "un_a_un", "audit"] as const;

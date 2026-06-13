@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaire interactif destinataires (useState/useTransition/useRouter).
 
 // Gestion des listes de destinataires e-mail (formateurs / commerciaux) :
 // ajout, activation/désactivation, suppression. Aucun compte requis.

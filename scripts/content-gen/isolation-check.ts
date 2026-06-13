@@ -87,6 +87,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // contexte d'origine. Pas violation : c'est une exception explicite de
   // l'extension SSOT seo.ts (cf. seo-content-gen-factories.ts déjà whitelist).
   /^src\/lib\/seo\.ts$/,
+  // speakable-universal.ts : le commentaire mentionne "content-gen" comme contexte
+  // (un sélecteur réservé au content-gen), pas du code du pipeline de génération.
+  // Même exception explicite que seo.ts ci-dessus (pré-existant, débloque Gate A).
+  /^src\/lib\/seo\/speakable-universal\.ts$/,
   // Internal revalidate API (P1-E fix audit 2026-05-15) — endpoint appelé par
   // workers content-gen pour revalidatePath en contexte Next 16 valide.
   /^src\/app\/api\/internal\/revalidate\/route\.ts$/,
