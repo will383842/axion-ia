@@ -1,8 +1,9 @@
 /**
  * Console admin — requêtes & agrégats coaching 1-to-1 (2026-06-13).
  *
- * Vue transverse (toutes séances, tous formateurs) — réservée aux admins
- * (les pages appellent `requireAdminRead`). Dashboards : gains de temps,
+ * Vue transverse (toutes séances, tous formateurs). L'accès est protégé par le
+ * middleware admin (groupe `[adminPrefix]`) ; les mutations passent par des
+ * actions gardées (`requireAdminWrite`). Dashboards : gains de temps,
  * optimisations par type / par métier, conformité AFEST.
  */
 
@@ -68,7 +69,7 @@ export async function getCoachingDashboard(): Promise<CoachingDashboard> {
       statut: true,
       plan: { select: { gainTempsHSemaine: true } },
       cartographie: { select: { id: true } },
-      _count: { select: { optimisations: true, comptesRendus: true } },
+      _count: { select: { comptesRendus: true } },
     },
   });
 

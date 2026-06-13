@@ -14,10 +14,19 @@ import {
 
 type Role = "formateur" | "commercial";
 
-/** Visibilité du document → rôles à notifier. */
+/**
+ * Visibilité du document → rôles à notifier. Doit rester l'INVERSE exact du
+ * filtre du portail ressources (`visibilitesForRole` dans ressources/queries.ts) :
+ * on ne notifie que les rôles qui verront effectivement le document, sinon
+ * l'e-mail pointerait vers un portail où le doc est invisible.
+ *   - commercial → commerciaux + formateurs (les 2 le voient)
+ *   - formateur  → formateurs uniquement
+ *   - stagiaire / interne → personne (pas destiné à l'équipe commerciale/formateur)
+ */
 function targetRoles(visibilite: string): Role[] {
-  // commercial = aussi visible des commerciaux (ex. programme) ; sinon formateurs.
-  return visibilite === "commercial" ? ["commercial", "formateur"] : ["formateur"];
+  if (visibilite === "commercial") return ["commercial", "formateur"];
+  if (visibilite === "formateur") return ["formateur"];
+  return [];
 }
 
 export async function notifyNewVersion(versionId: string): Promise<{ enqueued: number }> {
@@ -29,6 +38,7 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
 
   const doc = version.document;
   const roles = targetRoles(doc.visibilite);
+  if (roles.length === 0) return { enqueued: 0 };
 
   const recipients = await prisma.documentRecipient.findMany({
     where: {

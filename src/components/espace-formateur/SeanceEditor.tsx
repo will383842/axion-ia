@@ -214,11 +214,23 @@ export function SeanceEditor({ session }: { session: SeanceData }): React.ReactE
         ))}
       </div>
 
-      {tab === "cartographie" ? <CartographieTab session={session} onDone={refresh} /> : null}
-      {tab === "optimisations" ? <OptimisationsTab session={session} onDone={refresh} /> : null}
-      {tab === "plan" ? <PlanTab session={session} onDone={refresh} /> : null}
-      {tab === "cr" ? <ComptesRendusTab session={session} onDone={refresh} /> : null}
-      {tab === "journal" ? <JournalTab session={session} onDone={refresh} /> : null}
+      {/* Onglets gardés MONTÉS (masquage CSS) pour ne pas perdre les saisies non
+          enregistrées (Cartographie/Plan) au changement d'onglet. */}
+      <div className={tab === "cartographie" ? "" : "hidden"}>
+        <CartographieTab session={session} onDone={refresh} />
+      </div>
+      <div className={tab === "optimisations" ? "" : "hidden"}>
+        <OptimisationsTab session={session} onDone={refresh} />
+      </div>
+      <div className={tab === "plan" ? "" : "hidden"}>
+        <PlanTab session={session} onDone={refresh} />
+      </div>
+      <div className={tab === "cr" ? "" : "hidden"}>
+        <ComptesRendusTab session={session} onDone={refresh} />
+      </div>
+      <div className={tab === "journal" ? "" : "hidden"}>
+        <JournalTab session={session} onDone={refresh} />
+      </div>
     </div>
   );
 }
@@ -347,6 +359,9 @@ function OptimisationsTab({
   const [piste, setPiste] = useState("");
   const [gainMin, setGainMin] = useState("");
   const [occ, setOcc] = useState("");
+  const [gainEuro, setGainEuro] = useState("");
+  const [facilite, setFacilite] = useState("");
+  const [priorite, setPriorite] = useState("");
 
   function add() {
     setError(null);
@@ -363,6 +378,9 @@ function OptimisationsTab({
         piste: piste || undefined,
         gainTempsMinParOcc: gainMin ? Number(gainMin) : undefined,
         occurrencesSemaine: occ ? Number(occ) : undefined,
+        gainEuroOuRisque: gainEuro || undefined,
+        facilite: facilite ? Number(facilite) : undefined,
+        priorite: priorite ? Number(priorite) : undefined,
       });
       if (!res.ok) {
         setError(res.error ?? "Erreur.");
@@ -373,6 +391,9 @@ function OptimisationsTab({
       setPiste("");
       setGainMin("");
       setOcc("");
+      setGainEuro("");
+      setFacilite("");
+      setPriorite("");
       onDone();
     });
   }
@@ -473,6 +494,32 @@ function OptimisationsTab({
               type="number"
               value={occ}
               onChange={(e) => setOcc(e.target.value)}
+              className={inputCls}
+            />
+          </Field>
+          <Field label="Gain € ou risque évité">
+            <input
+              value={gainEuro}
+              onChange={(e) => setGainEuro(e.target.value)}
+              className={inputCls}
+            />
+          </Field>
+          <Field label="Facilité (1 facile → 5 complexe)">
+            <input
+              type="number"
+              min={1}
+              max={5}
+              value={facilite}
+              onChange={(e) => setFacilite(e.target.value)}
+              className={inputCls}
+            />
+          </Field>
+          <Field label="Priorité (1 = max)">
+            <input
+              type="number"
+              min={1}
+              value={priorite}
+              onChange={(e) => setPriorite(e.target.value)}
               className={inputCls}
             />
           </Field>
@@ -606,6 +653,7 @@ function ComptesRendusTab({
   const [phases, setPhases] = useState<Row[]>([]);
   const [planRemis, setPlanRemis] = useState(false);
   const [suite, setSuite] = useState("");
+  const [notes, setNotes] = useState("");
 
   function add() {
     setError(null);
@@ -623,6 +671,7 @@ function ComptesRendusTab({
         phasesReflexives: phases,
         planRemis,
         suite: suite || undefined,
+        notesConfidentielles: notes || undefined,
       });
       if (!res.ok) {
         setError(res.error ?? "Erreur.");
@@ -635,6 +684,7 @@ function ComptesRendusTab({
       setPhases([]);
       setPlanRemis(false);
       setSuite("");
+      setNotes("");
       onDone();
     });
   }
@@ -730,6 +780,9 @@ function ComptesRendusTab({
         </label>
         <Field label="Suite à donner">
           <input value={suite} onChange={(e) => setSuite(e.target.value)} className={inputCls} />
+        </Field>
+        <Field label="Notes confidentielles (coach uniquement)">
+          <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </Field>
         {error ? <p className="text-error text-xs">{error}</p> : null}
         <button

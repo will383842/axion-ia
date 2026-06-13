@@ -144,12 +144,13 @@ export async function verifyMagicToken(
   const [payloadB64, sigB64] = parts as [string, string];
 
   let payloadBytes: Uint8Array;
+  let sigBytes: Uint8Array;
   try {
     payloadBytes = b64urlDecode(payloadB64);
+    sigBytes = b64urlDecode(sigB64);
   } catch {
     return { ok: false, reason: "malformed_token" };
   }
-  const sigBytes = b64urlDecode(sigB64);
   const key = await hmacKey();
   const valid = await crypto.subtle.verify(
     "HMAC",

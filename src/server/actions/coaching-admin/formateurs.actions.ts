@@ -12,7 +12,6 @@
  */
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite } from "@/server/actions/intervention-documents/_guards";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -36,7 +35,9 @@ export async function setFormateurActifAction(
     where: { id: parsed.data.trainerId },
     data: { actif: parsed.data.actif },
   });
-  revalidatePath(`/fr/admin/coaching/formateurs`);
+  // Le rafraîchissement UI est assuré par router.refresh() côté client
+  // (FormateurAccountManager) — pas de revalidatePath ici car le préfixe admin
+  // est secret ([adminPrefix]) et un chemin hardcodé ne matcherait jamais.
   return { ok: true };
 }
 

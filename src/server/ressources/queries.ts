@@ -6,6 +6,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import type { InterventionDocVisibilite } from "../../../prisma/generated/client";
 import { getInterventionBySlug } from "@/content/intervention-documents-catalog";
 
 /** Visibilités qu'un rôle a le droit de voir (inverse de `targetRoles`). */
@@ -43,8 +44,10 @@ export async function listDocumentsForRecipientEmail(email: string): Promise<Rec
 
   // OR de critères : (visibilité du rôle) × (périmètre famille) × (périmètre slug).
   const orClauses = rows.map((r) => ({
-    visibilite: { in: visibilitesForRole(r.role) as never },
-    ...(r.famille ? { famille: r.famille as never } : {}),
+    // visibilitesForRole renvoie des string littéraux = valeurs de l'enum
+    // InterventionDocVisibilite (cast minimal, pas d'import du type généré).
+    visibilite: { in: visibilitesForRole(r.role) as InterventionDocVisibilite[] },
+    ...(r.famille ? { famille: r.famille } : {}),
     ...(r.interventionSlug ? { interventionSlug: r.interventionSlug } : {}),
   }));
 

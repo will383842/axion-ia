@@ -22,3 +22,12 @@ export function buildRessourcesMagicLinkUrl(token: string): string {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return `${base}/${LOCALE}/espace-ressources/connexion/${encodeURIComponent(token)}`;
 }
+
+/**
+ * Href (relatif, locale-préfixé) de téléchargement d'un document. Pointe vers
+ * une route serveur qui contrôle l'accès, signe l'URL R2 et redirige (302).
+ * Utilisé dans un `<a href>` synchrone → immunisé aux bloqueurs de pop-up.
+ */
+export function buildRessourceDownloadHref(versionId: string, kind: "source" | "pdf"): string {
+  return `/${LOCALE}/espace-ressources/telecharger/${versionId}?kind=${kind}`;
+}

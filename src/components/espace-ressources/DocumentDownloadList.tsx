@@ -1,8 +1,9 @@
-"use client";
-// use-client: liste de documents téléchargeables (useTransition + open URL signée).
+// Liste de documents téléchargeables. Les téléchargements passent par des
+// liens <a href> vers une route serveur qui contrôle l'accès, signe l'URL R2
+// et redirige (302) — navigation réelle, immunisée aux bloqueurs de pop-up.
+// Composant rendable côté serveur (pas de state), donc pas de "use client".
 
-import { useState, useTransition } from "react";
-import { getRessourceDownloadUrlAction } from "@/server/actions/ressources/download.actions";
+import { buildRessourceDownloadHref } from "@/server/ressources/routes";
 
 interface Doc {
   documentId: string;
@@ -26,24 +27,6 @@ const FAMILLE_LABEL: Record<string, string> = {
 };
 
 export function DocumentDownloadList({ documents }: { documents: Doc[] }): React.ReactElement {
-  const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  const [busyKey, setBusyKey] = useState<string | null>(null);
-
-  function download(versionId: string, kind: "source" | "pdf") {
-    setError(null);
-    setBusyKey(`${versionId}:${kind}`);
-    startTransition(async () => {
-      const res = await getRessourceDownloadUrlAction({ versionId, kind });
-      setBusyKey(null);
-      if (!res.ok || !res.url) {
-        setError(res.error ?? "Téléchargement indisponible.");
-        return;
-      }
-      window.open(res.url, "_blank", "noopener,noreferrer");
-    });
-  }
-
   if (documents.length === 0) {
     return (
       <p className="text-fg-muted text-sm">
@@ -66,7 +49,6 @@ export function DocumentDownloadList({ documents }: { documents: Doc[] }): React
 
   return (
     <div className="space-y-6">
-      {error ? <p className="text-error text-sm">{error}</p> : null}
       {Array.from(groups.entries()).map(([slug, g]) => (
         <section key={slug}>
           <h2 className="text-mocha text-sm font-semibold">
@@ -76,46 +58,40 @@ export function DocumentDownloadList({ documents }: { documents: Doc[] }): React
             </span>
           </h2>
           <ul className="mt-2 space-y-2">
-            {g.docs.map((d) => {
-              const sourceKey = `${d.versionId}:source`;
-              const pdfKey = `${d.versionId}:pdf`;
-              return (
-                <li
-                  key={d.documentId}
-                  className="border-border bg-cream flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3"
-                >
-                  <div>
-                    <span className="text-mocha text-sm font-medium">{d.titre}</span>
-                    <span className="text-fg-muted ml-2 text-xs">v{d.version}</span>
-                    {d.changeNote ? <p className="text-fg-muted text-xs">{d.changeNote}</p> : null}
-                  </div>
-                  <div className="flex gap-2">
-                    {d.hasPdf ? (
-                      <button
-                        type="button"
-                        disabled={pending && busyKey === pdfKey}
-                        onClick={() => download(d.versionId, "pdf")}
-                        className="bg-terracotta rounded px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
-                      >
-                        {busyKey === pdfKey ? "…" : "PDF"}
-                      </button>
-                    ) : null}
-                    {d.hasSource ? (
-                      <button
-                        type="button"
-                        disabled={pending && busyKey === sourceKey}
-                        onClick={() => download(d.versionId, "source")}
-                        className="border-terracotta text-terracotta rounded border px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
-                      >
-                        {busyKey === sourceKey
-                          ? "…"
-                          : `Source${d.sourceFormat ? ` (${d.sourceFormat})` : ""}`}
-                      </button>
-                    ) : null}
-                  </div>
-                </li>
-              );
-            })}
+            {g.docs.map((d) => (
+              <li
+                key={d.documentId}
+                className="border-border bg-cream flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3"
+              >
+                <div>
+                  <span className="text-mocha text-sm font-medium">{d.titre}</span>
+                  <span className="text-fg-muted ml-2 text-xs">v{d.version}</span>
+                  {d.changeNote ? <p className="text-fg-muted text-xs">{d.changeNote}</p> : null}
+                </div>
+                <div className="flex gap-2">
+                  {d.hasPdf ? (
+                    <a
+                      href={buildRessourceDownloadHref(d.versionId, "pdf")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-terracotta rounded px-3 py-1.5 text-xs font-semibold text-white"
+                    >
+                      PDF
+                    </a>
+                  ) : null}
+                  {d.hasSource ? (
+                    <a
+                      href={buildRessourceDownloadHref(d.versionId, "source")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-terracotta text-terracotta rounded border px-3 py-1.5 text-xs font-semibold"
+                    >
+                      Source{d.sourceFormat ? ` (${d.sourceFormat})` : ""}
+                    </a>
+                  ) : null}
+                </div>
+              </li>
+            ))}
           </ul>
         </section>
       ))}
