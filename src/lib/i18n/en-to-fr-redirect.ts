@@ -52,10 +52,11 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
     "/fr/interventions/dirigeant-vision-strategique",
   ],
   ["/en/interventions/executives", "/fr/interventions/dirigeants"],
-  ["/en/interventions/claude-executive", "/fr/interventions/claude-dirigeant"],
+  // Formats Claude 1-to-1 retirés (2026-06-13) → page 1-to-1 équivalente.
+  ["/en/interventions/claude-executive", "/fr/interventions/dirigeant-vision-strategique"],
   [
     "/en/interventions/claude-implementation-individual",
-    "/fr/interventions/claude-implementation-individuel",
+    "/fr/interventions/coaching-decouverte",
   ],
   ["/en/interventions/save-time", "/fr/interventions/gagner-du-temps"],
 

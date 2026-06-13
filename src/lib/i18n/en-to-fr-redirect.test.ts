@@ -84,14 +84,14 @@ describe("mapEnToFr", () => {
         "/fr/interventions/dirigeant-vision-strategique",
       );
     });
-    it("/en/interventions/claude-executive → /fr/interventions/claude-dirigeant", () => {
+    it("/en/interventions/claude-executive → /fr/interventions/dirigeant-vision-strategique (Claude retiré)", () => {
       expect(mapEnToFr("/en/interventions/claude-executive")).toBe(
-        "/fr/interventions/claude-dirigeant",
+        "/fr/interventions/dirigeant-vision-strategique",
       );
     });
-    it("/en/interventions/claude-implementation-individual → /fr/interventions/claude-implementation-individuel", () => {
+    it("/en/interventions/claude-implementation-individual → /fr/interventions/coaching-decouverte (Claude retiré)", () => {
       expect(mapEnToFr("/en/interventions/claude-implementation-individual")).toBe(
-        "/fr/interventions/claude-implementation-individuel",
+        "/fr/interventions/coaching-decouverte",
       );
     });
     it("/en/interventions/save-time → /fr/interventions/gagner-du-temps", () => {

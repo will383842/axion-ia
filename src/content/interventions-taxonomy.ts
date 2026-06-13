@@ -252,7 +252,7 @@ const ESSENTIELLE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-essentie
 const APPROFONDIE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!;
 const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
 const DIRIGEANT_VISION_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision");
-const CLAUDE_DIRIGEANT_TIER = getTierById(INTERVENTION_TIERS, "intervention-claude-dirigeant");
+const MEMBRE_EQUIPE_TIER = getTierById(INTERVENTION_TIERS, "intervention-membre-equipe");
 const CLAUDE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-claude").priceFlat!;
 
 export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
@@ -419,88 +419,34 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     badgeFr: "Vision & stratégie · 1-to-1",
     badgeEn: "Vision & strategy · 1-on-1",
   },
-  {
-    // Sprint 14.10.7 (Will 2026-05-11) — variante Claude pour dirigeant.
-    // Même format 1-to-1 que la journée stratégique, mais focalisé sur la
-    // maîtrise complète de Claude (Anthropic) côté dirigeant : Chat avancé,
-    // Projects mémoire, Code CLI pour les dossiers stratégiques.
-    slug: "claude-dirigeant",
-    family: "dirigeants",
-    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
-    pathFr: "/interventions/claude-dirigeant",
-    pathEn: "/interventions/claude-executive",
-    labelFr: "Intervention Claude · Dirigeant",
-    labelEn: "Claude Intervention · Executive",
-    taglineFr:
-      "1 journée 1-to-1 avec le dirigeant 100 % dédiée à Claude (Anthropic) — Chat avancé, Projects + mémoire stratégique, Claude Code CLI pour vos dossiers confidentiels. À la sortie, vous maîtrisez l'outil IA de pointe pour vos décisions.",
-    taglineEn:
-      "1-on-1 executive day 100 % focused on Claude (Anthropic) — advanced Chat, Projects + strategic memory, Claude Code CLI for your confidential files. You leave with full mastery of the cutting-edge AI tool for your decisions.",
-    priceFr: formatPrice(CLAUDE_DIRIGEANT_TIER, "fr"),
-    priceEn: formatPrice(CLAUDE_DIRIGEANT_TIER, "en"),
-    groupSizeFr: "1 dirigeant (1-to-1)",
-    groupSizeEn: "1 executive (1-on-1)",
-    audienceFr: "Dirigeant qui veut maîtriser Claude pour ses propres dossiers",
-    audienceEn: "Executive who wants to master Claude for their own files",
-    accent: "claude",
-    badgeFr: "Outil · Claude",
-    badgeEn: "Tool · Claude",
-  },
-
   // -------------------------------------------------------------------------
-  // FAMILLE : Individuel — 2 formats 1 jour, différenciés par profil maturité.
-  // Will (2026-05-11) : même objectif fonctionnel (audit poste + automatismes
-  // + programme implémentation devis), 2 cibles distinctes :
-  //   • Découverte : managers/indépendants qui démarrent l'IA
-  //   • Productivité avancée : utilisateurs IA déjà à l'aise qui maxent
-  // Prix « Sur devis » en V1 — Will tranchera après les premiers retours
-  // commerciaux.
+  // FAMILLE : Individuel — coaching 1-to-1 « Optimisation du poste ».
+  // Refonte 1-to-1 AFEST (Will 2026-06-13) : coaching « Optimisation du poste »,
+  // générique tous métiers (secrétaire, chef de chantier, commercial…). Le but
+  // n'est PAS de construire des automatisations mais de cartographier le
+  // fonctionnement actuel et d'identifier ce qu'on peut automatiser pour gagner
+  // du temps. Le format Claude individuel (centré outil) a été retiré.
   // -------------------------------------------------------------------------
   {
     slug: "coaching-decouverte",
     family: "individuel",
     pathFr: "/interventions/coaching-decouverte",
     pathEn: "/interventions/discovery-coaching",
-    labelFr: "Coaching IA · Découverte personnelle",
-    labelEn: "AI Coaching · Personal discovery",
+    labelFr: "Coaching IA · Optimisation du poste",
+    labelEn: "AI Coaching · Workstation optimization",
     taglineFr:
-      "1 journée sur votre poste pour découvrir l'IA pratique : on cartographie vos chronophages, on installe les outils essentiels, on met en place 3 à 5 automatismes concrets et on remet un plan d'implémentation pour aller plus loin sur devis.",
+      "1 journée sur votre poste : on cartographie votre fonctionnement actuel et vos chronophages, puis on identifie ce qu'on peut automatiser pour vous faire gagner du temps (et de l'argent). Vous repartez avec un plan d'optimisation personnalisé.",
     taglineEn:
-      "1 day on your workstation to discover practical AI: we map your time-sinks, install essential tools, set up 3-5 concrete automations and deliver an implementation plan to go further on request.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
+      "1 day at your workstation: we map your current workflow and time-sinks, then identify what can be automated to save you time (and money). You leave with a personalized optimization plan.",
+    priceFr: formatPrice(MEMBRE_EQUIPE_TIER, "fr"),
+    priceEn: formatPrice(MEMBRE_EQUIPE_TIER, "en"),
     groupSizeFr: "1 personne (1-to-1 strict)",
     groupSizeEn: "1 person (strict 1-on-1)",
-    audienceFr: "Managers, indépendants, dirigeants solo · découvrent l'IA",
-    audienceEn: "Managers, independents, solo executives · discovering AI",
+    audienceFr: "Tout poste · secrétaire, chef de chantier, commercial, manager…",
+    audienceEn: "Any role · assistant, site manager, sales, manager…",
     accent: "terracotta",
-    badgeFr: "Niveau débutant → intermédiaire",
-    badgeEn: "Beginner → intermediate",
-  },
-  {
-    // Sprint 14.10.7 (Will 2026-05-11) — variante Claude pour 1 personne.
-    // Format implémentation 1-to-1 strictement focalisé sur Claude (Anthropic) :
-    // installation, configuration Projects + Code CLI sur votre poste, agents
-    // personnels Claude, workflows Claude-only adaptés à votre métier.
-    slug: "claude-implementation-individuel",
-    family: "individuel",
-    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
-    pathFr: "/interventions/claude-implementation-individuel",
-    pathEn: "/interventions/claude-implementation-individual",
-    labelFr: "Implémentation Claude · Individuel",
-    labelEn: "Claude Implementation · Individual",
-    taglineFr:
-      "1 journée 1-to-1 sur votre poste, 100 % Claude (Anthropic) : installation, configuration Chat + Projects + Code CLI, agents personnels Claude pour vos cas récurrents, workflows métier dédiés. À la sortie, vous maîtrisez Claude pour votre travail quotidien.",
-    taglineEn:
-      "1-on-1 day on your workstation, 100 % Claude (Anthropic): installation, Chat + Projects + Code CLI configuration, personal Claude agents for your recurring cases, dedicated business workflows. You leave with full Claude mastery for your daily work.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    groupSizeFr: "1 personne (1-to-1 strict)",
-    groupSizeEn: "1 person (strict 1-on-1)",
-    audienceFr: "N'importe quel poste · veut maîtriser Claude en profondeur",
-    audienceEn: "Any role · wants to master Claude in depth",
-    accent: "claude",
-    badgeFr: "Outil · Claude",
-    badgeEn: "Tool · Claude",
+    badgeFr: "Sur votre poste réel",
+    badgeEn: "At your real workstation",
   },
 ] as const;
 

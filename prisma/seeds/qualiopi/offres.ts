@@ -149,17 +149,6 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     anglePedagogiqueFr: "vision_strategique",
   },
   {
-    tierId: "intervention-claude-dirigeant",
-    titreFr: "Intervention Claude · Dirigeant",
-    slug: "intervention-claude-dirigeant",
-    formatPedagogique: "dirigeant_1to1",
-    tarifType: "fixe",
-    promessePrincipaleFr: "Journée 1-to-1 dirigeant 100 % dédiée à Claude (Anthropic).",
-    nbModulesMin: 2,
-    nbModulesMax: 4,
-    anglePedagogiqueFr: "outil_claude_executif",
-  },
-  {
     tierId: "intervention-sur-demande",
     titreFr: "Sur demande",
     slug: "sur-demande",

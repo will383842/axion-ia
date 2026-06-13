@@ -554,9 +554,9 @@ export type UnAUnPublic = "dirigeant" | "collaborateur" | "recurrent";
 /** Public d'une prestation 1-to-1, par slug (axe d'organisation de la console). */
 const UN_A_UN_PUBLIC_BY_SLUG: Readonly<Record<string, UnAUnPublic | undefined>> = {
   "dirigeant-vision-strategique": "dirigeant",
-  "claude-dirigeant": "dirigeant",
+  "dirigeant-vision-strategique-2j": "dirigeant",
   "coaching-decouverte": "collaborateur",
-  "claude-implementation-individuel": "collaborateur",
+  "coaching-optimisation-2j": "collaborateur",
   "un-a-un-recurrent": "recurrent",
 };
 const UN_A_UN_PUBLIC_ORDER: ReadonlyArray<UnAUnPublic> = ["dirigeant", "collaborateur", "recurrent"];

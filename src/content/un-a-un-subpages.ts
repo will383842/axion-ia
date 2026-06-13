@@ -7,12 +7,8 @@
 // IndividualCoachingPage + 4 dirigeant/Claude rendues par InterventionDetailPage).
 // AUCUN prix (les tarifs restent dans pricing.ts). FR canonique + miroir EN.
 
-/** Les 6 slugs de pages détail un-à-un. */
-export type UnAUnDetailSlug =
-  | "coaching-decouverte"
-  | "dirigeant-vision-strategique"
-  | "claude-dirigeant"
-  | "claude-implementation-individuel";
+/** Les 2 slugs de pages détail un-à-un (formats Claude retirés le 2026-06-13). */
+export type UnAUnDetailSlug = "coaching-decouverte" | "dirigeant-vision-strategique";
 
 interface UnAUnPageMeta {
   /** Clé canonique FR (routing.pathnames) — next-intl résout l'EN via <Link>. */
@@ -28,12 +24,12 @@ interface UnAUnPageMeta {
 export const UN_A_UN_PAGES: Record<UnAUnDetailSlug, UnAUnPageMeta> = {
   "coaching-decouverte": {
     href: "/interventions/coaching-decouverte",
-    labelFr: "Coaching Découverte",
-    labelEn: "Discovery coaching",
+    labelFr: "Collaborateur · Optimisation du poste",
+    labelEn: "Team member · Workstation optimization",
     descFr:
-      "Une journée pour démarrer : prise en main des outils et 3 à 5 méthodes applicables dès le lendemain.",
+      "Une journée sur le poste : cartographie du fonctionnement actuel et identification de ce qu'on peut automatiser pour gagner du temps.",
     descEn:
-      "A day to get started: hands-on with the tools and 3 to 5 methods you can apply the next day.",
+      "A day at the workstation: mapping the current workflow and identifying what can be automated to save time.",
   },
   "dirigeant-vision-strategique": {
     href: "/interventions/dirigeant-vision-strategique",
@@ -44,23 +40,6 @@ export const UN_A_UN_PAGES: Record<UnAUnDetailSlug, UnAUnPageMeta> = {
     descEn:
       "A trigger on the AI opportunities in your market — not an audit, a clear 12-24 month vision.",
   },
-  "claude-dirigeant": {
-    href: "/interventions/claude-dirigeant",
-    labelFr: "Dirigeant · Maîtrise Claude",
-    labelEn: "Executive · Claude mastery",
-    descFr:
-      "Maîtriser Claude pour vos dossiers stratégiques confidentiels : Chat, Projects et ligne de commande.",
-    descEn: "Master Claude for your confidential strategic files: Chat, Projects and command line.",
-  },
-  "claude-implementation-individuel": {
-    href: "/interventions/claude-implementation-individuel",
-    labelFr: "Claude installé · Individuel",
-    labelEn: "Claude installed · Individual",
-    descFr:
-      "Claude installé et opérationnel sur votre poste en une journée, adapté à vos vrais cas d'usage.",
-    descEn:
-      "Claude installed and operational on your workstation in a day, tailored to your real use cases.",
-  },
 };
 
 /**
@@ -69,24 +48,6 @@ export const UN_A_UN_PAGES: Record<UnAUnDetailSlug, UnAUnPageMeta> = {
  * (cross-module « commencer par un audit ») est ajouté par le composant.
  */
 export const UN_A_UN_RELATED: Record<UnAUnDetailSlug, UnAUnDetailSlug[]> = {
-  "coaching-decouverte": [
-    "dirigeant-vision-strategique",
-    "claude-dirigeant",
-    "claude-implementation-individuel",
-  ],
-  "dirigeant-vision-strategique": [
-    "claude-dirigeant",
-    "claude-implementation-individuel",
-    "coaching-decouverte",
-  ],
-  "claude-dirigeant": [
-    "dirigeant-vision-strategique",
-    "claude-implementation-individuel",
-    "coaching-decouverte",
-  ],
-  "claude-implementation-individuel": [
-    "claude-dirigeant",
-    "dirigeant-vision-strategique",
-    "coaching-decouverte",
-  ],
+  "coaching-decouverte": ["dirigeant-vision-strategique"],
+  "dirigeant-vision-strategique": ["coaching-decouverte"],
 };
