@@ -83,7 +83,9 @@ export type EmailJobName =
   // Documents interventions — notification de nouvelle version publiée
   | "documents-nouvelle-version"
   // Espace formateur — lien de connexion passwordless (magic-link)
-  | "formateur-magic-link";
+  | "formateur-magic-link"
+  // Espace ressources — lien de connexion passwordless (commercial/formateur)
+  | "ressources-magic-link";
 
 export interface EmailJobData {
   template: EmailJobName;

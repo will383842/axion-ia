@@ -5956,7 +5956,8 @@ model InterventionDocumentVersion {
   publishedById   String?               @map("published_by_id") @db.Uuid
   createdAt       DateTime              @default(now()) @map("created_at")
 
-  currentOf InterventionDocument? @relation("CurrentVersion")
+  currentOf       InterventionDocument?     @relation("CurrentVersion")
+  telechargements RessourceTelechargement[]
 
   @@unique([documentId, version])
   @@index([documentId])
@@ -5979,9 +5980,50 @@ model DocumentRecipient {
   createdAt        DateTime              @default(now()) @map("created_at")
   updatedAt        DateTime              @updatedAt @map("updated_at")
 
+  // Espace ressources passwordless (2026-06-13) — accès aux documents à la demande.
+  lastRessourcesLoginAt DateTime?               @map("last_ressources_login_at")
+  ressourcesMagicLinks  RessourcesMagicLink[]
+  telechargements       RessourceTelechargement[]
+
   @@index([role])
   @@index([famille])
+  @@index([email])
   @@map("document_recipients")
+}
+
+/// Lien magique à usage unique pour la connexion passwordless à l'espace
+/// ressources (commerciaux + formateurs). Même mécanisme que FormateurMagicLink
+/// mais ancré sur DocumentRecipient (la liste de diffusion = la liste de comptes).
+model RessourcesMagicLink {
+  id          String            @id @default(uuid()) @db.Uuid
+  recipientId String            @map("recipient_id") @db.Uuid
+  recipient   DocumentRecipient @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  tokenHash   String            @unique @map("token_hash") @db.VarChar(64)
+  expiresAt   DateTime          @map("expires_at")
+  usedAt      DateTime?         @map("used_at")
+  createdIp   String?           @map("created_ip") @db.VarChar(64)
+  createdAt   DateTime          @default(now()) @map("created_at")
+
+  @@index([recipientId])
+  @@index([expiresAt])
+  @@map("ressources_magic_links")
+}
+
+/// Accusé de téléchargement (« accusé de lecture » du P3) : trace qui a
+/// téléchargé quelle version de document depuis l'espace ressources.
+model RessourceTelechargement {
+  id          String                     @id @default(uuid()) @db.Uuid
+  recipientId String                     @map("recipient_id") @db.Uuid
+  recipient   DocumentRecipient          @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  versionId   String                     @map("version_id") @db.Uuid
+  version     InterventionDocumentVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  /// 'source' (fichier éditable) ou 'pdf'.
+  kind        String                     @db.VarChar(10)
+  accessedAt  DateTime                   @default(now()) @map("accessed_at")
+
+  @@index([recipientId])
+  @@index([versionId])
+  @@map("ressource_telechargements")
 }
 
 // ============================================================

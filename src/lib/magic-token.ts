@@ -26,7 +26,12 @@
 const ENCODER = new TextEncoder();
 const DECODER = new TextDecoder();
 
-export type MagicScope = "cancel" | "reschedule" | "portal" | "formateur_login";
+export type MagicScope =
+  | "cancel"
+  | "reschedule"
+  | "portal"
+  | "formateur_login"
+  | "ressources_login";
 
 /** TTL par scope, en millisecondes. */
 const TTL_MS: Record<MagicScope, number> = {
@@ -34,6 +39,7 @@ const TTL_MS: Record<MagicScope, number> = {
   reschedule: 24 * 60 * 60 * 1000, // 24 h
   portal: 30 * 60 * 1000, // 30 min
   formateur_login: 15 * 60 * 1000, // 15 min (lien de connexion court, sécurité)
+  ressources_login: 15 * 60 * 1000, // 15 min — connexion espace ressources (commercial/formateur)
 };
 
 interface MagicPayload {

@@ -22,6 +22,7 @@ import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./l
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { verifyFormateurSession } from "./lib/formateur-session";
 import { FORMATEUR_COOKIE_NAME } from "./server/formateur/routes";
+import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
@@ -98,6 +99,25 @@ export default auth(async (req) => {
         const session = token ? await verifyFormateurSession(token) : { ok: false as const };
         if (!session.ok) {
           const dest = new URL(`/${m[1]}/espace-formateur/connexion`, req.url);
+          return NextResponse.redirect(dest);
+        }
+      }
+    }
+  }
+
+  // 0quinquies. Espace ressources (passwordless, 2026-06-13) — même garde Edge
+  //   que l'espace formateur (cookie signé HMAC partagé), pour commerciaux +
+  //   formateurs. Protège `/espace-ressources/*` sauf `/connexion`.
+  {
+    const m = req.nextUrl.pathname.match(/^\/(fr|en)\/espace-ressources(\/.*)?$/);
+    if (m) {
+      const sub = m[2] ?? "";
+      const isConnexion = sub === "/connexion" || sub.startsWith("/connexion/");
+      if (!isConnexion) {
+        const token = req.cookies.get(RESSOURCES_COOKIE_NAME)?.value;
+        const session = token ? await verifyFormateurSession(token) : { ok: false as const };
+        if (!session.ok) {
+          const dest = new URL(`/${m[1]}/espace-ressources/connexion`, req.url);
           return NextResponse.redirect(dest);
         }
       }
