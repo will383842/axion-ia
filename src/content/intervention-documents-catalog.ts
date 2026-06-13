@@ -89,6 +89,35 @@ export const DOC_CATEGORIES: ReadonlyArray<DocCategorieMeta> = [
   { key: "evaluation", titre: "Évaluation & qualité", icon: "star", ordre: 4 },
 ] as const;
 
+/**
+ * Libellé + ordre des 4 rayons, ADAPTÉS par famille (mêmes clés en base :
+ * une formation, un audit et un 1-to-1 réutilisent les 4 mêmes catégories,
+ * mais affichées avec un vocabulaire propre à chaque métier).
+ */
+const CATEGORIE_BY_FAMILLE: Record<
+  InterventionFamille,
+  Record<DocCategorie, { titre: string; ordre: number }>
+> = {
+  formation: {
+    stagiaires: { titre: "Documents stagiaires", ordre: 1 },
+    formateur: { titre: "Documents formateur", ordre: 2 },
+    cadre: { titre: "Cadre pédagogique", ordre: 3 },
+    evaluation: { titre: "Évaluation & qualité", ordre: 4 },
+  },
+  audit: {
+    cadre: { titre: "Cadrage & méthode", ordre: 1 },
+    formateur: { titre: "Outils consultant", ordre: 2 },
+    stagiaires: { titre: "Livrables client", ordre: 3 },
+    evaluation: { titre: "Suivi & qualité", ordre: 4 },
+  },
+  un_a_un: {
+    cadre: { titre: "Cadre & objectifs", ordre: 1 },
+    stagiaires: { titre: "Documents bénéficiaire", ordre: 2 },
+    formateur: { titre: "Documents coach", ordre: 3 },
+    evaluation: { titre: "Suivi & évaluation", ordre: 4 },
+  },
+};
+
 // ============================================================================
 // Slots par famille
 // ============================================================================
@@ -218,11 +247,202 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
   },
 ] as const;
 
-// 1-to-1 et audit : kits non encore fournis par Will. Scaffold vide
-// (les familles/onglets s'affichent, sections « à configurer ») — à peupler
-// quand les kits 1-to-1 / audit seront cadrés (même méthode qu'IA Express).
-const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [];
-const AUDIT_SLOTS: ReadonlyArray<DocSlot> = [];
+/**
+ * 1-TO-1 (coaching individuel). Structure cadrée 2026-06-13.
+ * NB : pas de doc Qualiopi généré (coaching non Qualiopi-éligible pour l'instant) ;
+ * « attestation_suivi » est un emplacement réservé (optionnel, vide en attendant
+ * l'agrément).
+ */
+const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
+  // Cadre & objectifs
+  {
+    key: "cadrage_objectifs",
+    titre: "Cadrage / contrat d'objectifs",
+    categorie: "cadre",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 1,
+  },
+  {
+    key: "positionnement_individuel",
+    titre: "Test de positionnement individuel",
+    categorie: "cadre",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 2,
+  },
+  {
+    key: "guide_coach",
+    titre: "Guide du coach (déroulé, posture)",
+    categorie: "cadre",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 3,
+  },
+  // Documents bénéficiaire
+  {
+    key: "parcours_seances",
+    titre: "Parcours / plan de séances",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 4,
+  },
+  {
+    key: "fiches_exercices",
+    titre: "Fiches & exercices individualisés",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 5,
+  },
+  {
+    key: "ressources_perso",
+    titre: "Ressources & prompts personnalisés",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["docx", "lien"],
+    ordre: 6,
+  },
+  // Documents coach (confidentiel)
+  {
+    key: "cr_seance",
+    titre: "Trame de compte-rendu de séance",
+    categorie: "formateur",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 7,
+  },
+  {
+    key: "corriges_1to1",
+    titre: "Corrigés / réponses types",
+    categorie: "formateur",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 8,
+  },
+  // Suivi & évaluation
+  {
+    key: "journal_progression",
+    titre: "Journal de progression / plan inter-séances",
+    categorie: "evaluation",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 9,
+  },
+  {
+    key: "evaluation_progression",
+    titre: "Évaluation des acquis / progression",
+    categorie: "evaluation",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 10,
+  },
+  {
+    key: "satisfaction_1to1",
+    titre: "Questionnaire de satisfaction (chaud + froid)",
+    categorie: "evaluation",
+    visibilite: "interne",
+    formats: ["docx"],
+    ordre: 11,
+  },
+  {
+    key: "attestation_suivi",
+    titre: "Attestation de suivi",
+    categorie: "evaluation",
+    visibilite: "stagiaire",
+    formats: ["pdf"],
+    ordre: 12,
+    optionnel: true,
+    note: "Emplacement réservé — à remplir quand le coaching sera Qualiopi-éligible (agrément).",
+  },
+];
+
+/**
+ * AUDIT (mission de conseil / diagnostic — PAS une formation Qualiopi).
+ * Structure cadrée 2026-06-13 : le rapport de restitution fait office de livrable
+ * de clôture (pas d'attestation, pas d'émargement). S'applique aux 4 niveaux d'audit.
+ */
+const AUDIT_SLOTS: ReadonlyArray<DocSlot> = [
+  // Cadrage & méthode
+  {
+    key: "audit_cadrage_mission",
+    titre: "Proposition / cadrage de mission",
+    categorie: "cadre",
+    visibilite: "commercial",
+    formats: ["docx"],
+    ordre: 1,
+    note: "Périmètre, objectifs, planning. Partagé au client/prospect.",
+  },
+  {
+    key: "audit_collecte_amont",
+    titre: "Questionnaire de collecte amont",
+    categorie: "cadre",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 2,
+  },
+  {
+    key: "audit_guide_conduite",
+    titre: "Guide de conduite d'audit (méthode)",
+    categorie: "cadre",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 3,
+  },
+  // Outils consultant (confidentiel)
+  {
+    key: "audit_grille_diagnostic",
+    titre: "Grille de diagnostic / matrice d'évaluation",
+    categorie: "formateur",
+    visibilite: "formateur",
+    formats: ["xlsx", "docx"],
+    ordre: 4,
+  },
+  {
+    key: "audit_trame_entretien",
+    titre: "Trame d'entretien",
+    categorie: "formateur",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 5,
+  },
+  // Livrables client
+  {
+    key: "audit_rapport",
+    titre: "Rapport d'audit / restitution",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 6,
+    note: "Livrable principal de la mission.",
+  },
+  {
+    key: "audit_slides_restitution",
+    titre: "Slides de restitution",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["pptx"],
+    ordre: 7,
+  },
+  {
+    key: "audit_plan_action",
+    titre: "Plan d'action / feuille de route priorisée",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["xlsx", "docx"],
+    ordre: 8,
+  },
+  // Suivi & qualité
+  {
+    key: "audit_satisfaction",
+    titre: "Questionnaire de satisfaction client",
+    categorie: "evaluation",
+    visibilite: "interne",
+    formats: ["docx"],
+    ordre: 9,
+  },
+];
 
 const SLOTS_BY_FAMILLE: Record<InterventionFamille, ReadonlyArray<DocSlot>> = {
   formation: FORMATION_SLOTS,
@@ -307,17 +527,20 @@ export function getSlotsByFamille(famille: InterventionFamille): ReadonlyArray<D
   return SLOTS_BY_FAMILLE[famille] ?? [];
 }
 
-/** Slots d'une famille regroupés par catégorie, dans l'ordre canonique. */
+/** Slots d'une famille regroupés par catégorie (libellés/ordre propres à la famille). */
 export function getSlotsByCategorie(
   famille: InterventionFamille,
 ): ReadonlyArray<{ categorie: DocCategorieMeta; slots: ReadonlyArray<DocSlot> }> {
   const slots = getSlotsByFamille(famille);
-  return [...DOC_CATEGORIES]
-    .sort((a, b) => a.ordre - b.ordre)
-    .map((categorie) => ({
-      categorie,
-      slots: slots.filter((s) => s.categorie === categorie.key).sort((a, b) => a.ordre - b.ordre),
+  const cfg = CATEGORIE_BY_FAMILLE[famille];
+  const iconOf = (key: DocCategorie): string =>
+    DOC_CATEGORIES.find((c) => c.key === key)?.icon ?? "clipboard";
+  return (Object.keys(cfg) as DocCategorie[])
+    .map((key) => ({
+      categorie: { key, titre: cfg[key].titre, icon: iconOf(key), ordre: cfg[key].ordre },
+      slots: slots.filter((s) => s.categorie === key).sort((a, b) => a.ordre - b.ordre),
     }))
+    .sort((a, b) => a.categorie.ordre - b.categorie.ordre)
     .filter((g) => g.slots.length > 0);
 }
 

@@ -87,11 +87,58 @@ describe("intervention-documents-catalog — slots FORMATION (kit IA Express)", 
   });
 });
 
-describe("intervention-documents-catalog — familles scaffoldées (1-to-1 / audit)", () => {
-  it("slots vides pour l'instant (à peupler quand kits fournis)", () => {
-    expect(getSlotsByFamille("un_a_un").length).toBe(0);
-    expect(getSlotsByFamille("audit").length).toBe(0);
-    expect(getSlotsByCategorie("un_a_un").length).toBe(0);
+describe("intervention-documents-catalog — slots AUDIT", () => {
+  it("9 slots répartis sur 4 rayons, clés uniques", () => {
+    const slots = getSlotsByFamille("audit");
+    expect(slots.length).toBe(9);
+    expect(new Set(slots.map((s) => s.key)).size).toBe(9);
+    expect(getSlotsByCategorie("audit").length).toBe(4);
+  });
+
+  it("livrable principal = rapport d'audit (client) ; pas d'attestation Qualiopi", () => {
+    expect(getSlot("audit", "audit_rapport")?.visibilite).toBe("stagiaire");
+    // un audit n'est pas une formation Qualiopi → aucun slot généré / attestation
+    const slots = getSlotsByFamille("audit");
+    expect(slots.every((s) => !s.generatedOnly && !s.qualiopiDocType)).toBe(true);
+    expect(getSlot("audit", "attestation_emargement")).toBeUndefined();
+  });
+
+  it("rayons audit affichés avec le vocabulaire conseil (Cadrage en 1er)", () => {
+    const groups = getSlotsByCategorie("audit");
+    expect(groups[0]?.categorie.titre).toBe("Cadrage & méthode");
+    expect(groups.map((g) => g.categorie.titre)).toContain("Livrables client");
+  });
+});
+
+describe("intervention-documents-catalog — slots 1-to-1", () => {
+  it("12 slots répartis sur 4 rayons, clés uniques", () => {
+    const slots = getSlotsByFamille("un_a_un");
+    expect(slots.length).toBe(12);
+    expect(new Set(slots.map((s) => s.key)).size).toBe(12);
+    expect(getSlotsByCategorie("un_a_un").length).toBe(4);
+  });
+
+  it("attestation de suivi = emplacement réservé (optionnel, vide en attendant agrément)", () => {
+    const att = getSlot("un_a_un", "attestation_suivi");
+    expect(att?.optionnel).toBe(true);
+    expect(att?.generatedOnly).toBeUndefined();
+  });
+
+  it("rayons 1-to-1 affichés avec le vocabulaire coaching", () => {
+    const titres = getSlotsByCategorie("un_a_un").map((g) => g.categorie.titre);
+    expect(titres).toContain("Documents bénéficiaire");
+    expect(titres).toContain("Documents coach");
+  });
+});
+
+describe("intervention-documents-catalog — intégrité globale", () => {
+  it("toutes familles : catégories de slot valides + ordres triés", () => {
+    const cats = new Set(DOC_CATEGORIES.map((c) => c.key));
+    for (const fam of ["formation", "un_a_un", "audit"] as const) {
+      for (const s of getSlotsByFamille(fam)) expect(cats.has(s.categorie)).toBe(true);
+      const ordres = getSlotsByCategorie(fam).map((g) => g.categorie.ordre);
+      expect(ordres).toEqual([...ordres].sort((a, b) => a - b));
+    }
   });
 
   it("famille inconnue → tableau vide (robustesse)", () => {
