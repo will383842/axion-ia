@@ -655,48 +655,48 @@ enum KbReviewerAssignmentStatus {
 // ============================================================
 
 model Submission {
-  id                 String           @id @default(uuid()) @db.Uuid
+  id                 String            @id @default(uuid()) @db.Uuid
   /// Méta-cert 2026-05-15 — UUID v4 client-side anti double-submit (OWASP A04).
   /// Partagée avec Booking si Submission créée dans la même tx (cas
   /// `createBookingAction`). Nullable car les Submissions historiques + autres
   /// types (`contact`, `audit`) n'utilisent pas encore d'idempotency key.
-  idempotencyKey     String?          @unique @map("idempotency_key") @db.VarChar(64)
+  idempotencyKey     String?           @unique @map("idempotency_key") @db.VarChar(64)
   type               SubmissionType
-  status             SubmissionStatus @default(new)
-  locale             Locale           @default(fr)
+  status             SubmissionStatus  @default(new)
+  locale             Locale            @default(fr)
   // Identité société
-  companyName        String           @map("company_name") @db.VarChar(255)
-  registrationNumber String?          @map("registration_number") @db.VarChar(40)
-  sector             String?          @db.VarChar(100)
-  address            String?          @db.Text
-  employeesCount     String?          @map("employees_count") @db.VarChar(20)
+  companyName        String            @map("company_name") @db.VarChar(255)
+  registrationNumber String?           @map("registration_number") @db.VarChar(40)
+  sector             String?           @db.VarChar(100)
+  address            String?           @db.Text
+  employeesCount     String?           @map("employees_count") @db.VarChar(20)
   // Contact
-  contactName        String           @map("contact_name") @db.VarChar(255)
-  contactRole        String?          @map("contact_role") @db.VarChar(100)
-  contactEmail       String           @map("contact_email") @db.Citext
-  contactPhone       String?          @map("contact_phone") @db.VarChar(30)
+  contactName        String            @map("contact_name") @db.VarChar(255)
+  contactRole        String?           @map("contact_role") @db.VarChar(100)
+  contactEmail       String            @map("contact_email") @db.Citext
+  contactPhone       String?           @map("contact_phone") @db.VarChar(30)
   // Payload form
   details            Json
   // Admin workflow
-  internalNotes      String?          @map("internal_notes") @db.Text
-  assignedTo         String?          @map("assigned_to") @db.VarChar(100)
+  internalNotes      String?           @map("internal_notes") @db.Text
+  assignedTo         String?           @map("assigned_to") @db.VarChar(100)
   // Anti-spam / source
   /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — DEPRECATED, à drop S+2 après
   /// backfill `prisma/scripts/backfill-ip-hash-2026-05-16.ts`. Lecture seule.
-  ipAddress          String?          @map("ip_address") @db.VarChar(64)
+  ipAddress          String?           @map("ip_address") @db.VarChar(64)
   /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — SHA-256(salt::ip) 16 hex.
   /// Helper `src/lib/security/ip-hash.ts`. Doctrine RGPD art. 4-1.
-  ipHash             String?          @map("ip_hash") @db.VarChar(64)
-  userAgent          String?          @map("user_agent") @db.Text
-  referer            String?          @db.Text
-  turnstileScore     Decimal?         @map("turnstile_score") @db.Decimal(4, 3)
+  ipHash             String?           @map("ip_hash") @db.VarChar(64)
+  userAgent          String?           @map("user_agent") @db.Text
+  referer            String?           @db.Text
+  turnstileScore     Decimal?          @map("turnstile_score") @db.Decimal(4, 3)
   /// Chatbot D-LEAD-SOURCE (2026-06-01) — origine du lead. NULL par défaut pour
   /// toutes les Submissions existantes/formulaires (rétro-compatible). Le tool
   /// `capturer_lead` pose `chatbot`. Filtrable en console admin.
   source             SubmissionSource? @map("source")
   // Timestamps
-  submittedAt        DateTime         @default(now()) @map("submitted_at")
-  updatedAt          DateTime         @updatedAt @map("updated_at")
+  submittedAt        DateTime          @default(now()) @map("submitted_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
 
   bookings               Booking[]
   // Sprint X.1 (D44) — parcours B : Submission qualifiée -> Booking via
@@ -1522,11 +1522,11 @@ model AdminUser {
 
   activityLogs          ActivityLog[]
   // Sprint X.1 — relations inverses booking V1
-  bookingsCancelled     Booking[]           @relation("BookingCancelledBy")
-  paymentsRecorded      Payment[]           @relation("PaymentRecordedBy")
+  bookingsCancelled     Booking[]             @relation("BookingCancelledBy")
+  paymentsRecorded      Payment[]             @relation("PaymentRecordedBy")
   refunds               Refund[]
-  cadrageMeetingsHeld   CadrageMeeting[]    @relation("CadrageHeldBy")
-  bookingTransitions    BookingTransition[] @relation("BookingTransitionActor")
+  cadrageMeetingsHeld   CadrageMeeting[]      @relation("CadrageHeldBy")
+  bookingTransitions    BookingTransition[]   @relation("BookingTransitionActor")
   formationTransitions  FormationTransition[] @relation("FormationTransitionActor")
   pricingConfigsUpdated PricingConfig[]
   siteSettingsUpdated   SiteSetting[]
@@ -4536,22 +4536,22 @@ model ChatTenant {
 /// Chunks RAG vectorisés (amorcés depuis KnowledgeEntry/KbFact/FAQ/pages services).
 /// `embedding vector(1024)` + `tsv tsvector` ajoutés via migrations_fts (T-02).
 model ChatKbChunk {
-  id         String      @id @default(uuid()) @db.Uuid
-  tenantId   String      @map("tenant_id") @db.Uuid
-  tenant     ChatTenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  sourceType String      @map("source_type") @db.VarChar(40) // knowledge_entry | kb_fact | faq | service_page | article
-  sourceRef  String      @map("source_ref") @db.VarChar(255) // id/slug de la source
-  categorie  String      @db.VarChar(60) // prestations|tarifs|faq|methodo|cas|...
-  priorite   String      @default("moyenne") @db.VarChar(20)
-  contenu    String      @db.Text
-  contexte   String?     @db.Text // phrase de contextualisation (cahier §9)
+  id         String                       @id @default(uuid()) @db.Uuid
+  tenantId   String                       @map("tenant_id") @db.Uuid
+  tenant     ChatTenant                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sourceType String                       @map("source_type") @db.VarChar(40) // knowledge_entry | kb_fact | faq | service_page | article
+  sourceRef  String                       @map("source_ref") @db.VarChar(255) // id/slug de la source
+  categorie  String                       @db.VarChar(60) // prestations|tarifs|faq|methodo|cas|...
+  priorite   String                       @default("moyenne") @db.VarChar(20)
+  contenu    String                       @db.Text
+  contexte   String?                      @db.Text // phrase de contextualisation (cahier §9)
   // Colonnes ajoutées via migrations_fts (T-02), lues via $queryRaw :
   embedding  Unsupported("vector(1024)")?
   tsv        Unsupported("tsvector")?
-  version    Int         @default(1)
-  actif      Boolean     @default(true)
-  createdAt  DateTime    @default(now()) @map("created_at")
-  updatedAt  DateTime    @updatedAt @map("updated_at")
+  version    Int                          @default(1)
+  actif      Boolean                      @default(true)
+  createdAt  DateTime                     @default(now()) @map("created_at")
+  updatedAt  DateTime                     @updatedAt @map("updated_at")
 
   @@unique([tenantId, sourceType, sourceRef, version])
   @@index([tenantId, categorie])
@@ -4561,17 +4561,17 @@ model ChatKbChunk {
 
 /// Cache sémantique (ADR-CB-05) — `question_embedding vector(1024)` via migrations_fts (T-02).
 model ChatSemanticCache {
-  id                String     @id @default(uuid()) @db.Uuid
-  tenantId          String     @map("tenant_id") @db.Uuid
-  tenant            ChatTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  question          String     @db.Text
+  id                String                       @id @default(uuid()) @db.Uuid
+  tenantId          String                       @map("tenant_id") @db.Uuid
+  tenant            ChatTenant                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  question          String                       @db.Text
   questionEmbedding Unsupported("vector(1024)")? @map("question_embedding")
-  reponse           String     @db.Text
+  reponse           String                       @db.Text
   sources           Json?
-  valideJusqu       DateTime?  @map("valide_jusqu")
-  hits              Int        @default(0)
-  knowledgeVersion  Int        @map("knowledge_version") // pour invalidation par version
-  createdAt         DateTime   @default(now()) @map("created_at")
+  valideJusqu       DateTime?                    @map("valide_jusqu")
+  hits              Int                          @default(0)
+  knowledgeVersion  Int                          @map("knowledge_version") // pour invalidation par version
+  createdAt         DateTime                     @default(now()) @map("created_at")
 
   @@index([tenantId, knowledgeVersion])
   @@map("chat_semantic_cache")
@@ -4596,24 +4596,24 @@ model ChatPromptVersion {
 /// Conversation (état serveur, stateless). Champs MVP5 (T-38) `searchSlots`/
 /// `proposedOffers`/`linkState` inclus dès T-01 (migration additive groupée).
 model ChatConversation {
-  id            String     @id @default(uuid()) @db.Uuid
-  tenantId      String     @map("tenant_id") @db.Uuid
-  tenant        ChatTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  sessionUuid   String     @map("session_uuid") @db.Uuid
-  persona       String?    @db.VarChar(60)
-  statut        String     @default("active") @db.VarChar(20)
-  pageContext   String?    @map("page_context") @db.Text // page d'origine (accueil proactif)
-  submissionId  String?    @map("submission_id") @db.Uuid // lien lead capturé (Submission interne)
-  resume        String?    @db.Text // contexte long résumé
-  ipHash        String?    @map("ip_hash") @db.VarChar(64) // SHA-256 salée
+  id              String     @id @default(uuid()) @db.Uuid
+  tenantId        String     @map("tenant_id") @db.Uuid
+  tenant          ChatTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sessionUuid     String     @map("session_uuid") @db.Uuid
+  persona         String?    @db.VarChar(60)
+  statut          String     @default("active") @db.VarChar(20)
+  pageContext     String?    @map("page_context") @db.Text // page d'origine (accueil proactif)
+  submissionId    String?    @map("submission_id") @db.Uuid // lien lead capturé (Submission interne)
+  resume          String?    @db.Text // contexte long résumé
+  ipHash          String?    @map("ip_hash") @db.VarChar(64) // SHA-256 salée
   // MVP2 qualification non-intrusive (T-13, qualifier_prospect) — profil prospect :
-  prospectProfile Json?    @map("prospect_profile") // type_structure/secteur/besoin/maturite_ia/urgence
+  prospectProfile Json?      @map("prospect_profile") // type_structure/secteur/besoin/maturite_ia/urgence
   // MVP5 « cœur vendeur-conseiller » (T-38) — état de la boucle catalogue :
-  searchSlots   Json?      @map("search_slots") // critères extraits (prix/durée/effectif/sujet/format/vertical)
-  proposedOffers Json?     @map("proposed_offers") // offres proposées au tour courant
-  linkState     String?    @map("link_state") @db.VarChar(20) // null|proposed|confirmed|sent
-  createdAt     DateTime   @default(now()) @map("created_at")
-  updatedAt     DateTime   @updatedAt @map("updated_at")
+  searchSlots     Json?      @map("search_slots") // critères extraits (prix/durée/effectif/sujet/format/vertical)
+  proposedOffers  Json?      @map("proposed_offers") // offres proposées au tour courant
+  linkState       String?    @map("link_state") @db.VarChar(20) // null|proposed|confirmed|sent
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
 
   messages    ChatMessage[]
   escalations ChatEscalation[]
@@ -4783,46 +4783,46 @@ enum DevisStatut {
 
 /// Client / prospect CRM. NAF → OPCO inféré (cf. crm/naf-opco.ts).
 model Client {
-  id                          String        @id @default(uuid()) @db.Uuid
+  id                         String       @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-CLI-NNN.
-  numero                      String        @unique @db.VarChar(40)
+  numero                     String       @unique @db.VarChar(40)
   /// entreprise (B2B) | particulier (B2C). Pour un particulier, raisonSociale = "Prénom Nom".
-  type                        ClientType    @default(entreprise)
-  raisonSociale               String        @map("raison_sociale") @db.VarChar(250)
-  siret                       String?       @db.VarChar(14)
-  nafCode                     String?       @map("naf_code") @db.VarChar(6)
-  conventionCollective        String?       @map("convention_collective") @db.VarChar(200)
+  type                       ClientType   @default(entreprise)
+  raisonSociale              String       @map("raison_sociale") @db.VarChar(250)
+  siret                      String?      @db.VarChar(14)
+  nafCode                    String?      @map("naf_code") @db.VarChar(6)
+  conventionCollective       String?      @map("convention_collective") @db.VarChar(200)
   /// Code IDCC de la branche (précise la convention collective — saisi, NAF non fiable). [T18]
-  idcc                        String?       @db.VarChar(10)
-  secteur                     String?       @db.VarChar(200)
-  taille                      CompanySize?
-  adresse                     String?       @db.Text
-  contactNom                  String?       @map("contact_nom") @db.VarChar(200)
-  contactEmail                String?       @map("contact_email") @db.Citext
-  contactTelephone            String?       @map("contact_telephone") @db.VarChar(40)
-  contactFonction             String?       @map("contact_fonction") @db.VarChar(150)
+  idcc                       String?      @db.VarChar(10)
+  secteur                    String?      @db.VarChar(200)
+  taille                     CompanySize?
+  adresse                    String?      @db.Text
+  contactNom                 String?      @map("contact_nom") @db.VarChar(200)
+  contactEmail               String?      @map("contact_email") @db.Citext
+  contactTelephone           String?      @map("contact_telephone") @db.VarChar(40)
+  contactFonction            String?      @map("contact_fonction") @db.VarChar(150)
   /// OPCO inféré depuis le code NAF (ou saisi manuellement).
-  opcoIdentifie               String?       @map("opco_identifie") @db.VarChar(60)
-  opcoNumeroAdherent          String?       @map("opco_numero_adherent") @db.VarChar(80)
-  opcoEnveloppeAnnuelleCents  Int?          @map("opco_enveloppe_annuelle_cents")
-  statut                      ClientStatut  @default(prospect)
-  source                      String?       @db.VarChar(120)
+  opcoIdentifie              String?      @map("opco_identifie") @db.VarChar(60)
+  opcoNumeroAdherent         String?      @map("opco_numero_adherent") @db.VarChar(80)
+  opcoEnveloppeAnnuelleCents Int?         @map("opco_enveloppe_annuelle_cents")
+  statut                     ClientStatut @default(prospect)
+  source                     String?      @db.VarChar(120)
   /// Contexte injecté au Formation Engine pour la génération sur-mesure.
-  contexteIa                  String?       @map("contexte_ia") @db.Text
-  besoinsIdentifies           Json?         @map("besoins_identifies")
-  notes                       String?       @db.Text
+  contexteIa                 String?      @map("contexte_ia") @db.Text
+  besoinsIdentifies          Json?        @map("besoins_identifies")
+  notes                      String?      @db.Text
   /// Agrégats commerciaux (mis à jour à la clôture des sessions).
-  nbSessions                  Int           @default(0) @map("nb_sessions")
-  nbStagiaires                Int           @default(0) @map("nb_stagiaires")
-  caCents                     Int           @default(0) @map("ca_cents")
-  createdAt                   DateTime      @default(now()) @map("created_at")
-  updatedAt                   DateTime      @updatedAt @map("updated_at")
+  nbSessions                 Int          @default(0) @map("nb_sessions")
+  nbStagiaires               Int          @default(0) @map("nb_stagiaires")
+  caCents                    Int          @default(0) @map("ca_cents")
+  createdAt                  DateTime     @default(now()) @map("created_at")
+  updatedAt                  DateTime     @updatedAt @map("updated_at")
 
-  devis      Devis[]
-  formations Formation[]
-  sessions   TrainingSession[]
-  documents  DocumentGenere[]
-  enrollmentsFinances Enrollment[] @relation("EnrollmentClient")
+  devis               Devis[]
+  formations          Formation[]
+  sessions            TrainingSession[]
+  documents           DocumentGenere[]
+  enrollmentsFinances Enrollment[]      @relation("EnrollmentClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -4832,29 +4832,29 @@ model Client {
 
 /// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
 model Devis {
-  id                    String      @id @default(uuid()) @db.Uuid
+  id                     String      @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-DEV-YYYY-NNN.
-  numero                String      @unique @db.VarChar(40)
-  clientId              String      @map("client_id") @db.Uuid
-  client                Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  numero                 String      @unique @db.VarChar(40)
+  clientId               String      @map("client_id") @db.Uuid
+  client                 Client      @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].
-  lignes                Json
-  montantTotalHtCents   Int         @map("montant_total_ht_cents")
+  lignes                 Json
+  montantTotalHtCents    Int         @map("montant_total_ht_cents")
   /// Mention TVA (exonération 261-4-4° CGI par défaut).
-  mentionTva            String      @map("mention_tva") @db.Text
+  mentionTva             String      @map("mention_tva") @db.Text
   /// direct | opco | cpf | france_travail.
-  financementSuggere    String?     @map("financement_suggere") @db.VarChar(40)
-  montantOpcoEstimeCents Int?       @map("montant_opco_estime_cents")
-  resteAChargeCents     Int?        @map("reste_a_charge_cents")
-  statut                DevisStatut @default(brouillon)
+  financementSuggere     String?     @map("financement_suggere") @db.VarChar(40)
+  montantOpcoEstimeCents Int?        @map("montant_opco_estime_cents")
+  resteAChargeCents      Int?        @map("reste_a_charge_cents")
+  statut                 DevisStatut @default(brouillon)
   /// = createdAt + 30 j par défaut.
-  dateValidite          DateTime    @map("date_validite")
-  fichierPdfUrl         String?     @map("fichier_pdf_url") @db.Text
-  sentAt                DateTime?   @map("sent_at")
-  acceptedAt            DateTime?   @map("accepted_at")
-  declinedAt            DateTime?   @map("declined_at")
-  createdAt             DateTime    @default(now()) @map("created_at")
-  updatedAt             DateTime    @updatedAt @map("updated_at")
+  dateValidite           DateTime    @map("date_validite")
+  fichierPdfUrl          String?     @map("fichier_pdf_url") @db.Text
+  sentAt                 DateTime?   @map("sent_at")
+  acceptedAt             DateTime?   @map("accepted_at")
+  declinedAt             DateTime?   @map("declined_at")
+  createdAt              DateTime    @default(now()) @map("created_at")
+  updatedAt              DateTime    @updatedAt @map("updated_at")
 
   sessions TrainingSession[]
 
@@ -4953,79 +4953,79 @@ enum OpcoStatut {
 /// Formation (pivot Module A↔B). Sélectionnable pour une session UNIQUEMENT si
 /// statutGeneration='publie' ET statut='actif'. Contenu IA marqué (AI Act 50).
 model Formation {
-  id                   String                    @id @default(uuid()) @db.Uuid
-  numero               String                    @unique @db.VarChar(40)
-  titre                String                    @db.VarChar(255)
-  slug                 String                    @unique @db.VarChar(180)
+  id                       String                    @id @default(uuid()) @db.Uuid
+  numero                   String                    @unique @db.VarChar(40)
+  titre                    String                    @db.VarChar(255)
+  slug                     String                    @unique @db.VarChar(180)
   /// Offre rattachée (OBLIGATOIRE — pas de formation hors catalogue).
-  offreSiteId          String                    @map("offre_site_id") @db.Uuid
-  offreSite            OffreSite                 @relation(fields: [offreSiteId], references: [id], onDelete: Restrict)
+  offreSiteId              String                    @map("offre_site_id") @db.Uuid
+  offreSite                OffreSite                 @relation(fields: [offreSiteId], references: [id], onDelete: Restrict)
   /// Client si formation sur-mesure.
-  clientId             String?                   @map("client_id") @db.Uuid
-  client               Client?                   @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  estSurMesure         Boolean                   @default(false) @map("est_sur_mesure")
-  dureeHeures          Int                       @map("duree_heures")
-  modalite             ModaliteFormation         @default(presentiel)
+  clientId                 String?                   @map("client_id") @db.Uuid
+  client                   Client?                   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  estSurMesure             Boolean                   @default(false) @map("est_sur_mesure")
+  dureeHeures              Int                       @map("duree_heures")
+  modalite                 ModaliteFormation         @default(presentiel)
   /// [{ id, verbe, description, niveauBloom }] — verbes d'action (indicateur 5).
-  objectifsPedagogiques Json                     @default("[]") @map("objectifs_pedagogiques")
+  objectifsPedagogiques    Json                      @default("[]") @map("objectifs_pedagogiques")
   /// [{ moduleId, titre, dureeMin, sequences:[...] }].
-  programmeDetaille    Json                      @default("[]") @map("programme_detaille")
-  supports             SupportFormation[]
-  methodesPedagogiques String                    @default("") @map("methodes_pedagogiques") @db.Text
+  programmeDetaille        Json                      @default("[]") @map("programme_detaille")
+  supports                 SupportFormation[]
+  methodesPedagogiques     String                    @default("") @map("methodes_pedagogiques") @db.Text
   /// Moyens techniques mis à disposition (off.17/21 : salle, plateforme, matériel). [T11]
-  moyensTechniques     String                    @default("") @map("moyens_techniques") @db.Text
+  moyensTechniques         String                    @default("") @map("moyens_techniques") @db.Text
   /// Ressources pédagogiques fournies (off.17/22) : [{ type, libelle }]. [T11]
-  ressourcesPedagogiques Json                    @default("[]") @map("ressources_pedagogiques")
+  ressourcesPedagogiques   Json                      @default("[]") @map("ressources_pedagogiques")
   /// Indicateurs de résultats publiés (off.2) : [{ libelle, valeur, unite, annee }]. [T17]
-  indicateursPublies   Json                      @default("[]") @map("indicateurs_publies")
+  indicateursPublies       Json                      @default("[]") @map("indicateurs_publies")
   /// Méthode de calcul affichée des indicateurs publiés (off.2). [T17]
-  methodeCalculIndicateurs String                @default("") @map("methode_calcul_indicateurs") @db.Text
+  methodeCalculIndicateurs String                    @default("") @map("methode_calcul_indicateurs") @db.Text
   /// Date de publication/mise à jour des indicateurs (off.2). [T17]
-  indicateursPubliesAt DateTime?                 @map("indicateurs_publies_at")
-  seuilReussitePct     Int                       @default(70) @map("seuil_reussite_pct")
-  ratioPratiquePct     Int?                      @map("ratio_pratique_pct")
-  accessibleHandicap   Boolean                   @default(false) @map("accessible_handicap")
-  certificationType    CertificationType         @default(aucune) @map("certification_type")
-  codeCpf              String?                   @map("code_cpf") @db.VarChar(20)
+  indicateursPubliesAt     DateTime?                 @map("indicateurs_publies_at")
+  seuilReussitePct         Int                       @default(70) @map("seuil_reussite_pct")
+  ratioPratiquePct         Int?                      @map("ratio_pratique_pct")
+  accessibleHandicap       Boolean                   @default(false) @map("accessible_handicap")
+  certificationType        CertificationType         @default(aucune) @map("certification_type")
+  codeCpf                  String?                   @map("code_cpf") @db.VarChar(20)
   // ── Certification France Compétences (RS / RNCP) — finançabilité CPF. [T18] ──
   /// Code RNCP (Répertoire National des Certifications Professionnelles).
-  codeRncp             String?                   @map("code_rncp") @db.VarChar(20)
+  codeRncp                 String?                   @map("code_rncp") @db.VarChar(20)
   /// Code RS (Répertoire Spécifique — compétences ciblées).
-  codeRs               String?                   @map("code_rs") @db.VarChar(20)
+  codeRs                   String?                   @map("code_rs") @db.VarChar(20)
   /// N° d'enregistrement France Compétences.
-  numeroEnregistrementFc String?                 @map("numero_enregistrement_fc") @db.VarChar(40)
+  numeroEnregistrementFc   String?                   @map("numero_enregistrement_fc") @db.VarChar(40)
   /// Nom du certificateur (déposant France Compétences).
-  certificateurNom     String?                   @map("certificateur_nom") @db.VarChar(250)
+  certificateurNom         String?                   @map("certificateur_nom") @db.VarChar(250)
   /// True si Axion-IA est le certificateur (déposant) ; false si partenaire habilité.
-  estCertificateur     Boolean                   @default(false) @map("est_certificateur")
+  estCertificateur         Boolean                   @default(false) @map("est_certificateur")
   /// N° d'habilitation si Axion-IA est partenaire d'un certificateur tiers.
-  numeroHabilitation   String?                   @map("numero_habilitation") @db.VarChar(60)
-  dateEnregistrementCertif DateTime?             @map("date_enregistrement_certif")
-  dateEcheanceCertif   DateTime?                 @map("date_echeance_certif")
+  numeroHabilitation       String?                   @map("numero_habilitation") @db.VarChar(60)
+  dateEnregistrementCertif DateTime?                 @map("date_enregistrement_certif")
+  dateEcheanceCertif       DateTime?                 @map("date_echeance_certif")
   /// Blocs de compétences (RNCP) : [{ code, libelle }].
-  blocsCompetences     Json                      @default("[]") @map("blocs_competences")
+  blocsCompetences         Json                      @default("[]") @map("blocs_competences")
   /// Éligible CPF (dérivé : certifiante RS/RNCP ou bloc + EDOF vérifié).
-  cpfEligible          Boolean                   @default(false) @map("cpf_eligible")
-  edofVerifieAt        DateTime?                 @map("edof_verifie_at")
-  edofVerifiePar       String?                   @map("edof_verifie_par") @db.Uuid
-  statutGeneration     FormationStatutGeneration @default(intention) @map("statut_generation")
-  statut               FormationStatut           @default(actif)
-  versionProgramme     String                    @default("1.0") @map("version_programme")
-  versionHistorique    Json                      @default("[]") @map("version_historique")
-  langueGeneration     String                    @default("fr") @map("langue_generation")
-  typesActionQualiopi  TypeActionQualiopi[]      @default([]) @map("types_action_qualiopi")
+  cpfEligible              Boolean                   @default(false) @map("cpf_eligible")
+  edofVerifieAt            DateTime?                 @map("edof_verifie_at")
+  edofVerifiePar           String?                   @map("edof_verifie_par") @db.Uuid
+  statutGeneration         FormationStatutGeneration @default(intention) @map("statut_generation")
+  statut                   FormationStatut           @default(actif)
+  versionProgramme         String                    @default("1.0") @map("version_programme")
+  versionHistorique        Json                      @default("[]") @map("version_historique")
+  langueGeneration         String                    @default("fr") @map("langue_generation")
+  typesActionQualiopi      TypeActionQualiopi[]      @default([]) @map("types_action_qualiopi")
   /// AI Act art. 50 (ADR 0024) — traçabilité + validation humaine bloquante.
-  aiGenerated          Boolean                   @default(false) @map("ai_generated")
-  aiModel              String?                   @map("ai_model") @db.VarChar(80)
-  aiPromptVersion      Int?                      @map("ai_prompt_version")
-  validatedBy          String?                   @map("validated_by") @db.Uuid
-  validatedAt          DateTime?                 @map("validated_at")
+  aiGenerated              Boolean                   @default(false) @map("ai_generated")
+  aiModel                  String?                   @map("ai_model") @db.VarChar(80)
+  aiPromptVersion          Int?                      @map("ai_prompt_version")
+  validatedBy              String?                   @map("validated_by") @db.Uuid
+  validatedAt              DateTime?                 @map("validated_at")
   /// Prix négocié optionnel (sinon dérivé offre/pricing.ts).
-  tarifHtCents         Int?                      @map("tarif_ht_cents")
-  createdAt            DateTime                  @default(now()) @map("created_at")
-  updatedAt            DateTime                  @updatedAt @map("updated_at")
+  tarifHtCents             Int?                      @map("tarif_ht_cents")
+  createdAt                DateTime                  @default(now()) @map("created_at")
+  updatedAt                DateTime                  @updatedAt @map("updated_at")
 
-  sessions       TrainingSession[]
+  sessions        TrainingSession[]
   fileValidations FileValidation[]
   generationJobs  FormationGenerationJob[]
   documents       DocumentGenere[]
@@ -5040,68 +5040,68 @@ model Formation {
 
 /// Session de formation (machine à états planifiee→en_cours→realisee).
 model TrainingSession {
-  id                           String                @id @default(uuid()) @db.Uuid
-  numero                       String                @unique @db.VarChar(40)
-  titreSession                 String                @map("titre_session") @db.VarChar(300)
-  formationId                  String                @map("formation_id") @db.Uuid
-  formation                    Formation             @relation(fields: [formationId], references: [id], onDelete: Restrict)
-  dateDebut                    DateTime              @map("date_debut")
-  dateFin                      DateTime              @map("date_fin")
-  dureeReelleHeures            Int?                  @map("duree_reelle_heures")
-  modalite                     ModaliteFormation
-  icalUid                      String?               @map("ical_uid") @db.VarChar(255)
-  clientId                     String?               @map("client_id") @db.Uuid
-  client                       Client?               @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  devisId                      String?               @map("devis_id") @db.Uuid
-  devis                        Devis?                @relation(fields: [devisId], references: [id], onDelete: SetNull)
-  financementType              FinancementType?      @map("financement_type")
-  montantHtCents               Int                   @map("montant_ht_cents")
-  opcoStatut                   OpcoStatut            @default(non_demande) @map("opco_statut")
-  opcoSubrogation              Boolean               @default(false) @map("opco_subrogation")
-  conventionTripartiteSigneeAt DateTime?             @map("convention_tripartite_signee_at")
-  edofVerifieAt                DateTime?             @map("edof_verifie_at")
-  ftPoeiOffreEmploiNumero      String?               @map("ft_poei_offre_emploi_numero") @db.VarChar(50)
-  ftPoeiAccordFinancementAt    DateTime?             @map("ft_poei_accord_financement_at")
-  ftPoeiEngagementSigneAt      DateTime?             @map("ft_poei_engagement_signe_at")
-  ftAifPrescriptionDate        DateTime?             @map("ft_aif_prescription_date")
+  id                                 String                   @id @default(uuid()) @db.Uuid
+  numero                             String                   @unique @db.VarChar(40)
+  titreSession                       String                   @map("titre_session") @db.VarChar(300)
+  formationId                        String                   @map("formation_id") @db.Uuid
+  formation                          Formation                @relation(fields: [formationId], references: [id], onDelete: Restrict)
+  dateDebut                          DateTime                 @map("date_debut")
+  dateFin                            DateTime                 @map("date_fin")
+  dureeReelleHeures                  Int?                     @map("duree_reelle_heures")
+  modalite                           ModaliteFormation
+  icalUid                            String?                  @map("ical_uid") @db.VarChar(255)
+  clientId                           String?                  @map("client_id") @db.Uuid
+  client                             Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId                            String?                  @map("devis_id") @db.Uuid
+  devis                              Devis?                   @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  financementType                    FinancementType?         @map("financement_type")
+  montantHtCents                     Int                      @map("montant_ht_cents")
+  opcoStatut                         OpcoStatut               @default(non_demande) @map("opco_statut")
+  opcoSubrogation                    Boolean                  @default(false) @map("opco_subrogation")
+  conventionTripartiteSigneeAt       DateTime?                @map("convention_tripartite_signee_at")
+  edofVerifieAt                      DateTime?                @map("edof_verifie_at")
+  ftPoeiOffreEmploiNumero            String?                  @map("ft_poei_offre_emploi_numero") @db.VarChar(50)
+  ftPoeiAccordFinancementAt          DateTime?                @map("ft_poei_accord_financement_at")
+  ftPoeiEngagementSigneAt            DateTime?                @map("ft_poei_engagement_signe_at")
+  ftAifPrescriptionDate              DateTime?                @map("ft_aif_prescription_date")
   /// Dispositif France Travail (AIF / POEI / CSP). [T11]
-  ftDispositif                 FranceTravailDispositif? @map("ft_dispositif")
+  ftDispositif                       FranceTravailDispositif? @map("ft_dispositif")
   /// Numéro de dossier OPCO (mention obligatoire sur la facture en subrogation). [T11]
-  numeroDossierOpco            String?               @map("numero_dossier_opco") @db.VarChar(60)
+  numeroDossierOpco                  String?                  @map("numero_dossier_opco") @db.VarChar(60)
   // ── Prise en charge OPCO PAR DOSSIER (relevée sur le portail de la branche). [T18] ──
   /// Montant de prise en charge relevé (centimes), selon `priseEnChargeUnite`.
-  priseEnChargeMontantCents       Int?               @map("prise_en_charge_montant_cents")
-  priseEnChargeUnite              PriseEnChargeUnite? @map("prise_en_charge_unite")
-  priseEnChargePlafondFormationCents Int?            @map("prise_en_charge_plafond_formation_cents")
-  priseEnChargePlafondAnnuelCents Int?               @map("prise_en_charge_plafond_annuel_cents")
+  priseEnChargeMontantCents          Int?                     @map("prise_en_charge_montant_cents")
+  priseEnChargeUnite                 PriseEnChargeUnite?      @map("prise_en_charge_unite")
+  priseEnChargePlafondFormationCents Int?                     @map("prise_en_charge_plafond_formation_cents")
+  priseEnChargePlafondAnnuelCents    Int?                     @map("prise_en_charge_plafond_annuel_cents")
   /// Traçabilité auditeur : URL du portail OPCO + date du relevé du barème.
-  priseEnChargeSourceUrl          String?            @map("prise_en_charge_source_url") @db.Text
-  priseEnChargeReleveLe           DateTime?          @map("prise_en_charge_releve_le")
+  priseEnChargeSourceUrl             String?                  @map("prise_en_charge_source_url") @db.Text
+  priseEnChargeReleveLe              DateTime?                @map("prise_en_charge_releve_le")
   /// Payeur du reste à charge CPF (stagiaire/employeur/opco/france_travail/exonere). [T11]
-  cpfPayeurResteCharge         String?               @map("cpf_payeur_reste_charge") @db.VarChar(40)
-  nbParticipantsPrevus         Int                   @map("nb_participants_prevus")
-  nbParticipantsReels          Int?                  @map("nb_participants_reels")
+  cpfPayeurResteCharge               String?                  @map("cpf_payeur_reste_charge") @db.VarChar(40)
+  nbParticipantsPrevus               Int                      @map("nb_participants_prevus")
+  nbParticipantsReels                Int?                     @map("nb_participants_reels")
   /// Session INTER-entreprises (R-INTER) : ouverte au catalogue, participants de
   /// sociétés différentes → financement + facture PAR inscription (cf. Enrollment).
   /// false (défaut) = intra : 1 commanditaire/financement au niveau session.
-  interEntreprises             Boolean               @default(false) @map("inter_entreprises")
+  interEntreprises                   Boolean                  @default(false) @map("inter_entreprises")
   /// [{ trainerId, role, heuresAnimees }] — 1 principal obligatoire.
-  coFormateurs                 Json                  @default("[]") @map("co_formateurs")
+  coFormateurs                       Json                     @default("[]") @map("co_formateurs")
   /// Formateur principal assigné (R9) — la garde isTrainerHabilite empêche
   /// d'assigner un formateur non habilité / sous-traitant non vérifié.
-  formateurPrincipalId         String?               @map("formateur_principal_id") @db.Uuid
-  formateurPrincipal           Trainer?              @relation("SessionFormateurPrincipal", fields: [formateurPrincipalId], references: [id], onDelete: SetNull)
+  formateurPrincipalId               String?                  @map("formateur_principal_id") @db.Uuid
+  formateurPrincipal                 Trainer?                 @relation("SessionFormateurPrincipal", fields: [formateurPrincipalId], references: [id], onDelete: SetNull)
   /// Récurrence (self-relation, max 52 occurrences).
-  sessionParentId              String?               @map("session_parent_id") @db.Uuid
-  sessionParent                TrainingSession?      @relation("SessionRecurrences", fields: [sessionParentId], references: [id], onDelete: SetNull)
-  sessionEnfants               TrainingSession[]     @relation("SessionRecurrences")
+  sessionParentId                    String?                  @map("session_parent_id") @db.Uuid
+  sessionParent                      TrainingSession?         @relation("SessionRecurrences", fields: [sessionParentId], references: [id], onDelete: SetNull)
+  sessionEnfants                     TrainingSession[]        @relation("SessionRecurrences")
   /// Report (self-relation).
-  sessionReporteeId            String?               @map("session_reportee_id") @db.Uuid
-  sessionReportee              TrainingSession?      @relation("SessionReportees", fields: [sessionReporteeId], references: [id], onDelete: SetNull)
-  sessionRemplacement          TrainingSession[]     @relation("SessionReportees")
-  statut                       TrainingSessionStatut @default(planifiee)
-  createdAt                    DateTime              @default(now()) @map("created_at")
-  updatedAt                    DateTime              @updatedAt @map("updated_at")
+  sessionReporteeId                  String?                  @map("session_reportee_id") @db.Uuid
+  sessionReportee                    TrainingSession?         @relation("SessionReportees", fields: [sessionReporteeId], references: [id], onDelete: SetNull)
+  sessionRemplacement                TrainingSession[]        @relation("SessionReportees")
+  statut                             TrainingSessionStatut    @default(planifiee)
+  createdAt                          DateTime                 @default(now()) @map("created_at")
+  updatedAt                          DateTime                 @updatedAt @map("updated_at")
 
   enrollments       Enrollment[]
   transitions       FormationTransition[]
@@ -5122,32 +5122,37 @@ model TrainingSession {
 
 /// Formateur (salarié ou sous-traitant). Habilitations = liste de formationIds.
 model Trainer {
-  id                   String        @id @default(uuid()) @db.Uuid
-  nom                  String        @db.VarChar(200)
-  prenom               String        @db.VarChar(200)
-  email                String        @unique @db.Citext
-  telephone            String?       @db.VarChar(40)
-  statut               TrainerStatut
+  id                    String        @id @default(uuid()) @db.Uuid
+  nom                   String        @db.VarChar(200)
+  prenom                String        @db.VarChar(200)
+  email                 String        @unique @db.Citext
+  telephone             String?       @db.VarChar(40)
+  statut                TrainerStatut
   /// Région d'intervention (Phase 2 calendrier 2026-06-10). Slug parmi les 13
   /// régions FR (cf. src/content/regions.ts). Null = non renseigné.
-  region               String?       @map("region") @db.VarChar(60)
-  cvUrl                String?       @map("cv_url") @db.Text
-  cvUploadedAt         DateTime?     @map("cv_uploaded_at")
+  region                String?       @map("region") @db.VarChar(60)
+  cvUrl                 String?       @map("cv_url") @db.Text
+  cvUploadedAt          DateTime?     @map("cv_uploaded_at")
   /// [{ domaine, niveauMaitrise, verifiedAt }].
-  domainesCompetences  Json          @default("[]") @map("domaines_competences")
+  domainesCompetences   Json          @default("[]") @map("domaines_competences")
   /// formationIds pour lesquels le formateur est habilité.
-  formationsHabilitees String[]      @default([]) @map("formations_habilitees")
-  dateEmbauche         DateTime?     @map("date_embauche")
-  tarifJourneeHtCents  Int?          @map("tarif_journee_ht_cents")
+  formationsHabilitees  String[]      @default([]) @map("formations_habilitees")
+  dateEmbauche          DateTime?     @map("date_embauche")
+  tarifJourneeHtCents   Int?          @map("tarif_journee_ht_cents")
   /// Sous-traitant (off.19/27) : NDA propre + vérification data.gouv.fr. [T11]
-  sousTraitantNda      String?       @map("sous_traitant_nda") @db.VarChar(20)
-  sousTraitantVerifieAt DateTime?    @map("sous_traitant_verifie_at")
-  actif                Boolean       @default(true)
-  createdAt            DateTime      @default(now()) @map("created_at")
-  updatedAt            DateTime      @updatedAt @map("updated_at")
+  sousTraitantNda       String?       @map("sous_traitant_nda") @db.VarChar(20)
+  sousTraitantVerifieAt DateTime?     @map("sous_traitant_verifie_at")
+  actif                 Boolean       @default(true)
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
 
   sessionsAnimees TrainingSession[] @relation("SessionFormateurPrincipal")
   bookingsAnimes  Booking[]         @relation("BookingFormateur")
+
+  // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
+  lastFormateurLoginAt DateTime?            @map("last_formateur_login_at")
+  magicLinks           FormateurMagicLink[]
+  coachingSessions     CoachingSession[]
 
   @@index([statut])
   @@index([actif])
@@ -5157,31 +5162,32 @@ model Trainer {
 
 /// Stagiaire. PII ; détails handicap chiffrés AES-256-GCM (pii-crypto).
 model Trainee {
-  id                     String       @id @default(uuid()) @db.Uuid
-  nom                    String       @db.VarChar(200)
-  prenom                 String       @db.VarChar(200)
-  email                  String       @unique @db.Citext
-  telephone              String?      @db.VarChar(40)
-  entreprise             String?      @db.VarChar(250)
-  fonction               String?      @db.VarChar(200)
-  situationHandicap      Boolean      @default(false) @map("situation_handicap")
+  id                     String    @id @default(uuid()) @db.Uuid
+  nom                    String    @db.VarChar(200)
+  prenom                 String    @db.VarChar(200)
+  email                  String    @unique @db.Citext
+  telephone              String?   @db.VarChar(40)
+  entreprise             String?   @db.VarChar(250)
+  fonction               String?   @db.VarChar(200)
+  situationHandicap      Boolean   @default(false) @map("situation_handicap")
   /// Chiffré pii-crypto (jamais en clair). Lecture serveur référent uniquement.
-  handicapDetailsChiffre String?      @map("handicap_details_chiffre") @db.Text
-  handicapVerifiePar     String?      @map("handicap_verifie_par") @db.Uuid
-  handicapVerifieAt      DateTime?    @map("handicap_verifie_at")
-  consentementFormation  Boolean      @default(false) @map("consentement_formation")
-  consentementEmail      Boolean      @default(false) @map("consentement_email")
-  consentementVersion    String?      @map("consentement_version") @db.VarChar(20)
-  consentementAt         DateTime?    @map("consentement_at")
-  deletedAt              DateTime?    @map("deleted_at")
-  createdAt              DateTime     @default(now()) @map("created_at")
-  updatedAt              DateTime     @updatedAt @map("updated_at")
+  handicapDetailsChiffre String?   @map("handicap_details_chiffre") @db.Text
+  handicapVerifiePar     String?   @map("handicap_verifie_par") @db.Uuid
+  handicapVerifieAt      DateTime? @map("handicap_verifie_at")
+  consentementFormation  Boolean   @default(false) @map("consentement_formation")
+  consentementEmail      Boolean   @default(false) @map("consentement_email")
+  consentementVersion    String?   @map("consentement_version") @db.VarChar(20)
+  consentementAt         DateTime? @map("consentement_at")
+  deletedAt              DateTime? @map("deleted_at")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
 
-  enrollments   Enrollment[]
-  documents     DocumentGenere[]
-  portailAcces  PortailAcces[]
-  appreciations Appreciation[]
-  rgpdDemandes  RgpdDemande[]
+  enrollments      Enrollment[]
+  documents        DocumentGenere[]
+  portailAcces     PortailAcces[]
+  appreciations    Appreciation[]
+  rgpdDemandes     RgpdDemande[]
+  coachingSessions CoachingSession[]
 
   @@index([email])
   @@index([entreprise])
@@ -5191,41 +5197,41 @@ model Trainee {
 
 /// Inscription stagiaire ↔ session (unicité par couple).
 model Enrollment {
-  id                   String           @id @default(uuid()) @db.Uuid
-  sessionId            String           @map("session_id") @db.Uuid
-  session              TrainingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  traineeId            String           @map("trainee_id") @db.Uuid
-  trainee              Trainee          @relation(fields: [traineeId], references: [id], onDelete: Cascade)
-  statut               EnrollmentStatut @default(planifiee)
-  tauxPresencePct      Int?             @map("taux_presence_pct")
-  emargementSigneAt    DateTime?        @map("emargement_signe_at")
-  adaptationsRealisees String?          @map("adaptations_realisees") @db.Text
+  id                    String                   @id @default(uuid()) @db.Uuid
+  sessionId             String                   @map("session_id") @db.Uuid
+  session               TrainingSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  traineeId             String                   @map("trainee_id") @db.Uuid
+  trainee               Trainee                  @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  statut                EnrollmentStatut         @default(planifiee)
+  tauxPresencePct       Int?                     @map("taux_presence_pct")
+  emargementSigneAt     DateTime?                @map("emargement_signe_at")
+  adaptationsRealisees  String?                  @map("adaptations_realisees") @db.Text
   /// Résultat d'attestation calculé (décision #7 : ≥80 complète / 60-79 partielle / <60 aucune).
-  attestationResultat  AttestationResultat? @map("attestation_resultat")
+  attestationResultat   AttestationResultat?     @map("attestation_resultat")
   /// Attestation officielle générée (DocumentGenere). Null tant que non émise / si <60%.
-  attestationDocumentId String?         @map("attestation_document_id") @db.Uuid
-  attestationDocument  DocumentGenere?  @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
-  attestationGenereeAt DateTime?        @map("attestation_generee_at")
+  attestationDocumentId String?                  @map("attestation_document_id") @db.Uuid
+  attestationDocument   DocumentGenere?          @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
+  attestationGenereeAt  DateTime?                @map("attestation_generee_at")
   // ── Inter-entreprises (R-INTER) : financement PAR PARTICIPANT ──────────────
   // Utilisés uniquement quand la session est `interEntreprises` (participants de
   // sociétés différentes, chacun son financeur/sa facture). En intra : null
   // (le financement reste au niveau session, inchangé).
   /// Financeur de CE participant (override du financement session si renseigné).
-  financementType      FinancementType?         @map("financement_type")
+  financementType       FinancementType?         @map("financement_type")
   /// Employeur/payeur de CE participant (pour la facture inter).
-  clientId             String?                  @map("client_id") @db.Uuid
-  client               Client?                  @relation("EnrollmentClient", fields: [clientId], references: [id], onDelete: SetNull)
-  numeroDossierOpco    String?                  @map("numero_dossier_opco") @db.VarChar(60)
-  edofVerifieAt        DateTime?                @map("edof_verifie_at")
-  ftDispositif         FranceTravailDispositif? @map("ft_dispositif")
+  clientId              String?                  @map("client_id") @db.Uuid
+  client                Client?                  @relation("EnrollmentClient", fields: [clientId], references: [id], onDelete: SetNull)
+  numeroDossierOpco     String?                  @map("numero_dossier_opco") @db.VarChar(60)
+  edofVerifieAt         DateTime?                @map("edof_verifie_at")
+  ftDispositif          FranceTravailDispositif? @map("ft_dispositif")
   /// Prix HT du siège pour ce participant (inter). Null = utilise le prix session.
-  montantHtCents       Int?                     @map("montant_ht_cents")
-  createdAt            DateTime         @default(now()) @map("created_at")
-  updatedAt            DateTime         @updatedAt @map("updated_at")
+  montantHtCents        Int?                     @map("montant_ht_cents")
+  createdAt             DateTime                 @default(now()) @map("created_at")
+  updatedAt             DateTime                 @updatedAt @map("updated_at")
 
-  presences      PresenceCreneau[]
-  evaluations    EvaluationAcquis[]
-  questionnaires Questionnaire[]
+  presences         PresenceCreneau[]
+  evaluations       EvaluationAcquis[]
+  questionnaires    Questionnaire[]
   facturesFormation FactureFormation[]
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
@@ -5461,32 +5467,32 @@ enum PlateformeDistanciel {
 /// réalisées / Σ minutes prévues). Présentiel : saisie émargement. Distanciel :
 /// alimenté par l'import du relevé de connexion (Zoom/Teams/Meet).
 model PresenceCreneau {
-  id                   String         @id @default(uuid()) @db.Uuid
-  enrollmentId         String         @map("enrollment_id") @db.Uuid
-  enrollment           Enrollment     @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  id                   String                 @id @default(uuid()) @db.Uuid
+  enrollmentId         String                 @map("enrollment_id") @db.Uuid
+  enrollment           Enrollment             @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   /// Jour du créneau (date civile, heure de Paris).
-  date                 DateTime       @db.Date
-  demiJournee          DemiJournee    @map("demi_journee")
+  date                 DateTime               @db.Date
+  demiJournee          DemiJournee            @map("demi_journee")
   /// Libellé lisible (ex. "2026-06-10 matin"). Stable pour affichage/PDF.
-  libelle              String         @map("libelle") @db.VarChar(120)
+  libelle              String                 @map("libelle") @db.VarChar(120)
   /// Durée planifiée du créneau (minutes). Base du dénominateur du taux.
-  dureePrevueMinutes   Int            @map("duree_prevue_minutes")
+  dureePrevueMinutes   Int                    @map("duree_prevue_minutes")
   /// Durée réellement réalisée (minutes). 0 si absent.
-  dureeRealiseeMinutes Int            @default(0) @map("duree_realisee_minutes")
+  dureeRealiseeMinutes Int                    @default(0) @map("duree_realisee_minutes")
   /// Présence validée pour ce créneau (réalisé ≥ seuil × prévu).
-  present              Boolean        @default(false)
+  present              Boolean                @default(false)
   source               PresenceSource
   /// Distanciel : horodatage connexion/déconnexion (UTC stocké, affiché Paris).
-  heureConnexion       DateTime?      @map("heure_connexion")
-  heureDeconnexion     DateTime?      @map("heure_deconnexion")
+  heureConnexion       DateTime?              @map("heure_connexion")
+  heureDeconnexion     DateTime?              @map("heure_deconnexion")
   /// Import associé (si distanciel) — permet traçabilité + re-calcul.
-  importId             String?        @map("import_id") @db.Uuid
+  importId             String?                @map("import_id") @db.Uuid
   import               ReleveConnexionImport? @relation(fields: [importId], references: [id], onDelete: SetNull)
-  commentaire          String?        @db.Text
+  commentaire          String?                @db.Text
   /// Admin ayant saisi/validé (null si import système).
-  enregistreParId      String?        @map("enregistre_par_id") @db.Uuid
-  createdAt            DateTime       @default(now()) @map("created_at")
-  updatedAt            DateTime       @updatedAt @map("updated_at")
+  enregistreParId      String?                @map("enregistre_par_id") @db.Uuid
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @updatedAt @map("updated_at")
 
   @@unique([enrollmentId, date, demiJournee], map: "presence_creneau_unique")
   @@index([enrollmentId])
@@ -5903,22 +5909,22 @@ enum DocumentRecipientRole {
 /// Slot logique de document pour une prestation (identité stable).
 /// `slot` = clé du catalogue SSOT (intervention-documents-catalog.ts).
 model InterventionDocument {
-  id               String                       @id @default(uuid()) @db.Uuid
+  id               String                        @id @default(uuid()) @db.Uuid
   /// Slug de la prestation (booking-catalog : ia-express, audit-flash-onsite…).
-  interventionSlug String                       @map("intervention_slug") @db.VarChar(80)
+  interventionSlug String                        @map("intervention_slug") @db.VarChar(80)
   famille          InterventionFamille
   categorie        InterventionDocCategorie
   /// Clé du slot SSOT (livret_apprenant, guide_animation, programme…).
-  slot             String                       @db.VarChar(80)
-  titre            String                       @db.VarChar(300)
-  visibilite       InterventionDocVisibilite    @default(stagiaire)
-  source           InterventionDocSource        @default(upload)
+  slot             String                        @db.VarChar(80)
+  titre            String                        @db.VarChar(300)
+  visibilite       InterventionDocVisibilite     @default(stagiaire)
+  source           InterventionDocSource         @default(upload)
   /// Pointeur vers la version COURANTE (publiée). Null si aucune version.
-  currentVersionId String?                      @unique @map("current_version_id") @db.Uuid
-  currentVersion   InterventionDocumentVersion? @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+  currentVersionId String?                       @unique @map("current_version_id") @db.Uuid
+  currentVersion   InterventionDocumentVersion?  @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
   versions         InterventionDocumentVersion[] @relation("DocVersions")
-  createdAt        DateTime                     @default(now()) @map("created_at")
-  updatedAt        DateTime                     @updatedAt @map("updated_at")
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  updatedAt        DateTime                      @updatedAt @map("updated_at")
 
   @@unique([interventionSlug, slot])
   @@index([famille, categorie])
@@ -5950,7 +5956,7 @@ model InterventionDocumentVersion {
   publishedById   String?               @map("published_by_id") @db.Uuid
   createdAt       DateTime              @default(now()) @map("created_at")
 
-  currentOf       InterventionDocument? @relation("CurrentVersion")
+  currentOf InterventionDocument? @relation("CurrentVersion")
 
   @@unique([documentId, version])
   @@index([documentId])
@@ -6143,25 +6149,25 @@ enum PriseEnChargeUnite {
 /// fichier ORIGINAL (obligation CDC) et trace le rapprochement participants↔
 /// stagiaires (matched/unmatched). Génère les `PresenceCreneau` distanciels.
 model ReleveConnexionImport {
-  id                String               @id @default(uuid()) @db.Uuid
-  sessionId         String               @map("session_id") @db.Uuid
-  session           TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  plateforme        PlateformeDistanciel
+  id                  String               @id @default(uuid()) @db.Uuid
+  sessionId           String               @map("session_id") @db.Uuid
+  session             TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  plateforme          PlateformeDistanciel
   /// Nom du fichier d'origine (ex. "participants_2026-06-10.csv").
-  fichierOriginalNom String              @map("fichier_original_nom") @db.VarChar(255)
+  fichierOriginalNom  String               @map("fichier_original_nom") @db.VarChar(255)
   /// Clé R2 du CSV original archivé (conservation 5 ans). Null si R2 absent.
-  fichierOriginalPath String?            @map("fichier_original_path") @db.Text
+  fichierOriginalPath String?              @map("fichier_original_path") @db.Text
   /// SHA-256 du contenu brut importé (intégrité).
-  hashSha256        String               @map("hash_sha256") @db.VarChar(64)
-  nbLignes          Int                  @default(0) @map("nb_lignes")
-  nbMatched         Int                  @default(0) @map("nb_matched")
-  nbUnmatched       Int                  @default(0) @map("nb_unmatched")
+  hashSha256          String               @map("hash_sha256") @db.VarChar(64)
+  nbLignes            Int                  @default(0) @map("nb_lignes")
+  nbMatched           Int                  @default(0) @map("nb_matched")
+  nbUnmatched         Int                  @default(0) @map("nb_unmatched")
   /// Participants non rapprochés (pour revue manuelle) : [{ nom, email, dureeMin }].
-  unmatched         Json                 @default("[]")
+  unmatched           Json                 @default("[]")
   /// Métadonnées du parse (idReunion, fuseau détecté, etc.).
-  meta              Json                 @default("{}")
-  importeParId      String?              @map("importe_par_id") @db.Uuid
-  createdAt         DateTime             @default(now()) @map("created_at")
+  meta                Json                 @default("{}")
+  importeParId        String?              @map("importe_par_id") @db.Uuid
+  createdAt           DateTime             @default(now()) @map("created_at")
 
   presences PresenceCreneau[]
 
@@ -6343,4 +6349,177 @@ model JobApplication {
   @@index([status, needsAttention])
   @@index([submittedAt])
   @@map("job_applications")
+}
+
+// ============================================================================
+// ESPACE FORMATEUR (passwordless) + COACHING 1-to-1 EN LIGNE (2026-06-13)
+// Comptes formateurs sans mot de passe (magic-token HMAC, cf. src/lib/magic-token.ts)
+// + formulaires 1-to-1 remplis en ligne. Ancre = modèle Trainer existant.
+// ============================================================================
+
+enum CoachingSessionStatut {
+  planifiee
+  realisee
+  annulee
+}
+
+enum OptimisationType {
+  automatisation
+  delegation
+  simplification
+  outillage
+  organisation
+}
+
+/// Lien magique à usage unique pour la connexion passwordless d'un formateur.
+/// Le token en clair n'est JAMAIS stocké (seul son hash SHA-256). TTL court +
+/// usage unique (usedAt) ; intégrité signée HMAC en plus (src/lib/magic-token.ts).
+model FormateurMagicLink {
+  id        String    @id @default(uuid()) @db.Uuid
+  trainerId String    @map("trainer_id") @db.Uuid
+  trainer   Trainer   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique @map("token_hash") @db.VarChar(64)
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdIp String?   @map("created_ip") @db.VarChar(64)
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([trainerId])
+  @@index([expiresAt])
+  @@map("formateur_magic_links")
+}
+
+/// Séance/parcours de coaching 1-to-1. Parent reliant le formateur (coach), le
+/// bénéficiaire (Trainee, ou champs libres si ad-hoc), l'intervention et la date.
+/// Les formulaires (cartographie, optimisations, plan, CR, journal) s'y rattachent.
+model CoachingSession {
+  id                     String                @id @default(uuid()) @db.Uuid
+  trainerId              String                @map("trainer_id") @db.Uuid
+  trainer                Trainer               @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  traineeId              String?               @map("trainee_id") @db.Uuid
+  trainee                Trainee?              @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  /// Référence souple vers un Booking (pas de FK : un coaching peut exister sans booking).
+  bookingId              String?               @map("booking_id") @db.Uuid
+  /// Slug d'intervention (cf. booking-catalog : dirigeant-vision-strategique, coaching-decouverte…).
+  interventionSlug       String                @map("intervention_slug") @db.VarChar(80)
+  dateSeance             DateTime              @map("date_seance")
+  statut                 CoachingSessionStatut @default(planifiee)
+  beneficiaireNom        String?               @map("beneficiaire_nom") @db.VarChar(200)
+  beneficiaireEmail      String?               @map("beneficiaire_email") @db.Citext
+  beneficiaireEntreprise String?               @map("beneficiaire_entreprise") @db.VarChar(250)
+  createdAt              DateTime              @default(now()) @map("created_at")
+  updatedAt              DateTime              @updatedAt @map("updated_at")
+
+  cartographie  CartographieActivite?
+  plan          PlanOptimisation?
+  optimisations OptimisationProposee[]
+  comptesRendus CompteRenduSeance[]
+  journaux      JournalProgression[]
+
+  @@index([trainerId])
+  @@index([traineeId])
+  @@index([interventionSlug])
+  @@index([dateSeance])
+  @@map("coaching_sessions")
+}
+
+/// Cartographie / analyse de l'activité (cœur AFEST) — 1 par séance.
+model CartographieActivite {
+  id                String          @id @default(uuid()) @db.Uuid
+  coachingSessionId String          @unique @map("coaching_session_id") @db.Uuid
+  coachingSession   CoachingSession @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  /// [{ tache, frequence, tempsParOccurrenceMin, penibilite, repetitif, valeurAjoutee }].
+  taches            Json            @default("[]")
+  chronophages      String?         @db.Text
+  irritants         String?         @db.Text
+  donneesSensibles  String?         @map("donnees_sensibles") @db.Text
+  contraintes       String?         @db.Text
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  @@map("coaching_cartographies")
+}
+
+/// Optimisation/automatisation identifiée — N par séance.
+model OptimisationProposee {
+  id                 String           @id @default(uuid()) @db.Uuid
+  coachingSessionId  String           @map("coaching_session_id") @db.Uuid
+  coachingSession    CoachingSession  @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  type               OptimisationType
+  titre              String           @db.VarChar(250)
+  situationActuelle  String?          @map("situation_actuelle") @db.Text
+  piste              String?          @db.Text
+  gainTempsMinParOcc Int?             @map("gain_temps_min_par_occ")
+  occurrencesSemaine Int?             @map("occurrences_semaine")
+  gainEuroOuRisque   String?          @map("gain_euro_ou_risque") @db.VarChar(250)
+  /// 1 (facile) → 5 (complexe).
+  facilite           Int?
+  priorite           Int?
+  retenue            Boolean          @default(false)
+  createdAt          DateTime         @default(now()) @map("created_at")
+
+  @@index([coachingSessionId])
+  @@index([type])
+  @@map("coaching_optimisations")
+}
+
+/// Plan d'optimisation personnalisé (livrable bénéficiaire) — 1 par séance.
+model PlanOptimisation {
+  id                    String          @id @default(uuid()) @db.Uuid
+  coachingSessionId     String          @unique @map("coaching_session_id") @db.Uuid
+  coachingSession       CoachingSession @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  objectifs             String?         @db.Text
+  /// [{ optimisation, comment, gainAttendu, quand }].
+  optimisationsRetenues Json            @default("[]") @map("optimisations_retenues")
+  /// [{ etape, echeance }].
+  prochainesEtapes      Json            @default("[]") @map("prochaines_etapes")
+  pointsVigilance       String?         @map("points_vigilance") @db.Text
+  gainTempsHSemaine     Decimal?        @map("gain_temps_h_semaine") @db.Decimal(6, 2)
+  suiviPropose          String?         @map("suivi_propose") @db.VarChar(120)
+  createdAt             DateTime        @default(now()) @map("created_at")
+  updatedAt             DateTime        @updatedAt @map("updated_at")
+
+  @@map("coaching_plans")
+}
+
+/// Compte-rendu de séance — N par séance/parcours.
+model CompteRenduSeance {
+  id                   String          @id @default(uuid()) @db.Uuid
+  coachingSessionId    String          @map("coaching_session_id") @db.Uuid
+  coachingSession      CoachingSession @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  dateSeance           DateTime        @map("date_seance")
+  dureeMinutes         Int?            @map("duree_minutes")
+  objectifs            String?         @db.Text
+  /// [{ cas, usageIa, resultat, autonomie }].
+  misesEnSituation     Json            @default("[]") @map("mises_en_situation")
+  /// [{ situation, apprentissage }] (phases réflexives AFEST).
+  phasesReflexives     Json            @default("[]") @map("phases_reflexives")
+  planRemis            Boolean         @default(false) @map("plan_remis")
+  suite                String?         @db.VarChar(120)
+  notesConfidentielles String?         @map("notes_confidentielles") @db.Text
+  createdAt            DateTime        @default(now()) @map("created_at")
+
+  @@index([coachingSessionId])
+  @@index([dateSeance])
+  @@map("coaching_comptes_rendus")
+}
+
+/// Journal de progression / plan inter-séances (suivi régulier) — N par parcours.
+model JournalProgression {
+  id                  String          @id @default(uuid()) @db.Uuid
+  coachingSessionId   String          @map("coaching_session_id") @db.Uuid
+  coachingSession     CoachingSession @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  dateEntree          DateTime        @default(now()) @map("date_entree")
+  periode             String?         @db.VarChar(60)
+  acquisitions        String?         @db.Text
+  blocages            String?         @db.Text
+  prochainsFocus      String?         @map("prochains_focus") @db.Text
+  gainTempsCumuleHSem Decimal?        @map("gain_temps_cumule_h_sem") @db.Decimal(6, 2)
+  /// 1-5.
+  engagement          Int?
+  createdAt           DateTime        @default(now()) @map("created_at")
+
+  @@index([coachingSessionId])
+  @@index([dateEntree])
+  @@map("coaching_journaux")
 }
