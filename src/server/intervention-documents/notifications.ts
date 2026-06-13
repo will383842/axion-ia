@@ -5,6 +5,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { getSignedUrlR2, isR2Configured } from "@/lib/r2-storage";
 import {
   FAMILLES,
   getInterventionBySlug,
@@ -47,6 +48,20 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
   const familleLabel =
     FAMILLES.find((f) => f.key === (doc.famille as InterventionFamille))?.titre ?? doc.famille;
 
+  // Liens de téléchargement signés (TTL 14 j), générés une seule fois pour tous
+  // les destinataires. Fail-soft : si R2 indisponible, l'e-mail part sans lien.
+  const TTL_SECONDS = 14 * 24 * 3600;
+  const sign = async (key: string | null): Promise<string | undefined> => {
+    if (!key || !isR2Configured()) return undefined;
+    try {
+      return await getSignedUrlR2(key, TTL_SECONDS);
+    } catch {
+      return undefined;
+    }
+  };
+  const sourceUrl = await sign(version.sourceKey);
+  const pdfUrl = await sign(version.pdfKey);
+
   let enqueued = 0;
   for (const r of recipients) {
     try {
@@ -60,6 +75,9 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
           version: version.version,
           familleLabel,
           changeNote: version.changeNote ?? undefined,
+          sourceUrl,
+          pdfUrl,
+          sourceFormat: version.sourceFormat ?? undefined,
         },
         { jobId: `doc-version-${versionId}-${r.id}` },
       );
