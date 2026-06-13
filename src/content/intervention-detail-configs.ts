@@ -9,7 +9,7 @@
 // `InterventionDetailPage` rend chaque page de façon identique → harmonie
 // visuelle parfaite entre les pages.
 
-import { Compass, Sparkles, TrendingUp, Target, Eye, Lightbulb } from "lucide-react";
+import { Compass, Target, Eye, Lightbulb } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { INTERVENTION_TIERS, getTierById } from "./pricing";
 
