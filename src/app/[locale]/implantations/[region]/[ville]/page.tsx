@@ -131,11 +131,16 @@ function adaptVilleToCity(v: Ville, regionLabel: string): City {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, region: regionSlug, ville: villeSlug } = await params;
-  if (!hasLocale(routing.locales, locale)) return {};
+  // P0 2026-06-14 — Fix soft-404 : un slug ville/région introuvable renvoyait des
+  // métadonnées vides `{}` → robots par défaut `index,follow` (la page not-found
+  // était indexable). On force `noindex,nofollow` pour ne pas indexer de villes
+  // fantômes (liens cassés / fuzzing), cohérent avec le notFound() de la page.
+  const NOT_FOUND_META: Metadata = { robots: { index: false, follow: false } };
+  if (!hasLocale(routing.locales, locale)) return NOT_FOUND_META;
   const ville = await resolveVilleWithCopy(villeSlug);
-  if (!ville || ville.region !== regionSlug) return {};
+  if (!ville || ville.region !== regionSlug) return NOT_FOUND_META;
   const region = getRegion(regionSlug);
-  if (!region) return {};
+  if (!region) return NOT_FOUND_META;
   const isFr = locale === "fr";
   const isPilot = !!ville.copy;
 
