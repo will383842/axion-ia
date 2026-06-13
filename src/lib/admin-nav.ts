@@ -280,6 +280,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "✉️",
       group: "documents-interventions",
     },
+    {
+      href: `${base}/documents-interventions/import`,
+      label: "Importer un kit",
+      icon: "📦",
+      group: "documents-interventions",
+    },
     // ── Coaching 1-to-1 (séances AFEST remplies par les formateurs) ───────
     {
       href: `${base}/coaching`,
