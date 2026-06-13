@@ -68,7 +68,8 @@ export function startKitImportWorker(): Worker<KitImportJobData, void, string> {
   );
 
   worker.on("failed", (job, err) => {
-    captureWorkerError(err, { worker: "kit-import", jobId: job?.id });
+    console.error(`[kit-import-worker] failed: job=${job?.id}: ${err.message}`);
+    captureWorkerError("kit-import", "kit-import", job, err);
     Sentry.captureException(err);
   });
 
