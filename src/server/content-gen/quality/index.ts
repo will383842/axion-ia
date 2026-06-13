@@ -26,6 +26,7 @@ export { jaccardSimilarity, checkPlagiarism } from "./plagiarism";
 // ─── Sprint v7 Phase 16 — Quality gates renforcés (env-gated) ────────────────
 export {
   composeMultiJudge,
+  runMultiJudge,
   type JudgeResult,
   type MultiJudgeEnsembleResult,
 } from "./multi-judge-ensemble";

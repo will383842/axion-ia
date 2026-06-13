@@ -44,7 +44,7 @@ import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { injectExternalLinks } from "../links/external-links-injector";
 import {
-  composeMultiJudge,
+  runMultiJudge,
   scanWithOriginalityAi,
   passesOriginalityGate,
   type JudgeResult,
@@ -278,7 +278,19 @@ label : ${config.recommendedCtaLabel}
     costUsd: 0,
     tokens: 0,
   };
-  const multiJudge = composeMultiJudge([internalJudge]);
+  const multiJudge = await runMultiJudge(
+    {
+      jobId: `phase8-${config.contentTypeSlug}`,
+      title: parsed.title,
+      metaTitle: parsed.metaTitle,
+      metaDescription: parsed.metaDescription,
+      bodyHtml: parsed.bodyHtml,
+      bodyText: finalBodyText,
+      faq: parsed.faq.map((q) => ({ question: q.q, answer: q.a })),
+      contentType: config.contentTypeSlug,
+    },
+    internalJudge,
+  );
   const qualityScore = multiJudge.consensusScore;
   if (multiJudge.tieBreakerUsed) {
     console.log(

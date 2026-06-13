@@ -61,7 +61,7 @@ on:
   workflow_dispatch:
     inputs:
       skip_deploy:
-        description: 'Build & push image only — skip Coolify deploy + CF purge + LHCI (use for first run before Coolify reconfig)'
+        description: "Build & push image only — skip Coolify deploy + CF purge + LHCI (use for first run before Coolify reconfig)"
         type: boolean
         default: false
 
@@ -333,6 +333,40 @@ jobs:
             echo "::warning::Could not extract deployment_uuid from response."
           fi
         id: deploy
+
+      - name: POST /api/v1/deploy (worker BullMQ — axion-ia-worker)
+        # P0 2026-06-13 : le worker BullMQ est une 2e app Coolify (Dockerfile.worker)
+        # qui consomme TOUTES les files BullMQ de génération de contenu (génération, publication,
+        # indexation, lifecycle…). Sans ce trigger, un push main ne redéploie QUE
+        # l'app web → le code du worker reste figé en prod (les fixes worker ne
+        # parviennent jamais en production). Coolify rebuild l'app worker depuis la
+        # source (Dockerfile.worker) à ce POST.
+        # No-op si COOLIFY_WORKER_APP_UUID absent → activation par Will :
+        #   gh secret set COOLIFY_WORKER_APP_UUID --body "<uuid-app-worker>"
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::warning::COOLIFY_WORKER_APP_UUID non défini — redéploiement du worker IGNORÉ. Le code worker NE sera PAS mis à jour en prod. Ajoute le secret pour activer."
+            exit 0
+          fi
+          if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ]; then
+            echo "::error::Missing COOLIFY_API_TOKEN / COOLIFY_URL."
+            exit 1
+          fi
+          echo "Triggering deploy on Coolify for WORKER app ${COOLIFY_WORKER_APP_UUID}…"
+          response=$(curl -fsSL -G \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_WORKER_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify worker response: ${response}"
+        id: deploy_worker
 
       - name: Wait for Coolify deployment to finish (max 25 min + early-fail)
         if: steps.deploy.outputs.deployment_uuid != ''

@@ -304,13 +304,32 @@ export async function assertCostCapAvailable(
     if (err instanceof ProviderError) throw err;
     // P2021 = table doesn't exist (migration pas appliquée) → bypass V0
     if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
+      warnCostGuardBypassed(provider, "table absente (P2021)");
       return;
     }
     // PrismaClientInitializationError = DB pas accessible (test sans DB) → bypass V0
     if (err instanceof Error && err.constructor.name === "PrismaClientInitializationError") {
+      warnCostGuardBypassed(provider, "DB inaccessible");
       return;
     }
     throw err;
+  }
+}
+
+/**
+ * P1 2026-06-13 — Observabilité : le cost-cap se met en bypass (résilience) sur
+ * erreur DB. C'est voulu au build/test, mais en PROD réelle ça veut dire que la
+ * génération tourne SANS plafond → on le rend visible (au lieu d'un bypass
+ * silencieux) pour pouvoir réagir. Aucun bruit hors prod (stub/build/test).
+ */
+function warnCostGuardBypassed(provider: ProviderKey, reason: string): void {
+  if (
+    process.env.NODE_ENV === "production" &&
+    !process.env.DATABASE_URL?.includes("stub.invalid")
+  ) {
+    console.warn(
+      `[cost-tracker] ⚠️ cost-cap bypassé en PROD (provider=${provider}, ${reason}) — génération NON plafonnée jusqu'au rétablissement DB.`,
+    );
   }
 }
 
@@ -341,6 +360,7 @@ export async function trackCost(args: CostTrackingArgs): Promise<void> {
     const code = err instanceof Error && "code" in err ? (err as { code: string }).code : "";
     if (code === "P2021") {
       // Tables pas migrées → no-op
+      warnCostGuardBypassed(args.provider, "trackCost: table absente (P2021)");
       return;
     }
     if (code === "P2025") {
@@ -353,6 +373,7 @@ export async function trackCost(args: CostTrackingArgs): Promise<void> {
     }
     if (err instanceof Error && err.constructor.name === "PrismaClientInitializationError") {
       // DB pas accessible (tests sans DB) → no-op
+      warnCostGuardBypassed(args.provider, "trackCost: DB inaccessible");
       return;
     }
     throw err;

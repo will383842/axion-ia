@@ -28,6 +28,7 @@ import {
 } from "@/server/content-gen/fact-check/claims-extractor";
 import { perplexityProvider } from "@/server/content-gen/providers/perplexity";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-fact-check";
@@ -173,10 +174,28 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
   });
 
   if (score < 50) {
+    // P0 2026-06-13 (décision Will) — Chiffre RÉFUTÉ (vérifié faux par Perplexity).
+    // On ne laisse PAS une affirmation fausse indexée : on RETIRE l'article de
+    // l'index (tier_3 noindex → exclu du sitemap + meta robots noindex) et on
+    // déclenche une revalidation immédiate (sans attendre l'ISR 1h). L'URL reste
+    // vivante (rétractation douce, pas de 404), réversible après correction.
+    // Le job passe en quarantaine pour correction humaine.
+    await prisma.article
+      .update({
+        where: { id: articleId },
+        data: { indexationTier: "tier_3_noindex_nofollow" },
+      })
+      .catch(() => undefined);
     await prisma.contentGenJob
       .update({ where: { id: contentGenJobId }, data: { status: "quarantined_factcheck" } })
       .catch(() => undefined);
-    console.warn(`[fact-check] article=${articleId} score=${score} < 50 → quarantined_factcheck`);
+    const listPath = article.isNews ? "/fr/actualites" : "/fr/blog";
+    await revalidateContent({
+      paths: [`${listPath}/${translation.slug}`, listPath, "/sitemap.xml"],
+    }).catch(() => undefined);
+    console.warn(
+      `[fact-check] article=${articleId} score=${score} < 50 → RETRACTÉ (tier_3 noindex) + revalidate + quarantined_factcheck`,
+    );
   }
 
   console.log(

@@ -110,11 +110,16 @@ export function sanitizeContentGenHtml(html: string): string {
     RETURN_DOM_FRAGMENT: false,
   });
 
+  // P1 2026-06-13 — Anti-fuite PageRank : force `rel="nofollow noopener
+  // noreferrer"` sur TOUT lien externe (host ≠ axion-ia.com). Sans ça, chaque
+  // citation externe écrite par le LLM sortait en dofollow (fuite de PageRank).
+  // Les liens internes (relatifs `/…` ou axion-ia.com) restent dofollow.
+  const withExternalRel = ensureExternalLinkRel(sanitized);
+
   // Post-traitement : force rel="noopener noreferrer" sur tous les
-  // `<a target="_blank">` (sécurité reverse-tabnabbing). DOMPurify peut le
-  // faire via hooks mais cette implémentation post-sanitize est plus
-  // lisible côté audit.
-  return sanitized.replace(
+  // `<a target="_blank">` restants (sécurité reverse-tabnabbing) — couvre les
+  // liens INTERNES ouverts en nouvel onglet (les externes ont déjà leur rel).
+  return withExternalRel.replace(
     /<a\b([^>]*?)target=["']_blank["']([^>]*?)>/gi,
     (match, before: string, after: string) => {
       const all = (before + after).toLowerCase();
@@ -122,4 +127,40 @@ export function sanitizeContentGenHtml(html: string): string {
       return `<a${before}target="_blank"${after} rel="noopener noreferrer">`;
     },
   );
+}
+
+/** Host canonique du site (les liens vers ce host restent dofollow). */
+const SITE_HOST = "axion-ia.com";
+
+/**
+ * Garantit `rel="nofollow noopener noreferrer"` sur chaque lien EXTERNE
+ * (URL absolue http(s) dont le host n'est pas axion-ia.com). Fusionne avec un
+ * `rel` existant sans le dupliquer. Les liens internes/relatifs sont laissés
+ * intacts (dofollow voulu pour le maillage interne).
+ */
+function ensureExternalLinkRel(html: string): string {
+  const isExternalHref = (href: string): boolean => {
+    if (!/^https?:\/\//i.test(href)) return false; // relatif / ancre / mailto → interne
+    try {
+      const host = new URL(href).hostname.toLowerCase();
+      return host !== SITE_HOST && !host.endsWith(`.${SITE_HOST}`);
+    } catch {
+      return false;
+    }
+  };
+  return html.replace(/<a\b([^>]*)>/gi, (match, attrs: string) => {
+    const hrefMatch = attrs.match(/href=["']([^"']*)["']/i);
+    if (!hrefMatch) return match;
+    if (!isExternalHref(hrefMatch[1] ?? "")) return match;
+    const relMatch = attrs.match(/rel=["']([^"']*)["']/i);
+    const tokens = new Set((relMatch?.[1] ?? "").split(/\s+/).filter(Boolean));
+    tokens.add("nofollow");
+    tokens.add("noopener");
+    tokens.add("noreferrer");
+    const relValue = [...tokens].join(" ");
+    const newAttrs = relMatch
+      ? attrs.replace(/rel=["'][^"']*["']/i, `rel="${relValue}"`)
+      : `${attrs} rel="${relValue}"`;
+    return `<a${newAttrs}>`;
+  });
 }

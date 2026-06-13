@@ -8,7 +8,7 @@
  */
 
 import { z } from "zod";
-import { auth } from "@/auth";
+import { requireAdmin } from "./_auth";
 import { prisma } from "@/lib/prisma";
 import { ALL_EXTERNAL_LINKS } from "@/data/external-links/master";
 import { getExternalLinksStats } from "@/data/external-links/master";
@@ -63,11 +63,6 @@ export interface ListExternalLinksResult {
     readonly usageCount: number;
     readonly lastUsedAt: string | null;
   }>;
-}
-
-async function requireAdmin(): Promise<void> {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
 }
 
 /**

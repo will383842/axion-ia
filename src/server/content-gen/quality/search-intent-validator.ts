@@ -26,6 +26,29 @@ export interface IntentValidationResult {
   readonly hardFails: ReadonlyArray<string>;
 }
 
+/** Host canonique — un lien vers ce host n'est PAS une source externe d'autorité. */
+const SITE_HOST = "axion-ia.com";
+
+/**
+ * Compte les liens externes d'autorité (URL absolue http(s) hors axion-ia.com)
+ * présents dans le HTML. Sert de signal de citabilité robuste : les générateurs
+ * Anthropic citent souvent via `<a>` dans le body sans remplir `citationCount`.
+ */
+function countExternalLinks(html: string): number {
+  let count = 0;
+  const re = /<a\b[^>]*href=["'](https?:\/\/[^"']+)["'][^>]*>/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) {
+    try {
+      const host = new URL(m[1]!).hostname.toLowerCase();
+      if (host !== SITE_HOST && !host.endsWith(`.${SITE_HOST}`)) count++;
+    } catch {
+      // URL invalide → ignorée
+    }
+  }
+  return count;
+}
+
 export function validateIntentAlignment(input: IntentValidationInput): IntentValidationResult {
   const warnings: string[] = [];
   const hardFails: string[] = [];
@@ -150,10 +173,20 @@ export function validateIntentAlignment(input: IntentValidationInput): IntentVal
           `Intent ai_overview : premier paragraphe ${firstParagraphWordCount} mots (cible 30-70 pour AI Overview)`,
         );
       }
-      // Citations P1 : au moins 1 citation source primaire attendue.
-      if ((input.citationCount ?? 0) < 1) {
+      // Citations P1 (2026-06-13) : exiger AU MOINS une source citable — citation
+      // Perplexity OU lien externe d'autorité dans le body. Hard-fail uniquement
+      // si AUCUNE source (un contenu AI Overview sans aucune source n'est pas
+      // citable → noindex). On prend le max(citationCount, liens externes) pour
+      // éviter les faux-positifs (citationCount souvent vide en gen Anthropic).
+      const externalLinkCount = countExternalLinks(input.bodyHtml);
+      const sourceCount = Math.max(input.citationCount ?? 0, externalLinkCount);
+      if (sourceCount < 1) {
+        hardFails.push(
+          "Intent ai_overview : aucune source citable (ni citation ni lien externe d'autorité) — contenu AEO non sourçable",
+        );
+      } else if ((input.citationCount ?? 0) < 1) {
         warnings.push(
-          `Intent ai_overview : ${input.citationCount ?? 0} citation (cible >= 1 source P1)`,
+          `Intent ai_overview : ${externalLinkCount} lien(s) externe(s) mais 0 citation formelle (cible >= 1 source P1)`,
         );
       }
       break;
