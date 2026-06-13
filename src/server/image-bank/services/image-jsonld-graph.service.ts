@@ -317,7 +317,10 @@ export function buildGalleryHubGraph(args: GalleryHubGraphArgs): {
       "@type": "ImageObject",
       "@id": `${SITE_URL}/${args.locale}/galerie/${img.slug}#image`,
       url: `${SITE_URL}/${args.locale}/galerie/${img.slug}`,
-      contentUrl: `${SITE_URL}/image-bank/${img.id}/image-md.webp`,
+      // P0 2026-06-14 — Fix : l'ancien `/image-bank/{id}/image-md.webp` renvoyait
+      // 404 (variant non servie) → Google Images recevait des contentUrl mortes.
+      // On aligne sur l'URL publique servie en 200 (idem détail + sitemap-images).
+      contentUrl: `${SITE_URL}/images/${img.slug}.webp`,
       width: img.width,
       height: img.height,
     },

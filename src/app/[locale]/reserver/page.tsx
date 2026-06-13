@@ -409,7 +409,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  return buildProductMetadata({
+  const meta = buildProductMetadata({
     locale,
     path: "/reserver",
     title:
@@ -422,6 +422,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Pick an available date, choose the AI session or audit, city and duration. Email confirmation within 1 business hour.",
     alternates: { fr: "/reserver", en: "/book" },
   });
+  // P0 2026-06-14 — /reserver = funnel de réservation, déjà Disallow dans
+  // robots.txt. buildProductMetadata met `index,follow` par défaut → conflit
+  // (bloqué au crawl mais déclaré indexable). On force `noindex,follow`.
+  return { ...meta, robots: { index: false, follow: true } };
 }
 
 export default async function ReserverPage({ params }: Props) {
