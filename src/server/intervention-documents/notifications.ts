@@ -11,23 +11,7 @@ import {
   getInterventionBySlug,
   type InterventionFamille,
 } from "@/content/intervention-documents-catalog";
-
-type Role = "formateur" | "commercial";
-
-/**
- * Visibilité du document → rôles à notifier. Doit rester l'INVERSE exact du
- * filtre du portail ressources (`visibilitesForRole` dans ressources/queries.ts) :
- * on ne notifie que les rôles qui verront effectivement le document, sinon
- * l'e-mail pointerait vers un portail où le doc est invisible.
- *   - commercial → commerciaux + formateurs (les 2 le voient)
- *   - formateur  → formateurs uniquement
- *   - stagiaire / interne → personne (pas destiné à l'équipe commerciale/formateur)
- */
-function targetRoles(visibilite: string): Role[] {
-  if (visibilite === "commercial") return ["commercial", "formateur"];
-  if (visibilite === "formateur") return ["formateur"];
-  return [];
-}
+import { targetRoles } from "./visibility-mapping";
 
 export async function notifyNewVersion(versionId: string): Promise<{ enqueued: number }> {
   const version = await prisma.interventionDocumentVersion.findUnique({

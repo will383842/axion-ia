@@ -8,12 +8,7 @@
 import { prisma } from "@/lib/prisma";
 import type { InterventionDocVisibilite } from "../../../prisma/generated/client";
 import { getInterventionBySlug } from "@/content/intervention-documents-catalog";
-
-/** Visibilités qu'un rôle a le droit de voir (inverse de `targetRoles`). */
-function visibilitesForRole(role: string): string[] {
-  // commercial → docs « commercial » ; formateur → « formateur » + « commercial ».
-  return role === "commercial" ? ["commercial"] : ["formateur", "commercial"];
-}
+import { visibilitesForRole } from "@/server/intervention-documents/visibility-mapping";
 
 export interface RecipientDocument {
   documentId: string;
