@@ -59,11 +59,12 @@ const OFFER_FR_PATH: Readonly<Record<string, string>> = {
   "intervention-approfondie": "/formations",
   "intervention-conference": "/formations",
   "intervention-dirigeants": "/interventions/dirigeants",
-  // Membre d'équipe (890 €) : pas de page /interventions/membre-equipe → hub 1-to-1 (D-MEMBRE-EQUIPE 🔒).
+  // Membre d'équipe (990 €) : pas de page /interventions/membre-equipe → hub 1-to-1 (D-MEMBRE-EQUIPE 🔒).
   "intervention-membre-equipe": "/un-a-un",
+  "intervention-membre-equipe-2j": "/un-a-un",
   "intervention-claude": "/formations",
   "intervention-dirigeant-vision": "/interventions/dirigeant-vision-strategique",
-  "intervention-claude-dirigeant": "/interventions/claude-dirigeant",
+  "intervention-dirigeant-vision-2j": "/interventions/dirigeant-vision-strategique",
   // Sur demande : pas de page propre → demande de devis.
   "intervention-sur-demande": "/demande-devis",
 

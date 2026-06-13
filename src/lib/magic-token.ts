@@ -7,9 +7,12 @@
 // Payload JSON : { scope, resourceId, email?, exp (unix ms), jti }
 //
 // Scopes V1 supportés :
-//   - 'cancel'      — TTL 24 h — annulation self-service par client (Sprint X.15)
-//   - 'reschedule'  — TTL 24 h — reschedule client (Sprint X.15)
-//   - 'portal'      — TTL 30 min — redirect Stripe Customer Portal (V2+)
+//   - 'cancel'           — TTL 24 h  — annulation self-service par client (Sprint X.15)
+//   - 'reschedule'       — TTL 24 h  — reschedule client (Sprint X.15)
+//   - 'portal'           — TTL 30 min — redirect Stripe Customer Portal (V2+)
+//   - 'formateur_login'  — TTL 15 min — connexion passwordless espace formateur (2026-06-13).
+//                          Usage unique imposé par la table FormateurMagicLink (tokenHash +
+//                          usedAt) : le jti est tracé en base, un lien déjà consommé est rejeté.
 //
 // Sécurité :
 //   - secret = AUTH_SECRET (commune à l'app, env Coolify).
@@ -23,13 +26,20 @@
 const ENCODER = new TextEncoder();
 const DECODER = new TextDecoder();
 
-export type MagicScope = "cancel" | "reschedule" | "portal";
+export type MagicScope =
+  | "cancel"
+  | "reschedule"
+  | "portal"
+  | "formateur_login"
+  | "ressources_login";
 
 /** TTL par scope, en millisecondes. */
 const TTL_MS: Record<MagicScope, number> = {
   cancel: 24 * 60 * 60 * 1000, // 24 h
   reschedule: 24 * 60 * 60 * 1000, // 24 h
   portal: 30 * 60 * 1000, // 30 min
+  formateur_login: 15 * 60 * 1000, // 15 min (lien de connexion court, sécurité)
+  ressources_login: 15 * 60 * 1000, // 15 min — connexion espace ressources (commercial/formateur)
 };
 
 interface MagicPayload {
@@ -134,12 +144,13 @@ export async function verifyMagicToken(
   const [payloadB64, sigB64] = parts as [string, string];
 
   let payloadBytes: Uint8Array;
+  let sigBytes: Uint8Array;
   try {
     payloadBytes = b64urlDecode(payloadB64);
+    sigBytes = b64urlDecode(sigB64);
   } catch {
     return { ok: false, reason: "malformed_token" };
   }
-  const sigBytes = b64urlDecode(sigB64);
   const key = await hmacKey();
   const valid = await crypto.subtle.verify(
     "HMAC",

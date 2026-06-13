@@ -76,6 +76,8 @@ import {
   DocumentsNouvelleVersionEmail,
   documentsNouvelleVersionSubject,
 } from "./documents-nouvelle-version";
+import { FormateurMagicLinkEmail, formateurMagicLinkSubject } from "./formateur-magic-link";
+import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 // Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
 import {
   contractVersionUpdated,
@@ -247,6 +249,14 @@ const TEMPLATES: TemplateMap = {
   "documents-nouvelle-version": {
     subject: documentsNouvelleVersionSubject,
     component: DocumentsNouvelleVersionEmail,
+  },
+  "formateur-magic-link": {
+    subject: formateurMagicLinkSubject,
+    component: FormateurMagicLinkEmail,
+  },
+  "ressources-magic-link": {
+    subject: ressourcesMagicLinkSubject,
+    component: RessourcesMagicLinkEmail,
   },
   // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
   "contract-version-updated": contractVersionUpdated,

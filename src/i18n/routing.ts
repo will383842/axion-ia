@@ -66,14 +66,7 @@ export const routing = defineRouting({
       fr: "/interventions/dirigeant-vision-strategique",
       en: "/interventions/executive-strategic-vision",
     },
-    "/interventions/claude-dirigeant": {
-      fr: "/interventions/claude-dirigeant",
-      en: "/interventions/claude-executive",
-    },
-    "/interventions/claude-implementation-individuel": {
-      fr: "/interventions/claude-implementation-individuel",
-      en: "/interventions/claude-implementation-individual",
-    },
+    // Formats Claude 1-to-1 retirés le 2026-06-13 (301 → page équivalente, next.config.ts).
     // `gagner-du-temps` / `intervention-claude` (anciennes collectives) retirées
     // 2026-06-12 → /formations (301 next.config.ts).
 

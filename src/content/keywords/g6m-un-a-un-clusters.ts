@@ -228,14 +228,14 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     urlCible: "/fr/interventions/dirigeant-vision-strategique",
   }),
 
-  // ── Claude individuel → claude-implementation-individuel ────────────────────
+  // ── Claude individuel → coaching-decouverte (format Claude retiré 2026-06-13) ─
   u({
     keyword: "coaching Claude individuel sur mon poste",
     intent: "transactionnel",
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/claude-implementation-individuel",
+    urlCible: "/fr/interventions/coaching-decouverte",
   }),
   u({
     keyword: "maîtriser Claude pour mon travail quotidien",
@@ -243,7 +243,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "pme",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/claude-implementation-individuel",
+    urlCible: "/fr/interventions/coaching-decouverte",
   }),
   u({
     keyword: "configurer Claude Projects et Code sur mon poste",
@@ -251,17 +251,17 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "startup-scaleup",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/interventions/claude-implementation-individuel",
+    urlCible: "/fr/interventions/coaching-decouverte",
   }),
 
-  // ── Claude dirigeant → claude-dirigeant ─────────────────────────────────────
+  // ── Claude dirigeant → dirigeant-vision-strategique (format Claude retiré) ───
   u({
     keyword: "coaching Claude pour un dirigeant",
     intent: "transactionnel",
     cible: "eti",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/interventions/claude-dirigeant",
+    urlCible: "/fr/interventions/dirigeant-vision-strategique",
   }),
   u({
     keyword: "utiliser Claude pour mes dossiers confidentiels",
@@ -269,7 +269,7 @@ export const KW_UN_A_UN_V2: KeywordSeed[] = [
     cible: "eti",
     priorite: 3,
     niveau: 3,
-    urlCible: "/fr/interventions/claude-dirigeant",
+    urlCible: "/fr/interventions/dirigeant-vision-strategique",
   }),
 
   // ── Individuel — tous postes → individuel ───────────────────────────────────

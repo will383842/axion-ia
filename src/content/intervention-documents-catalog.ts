@@ -25,7 +25,12 @@
 // La famille Prisma (`un_a_un`) diffère du BookingCategoryId (`un-a-un`) :
 // cf. FAMILLE_TO_BOOKING / BOOKING_TO_FAMILLE.
 
-import { BOOKING_CATALOG, type BookingCategoryId } from "@/content/booking-catalog";
+import {
+  BOOKING_CATALOG,
+  FORMATION_DUREE_BY_SLUG,
+  type BookingCategoryId,
+  type FormationDuree,
+} from "@/content/booking-catalog";
 
 // ============================================================================
 // Types
@@ -248,20 +253,32 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
 ] as const;
 
 /**
- * 1-TO-1 (coaching individuel). Structure cadrée 2026-06-13.
- * NB : pas de doc Qualiopi généré (coaching non Qualiopi-éligible pour l'instant) ;
- * « attestation_suivi » est un emplacement réservé (optionnel, vide en attendant
- * l'agrément).
+ * 1-TO-1 (coaching individuel) — cadré en AFEST (Action de Formation En Situation
+ * de Travail), Qualiopi/OPCO-finançable (décision Will 2026-06-13). La méthode :
+ * cartographier le fonctionnement actuel (= analyse de l'activité AFEST), mises en
+ * situation, phases réflexives, plan d'optimisation. Documents Qualiopi générés par
+ * le Formation Engine (positionnement, émargement, attestation) comme les formations.
+ * ⚠️ Financement effectif conditionné au périmètre de l'agrément (à confirmer au
+ * certificateur).
  */
 const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
   // Cadre & objectifs
   {
     key: "cadrage_objectifs",
-    titre: "Cadrage / contrat d'objectifs",
+    titre: "Cadrage / convention AFEST & contrat d'objectifs",
     categorie: "cadre",
     visibilite: "stagiaire",
     formats: ["docx"],
     ordre: 1,
+  },
+  {
+    key: "analyse_activite",
+    titre: "Grille de cartographie / analyse de l'activité (AFEST)",
+    categorie: "cadre",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 2,
+    note: "Cœur AFEST : cartographie du fonctionnement actuel (tâches, temps, irritants) en ouverture de journée.",
   },
   {
     key: "positionnement_individuel",
@@ -269,15 +286,17 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "cadre",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 2,
+    ordre: 3,
+    qualiopiDocType: "positionnement",
+    note: "Modèle. Les instances par bénéficiaire sont générées par le Formation Engine.",
   },
   {
     key: "guide_coach",
-    titre: "Guide du coach (déroulé, posture)",
+    titre: "Trame de journée & guide du coach (déroulé AFEST, posture)",
     categorie: "cadre",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 3,
+    ordre: 4,
   },
   // Documents bénéficiaire
   {
@@ -286,7 +305,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "stagiaires",
     visibilite: "stagiaire",
     formats: ["docx"],
-    ordre: 4,
+    ordre: 5,
   },
   {
     key: "fiches_exercices",
@@ -294,7 +313,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "stagiaires",
     visibilite: "stagiaire",
     formats: ["docx"],
-    ordre: 5,
+    ordre: 6,
   },
   {
     key: "ressources_perso",
@@ -302,7 +321,16 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "stagiaires",
     visibilite: "stagiaire",
     formats: ["docx", "lien"],
-    ordre: 6,
+    ordre: 7,
+  },
+  {
+    key: "plan_optimisation",
+    titre: "Plan d'optimisation personnalisé (livrable)",
+    categorie: "stagiaires",
+    visibilite: "stagiaire",
+    formats: ["docx"],
+    ordre: 8,
+    note: "Livrable de fin : ce qu'on peut automatiser/optimiser + gains de temps et d'argent estimés.",
   },
   // Documents coach (confidentiel)
   {
@@ -311,7 +339,16 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "formateur",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 7,
+    ordre: 9,
+  },
+  {
+    key: "phase_reflexive",
+    titre: "Trame de phase réflexive (AFEST)",
+    categorie: "formateur",
+    visibilite: "formateur",
+    formats: ["docx"],
+    ordre: 10,
+    note: "Obligatoire AFEST : alterner mise en situation de travail et débrief réflexif.",
   },
   {
     key: "corriges_1to1",
@@ -319,7 +356,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "formateur",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 8,
+    ordre: 11,
   },
   // Suivi & évaluation
   {
@@ -328,7 +365,7 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "evaluation",
     visibilite: "stagiaire",
     formats: ["docx"],
-    ordre: 9,
+    ordre: 12,
   },
   {
     key: "evaluation_progression",
@@ -336,7 +373,8 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "evaluation",
     visibilite: "formateur",
     formats: ["docx"],
-    ordre: 10,
+    ordre: 13,
+    qualiopiDocType: "grille_evaluation",
   },
   {
     key: "satisfaction_1to1",
@@ -344,17 +382,19 @@ const UN_A_UN_SLOTS: ReadonlyArray<DocSlot> = [
     categorie: "evaluation",
     visibilite: "interne",
     formats: ["docx"],
-    ordre: 11,
+    ordre: 14,
+    qualiopiDocType: "satisfaction",
   },
   {
-    key: "attestation_suivi",
-    titre: "Attestation de suivi",
+    key: "attestation_emargement",
+    titre: "Attestation de réalisation + émargement",
     categorie: "evaluation",
-    visibilite: "stagiaire",
+    visibilite: "interne",
     formats: ["pdf"],
-    ordre: 12,
-    optionnel: true,
-    note: "Emplacement réservé — à remplir quand le coaching sera Qualiopi-éligible (agrément).",
+    ordre: 15,
+    qualiopiDocType: "attestation",
+    generatedOnly: true,
+    note: "Généré par le Formation Engine (vraies données, QR, rétention 5 ans). Lien seul, pas d'upload.",
   },
 ];
 
@@ -495,6 +535,8 @@ export interface InterventionRef {
   labelFr: string;
   labelEn: string;
   famille: InterventionFamille;
+  /** Durée (`4h`/`1j`/`2j`/`3j`) — uniquement pour la famille formation. */
+  duree?: FormationDuree;
 }
 
 /** Liste des prestations d'une famille, dérivée du booking-catalog (SSOT). */
@@ -504,12 +546,111 @@ export function getInterventionsByFamille(
   const bookingId = FAMILLE_TO_BOOKING[famille];
   const cat = BOOKING_CATALOG.find((c) => c.id === bookingId);
   if (!cat) return [];
-  return cat.formats.map((f) => ({
-    slug: f.slug,
-    labelFr: f.labelFr,
-    labelEn: f.labelEn,
-    famille,
+  return cat.formats.map((f) => {
+    // La durée n'existe que pour les formations ; on n'ajoute la clé que si elle
+    // est résolue (exactOptionalPropertyTypes : pas de clé à `undefined`).
+    const duree = famille === "formation" ? FORMATION_DUREE_BY_SLUG[f.slug] : undefined;
+    return {
+      slug: f.slug,
+      labelFr: f.labelFr,
+      labelEn: f.labelEn,
+      famille,
+      ...(duree ? { duree } : {}),
+    };
+  });
+}
+
+// ============================================================================
+// Sous-groupes d'affichage (console mieux organisée)
+// ----------------------------------------------------------------------------
+// Pour éviter des listes à plat trop longues, certaines familles s'affichent en
+// sections : Formations → par durée (4 h / 1 j / 2 j / 3 j), 1-to-1 → par public
+// (Dirigeant / Collaborateur / Suivi régulier). Audit reste en liste à plat
+// (4 prestations, aucun axe propre → null). Tout élément non classé tombe dans
+// un groupe « Autres » final ; les groupes vides sont omis.
+// ============================================================================
+
+export interface InterventionSousGroupe {
+  /** Identifiant stable (durée, public, ou « autres ») — sert de clé React. */
+  key: string;
+  titre: string;
+  interventions: ReadonlyArray<InterventionRef>;
+}
+
+const FORMATION_DUREE_ORDER: ReadonlyArray<FormationDuree> = ["4h", "1j", "2j", "3j"];
+const FORMATION_DUREE_LABEL: Record<FormationDuree, string> = {
+  "4h": "4 heures",
+  "1j": "1 jour",
+  "2j": "2 jours",
+  "3j": "3 jours",
+};
+
+export type UnAUnPublic = "dirigeant" | "collaborateur" | "recurrent";
+/** Public d'une prestation 1-to-1, par slug (axe d'organisation de la console). */
+const UN_A_UN_PUBLIC_BY_SLUG: Readonly<Record<string, UnAUnPublic | undefined>> = {
+  "dirigeant-vision-strategique": "dirigeant",
+  "dirigeant-vision-strategique-2j": "dirigeant",
+  "coaching-decouverte": "collaborateur",
+  "coaching-optimisation-2j": "collaborateur",
+  "un-a-un-recurrent": "recurrent",
+};
+const UN_A_UN_PUBLIC_ORDER: ReadonlyArray<UnAUnPublic> = [
+  "dirigeant",
+  "collaborateur",
+  "recurrent",
+];
+const UN_A_UN_PUBLIC_LABEL: Record<UnAUnPublic, string> = {
+  dirigeant: "Dirigeant",
+  collaborateur: "Collaborateur",
+  recurrent: "Suivi régulier",
+};
+
+/** Regroupe selon un ordre de clés + libellés ; non-classés → groupe « Autres » final. */
+function buildSousGroupes<K extends string>(
+  items: ReadonlyArray<InterventionRef>,
+  keyOf: (i: InterventionRef) => K | undefined,
+  order: ReadonlyArray<K>,
+  label: Record<K, string>,
+  autresTitre: string,
+): ReadonlyArray<InterventionSousGroupe> {
+  const groups: InterventionSousGroupe[] = order.map((k) => ({
+    key: k,
+    titre: label[k],
+    interventions: items.filter((i) => keyOf(i) === k),
   }));
+  const autres = items.filter((i) => keyOf(i) === undefined);
+  if (autres.length > 0) {
+    groups.push({ key: "autres", titre: autresTitre, interventions: autres });
+  }
+  return groups.filter((g) => g.interventions.length > 0);
+}
+
+/**
+ * Sous-groupes d'affichage d'une famille. `null` = pas de sous-groupe → la
+ * famille s'affiche en liste à plat (cas Audit : trop peu de prestations).
+ */
+export function getInterventionsSousGroupes(
+  famille: InterventionFamille,
+): ReadonlyArray<InterventionSousGroupe> | null {
+  if (famille === "formation") {
+    return buildSousGroupes(
+      getInterventionsByFamille("formation"),
+      (i) => i.duree,
+      FORMATION_DUREE_ORDER,
+      FORMATION_DUREE_LABEL,
+      "Personnalisées",
+    );
+  }
+  if (famille === "un_a_un") {
+    return buildSousGroupes(
+      getInterventionsByFamille("un_a_un"),
+      (i) => UN_A_UN_PUBLIC_BY_SLUG[i.slug],
+      UN_A_UN_PUBLIC_ORDER,
+      UN_A_UN_PUBLIC_LABEL,
+      "Autres",
+    );
+  }
+  return null;
 }
 
 /** Toutes les prestations, toutes familles confondues. */

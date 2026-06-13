@@ -426,7 +426,10 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     labelFr: "Dirigeants",
     labelEn: "Executives",
     // Will 2026-06-03 — journée 1-to-1 dirigeant portée de 990 à 1 190 € HT.
-    priceFlat: 1190,
+    // Will 2026-06-13 — harmonisation 1-to-1 (AFEST) : Dirigeant 1 jour fixé à
+    // 1 390 € HT (fin de la dérive 1 190/1 390 vs intervention-dirigeant-vision ;
+    // 393 villes + /reserver + tarifs s'alignent via les tokens de prix).
+    priceFlat: 1390,
     durationFr: "1 journée",
     durationEn: "1 day",
     groupSizeFr: "1 dirigeant (1-to-1)",
@@ -439,12 +442,14 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     // Will 2026-05-24 — variante 1-to-1 pour collaborateur clé (non-dirigeant).
-    // Même format journée 1-to-1 que `intervention-dirigeants`, prix d'entrée
-    // 890 € HT (différenciation tarifaire vs 990 € dirigeant).
+    // Même format journée 1-to-1 que `intervention-dirigeants`.
+    // Will 2026-06-13 — « Optimisation du poste » (AFEST) : 1 jour fixé à
+    // 990 € HT (nouveau prix collaborateur ; propagé aux 393 villes + /un-a-un
+    // via les tokens de prix).
     id: "intervention-membre-equipe",
     labelFr: "Membre équipe",
     labelEn: "Team member",
-    priceFlat: 890,
+    priceFlat: 990,
     durationFr: "1 journée",
     durationEn: "1 day",
     groupSizeFr: "1 collaborateur (1-to-1)",
@@ -491,17 +496,37 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
-    // Will 2026-06-03 — 1-to-1 dirigeant 100 % Claude, prix fixe.
-    id: "intervention-claude-dirigeant",
-    labelFr: "Intervention Claude · Dirigeant",
-    labelEn: "Claude Intervention · Executive",
-    priceFlat: 1190,
-    durationFr: "1 journée",
-    durationEn: "1 day",
+    // Will 2026-06-13 — 1-to-1 dirigeant « 2 jours » (AFEST). Prix = 1 390 × ~1,85
+    // (règle 1j→2j de la grille formations). HT.
+    id: "intervention-dirigeant-vision-2j",
+    labelFr: "Dirigeant · 2 jours",
+    labelEn: "Executive · 2 days",
+    priceFlat: 2590,
+    durationFr: "2 jours",
+    durationEn: "2 days",
     groupSizeFr: "1 dirigeant (1-to-1)",
     groupSizeEn: "1 executive (1-on-1)",
-    descriptionFr: "Journée 1-to-1 dirigeant 100 % dédiée à Claude (Anthropic).",
-    descriptionEn: "1-on-1 executive day 100 % focused on Claude (Anthropic).",
+    descriptionFr:
+      "Accompagnement 1-to-1 sur 2 jours : cartographie approfondie, mises en situation et feuille de route d'optimisation (temps & coûts).",
+    descriptionEn:
+      "2-day 1-on-1: in-depth mapping, hands-on situations and an optimization roadmap (time & cost).",
+    audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
+  },
+  {
+    // Will 2026-06-13 — collaborateur « Optimisation du poste · 2 jours » (AFEST).
+    // Prix = 990 × ~1,85. HT.
+    id: "intervention-membre-equipe-2j",
+    labelFr: "Membre équipe · 2 jours",
+    labelEn: "Team member · 2 days",
+    priceFlat: 1830,
+    durationFr: "2 jours",
+    durationEn: "2 days",
+    groupSizeFr: "1 collaborateur (1-to-1)",
+    groupSizeEn: "1 employee (1-on-1)",
+    descriptionFr:
+      "Optimisation du poste sur 2 jours : cartographie du fonctionnement, irritants, et plan d'automatisation pour gagner du temps.",
+    descriptionEn:
+      "2-day workstation optimization: workflow mapping, pain points, and an automation plan to save time.",
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {

@@ -12,3 +12,6 @@ public
 src/components/ui
 _AUDIT
 .claude/worktrees
+# Trames de kit 1-to-1 (gabarits manuscrits à blancs ASCII : prettier ne peut
+# pas stabiliser les séquences d'astérisques/underscores → non idempotent).
+docs/kits

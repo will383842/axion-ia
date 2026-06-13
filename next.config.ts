@@ -356,12 +356,23 @@ const nextConfig: NextConfig = {
         destination: "/:locale/sites-web-augmentes",
         permanent: true,
       },
+      // Formats Claude 1-to-1 retirés (Will 2026-06-13, centrés outil) → 301 vers
+      // la prestation 1-to-1 équivalente (zéro lien mort, autorité SEO transférée).
+      {
+        source: "/:locale(fr|en)/interventions/claude-dirigeant",
+        destination: "/:locale/interventions/dirigeant-vision-strategique",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/claude-implementation-individuel",
+        destination: "/:locale/interventions/coaching-decouverte",
+        permanent: true,
+      },
       // Refonte /formations 2026-06-11 (Will) — l'offre de formations COLLECTIVES
       // de /interventions/* est remplacée par /formations (public/live). 301 des
       // anciennes URLs collectives → /formations (zéro lien mort, autorité SEO
       // transférée). Le 1-to-1 (/interventions/{dirigeants,individuel,coaching*,
-      // claude-dirigeant,claude-implementation-individuel,demande}) RESTE intact
-      // (aucune source ci-dessous ne le capture — chemins exacts).
+      // dirigeant-vision-strategique,demande}) RESTE intact (chemins exacts).
       {
         source: "/:locale(fr|en)/interventions",
         destination: "/:locale/formations",

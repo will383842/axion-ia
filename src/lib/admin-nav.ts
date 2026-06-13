@@ -27,6 +27,7 @@ export type AdminNavGroup =
   | "content"
   | "qualiopi"
   | "documents-interventions"
+  | "coaching-1to1"
   | "image-bank"
   | "chatbot"
   | "engagement"
@@ -49,6 +50,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   content: "Contenu",
   qualiopi: "Formation / Qualiopi",
   "documents-interventions": "Documents interventions",
+  "coaching-1to1": "Coaching 1-to-1",
   "image-bank": "Banque d'images",
   chatbot: "Chatbot",
   engagement: "Engagement",
@@ -61,6 +63,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "content",
   "qualiopi",
   "documents-interventions",
+  "coaching-1to1",
   "image-bank",
   "chatbot",
   "engagement",
@@ -276,6 +279,25 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Annuaire équipe",
       icon: "✉️",
       group: "documents-interventions",
+    },
+    // ── Coaching 1-to-1 (séances AFEST remplies par les formateurs) ───────
+    {
+      href: `${base}/coaching`,
+      label: "Tableau de bord",
+      icon: "📈",
+      group: "coaching-1to1",
+    },
+    {
+      href: `${base}/coaching/seances`,
+      label: "Séances 1-to-1",
+      icon: "🗂️",
+      group: "coaching-1to1",
+    },
+    {
+      href: `${base}/coaching/formateurs`,
+      label: "Comptes formateurs",
+      icon: "🧑‍🏫",
+      group: "coaching-1to1",
     },
     // ── banque d'images (image-bank V1) ──────────────────────────────────
     { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },

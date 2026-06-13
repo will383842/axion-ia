@@ -20,11 +20,14 @@ import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
+import { verifyFormateurSession } from "./lib/formateur-session";
+import { FORMATEUR_COOKIE_NAME } from "./server/formateur/routes";
+import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export default auth(async (req) => {
   // 0. EN locale disabled (2026-05-16) — 301 redirect /en/* → /fr/équivalent.
   //    Toggle via Coolify env var `EN_LOCALE_ENABLED=true` pour réactiver.
   //    Voir AGENTS.md « EN re-enable procedure ».
@@ -77,6 +80,51 @@ export default auth((req) => {
     if (m && m[2] !== "candidature") {
       const dest = new URL(`/${m[1]}/devenir-commercial-ia${req.nextUrl.search}`, req.url);
       return NextResponse.redirect(dest, 301);
+    }
+  }
+
+  // 0quater. Espace formateur (passwordless, 2026-06-13) — garde de session.
+  //   Protège `/espace-formateur/*` SAUF la connexion (`/espace-formateur/connexion`
+  //   et la route de vérif `/espace-formateur/connexion/<token>`). Vérification
+  //   Edge-safe du cookie signé HMAC (src/lib/formateur-session.ts) ; le check
+  //   `Trainer.actif` (révocation) se fait côté Node via requireFormateur().
+  //   Pas d'appel DB ici (Edge runtime).
+  {
+    const m = req.nextUrl.pathname.match(/^\/(fr|en)\/espace-formateur(\/.*)?$/);
+    if (m) {
+      const sub = m[2] ?? "";
+      const isConnexion = sub === "/connexion" || sub.startsWith("/connexion/");
+      if (!isConnexion) {
+        const token = req.cookies.get(FORMATEUR_COOKIE_NAME)?.value;
+        const session = token
+          ? await verifyFormateurSession(token, "formateur")
+          : { ok: false as const };
+        if (!session.ok) {
+          const dest = new URL(`/${m[1]}/espace-formateur/connexion`, req.url);
+          return NextResponse.redirect(dest);
+        }
+      }
+    }
+  }
+
+  // 0quinquies. Espace ressources (passwordless, 2026-06-13) — même garde Edge
+  //   que l'espace formateur (cookie signé HMAC partagé), pour commerciaux +
+  //   formateurs. Protège `/espace-ressources/*` sauf `/connexion`.
+  {
+    const m = req.nextUrl.pathname.match(/^\/(fr|en)\/espace-ressources(\/.*)?$/);
+    if (m) {
+      const sub = m[2] ?? "";
+      const isConnexion = sub === "/connexion" || sub.startsWith("/connexion/");
+      if (!isConnexion) {
+        const token = req.cookies.get(RESSOURCES_COOKIE_NAME)?.value;
+        const session = token
+          ? await verifyFormateurSession(token, "ressources")
+          : { ok: false as const };
+        if (!session.ok) {
+          const dest = new URL(`/${m[1]}/espace-ressources/connexion`, req.url);
+          return NextResponse.redirect(dest);
+        }
+      }
     }
   }
 
