@@ -48,6 +48,29 @@
   un formateur ne peut jamais lire/écrire la séance d'un autre.
 - Console admin protégée par les guards `requireAdminRead/Write`.
 
+## Espace ressources passwordless (commerciaux + formateurs)
+
+> Le P3 reporté du chantier documents-interventions, construit comme **compte
+> passwordless** : commerciaux + formateurs consultent/téléchargent à la demande
+> les documents de leur périmètre (complément des notifications e-mail).
+
+- **Identité = `DocumentRecipient`** (la liste « Annuaire équipe » EST la liste de
+  comptes). Pour donner accès à quelqu'un : l'ajouter dans _Documents
+  interventions → Annuaire équipe_ (rôle commercial/formateur + périmètre).
+- **URL** : `/fr/espace-ressources/connexion` → e-mail → lien magique → liste des
+  documents (groupés par prestation) avec boutons **PDF** / **source**.
+- **Migration** `20260613160000_ressources_portal` (additive, auto au deploy) :
+  `ressources_magic_links` + `ressource_telechargements` (accusé de
+  téléchargement) + colonne `last_ressources_login_at`.
+- **Sécurité** : mêmes garanties que l'espace formateur (cookie HMAC, lien
+  one-shot 15 min, garde Edge). Filtrage rôle↔visibilité : commercial →
+  `commercial` ; formateur → `formateur`+`commercial` ; borné au périmètre
+  famille/prestation (UNION si plusieurs lignes pour le même e-mail).
+- **Aucune nouvelle env** (URL R2 signées 5 min, `R2_*` déjà requis).
+- **E2E** : ajouter un destinataire (Annuaire équipe) → `/espace-ressources/connexion`
+  → lien → liste → télécharger un PDF (trace dans `ressource_telechargements`) →
+  désactiver le destinataire = accès coupé.
+
 ## Reste optionnel / futur
 
 - Génération .docx/.pdf des livrables (plan, CR) — non inclus (les formulaires
