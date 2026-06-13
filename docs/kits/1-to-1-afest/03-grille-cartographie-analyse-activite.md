@@ -3,8 +3,8 @@
 **À remplir en ouverture de journée**, avec la personne. C'est le **cœur** du 1-to-1 :
 on photographie le **fonctionnement réel** avant toute optimisation.
 
-**Bénéficiaire :** **********\_\_********** **Poste / rôle :** **********\_\_**********
-**Date :** ****\_\_\_\_**** **Coach :** **********\_\_**********
+**Bénéficiaire :** ****\*\*****\_\_****\*\***** **Poste / rôle :** ****\*\*****\_\_****\*\*****
+**Date :** \***\*\_\_\_\_\*\*** **Coach :** ****\*\*****\_\_****\*\*****
 
 ---
 
@@ -25,16 +25,16 @@ _Astuce : viser 8 à 15 tâches. Reprendre l'agenda + la boîte mail de la semai
 
 ## 2. Chronophages & irritants (synthèse)
 
-- Tâche qui prend le plus de temps : **************\_\_**************
-- Tâche la plus pénible / source d'erreurs : **************\_\_**************
-- Tâche la plus répétitive : **************\_\_**************
-- « Si je pouvais supprimer une corvée, ce serait… » : **************\_\_**************
+- Tâche qui prend le plus de temps : ******\*\*******\_\_******\*\*******
+- Tâche la plus pénible / source d'erreurs : ******\*\*******\_\_******\*\*******
+- Tâche la plus répétitive : ******\*\*******\_\_******\*\*******
+- « Si je pouvais supprimer une corvée, ce serait… » : ******\*\*******\_\_******\*\*******
 
 ## 3. Données & contraintes
 
-- Outils imposés par l'entreprise : **************\_\_**************
-- Données sensibles / confidentielles manipulées : **************\_\_**************
-- Contraintes (réglementaires, validation hiérarchique, clients) : **************\_\_**************
+- Outils imposés par l'entreprise : ******\*\*******\_\_******\*\*******
+- Données sensibles / confidentielles manipulées : ******\*\*******\_\_******\*\*******
+- Contraintes (réglementaires, validation hiérarchique, clients) : ******\*\*******\_\_******\*\*******
 
 ## 4. Lecture rapide (matrice temps × valeur)
 

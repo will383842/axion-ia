@@ -25,14 +25,14 @@ Une AFEST **alterne** deux temps :
 
 ## 3. Trame de phase réflexive (à dérouler après chaque mise en situation)
 
-**Mise en situation observée :** **************\_\_************** **Heure :** **\_\_**
+**Mise en situation observée :** ******\*\*******\_\_******\*\******* **Heure :** **\_\_**
 
-1. **Ce que tu as fait** (déroulé factuel) : **************\_\_**************
-2. **Ce qui a bien marché** : **************\_\_**************
-3. **Ce qui a coincé / surpris** : **************\_\_**************
-4. **Ce que tu en retiens** (la règle, la méthode) : **************\_\_**************
-5. **Ce que tu refais seul demain** : **************\_\_**************
-6. **Ce qu'il te reste à sécuriser** (vérif, limite, confidentialité) : **************\_\_**************
+1. **Ce que tu as fait** (déroulé factuel) : ******\*\*******\_\_******\*\*******
+2. **Ce qui a bien marché** : ******\*\*******\_\_******\*\*******
+3. **Ce qui a coincé / surpris** : ******\*\*******\_\_******\*\*******
+4. **Ce que tu en retiens** (la règle, la méthode) : ******\*\*******\_\_******\*\*******
+5. **Ce que tu refais seul demain** : ******\*\*******\_\_******\*\*******
+6. **Ce qu'il te reste à sécuriser** (vérif, limite, confidentialité) : ******\*\*******\_\_******\*\*******
 
 _(Une fiche par mise en situation — minimum 2 à 3 sur la journée.)_
 

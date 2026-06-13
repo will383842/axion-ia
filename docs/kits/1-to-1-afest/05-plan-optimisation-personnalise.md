@@ -3,15 +3,15 @@
 **Document remis au bénéficiaire.** Rédigé AVEC lui en fin de journée. C'est le résultat
 concret du 1-to-1 : sa feuille de route pour gagner du temps.
 
-**Bénéficiaire :** **********\_\_********** **Poste :** **********\_\_**********
-**Entreprise :** **********\_\_********** **Date :** ****\_\_\_\_**** **Coach :** **********\_\_**********
+**Bénéficiaire :** ****\*\*****\_\_****\*\***** **Poste :** ****\*\*****\_\_****\*\*****
+**Entreprise :** ****\*\*****\_\_****\*\***** **Date :** \***\*\_\_\_\_\*\*** **Coach :** ****\*\*****\_\_****\*\*****
 
 ---
 
 ## 1. Ce qu'on a constaté (cartographie)
 
 - Temps total cartographié : \_**\_ h/semaine sur \_\_** tâches.
-- Principaux chronophages : **************\_\_**************
+- Principaux chronophages : ******\*\*******\_\_******\*\*******
 - Gain de temps potentiel identifié : **\_\_\_\_ h/semaine** (~ \_\_\_\_ jours/an).
 
 ## 2. Optimisations retenues (par ordre de priorité)
@@ -26,21 +26,21 @@ concret du 1-to-1 : sa feuille de route pour gagner du temps.
 
 ## 3. Mes prochaines étapes (engagements)
 
-- [ ] **************\_\_************** (avant le \_\_\_\_)
-- [ ] **************\_\_************** (avant le \_\_\_\_)
-- [ ] **************\_\_************** (avant le \_\_\_\_)
+- [ ] ******\*\*******\_\_******\*\******* (avant le \_\_\_\_)
+- [ ] ******\*\*******\_\_******\*\******* (avant le \_\_\_\_)
+- [ ] ******\*\*******\_\_******\*\******* (avant le \_\_\_\_)
 
 ## 4. Points de vigilance
 
 - **Vérification** : toujours relire/valider les sorties IA (ne pas livrer sans contrôle).
-- **Confidentialité** : **************\_\_************** (données à ne jamais exposer).
-- **Limites** : **************\_\_**************
+- **Confidentialité** : ******\*\*******\_\_******\*\******* (données à ne jamais exposer).
+- **Limites** : ******\*\*******\_\_******\*\*******
 
 ## 5. Pour aller plus loin
 
-- Ressources & prompts remis : **************\_\_**************
+- Ressources & prompts remis : ******\*\*******\_\_******\*\*******
 - Suivi proposé : ☐ Point à J+30 ☐ Coaching régulier 1-to-1 ☐ Formation d'équipe
-- Contact : **************\_\_**************
+- Contact : ******\*\*******\_\_******\*\*******
 
 ---
 
