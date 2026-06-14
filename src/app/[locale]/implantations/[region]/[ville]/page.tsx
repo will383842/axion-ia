@@ -356,6 +356,44 @@ export default async function VilleHubPage({ params }: Props) {
     sameAs: [cityWikiUrl, cityWikidataUrl],
   });
 
+  // LocalBusiness / ProfessionalService (Service Area Business safe) — parité avec
+  // les pages service×ville (`src/lib/seo/ville-service-jsonld.ts` § 2). Le hub
+  // ville n'émettait jusqu'ici qu'un `Service` + un `Place` nu ; on ajoute le
+  // ProfessionalService avec `areaServed` = ville pour le signal Local Pack / AI
+  // Overviews. IMPORTANT : pas de `geo` ni `openingHours` ni `priceRange` sur le
+  // business (Axion-IA = 1 siège FR servant toute la France ; claim de bureau
+  // physique par ville = sanction Google « fake local SEO », cf. Sprint correctif
+  // P1-1 2026-05-23). Les coordonnées GPS de la VILLE restent portées par le
+  // `Place` ci-dessus (légitime : décrit la commune, pas un bureau Axion-IA).
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "ProfessionalService"],
+    "@id": `${url}#business`,
+    name: isFr
+      ? `Axion-IA · Services IA à ${ville.nameFr}`
+      : `Axion-IA · AI services in ${ville.nameFr}`,
+    description: isFr ? copy.pitchFr : copy.pitchEn,
+    url,
+    email: "contact@axion-ia.com",
+    image: `${SITE_URL}/opengraph-image`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: ville.nameFr,
+      addressRegion: region.nameFr,
+      addressCountry: "FR",
+    },
+    sameAs: ["https://www.linkedin.com/company/axion-ia-france", cityWikiUrl, cityWikidataUrl],
+    parentOrganization: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Axion-IA",
+      legalName: "Axion-IA",
+      url: SITE_URL,
+    },
+    areaServed: { "@type": "City", name: ville.nameFr },
+    knowsLanguage: ["fr", "en"],
+  } as const;
+
   const breadcrumbJsonLd = buildBreadcrumbJsonLd({
     locale: loc,
     items: [
@@ -836,6 +874,7 @@ export default async function VilleHubPage({ params }: Props) {
           } as const,
           serviceJsonLd,
           placeJsonLd,
+          localBusinessJsonLd,
           breadcrumbJsonLd,
           verticalesItemList,
           heroImageJsonLd,

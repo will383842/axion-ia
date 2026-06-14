@@ -37,11 +37,22 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+async function countPublishedNews(): Promise<number> {
+  try {
+    return await prisma.article.count({
+      where: { status: "published", isNews: true, indexationTier: "tier_1_indexable" },
+    });
+  } catch {
+    // P2021 (table absente bootstrap) / stub.invalid build → traité comme vide
+    return 0;
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   if (locale !== "fr") return { robots: { index: false, follow: false } };
-  return buildProductMetadata({
+  const base = buildProductMetadata({
     locale,
     path: "/actualites",
     title: "Actualités IA · Veille opérationnelle · Axion-IA",
@@ -49,6 +60,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI : décisions Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
     alternates: { fr: "/actualites", en: "/actualites" },
   });
+  // Soft-404 fix (2026-06-14) : si 0 actualité publiée, le hub n'a aucun contenu
+  // à indexer → noindex,follow (évite le soft-404). L'ISR (revalidate=3600)
+  // repassera index dès qu'un article est publié.
+  if ((await countPublishedNews()) === 0) {
+    return { ...base, robots: { index: false, follow: true } };
+  }
+  return base;
 }
 
 interface NewsItem {

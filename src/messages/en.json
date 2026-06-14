@@ -38,9 +38,9 @@
     "priceFrom": "from",
     "contact": "Contact",
     "contactLong": "Contact us",
-    "contactAria": "Contact us — reply within 24 business hours",
+    "contactAria": "Email us — reply within 24 business hours",
     "bookCall": "Réserver un appel",
-    "bookCallAria": "Réserver un rendez-vous téléphonique"
+    "bookCallAria": "Réserver un appel — rendez-vous téléphonique"
   },
   "footer": {
     "identity": "Identity",

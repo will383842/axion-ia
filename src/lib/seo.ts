@@ -141,6 +141,15 @@ export function buildProductMetadata({
   // signaler à Google une alternate EN qui répond 301. Quand EN sera
   // réactivé (EN_LOCALE_ENABLED=true), hreflang="en" revient automatique.
   const enDisabled = isEnLocaleDisabled();
+  // title-double-suffix fix (2026-06-14) : le root layout déclare
+  // `title.template = "%s · Axion-IA"`. Next.js l'applique à toute `title` string
+  // renvoyée ici. Si le titre source contient DÉJÀ « · Axion-IA », le template
+  // le ré-ajoute → « … · Axion-IA · Axion-IA ». On renvoie alors `{ absolute }`
+  // (bypass template) ; sinon la string brute (le template appose le suffixe).
+  const TITLE_SUFFIX = " · Axion-IA";
+  const resolvedTitle: NonNullable<Metadata["title"]> = title.endsWith(TITLE_SUFFIX)
+    ? { absolute: title }
+    : title;
   // Sprint Web Vitals fix 2026-05-17 — normalize canonical (strip trailing
   // slash sauf root pour éviter Lighthouse `canonical` audit fail).
   // Next.js 16 defaults trailingSlash=false : `/fr/` doit pointer canonical
@@ -158,7 +167,7 @@ export function buildProductMetadata({
     languages.en = `/en${enNorm}`;
   }
   return {
-    title,
+    title: resolvedTitle,
     description,
     alternates: {
       canonical: `/${locale}${pathNorm}`,
