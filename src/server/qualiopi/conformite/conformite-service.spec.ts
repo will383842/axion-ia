@@ -29,6 +29,7 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { count: vi.fn() },
     revueDirection: { count: vi.fn() },
     supportFormation: { count: vi.fn() },
+    coachingSession: { findMany: vi.fn() },
   },
 }));
 
@@ -55,6 +56,7 @@ type MockPrisma = {
   documentGenere: { count: ReturnType<typeof vi.fn> };
   revueDirection: { count: ReturnType<typeof vi.fn> };
   supportFormation: { count: ReturnType<typeof vi.fn> };
+  coachingSession: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockP = prisma as unknown as MockPrisma;
@@ -81,6 +83,7 @@ function setupEmpty() {
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
   mockP.supportFormation.count.mockResolvedValue(0);
+  mockP.coachingSession.findMany.mockResolvedValue([]);
   // Par défaut : référent handicap + responsable qualité vides
   mockGetConfig.mockResolvedValue("");
 }
@@ -371,15 +374,35 @@ describe("evaluerConformite", () => {
 
   // ── off.13/14/15/28 (APP/AFEST) : a_completer si applicable, non muet ────
 
-  it("off.13/14/15/28 a_completer avec preuve explicite si alternance_afest déclaré", async () => {
+  it("off.13/14/15/28 a_completer avec preuve explicite si AFEST applicable mais aucun parcours tracé", async () => {
     mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
     const result = await evaluerConformite();
     for (const numero of [13, 14, 15, 28]) {
       const ind = result.indicateurs.find((i) => i.numero === numero);
       expect(ind?.statut, `off.${numero} doit être a_completer`).toBe("a_completer");
       expect(ind?.preuves.join(" "), `off.${numero} doit porter une preuve explicite`).toMatch(
-        /à compléter manuellement/i,
+        /à compléter/i,
       );
+    }
+  });
+
+  it("off.13/14/15/28 AUTOMATISÉS → couverts depuis les parcours AFEST 1-to-1 réalisés", async () => {
+    // Un parcours coaching AFEST réalisé avec cartographie, évaluation et
+    // alternance mises en situation ↔ phases réflexives tracées.
+    mockP.coachingSession.findMany.mockResolvedValue([
+      {
+        cartographie: { id: "carto-1" },
+        evaluations: [{ id: "eval-1" }],
+        comptesRendus: [
+          { misesEnSituation: [{ cas: "x" }], phasesReflexives: [{ situation: "y" }] },
+        ],
+      },
+    ]);
+    const result = await evaluerConformite();
+    for (const numero of [13, 14, 15, 28]) {
+      const ind = result.indicateurs.find((i) => i.numero === numero);
+      expect(ind?.statut, `off.${numero} doit être couvert (automatisé)`).toBe("couvert");
+      expect(ind?.preuves.length, `off.${numero} doit porter une preuve`).toBeGreaterThan(0);
     }
   });
 

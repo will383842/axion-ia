@@ -84,6 +84,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbDocsAccueil,
     nbDocsPresence,
     responsableQualiteNom,
+    coachingAfestResult,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -160,12 +161,45 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }),
     // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
     getQualiopiConfig("responsable_qualite_nom").catch(() => ""),
+    // off.13/14/15/28 (AFEST 1-to-1) : preuves dérivées des parcours coaching AFEST
+    //   réalisés (cartographie = analyse activité, alternance mises en situation /
+    //   phases réflexives, évaluation des acquis). Automatisation C1.
+    prisma.coachingSession.findMany({
+      where: { estAfest: true, statut: "realisee" },
+      select: {
+        cartographie: { select: { id: true } },
+        evaluations: { select: { id: true } },
+        comptesRendus: { select: { misesEnSituation: true, phasesReflexives: true } },
+      },
+      take: 200,
+    }),
   ]);
+
+  // ── Données AFEST 1-to-1 (coaching) — automatisation off.13/14/15/28 ─────────
+  const nbCoachingAfest = coachingAfestResult.length;
+  const coachingAfestAnalyse = coachingAfestResult.filter((c) => c.cartographie != null).length;
+  const coachingAfestEval = coachingAfestResult.filter((c) => c.evaluations.length > 0).length;
+  const coachingAfestAlternance = coachingAfestResult.filter((c) =>
+    c.comptesRendus.some(
+      (cr) =>
+        Array.isArray(cr.misesEnSituation) &&
+        cr.misesEnSituation.length > 0 &&
+        Array.isArray(cr.phasesReflexives) &&
+        cr.phasesReflexives.length > 0,
+    ),
+  ).length;
 
   const typesAction = typesActionResult;
   // off.3/7/16 : formations avec ≥1 code RS ou RNCP renseigné
   const nbFormationsCertifiantes = formationsCertifiantesResult.length;
-  const typesActionEffectifs = typesAction.length > 0 ? typesAction : ["classique"];
+  const typesActionEffectifs = Array.from(
+    new Set([
+      ...(typesAction.length > 0 ? typesAction : ["classique"]),
+      // Le 1-to-1 AFEST rend off.13/14/15/28 applicables même sans formation
+      // collective déclarée en alternance.
+      ...(nbCoachingAfest > 0 ? ["alternance_afest"] : []),
+    ]),
+  );
   const applicablesNums = indicateursApplicables(typesActionEffectifs);
   // off.13/14/15/28 (APP/AFEST) : applicables seulement si l'OF déclare
   //   l'alternance/AFEST. Quand applicables, on ne peut pas les déduire d'un
@@ -275,14 +309,41 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     nbSessionsRealisees > 0 && nbDocsPresence > 0,
   );
-  // off.13/14/15 (APP) : conditionnels apprentissage. Si applicables (OF déclare
-  //   alternance_afest), on ne peut pas les automatiser en V1 → a_completer avec
-  //   preuve explicite. Si non applicables, l'assemblage les passe en
-  //   non_applicable (preuves ignorées).
-  const preuveAppAfest = ["Indicateur APP/AFEST à compléter manuellement (hors automatisation V1)"];
-  set(13, appAfestApplicable ? preuveAppAfest : [], false); // APP conditionnel
-  set(14, appAfestApplicable ? preuveAppAfest : [], false); // APP conditionnel
-  set(15, appAfestApplicable ? preuveAppAfest : [], false); // APP conditionnel
+  // off.13/14/15 (APP/AFEST) : AUTOMATISÉS depuis les parcours AFEST 1-to-1 (C1).
+  //   13 = analyse de l'activité (cartographie) ; 14 = accompagnement par
+  //   alternance mises en situation ↔ phases réflexives ; 15 = évaluation des
+  //   acquis. Couvert dès qu'au moins un parcours AFEST réalisé porte la preuve.
+  //   Si applicable mais aucune preuve → a_completer explicite (pas couvert muet).
+  const preuveAfestManquante = ["Aucun parcours AFEST 1-to-1 réalisé tracé — à compléter."];
+  set(
+    13,
+    coachingAfestAnalyse > 0
+      ? [`${coachingAfestAnalyse} parcours AFEST avec analyse de l'activité (cartographie)`]
+      : appAfestApplicable
+        ? preuveAfestManquante
+        : [],
+    coachingAfestAnalyse > 0,
+  );
+  set(
+    14,
+    coachingAfestAlternance > 0
+      ? [
+          `${coachingAfestAlternance} parcours AFEST avec alternance mises en situation / phases réflexives`,
+        ]
+      : appAfestApplicable
+        ? preuveAfestManquante
+        : [],
+    coachingAfestAlternance > 0,
+  );
+  set(
+    15,
+    coachingAfestEval > 0
+      ? [`${coachingAfestEval} parcours AFEST avec évaluation des acquis`]
+      : appAfestApplicable
+        ? preuveAfestManquante
+        : [],
+    coachingAfestEval > 0,
+  );
   // off.16 : présentation à la certification — couvert si ≥1 formation certifiante
   //          avec code RS/RNCP (la présentation implique un code enregistré)
   set(
@@ -351,7 +412,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbPartenariats > 0 && referentHandicapNom.trim().length > 0,
   );
   set(27, [`${nbSousTraitants} sous-traitant(s) référencé(s)`], nbSousTraitants > 0);
-  set(28, appAfestApplicable ? preuveAppAfest : [], false); // AFEST conditionnel
+  // off.28 (AFEST) : AUTOMATISÉ — alternance mises en situation ↔ phases
+  //   réflexives tracée dans les comptes-rendus (L.6313-1-2 / D.6313-3-1).
+  set(
+    28,
+    coachingAfestAlternance > 0
+      ? [
+          `${coachingAfestAlternance} parcours AFEST avec mises en situation et phases réflexives tracées (L.6313-1-2)`,
+        ]
+      : appAfestApplicable
+        ? preuveAfestManquante
+        : [],
+    coachingAfestAlternance > 0,
+  );
   // off.29 : insertion / débouchés — donnée de suivi post-formation NON déductible
   //          d'un artefact logiciel (l'existence d'une session ne prouve pas l'insertion).
   //          a_completer avec preuve explicite (à renseigner manuellement).

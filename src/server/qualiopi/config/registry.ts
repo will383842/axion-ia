@@ -20,6 +20,7 @@ export interface ConfigEntry<T> {
 
 const str = (def = "") => ({ schema: z.string(), default: def });
 const num = (def: number) => ({ schema: z.number(), default: def });
+const bool = (def: boolean) => ({ schema: z.boolean(), default: def });
 
 export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Identité organisme (placeholders légaux — à renseigner par Will) ──
@@ -134,6 +135,31 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description: "Seuil de présence pour attestation complète (%).",
   },
   langue_generation: { ...str("fr"), description: "Langue de génération (FR figé v1)." },
+
+  // ── 1-to-1 / AFEST (C1, 2026-06-14) — enforcement GATED (cf. ADR Phase 0 §7) ──
+  // Tous à false par défaut : la couche AFEST est livrée sans contrainte ; Will
+  // active chaque flag après confirmation du certificateur. Aucune fuite tant
+  // que le périmètre n'est pas certifié.
+  afest_perimetre_certifie: {
+    ...bool(false),
+    description:
+      "L'AFEST / 1-to-1 est dans le périmètre Qualiopi certifié (active mentions périmètre + finançabilité OPCO sur les documents).",
+  },
+  afest_tuteur_obligatoire: {
+    ...bool(false),
+    description:
+      "Tuteur entreprise AFEST obligatoire + signataire du protocole (bloque la clôture si absent). À confirmer avec le certificateur.",
+  },
+  afest_formateur_habilitation_requise: {
+    ...bool(false),
+    description:
+      "Habilitation formateur/accompagnateur AFEST requise (Trainer.afestHabiliteAt) pour animer un parcours AFEST. À confirmer avec le certificateur.",
+  },
+  afest_seuil_heures_min: {
+    ...num(0),
+    description:
+      "Plancher absolu d'heures réalisées pour une attestation 1-to-1 complète (0 = pas de plancher, seuls les % d'assiduité s'appliquent).",
+  },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
 export type QualiopiConfigKey = keyof typeof QUALIOPI_CONFIG_REGISTRY;

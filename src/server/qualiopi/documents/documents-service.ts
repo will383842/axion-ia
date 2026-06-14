@@ -43,6 +43,7 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
   lettre_mission: "formation",
   reglement_interieur: "formation",
   livret_accueil: "formation",
+  protocole_afest: "formation",
 };
 
 export interface GenerateDocumentInput {
@@ -64,6 +65,8 @@ export interface GenerateDocumentInput {
     sessionId?: string;
     traineeId?: string;
     clientId?: string;
+    /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
+    coachingSessionId?: string;
   };
   estCopie?: boolean;
   qrToken?: string | null;
@@ -168,6 +171,9 @@ export async function generateDocument(
           ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
           ...(input.refs?.traineeId != null ? { traineeId: input.refs.traineeId } : {}),
           ...(input.refs?.clientId != null ? { clientId: input.refs.clientId } : {}),
+          ...(input.refs?.coachingSessionId != null
+            ? { coachingSessionId: input.refs.coachingSessionId }
+            : {}),
           ...(input.fichierOriginalPath != null
             ? { fichierOriginalPath: input.fichierOriginalPath }
             : {}),

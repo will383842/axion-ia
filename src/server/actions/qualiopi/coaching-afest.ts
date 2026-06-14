@@ -1,0 +1,189 @@
+"use server";
+
+/**
+ * Qualiopi 1-to-1 / AFEST — Server Actions admin (console coaching).
+ *
+ * Génération des documents AFEST (protocole, attestation en heures) + cadrage
+ * AFEST d'un parcours. RBAC admin (requireAdminWrite). Enforcement des exigences
+ * certificateur (tuteur, habilitation formateur) GATED par flags SiteSetting :
+ * tant que le flag est `false`, aucune contrainte (ADR Phase 0 §7).
+ */
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../../prisma/generated/client";
+import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { genererProtocoleAfest } from "@/server/qualiopi/coaching-afest/protocole-1to1";
+import { genererAttestation1to1 } from "@/server/qualiopi/coaching-afest/attestation-1to1";
+
+export interface AfestActionResult {
+  readonly ok: boolean;
+  readonly error?: string;
+  readonly documentId?: string | null;
+  readonly numero?: string;
+  readonly resultat?: "complete" | "partielle" | "aucune";
+}
+
+function refresh(revalidate?: string) {
+  if (revalidate) revalidatePath(revalidate);
+}
+
+/**
+ * Vérifie les pré-requis AFEST gated (tuteur, habilitation formateur) d'un
+ * parcours. Retourne un message d'erreur si un flag actif n'est pas satisfait,
+ * sinon null. Aucun blocage tant que les flags sont à false.
+ */
+async function checkAfestEnforcement(coachingSessionId: string): Promise<string | null> {
+  const [tuteurRequis, habilitationRequise] = await Promise.all([
+    getQualiopiConfig("afest_tuteur_obligatoire"),
+    getQualiopiConfig("afest_formateur_habilitation_requise"),
+  ]);
+  if (!tuteurRequis && !habilitationRequise) return null;
+
+  const cs = await prisma.coachingSession.findUnique({
+    where: { id: coachingSessionId },
+    select: {
+      tuteurEntrepriseNom: true,
+      trainer: { select: { afestHabiliteAt: true } },
+    },
+  });
+  if (!cs) return "Parcours introuvable.";
+
+  if (tuteurRequis && !cs.tuteurEntrepriseNom) {
+    return "Tuteur entreprise obligatoire (exigence AFEST activée) — renseignez-le avant de générer le document.";
+  }
+  if (habilitationRequise && cs.trainer.afestHabiliteAt == null) {
+    return "Le formateur n'a pas d'habilitation AFEST tracée (exigence activée).";
+  }
+  return null;
+}
+
+// ─── Cadrage AFEST d'un parcours ─────────────────────────────────────────────
+
+const cadrageSchema = z.object({
+  coachingSessionId: z.string().uuid(),
+  estAfest: z.boolean(),
+  heuresPrevuesConvention: z.number().min(0).max(2000).optional(),
+  tuteurEntrepriseNom: z.string().trim().max(200).optional(),
+  tuteurEntrepriseEmail: z.string().trim().toLowerCase().email().optional().or(z.literal("")),
+  objectifsPedagogiques: z
+    .array(z.object({ libelle: z.string().trim().min(1).max(300) }))
+    .optional(),
+  revalidate: z.string().optional(),
+});
+
+export async function setAfestCadrageAction(
+  input: z.input<typeof cadrageSchema>,
+): Promise<AfestActionResult> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+  const parsed = cadrageSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Champs invalides." };
+  const d = parsed.data;
+
+  const data: Prisma.CoachingSessionUpdateInput = { estAfest: d.estAfest };
+  if (d.heuresPrevuesConvention !== undefined)
+    data.heuresPrevuesConvention = d.heuresPrevuesConvention;
+  if (d.tuteurEntrepriseNom !== undefined) data.tuteurEntrepriseNom = d.tuteurEntrepriseNom || null;
+  if (d.tuteurEntrepriseEmail !== undefined)
+    data.tuteurEntrepriseEmail = d.tuteurEntrepriseEmail || null;
+  if (d.objectifsPedagogiques !== undefined)
+    data.objectifsPedagogiques = d.objectifsPedagogiques as unknown as Prisma.InputJsonValue;
+
+  await prisma.coachingSession.update({ where: { id: d.coachingSessionId }, data });
+  await logQualiopiActivity({
+    action: "qualiopi.coaching.afest.cadrage",
+    targetType: "CoachingSession",
+    targetId: d.coachingSessionId,
+    changes: { estAfest: d.estAfest },
+    session,
+  });
+  refresh(d.revalidate);
+  return { ok: true };
+}
+
+// ─── Génération Protocole AFEST ──────────────────────────────────────────────
+
+const genSchema = z.object({
+  coachingSessionId: z.string().uuid(),
+  revalidate: z.string().optional(),
+});
+
+export async function genererProtocoleAfestAction(
+  input: z.input<typeof genSchema>,
+): Promise<AfestActionResult> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+  const parsed = genSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
+
+  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId);
+  if (blocked) return { ok: false, error: blocked };
+
+  try {
+    const res = await genererProtocoleAfest(parsed.data.coachingSessionId);
+    if (!res) return { ok: false, error: "Génération indisponible." };
+    await logQualiopiActivity({
+      action: "qualiopi.coaching.protocole_afest.generate",
+      targetType: "CoachingSession",
+      targetId: parsed.data.coachingSessionId,
+      changes: res,
+      session,
+    });
+    refresh(parsed.data.revalidate);
+    return { ok: true, documentId: res.documentId, numero: res.numero };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Erreur de génération." };
+  }
+}
+
+// ─── Génération Attestation 1-to-1 ───────────────────────────────────────────
+
+const attestSchema = z.object({
+  coachingSessionId: z.string().uuid(),
+  force: z.boolean().optional(),
+  revalidate: z.string().optional(),
+});
+
+export async function genererAttestation1to1Action(
+  input: z.input<typeof attestSchema>,
+): Promise<AfestActionResult> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+  const parsed = attestSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
+
+  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId);
+  if (blocked) return { ok: false, error: blocked };
+
+  try {
+    const res = await genererAttestation1to1(parsed.data.coachingSessionId, {
+      ...(parsed.data.force !== undefined ? { force: parsed.data.force } : {}),
+    });
+    await logQualiopiActivity({
+      action: `qualiopi.coaching.attestation.${res.resultat}`,
+      targetType: "CoachingSession",
+      targetId: parsed.data.coachingSessionId,
+      changes: res,
+      session,
+    });
+    refresh(parsed.data.revalidate);
+    return { ok: true, resultat: res.resultat, documentId: res.documentId };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Erreur de génération." };
+  }
+}

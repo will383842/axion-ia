@@ -34,6 +34,9 @@ export const LEGAL_MENTIONS = {
   /** CGV — objet des prestations. */
   cgvObjet:
     "Prestations de formation professionnelle au sens des articles L.6313-1 et suivants du Code du travail.",
+  /** Protocole individuel AFEST (action de formation en situation de travail). */
+  afestProtocole:
+    "Action de formation en situation de travail (AFEST) organisée conformément aux articles L.6313-1-2 et D.6313-3-1 du Code du travail : analyse de l'activité, mises en situation de travail et phases réflexives, évaluation des acquis.",
   /** Déclaration d'activité (lettre DREETS). */
   declarationActivite:
     "Déclaration d'activité enregistrée auprès du préfet de région du lieu de direction effective (article R.6351-2 du Code du travail). Cet enregistrement ne vaut pas agrément de l'État.",

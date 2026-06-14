@@ -4822,7 +4822,8 @@ model Client {
   formations          Formation[]
   sessions            TrainingSession[]
   documents           DocumentGenere[]
-  enrollmentsFinances Enrollment[]      @relation("EnrollmentClient")
+  enrollmentsFinances Enrollment[]       @relation("EnrollmentClient")
+  coachingContracts   CoachingContract[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5151,6 +5152,10 @@ model Trainer {
 
   // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
   lastFormateurLoginAt DateTime?            @map("last_formateur_login_at")
+  /// Habilitation formateur/accompagnateur AFEST (D.6313-3-1 §2). Date de
+  /// l'habilitation tracée. Null = non habilité. L'enforcement (obligatoire ou
+  /// non) est piloté par le flag SiteSetting `qualiopi.afest_formateur_habilitation_requise`.
+  afestHabiliteAt      DateTime?            @map("afest_habilite_at")
   magicLinks           FormateurMagicLink[]
   coachingSessions     CoachingSession[]
 
@@ -5182,12 +5187,13 @@ model Trainee {
   createdAt              DateTime  @default(now()) @map("created_at")
   updatedAt              DateTime  @updatedAt @map("updated_at")
 
-  enrollments      Enrollment[]
-  documents        DocumentGenere[]
-  portailAcces     PortailAcces[]
-  appreciations    Appreciation[]
-  rgpdDemandes     RgpdDemande[]
-  coachingSessions CoachingSession[]
+  enrollments       Enrollment[]
+  documents         DocumentGenere[]
+  portailAcces      PortailAcces[]
+  appreciations     Appreciation[]
+  rgpdDemandes      RgpdDemande[]
+  coachingSessions  CoachingSession[]
+  coachingContracts CoachingContract[]
 
   @@index([email])
   @@index([entreprise])
@@ -5387,6 +5393,8 @@ enum DocumentType {
   lettre_mission
   reglement_interieur
   livret_accueil
+  /// Protocole individuel AFEST (décret D.6313-3-1 §3) — coaching 1-to-1.
+  protocole_afest
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
@@ -5403,6 +5411,10 @@ model DocumentGenere {
   trainee             Trainee?         @relation(fields: [traineeId], references: [id], onDelete: SetNull)
   clientId            String?          @map("client_id") @db.Uuid
   client              Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  /// Coaching 1-to-1 AFEST (C1) : rattache un document généré à son parcours.
+  /// Null pour les documents de formation collective (inchangé).
+  coachingSessionId   String?          @map("coaching_session_id") @db.Uuid
+  coachingSession     CoachingSession? @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
   /// URL signée S3/R2 (expiration courte). Regénérée à la demande.
   pdfUrl              String?          @map("pdf_url") @db.Text
   hashSha256          String           @map("hash_sha256") @db.VarChar(64)
@@ -5426,6 +5438,7 @@ model DocumentGenere {
 
   @@index([type, sessionId])
   @@index([traineeId, type])
+  @@index([coachingSessionId])
   @@index([suppressionPrevueAt])
   @@map("documents_generes")
 }
@@ -5533,28 +5546,35 @@ enum AttestationResultat {
 /// Plusieurs lignes par inscription possibles (initiale + intermédiaire(s) +
 /// finale). La `finale` la plus récente fait foi pour la réussite.
 model EvaluationAcquis {
-  id              String            @id @default(uuid()) @db.Uuid
-  enrollmentId    String            @map("enrollment_id") @db.Uuid
-  enrollment      Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
-  type            EvaluationType
-  dateEvaluation  DateTime          @map("date_evaluation")
-  scoreObtenu     Int               @map("score_obtenu")
-  scoreMax        Int               @map("score_max")
-  scorePct        Int               @map("score_pct")
-  niveauGlobal    NiveauAcquisition @map("niveau_global")
+  id                String            @id @default(uuid()) @db.Uuid
+  /// Inscription (formation collective). Nullable depuis le 1-to-1 AFEST (C1) :
+  /// une évaluation peut être rattachée à un parcours coaching sans Enrollment.
+  /// Invariant applicatif : exactement un de (enrollmentId, coachingSessionId).
+  enrollmentId      String?           @map("enrollment_id") @db.Uuid
+  enrollment        Enrollment?       @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  /// Coaching 1-to-1 AFEST (C1). Null pour une évaluation de formation collective.
+  coachingSessionId String?           @map("coaching_session_id") @db.Uuid
+  coachingSession   CoachingSession?  @relation("CoachingEvaluations", fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  type              EvaluationType
+  dateEvaluation    DateTime          @map("date_evaluation")
+  scoreObtenu       Int               @map("score_obtenu")
+  scoreMax          Int               @map("score_max")
+  scorePct          Int               @map("score_pct")
+  niveauGlobal      NiveauAcquisition @map("niveau_global")
   /// scorePct ≥ seuil_reussite_pct de la formation.
-  reussite        Boolean           @default(false)
+  reussite          Boolean           @default(false)
   /// [{ libelle, note(1-3), observations?, objectifRef? }] — lien objectif↔éval.
-  competences     Json              @default("[]")
-  recommandations String?           @db.Text
+  competences       Json              @default("[]")
+  recommandations   String?           @db.Text
   /// Admin/formateur ayant saisi l'évaluation.
-  evalueParId     String?           @map("evalue_par_id") @db.Uuid
+  evalueParId       String?           @map("evalue_par_id") @db.Uuid
   /// Grille PDF générée (DocumentGenere type grille_evaluation), optionnel.
-  documentId      String?           @map("document_id") @db.Uuid
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
+  documentId        String?           @map("document_id") @db.Uuid
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
 
   @@index([enrollmentId])
+  @@index([coachingSessionId])
   @@index([type])
   @@map("evaluations_acquis")
 }
@@ -5635,8 +5655,13 @@ enum FactureFormationStatut {
 model FactureFormation {
   id                  String                       @id @default(uuid()) @db.Uuid
   numero              String                       @unique @db.VarChar(40)
-  sessionId           String                       @map("session_id") @db.Uuid
-  session             TrainingSession              @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  /// Session de formation collective. Nullable depuis le 1-to-1 AFEST (C1) :
+  /// une facture peut cibler un `CoachingContract` sans TrainingSession.
+  sessionId           String?                      @map("session_id") @db.Uuid
+  session             TrainingSession?             @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  /// Contrat de coaching 1-to-1 AFEST (C1). Null pour une facture de formation.
+  coachingContractId  String?                      @map("coaching_contract_id") @db.Uuid
+  coachingContract    CoachingContract?            @relation(fields: [coachingContractId], references: [id], onDelete: SetNull)
   /// Inscription ciblée (R-INTER) : facture PAR participant en inter-entreprises.
   /// Null = facture au niveau session (intra, inchangé).
   enrollmentId        String?                      @map("enrollment_id") @db.Uuid
@@ -5662,6 +5687,7 @@ model FactureFormation {
 
   @@index([sessionId])
   @@index([enrollmentId])
+  @@index([coachingContractId])
   @@index([statut])
   @@map("factures_formation")
 }
@@ -5981,7 +6007,7 @@ model DocumentRecipient {
   updatedAt        DateTime              @updatedAt @map("updated_at")
 
   // Espace ressources passwordless (2026-06-13) — accès aux documents à la demande.
-  lastRessourcesLoginAt DateTime?               @map("last_ressources_login_at")
+  lastRessourcesLoginAt DateTime?                 @map("last_ressources_login_at")
   ressourcesMagicLinks  RessourcesMagicLink[]
   telechargements       RessourceTelechargement[]
 
@@ -6012,14 +6038,14 @@ model RessourcesMagicLink {
 /// Accusé de téléchargement (« accusé de lecture » du P3) : trace qui a
 /// téléchargé quelle version de document depuis l'espace ressources.
 model RessourceTelechargement {
-  id          String                     @id @default(uuid()) @db.Uuid
-  recipientId String                     @map("recipient_id") @db.Uuid
-  recipient   DocumentRecipient          @relation(fields: [recipientId], references: [id], onDelete: Cascade)
-  versionId   String                     @map("version_id") @db.Uuid
+  id          String                      @id @default(uuid()) @db.Uuid
+  recipientId String                      @map("recipient_id") @db.Uuid
+  recipient   DocumentRecipient           @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  versionId   String                      @map("version_id") @db.Uuid
   version     InterventionDocumentVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
   /// 'source' (fichier éditable) ou 'pdf'.
-  kind        String                     @db.VarChar(10)
-  accessedAt  DateTime                   @default(now()) @map("accessed_at")
+  kind        String                      @db.VarChar(10)
+  accessedAt  DateTime                    @default(now()) @map("accessed_at")
 
   @@index([recipientId])
   @@index([versionId])
@@ -6037,21 +6063,21 @@ enum KitImportStatut {
 /// Exécution d'un import en masse de kit (ZIP) → documents-interventions.
 /// Trace le statut + le récapitulatif (créés/mis à jour/inchangés) pour l'UI.
 model KitImportRun {
-  id          String          @id @default(uuid()) @db.Uuid
-  statut      KitImportStatut @default(en_attente)
+  id          String              @id @default(uuid()) @db.Uuid
+  statut      KitImportStatut     @default(en_attente)
   /// Famille ciblée par l'import (aiguille le mapping dossier→slots). Défaut historique : formation.
   famille     InterventionFamille @default(formation)
   /// Clé R2 temporaire du ZIP uploadé (supprimée après traitement).
-  tempKey     String?         @map("temp_key") @db.Text
-  fileName    String?         @map("file_name") @db.VarChar(300)
+  tempKey     String?             @map("temp_key") @db.Text
+  fileName    String?             @map("file_name") @db.VarChar(300)
   /// Récapitulatif (KitImportSummary) : created/updated/unchanged/items/errors.
   summary     Json?
-  error       String?         @db.Text
+  error       String?             @db.Text
   /// AdminUser.id de l'auteur (audit, sans FK pour rester additif).
-  startedById String?         @map("started_by_id") @db.Uuid
-  startedAt   DateTime?       @map("started_at")
-  finishedAt  DateTime?       @map("finished_at")
-  createdAt   DateTime        @default(now()) @map("created_at")
+  startedById String?             @map("started_by_id") @db.Uuid
+  startedAt   DateTime?           @map("started_at")
+  finishedAt  DateTime?           @map("finished_at")
+  createdAt   DateTime            @default(now()) @map("created_at")
 
   @@index([statut])
   @@index([createdAt])
@@ -6435,6 +6461,7 @@ enum CoachingSessionStatut {
   planifiee
   realisee
   annulee
+  reportee
 }
 
 enum OptimisationType {
@@ -6467,33 +6494,62 @@ model FormateurMagicLink {
 /// bénéficiaire (Trainee, ou champs libres si ad-hoc), l'intervention et la date.
 /// Les formulaires (cartographie, optimisations, plan, CR, journal) s'y rattachent.
 model CoachingSession {
-  id                     String                @id @default(uuid()) @db.Uuid
-  trainerId              String                @map("trainer_id") @db.Uuid
-  trainer                Trainer               @relation(fields: [trainerId], references: [id], onDelete: Restrict)
-  traineeId              String?               @map("trainee_id") @db.Uuid
-  trainee                Trainee?              @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  id                       String                @id @default(uuid()) @db.Uuid
+  trainerId                String                @map("trainer_id") @db.Uuid
+  trainer                  Trainer               @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  traineeId                String?               @map("trainee_id") @db.Uuid
+  trainee                  Trainee?              @relation(fields: [traineeId], references: [id], onDelete: SetNull)
   /// Référence souple vers un Booking (pas de FK : un coaching peut exister sans booking).
-  bookingId              String?               @map("booking_id") @db.Uuid
+  bookingId                String?               @map("booking_id") @db.Uuid
   /// Slug d'intervention (cf. booking-catalog : dirigeant-vision-strategique, coaching-decouverte…).
-  interventionSlug       String                @map("intervention_slug") @db.VarChar(80)
-  dateSeance             DateTime              @map("date_seance")
-  statut                 CoachingSessionStatut @default(planifiee)
-  beneficiaireNom        String?               @map("beneficiaire_nom") @db.VarChar(200)
-  beneficiaireEmail      String?               @map("beneficiaire_email") @db.Citext
-  beneficiaireEntreprise String?               @map("beneficiaire_entreprise") @db.VarChar(250)
-  createdAt              DateTime              @default(now()) @map("created_at")
-  updatedAt              DateTime              @updatedAt @map("updated_at")
+  interventionSlug         String                @map("intervention_slug") @db.VarChar(80)
+  dateSeance               DateTime              @map("date_seance")
+  statut                   CoachingSessionStatut @default(planifiee)
+  beneficiaireNom          String?               @map("beneficiaire_nom") @db.VarChar(200)
+  beneficiaireEmail        String?               @map("beneficiaire_email") @db.Citext
+  beneficiaireEntreprise   String?               @map("beneficiaire_entreprise") @db.VarChar(250)
+  // ── Couche administrative/légale AFEST (C1, 2026-06-14) — tout additif ──────
+  /// Contrat de coaching récurrent rattaché (un-a-un-recurrent), si applicable.
+  coachingContractId       String?               @map("coaching_contract_id") @db.Uuid
+  coachingContract         CoachingContract?     @relation(fields: [coachingContractId], references: [id], onDelete: SetNull)
+  /// Parcours cadré en AFEST (active l'applicabilité des indicateurs off.13/14/15/28).
+  estAfest                 Boolean               @default(false) @map("est_afest")
+  /// Coaching 1-to-1 = intra par défaut (1 bénéficiaire, 1 entreprise).
+  interEntreprises         Boolean               @default(false) @map("inter_entreprises")
+  /// Objectifs pédagogiques : [{ id, libelle }] (miroir Formation.objectifsPedagogiques).
+  objectifsPedagogiques    Json                  @default("[]") @map("objectifs_pedagogiques")
+  conventionSigneeAt       DateTime?             @map("convention_signee_at")
+  /// Cache des heures réellement réalisées = Σ CompteRenduSeance.dureeMinutes / 60.
+  /// Recalculé à la clôture du parcours. Source de vérité OPCO/attestation.
+  dureeReelleHeures        Decimal?              @map("duree_reelle_heures") @db.Decimal(6, 2)
+  /// Heures prévues à la convention (dénominateur des seuils d'attestation).
+  heuresPrevuesConvention  Decimal?              @map("heures_prevues_convention") @db.Decimal(6, 2)
+  // Tuteur entreprise AFEST (optionnel — enforcement gated par flag SiteSetting).
+  tuteurEntrepriseNom      String?               @map("tuteur_entreprise_nom") @db.VarChar(200)
+  tuteurEntrepriseEmail    String?               @map("tuteur_entreprise_email") @db.Citext
+  tuteurEntrepriseSigneeAt DateTime?             @map("tuteur_entreprise_signee_at")
+  // Résultat d'attestation 1-to-1 (réutilise la classification 80/60/0).
+  attestationResultat      AttestationResultat?  @map("attestation_resultat")
+  attestationDocumentId    String?               @map("attestation_document_id") @db.Uuid
+  attestationGenereeAt     DateTime?             @map("attestation_generee_at")
+  createdAt                DateTime              @default(now()) @map("created_at")
+  updatedAt                DateTime              @updatedAt @map("updated_at")
 
-  cartographie  CartographieActivite?
-  plan          PlanOptimisation?
-  optimisations OptimisationProposee[]
-  comptesRendus CompteRenduSeance[]
-  journaux      JournalProgression[]
+  cartographie     CartographieActivite?
+  plan             PlanOptimisation?
+  optimisations    OptimisationProposee[]
+  comptesRendus    CompteRenduSeance[]
+  journaux         JournalProgression[]
+  documentsGeneres DocumentGenere[]       @relation("CoachingDocuments")
+  evaluations      EvaluationAcquis[]     @relation("CoachingEvaluations")
+  transitions      CoachingTransition[]
 
   @@index([trainerId])
   @@index([traineeId])
+  @@index([coachingContractId])
   @@index([interventionSlug])
   @@index([dateSeance])
+  @@index([estAfest])
   @@map("coaching_sessions")
 }
 
@@ -6596,4 +6652,66 @@ model JournalProgression {
   @@index([coachingSessionId])
   @@index([dateEntree])
   @@map("coaching_journaux")
+}
+
+// ============================================================
+// QUALIOPI — 1-to-1 / AFEST : couche administrative/légale (C1, 2026-06-14)
+// Contrat de coaching récurrent + event-sourcing des transitions d'état.
+// Migration ADDITIVE. Le foyer pédagogique reste CoachingSession (PR #60).
+// ============================================================
+
+/// Contrat de coaching 1-to-1 (notamment `un-a-un-recurrent` : 6/12/24 mois,
+/// N séances). Regroupe N `CoachingSession` pour la facturation/conformité au
+/// niveau parcours. Null sur une séance ponctuelle hors contrat.
+model CoachingContract {
+  id                String          @id @default(uuid()) @db.Uuid
+  /// Numérotation séquentielle AXI-FORM-YYYY-NNN (réutilise le compteur formation).
+  numero            String          @unique @db.VarChar(40)
+  traineeId         String?         @map("trainee_id") @db.Uuid
+  trainee           Trainee?        @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId          String?         @map("client_id") @db.Uuid
+  client            Client?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  /// Référence souple vers un Booking (pas de FK).
+  bookingId         String?         @map("booking_id") @db.Uuid
+  interventionSlug  String          @map("intervention_slug") @db.VarChar(80)
+  montantHtCents    Int             @map("montant_ht_cents")
+  dateSigneeAt      DateTime?       @map("date_signee_at")
+  dureeContratMois  Int?            @map("duree_contrat_mois")
+  nbSeancesMax      Int?            @map("nb_seances_max")
+  financementType   FinancementType @default(direct) @map("financement_type")
+  numeroDossierOpco String?         @map("numero_dossier_opco") @db.VarChar(60)
+  subrogation       Boolean         @default(false)
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  sessions CoachingSession[]
+  factures FactureFormation[]
+
+  @@index([traineeId])
+  @@index([clientId])
+  @@index([interventionSlug])
+  @@map("coaching_contracts")
+}
+
+/// Event-sourcing des transitions d'état d'une séance/parcours coaching
+/// (miroir FormationTransition). Idempotence par (session, toStatus, trigger).
+model CoachingTransition {
+  id                String                 @id @default(uuid()) @db.Uuid
+  coachingSessionId String                 @map("coaching_session_id") @db.Uuid
+  coachingSession   CoachingSession        @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  fromStatus        CoachingSessionStatut? @map("from_status")
+  toStatus          CoachingSessionStatut  @map("to_status")
+  trigger           String                 @db.VarChar(80)
+  triggeredBy       TransitionTriggeredBy  @map("triggered_by")
+  triggeredById     String?                @map("triggered_by_id") @db.Uuid
+  reason            String?                @db.VarChar(500)
+  snapshotBefore    Json?                  @map("snapshot_before")
+  snapshotAfter     Json?                  @map("snapshot_after")
+  notes             String?                @db.Text
+  createdAt         DateTime               @default(now()) @map("created_at")
+
+  @@unique([coachingSessionId, toStatus, trigger], map: "coaching_transitions_idempotence")
+  @@index([coachingSessionId, createdAt])
+  @@index([triggeredBy])
+  @@map("coaching_transitions")
 }
