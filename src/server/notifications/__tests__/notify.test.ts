@@ -39,7 +39,13 @@ describe("notify()", () => {
     process.env.REDIS_URL = "redis://localhost:6381";
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    // Attend la fin des dispatches fire-and-forget (severity critical/error →
+    // Promise détachée) du test courant AVANT de restaurer les mocks : sinon leur
+    // fetch asynchrone se résout pendant un test ultérieur et fausse son compteur
+    // d'appels → flake d'isolation inter-tests (ordre-dépendant).
+    const { flushPendingDispatches } = await import("../index");
+    await flushPendingDispatches();
     globalThis.fetch = originalFetch;
     process.env.TELEGRAM_BOT_TOKEN = originalToken;
     process.env.TELEGRAM_CHAT_ID = originalChatId;
