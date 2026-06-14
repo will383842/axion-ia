@@ -20,6 +20,14 @@ import { genererProtocoleAfest } from "@/server/qualiopi/coaching-afest/protocol
 import { genererAttestation1to1 } from "@/server/qualiopi/coaching-afest/attestation-1to1";
 import { genererEmargement1to1 } from "@/server/qualiopi/coaching-afest/emargement-1to1";
 import { genererFactureCoaching } from "@/server/qualiopi/coaching-afest/facturation-1to1";
+import { validateCoachingFinancement } from "@/server/qualiopi/coaching-afest/financement-1to1";
+import {
+  genererKitOpcoCoaching,
+  genererKitCpfCoaching,
+  genererKitFranceTravailCoaching,
+  genererConventionTripartiteCoaching,
+  genererCertificat1to1,
+} from "@/server/qualiopi/coaching-afest/kits-1to1";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { PositionnementPdf } from "@/server/qualiopi/documents/templates/positionnement";
@@ -361,6 +369,227 @@ export async function genererFactureCoachingAction(
     return { ok: true, documentId: res.documentId, numero: res.numero };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Erreur de facturation." };
+  }
+}
+
+// ─── Financement d'un contrat coaching (parité OPCO/CPF/France Travail) ───────
+
+const financementSchema = z.object({
+  coachingContractId: z.string().uuid(),
+  financementType: z.enum(["direct", "opco", "cpf", "france_travail", "mixte"]),
+  montantHtCents: z.number().int().min(0).optional(),
+  subrogation: z.boolean().optional(),
+  numeroDossierOpco: z.string().trim().max(60).optional(),
+  conventionTripartiteSigneeAt: z.string().min(1).optional(),
+  priseEnChargeMontantCents: z.number().int().min(0).optional(),
+  priseEnChargeUnite: z
+    .enum(["euro_heure", "euro_jour", "euro_formation", "euro_an_salarie"])
+    .optional(),
+  priseEnChargePlafondFormationCents: z.number().int().min(0).optional(),
+  priseEnChargePlafondAnnuelCents: z.number().int().min(0).optional(),
+  priseEnChargeSourceUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+  edofVerifieAt: z.string().min(1).optional(),
+  resteAChargeCents: z.number().int().min(0).optional(),
+  cpfPayeurResteCharge: z.string().trim().max(40).optional(),
+  ftDispositif: z.enum(["aif", "poei", "csp"]).optional(),
+  ftAifPrescriptionDate: z.string().min(1).optional(),
+  ftPoeiOffreEmploiNumero: z.string().trim().max(50).optional(),
+  ftPoeiAccordFinancementAt: z.string().min(1).optional(),
+  ftPoeiEngagementSigneAt: z.string().min(1).optional(),
+  revalidate: z.string().optional(),
+});
+
+/** "yyyy-mm-dd" → Date (minuit UTC), null si vide/invalide. */
+function parseDateInput(v: string | undefined): Date | null {
+  if (!v) return null;
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+export async function setFinancementCoachingAction(
+  input: z.input<typeof financementSchema>,
+): Promise<AfestActionResult> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+  const parsed = financementSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Champs invalides." };
+  const d = parsed.data;
+
+  const data: Prisma.CoachingContractUpdateInput = { financementType: d.financementType };
+  if (d.montantHtCents !== undefined) data.montantHtCents = d.montantHtCents;
+  if (d.subrogation !== undefined) data.subrogation = d.subrogation;
+  if (d.numeroDossierOpco !== undefined) data.numeroDossierOpco = d.numeroDossierOpco || null;
+  if (d.conventionTripartiteSigneeAt !== undefined)
+    data.conventionTripartiteSigneeAt = parseDateInput(d.conventionTripartiteSigneeAt);
+  if (d.priseEnChargeMontantCents !== undefined)
+    data.priseEnChargeMontantCents = d.priseEnChargeMontantCents;
+  if (d.priseEnChargeUnite !== undefined) data.priseEnChargeUnite = d.priseEnChargeUnite;
+  if (d.priseEnChargePlafondFormationCents !== undefined)
+    data.priseEnChargePlafondFormationCents = d.priseEnChargePlafondFormationCents;
+  if (d.priseEnChargePlafondAnnuelCents !== undefined)
+    data.priseEnChargePlafondAnnuelCents = d.priseEnChargePlafondAnnuelCents;
+  if (d.priseEnChargeSourceUrl !== undefined)
+    data.priseEnChargeSourceUrl = d.priseEnChargeSourceUrl || null;
+  if (d.priseEnChargeMontantCents !== undefined || d.priseEnChargeUnite !== undefined)
+    data.priseEnChargeReleveLe = new Date();
+  if (d.edofVerifieAt !== undefined) data.edofVerifieAt = parseDateInput(d.edofVerifieAt);
+  if (d.resteAChargeCents !== undefined) data.resteAChargeCents = d.resteAChargeCents;
+  if (d.cpfPayeurResteCharge !== undefined)
+    data.cpfPayeurResteCharge = d.cpfPayeurResteCharge || null;
+  if (d.ftDispositif !== undefined) data.ftDispositif = d.ftDispositif;
+  if (d.ftAifPrescriptionDate !== undefined)
+    data.ftAifPrescriptionDate = parseDateInput(d.ftAifPrescriptionDate);
+  if (d.ftPoeiOffreEmploiNumero !== undefined)
+    data.ftPoeiOffreEmploiNumero = d.ftPoeiOffreEmploiNumero || null;
+  if (d.ftPoeiAccordFinancementAt !== undefined)
+    data.ftPoeiAccordFinancementAt = parseDateInput(d.ftPoeiAccordFinancementAt);
+  if (d.ftPoeiEngagementSigneAt !== undefined)
+    data.ftPoeiEngagementSigneAt = parseDateInput(d.ftPoeiEngagementSigneAt);
+
+  await prisma.coachingContract.update({ where: { id: d.coachingContractId }, data });
+
+  // Alerte non bloquante : pré-requis du dispositif non satisfaits.
+  const contrat = await prisma.coachingContract.findUnique({
+    where: { id: d.coachingContractId },
+    select: {
+      financementType: true,
+      montantHtCents: true,
+      subrogation: true,
+      numeroDossierOpco: true,
+      conventionTripartiteSigneeAt: true,
+      priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      priseEnChargePlafondFormationCents: true,
+      priseEnChargePlafondAnnuelCents: true,
+      edofVerifieAt: true,
+      resteAChargeCents: true,
+      ftDispositif: true,
+      ftAifPrescriptionDate: true,
+      ftPoeiOffreEmploiNumero: true,
+      ftPoeiAccordFinancementAt: true,
+      ftPoeiEngagementSigneAt: true,
+    },
+  });
+  const alerte = contrat ? validateCoachingFinancement(contrat) : null;
+
+  await logQualiopiActivity({
+    action: "qualiopi.coaching.financement.set",
+    targetType: "CoachingContract",
+    targetId: d.coachingContractId,
+    changes: { financementType: d.financementType },
+    session,
+  });
+  refresh(d.revalidate);
+  return alerte ? { ok: true, error: alerte } : { ok: true };
+}
+
+// ─── Certification France Compétences d'un parcours (RNCP / RS) ───────────────
+
+const certificationSchema = z.object({
+  coachingSessionId: z.string().uuid(),
+  certificationType: z.enum(["aucune", "rs", "rncp"]),
+  codeRncp: z.string().trim().max(20).optional(),
+  codeRs: z.string().trim().max(20).optional(),
+  numeroEnregistrementFc: z.string().trim().max(40).optional(),
+  dateEnregistrementCertif: z.coerce.date().optional(),
+  dateEcheanceCertif: z.coerce.date().optional(),
+  cpfEligible: z.boolean().optional(),
+  blocsCompetences: z.array(z.object({ libelle: z.string().trim().min(1).max(300) })).optional(),
+  revalidate: z.string().optional(),
+});
+
+export async function setCertificationCoachingAction(
+  input: z.input<typeof certificationSchema>,
+): Promise<AfestActionResult> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+  const parsed = certificationSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Champs invalides." };
+  const d = parsed.data;
+
+  const data: Prisma.CoachingSessionUpdateInput = { certificationType: d.certificationType };
+  if (d.codeRncp !== undefined) data.codeRncp = d.codeRncp || null;
+  if (d.codeRs !== undefined) data.codeRs = d.codeRs || null;
+  if (d.numeroEnregistrementFc !== undefined)
+    data.numeroEnregistrementFc = d.numeroEnregistrementFc || null;
+  if (d.dateEnregistrementCertif !== undefined)
+    data.dateEnregistrementCertif = d.dateEnregistrementCertif;
+  if (d.dateEcheanceCertif !== undefined) data.dateEcheanceCertif = d.dateEcheanceCertif;
+  if (d.cpfEligible !== undefined) data.cpfEligible = d.cpfEligible;
+  if (d.blocsCompetences !== undefined)
+    data.blocsCompetences = d.blocsCompetences as unknown as Prisma.InputJsonValue;
+
+  await prisma.coachingSession.update({ where: { id: d.coachingSessionId }, data });
+  await logQualiopiActivity({
+    action: "qualiopi.coaching.certification.set",
+    targetType: "CoachingSession",
+    targetId: d.coachingSessionId,
+    changes: { certificationType: d.certificationType },
+    session,
+  });
+  refresh(d.revalidate);
+  return { ok: true };
+}
+
+// ─── Kits financeurs + certificat 1-to-1 (réutilisent les templates) ──────────
+
+type CoachingKit =
+  | "kit_opco"
+  | "kit_cpf"
+  | "kit_france_travail"
+  | "convention_tripartite"
+  | "certificat";
+
+const KIT_GENERATORS: Record<
+  CoachingKit,
+  (id: string) => Promise<{ documentId: string; numero: string }>
+> = {
+  kit_opco: genererKitOpcoCoaching,
+  kit_cpf: genererKitCpfCoaching,
+  kit_france_travail: genererKitFranceTravailCoaching,
+  convention_tripartite: genererConventionTripartiteCoaching,
+  certificat: (id) => genererCertificat1to1(id),
+};
+
+const kitSchema = z.object({
+  coachingSessionId: z.string().uuid(),
+  kit: z.enum(["kit_opco", "kit_cpf", "kit_france_travail", "convention_tripartite", "certificat"]),
+  revalidate: z.string().optional(),
+});
+
+export async function genererKitCoachingAction(
+  input: z.input<typeof kitSchema>,
+): Promise<AfestActionResult> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Non autorisé." };
+  }
+  const parsed = kitSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
+  const { coachingSessionId, kit } = parsed.data;
+  try {
+    const res = await KIT_GENERATORS[kit](coachingSessionId);
+    await logQualiopiActivity({
+      action: `qualiopi.coaching.${kit}.generate`,
+      targetType: "CoachingSession",
+      targetId: coachingSessionId,
+      changes: { documentId: res.documentId, numero: res.numero },
+      session,
+    });
+    refresh(parsed.data.revalidate);
+    return { ok: true, documentId: res.documentId, numero: res.numero };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Erreur de génération." };
   }
 }
 

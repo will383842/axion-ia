@@ -35,6 +35,8 @@ export interface CreerReclamationInput {
   gravite?: string;
   dateReception: Date;
   enrollmentId?: string;
+  /** Réclamation rattachée à un parcours coaching 1-to-1 (off.31). */
+  coachingSessionId?: string;
   traiteeParId?: string;
 }
 
@@ -107,6 +109,9 @@ export async function creerReclamation(input: CreerReclamationInput): Promise<Re
           statut: "nouvelle",
           dateReception: input.dateReception,
           ...(input.enrollmentId !== undefined ? { enrollmentId: input.enrollmentId } : {}),
+          ...(input.coachingSessionId !== undefined
+            ? { coachingSessionId: input.coachingSessionId }
+            : {}),
           ...(input.traiteeParId !== undefined ? { traiteeParId: input.traiteeParId } : {}),
         },
       });

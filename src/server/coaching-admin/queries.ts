@@ -42,6 +42,27 @@ export async function getSessionAdmin(sessionId: string) {
         orderBy: { createdAt: "desc" },
         select: { id: true, type: true, numero: true, pdfUrl: true, createdAt: true },
       },
+      coachingContract: {
+        select: {
+          id: true,
+          montantHtCents: true,
+          financementType: true,
+          subrogation: true,
+          numeroDossierOpco: true,
+          conventionTripartiteSigneeAt: true,
+          priseEnChargeMontantCents: true,
+          priseEnChargeUnite: true,
+          priseEnChargePlafondFormationCents: true,
+          priseEnChargePlafondAnnuelCents: true,
+          edofVerifieAt: true,
+          resteAChargeCents: true,
+          ftDispositif: true,
+          ftAifPrescriptionDate: true,
+          ftPoeiOffreEmploiNumero: true,
+          ftPoeiAccordFinancementAt: true,
+          ftPoeiEngagementSigneAt: true,
+        },
+      },
     },
   });
 }

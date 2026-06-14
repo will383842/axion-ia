@@ -5653,37 +5653,39 @@ enum FactureFormationStatut {
 /// exonérée (261-4-4° CGI). Lignes = ventilation (forfait OU horaire OPCO).
 /// Libellée à l'OPCO si subrogation, sinon à l'entreprise/stagiaire/FT.
 model FactureFormation {
-  id                  String                       @id @default(uuid()) @db.Uuid
-  numero              String                       @unique @db.VarChar(40)
+  id                            String                       @id @default(uuid()) @db.Uuid
+  numero                        String                       @unique @db.VarChar(40)
   /// Session de formation collective. Nullable depuis le 1-to-1 AFEST (C1) :
   /// une facture peut cibler un `CoachingContract` sans TrainingSession.
-  sessionId           String?                      @map("session_id") @db.Uuid
-  session             TrainingSession?             @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  sessionId                     String?                      @map("session_id") @db.Uuid
+  session                       TrainingSession?             @relation(fields: [sessionId], references: [id], onDelete: Restrict)
   /// Contrat de coaching 1-to-1 AFEST (C1). Null pour une facture de formation.
-  coachingContractId  String?                      @map("coaching_contract_id") @db.Uuid
-  coachingContract    CoachingContract?            @relation(fields: [coachingContractId], references: [id], onDelete: SetNull)
+  coachingContractId            String?                      @map("coaching_contract_id") @db.Uuid
+  coachingContract              CoachingContract?            @relation(fields: [coachingContractId], references: [id], onDelete: SetNull)
   /// Inscription ciblée (R-INTER) : facture PAR participant en inter-entreprises.
   /// Null = facture au niveau session (intra, inchangé).
-  enrollmentId        String?                      @map("enrollment_id") @db.Uuid
-  enrollment          Enrollment?                  @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
-  destinataire        FactureFormationDestinataire
-  destinataireNom     String                       @map("destinataire_nom") @db.VarChar(250)
-  destinataireSiret   String?                      @map("destinataire_siret") @db.VarChar(20)
-  destinataireAdresse String?                      @map("destinataire_adresse") @db.Text
-  montantHtCents      Int                          @map("montant_ht_cents")
+  enrollmentId                  String?                      @map("enrollment_id") @db.Uuid
+  enrollment                    Enrollment?                  @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
+  destinataire                  FactureFormationDestinataire
+  destinataireNom               String                       @map("destinataire_nom") @db.VarChar(250)
+  destinataireSiret             String?                      @map("destinataire_siret") @db.VarChar(20)
+  destinataireAdresse           String?                      @map("destinataire_adresse") @db.Text
+  montantHtCents                Int                          @map("montant_ht_cents")
   /// Exonération TVA art. 261-4-4° CGI (true par défaut pour la formation pro).
-  tvaExoneree         Boolean                      @default(true) @map("tva_exoneree")
+  tvaExoneree                   Boolean                      @default(true) @map("tva_exoneree")
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents }].
-  lignes              Json                         @default("[]")
-  subrogation         Boolean                      @default(false)
-  numeroDossierOpco   String?                      @map("numero_dossier_opco") @db.VarChar(60)
-  statut              FactureFormationStatut       @default(brouillon)
+  lignes                        Json                         @default("[]")
+  subrogation                   Boolean                      @default(false)
+  numeroDossierOpco             String?                      @map("numero_dossier_opco") @db.VarChar(60)
+  /// Aide France Travail (AIF/POEI) prise en charge (centimes), si financement FT.
+  montantAideFranceTravailCents Int?                         @map("montant_aide_france_travail_cents")
+  statut                        FactureFormationStatut       @default(brouillon)
   /// DocumentGenere (PDF) associé.
-  documentId          String?                      @map("document_id") @db.Uuid
-  emiseAt             DateTime?                    @map("emise_at")
-  echeanceAt          DateTime?                    @map("echeance_at")
-  createdAt           DateTime                     @default(now()) @map("created_at")
-  updatedAt           DateTime                     @updatedAt @map("updated_at")
+  documentId                    String?                      @map("document_id") @db.Uuid
+  emiseAt                       DateTime?                    @map("emise_at")
+  echeanceAt                    DateTime?                    @map("echeance_at")
+  createdAt                     DateTime                     @default(now()) @map("created_at")
+  updatedAt                     DateTime                     @updatedAt @map("updated_at")
 
   @@index([sessionId])
   @@index([enrollmentId])
@@ -5741,12 +5743,16 @@ model Reclamation {
   reponse            String?           @db.Text
   actionsCorrectives String?           @map("actions_correctives") @db.Text
   enrollmentId       String?           @map("enrollment_id") @db.Uuid
+  /// Parcours coaching 1-to-1 AFEST (harmonisation off.31) — alternatif à enrollmentId.
+  coachingSessionId  String?           @map("coaching_session_id") @db.Uuid
+  coachingSession    CoachingSession?  @relation("CoachingReclamations", fields: [coachingSessionId], references: [id], onDelete: SetNull)
   traiteeParId       String?           @map("traitee_par_id") @db.Uuid
   createdAt          DateTime          @default(now()) @map("created_at")
   updatedAt          DateTime          @updatedAt @map("updated_at")
 
   @@index([statut])
   @@index([dateReception])
+  @@index([coachingSessionId])
   @@map("reclamations")
 }
 
@@ -6131,21 +6137,25 @@ model PortailAcces {
 /// Appréciation multi-parties (off.30) : recueil structuré des retours
 /// stagiaire / entreprise / financeur / formateur (≠ réclamations off.31).
 model Appreciation {
-  id               String             @id @default(uuid()) @db.Uuid
-  source           AppreciationSource
-  enrollmentId     String?            @map("enrollment_id") @db.Uuid
-  traineeId        String?            @map("trainee_id") @db.Uuid
-  trainee          Trainee?           @relation(fields: [traineeId], references: [id], onDelete: SetNull)
-  clientId         String?            @map("client_id") @db.Uuid
+  id                String             @id @default(uuid()) @db.Uuid
+  source            AppreciationSource
+  enrollmentId      String?            @map("enrollment_id") @db.Uuid
+  /// Parcours coaching 1-to-1 AFEST (harmonisation off.30) — alternatif à enrollmentId.
+  coachingSessionId String?            @map("coaching_session_id") @db.Uuid
+  coachingSession   CoachingSession?   @relation("CoachingAppreciations", fields: [coachingSessionId], references: [id], onDelete: SetNull)
+  traineeId         String?            @map("trainee_id") @db.Uuid
+  trainee           Trainee?           @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId          String?            @map("client_id") @db.Uuid
   /// Note /5 (facultative).
-  note             Int?
-  commentaire      String?            @db.Text
-  dateAppreciation DateTime           @map("date_appreciation")
-  createdAt        DateTime           @default(now()) @map("created_at")
+  note              Int?
+  commentaire       String?            @db.Text
+  dateAppreciation  DateTime           @map("date_appreciation")
+  createdAt         DateTime           @default(now()) @map("created_at")
 
   @@index([source])
   @@index([dateAppreciation])
   @@index([enrollmentId])
+  @@index([coachingSessionId])
   @@map("appreciations")
 }
 
@@ -6538,6 +6548,18 @@ model CoachingSession {
   attestationResultat      AttestationResultat?  @map("attestation_resultat")
   attestationDocumentId    String?               @map("attestation_document_id") @db.Uuid
   attestationGenereeAt     DateTime?             @map("attestation_generee_at")
+  // Certificat de réalisation 1-to-1 (R.6313-3, heures en centièmes).
+  certificatDocumentId     String?               @map("certificat_document_id") @db.Uuid
+  certificatGenereeAt      DateTime?             @map("certificat_generee_at")
+  // France Compétences — RNCP / RS (parcours AFEST certifiant, cas atypique).
+  certificationType        CertificationType     @default(aucune) @map("certification_type")
+  codeRncp                 String?               @map("code_rncp") @db.VarChar(20)
+  codeRs                   String?               @map("code_rs") @db.VarChar(20)
+  blocsCompetences         Json                  @default("[]") @map("blocs_competences")
+  numeroEnregistrementFc   String?               @map("numero_enregistrement_fc") @db.VarChar(40)
+  dateEnregistrementCertif DateTime?             @map("date_enregistrement_certif")
+  dateEcheanceCertif       DateTime?             @map("date_echeance_certif")
+  cpfEligible              Boolean               @default(false) @map("cpf_eligible")
   createdAt                DateTime              @default(now()) @map("created_at")
   updatedAt                DateTime              @updatedAt @map("updated_at")
 
@@ -6549,6 +6571,8 @@ model CoachingSession {
   documentsGeneres DocumentGenere[]       @relation("CoachingDocuments")
   evaluations      EvaluationAcquis[]     @relation("CoachingEvaluations")
   transitions      CoachingTransition[]
+  appreciations    Appreciation[]         @relation("CoachingAppreciations")
+  reclamations     Reclamation[]          @relation("CoachingReclamations")
 
   @@index([trainerId])
   @@index([traineeId])
@@ -6677,25 +6701,45 @@ model JournalProgression {
 /// N séances). Regroupe N `CoachingSession` pour la facturation/conformité au
 /// niveau parcours. Null sur une séance ponctuelle hors contrat.
 model CoachingContract {
-  id                String          @id @default(uuid()) @db.Uuid
+  id                                 String                   @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-FORM-YYYY-NNN (réutilise le compteur formation).
-  numero            String          @unique @db.VarChar(40)
-  traineeId         String?         @map("trainee_id") @db.Uuid
-  trainee           Trainee?        @relation(fields: [traineeId], references: [id], onDelete: SetNull)
-  clientId          String?         @map("client_id") @db.Uuid
-  client            Client?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  numero                             String                   @unique @db.VarChar(40)
+  traineeId                          String?                  @map("trainee_id") @db.Uuid
+  trainee                            Trainee?                 @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId                           String?                  @map("client_id") @db.Uuid
+  client                             Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
   /// Référence souple vers un Booking (pas de FK).
-  bookingId         String?         @map("booking_id") @db.Uuid
-  interventionSlug  String          @map("intervention_slug") @db.VarChar(80)
-  montantHtCents    Int             @map("montant_ht_cents")
-  dateSigneeAt      DateTime?       @map("date_signee_at")
-  dureeContratMois  Int?            @map("duree_contrat_mois")
-  nbSeancesMax      Int?            @map("nb_seances_max")
-  financementType   FinancementType @default(direct) @map("financement_type")
-  numeroDossierOpco String?         @map("numero_dossier_opco") @db.VarChar(60)
-  subrogation       Boolean         @default(false)
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
+  bookingId                          String?                  @map("booking_id") @db.Uuid
+  interventionSlug                   String                   @map("intervention_slug") @db.VarChar(80)
+  montantHtCents                     Int                      @map("montant_ht_cents")
+  dateSigneeAt                       DateTime?                @map("date_signee_at")
+  dureeContratMois                   Int?                     @map("duree_contrat_mois")
+  nbSeancesMax                       Int?                     @map("nb_seances_max")
+  financementType                    FinancementType          @default(direct) @map("financement_type")
+  numeroDossierOpco                  String?                  @map("numero_dossier_opco") @db.VarChar(60)
+  subrogation                        Boolean                  @default(false)
+  // ── Parité financement avec TrainingSession (2026-06-14) — tout additif ──────
+  /// Convention tripartite OPCO signée (L.6353-2) — requise avant subrogation.
+  conventionTripartiteSigneeAt       DateTime?                @map("convention_tripartite_signee_at")
+  // OPCO : ventilation horaire (barème prise en charge relevé sur le portail OPCO).
+  priseEnChargeMontantCents          Int?                     @map("prise_en_charge_montant_cents")
+  priseEnChargeUnite                 PriseEnChargeUnite?      @map("prise_en_charge_unite")
+  priseEnChargePlafondFormationCents Int?                     @map("prise_en_charge_plafond_formation_cents")
+  priseEnChargePlafondAnnuelCents    Int?                     @map("prise_en_charge_plafond_annuel_cents")
+  priseEnChargeSourceUrl             String?                  @map("prise_en_charge_source_url") @db.Text
+  priseEnChargeReleveLe              DateTime?                @map("prise_en_charge_releve_le")
+  // CPF / EDOF
+  edofVerifieAt                      DateTime?                @map("edof_verifie_at")
+  resteAChargeCents                  Int?                     @map("reste_a_charge_cents")
+  cpfPayeurResteCharge               String?                  @map("cpf_payeur_reste_charge") @db.VarChar(40)
+  // France Travail (AIF / POEI / CSP)
+  ftDispositif                       FranceTravailDispositif? @map("ft_dispositif")
+  ftAifPrescriptionDate              DateTime?                @map("ft_aif_prescription_date")
+  ftPoeiOffreEmploiNumero            String?                  @map("ft_poei_offre_emploi_numero") @db.VarChar(50)
+  ftPoeiAccordFinancementAt          DateTime?                @map("ft_poei_accord_financement_at")
+  ftPoeiEngagementSigneAt            DateTime?                @map("ft_poei_engagement_signe_at")
+  createdAt                          DateTime                 @default(now()) @map("created_at")
+  updatedAt                          DateTime                 @updatedAt @map("updated_at")
 
   sessions CoachingSession[]
   factures FactureFormation[]
