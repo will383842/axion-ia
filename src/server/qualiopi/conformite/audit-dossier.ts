@@ -112,7 +112,8 @@ const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   25: [],
   26: [],
   27: ["convention_tripartite"],
-  28: [],
+  // off.28 (AFEST 1-to-1) : protocole AFEST + attestation en heures.
+  28: ["protocole_afest", "attestation", "emargement"],
   29: [],
 
   // C7 — Amélioration

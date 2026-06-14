@@ -14,12 +14,21 @@ import {
   setAfestCadrageAction,
   genererProtocoleAfestAction,
   genererAttestation1to1Action,
+  genererEmargement1to1Action,
+  genererPositionnement1to1Action,
+  genererSatisfaction1to1Action,
+  genererFactureCoachingAction,
+  signerSeance1to1Action,
 } from "@/server/actions/qualiopi/coaching-afest";
 
 const DOC_LABELS: Record<string, string> = {
   protocole_afest: "Protocole AFEST",
   attestation: "Attestation de réalisation",
   attestation_partielle: "Attestation partielle",
+  emargement: "Feuille d'émargement",
+  positionnement: "Positionnement",
+  satisfaction: "Satisfaction",
+  facture: "Facture",
 };
 
 export interface AfestPanelProps {
@@ -31,6 +40,8 @@ export interface AfestPanelProps {
   tuteurNom: string | null;
   tuteurEmail: string | null;
   attestationResultat: string | null;
+  coachingContractId: string | null;
+  seances: ReadonlyArray<{ id: string; date: string; presenceSignee: boolean }>;
   documents: ReadonlyArray<{ id: string; type: string; numero: string; pdfUrl: string | null }>;
 }
 
@@ -179,7 +190,120 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
         >
           {"Générer l'attestation en heures"}
         </button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            run(
+              () =>
+                genererEmargement1to1Action({
+                  coachingSessionId: props.coachingSessionId,
+                  revalidate: props.revalidatePath,
+                }),
+              "Émargement généré.",
+            )
+          }
+          className="border-border rounded-md border px-3 py-1 text-xs font-medium disabled:opacity-50"
+        >
+          {"Générer l'émargement"}
+        </button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            run(
+              () =>
+                genererPositionnement1to1Action({
+                  coachingSessionId: props.coachingSessionId,
+                  revalidate: props.revalidatePath,
+                }),
+              "Positionnement généré.",
+            )
+          }
+          className="border-border rounded-md border px-3 py-1 text-xs font-medium disabled:opacity-50"
+        >
+          Générer le positionnement
+        </button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            run(
+              () =>
+                genererSatisfaction1to1Action({
+                  coachingSessionId: props.coachingSessionId,
+                  revalidate: props.revalidatePath,
+                }),
+              "Satisfaction générée.",
+            )
+          }
+          className="border-border rounded-md border px-3 py-1 text-xs font-medium disabled:opacity-50"
+        >
+          Générer la satisfaction
+        </button>
+        {props.coachingContractId ? (
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() =>
+              run(
+                () =>
+                  genererFactureCoachingAction({
+                    coachingContractId: props.coachingContractId as string,
+                    revalidate: props.revalidatePath,
+                  }),
+                "Facture générée.",
+              )
+            }
+            className="border-border rounded-md border px-3 py-1 text-xs font-medium disabled:opacity-50"
+          >
+            Générer la facture OPCO
+          </button>
+        ) : null}
       </div>
+
+      {/* Présence par séance (émargement signé) */}
+      {props.seances.length > 0 ? (
+        <div className="border-border mb-3 space-y-1 border-t pt-3">
+          <p className="text-fg-muted text-xs">
+            {"Présence des séances (signature pour l'audit) :"}
+          </p>
+          {props.seances.map((s) => (
+            <div key={s.id} className="flex items-center justify-between text-sm">
+              <span>
+                {s.date}{" "}
+                {s.presenceSignee ? (
+                  <span className="text-success text-xs">présence signée</span>
+                ) : (
+                  <span className="text-terracotta text-xs">non signée</span>
+                )}
+              </span>
+              {!s.presenceSignee ? (
+                <button
+                  type="button"
+                  disabled={pending}
+                  onClick={() =>
+                    run(
+                      () =>
+                        signerSeance1to1Action({
+                          compteRenduId: s.id,
+                          beneficiairePresent: true,
+                          beneficiaireSigne: true,
+                          formateurSigne: true,
+                          revalidate: props.revalidatePath,
+                        }),
+                      "Présence signée.",
+                    )
+                  }
+                  className="border-border rounded-md border px-2 py-0.5 text-xs disabled:opacity-50"
+                >
+                  Signer la présence
+                </button>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       {message ? (
         <p className={`mb-2 text-xs ${message.kind === "ok" ? "text-success" : "text-terracotta"}`}>

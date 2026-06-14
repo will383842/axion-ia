@@ -6528,6 +6528,12 @@ model CoachingSession {
   tuteurEntrepriseNom      String?               @map("tuteur_entreprise_nom") @db.VarChar(200)
   tuteurEntrepriseEmail    String?               @map("tuteur_entreprise_email") @db.Citext
   tuteurEntrepriseSigneeAt DateTime?             @map("tuteur_entreprise_signee_at")
+  // Protocole AFEST émis (idempotence — pas de doublon à la re-génération).
+  protocoleDocumentId      String?               @map("protocole_document_id") @db.Uuid
+  protocoleGenereeAt       DateTime?             @map("protocole_generee_at")
+  // Émargement 1-to-1 émis (feuille de présence signée du parcours).
+  emargementDocumentId     String?               @map("emargement_document_id") @db.Uuid
+  emargementGenereeAt      DateTime?             @map("emargement_generee_at")
   // Résultat d'attestation 1-to-1 (réutilise la classification 80/60/0).
   attestationResultat      AttestationResultat?  @map("attestation_resultat")
   attestationDocumentId    String?               @map("attestation_document_id") @db.Uuid
@@ -6627,6 +6633,13 @@ model CompteRenduSeance {
   planRemis            Boolean         @default(false) @map("plan_remis")
   suite                String?         @db.VarChar(120)
   notesConfidentielles String?         @map("notes_confidentielles") @db.Text
+  // Traçabilité de présence AFEST (émargement signé par séance) — additif.
+  beneficiairePresent  Boolean         @default(false) @map("beneficiaire_present")
+  beneficiaireSigneAt  DateTime?       @map("beneficiaire_signe_at")
+  formateurSigneAt     DateTime?       @map("formateur_signe_at")
+  tuteurSigneAt        DateTime?       @map("tuteur_signe_at")
+  /// Date à laquelle la présence de la séance a été validée/signée (preuve audit).
+  presenceSigneeAt     DateTime?       @map("presence_signee_at")
   createdAt            DateTime        @default(now()) @map("created_at")
 
   @@index([coachingSessionId])

@@ -76,6 +76,12 @@ export default async function AdminSeanceDetailPage({
         tuteurNom={s.tuteurEntrepriseNom}
         tuteurEmail={s.tuteurEntrepriseEmail}
         attestationResultat={s.attestationResultat}
+        coachingContractId={s.coachingContractId}
+        seances={s.comptesRendus.map((c) => ({
+          id: c.id,
+          date: dateFmt.format(c.dateSeance),
+          presenceSignee: c.presenceSigneeAt != null,
+        }))}
         documents={s.documentsGeneres}
       />
 

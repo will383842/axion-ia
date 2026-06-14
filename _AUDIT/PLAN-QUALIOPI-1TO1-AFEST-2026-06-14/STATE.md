@@ -48,5 +48,18 @@ DÉFÉRÉ (documenté, dépend du certificateur ou faux positif) :
 - Brancher la génération facture coaching dans une action/UI (service prêt).
 - isolation-check : 1 violation PRÉ-EXISTANTE (`accessibilite/page.tsx`), pas introduite ici.
 
+## Vérification e2e adversariale (16 dim) + corrections (2026-06-14, post-impl)
+Rapport : `_AUDIT/VERIF-QUALIOPI-1TO1-AFEST-2026-06-14/` (RAPPORT-CONFORMITE.md + RUNBOOK.md + e2e-results.json + pdf/).
+Décisions Will : corriger tout (sauf scope) + restreindre à off.28 + implémenter émargement signé.
+CORRIGÉ (D-01→D-09) :
+- D-01 off.28 SEUL (off.13/14/15 = apprentissage/CFA → non_applicable ; registre découplé "app"≠AFEST). Prouvé e2e.
+- D-02 protocole idempotent (protocoleDocumentId/GenereeAt). D-06 manifeste auditeur lie protocole/attestation/émargement à off.28.
+- D-03 facture coaching câblée (action + bouton). D-05 générateurs positionnement/satisfaction 1-to-1.
+- D-04 RGPD : effacement + export couvrent CoachingSession/CR/PII. D-07 format heures FR (attestation-partielle).
+- D-08 BPF intègre CA + heures coaching (+7 tests). D-09 émargement signé 1-to-1 (modèle présence par séance + template + service + action + gate attestation gated).
+Migration additive `20260614140000_qualiopi_1to1_afest_verif`. typecheck 0, 83 tests verts, gates OK.
+E2E re-prouvé (DB jetable) : heures 14, protocole idempotent, émargement, attestation complete, facture, off.28 couvert, off.13/14/15 non_applicable.
+DÉFÉRÉ scope (décision Will) : D-10 DocuSeal signatures, D-11 portail bénéficiaire.
+
 ## Garde-fous (pause obligatoire)
 archi ✅ tranché · exigences AFEST/certificateur ⏳ ouvert · mentions/numéros légaux (placeholders SiteSetting, rien d'inventé) · avant push/merge/deploy.

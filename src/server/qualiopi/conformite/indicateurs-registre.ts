@@ -279,14 +279,18 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
  *
  * - Tronc commun (conditionnel undefined) : toujours applicables.
  * - "cert"  : applicable si "certifiante" ∈ typesAction.
- * - "app"   : applicable si "alternance_afest" ∈ typesAction.
- * - "afest" : applicable si "alternance_afest" ∈ typesAction.
+ * - "app"   : APPRENTISSAGE/CFA (off.13/14/15). Axion-IA n'exerce pas
+ *             l'apprentissage → jamais applicable (découplé de l'AFEST). Ne PAS
+ *             le rattacher à "alternance_afest" : ce sont des indicateurs apprenti
+ *             (citoyenneté/droits de l'apprenti), distincts de l'AFEST (off.28).
+ * - "afest" : applicable si "alternance_afest" ∈ typesAction (off.28).
  *
  * Retourne les numéros triés ascendants.
  */
 export function indicateursApplicables(typesAction: string[]): number[] {
   const hasCert = typesAction.includes("certifiante");
-  const hasApp = typesAction.includes("alternance_afest");
+  // "app" = apprentissage (CFA) : aucun type d'action correspondant chez Axion-IA.
+  const hasApp = typesAction.includes("apprentissage");
   const hasAfest = typesAction.includes("alternance_afest");
 
   return INDICATEURS_RNQ.filter((ind) => {

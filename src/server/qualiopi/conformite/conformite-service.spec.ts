@@ -372,23 +372,29 @@ describe("evaluerConformite", () => {
     expect(ind16?.statut, "off.16 doit être couvert").toBe("couvert");
   });
 
-  // ── off.13/14/15/28 (APP/AFEST) : a_completer si applicable, non muet ────
+  // ── off.28 = AFEST (automatisé) ; off.13/14/15 = APPRENTISSAGE (non applicable) ──
 
-  it("off.13/14/15/28 a_completer avec preuve explicite si AFEST applicable mais aucun parcours tracé", async () => {
+  it("off.13/14/15 (apprentissage/CFA) restent NON APPLICABLES même avec AFEST déclaré", async () => {
+    // alternance_afest déclaré ne doit PAS rendre les indicateurs apprenti applicables.
     mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
     const result = await evaluerConformite();
-    for (const numero of [13, 14, 15, 28]) {
+    for (const numero of [13, 14, 15]) {
       const ind = result.indicateurs.find((i) => i.numero === numero);
-      expect(ind?.statut, `off.${numero} doit être a_completer`).toBe("a_completer");
-      expect(ind?.preuves.join(" "), `off.${numero} doit porter une preuve explicite`).toMatch(
-        /à compléter/i,
+      expect(ind?.statut, `off.${numero} (apprentissage) doit être non_applicable`).toBe(
+        "non_applicable",
       );
     }
   });
 
-  it("off.13/14/15/28 AUTOMATISÉS → couverts depuis les parcours AFEST 1-to-1 réalisés", async () => {
-    // Un parcours coaching AFEST réalisé avec cartographie remplie, évaluation et
-    // alternance mises en situation ↔ phases réflexives tracées.
+  it("off.28 a_completer si AFEST applicable mais aucun parcours conforme tracé", async () => {
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
+    const result = await evaluerConformite();
+    const ind28 = result.indicateurs.find((i) => i.numero === 28);
+    expect(ind28?.statut).toBe("a_completer");
+    expect(ind28?.preuves.join(" ")).toMatch(/à compléter/i);
+  });
+
+  it("off.28 AUTOMATISÉ → couvert depuis un parcours AFEST 1-to-1 CONFORME (analyse + alternance + éval)", async () => {
     mockP.coachingSession.findMany.mockResolvedValue([
       {
         cartographie: { taches: [{ tache: "Tri des emails" }] },
@@ -399,34 +405,29 @@ describe("evaluerConformite", () => {
       },
     ]);
     const result = await evaluerConformite();
-    for (const numero of [13, 14, 15, 28]) {
-      const ind = result.indicateurs.find((i) => i.numero === numero);
-      expect(ind?.statut, `off.${numero} doit être couvert (automatisé)`).toBe("couvert");
-      expect(ind?.preuves.length, `off.${numero} doit porter une preuve`).toBeGreaterThan(0);
+    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("couvert");
+    // Les indicateurs apprentissage NE deviennent PAS couverts par l'AFEST.
+    for (const numero of [13, 14, 15]) {
+      expect(result.indicateurs.find((i) => i.numero === numero)?.statut).toBe("non_applicable");
     }
   });
 
-  it("off.13/14/28 NON couverts si cartographie/alternance vides ou malformées (anti faux-positif)", async () => {
+  it("off.28 a_completer si cartographie/alternance/éval vides ou malformées (anti faux-positif)", async () => {
     mockP.coachingSession.findMany.mockResolvedValue([
       {
-        cartographie: { taches: [] }, // vide → off.13 non couvert
+        cartographie: { taches: [] }, // vide
         evaluations: [],
         comptesRendus: [
-          // misesEnSituation présent mais malformé (cas vide) + phases absentes
           { misesEnSituation: [{ cas: "" }], phasesReflexives: [] },
           { misesEnSituation: [null], phasesReflexives: [{ situation: "ok" }] },
         ],
       },
     ]);
     const result = await evaluerConformite();
-    // estAfest présent → applicable, mais aucune preuve valide → a_completer (pas couvert).
-    for (const numero of [13, 14, 28]) {
-      const ind = result.indicateurs.find((i) => i.numero === numero);
-      expect(ind?.statut, `off.${numero} ne doit PAS être couvert`).toBe("a_completer");
-    }
+    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("a_completer");
   });
 
-  it("off.14/28 a_completer si comptesRendus vide même avec cartographie remplie", async () => {
+  it("off.28 a_completer si comptesRendus vide même avec cartographie remplie + éval", async () => {
     mockP.coachingSession.findMany.mockResolvedValue([
       {
         cartographie: { taches: [{ tache: "x" }] },
@@ -435,14 +436,7 @@ describe("evaluerConformite", () => {
       },
     ]);
     const result = await evaluerConformite();
-    // off.13 (analyse) couvert via cartographie ; off.14/28 (alternance) non.
-    expect(result.indicateurs.find((i) => i.numero === 13)?.statut).toBe("couvert");
-    for (const numero of [14, 28]) {
-      expect(
-        result.indicateurs.find((i) => i.numero === numero)?.statut,
-        `off.${numero} sans alternance`,
-      ).toBe("a_completer");
-    }
+    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("a_completer");
   });
 
   it("off.28 (AFEST) non_applicable et sans preuve pour une action classique", async () => {

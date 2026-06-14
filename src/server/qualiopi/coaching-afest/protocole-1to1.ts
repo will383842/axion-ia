@@ -78,6 +78,7 @@ function buildMisesEnSituation(taches: unknown): string[] {
  */
 export async function genererProtocoleAfest(
   coachingSessionId: string,
+  opts?: { force?: boolean },
 ): Promise<ProtocoleAfestGenerated | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return null;
@@ -94,6 +95,8 @@ export async function genererProtocoleAfest(
       beneficiaireNom: true,
       beneficiaireEntreprise: true,
       tuteurEntrepriseNom: true,
+      protocoleDocumentId: true,
+      protocoleGenereeAt: true,
       trainer: { select: { nom: true, prenom: true } },
       trainee: { select: { nom: true, prenom: true, entreprise: true, fonction: true } },
       cartographie: {
@@ -103,6 +106,16 @@ export async function genererProtocoleAfest(
   });
 
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
+
+  // Idempotence : un protocole déjà émis n'est pas régénéré (évite les doublons
+  // DocumentGenere). `force` permet une réémission explicite (admin).
+  if (cs.protocoleGenereeAt && cs.protocoleDocumentId && !opts?.force) {
+    const existing = await prisma.documentGenere.findUnique({
+      where: { id: cs.protocoleDocumentId },
+      select: { id: true, numero: true },
+    });
+    if (existing) return { documentId: existing.id, numero: existing.numero };
+  }
 
   const identite = await getOrganismeIdentite();
   const perimetreCertifie = await getQualiopiConfig("afest_perimetre_certifie");
@@ -168,6 +181,12 @@ export async function genererProtocoleAfest(
       }),
     refs: { coachingSessionId },
     qrToken: token,
+  });
+
+  // Trace l'émission (idempotence + lien parcours → document).
+  await prisma.coachingSession.update({
+    where: { id: coachingSessionId },
+    data: { protocoleDocumentId: generated.id, protocoleGenereeAt: new Date() },
   });
 
   try {

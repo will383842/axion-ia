@@ -130,6 +130,11 @@ export interface AttestationPartielleData {
 // Helpers
 // ============================================================
 
+/** Heures au format français (virgule décimale ; entiers inchangés). R.6313-3. */
+function hFr(heures: number): string {
+  return heures.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+}
+
 function assiduitePercent(heuresSuivies: number, heuresTotales: number): string {
   if (heuresTotales === 0) return "—";
   const pct = Math.round((heuresSuivies / heuresTotales) * 100);
@@ -192,7 +197,7 @@ export function AttestationPartiellePdf({
         <DocSection title="Formation concernée">
           <FieldRow label="Intitulé" value={data.formation.intitule} />
           <FieldRow label="Objectifs" value={data.formation.objectifs} />
-          <FieldRow label="Durée totale prévue" value={`${data.formation.dureeHeures} h`} />
+          <FieldRow label="Durée totale prévue" value={`${hFr(data.formation.dureeHeures)} h`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
           <FieldRow label="Modalité" value={data.formation.modalite} />
@@ -203,12 +208,12 @@ export function AttestationPartiellePdf({
         <DocSection title="Résultats partiels">
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Durée réelle suivie</Text>
-            <Text style={styles.resultValue}>{`${data.resultats.heuresSuivies} h`}</Text>
+            <Text style={styles.resultValue}>{`${hFr(data.resultats.heuresSuivies)} h`}</Text>
           </View>
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Assiduité</Text>
             <Text style={styles.resultValue}>
-              {`${data.resultats.heuresSuivies} h / ${data.resultats.heuresTotales} h = ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}`}
+              {`${hFr(data.resultats.heuresSuivies)} h / ${hFr(data.resultats.heuresTotales)} h = ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}`}
             </Text>
           </View>
           {data.resultats.evaluationObtenue ? (
