@@ -1,8 +1,8 @@
 /**
  * KB V4 — Wrapper embeddings pour dedup factory + recherche hybride.
  *
- * Provider default V4 (§17.6 prompt master) : **Voyage AI `voyage-3-lite`**
- * (1024 dim, $0.02/1M tokens, best cost/perf ratio).
+ * Provider default V4 (§17.6 prompt master) : **Voyage AI `voyage-3`**
+ * (1024 dim via `output_dimension`, best cost/perf ratio).
  *
  * Refus dur (cf. confidentialités) : NE PAS envoyer à API externe les entries
  * `confidentiality IN ('confidential', 'secret')`.
@@ -15,11 +15,16 @@ import type { KbConfidentiality } from "../../../prisma/generated/client";
 import { isExternalApiAllowed } from "@/content/knowledge/confidentialities";
 
 /**
- * Modèle embedding actif V1 V4.
- * Pour bascule : update `EMBEDDING_MODEL_NAME` + dimension table + reindex.
+ * Modèle embedding actif.
+ * ⚠️ Fix 2026-06-14 : `voyage-3-lite` renvoie 512 dimensions par défaut, ce qui
+ * ne correspond PAS à la colonne `vector(1024)` + index HNSW (erreur runtime
+ * « dimension inattendue : 512 (attendu 1024) »). On bascule sur `voyage-3`
+ * (1024 par défaut) ET on force `output_dimension: 1024` dans la requête API
+ * (Matryoshka) — aucune migration DB nécessaire, la dimension reste 1024.
+ * Pour rebasculer : update `EMBEDDING_MODEL_NAME` + `EMBEDDING_DIMENSION` (+ migration table/reindex si dim ≠ 1024).
  */
-export const EMBEDDING_MODEL_NAME = "voyage-3-lite" as const;
-export const EMBEDDING_MODEL_VERSION = "2026-05" as const;
+export const EMBEDDING_MODEL_NAME = "voyage-3" as const;
+export const EMBEDDING_MODEL_VERSION = "2026-06" as const;
 export const EMBEDDING_DIMENSION = 1024 as const;
 
 export interface EmbeddingResult {
@@ -69,7 +74,7 @@ async function stubEmbedding(text: string): Promise<EmbeddingResult> {
 }
 
 /**
- * Appel réel Voyage AI `voyage-3-lite` (1024-dim). Lève en cas d'erreur HTTP ou
+ * Appel réel Voyage AI `voyage-3` (1024-dim via output_dimension). Lève en cas d'erreur HTTP ou
  * de dimension inattendue (pas de fallback dimension-incompatible : OpenAI = 1536
  * ≠ 1024 → poisonnerait l'index vector(1024) ; le worker BullMQ retente).
  */
@@ -84,6 +89,9 @@ async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingR
       input: [text],
       model: EMBEDDING_MODEL_NAME,
       input_type: "document",
+      // Force la dimension de sortie à 1024 (Matryoshka) pour matcher la colonne
+      // pgvector(1024) + l'index HNSW, quel que soit le défaut du modèle.
+      output_dimension: EMBEDDING_DIMENSION,
     }),
   });
   if (!res.ok) {
@@ -112,7 +120,7 @@ async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingR
 /**
  * Génère un embedding 1024-dim pour un texte (KB dedup + RAG chatbot).
  *
- * - `VOYAGE_API_KEY` présente → appel réel `voyage-3-lite` (T-04) ;
+ * - `VOYAGE_API_KEY` présente → appel réel `voyage-3` (T-04) ;
  * - sinon → stub déterministe (dev/test sans clé → KB tests inchangés).
  *
  * Refus dur : ne JAMAIS envoyer une entrée `confidential`/`secret` à l'API externe.
