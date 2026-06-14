@@ -1,22 +1,24 @@
 /**
- * Qualiopi 1-to-1 / AFEST — facturation d'un parcours coaching (C1, P5).
+ * Qualiopi 1-to-1 / AFEST — facturation d'un parcours coaching (parité financement).
  *
- * Facture un `CoachingContract` (forfait, TVA exonérée 261-4-4° CGI), avec
- * subrogation OPCO optionnelle (destinataire = OPCO + n° dossier bloquant).
- * Réutilise computeForfait, generateDocument et le template FacturePdf — AUCUNE
- * duplication de la machinerie. La facture est rattachée via coachingContractId.
- *
- * Stub-aware. Numérotation AXI-FACT-YYYY-NNN (retry P2002).
+ * Facture un `CoachingContract` (TVA exonérée 261-4-4° CGI) selon son dispositif :
+ *   - OPCO : ventilation horaire (barème prise en charge) ou forfait, subrogation
+ *            → destinataire OPCO + n° dossier ;
+ *   - France Travail : destinataire France Travail + montant aide ;
+ *   - CPF : reste à charge bénéficiaire ;
+ *   - direct : forfait, destinataire entreprise.
+ * Valide les pré-requis bloquants (validateCoachingFinancement). Heures réelles =
+ * Σ CompteRenduSeance.dureeMinutes / 60. Réutilise FacturePdf. Stub-aware.
  */
 
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import { computeForfait } from "@/server/qualiopi/financements/opco-calcul";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
+import { validateCoachingFinancement, computeCoachingFacturation } from "./financement-1to1";
 
 export interface GenererFactureCoachingResult {
   factureId: string;
@@ -26,6 +28,16 @@ export interface GenererFactureCoachingResult {
 
 const MAX_ATTEMPTS = 5;
 const PREFIX_FACT = "AXI-FACT";
+
+/** Heures réelles d'un contrat = Σ CompteRenduSeance.dureeMinutes des séances liées. */
+async function heuresReellesContrat(coachingContractId: string): Promise<number> {
+  const crs = await prisma.compteRenduSeance.findMany({
+    where: { coachingSession: { coachingContractId } },
+    select: { dureeMinutes: true },
+  });
+  const minutes = crs.reduce((acc, c) => acc + (c.dureeMinutes ?? 0), 0);
+  return Math.round((minutes / 60) * 100) / 100;
+}
 
 export async function genererFactureCoaching(
   coachingContractId: string,
@@ -39,28 +51,26 @@ export async function genererFactureCoaching(
     include: { client: true },
   });
 
-  // Subrogation OPCO : n° de dossier ET client identifié bloquants (sinon la
-  // facture serait libellée à un destinataire « À compléter »).
-  if (contrat.subrogation && !contrat.numeroDossierOpco) {
-    throw new Error(
-      "Subrogation OPCO : le numéro de dossier OPCO est obligatoire pour émettre la facture.",
-    );
-  }
+  // Pré-requis bloquants du dispositif (OPCO/CPF/France Travail).
+  const blocked = validateCoachingFinancement(contrat);
+  if (blocked) throw new Error(blocked);
   if (contrat.subrogation && !contrat.client) {
     throw new Error(
       "Subrogation OPCO : un client (entreprise/OPCO) doit être rattaché au contrat avant facturation.",
     );
   }
 
-  const { lignes, totalHtCents } = computeForfait(contrat.montantHtCents);
+  const heures = await heuresReellesContrat(coachingContractId);
+  const calc = computeCoachingFacturation(contrat, heures);
 
-  // Destinataire : OPCO si subrogation, sinon le client.
-  const estOpco = contrat.subrogation;
+  // Nom/SIRET/adresse du destinataire selon le dispositif.
   let destinataireNom = "À compléter";
   let destinataireSiret: string | undefined;
   let destinataireAdresse: string | undefined;
-  if (estOpco && contrat.client) {
-    destinataireNom = contrat.client.opcoIdentifie ?? "OPCO";
+  if (calc.destinataire === "opco") {
+    destinataireNom = contrat.client?.opcoIdentifie ?? "OPCO";
+  } else if (calc.destinataire === "france_travail") {
+    destinataireNom = "France Travail";
   } else if (contrat.client) {
     destinataireNom = contrat.client.raisonSociale ?? "Client";
     destinataireSiret = contrat.client.siret ?? undefined;
@@ -93,11 +103,9 @@ export async function genererFactureCoaching(
         ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
         ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
       },
-      lignes,
-      ...(contrat.subrogation && contrat.numeroDossierOpco
-        ? {
-            subrogationOpco: { nomOpco: destinataireNom, numeroDossier: contrat.numeroDossierOpco },
-          }
+      lignes: calc.lignes,
+      ...(calc.destinataire === "opco" && calc.numeroDossier
+        ? { subrogationOpco: { nomOpco: destinataireNom, numeroDossier: calc.numeroDossier } }
         : {}),
     };
 
@@ -118,16 +126,17 @@ export async function genererFactureCoaching(
         data: {
           numero,
           coachingContractId,
-          destinataire: estOpco ? "opco" : "entreprise",
+          destinataire: calc.destinataire,
           destinataireNom,
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-          montantHtCents: totalHtCents,
+          montantHtCents: calc.totalHtCents,
           tvaExoneree: true,
-          lignes: lignes as never,
-          subrogation: contrat.subrogation,
-          ...(contrat.numeroDossierOpco != null
-            ? { numeroDossierOpco: contrat.numeroDossierOpco }
+          lignes: calc.lignes as never,
+          subrogation: calc.subrogation,
+          ...(calc.numeroDossier != null ? { numeroDossierOpco: calc.numeroDossier } : {}),
+          ...(calc.montantAideFranceTravailCents != null
+            ? { montantAideFranceTravailCents: calc.montantAideFranceTravailCents }
             : {}),
           statut: "emise",
           emiseAt: now,

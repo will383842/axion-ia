@@ -13,6 +13,12 @@ import { AfestPanel } from "@/components/admin/coaching/AfestPanel";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
+/** Date → "yyyy-mm-dd" pour un <input type="date"> (null si absente). */
+function toDateInput(d: Date | null): string | null {
+  if (!d) return null;
+  return new Date(d).toISOString().slice(0, 10);
+}
+
 function Block({
   title,
   children,
@@ -77,6 +83,32 @@ export default async function AdminSeanceDetailPage({
         tuteurEmail={s.tuteurEntrepriseEmail}
         attestationResultat={s.attestationResultat}
         coachingContractId={s.coachingContractId}
+        financement={
+          s.coachingContract
+            ? {
+                financementType: s.coachingContract.financementType,
+                montantHtCents: s.coachingContract.montantHtCents,
+                subrogation: s.coachingContract.subrogation,
+                numeroDossierOpco: s.coachingContract.numeroDossierOpco,
+                conventionTripartiteSigneeAt: toDateInput(
+                  s.coachingContract.conventionTripartiteSigneeAt,
+                ),
+                priseEnChargeMontantCents: s.coachingContract.priseEnChargeMontantCents,
+                priseEnChargeUnite: s.coachingContract.priseEnChargeUnite,
+                edofVerifieAt: toDateInput(s.coachingContract.edofVerifieAt),
+                resteAChargeCents: s.coachingContract.resteAChargeCents,
+                ftDispositif: s.coachingContract.ftDispositif,
+                ftAifPrescriptionDate: toDateInput(s.coachingContract.ftAifPrescriptionDate),
+                ftPoeiOffreEmploiNumero: s.coachingContract.ftPoeiOffreEmploiNumero,
+              }
+            : null
+        }
+        certification={{
+          certificationType: s.certificationType,
+          codeRncp: s.codeRncp,
+          codeRs: s.codeRs,
+          cpfEligible: s.cpfEligible,
+        }}
         seances={s.comptesRendus.map((c) => ({
           id: c.id,
           date: dateFmt.format(c.dateSeance),

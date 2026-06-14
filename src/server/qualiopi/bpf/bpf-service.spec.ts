@@ -396,6 +396,9 @@ describe("bpfToCsv", () => {
     nbSessions: 15,
     nbStagiairesDistincts: 87,
     nbHeuresStagiaires: 609,
+    nbHeuresStagiairesCollectif: 549,
+    nbHeuresStagiairesCoaching: 60,
+    nbCoachingParcours: 4,
     caTotalHtCents: 4500000,
     caParFinanceur: {
       opco: 1500000,

@@ -30,6 +30,8 @@ export interface CreerAppreciationInput {
   traineeId?: string;
   /** Lien au client/entreprise (optionnel). */
   clientId?: string;
+  /** Lien à un parcours coaching 1-to-1 (optionnel — off.30). */
+  coachingSessionId?: string;
   /** Note /5 (optionnel — entier 1..5). */
   note?: number;
   /** Commentaire libre (optionnel). */
@@ -42,6 +44,7 @@ export interface AppreciationListOptions {
   traineeId?: string;
   enrollmentId?: string;
   clientId?: string;
+  coachingSessionId?: string;
   limit?: number;
 }
 
@@ -51,6 +54,7 @@ export interface AppreciationItem {
   enrollmentId: string | null;
   traineeId: string | null;
   clientId: string | null;
+  coachingSessionId: string | null;
   note: number | null;
   commentaire: string | null;
   dateAppreciation: Date;
@@ -91,6 +95,9 @@ export async function creerAppreciation(input: CreerAppreciationInput): Promise<
       ...(input.enrollmentId !== undefined ? { enrollmentId: input.enrollmentId } : {}),
       ...(input.traineeId !== undefined ? { traineeId: input.traineeId } : {}),
       ...(input.clientId !== undefined ? { clientId: input.clientId } : {}),
+      ...(input.coachingSessionId !== undefined
+        ? { coachingSessionId: input.coachingSessionId }
+        : {}),
       ...(input.note !== undefined ? { note: input.note } : {}),
       ...(input.commentaire !== undefined ? { commentaire: input.commentaire } : {}),
       dateAppreciation: input.dateAppreciation,
@@ -122,6 +129,8 @@ export async function listAppreciations(
   if (options.traineeId !== undefined) where["traineeId"] = options.traineeId;
   if (options.enrollmentId !== undefined) where["enrollmentId"] = options.enrollmentId;
   if (options.clientId !== undefined) where["clientId"] = options.clientId;
+  if (options.coachingSessionId !== undefined)
+    where["coachingSessionId"] = options.coachingSessionId;
 
   const items = await prisma.appreciation.findMany({
     where,
@@ -133,6 +142,7 @@ export async function listAppreciations(
       enrollmentId: true,
       traineeId: true,
       clientId: true,
+      coachingSessionId: true,
       note: true,
       commentaire: true,
       dateAppreciation: true,
@@ -146,6 +156,7 @@ export async function listAppreciations(
     enrollmentId: item.enrollmentId ?? null,
     traineeId: item.traineeId ?? null,
     clientId: item.clientId ?? null,
+    coachingSessionId: item.coachingSessionId ?? null,
     note: item.note ?? null,
     commentaire: item.commentaire ?? null,
     dateAppreciation: item.dateAppreciation,

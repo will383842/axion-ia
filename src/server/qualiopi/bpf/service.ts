@@ -43,6 +43,12 @@ export interface BpfResult {
   nbSessions: number;
   nbStagiairesDistincts: number;
   nbHeuresStagiaires: number;
+  /** Heures stagiaires des sessions collectives (dureeReelle × participants). */
+  nbHeuresStagiairesCollectif: number;
+  /** Heures stagiaires des parcours coaching AFEST 1-to-1 (Σ séances). */
+  nbHeuresStagiairesCoaching: number;
+  /** Nombre de parcours coaching AFEST réalisés dans l'année. */
+  nbCoachingParcours: number;
   caTotalHtCents: number;
   caParFinanceur: BpfFinanceurDetail;
   nbFormateursInternes: number;
@@ -141,6 +147,9 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     nbSessions,
     nbStagiairesDistincts,
     nbHeuresStagiaires: nbHeuresStagiairesFinal,
+    nbHeuresStagiairesCollectif: nbHeuresStagiaires,
+    nbHeuresStagiairesCoaching: coaching.nbHeuresStagiaires,
+    nbCoachingParcours: coaching.nbParcours,
     caTotalHtCents: caTotalHtCentsFinal,
     caParFinanceur,
     nbFormateursInternes,
@@ -153,6 +162,7 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
 interface CoachingAggregat {
   caHtCents: number;
   nbHeuresStagiaires: number;
+  nbParcours: number;
 }
 
 /**
@@ -204,7 +214,7 @@ async function aggregateCoaching(
     }
   }
 
-  return { caHtCents, nbHeuresStagiaires: totalMinutes / 60 };
+  return { caHtCents, nbHeuresStagiaires: totalMinutes / 60, nbParcours: coachingSessions.length };
 }
 
 export function bpfToCsv(bpf: BpfResult): string {
@@ -220,6 +230,9 @@ export function bpfToCsv(bpf: BpfResult): string {
   lignes.push(`Nombre de sessions réalisées;${bpf.nbSessions}`);
   lignes.push(`Nombre de stagiaires distincts;${bpf.nbStagiairesDistincts}`);
   lignes.push(`Nombre d'heures stagiaires;${bpf.nbHeuresStagiaires}`);
+  lignes.push(`  dont sessions collectives;${bpf.nbHeuresStagiairesCollectif}`);
+  lignes.push(`  dont coaching AFEST 1-to-1;${bpf.nbHeuresStagiairesCoaching}`);
+  lignes.push(`Nombre de parcours coaching AFEST;${bpf.nbCoachingParcours}`);
   lignes.push(`Chiffre d'affaires total HT (€);${centimesEnEuros(bpf.caTotalHtCents)}`);
   lignes.push("");
   lignes.push("Financeur;CA HT (€)");
@@ -271,6 +284,9 @@ function buildEmptyBpf(
     nbSessions: 0,
     nbStagiairesDistincts: 0,
     nbHeuresStagiaires: 0,
+    nbHeuresStagiairesCollectif: 0,
+    nbHeuresStagiairesCoaching: 0,
+    nbCoachingParcours: 0,
     caTotalHtCents: 0,
     caParFinanceur: { opco: 0, cpf: 0, france_travail: 0, direct: 0, mixte: 0 },
     nbFormateursInternes: 0,
