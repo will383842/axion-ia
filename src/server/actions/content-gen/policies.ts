@@ -54,6 +54,12 @@ const ContentPoliciesSchema = z
     // tier-1 directe. Exposés dans la console pour piloter/réversibiliser.
     factoryAutoPublishAllBlogTypes: z.boolean(),
     factoryAutoPromoteTier1MinScore: z.number().int().min(0).max(100),
+    // 2026-06-14 — Cap journalier de news RSS (0-200). Le worker content-rss-fetch
+    // n'enqueue plus au-delà de ce nombre de blog_from_rss par jour (UTC).
+    rssMaxPerDay: z.number().int().min(0).max(200),
+    // Fenêtre de fraîcheur (jours) : une news datée plus vieille est abandonnée
+    // (jamais générée en news périmée). Sélection = la plus récente d'abord.
+    rssMaxAgeDays: z.number().int().min(1).max(30),
   })
   .strict();
 const LlmsTxtSchema = z.string().max(50_000);
@@ -190,6 +196,10 @@ export interface ContentPolicies {
   readonly factoryAutoPublishAllBlogTypes: boolean;
   /** Score min pour promotion tier-1 indexable (0 = tout indexable). */
   readonly factoryAutoPromoteTier1MinScore: number;
+  /** Cap journalier de news RSS générées (jobs blog_from_rss / jour, UTC). */
+  readonly rssMaxPerDay: number;
+  /** Fenêtre de fraîcheur news RSS (jours) : au-delà, la news est abandonnée. */
+  readonly rssMaxAgeDays: number;
 }
 
 const POLICIES_DEFAULTS: ContentPolicies = {
@@ -201,6 +211,9 @@ const POLICIES_DEFAULTS: ContentPolicies = {
   // 2026-06-14 (décision Will) — full auto + tout indexable par défaut.
   factoryAutoPublishAllBlogTypes: true,
   factoryAutoPromoteTier1MinScore: 0,
+  // 2026-06-14 — Cap news RSS/jour (défaut 20) + fenêtre fraîcheur (défaut 3 j).
+  rssMaxPerDay: 20,
+  rssMaxAgeDays: 3,
 };
 
 export async function getPolicies(): Promise<ContentPolicies> {

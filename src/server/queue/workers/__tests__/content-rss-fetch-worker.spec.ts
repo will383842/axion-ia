@@ -56,7 +56,11 @@ vi.mock("bullmq", () => ({
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    contentGenJob: { create: contentGenJobCreateMock },
+    contentGenJob: {
+      create: contentGenJobCreateMock,
+      // Cap journalier news RSS (2026-06-14) : le worker compte les jobs du jour.
+      count: vi.fn().mockResolvedValue(0),
+    },
     // S+5 P2-3 — primary source DB-backed (RssSource table) avec fallback
     // ContentGenConfig.rss_sources. On retourne [] ici pour forcer le fallback
     // legacy testé par les fixtures readConfigMock ci-dessous.
@@ -139,7 +143,8 @@ describe("content-rss-fetch-worker — Sprint S+5 P2-10 sub-agent C", () => {
         title: "Audit IA en cabinet — best practices",
         link: "https://blog.example.com/audit-ia",
         summary: "Comment auditer une intégration IA en cabinet B2B",
-        published: new Date("2026-05-19T10:00:00Z"),
+        // Date récente (fenêtre de fraîcheur rssMaxAgeDays) → l'item est traité.
+        published: new Date(Date.now() - 60 * 60 * 1000),
       },
     ]);
     contentGenJobCreateMock.mockResolvedValue({ id: "cg-job-42" });
@@ -162,6 +167,73 @@ describe("content-rss-fetch-worker — Sprint S+5 P2-10 sub-agent C", () => {
     const seenWrite = writeConfigMock.mock.calls[0];
     expect(seenWrite?.[0]).toBe("rss_items_seen");
     expect((seenWrite?.[1] as readonly string[]).length).toBe(1);
+  });
+
+  it("cap + fraîcheur — 4 items (1 périmé) avec rssMaxPerDay=2 → 2 créés (les + récents), périmé abandonné", async () => {
+    readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
+      if (key === "kill_switch") return { active: false };
+      if (key === "policies") return { rssMaxPerDay: 2, rssMaxAgeDays: 3 };
+      if (key === "rss_sources") {
+        return [
+          {
+            url: "https://blog.example.com/rss",
+            name: "Example Blog",
+            tags: ["ia"],
+            pollIntervalMin: 60,
+            autoPublish: false,
+            enabled: true,
+          },
+        ];
+      }
+      if (key === "rss_items_seen") return [];
+      return defaultValue;
+    });
+    ssrfFetchMock.mockResolvedValue({ ok: true, status: 200, text: async () => "<rss>...</rss>" });
+    const H = 60 * 60 * 1000;
+    parseFeedMock.mockReturnValue([
+      {
+        id: "g1",
+        title: "Plus récent",
+        link: "https://x/1",
+        summary: "s",
+        published: new Date(Date.now() - 1 * H),
+      },
+      {
+        id: "g2",
+        title: "Récent",
+        link: "https://x/2",
+        summary: "s",
+        published: new Date(Date.now() - 5 * H),
+      },
+      {
+        id: "g3",
+        title: "Moins récent",
+        link: "https://x/3",
+        summary: "s",
+        published: new Date(Date.now() - 20 * H),
+      },
+      {
+        id: "g4",
+        title: "Périmé",
+        link: "https://x/4",
+        summary: "s",
+        published: new Date(Date.now() - 10 * 24 * H),
+      },
+    ]);
+    let n = 0;
+    contentGenJobCreateMock.mockImplementation(async () => ({ id: `cg-${++n}` }));
+
+    const processor = await getProcessor();
+    await processor(fakeJob());
+
+    // Cap = 2 → 2 jobs créés ; le périmé (10 j > 3 j) jamais créé.
+    expect(contentGenJobCreateMock).toHaveBeenCalledTimes(2);
+    const titles = contentGenJobCreateMock.mock.calls.map(
+      (c) => (c[0] as { data: { inputPayload: { rssTitle: string } } }).data.inputPayload.rssTitle,
+    );
+    // Sélection = les 2 plus récents, dans l'ordre.
+    expect(titles).toEqual(["Plus récent", "Récent"]);
+    expect(titles).not.toContain("Périmé");
   });
 
   it("failure path — DB insert ContentGenJob échoue → warn + skip, pas d'enqueue", async () => {
