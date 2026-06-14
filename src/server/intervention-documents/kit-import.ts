@@ -130,6 +130,12 @@ export async function importKitFromZip(
         // Document généré par la plateforme : pas d'upload statique.
         continue;
       }
+      if (slotDef.qualiopiDocType) {
+        // Document Qualiopi (positionnement / évaluation / satisfaction / attestation) :
+        // produit/agrégé par le Formation Engine, JAMAIS dupliqué via l'import en masse
+        // (invariant aligné sur les formations — cf. catalogue + schéma documents_interventions).
+        continue;
+      }
 
       const srcBuf = b.sourcePath ? await zip.files[b.sourcePath]!.async("nodebuffer") : null;
       const pdfBuf = b.pdfPath ? await zip.files[b.pdfPath]!.async("nodebuffer") : null;
