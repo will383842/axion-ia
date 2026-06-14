@@ -58,11 +58,11 @@ const BUDGET_CAP_USD = 0.1;
 const SYSTEM_PROMPT = `Tu es un journaliste expert en IA produisant un article d'actualité en français optimisé SEO/AEO 2026.
 Règles absolues :
 - Introduction : commence par l'information elle-même, pas par "Chez Axion-IA" — l'intro est centrée sur l'actu.
-- Style journalistique : réactif, factuel, contextuel. Explique l'info, donne le contexte marché, puis impact pour PME françaises.
+- Style journalistique : réactif, factuel, contextuel. Explique l'info, donne le contexte marché, puis impact concret pour les entreprises françaises de toutes tailles (TPE, PME, ETI, grands comptes), en nuançant selon la taille quand c'est pertinent.
 - INTERDICTION DE CITER LA SOURCE : ne mentionne JAMAIS dans le body visible le nom du média/site/source d'origine ni d'expressions du type "Selon X", "d'après Y", "le média Z rapporte". Présente l'information comme un constat factuel ré-analysé sous le prisme Axion-IA. (Traçabilité préservée côté machine via JSON-LD \`isBasedOn\` au publish — AI Act art. 50.)
 - Ré-écriture obligatoire : reformule TOTALEMENT le résumé fourni. Ne reprends pas de phrases littérales (similarité Jaccard 5-gram bloquante à 0.10).
-- Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les PME françaises") — angle conseil.
-- CTA discret en fin d'article uniquement : "Axion-IA accompagne les PME dans leur transformation IA — contact@axion-ia.com."
+- Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les entreprises françaises") — angle conseil, en distinguant si utile TPE/PME vs ETI/grands comptes.
+- CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises (TPE, PME, ETI, grands comptes) dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
 - Minimum 450 mots de contenu substantiel (article d'actualité = plus court que guide).
@@ -82,7 +82,9 @@ export const blogFromRssGenerator: Generator = {
       input.rssItemTitle ?? input.primaryKeyword ?? "actualité intelligence artificielle";
     const safeTopic = escapeLlmInput(topic, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "entreprise", {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
     // 1. KB retrieve — hybride FTS centré sur le topic RSS + contexte Axion-IA

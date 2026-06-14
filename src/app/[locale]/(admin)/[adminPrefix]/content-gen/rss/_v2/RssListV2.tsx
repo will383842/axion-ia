@@ -39,9 +39,14 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
         title="Sources RSS"
         description={`${sources.length} source${sources.length > 1 ? "s" : ""} · Pipeline 2 actualités · poll via cron \`content-rss-fetch\` toutes les heures.`}
         actions={
-          <Link href={`/fr/${adminPrefix}/content-gen/rss/new`} className="admin-button">
-            + Ajouter source
-          </Link>
+          <div className="flex gap-[var(--space-admin-2)]">
+            <Link href={`/fr/${adminPrefix}/content-gen/rss/import`} className="admin-button-ghost">
+              ⇪ Import en masse
+            </Link>
+            <Link href={`/fr/${adminPrefix}/content-gen/rss/new`} className="admin-button">
+              + Ajouter source
+            </Link>
+          </div>
         }
       />
 

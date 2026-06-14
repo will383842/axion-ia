@@ -136,6 +136,73 @@ export async function addRssSourceToDb(input: RssSourceInput): Promise<RssSource
   }
 }
 
+export interface BulkRssImportResult {
+  readonly created: number;
+  readonly skipped: number;
+  readonly errors: ReadonlyArray<{ url: string; reason: string }>;
+  readonly createdNames: ReadonlyArray<string>;
+}
+
+/**
+ * Import en masse de sources RSS (bouton « Import en masse » admin).
+ *
+ * - Idempotent : une URL déjà présente est IGNORÉE (skipped), jamais une erreur
+ *   → ré-importer la même liste est sûr.
+ * - Tolérant : chaque entrée est validée individuellement ; une entrée invalide
+ *   est rangée dans `errors` sans bloquer les autres (import partiel possible).
+ * - Admin + rate-limité ; chaque entrée passe le même schéma Zod que l'ajout
+ *   unitaire (URL valide, name 2-200, pollIntervalMin 5-1440, etc.).
+ */
+export async function bulkAddRssSourcesToDb(
+  inputs: ReadonlyArray<unknown>,
+): Promise<BulkRssImportResult> {
+  await requireAdminWriteRateLimited("bulkAddRssSourcesToDb", { limit: 5 });
+
+  let created = 0;
+  let skipped = 0;
+  const errors: Array<{ url: string; reason: string }> = [];
+  const createdNames: string[] = [];
+
+  for (const raw of inputs) {
+    const result = RssSourceInputSchema.safeParse(raw);
+    if (!result.success) {
+      const maybeUrl = (raw as { url?: unknown } | null)?.url;
+      const url = typeof maybeUrl === "string" ? maybeUrl : "(url manquante)";
+      errors.push({ url, reason: result.error.issues[0]?.message ?? "validation échouée" });
+      continue;
+    }
+    const parsed = result.data;
+    try {
+      const existing = await prisma.rssSource.findUnique({ where: { url: parsed.url } });
+      if (existing) {
+        skipped++;
+        continue;
+      }
+      await prisma.rssSource.create({
+        data: {
+          url: parsed.url,
+          name: parsed.name,
+          enabled: parsed.enabled,
+          verticale: parsed.verticale ?? null,
+          tags: parsed.tags,
+          pollIntervalMin: parsed.pollIntervalMin,
+          autoPublish: parsed.autoPublish,
+          language: parsed.language,
+        },
+      });
+      created++;
+      createdNames.push(parsed.name);
+    } catch (e) {
+      errors.push({ url: parsed.url, reason: e instanceof Error ? e.message : String(e) });
+    }
+  }
+
+  if (created > 0) {
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  }
+  return { created, skipped, errors, createdNames };
+}
+
 export async function updateRssSourceInDb(
   id: string,
   input: RssSourceInput,

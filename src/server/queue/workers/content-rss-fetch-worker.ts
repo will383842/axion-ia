@@ -181,108 +181,150 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const sources = await loadRssSources();
   const seenHashes = new Set(await readContentGenConfig<ReadonlyArray<string>>(SEEN_KEY, []));
 
+  // 2026-06-14 — Cap journalier de news RSS (policy `policies.rssMaxPerDay`,
+  // défaut 20). Avant : le worker enquêtait TOUS les items nouveaux de TOUS les
+  // flux à chaque tick horaire → volume non maîtrisé. Désormais on compte les
+  // jobs `blog_from_rss` déjà créés aujourd'hui (UTC) et on n'enqueue plus une
+  // fois le budget atteint. Les items au-delà du budget ne sont PAS marqués
+  // "seen" → ils restent éligibles aux ticks suivants / au lendemain.
+  const rssPolicies = await readContentGenConfig<{
+    rssMaxPerDay?: number;
+    rssMaxAgeDays?: number;
+  }>("policies", {});
+  const maxPerDay = rssPolicies.rssMaxPerDay ?? 20;
+  const startOfDayUtc = new Date();
+  startOfDayUtc.setUTCHours(0, 0, 0, 0);
+  const todayCount = await prisma.contentGenJob
+    .count({ where: { contentType: "blog_from_rss", createdAt: { gte: startOfDayUtc } } })
+    .catch(() => 0);
+  const dailyBudget = Math.max(0, maxPerDay - todayCount);
+  if (dailyBudget <= 0) {
+    console.log(
+      `[rss-fetch-worker] cap journalier news atteint (${todayCount}/${maxPerDay}) — skip tick`,
+    );
+    return;
+  }
+
+  // Fenêtre de fraîcheur : on ABANDONNE toute news datée plus vieille que
+  // `rssMaxAgeDays` (défaut 3 j) — une news traitée plusieurs jours après est
+  // périmée. Les items trop vieux sont marqués "seen" (consommés, jamais générés).
+  // Les items SANS date sont conservés (impossible de prouver qu'ils sont vieux)
+  // mais passent en dernier dans la priorité de tri.
+  const maxAgeDays = rssPolicies.rssMaxAgeDays ?? 3;
+  const freshnessCutoffMs = Date.now() - maxAgeDays * 86_400_000;
+
   let totalEnqueued = 0;
   const newSeen: string[] = [];
 
+  // 1. Collecte de TOUS les items nouveaux (non vus) de TOUS les flux + santé source.
+  const candidates: Array<{
+    item: FeedItem;
+    source: RssSource;
+    hash: string;
+    ts: number | null;
+  }> = [];
   for (const source of sources) {
     const items = await fetchSource(source);
-    // P2-3 — tracking santé par source : si le fetch a renvoyé au moins 1 item
-    // ou si la source est joignable (parseFeed n'a pas throw), on marque
-    // lastSuccessAt + reset failureCount. Sinon increment failureCount.
-    // Best-effort : ne pas bloquer le tick si l'update échoue.
+    // P2-3 — tracking santé par source (best-effort, ne bloque pas le tick).
     if (source.id) {
       try {
         const now = new Date();
-        if (items.length > 0) {
-          await prisma.rssSource.update({
-            where: { id: source.id },
-            data: { lastFetchedAt: now, lastSuccessAt: now, failureCount: 0 },
-          });
-        } else {
-          await prisma.rssSource.update({
-            where: { id: source.id },
-            data: { lastFetchedAt: now, failureCount: { increment: 1 } },
-          });
-        }
+        await prisma.rssSource.update({
+          where: { id: source.id },
+          data:
+            items.length > 0
+              ? { lastFetchedAt: now, lastSuccessAt: now, failureCount: 0 }
+              : { lastFetchedAt: now, failureCount: { increment: 1 } },
+        });
       } catch {
-        // Pas de table (legacy fallback ContentGenConfig) ou row supprimée — no-op.
+        // Pas de table (legacy fallback) ou row supprimée — no-op.
       }
     }
     for (const item of items) {
       const hash = hashItem(item.link, item.title);
       if (seenHashes.has(hash)) continue;
-      seenHashes.add(hash);
-      newSeen.push(hash);
-
-      // 1. Crée une row ContentGenJob.queued AVANT enqueue BullMQ.
-      // Le worker primaire `content-gen-worker` attend `contentGenJobId` dans le
-      // payload (cf. ContentGenJobPayload). Sans cette row, le worker throw
-      // UnrecoverableError au lookup DB. Idempotency : `idempotencyKey` unique
-      // = hash(source + item) → P2002 silent skip si retry.
-      // Sprint S+4-E — Le generator `blog_from_rss` reçoit toujours les mêmes
-      // 4 champs canoniques (rssTitle/rssLink/rssPubDate/rssDescription) pour
-      // rétro-compat ; les nouveaux champs Atom (author, tags, content riche,
-      // updated) sont exposés en extra et exploitables par les versions
-      // ultérieures du generator sans casser l'existant.
-      const inputPayload = {
-        rssTitle: item.title,
-        rssLink: item.link,
-        rssPubDate: item.published?.toISOString(),
-        rssDescription: item.summary,
-        rssSourceName: source.name,
-        rssTags: source.tags,
-        autoPublish: source.autoPublish,
-        // Champs étendus (Atom + RSS riche) — optionnels, ignorés si generator
-        // ancienne version. Permettent meilleur enrichissement éditorial.
-        rssGuid: item.id,
-        ...(item.content ? { rssContent: item.content } : {}),
-        ...(item.author ? { rssAuthor: item.author } : {}),
-        ...(item.updated ? { rssUpdated: item.updated.toISOString() } : {}),
-        ...(item.tags && item.tags.length > 0 ? { rssItemTags: item.tags } : {}),
-      };
-      let contentGenJobId: string | null = null;
-      try {
-        const dbJob = await prisma.contentGenJob.create({
-          data: {
-            idempotencyKey: `rss-${hash}`,
-            contentType: "blog_from_rss",
-            status: "queued",
-            priority: 5,
-            inputPayload: inputPayload as never,
-            targetLocale: "fr",
-            // Pipeline 2 RSS = informational par défaut. Le generator
-            // blog-from-rss peut ré-évaluer si nécessaire (mais reste safe).
-            targetSearchIntent: "informational",
-            primaryProvider: "openai",
-            fallbackProvider: "anthropic",
-          },
-          select: { id: true },
-        });
-        contentGenJobId = dbJob.id;
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        if (msg.includes("Unique constraint") || msg.includes("P2002")) {
-          // Race condition rare — un autre tick a inséré entre-temps. Skip.
-          continue;
-        }
-        console.warn(`[rss-fetch-worker] DB insert ContentGenJob failed:`, msg);
-        continue;
-      }
-
-      // 2. Enqueue content-gen avec payload conforme ContentGenJobPayload.
-      const payload: ContentGenJobPayload = {
-        contentGenJobId,
-        contentType: "blog_from_rss",
-        targetSearchIntent: "informational",
-        inputPayload,
-      };
-      await getContentGenQueue().add(
-        "blog_from_rss",
-        payload,
-        { jobId: `gen-${contentGenJobId}` }, // BullMQ dedup
-      );
-      totalEnqueued++;
+      candidates.push({ item, source, hash, ts: item.published ? item.published.getTime() : null });
     }
+  }
+
+  // 2. Fraîcheur : drop des items datés trop vieux (consommés sans génération).
+  const fresh: typeof candidates = [];
+  let dropped = 0;
+  for (const c of candidates) {
+    if (c.ts !== null && c.ts < freshnessCutoffMs) {
+      seenHashes.add(c.hash);
+      newSeen.push(c.hash);
+      dropped++;
+    } else {
+      fresh.push(c);
+    }
+  }
+
+  // 3. Tri par fraîcheur DÉCROISSANTE (news la plus récente d'abord). Quand le
+  // budget journalier < volume disponible, on choisit ainsi les MEILLEURES news
+  // (les plus récentes), pas l'ordre arbitraire des flux. Items sans date → fin.
+  fresh.sort((a, b) => (b.ts ?? 0) - (a.ts ?? 0));
+
+  // 4. Génération jusqu'au budget journalier. Les items frais NON retenus restent
+  // non-"seen" → reconsidérés au prochain tick / lendemain TANT qu'ils sont frais
+  // (au-delà de maxAgeDays ils seront abandonnés à l'étape 2 — pas de news périmée).
+  for (const { item, source, hash } of fresh) {
+    if (totalEnqueued >= dailyBudget) break;
+    seenHashes.add(hash);
+    newSeen.push(hash);
+
+    // ContentGenJob.queued AVANT enqueue BullMQ (le content-gen-worker attend
+    // contentGenJobId au lookup DB). Idempotency `rss-<hash>` → P2002 skip si retry.
+    const inputPayload = {
+      rssTitle: item.title,
+      rssLink: item.link,
+      rssPubDate: item.published?.toISOString(),
+      rssDescription: item.summary,
+      rssSourceName: source.name,
+      rssTags: source.tags,
+      autoPublish: source.autoPublish,
+      rssGuid: item.id,
+      ...(item.content ? { rssContent: item.content } : {}),
+      ...(item.author ? { rssAuthor: item.author } : {}),
+      ...(item.updated ? { rssUpdated: item.updated.toISOString() } : {}),
+      ...(item.tags && item.tags.length > 0 ? { rssItemTags: item.tags } : {}),
+    };
+    let contentGenJobId: string | null = null;
+    try {
+      const dbJob = await prisma.contentGenJob.create({
+        data: {
+          idempotencyKey: `rss-${hash}`,
+          contentType: "blog_from_rss",
+          status: "queued",
+          priority: 5,
+          inputPayload: inputPayload as never,
+          targetLocale: "fr",
+          targetSearchIntent: "informational",
+          primaryProvider: "openai",
+          fallbackProvider: "anthropic",
+        },
+        select: { id: true },
+      });
+      contentGenJobId = dbJob.id;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("Unique constraint") || msg.includes("P2002")) continue;
+      console.warn(`[rss-fetch-worker] DB insert ContentGenJob failed:`, msg);
+      continue;
+    }
+
+    const payload: ContentGenJobPayload = {
+      contentGenJobId,
+      contentType: "blog_from_rss",
+      targetSearchIntent: "informational",
+      inputPayload,
+    };
+    await getContentGenQueue().add("blog_from_rss", payload, { jobId: `gen-${contentGenJobId}` });
+    totalEnqueued++;
+  }
+
+  if (dropped > 0) {
+    console.log(`[rss-fetch-worker] ${dropped} item(s) périmé(s) (> ${maxAgeDays}j) abandonné(s)`);
   }
 
   // Cap "seen" cache à MAX_SEEN entries (LRU FIFO trim)

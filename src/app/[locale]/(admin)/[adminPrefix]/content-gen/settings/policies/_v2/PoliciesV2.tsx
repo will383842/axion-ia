@@ -13,6 +13,8 @@ interface PoliciesConfig {
   tier3RetentionDays: number;
   factoryAutoPublishAllBlogTypes: boolean;
   factoryAutoPromoteTier1MinScore: number;
+  rssMaxPerDay: number;
+  rssMaxAgeDays: number;
 }
 
 interface Props {
@@ -30,6 +32,8 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
       tier3RetentionDays: Number(formData.get("tier3RetentionDays") ?? 0),
       factoryAutoPublishAllBlogTypes: formData.get("factoryAutoPublishAllBlogTypes") === "on",
       factoryAutoPromoteTier1MinScore: Number(formData.get("factoryAutoPromoteTier1MinScore") ?? 0),
+      rssMaxPerDay: Number(formData.get("rssMaxPerDay") ?? 20),
+      rssMaxAgeDays: Number(formData.get("rssMaxAgeDays") ?? 3),
     });
   }
 
@@ -76,6 +80,38 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
               min="0"
               max="100"
               defaultValue={cfg.factoryAutoPromoteTier1MinScore}
+              className="admin-input"
+              required
+            />
+          </div>
+
+          <div className="admin-field">
+            <label htmlFor="rssMaxPerDay" className="admin-label">
+              News RSS max par jour (cap volume — 0 = pause RSS)
+            </label>
+            <input
+              id="rssMaxPerDay"
+              name="rssMaxPerDay"
+              type="number"
+              min="0"
+              max="200"
+              defaultValue={cfg.rssMaxPerDay}
+              className="admin-input"
+              required
+            />
+          </div>
+
+          <div className="admin-field">
+            <label htmlFor="rssMaxAgeDays" className="admin-label">
+              News RSS — fraîcheur max (jours) : au-delà la news est abandonnée (jamais périmée)
+            </label>
+            <input
+              id="rssMaxAgeDays"
+              name="rssMaxAgeDays"
+              type="number"
+              min="1"
+              max="30"
+              defaultValue={cfg.rssMaxAgeDays}
               className="admin-input"
               required
             />
