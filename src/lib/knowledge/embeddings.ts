@@ -73,6 +73,41 @@ async function stubEmbedding(text: string): Promise<EmbeddingResult> {
   };
 }
 
+// 2026-06-14 — Alerte prod si la clé Voyage est invalide (401) ou les crédits
+// épuisés (402). Sans ça, le RAG vectoriel retombe SILENCIEUSEMENT en FTS et on
+// ne s'en rend compte que via une baisse de pertinence. Throttle 30 min pour ne
+// pas spammer Telegram (un job de génération peut faire des dizaines d'embeddings).
+let lastVoyageAuthAlertAt = 0;
+const VOYAGE_AUTH_ALERT_THROTTLE_MS = 30 * 60 * 1000;
+
+function alertVoyageAuthFailure(status: number, detail: string): void {
+  // Prod réelle uniquement — jamais au build/SSG (stub) ni en dev/test.
+  if (process.env.NODE_ENV !== "production") return;
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return;
+  const now = Date.now();
+  if (now - lastVoyageAuthAlertAt < VOYAGE_AUTH_ALERT_THROTTLE_MS) return;
+  lastVoyageAuthAlertAt = now;
+  const reason =
+    status === 402
+      ? "crédits Voyage épuisés (402)"
+      : "clé Voyage invalide / révoquée (401) — vérifier VOYAGE_API_KEY";
+  void (async () => {
+    try {
+      const { sendTelegram } = await import("@/lib/telegram");
+      await sendTelegram({
+        tag: "INCIDENT",
+        body:
+          `[VOYAGE ${status}] RAG vectoriel KO — ${reason}.\n` +
+          `Le système retombe en recherche FTS (lexicale) : dégradé mais fonctionnel.\n` +
+          `Action : vérifier VOYAGE_API_KEY (Coolify web+worker) + crédits sur dash.voyageai.com.\n` +
+          `Détail: ${detail.slice(0, 200)}`,
+      });
+    } catch {
+      // best-effort — l'alerte ne doit jamais casser le pipeline d'embedding.
+    }
+  })();
+}
+
 /**
  * Appel réel Voyage AI `voyage-3` (1024-dim via output_dimension). Lève en cas d'erreur HTTP ou
  * de dimension inattendue (pas de fallback dimension-incompatible : OpenAI = 1536
@@ -96,6 +131,9 @@ async function embedWithVoyage(text: string, apiKey: string): Promise<EmbeddingR
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
+    if (res.status === 401 || res.status === 402) {
+      alertVoyageAuthFailure(res.status, detail);
+    }
     throw new Error(`[embeddings] Voyage HTTP ${res.status} ${res.statusText} ${detail}`.trim());
   }
   const json = (await res.json()) as {
