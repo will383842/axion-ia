@@ -706,7 +706,13 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // auto-publié est promu tier_1_indexable (sitemap + IndexNow), plus de
       // tier_2 noindex par défaut. Monter ce seuil via policy pour re-gater.
       const autoPromoteTier1MinScore = policies.factoryAutoPromoteTier1MinScore ?? 0;
-      const shouldPromoteTier1 = score >= autoPromoteTier1MinScore;
+      // 2026-06-14 — Garde-fou soft-404 : même en « tout indexable », on n'indexe
+      // PAS un contenu que le generator a jugé dégénéré/vide (soft-404 →
+      // finalIndexationTier=tier_3). Ce contenu est tout de même publié, mais en
+      // tier_2_noindex_follow (publié, hors index) au lieu de tier_1. Évite
+      // d'envoyer du contenu junk à Google (risque HCU/thin-content).
+      const shouldPromoteTier1 =
+        score >= autoPromoteTier1MinScore && finalIndexationTier !== "tier_3_noindex_nofollow";
 
       const review = await prisma.reviewQueue.findUnique({
         where: { jobId: contentGenJobId },
