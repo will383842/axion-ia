@@ -23,7 +23,7 @@ export function startKitImportWorker(): Worker<KitImportJobData, void, string> {
       const { runId } = job.data;
       const run = await prisma.kitImportRun.findUnique({
         where: { id: runId },
-        select: { id: true, tempKey: true },
+        select: { id: true, tempKey: true, famille: true },
       });
       if (!run) {
         console.warn(`[kit-import] run ${runId} introuvable, ignoré`);
@@ -43,7 +43,7 @@ export function startKitImportWorker(): Worker<KitImportJobData, void, string> {
       });
 
       try {
-        const summary = await importKitFromR2Key(run.tempKey);
+        const summary = await importKitFromR2Key(run.tempKey, run.famille);
         // Statut final AVANT de supprimer le ZIP : si cet update échoue, le
         // ZIP reste présent → un retry re-télécharge et re-importe (idempotent).
         await prisma.kitImportRun.update({

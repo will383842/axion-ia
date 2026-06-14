@@ -50,6 +50,8 @@ export interface StartKitImportResult {
 const startSchema = z.object({
   tempKey: z.string().trim().min(1).max(300),
   fileName: z.string().trim().max(300).optional(),
+  // Famille ciblée (défaut `formation` : rétrocompatible avec l'appel historique).
+  famille: z.enum(["formation", "un_a_un", "audit"]).default("formation"),
 });
 
 export async function startKitImportAction(
@@ -67,6 +69,7 @@ export async function startKitImportAction(
       statut: "en_attente",
       tempKey: parsed.data.tempKey,
       fileName: parsed.data.fileName ?? null,
+      famille: parsed.data.famille,
       startedById: session.userId,
     },
     select: { id: true },
