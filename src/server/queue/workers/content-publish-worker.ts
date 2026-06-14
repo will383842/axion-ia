@@ -308,6 +308,11 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   const outlineSimhash =
     typeof output["outlineSimhash"] === "string" ? (output["outlineSimhash"] as string) : null;
 
+  // #2 2026-06-14 — Fingerprint sémantique (topic-fingerprint) propagé depuis le
+  // content-gen-worker ; persisté sur Article pour la dedup cross-entry future.
+  const topicFingerprint =
+    typeof output["topicFingerprint"] === "string" ? (output["topicFingerprint"] as string) : null;
+
   const isNews = cgJob.contentType === "blog_from_rss";
   const rssSourceUrl =
     typeof (cgJob.inputPayload as Record<string, unknown>)?.rssLink === "string"
@@ -317,6 +322,27 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     typeof (cgJob.inputPayload as Record<string, unknown>)?.rssSourceName === "string"
       ? ((cgJob.inputPayload as Record<string, unknown>).rssSourceName as string)
       : null;
+
+  // #1 2026-06-14 — Idempotence : si un Article a déjà été créé pour ce job
+  // (re-publish / retry BullMQ après échec partiel d'une étape post-insert), on
+  // NE recrée PAS (Article.create n'est pas idempotent → violerait l'unique slug
+  // et créerait un doublon). On court-circuite proprement.
+  const existingArticle = await prisma.article.findFirst({
+    where: { generatedByJobId: cgJob.id },
+    select: { id: true },
+  });
+  if (existingArticle) {
+    await logStep(cgJob.id, "publish", "Article déjà publié pour ce job — skip (idempotent)", {
+      article_id: existingArticle.id,
+    });
+    await prisma.contentGenJob
+      .update({
+        where: { id: cgJob.id },
+        data: { status: "published", outputBlogPostId: existingArticle.id },
+      })
+      .catch(() => undefined);
+    return;
+  }
 
   // Article + Translation insert (transaction)
   const indexationTier = promoteToTier1 ? "tier_1_indexable" : "tier_2_noindex_follow";
@@ -372,6 +398,8 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(heroImageAlt ? { featuredImageAltFr: heroImageAlt } : {}),
         // B.7 P0-6 — Outline SimHash (couche dedup 3, persiste pour future comparaison).
         ...(outlineSimhash ? { outlineSimhash } : {}),
+        // #2 2026-06-14 — Fingerprint sémantique (dedup cross-entry topic).
+        ...(topicFingerprint ? { topicFingerprint } : {}),
       },
     });
 

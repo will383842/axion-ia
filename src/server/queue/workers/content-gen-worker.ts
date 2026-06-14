@@ -41,6 +41,11 @@ import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyw
 import { assignHeroImage } from "@/server/content-gen/images/assign-hero-image";
 // B.7 P1.5 P0-6 — Outline SimHash dedup (couche A.3 post-IA).
 import { checkOutlineDedup } from "@/server/content-gen/quality/dedup-guard";
+// #2 2026-06-14 — Dedup sémantique cross-entry (topic-fingerprint Voyage SimHash).
+import {
+  computeTopicFingerprint,
+  classifyTopicDuplicate,
+} from "@/server/content-gen/dedup/topic-fingerprint";
 // Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes parallèles).
 import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 
@@ -539,10 +544,47 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       { hard_fault: doctrineHardFail, faults: doctrineHardFaults.map((v) => v.pattern) },
     );
 
+    // #2 2026-06-14 — Dedup SÉMANTIQUE cross-entry (topic-fingerprint Voyage).
+    // Détecte la redondance THÉMATIQUE (même sujet, mots différents) que le
+    // plagiat lexical Jaccard rate — notamment 2 sources RSS couvrant le même
+    // événement, rédigées différemment. Fail-soft : sans clé Voyage / embedding
+    // stub / erreur réseau → fingerprint null → aucun blocage (zéro régression).
+    // Comparé aux 300 derniers articles publiés porteurs d'un fingerprint.
+    const topicText = `${output.title}\n\n${output.bodyText}`.slice(0, 4000);
+    const topicFingerprint = await computeTopicFingerprint(topicText);
+    let topicDuplicateFail = false;
+    if (topicFingerprint) {
+      const recentFp = await prisma.article.findMany({
+        where: {
+          status: "published",
+          topicFingerprint: { not: null },
+          NOT: { generatedByJobId: contentGenJobId },
+        },
+        orderBy: { publishedAt: "desc" },
+        take: 300,
+        select: { topicFingerprint: true },
+      });
+      const fpCorpus = recentFp
+        .map((r) => r.topicFingerprint)
+        .filter((f): f is string => typeof f === "string");
+      const topicVerdict = classifyTopicDuplicate(topicFingerprint, fpCorpus);
+      topicDuplicateFail = topicVerdict.verdict === "duplicate";
+      await logStep(
+        contentGenJobId,
+        "dedup_check",
+        `Topic-fingerprint ${topicVerdict.verdict} (Hamming ${topicVerdict.minDistance})`,
+        { verdict: topicVerdict.verdict, min_distance: topicVerdict.minDistance },
+      );
+    }
+
     // Tier final : downgrade tier_3 si plagiat OR intent hardFails OR outline dup
-    // OR faute dure doctrine. Sinon on garde l'indexationTier issu du generator.
+    // OR faute dure doctrine OR doublon sémantique. Sinon indexationTier generator.
     const blockingFail =
-      !plagiarism.passed || !intent.aligned || outlineBlockingFail || doctrineHardFail;
+      !plagiarism.passed ||
+      !intent.aligned ||
+      outlineBlockingFail ||
+      doctrineHardFail ||
+      topicDuplicateFail;
     const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
 
     // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert).
@@ -567,6 +609,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       outlineSimhash: outlineDedup.outlineSimhash,
       outlineDedupVerdict: outlineDedup.verdict,
       outlineDedupMatchedArticleId: outlineDedup.matchedArticleId,
+      // #2 2026-06-14 — Fingerprint sémantique (persisté sur Article au publish
+      // pour alimenter la dedup cross-entry des prochaines générations).
+      topicFingerprint,
       // P0 2026-06-13 — Traçabilité des fautes dures (SIREN/prix non-SSOT) ayant
       // retenu l'article pour correction humaine.
       doctrineHardFaults: doctrineHardFaults.map((v) => ({
