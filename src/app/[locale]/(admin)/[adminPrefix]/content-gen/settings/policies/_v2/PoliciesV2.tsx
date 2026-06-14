@@ -11,6 +11,8 @@ interface PoliciesConfig {
   plagiarismJaccardInternal: number;
   plagiarismJaccardRss: number;
   tier3RetentionDays: number;
+  factoryAutoPublishAllBlogTypes: boolean;
+  factoryAutoPromoteTier1MinScore: number;
 }
 
 interface Props {
@@ -26,6 +28,8 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
       plagiarismJaccardInternal: Number(formData.get("plagiarismJaccardInternal") ?? 0),
       plagiarismJaccardRss: Number(formData.get("plagiarismJaccardRss") ?? 0),
       tier3RetentionDays: Number(formData.get("tier3RetentionDays") ?? 0),
+      factoryAutoPublishAllBlogTypes: formData.get("factoryAutoPublishAllBlogTypes") === "on",
+      factoryAutoPromoteTier1MinScore: Number(formData.get("factoryAutoPromoteTier1MinScore") ?? 0),
     });
   }
 
@@ -47,6 +51,34 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
               />{" "}
               Skip ville si copy existe déjà (économise tokens)
             </label>
+          </div>
+
+          <div className="admin-field">
+            <label className="admin-label">
+              <input
+                type="checkbox"
+                name="factoryAutoPublishAllBlogTypes"
+                defaultChecked={cfg.factoryAutoPublishAllBlogTypes}
+              />{" "}
+              Full auto-publish — publie TOUS les types automatiquement, sans relecture (décocher =
+              repasse en validation manuelle via /review-queue)
+            </label>
+          </div>
+
+          <div className="admin-field">
+            <label htmlFor="factoryAutoPromoteTier1MinScore" className="admin-label">
+              Promotion tier-1 indexable si score ≥ (0 = tout indexable, pas de noindex)
+            </label>
+            <input
+              id="factoryAutoPromoteTier1MinScore"
+              name="factoryAutoPromoteTier1MinScore"
+              type="number"
+              min="0"
+              max="100"
+              defaultValue={cfg.factoryAutoPromoteTier1MinScore}
+              className="admin-input"
+              required
+            />
           </div>
 
           <div className="admin-filters-grid">

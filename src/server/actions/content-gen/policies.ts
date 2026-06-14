@@ -50,6 +50,10 @@ const ContentPoliciesSchema = z
     plagiarismJaccardInternal: z.number().min(0).max(1),
     plagiarismJaccardRss: z.number().min(0).max(1),
     tier3RetentionDays: z.number().int().min(1).max(730),
+    // 2026-06-14 — Full auto-publish (tous types, sans relecture) + promotion
+    // tier-1 directe. Exposés dans la console pour piloter/réversibiliser.
+    factoryAutoPublishAllBlogTypes: z.boolean(),
+    factoryAutoPromoteTier1MinScore: z.number().int().min(0).max(100),
   })
   .strict();
 const LlmsTxtSchema = z.string().max(50_000);
@@ -182,6 +186,10 @@ export interface ContentPolicies {
   readonly plagiarismJaccardInternal: number;
   readonly plagiarismJaccardRss: number;
   readonly tier3RetentionDays: number;
+  /** Full auto-publish de TOUS les types de contenu, sans relecture humaine. */
+  readonly factoryAutoPublishAllBlogTypes: boolean;
+  /** Score min pour promotion tier-1 indexable (0 = tout indexable). */
+  readonly factoryAutoPromoteTier1MinScore: number;
 }
 
 const POLICIES_DEFAULTS: ContentPolicies = {
@@ -190,6 +198,9 @@ const POLICIES_DEFAULTS: ContentPolicies = {
   plagiarismJaccardInternal: 0.3,
   plagiarismJaccardRss: 0.1,
   tier3RetentionDays: 90,
+  // 2026-06-14 (décision Will) — full auto + tout indexable par défaut.
+  factoryAutoPublishAllBlogTypes: true,
+  factoryAutoPromoteTier1MinScore: 0,
 };
 
 export async function getPolicies(): Promise<ContentPolicies> {
