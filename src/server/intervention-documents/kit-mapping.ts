@@ -62,11 +62,20 @@ export const UN_A_UN_FOLDER_TO_SLUGS: Readonly<Record<string, ReadonlyArray<stri
   Collaborateur: ["coaching-decouverte", "coaching-optimisation-2j"],
 };
 
-/** Préfixe de fichier numéroté (NN_) → CLÉ de slot du catalogue (UN_A_UN, ordre 01→14). */
+/**
+ * Préfixe de fichier numéroté (NN_) → CLÉ de slot du catalogue (UN_A_UN).
+ *
+ * ⚠️ EXCLUS volontairement (générés/agrégés par le Formation Engine, JAMAIS
+ * dupliqués ici — cf. catalogue `qualiopiDocType` + schéma Prisma) :
+ *   03 positionnement_individuel · 13 evaluation_progression · 14 satisfaction_1to1
+ *   15 attestation_emargement (generatedOnly).
+ * Même règle que les formations (dont l'import exclut test/éval/satisfaction/attestation).
+ * Les `.docx` correspondants restent dans le kit comme MODÈLES de référence
+ * (uploadables à la main), mais ne sont pas importés en masse.
+ */
 export const UN_A_UN_FILE_TO_SLOT: Readonly<Record<string, string>> = {
   "01": "cadrage_objectifs",
   "02": "analyse_activite",
-  "03": "positionnement_individuel",
   "04": "guide_coach",
   "05": "parcours_seances",
   "06": "fiches_exercices",
@@ -76,8 +85,6 @@ export const UN_A_UN_FILE_TO_SLOT: Readonly<Record<string, string>> = {
   "10": "phase_reflexive",
   "11": "corriges_1to1",
   "12": "journal_progression",
-  "13": "evaluation_progression",
-  "14": "satisfaction_1to1",
 };
 
 // ============================ Helpers ========================================

@@ -128,10 +128,23 @@ describe("kit-mapping — 1-to-1 (un_a_un)", () => {
     expect(resolveSlugs("Quoi", "audit")).toEqual([]);
   });
 
-  it("mappe les 14 préfixes vers les slots un_a_un (sans diaporama, sans 00_Presentation)", () => {
+  it("mappe les préfixes pédagogiques un_a_un et EXCLUT les docs Qualiopi-générés", () => {
     expect(UN_A_UN_FILE_TO_SLOT["01"]).toBe("cadrage_objectifs");
     expect(UN_A_UN_FILE_TO_SLOT["08"]).toBe("plan_optimisation");
-    expect(UN_A_UN_FILE_TO_SLOT["14"]).toBe("satisfaction_1to1");
+    expect(UN_A_UN_FILE_TO_SLOT["12"]).toBe("journal_progression");
+    // Exclus : positionnement (03) / évaluation (13) / satisfaction (14) — générés
+    // par le Formation Engine, jamais importés en masse (comme les formations).
+    expect(UN_A_UN_FILE_TO_SLOT["03"]).toBeUndefined();
+    expect(UN_A_UN_FILE_TO_SLOT["13"]).toBeUndefined();
+    expect(UN_A_UN_FILE_TO_SLOT["14"]).toBeUndefined();
+    expect(Object.keys(UN_A_UN_FILE_TO_SLOT).length).toBe(11);
+    // Ces fichiers du kit ne sont donc PAS classés (ignorés par l'import).
+    expect(
+      classifyEntry("Dirigeant/Documents_DOCX/03_Test_Positionnement_Individuel.docx", "un_a_un"),
+    ).toBeNull();
+    expect(
+      classifyEntry("Collaborateur/Documents_DOCX/14_Questionnaire_Satisfaction.docx", "un_a_un"),
+    ).toBeNull();
   });
 
   it("ignore les placeholders PDF en .html (Documents_PDF non-.pdf)", () => {
@@ -152,12 +165,17 @@ describe("kit-mapping — 1-to-1 (un_a_un)", () => {
     expect(classifyEntry("Dirigeant/00_Presentation/Slides.pptx", "un_a_un")).toBeNull();
   });
 
-  // Verrou de cohérence SSOT pour la famille 1-to-1.
-  it("chaque slot importé existe dans le catalogue un_a_un (non généré)", () => {
+  // Verrou de cohérence SSOT pour la famille 1-to-1 : chaque slot importé existe,
+  // n'est ni generatedOnly NI Qualiopi-généré (positionnement/éval/satisfaction/attestation).
+  it("chaque slot importé existe au catalogue un_a_un et n'est PAS Qualiopi-généré", () => {
     for (const slotKey of Object.values(UN_A_UN_FILE_TO_SLOT)) {
       const def = getSlot("un_a_un", slotKey);
       expect(def, `slot ${slotKey} absent du catalogue un_a_un`).toBeDefined();
       expect(def?.generatedOnly ?? false, `slot ${slotKey} est generatedOnly`).toBe(false);
+      expect(
+        def?.qualiopiDocType,
+        `slot ${slotKey} est Qualiopi-généré → ne doit pas être importé`,
+      ).toBeUndefined();
     }
   });
 
@@ -174,12 +192,12 @@ describe("kit-mapping — 1-to-1 (un_a_un)", () => {
     }
   });
 
-  // Couverture exhaustive : les 14 documents de CHAQUE public se classent vers le
-  // bon slot et les deux prestations (1j + 2j) du public.
-  it("les 14 préfixes d'un public se classent tous vers le bon slot + les 2 slugs", () => {
+  // Couverture exhaustive : les 11 documents pédagogiques de CHAQUE public se
+  // classent vers le bon slot et les deux prestations (1j + 2j) du public.
+  it("les 11 documents pédagogiques d'un public se classent vers le bon slot + les 2 slugs", () => {
     const dirSlugs = [...UN_A_UN_FOLDER_TO_SLUGS["Dirigeant"]!];
     const colSlugs = [...UN_A_UN_FOLDER_TO_SLUGS["Collaborateur"]!];
-    expect(Object.keys(UN_A_UN_FILE_TO_SLOT).length).toBe(14);
+    expect(Object.keys(UN_A_UN_FILE_TO_SLOT).length).toBe(11);
     for (const [prefix, slot] of Object.entries(UN_A_UN_FILE_TO_SLOT)) {
       const dir = classifyEntry(`Dirigeant/Documents_DOCX/${prefix}_X.docx`, "un_a_un");
       expect(dir, `Dirigeant ${prefix} non classé`).not.toBeNull();
