@@ -19,6 +19,15 @@ import { genererAttestation1to1 } from "@/server/qualiopi/coaching-afest/attesta
 import { genererFactureCoaching } from "@/server/qualiopi/coaching-afest/facturation-1to1";
 import { genererEmargement1to1 } from "@/server/qualiopi/coaching-afest/emargement-1to1";
 import { getHeuresReelles1to1 } from "@/server/qualiopi/coaching-afest/heures";
+import { validateCoachingFinancement } from "@/server/qualiopi/coaching-afest/financement-1to1";
+import {
+  genererKitOpcoCoaching,
+  genererKitCpfCoaching,
+  genererKitFranceTravailCoaching,
+  genererConventionTripartiteCoaching,
+  genererCertificat1to1,
+} from "@/server/qualiopi/coaching-afest/kits-1to1";
+import { computeBpf, bpfToCsv } from "@/server/qualiopi/bpf/service";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossier";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
@@ -176,6 +185,72 @@ async function main() {
   report.emargement = await genererEmargement1to1(cs.id);
   report.attestation = await genererAttestation1to1(cs.id); // attendu complete, 14 h
   report.facture = await genererFactureCoaching(contrat.id);
+
+  // ── Parité financement : OPCO ventilation + CPF + France Travail + RNCP/RS ───
+  // Enrichit le contrat d'un barème horaire (50 €/h) + convention tripartite +
+  // EDOF + date de signature (pour le CA BPF). Le parcours devient certifiant RS.
+  await prisma.coachingContract.update({
+    where: { id: contrat.id },
+    data: {
+      dateSigneeAt: new Date("2026-02-15"),
+      conventionTripartiteSigneeAt: new Date("2026-02-15"),
+      priseEnChargeMontantCents: 5000, // 50 €/h
+      priseEnChargeUnite: "euro_heure",
+      priseEnChargeReleveLe: new Date("2026-02-15"),
+      edofVerifieAt: new Date("2026-02-10"),
+      resteAChargeCents: 0,
+      ftDispositif: "aif",
+      ftAifPrescriptionDate: new Date("2026-02-12"),
+    },
+  });
+  await prisma.coachingSession.update({
+    where: { id: cs.id },
+    data: { certificationType: "rs", codeRs: "RS-TEST-1234", cpfEligible: true },
+  });
+
+  const contratFin = await prisma.coachingContract.findUniqueOrThrow({
+    where: { id: contrat.id },
+    select: {
+      financementType: true,
+      montantHtCents: true,
+      subrogation: true,
+      numeroDossierOpco: true,
+      conventionTripartiteSigneeAt: true,
+      priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      priseEnChargePlafondFormationCents: true,
+      priseEnChargePlafondAnnuelCents: true,
+      edofVerifieAt: true,
+      resteAChargeCents: true,
+      ftDispositif: true,
+      ftAifPrescriptionDate: true,
+      ftPoeiOffreEmploiNumero: true,
+      ftPoeiAccordFinancementAt: true,
+      ftPoeiEngagementSigneAt: true,
+    },
+  });
+  report.financementValidation = validateCoachingFinancement(contratFin); // attendu null (OK)
+
+  report.kitOpco = await genererKitOpcoCoaching(cs.id);
+  report.kitCpf = await genererKitCpfCoaching(cs.id);
+  report.kitFranceTravail = await genererKitFranceTravailCoaching(cs.id);
+  report.conventionTripartite = await genererConventionTripartiteCoaching(cs.id);
+  report.certificat = await genererCertificat1to1(cs.id);
+  report.certificatIdempotent = await genererCertificat1to1(cs.id); // MÊME doc
+
+  // Facture financement-aware : ventilation horaire OPCO (14 h × 50 € = 70000).
+  report.factureVentilation = await genererFactureCoaching(contrat.id);
+
+  // BPF : la contribution coaching doit apparaître (heures + CA + ligne CSV).
+  const bpf = await computeBpf(2026);
+  report.bpf = {
+    nbHeuresStagiaires: bpf.nbHeuresStagiaires,
+    nbHeuresStagiairesCoaching: bpf.nbHeuresStagiairesCoaching,
+    nbCoachingParcours: bpf.nbCoachingParcours,
+    caTotalHtCents: bpf.caTotalHtCents,
+    caOpco: bpf.caParFinanceur.opco,
+  };
+  report.bpfCsvMentionneCoaching = bpfToCsv(bpf).includes("coaching AFEST 1-to-1");
 
   const conf = await evaluerConformite();
   // off.28 = AFEST (doit être couvert) ; off.13/14/15 = apprentissage (non applicable).
