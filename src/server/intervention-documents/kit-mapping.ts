@@ -27,6 +27,17 @@ export const FOLDER_TO_SLUG: Readonly<Record<string, string>> = {
   IA_Conformite: "ia-conformite",
   IA_Fondamentaux: "ia-fondamentaux",
   IA_Securite: "ia-securite",
+  // 10 formations catalogue V2 (kits produits 2026-06-14)
+  IA_Sur_Le_Terrain: "ia-sur-le-terrain",
+  Automatisations_Decouverte: "automatisations-decouverte",
+  Claude_Decouverte: "claude-decouverte",
+  IA_Integration_Metier: "ia-integration-metier",
+  IA_Commercial_Avance: "ia-commercial-avance",
+  Agents_Automatisations: "agents-automatisations",
+  Claude_Createur: "claude-createur",
+  IA_Transformation_Equipe: "ia-transformation-equipe",
+  Agents_Automatisations_Avance: "agents-automatisations-avance",
+  Claude_Architecte: "claude-architecte",
 };
 
 /**
