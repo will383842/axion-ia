@@ -50,7 +50,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  return buildProductMetadata({
+  const meta = buildProductMetadata({
     locale,
     path: "/cas-concrets",
     title:
@@ -63,6 +63,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Operational AI case studies: industry, legal, retail, banking, trades. Numerical results, testimonials, context.",
     alternates: { fr: "/cas-concrets", en: "/case-studies" },
   });
+  // Découvrabilité RSS (2026-06-14) : expose <link rel="alternate" rss> vers le
+  // feed (comme le blog). buildProductMetadata ne propage pas alternates.types,
+  // d'où le merge post-retour.
+  return {
+    ...meta,
+    alternates: {
+      ...meta.alternates,
+      types: { "application/rss+xml": `/${locale}/cas-concrets/feed.xml` },
+    },
+  };
 }
 
 export default async function CaseStudiesListing({ params }: Props) {

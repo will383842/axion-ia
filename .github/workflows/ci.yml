@@ -177,6 +177,15 @@ jobs:
         # en CI (il pingue les moteurs de recherche). La compression .br est
         # refaite au vrai build de déploiement (Dockerfile / GH Actions deploy).
         # Le Gate B ne valide QUE la compilation du build. (Fix 2026-05-29.)
+        #
+        # NODE_OPTIONS heap aligné sur le Dockerfile de déploiement
+        # (max-old-space-size=6144) : le webpack compile du SSG (~18k pages)
+        # dépassait le heap Node par défaut sur ubuntu-latest → « JavaScript heap
+        # out of memory » (cause du Gate B rouge chronique). Env scoppé à CE step
+        # uniquement (pas job-level) pour ne pas impacter Playwright/Lighthouse.
+        # (Fix OOM Gate B 2026-06-14.)
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
         run: pnpm exec next build --webpack
       # Sprint Final P1-8 (audit final 2026-05-22) — Bundle delta + LHCI passés
       # en STRICT (continue-on-error retiré) pour enforcer le contrat AGENTS.md :
