@@ -25,6 +25,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { applySystemPromptOverride } from "@/server/content-gen/template-resolver";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
@@ -138,18 +139,24 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×6-8], tags }`;
 
+      // 2026-06-15 — Override template console (fallback prompt code si absent).
+      const effectiveSystem = applySystemPromptOverride(
+        SYSTEM_PROMPT,
+        input.templateOverride,
+        "blog_article",
+      );
       lastPromptHash = hashPrompt(
-        SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent) + userPrompt,
+        effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent) + userPrompt,
       );
 
       const llmResult = await routerGenerate({
         jobId: input.jobId,
         contentType: "blog_article",
         role: "text",
-        systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent),
+        systemPrompt: effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent),
         userPrompt,
-        maxTokens: 4096,
-        temperature: iteration === 0 ? 0.7 : 0.5,
+        maxTokens: input.templateOverride?.maxTokens ?? 4096,
+        temperature: input.templateOverride?.temperature ?? (iteration === 0 ? 0.7 : 0.5),
       });
 
       accumulatedCostUsd += llmResult.costUsd;

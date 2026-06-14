@@ -57,6 +57,16 @@ export async function TemplatesListV2({
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
+        <p className="text-[length:var(--text-admin-sm)]">
+          ℹ️ Un template <strong>actif</strong> remplace, à la génération, le prompt système (+
+          température / max tokens) codé en dur — la voix de marque reste toujours ré-appliquée.
+          Câblé pour :{" "}
+          <strong>blog_article, blog_from_keywords, blog_from_title, blog_from_rss</strong>. Les
+          autres types utilisent encore le prompt code (fallback).
+        </p>
+      </AdminCard>
+
+      <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
           <div className="admin-filters-grid">
             <div className="admin-field">

@@ -44,6 +44,18 @@ export interface GeneratorBaseInput {
   readonly rssItemTitle?: string;
   readonly rssItemSummary?: string;
   readonly rssItemLink?: string;
+  /**
+   * Override de template DB (console /content-gen/templates) résolu par le
+   * worker via `resolveTemplateOverride(contentType)`. Si présent, son
+   * systemPrompt/temperature/maxTokens remplace les valeurs en dur du
+   * générateur (fallback code si absent). 2026-06-15.
+   */
+  readonly templateOverride?: {
+    readonly templateId: string;
+    readonly systemPrompt?: string;
+    readonly temperature?: number;
+    readonly maxTokens?: number;
+  };
 }
 
 export interface GeneratedFaqItem {
