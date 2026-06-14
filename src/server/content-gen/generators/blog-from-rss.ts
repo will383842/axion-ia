@@ -65,7 +65,7 @@ Règles absolues :
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les entreprises (TPE, PME, ETI, grands comptes) dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
 - 0 délai chiffré, 0 mention de frais de déplacement, 0 prix en dur.
-- Minimum 450 mots de contenu substantiel (article d'actualité = plus court que guide).
+- Longueur : vise une longueur COMPARABLE à celle de la matière source fournie ci-dessous (≈ ±25 %), avec un minimum de 450 mots. Si la source est courte, reste concis ; si elle est longue/détaillée, développe d'autant. N'INVENTE PAS de faits pour rallonger : enrichis uniquement avec le contexte marché et l'angle Axion-IA (section finale). Article d'actualité = plus court qu'un guide.
 - 4 à 6 questions FAQ réelles avec réponses directes ≥ 2 lignes.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
@@ -123,7 +123,7 @@ export const blogFromRssGenerator: Generator = {
               ? `URL d'origine (NE PAS mentionner) : ${escapeLlmInput(input.rssItemLink, { maxLen: 200 })}`
               : "",
             input.rssItemSummary
-              ? `\nRésumé brut (à reformuler totalement, jamais citer littéralement) :\n${escapeLlmInput(input.rssItemSummary, { maxLen: 800 })}`
+              ? `\nContenu source brut (à reformuler TOTALEMENT, jamais citer littéralement ; sert aussi à caler la longueur cible) :\n${escapeLlmInput(input.rssItemSummary, { maxLen: 3000 })}`
               : "",
           ]
             .filter(Boolean)
