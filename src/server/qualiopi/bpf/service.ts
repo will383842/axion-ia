@@ -113,6 +113,18 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     }
   }
 
+  // ── Coaching AFEST 1-to-1 (C1) ─────────────────────────────────────────────
+  // Le BPF agrège aussi les parcours de coaching 1-to-1 :
+  //  - CA : CoachingContract.montantHtCents signés dans l'année, ventilés par
+  //    financementType (direct/opco/cpf/france_travail/mixte) ;
+  //  - heures stagiaires : Σ CompteRenduSeance.dureeMinutes / 60 des séances
+  //    AFEST réalisées dans l'année. C'est du 1-to-1 → AUCUNE multiplication
+  //    par un nombre de participants.
+  const coaching = await aggregateCoaching(plage, caParFinanceur);
+
+  const caTotalHtCentsFinal = caTotalHtCents + coaching.caHtCents;
+  const nbHeuresStagiairesFinal = nbHeuresStagiaires + coaching.nbHeuresStagiaires;
+
   const [nbFormateursInternes, nbFormateursExternes, depenses] = await Promise.all([
     prisma.trainer.count({ where: { statut: "salarie", actif: true } }),
     prisma.trainer.count({ where: { statut: "sous_traitant", actif: true } }),
@@ -128,14 +140,71 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     },
     nbSessions,
     nbStagiairesDistincts,
-    nbHeuresStagiaires,
-    caTotalHtCents,
+    nbHeuresStagiaires: nbHeuresStagiairesFinal,
+    caTotalHtCents: caTotalHtCentsFinal,
     caParFinanceur,
     nbFormateursInternes,
     nbFormateursExternes,
     depenses,
     calculeAt: new Date(),
   };
+}
+
+interface CoachingAggregat {
+  caHtCents: number;
+  nbHeuresStagiaires: number;
+}
+
+/**
+ * Agrège la contribution du coaching AFEST 1-to-1 au BPF d'une année :
+ *  - somme CoachingContract.montantHtCents signés dans l'année (ventilés par
+ *    financeur, MUTE `caParFinanceur` en place comme les sessions collectives) ;
+ *  - somme les heures réelles = Σ CompteRenduSeance.dureeMinutes / 60 des séances
+ *    AFEST réalisées dans l'année (1-to-1 : pas de multiplication participants).
+ *
+ * Note : pas de garde stub.invalid ici — `computeBpf` court-circuite déjà avant
+ * tout appel Prisma en mode build stub.
+ */
+async function aggregateCoaching(
+  plage: { gte: Date; lt: Date },
+  caParFinanceur: BpfFinanceurDetail,
+): Promise<CoachingAggregat> {
+  const [contracts, coachingSessions] = await Promise.all([
+    prisma.coachingContract.findMany({
+      where: { dateSigneeAt: plage },
+      select: { montantHtCents: true, financementType: true },
+    }),
+    prisma.coachingSession.findMany({
+      where: {
+        estAfest: true,
+        statut: "realisee",
+        dateSeance: plage,
+      },
+      select: {
+        comptesRendus: { select: { dureeMinutes: true } },
+      },
+    }),
+  ]);
+
+  let caHtCents = 0;
+  for (const contract of contracts) {
+    caHtCents += contract.montantHtCents;
+    const type = contract.financementType ?? "direct";
+    if (type in caParFinanceur) {
+      caParFinanceur[type as keyof BpfFinanceurDetail] += contract.montantHtCents;
+    }
+  }
+
+  let totalMinutes = 0;
+  for (const session of coachingSessions) {
+    for (const cr of session.comptesRendus) {
+      if (cr.dureeMinutes !== null) {
+        totalMinutes += cr.dureeMinutes;
+      }
+    }
+  }
+
+  return { caHtCents, nbHeuresStagiaires: totalMinutes / 60 };
 }
 
 export function bpfToCsv(bpf: BpfResult): string {

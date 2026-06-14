@@ -39,7 +39,9 @@ export interface CreerDemandeRgpdResult {
  * Exporte toutes les données d'un stagiaire au format JSON (droit d'accès RGPD).
  *
  * Inclut : identité, inscriptions, évaluations, questionnaires, documents,
- * appréciations liées, situation handicap déchiffrée.
+ * appréciations liées, situation handicap déchiffrée, parcours coaching 1-to-1 /
+ * AFEST (séances + comptes-rendus, évaluations, cartographie, plan, journaux,
+ * transitions, contrat de coaching).
  *
  * Stub-aware : retourne un objet vide si DATABASE_URL contient "stub.invalid".
  */
@@ -70,6 +72,18 @@ export async function exporterDonneesStagiaire(traineeId: string): Promise<objec
       documents: true,
       appreciations: true,
       rgpdDemandes: true,
+      // RGPD art. 15 — portabilité des parcours coaching 1-to-1 / AFEST.
+      coachingSessions: {
+        include: {
+          comptesRendus: true,
+          evaluations: true,
+          cartographie: true,
+          plan: true,
+          journaux: true,
+          transitions: true,
+          coachingContract: true,
+        },
+      },
     },
   });
 
@@ -107,6 +121,8 @@ export async function exporterDonneesStagiaire(traineeId: string): Promise<objec
     })),
     appreciations: trainee.appreciations,
     demandesRgpd: trainee.rgpdDemandes,
+    // RGPD art.15 — parcours coaching 1-to-1 / AFEST du bénéficiaire.
+    coachingSessions: trainee.coachingSessions,
   };
 }
 
@@ -118,8 +134,10 @@ export async function exporterDonneesStagiaire(traineeId: string): Promise<objec
  * Anonymise les données PII du stagiaire et pose `deletedAt = now()`.
  *
  * Champs anonymisés : nom, prenom, email, telephone, handicapDetailsChiffre.
+ * Côté coaching 1-to-1 / AFEST : PII bénéficiaire/tuteur des CoachingSession +
+ * notes confidentielles des CompteRenduSeance (mêmes transaction).
  * L'enregistrement est conservé pour l'intégrité comptable et légale (documents,
- * inscriptions, émargements).
+ * inscriptions, émargements, heures réalisées, attestations).
  *
  * PAS de DELETE physique — conformément au droit à l'effacement RGPD art. 17
  * appliqué sous contrainte de conservation légale (art. 17§3b).
@@ -160,6 +178,26 @@ export async function supprimerStagiaire(traineeId: string): Promise<void> {
     prisma.portailAcces.updateMany({
       where: { traineeId, revoked: false },
       data: { revoked: true },
+    }),
+    // RGPD : anonymiser les parcours coaching 1-to-1 / AFEST du stagiaire. Les
+    // séances sont conservées (agrégats légaux : heures réalisées, attestations,
+    // émargements, financement OPCO) mais purgées des PII bénéficiaire/tuteur.
+    prisma.coachingSession.updateMany({
+      where: { traineeId },
+      data: {
+        beneficiaireNom: null,
+        beneficiaireEmail: null,
+        beneficiaireEntreprise: null,
+        tuteurEntrepriseNom: null,
+        tuteurEntrepriseEmail: null,
+      },
+    }),
+    // RGPD : purger les notes confidentielles des comptes-rendus de séance
+    // (champ libre potentiellement nominatif). Le reste du compte-rendu (durée,
+    // objectifs, présence signée) est conservé pour l'intégrité légale AFEST.
+    prisma.compteRenduSeance.updateMany({
+      where: { coachingSession: { traineeId } },
+      data: { notesConfidentielles: null },
     }),
   ]);
 }

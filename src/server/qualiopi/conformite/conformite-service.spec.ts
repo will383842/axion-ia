@@ -29,6 +29,7 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { count: vi.fn() },
     revueDirection: { count: vi.fn() },
     supportFormation: { count: vi.fn() },
+    coachingSession: { findMany: vi.fn() },
   },
 }));
 
@@ -55,6 +56,7 @@ type MockPrisma = {
   documentGenere: { count: ReturnType<typeof vi.fn> };
   revueDirection: { count: ReturnType<typeof vi.fn> };
   supportFormation: { count: ReturnType<typeof vi.fn> };
+  coachingSession: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockP = prisma as unknown as MockPrisma;
@@ -81,6 +83,7 @@ function setupEmpty() {
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
   mockP.supportFormation.count.mockResolvedValue(0);
+  mockP.coachingSession.findMany.mockResolvedValue([]);
   // Par défaut : référent handicap + responsable qualité vides
   mockGetConfig.mockResolvedValue("");
 }
@@ -369,18 +372,71 @@ describe("evaluerConformite", () => {
     expect(ind16?.statut, "off.16 doit être couvert").toBe("couvert");
   });
 
-  // ── off.13/14/15/28 (APP/AFEST) : a_completer si applicable, non muet ────
+  // ── off.28 = AFEST (automatisé) ; off.13/14/15 = APPRENTISSAGE (non applicable) ──
 
-  it("off.13/14/15/28 a_completer avec preuve explicite si alternance_afest déclaré", async () => {
+  it("off.13/14/15 (apprentissage/CFA) restent NON APPLICABLES même avec AFEST déclaré", async () => {
+    // alternance_afest déclaré ne doit PAS rendre les indicateurs apprenti applicables.
     mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
     const result = await evaluerConformite();
-    for (const numero of [13, 14, 15, 28]) {
+    for (const numero of [13, 14, 15]) {
       const ind = result.indicateurs.find((i) => i.numero === numero);
-      expect(ind?.statut, `off.${numero} doit être a_completer`).toBe("a_completer");
-      expect(ind?.preuves.join(" "), `off.${numero} doit porter une preuve explicite`).toMatch(
-        /à compléter manuellement/i,
+      expect(ind?.statut, `off.${numero} (apprentissage) doit être non_applicable`).toBe(
+        "non_applicable",
       );
     }
+  });
+
+  it("off.28 a_completer si AFEST applicable mais aucun parcours conforme tracé", async () => {
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
+    const result = await evaluerConformite();
+    const ind28 = result.indicateurs.find((i) => i.numero === 28);
+    expect(ind28?.statut).toBe("a_completer");
+    expect(ind28?.preuves.join(" ")).toMatch(/à compléter/i);
+  });
+
+  it("off.28 AUTOMATISÉ → couvert depuis un parcours AFEST 1-to-1 CONFORME (analyse + alternance + éval)", async () => {
+    mockP.coachingSession.findMany.mockResolvedValue([
+      {
+        cartographie: { taches: [{ tache: "Tri des emails" }] },
+        evaluations: [{ id: "eval-1" }],
+        comptesRendus: [
+          { misesEnSituation: [{ cas: "x" }], phasesReflexives: [{ situation: "y" }] },
+        ],
+      },
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("couvert");
+    // Les indicateurs apprentissage NE deviennent PAS couverts par l'AFEST.
+    for (const numero of [13, 14, 15]) {
+      expect(result.indicateurs.find((i) => i.numero === numero)?.statut).toBe("non_applicable");
+    }
+  });
+
+  it("off.28 a_completer si cartographie/alternance/éval vides ou malformées (anti faux-positif)", async () => {
+    mockP.coachingSession.findMany.mockResolvedValue([
+      {
+        cartographie: { taches: [] }, // vide
+        evaluations: [],
+        comptesRendus: [
+          { misesEnSituation: [{ cas: "" }], phasesReflexives: [] },
+          { misesEnSituation: [null], phasesReflexives: [{ situation: "ok" }] },
+        ],
+      },
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("a_completer");
+  });
+
+  it("off.28 a_completer si comptesRendus vide même avec cartographie remplie + éval", async () => {
+    mockP.coachingSession.findMany.mockResolvedValue([
+      {
+        cartographie: { taches: [{ tache: "x" }] },
+        evaluations: [{ id: "e" }],
+        comptesRendus: [],
+      },
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("a_completer");
   });
 
   it("off.28 (AFEST) non_applicable et sans preuve pour une action classique", async () => {

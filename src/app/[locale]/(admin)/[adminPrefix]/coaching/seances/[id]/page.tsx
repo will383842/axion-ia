@@ -8,6 +8,8 @@ import {
   optimisationTypeLabel,
   sessionStatutLabel,
 } from "@/server/formateur/coaching-options";
+import { sumHeuresReelles } from "@/server/qualiopi/coaching-afest/heures";
+import { AfestPanel } from "@/components/admin/coaching/AfestPanel";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
@@ -44,6 +46,7 @@ export default async function AdminSeanceDetailPage({
   const s = await getSessionAdmin(id);
   if (!s) notFound();
   const seancesHref = `/${locale}/${adminPrefix}/coaching/seances`;
+  const heuresReelles = sumHeuresReelles(s.comptesRendus);
 
   return (
     <div className="space-y-4">
@@ -63,6 +66,24 @@ export default async function AdminSeanceDetailPage({
           {s.beneficiaireEntreprise ? ` (${s.beneficiaireEntreprise})` : ""}
         </p>
       </div>
+
+      <AfestPanel
+        coachingSessionId={s.id}
+        revalidatePath={`/${locale}/${adminPrefix}/coaching/seances/${s.id}`}
+        estAfest={s.estAfest}
+        heuresReelles={heuresReelles}
+        heuresPrevues={s.heuresPrevuesConvention != null ? Number(s.heuresPrevuesConvention) : null}
+        tuteurNom={s.tuteurEntrepriseNom}
+        tuteurEmail={s.tuteurEntrepriseEmail}
+        attestationResultat={s.attestationResultat}
+        coachingContractId={s.coachingContractId}
+        seances={s.comptesRendus.map((c) => ({
+          id: c.id,
+          date: dateFmt.format(c.dateSeance),
+          presenceSignee: c.presenceSigneeAt != null,
+        }))}
+        documents={s.documentsGeneres}
+      />
 
       <Block title="Cartographie de l'activité">
         {s.cartographie ? (

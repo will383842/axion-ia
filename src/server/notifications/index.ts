@@ -91,6 +91,22 @@ async function dispatchChannels(
  * Ne throw jamais. Retourne un `NotifyResult` reportant l'état de chaque
  * canal. Dédup Redis et rate-limit fail-open silencieux si Redis down.
  */
+/**
+ * Dispatches fire-and-forget en cours (severity critical/error). Référencés ici
+ * uniquement pour pouvoir les ATTENDRE (tests, arrêt gracieux) — le runtime reste
+ * non-bloquant (`notify` ne les await jamais). Auto-nettoyés à la résolution.
+ */
+const inFlightDispatches = new Set<Promise<unknown>>();
+
+/**
+ * Attend la fin de tous les dispatches fire-and-forget en cours. À utiliser dans
+ * les tests (évite qu'un fetch asynchrone fuite sur le test suivant) et pour un
+ * arrêt gracieux. No-op s'il n'y a aucun dispatch détaché en cours.
+ */
+export async function flushPendingDispatches(): Promise<void> {
+  await Promise.allSettled([...inFlightDispatches]);
+}
+
 export async function notify(input: NotifyInput): Promise<NotifyResult> {
   const routing = getRouting(input.category);
   const severity = input.severity ?? routing.severity;
@@ -130,7 +146,11 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
 
   if (async) {
     // Fire-and-forget : on lance la promise détachée, on retourne tout de suite.
-    void dispatchChannels(input.category, severity, channels, formatted.text, payload);
+    // On garde une référence attendable (tests / arrêt gracieux) sans bloquer le
+    // runtime ; la référence s'auto-supprime à la résolution.
+    const dispatch = dispatchChannels(input.category, severity, channels, formatted.text, payload);
+    inFlightDispatches.add(dispatch);
+    void dispatch.finally(() => inFlightDispatches.delete(dispatch));
     const queued: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">> =
       {};
     for (const c of channels) queued[c] = "queued";

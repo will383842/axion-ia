@@ -94,6 +94,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   lettre_mission: "Lettre de mission formateur",
   reglement_interieur: "Règlement intérieur (L.6352-3)",
   livret_accueil: "Livret d'accueil stagiaire",
+  protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

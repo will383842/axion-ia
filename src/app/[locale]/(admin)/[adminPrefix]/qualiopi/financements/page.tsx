@@ -300,9 +300,11 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
 
                     {/* Session */}
                     <td className={cellCls}>
-                      <div className="font-medium">{f.session.titreSession}</div>
+                      <div className="font-medium">
+                        {f.session?.titreSession ?? "Coaching 1-to-1"}
+                      </div>
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        {f.session.numero}
+                        {f.session?.numero ?? ""}
                       </div>
                     </td>
 
@@ -370,12 +372,18 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
 
                     {/* Actions */}
                     <td className={cellCls}>
-                      <Link
-                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${f.session.id}/financement`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                      >
-                        Voir session
-                      </Link>
+                      {f.session ? (
+                        <Link
+                          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${f.session.id}/financement`}
+                          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                        >
+                          Voir session
+                        </Link>
+                      ) : (
+                        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          —
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}

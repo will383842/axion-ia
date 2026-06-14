@@ -15,6 +15,8 @@ vi.mock("@/lib/prisma", () => ({
     trainingSession: { findMany: vi.fn() },
     trainer: { count: vi.fn() },
     bpfDepense: { findMany: vi.fn(), create: vi.fn(), delete: vi.fn() },
+    coachingContract: { findMany: vi.fn() },
+    coachingSession: { findMany: vi.fn() },
   },
 }));
 
@@ -43,6 +45,8 @@ const mockPrisma = prisma as unknown as {
     create: ReturnType<typeof vi.fn>;
     delete: ReturnType<typeof vi.fn>;
   };
+  coachingContract: { findMany: ReturnType<typeof vi.fn> };
+  coachingSession: { findMany: ReturnType<typeof vi.fn> };
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,6 +72,19 @@ function makeSession(overrides: {
   };
 }
 
+function makeContract(overrides: { montantHtCents?: number; financementType?: string | null }) {
+  return {
+    montantHtCents: overrides.montantHtCents ?? 139000,
+    financementType: "financementType" in overrides ? overrides.financementType : "direct",
+  };
+}
+
+function makeCoachingSession(dureesMinutes: Array<number | null>) {
+  return {
+    comptesRendus: dureesMinutes.map((dureeMinutes) => ({ dureeMinutes })),
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // computeBpf
 // ─────────────────────────────────────────────────────────────────────────────
@@ -78,6 +95,8 @@ describe("computeBpf", () => {
     mockPrisma.trainingSession.findMany.mockResolvedValue([]);
     mockPrisma.trainer.count.mockResolvedValue(0);
     mockPrisma.bpfDepense.findMany.mockResolvedValue([]);
+    mockPrisma.coachingContract.findMany.mockResolvedValue([]);
+    mockPrisma.coachingSession.findMany.mockResolvedValue([]);
   });
 
   it("retourne des zéros si aucune session réalisée", async () => {
@@ -255,6 +274,110 @@ describe("computeBpf", () => {
     expect(result.depenses.parCategorie["Locations de salles"]).toBe(55000);
     expect(result.depenses.parCategorie["Matériel pédagogique"]).toBe(15000);
     expect(result.depenses.items).toHaveLength(3);
+  });
+
+  // ── Coaching AFEST 1-to-1 (C1) ─────────────────────────────────────────────
+
+  it("agrège le CA des CoachingContract dans le CA total", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ id: "s1", montantHtCents: 500000 }),
+    ]);
+    mockPrisma.coachingContract.findMany.mockResolvedValue([
+      makeContract({ montantHtCents: 139000 }),
+      makeContract({ montantHtCents: 99000 }),
+    ]);
+
+    const result = await computeBpf(2026);
+    // 500000 (session) + 139000 + 99000 (coaching) = 738000
+    expect(result.caTotalHtCents).toBe(738000);
+  });
+
+  it("ventile le CA coaching par financeur (en plus des sessions)", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ id: "s1", montantHtCents: 200000, financementType: "opco" }),
+    ]);
+    mockPrisma.coachingContract.findMany.mockResolvedValue([
+      makeContract({ montantHtCents: 139000, financementType: "opco" }),
+      makeContract({ montantHtCents: 99000, financementType: "cpf" }),
+      makeContract({ montantHtCents: 50000, financementType: "france_travail" }),
+      makeContract({ montantHtCents: 30000, financementType: null }), // → direct
+    ]);
+
+    const result = await computeBpf(2026);
+    expect(result.caParFinanceur.opco).toBe(200000 + 139000); // session + coaching
+    expect(result.caParFinanceur.cpf).toBe(99000);
+    expect(result.caParFinanceur.france_travail).toBe(50000);
+    expect(result.caParFinanceur.direct).toBe(30000);
+    expect(result.caParFinanceur.mixte).toBe(0);
+  });
+
+  it("ajoute les heures coaching = Σ CompteRenduSeance.dureeMinutes / 60 SANS multiplier par participants", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ id: "s1", dureeReelleHeures: 7, nbParticipantsReels: 10 }), // 70 h collectif
+    ]);
+    mockPrisma.coachingSession.findMany.mockResolvedValue([
+      // parcours 1 : 90 + 120 + 90 = 300 min → 5 h (1-to-1, pas ×participants)
+      makeCoachingSession([90, 120, 90]),
+      // parcours 2 : 60 + 60 = 120 min → 2 h
+      makeCoachingSession([60, 60]),
+    ]);
+
+    const result = await computeBpf(2026);
+    // 70 (collectif) + 5 + 2 (coaching 1-to-1) = 77
+    expect(result.nbHeuresStagiaires).toBe(77);
+  });
+
+  it("ignore les comptes-rendus sans dureeMinutes pour les heures coaching", async () => {
+    mockPrisma.coachingSession.findMany.mockResolvedValue([
+      makeCoachingSession([120, null, 60]), // 180 min → 3 h
+    ]);
+
+    const result = await computeBpf(2026);
+    expect(result.nbHeuresStagiaires).toBe(3);
+  });
+
+  it("gère un mix CoachingContract + TrainingSession (CA par financeur + heures coaching)", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({
+        id: "s1",
+        montantHtCents: 300000,
+        financementType: "opco",
+        dureeReelleHeures: 14,
+        nbParticipantsReels: 8, // 112 h collectif
+        enrollments: [{ traineeId: "t1" }, { traineeId: "t2" }],
+      }),
+    ]);
+    mockPrisma.coachingContract.findMany.mockResolvedValue([
+      makeContract({ montantHtCents: 139000, financementType: "opco" }),
+      makeContract({ montantHtCents: 99000, financementType: "direct" }),
+    ]);
+    mockPrisma.coachingSession.findMany.mockResolvedValue([
+      makeCoachingSession([90, 90, 90, 90]), // 360 min → 6 h
+    ]);
+
+    const result = await computeBpf(2026);
+    // CA : 300000 + 139000 + 99000 = 538000
+    expect(result.caTotalHtCents).toBe(538000);
+    expect(result.caParFinanceur.opco).toBe(300000 + 139000);
+    expect(result.caParFinanceur.direct).toBe(99000);
+    // Heures : 112 (collectif) + 6 (coaching) = 118
+    expect(result.nbHeuresStagiaires).toBe(118);
+    // Rétrocompat : nbSessions inchangé (compte les TrainingSession uniquement)
+    expect(result.nbSessions).toBe(1);
+  });
+
+  it("ne charge pas le coaching en mode stub.invalid", async () => {
+    const original = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    try {
+      const result = await computeBpf(2026);
+      expect(result.caTotalHtCents).toBe(0);
+      expect(result.nbHeuresStagiaires).toBe(0);
+      expect(mockPrisma.coachingContract.findMany).not.toHaveBeenCalled();
+      expect(mockPrisma.coachingSession.findMany).not.toHaveBeenCalled();
+    } finally {
+      process.env["DATABASE_URL"] = original;
+    }
   });
 });
 

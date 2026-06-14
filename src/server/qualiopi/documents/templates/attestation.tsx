@@ -120,6 +120,11 @@ function assiduitePercent(data: ResultatsFormationData): string {
   return `${pct} %`;
 }
 
+/** Heures au format français (virgule décimale ; entiers inchangés). R.6313-3. */
+function hFr(heures: number): string {
+  return heures.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+}
+
 // ============================================================
 // Composant principal
 // ============================================================
@@ -165,7 +170,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
         <DocSection title="Formation suivie">
           <FieldRow label="Intitulé" value={data.formation.intitule} />
           <FieldRow label="Objectifs" value={data.formation.objectifs} />
-          <FieldRow label="Durée totale" value={`${data.formation.dureeHeures} h`} />
+          <FieldRow label="Durée totale" value={`${hFr(data.formation.dureeHeures)} h`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
           <FieldRow label="Modalité" value={data.formation.modalite} />
@@ -177,7 +182,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Assiduité</Text>
             <Text style={styles.resultValue}>
-              {`${data.resultats.heuresSuivies} h / ${data.resultats.heuresTotales} h = ${assiduitePercent(data.resultats)}`}
+              {`${hFr(data.resultats.heuresSuivies)} h / ${hFr(data.resultats.heuresTotales)} h = ${assiduitePercent(data.resultats)}`}
             </Text>
           </View>
           {data.resultats.evaluationObtenue ? (

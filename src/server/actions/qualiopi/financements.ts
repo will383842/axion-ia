@@ -630,7 +630,7 @@ export async function genererFacturePdfAction(input: {
       type: "facture",
       buildElement: (numero) =>
         React.createElement(FacturePdf, { data: { ...factureData, numero } }),
-      refs: { sessionId: facture.sessionId },
+      refs: facture.sessionId != null ? { sessionId: facture.sessionId } : {},
     });
     documentId = docResult.id;
   } catch (err: unknown) {
@@ -781,8 +781,8 @@ export async function exportComptaCsvAction(input: {
     return [
       f.numero,
       dateEmission,
-      f.session.numero,
-      `"${f.session.titreSession.replace(/"/g, '""')}"`,
+      f.session?.numero ?? "",
+      `"${(f.session?.titreSession ?? "Coaching 1-to-1").replace(/"/g, '""')}"`,
       DEST_LABELS[f.destinataire] ?? f.destinataire,
       `"${f.destinataireNom.replace(/"/g, '""')}"`,
       montantHt,
