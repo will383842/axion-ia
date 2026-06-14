@@ -11,6 +11,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { buildImageDetailGraph } from "@/server/image-bank/services/image-jsonld-graph.service";
 import { imageBankService } from "@/server/image-bank/services/image-bank.service";
+import { resolveCopyrightHolder } from "@/server/image-bank/constants";
 import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 
@@ -229,7 +230,7 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
   const secondaryKeywords = Array.isArray(image.keywordsSecondary)
     ? (image.keywordsSecondary.filter((k) => typeof k === "string" && k.length > 0) as string[])
     : [];
-  const attribution = `© ${image.copyrightHolder ?? "Axion-IA"} — « ${tr.title} ». Licence CC BY 4.0. Source : ${pageUrl}`;
+  const attribution = `© ${resolveCopyrightHolder(image.copyrightHolder)} — « ${tr.title} ». Licence CC BY 4.0. Source : ${pageUrl}`;
 
   return (
     <main className="container mx-auto max-w-6xl px-4 py-10">
@@ -438,7 +439,10 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
                 }
               />
               {image.copyrightHolder && (
-                <DetailRow label="© Copyright" value={image.copyrightHolder} />
+                <DetailRow
+                  label="© Copyright"
+                  value={resolveCopyrightHolder(image.copyrightHolder)}
+                />
               )}
               {image.photographerName && (
                 <DetailRow

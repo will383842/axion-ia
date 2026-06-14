@@ -3608,7 +3608,7 @@ model Keyword {
 //   - Stockage local dev (public/image-bank/) ou S3/Hetzner (prod) — PAS de hotlinks
 //   - License par défaut CC BY 4.0 (enum éditable admin)
 //   - Geo-targeting via ISO codes (target_countries jsonb)
-//   - Copyright holder = Axion-IA OÜ (estonienne, 0 SIREN)
+//   - Copyright holder = Axion-IA (SAS française ; jamais « OÜ », cf. resolveCopyrightHolder)
 //   - 10 tables : Country (prérequis) + 8 image-bank core + ImageDownloadLog + ImageImportBatch
 // Refs :
 //   - .claude/skills/axionia-image-bank/references/prisma-schema.md

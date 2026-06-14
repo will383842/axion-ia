@@ -45,8 +45,8 @@ const CATEGORIES: ReadonlyArray<CategorySeed> = [
     sortOrder: 40,
     name: { fr: "Équipe", en: "Team" },
     description: {
-      fr: "Portraits et environnements de travail de l'équipe Axion-IA OÜ.",
-      en: "Portraits and work environments of the Axion-IA OÜ team.",
+      fr: "Portraits et environnements de travail de l'équipe Axion-IA.",
+      en: "Portraits and work environments of the Axion-IA team.",
     },
   },
   {
