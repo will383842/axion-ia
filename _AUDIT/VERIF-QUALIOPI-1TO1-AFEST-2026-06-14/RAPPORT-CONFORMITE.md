@@ -97,5 +97,28 @@ Fixture « dossier AFEST complet » seedée (bénéficiaire + tuteur + 3 séance
 - **Certificateur (3 questions ADR §7 toujours ouvertes)** : périmètre AFEST · tuteur obligatoire · habilitation formateur. **+ NOUVELLE question (D-09)** : émargement signé par séance requis ?
 - **Décision scope** : portail bénéficiaire 1-to-1 (D-11), DocuSeal (D-10) — in/out V1.
 
+## 7bis. APRÈS CORRECTIONS (validées par Will) + 2e passe adversariale
+
+Décisions Will : corriger tout (sauf scope) · **restreindre à off.28** · **implémenter l'émargement signé**.
+
+**Corrigé + vérifié (commits `e1f76c77` + 2e passe) :**
+- **D-01** ✅ off.28 SEUL automatisé ; off.13/14/15 (apprentissage/CFA) = `non_applicable` (registre découplé). **Prouvé e2e** (off.28 couvert, 13/14/15 non_applicable).
+- **D-02** ✅ protocole idempotent (re-gen → même doc, prouvé e2e). **D-06** ✅ manifeste auditeur lie protocole/attestation/émargement à off.28.
+- **D-03** ✅ facture coaching câblée (action + bouton). **D-05** ✅ générateurs positionnement/satisfaction 1-to-1.
+- **D-04** ✅ RGPD : effacement anonymise CoachingSession/CR PII + export inclut le coaching (test dédié). **D-07** ✅ format heures FR (attestation-partielle).
+- **D-08** ✅ BPF intègre CA + heures coaching (+7 tests). **D-09** ✅ émargement signé 1-to-1 (présence par séance + template + service + actions + gate attestation : présence signée + durée requises, gated).
+- 2e passe : gate émargement ajouté · IDOR durci (existence + audit) · gate durée séance · commentaires conformité corrigés · specs registre/RGPD alignées.
+
+**Vérif finale** : `prisma migrate deploy` OK (drift 0) · typecheck 0 · **suite Qualiopi verte** · anti-hex/anti-siren/use-client OK · e2e réel re-prouvé (heures 14, protocole idempotent, émargement, attestation complete, facture OPCO, off.28 couvert).
+
+**Résiduels ACCEPTÉS (documentés, non bloquants)** :
+- Race-condition `generateDocument` + update non atomiques (protocole/émargement/attestation) : **pattern identique au Formation Engine collectif existant** ; idempotence couvre le cas séquentiel ; risque = 2 admins générant le MÊME doc simultanément (rare). Re-architecture tx hors périmètre.
+- `createEvaluation` API ne prend pas `coachingSessionId` (éval coaching créée via Prisma/seed) — capture UI éval coaching = amélioration future.
+
+**Déféré scope (décision Will)** : D-10 signatures DocuSeal (e-sig tuteur 3 parties) · D-11 portail bénéficiaire.
+
+## 8. Verdict final : **PRODUCTION-READY (back-office), sous réserve des items « reste à Will »**
+La couche AFEST 1-to-1 est **fonctionnelle, conforme et démontrable** (dossier complet généré e2e, mode auditeur cohérent, off.28 automatisé sans faux positif). Restent **non-techniques** : numéros légaux (`SiteSetting`), **validation certificateur** (périmètre AFEST · tuteur · habilitation · émargement signé — flags `afest_*` prêts), et les 2 items de scope déférés. `OF_PUBLIC_DISCLOSURE_ENABLED` reste `false` (aucune fuite publique).
+
 ## 7. Recommandation
 Corriger d'abord le **lot « sûr » sans STOP&ASK** (D-02 idempotence, D-03 action facture, D-04 RGPD, D-06 manifeste, D-07 format partielle) puis re-vérifier. **D-01 (off.13/14/15)** et **D-09 (émargement signé)** sont des décisions de scope/conformité à valider avec toi/le certificateur avant correction. **Verdict actuel : NON production-ready ; chemin vers OUI = lot sûr + arbitrage D-01/D-09.**

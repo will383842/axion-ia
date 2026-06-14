@@ -215,17 +215,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const typesActionEffectifs = Array.from(
     new Set([
       ...(typesAction.length > 0 ? typesAction : ["classique"]),
-      // Le 1-to-1 AFEST rend off.13/14/15/28 applicables même sans formation
-      // collective déclarée en alternance.
+      // Le 1-to-1 AFEST rend SEULEMENT off.28 applicable (via indicateursApplicables).
+      // off.13/14/15 (apprentissage/CFA) ne sont JAMAIS applicables chez Axion-IA.
       ...(coachingAfestResult.length > 0 ? ["alternance_afest"] : []),
     ]),
   );
   const applicablesNums = indicateursApplicables(typesActionEffectifs);
-  // off.13/14/15/28 (APP/AFEST) : applicables seulement si l'OF déclare
-  //   l'alternance/AFEST. Quand applicables, on ne peut pas les déduire d'un
-  //   artefact logiciel en V1 → a_completer avec preuve explicite (pas un
-  //   `couvert=false` muet et trompeur). Quand non applicables, l'assemblage
-  //   final les passe en non_applicable via applicablesNums.
+  // off.28 (AFEST) : applicable si l'OF déclare alternance_afest OU s'il existe un
+  //   parcours AFEST 1-to-1. a_completer avec preuve explicite si applicable sans
+  //   parcours conforme. off.13/14/15 (APP/apprentissage) : hors périmètre Axion-IA
+  //   → non_applicable via applicablesNums (jamais déduits du coaching).
   const appAfestApplicable = typesActionEffectifs.includes("alternance_afest");
 
   // ── Table de preuves par indicateur ────────────────────────────────────────

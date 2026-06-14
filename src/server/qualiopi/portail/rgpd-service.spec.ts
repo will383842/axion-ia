@@ -19,6 +19,12 @@ vi.mock("@/lib/prisma", () => ({
     portailAcces: {
       updateMany: vi.fn(),
     },
+    coachingSession: {
+      updateMany: vi.fn(),
+    },
+    compteRenduSeance: {
+      updateMany: vi.fn(),
+    },
     rgpdDemande: {
       create: vi.fn(),
     },
@@ -40,6 +46,12 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
   };
   portailAcces: {
+    updateMany: ReturnType<typeof vi.fn>;
+  };
+  coachingSession: {
+    updateMany: ReturnType<typeof vi.fn>;
+  };
+  compteRenduSeance: {
     updateMany: ReturnType<typeof vi.fn>;
   };
   rgpdDemande: {
@@ -186,6 +198,28 @@ describe("supprimerStagiaire", () => {
     expect(call.where.traineeId).toBe("t-del-rgpd");
     expect(call.where.revoked).toBe(false);
     expect(call.data.revoked).toBe(true);
+  });
+
+  it("anonymise les PII coaching (CoachingSession + notes confidentielles) — RGPD art.17", async () => {
+    mockPrisma.trainee.update.mockResolvedValue({});
+
+    await supprimerStagiaire("t-del-coach");
+
+    // CoachingSession : bénéficiaire + tuteur PII → null.
+    const csCall = mockPrisma.coachingSession.updateMany.mock.calls[0]![0] as {
+      where: { traineeId: string };
+      data: Record<string, unknown>;
+    };
+    expect(csCall.where.traineeId).toBe("t-del-coach");
+    expect(csCall.data["beneficiaireNom"]).toBeNull();
+    expect(csCall.data["beneficiaireEmail"]).toBeNull();
+    expect(csCall.data["tuteurEntrepriseNom"]).toBeNull();
+    expect(csCall.data["tuteurEntrepriseEmail"]).toBeNull();
+    // CompteRenduSeance : notes confidentielles du coach → null.
+    const crCall = mockPrisma.compteRenduSeance.updateMany.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(crCall.data["notesConfidentielles"]).toBeNull();
   });
 
   it("leve si stub.invalid", async () => {

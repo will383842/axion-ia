@@ -143,12 +143,13 @@ describe("indicateursApplicables", () => {
     expect(nums).toContain(16);
   });
 
-  it("action alternance_afest → inclut off.13, 14, 15, 28", () => {
+  it("action alternance_afest → inclut off.28 mais PAS off.13/14/15 (apprentissage)", () => {
     const nums = indicateursApplicables(["alternance_afest"]);
-    expect(nums).toContain(13);
-    expect(nums).toContain(14);
-    expect(nums).toContain(15);
+    // off.28 = AFEST (applicable) ; off.13/14/15 = apprentissage/CFA (jamais applicables).
     expect(nums).toContain(28);
+    expect(nums).not.toContain(13);
+    expect(nums).not.toContain(14);
+    expect(nums).not.toContain(15);
   });
 
   it("retourne les numéros triés ascendants", () => {
@@ -157,9 +158,12 @@ describe("indicateursApplicables", () => {
     expect(nums).toEqual(sorted);
   });
 
-  it("tous types → retourne 32 indicateurs", () => {
+  it("tous types → 29 indicateurs (off.13/14/15 apprentissage jamais applicables)", () => {
     const nums = indicateursApplicables(["classique", "certifiante", "alternance_afest"]);
-    expect(nums).toHaveLength(32);
+    // 32 indicateurs RNQ − off.13/14/15 (apprentissage/CFA hors périmètre) = 29.
+    expect(nums).toHaveLength(29);
+    expect(nums).not.toContain(13);
+    expect(nums).toContain(28);
   });
 
   it("tableau vide (pas de type) → 0 applicables (tronc commun exige au moins 1 type)", () => {

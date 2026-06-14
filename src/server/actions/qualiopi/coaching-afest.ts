@@ -67,7 +67,12 @@ async function checkAfestEnforcement(
       trainer: { select: { afestHabiliteAt: true } },
       cartographie: { select: { taches: true } },
       comptesRendus: {
-        select: { misesEnSituation: true, phasesReflexives: true, presenceSigneeAt: true },
+        select: {
+          misesEnSituation: true,
+          phasesReflexives: true,
+          presenceSigneeAt: true,
+          dureeMinutes: true,
+        },
       },
     },
   });
@@ -102,6 +107,10 @@ async function checkAfestEnforcement(
       // Présence signée par séance (preuve d'audit) — requise en périmètre certifié.
       if (cs.comptesRendus.length === 0) {
         return "Aucune séance enregistrée — impossible d'attester la présence.";
+      }
+      // Toutes les séances doivent porter une durée (traçabilité des heures).
+      if (cs.comptesRendus.some((cr) => cr.dureeMinutes == null)) {
+        return "Une ou plusieurs séances n'ont pas de durée renseignée — impossible d'attester les heures (traçabilité Qualiopi).";
       }
       const toutesSignees = cs.comptesRendus.every((cr) => cr.presenceSigneeAt != null);
       if (!toutesSignees) {
@@ -253,6 +262,10 @@ export async function genererEmargement1to1Action(
   }
   const parsed = genSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
+  // Mêmes pré-requis gated que le protocole (tuteur/habilitation/cartographie) —
+  // PAS la présence signée (l'émargement EST la preuve de présence).
+  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId, "protocole");
+  if (blocked) return { ok: false, error: blocked };
   try {
     const res = await genererEmargement1to1(parsed.data.coachingSessionId);
     if (!res) return { ok: false, error: "Génération indisponible." };
@@ -293,6 +306,12 @@ export async function signerSeance1to1Action(
   const parsed = signSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
   const d = parsed.data;
+  // Vérifie l'existence + récupère le parcours pour la traçabilité d'audit.
+  const cr = await prisma.compteRenduSeance.findUnique({
+    where: { id: d.compteRenduId },
+    select: { coachingSessionId: true },
+  });
+  if (!cr) return { ok: false, error: "Compte-rendu introuvable." };
   const now = new Date();
   const data: Prisma.CompteRenduSeanceUpdateInput = { presenceSigneeAt: now };
   if (d.beneficiairePresent !== undefined) data.beneficiairePresent = d.beneficiairePresent;
@@ -304,7 +323,7 @@ export async function signerSeance1to1Action(
     action: "qualiopi.coaching.seance.signee",
     targetType: "CompteRenduSeance",
     targetId: d.compteRenduId,
-    changes: { presenceSigneeAt: now },
+    changes: { presenceSigneeAt: now, coachingSessionId: cr.coachingSessionId },
     session,
   });
   refresh(d.revalidate);
