@@ -48,6 +48,8 @@ import {
 } from "@/server/content-gen/dedup/topic-fingerprint";
 // Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes parallèles).
 import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
+// 2026-06-15 — Branche les ContentTemplate (console) au pipeline (override prompt).
+import { resolveTemplateOverride } from "@/server/content-gen/template-resolver";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -355,11 +357,23 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         ? inputPayload["rssLink"]
         : undefined;
 
+    // 2026-06-15 — Résout un éventuel ContentTemplate ACTIF (éditable console
+    // /content-gen/templates) pour ce contentType. Présent → override prompt ;
+    // absent / DB indispo → null → fallback prompt code (zéro régression).
+    const templateOverride = await resolveTemplateOverride(contentType);
+    if (templateOverride) {
+      await logStep(contentGenJobId, "llm_call", "Template DB actif appliqué (override prompt)", {
+        template_id: templateOverride.templateId,
+        has_system_prompt: Boolean(templateOverride.systemPrompt),
+      });
+    }
+
     const startedAt = Date.now();
     const output = await generator.generate({
       jobId: contentGenJobId,
       contentType,
       targetSearchIntent,
+      ...(templateOverride ? { templateOverride } : {}),
       ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
       ...(dbJob.anchorDepartementCode
         ? { anchorDepartementCode: dbJob.anchorDepartementCode }
