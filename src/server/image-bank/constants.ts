@@ -58,6 +58,20 @@ export const DEFAULT_COPYRIGHT_HOLDER = "Axion-IA";
 /** Credit text (CC BY 4.0 attribution short form). */
 export const DEFAULT_CREDIT_TEXT = "Axion-IA";
 
+/**
+ * Normalise un copyright holder pour l'affichage/JSON-LD (2026-06-14).
+ * L'entité est une **SAS française** (« Axion-IA ») — JAMAIS « Axion-IA OÜ »
+ * (modélisation estonienne historique). Toute valeur legacy contenant « OÜ »
+ * (ex. lignes DB / défaut migration `Axion-IA OÜ`) est nettoyée → « Axion-IA ».
+ * Évite une migration DB : le rendu est corrigé immédiatement, quelle que soit
+ * la donnée stockée.
+ */
+export function resolveCopyrightHolder(raw?: string | null): string {
+  if (!raw) return DEFAULT_COPYRIGHT_HOLDER;
+  const cleaned = raw.replace(/\s*OÜ/gi, "").trim();
+  return cleaned || DEFAULT_COPYRIGHT_HOLDER;
+}
+
 // ─── Sharp pipeline ──────────────────────────────────────────────────────────
 
 /** Anti zip-bomb (100 MP cap, vs default Sharp 268 MP). */

@@ -15,10 +15,9 @@ import {
   DEFAULT_ACCESSIBILITY_CONTROL,
   DEFAULT_ACCESSIBILITY_FEATURES,
   DEFAULT_ACCESSIBILITY_HAZARD,
-  DEFAULT_COPYRIGHT_HOLDER,
-  DEFAULT_CREDIT_TEXT,
   DEFAULT_LICENSE_TYPE,
   DEFAULT_LICENSE_URL,
+  resolveCopyrightHolder,
   GALLERY_LABEL,
   GALLERY_SEGMENT,
   HOME_LABEL,
@@ -94,13 +93,13 @@ export class ImageSeoService {
       },
       copyrightHolder: {
         "@type": "Organization",
-        name: image.copyrightHolder || DEFAULT_COPYRIGHT_HOLDER,
+        name: resolveCopyrightHolder(image.copyrightHolder),
       },
       copyrightYear: referenceDate.getFullYear(),
       copyrightNotice: this.buildCopyrightNotice(image, referenceDate),
       license: image.licenseUrl || DEFAULT_LICENSE_URL,
       acquireLicensePage: pageUrl,
-      creditText: image.copyrightHolder || DEFAULT_CREDIT_TEXT,
+      creditText: resolveCopyrightHolder(image.copyrightHolder),
       // Selectors alignés sur le DOM réel de `/galerie/[slug]/page.tsx` :
       // h1 (titre) + figcaption (légende) + .image-description (paragraphe
       // principal) + .image-about (résumé IA). Doivent matcher des éléments
@@ -334,7 +333,7 @@ export class ImageSeoService {
 
   private buildCopyrightNotice(image: ImageAsset, date: Date): string {
     const year = date.getFullYear();
-    const holder = image.copyrightHolder || DEFAULT_COPYRIGHT_HOLDER;
+    const holder = resolveCopyrightHolder(image.copyrightHolder);
     const licenseType =
       (image.licenseType ?? DEFAULT_LICENSE_TYPE).toUpperCase().replace("CC-BY-4.0", "CC BY 4.0") ||
       "CC BY 4.0";
