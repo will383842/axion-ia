@@ -6039,6 +6039,8 @@ enum KitImportStatut {
 model KitImportRun {
   id          String          @id @default(uuid()) @db.Uuid
   statut      KitImportStatut @default(en_attente)
+  /// Famille ciblée par l'import (aiguille le mapping dossier→slots). Défaut historique : formation.
+  famille     InterventionFamille @default(formation)
   /// Clé R2 temporaire du ZIP uploadé (supprimée après traitement).
   tempKey     String?         @map("temp_key") @db.Text
   fileName    String?         @map("file_name") @db.VarChar(300)

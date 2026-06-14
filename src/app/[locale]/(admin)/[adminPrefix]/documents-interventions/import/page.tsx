@@ -14,6 +14,12 @@ const STATUT_LABEL: Record<string, string> = {
   erreur: "Erreur",
 };
 
+const FAMILLE_LABEL: Record<string, string> = {
+  formation: "Formations",
+  un_a_un: "1-to-1",
+  audit: "Audit",
+};
+
 interface Summary {
   created?: number;
   updated?: number;
@@ -29,6 +35,7 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
     select: {
       id: true,
       statut: true,
+      famille: true,
       fileName: true,
       summary: true,
       error: true,
@@ -40,14 +47,24 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-mocha mb-1 text-xl font-semibold">Importer un kit de formation</h1>
+        <h1 className="text-mocha mb-1 text-xl font-semibold">Importer un kit</h1>
         <p className="text-fg-muted text-sm">
-          Dépose le <strong>.zip</strong> de ton kit (un dossier par formation, avec
-          <em> Documents_DOCX</em>, <em>Documents_PDF</em> et <em>00_Presentation</em>). Tout se
+          Choisis le <strong>type de kit</strong>, puis dépose son <strong>.zip</strong>. Tout se
           range automatiquement à la bonne place. <strong>Relançable sans risque</strong> : les
           documents inchangés sont sautés, ceux que tu as modifiés créent une nouvelle version («
           Quoi de neuf »).
         </p>
+        <ul className="text-fg-muted mt-2 list-disc space-y-0.5 pl-5 text-xs">
+          <li>
+            <strong>Formations</strong> : un dossier par formation, avec <em>Documents_DOCX</em>,{" "}
+            <em>Documents_PDF</em> et <em>00_Presentation</em>.
+          </li>
+          <li>
+            <strong>1-to-1 / Coaching AFEST</strong> : dossiers <em>Dirigeant/</em> et{" "}
+            <em>Collaborateur/</em> (chacun avec <em>Documents_DOCX</em>) — la même trame alimente
+            les formats 1 jour et 2 jours.
+          </li>
+        </ul>
       </div>
 
       <KitImporter />
@@ -63,7 +80,12 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
               return (
                 <li key={r.id} className="border-border bg-cream rounded-lg border p-3 text-sm">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-mocha font-medium">{r.fileName ?? "kit.zip"}</span>
+                    <span className="text-mocha font-medium">
+                      {r.fileName ?? "kit.zip"}
+                      <span className="bg-sand text-fg-muted ml-2 rounded px-1.5 py-0.5 text-[11px] font-normal">
+                        {FAMILLE_LABEL[r.famille] ?? r.famille}
+                      </span>
+                    </span>
                     <span
                       className={`rounded px-2 py-0.5 text-xs ${
                         r.statut === "termine"

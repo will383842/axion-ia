@@ -20,8 +20,8 @@ import { createHash } from "node:crypto";
 import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { uploadToR2, getObjectBufferR2 } from "@/lib/r2-storage";
-import { getSlot } from "@/content/intervention-documents-catalog";
-import { classifyEntry, buildKitR2Key, FOLDER_TO_SLUG } from "./kit-mapping";
+import { getSlot, type InterventionFamille } from "@/content/intervention-documents-catalog";
+import { classifyEntry, buildKitR2Key, knownTopFolders } from "./kit-mapping";
 
 const MIME: Record<string, string> = {
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -56,8 +56,11 @@ function sha256Hex(buf: Buffer): string {
   return createHash("sha256").update(buf).digest("hex");
 }
 
-/** Importe un kit depuis un buffer ZIP. Idempotent. */
-export async function importKitFromZip(zipBuffer: Buffer): Promise<KitImportSummary> {
+/** Importe un kit depuis un buffer ZIP. Idempotent. Famille-aware (défaut : formation). */
+export async function importKitFromZip(
+  zipBuffer: Buffer,
+  famille: InterventionFamille = "formation",
+): Promise<KitImportSummary> {
   const summary: KitImportSummary = {
     created: 0,
     updated: 0,
@@ -80,9 +83,11 @@ export async function importKitFromZip(zipBuffer: Buffer): Promise<KitImportSumm
   }
 
   // 1. Regroupe les entrées par (slug, slot), en appariant source + pdf.
+  //    Un fichier peut viser PLUSIEURS slugs (variantes 1j/2j en 1-to-1) → on
+  //    crée/alimente un bundle par slug destinataire (même contenu réutilisé).
   const bundles = new Map<string, SlotBundle>();
   const seenFolders = new Set<string>();
-  const knownFolders = new Set(Object.keys(FOLDER_TO_SLUG));
+  const knownFolders = knownTopFolders(famille);
 
   for (const rawPath of allPaths) {
     const entry = zip.files[rawPath];
@@ -92,18 +97,20 @@ export async function importKitFromZip(zipBuffer: Buffer): Promise<KitImportSumm
     const topFolder = path.split("/").filter(Boolean)[0];
     if (topFolder) seenFolders.add(topFolder);
 
-    const classified = classifyEntry(path);
+    const classified = classifyEntry(path, famille);
     if (!classified) continue;
-    const key = `${classified.slug}::${classified.slot}`;
-    const b = bundles.get(key) ?? { slug: classified.slug, slot: classified.slot };
-    // Clé BRUTE (rawPath) pour relire le contenu ; classification sur le normalisé.
-    if (classified.kind === "source") {
-      b.sourcePath = rawPath;
-      b.sourceExt = classified.ext;
-    } else {
-      b.pdfPath = rawPath;
+    for (const slug of classified.slugs) {
+      const key = `${slug}::${classified.slot}`;
+      const b = bundles.get(key) ?? { slug, slot: classified.slot };
+      // Clé BRUTE (rawPath) pour relire le contenu ; classification sur le normalisé.
+      if (classified.kind === "source") {
+        b.sourcePath = rawPath;
+        b.sourceExt = classified.ext;
+      } else {
+        b.pdfPath = rawPath;
+      }
+      bundles.set(key, b);
     }
-    bundles.set(key, b);
   }
 
   for (const f of seenFolders) {
@@ -114,7 +121,7 @@ export async function importKitFromZip(zipBuffer: Buffer): Promise<KitImportSumm
   let totalBytes = 0;
   for (const b of bundles.values()) {
     try {
-      const slotDef = getSlot("formation", b.slot);
+      const slotDef = getSlot(famille, b.slot);
       if (!slotDef) {
         summary.errors.push(`${b.slug}/${b.slot} : slot inconnu du catalogue, ignoré`);
         continue;
@@ -163,7 +170,7 @@ export async function importKitFromZip(zipBuffer: Buffer): Promise<KitImportSumm
         const doc = await prisma.interventionDocument.create({
           data: {
             interventionSlug: b.slug,
-            famille: "formation",
+            famille,
             categorie: slotDef.categorie,
             slot: b.slot,
             titre: slotDef.titre,
@@ -256,8 +263,11 @@ export async function importKitFromZip(zipBuffer: Buffer): Promise<KitImportSumm
  * NE supprime PAS le ZIP : le worker le fait APRÈS l'écriture du statut final,
  * pour qu'un retry (statut non encore 'termine') puisse re-télécharger le ZIP.
  */
-export async function importKitFromR2Key(tempKey: string): Promise<KitImportSummary> {
+export async function importKitFromR2Key(
+  tempKey: string,
+  famille: InterventionFamille = "formation",
+): Promise<KitImportSummary> {
   const buf = await getObjectBufferR2(tempKey);
   if (!buf) throw new Error(`ZIP introuvable sur R2 : ${tempKey}`);
-  return importKitFromZip(buf);
+  return importKitFromZip(buf, famille);
 }

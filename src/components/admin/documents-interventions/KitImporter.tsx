@@ -12,6 +12,9 @@ export function KitImporter(): React.ReactElement {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  // Famille ciblée : aiguille le rangement (formation → 1 dossier/formation ;
+  // 1-to-1 → dossiers Dirigeant/ + Collaborateur/). Défaut : Formations.
+  const [famille, setFamille] = useState<"formation" | "un_a_un">("formation");
   const [phase, setPhase] = useState<"idle" | "upload" | "start">("idle");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +57,11 @@ export function KitImporter(): React.ReactElement {
         }
         // 3. Déclenche l'import (job en arrière-plan)
         setPhase("start");
-        const started = await startKitImportAction({ tempKey: prep.tempKey, fileName: file.name });
+        const started = await startKitImportAction({
+          tempKey: prep.tempKey,
+          fileName: file.name,
+          famille,
+        });
         if (!started.ok) {
           setError(started.error ?? "Lancement de l'import échoué.");
           return;
@@ -78,6 +85,21 @@ export function KitImporter(): React.ReactElement {
 
   return (
     <div className="border-border bg-cream space-y-3 rounded-lg border p-4">
+      <label htmlFor="kit-famille" className="text-mocha block text-sm font-medium">
+        Type de kit
+      </label>
+      <select
+        id="kit-famille"
+        value={famille}
+        onChange={(e) => setFamille(e.target.value as "formation" | "un_a_un")}
+        disabled={busy}
+        className="border-border rounded-md border bg-white px-3 py-2 text-sm disabled:opacity-50"
+      >
+        <option value="formation">Formations (un dossier par formation)</option>
+        <option value="un_a_un">
+          1-to-1 / Coaching AFEST (dossiers Dirigeant + Collaborateur)
+        </option>
+      </select>
       <label htmlFor="kit-zip" className="text-mocha block text-sm font-medium">
         Fichier du kit (.zip)
       </label>
