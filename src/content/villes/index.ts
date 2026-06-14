@@ -288,14 +288,20 @@ export function cohortSize(now: Date = new Date()): number {
 }
 
 /**
- * True si la ville (par slug) est dans la cohorte indexable à la date `now`.
- * Utilisé par la page hub ville pour décider `robots: index|noindex` et par le
- * sitemap pour inclure/exclure l'URL — les deux DOIVENT rester cohérents.
+ * True si la ville (par slug) est indexable.
+ *
+ * P0 2026-06-14 (décision Will) : le drip progressif est RETIRÉ — toutes les
+ * villes UNIQUES éligibles (`RANKED_INDEXABLE` = copy + score d'unicité ≥ 0,6 ou
+ * premium) sont indexables IMMÉDIATEMENT (le contenu villes est unique, validé
+ * par la recette 2026-06-14). On ne gate plus sur `cohortSize(now)`.
+ *
+ * ⚠️ Les ~341 quasi-doublons (copy mais hors `UNIQUE_VILLE_SLUGS`) et les stubs
+ * sans copy restent hors `RANKED_INDEXABLE` → `noindex` (anti-doorway HCU,
+ * aucun contenu unique à indexer). `now` conservé pour compat de signature.
  */
 export function isVilleIndexable(slug: string, now: Date = new Date()): boolean {
-  const rank = INDEXABLE_RANK.get(slug);
-  if (rank === undefined) return false;
-  return rank < cohortSize(now);
+  void now;
+  return INDEXABLE_RANK.has(slug);
 }
 
 /**
