@@ -172,7 +172,9 @@ export async function genererAttestation1to1(
       ? formatDate(new Date(dates[dates.length - 1]!))
       : formatDate(new Date(cs.dateSeance));
 
-  const heuresTotales = heuresPrevues ?? heuresReelles;
+  // heuresPrevues=0 (saisie explicite) traité comme « non défini » → on retient
+  // les heures réellement réalisées comme total affiché (évite « X h / 0 h »).
+  const heuresTotales = heuresPrevues != null && heuresPrevues > 0 ? heuresPrevues : heuresReelles;
   const formationData = {
     intitule: coachingInterventionLabel(cs.interventionSlug),
     objectifs: objectifsStr,

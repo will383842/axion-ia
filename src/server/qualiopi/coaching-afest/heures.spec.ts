@@ -54,4 +54,9 @@ describe("computeTaux1to1", () => {
   it("parcours partiel (9,5 h / 20 h prévues) → 48 %", () => {
     expect(computeTaux1to1(9.5, 20)).toBe(48); // 47,5 → 48
   });
+
+  it("cohérence centièmes → taux entier (1,45 h / 2 h = 73 %)", () => {
+    // Le taux d'assiduité s'applique au % (entier RNQ), pas aux centièmes d'heure.
+    expect(computeTaux1to1(1.45, 2)).toBe(73); // 72,5 → 73
+  });
 });

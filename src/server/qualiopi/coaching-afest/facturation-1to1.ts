@@ -39,10 +39,16 @@ export async function genererFactureCoaching(
     include: { client: true },
   });
 
-  // Subrogation OPCO : n° de dossier bloquant.
+  // Subrogation OPCO : n° de dossier ET client identifié bloquants (sinon la
+  // facture serait libellée à un destinataire « À compléter »).
   if (contrat.subrogation && !contrat.numeroDossierOpco) {
     throw new Error(
       "Subrogation OPCO : le numéro de dossier OPCO est obligatoire pour émettre la facture.",
+    );
+  }
+  if (contrat.subrogation && !contrat.client) {
+    throw new Error(
+      "Subrogation OPCO : un client (entreprise/OPCO) doit être rattaché au contrat avant facturation.",
     );
   }
 

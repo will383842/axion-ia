@@ -84,7 +84,7 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
             checked={estAfest}
             onChange={(e) => setEstAfest(e.target.checked)}
           />
-          <span>Parcours cadré en AFEST (active off.13/14/15/28)</span>
+          <span>Parcours cadré en AFEST (action de formation en situation de travail)</span>
         </label>
         <div className="grid grid-cols-2 gap-2">
           <label className="text-fg-muted text-xs">

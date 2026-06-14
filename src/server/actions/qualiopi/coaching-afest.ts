@@ -31,22 +31,34 @@ function refresh(revalidate?: string) {
 }
 
 /**
- * Vérifie les pré-requis AFEST gated (tuteur, habilitation formateur) d'un
- * parcours. Retourne un message d'erreur si un flag actif n'est pas satisfait,
- * sinon null. Aucun blocage tant que les flags sont à false.
+ * Vérifie les pré-requis AFEST GATED d'un parcours avant émission d'un document.
+ * Retourne un message d'erreur si un flag actif n'est pas satisfait, sinon null.
+ * Aucun blocage tant que les flags sont à false (ADR Phase 0 §7).
+ *
+ * - `afest_tuteur_obligatoire` → tuteur entreprise renseigné.
+ * - `afest_formateur_habilitation_requise` → Trainer.afestHabiliteAt présent.
+ * - `afest_perimetre_certifie` → exige une cartographie d'activité remplie
+ *   (≥1 tâche) et, pour l'attestation, ≥1 séance avec alternance tracée
+ *   (mise en situation + phase réflexive non vides).
  */
-async function checkAfestEnforcement(coachingSessionId: string): Promise<string | null> {
-  const [tuteurRequis, habilitationRequise] = await Promise.all([
+async function checkAfestEnforcement(
+  coachingSessionId: string,
+  kind: "protocole" | "attestation",
+): Promise<string | null> {
+  const [tuteurRequis, habilitationRequise, perimetreCertifie] = await Promise.all([
     getQualiopiConfig("afest_tuteur_obligatoire"),
     getQualiopiConfig("afest_formateur_habilitation_requise"),
+    getQualiopiConfig("afest_perimetre_certifie"),
   ]);
-  if (!tuteurRequis && !habilitationRequise) return null;
+  if (!tuteurRequis && !habilitationRequise && !perimetreCertifie) return null;
 
   const cs = await prisma.coachingSession.findUnique({
     where: { id: coachingSessionId },
     select: {
       tuteurEntrepriseNom: true,
       trainer: { select: { afestHabiliteAt: true } },
+      cartographie: { select: { taches: true } },
+      comptesRendus: { select: { misesEnSituation: true, phasesReflexives: true } },
     },
   });
   if (!cs) return "Parcours introuvable.";
@@ -56,6 +68,28 @@ async function checkAfestEnforcement(coachingSessionId: string): Promise<string 
   }
   if (habilitationRequise && cs.trainer.afestHabiliteAt == null) {
     return "Le formateur n'a pas d'habilitation AFEST tracée (exigence activée).";
+  }
+  if (perimetreCertifie) {
+    const taches = cs.cartographie?.taches;
+    if (!Array.isArray(taches) || taches.length === 0) {
+      return "Cartographie de l'activité incomplète : au moins une tâche doit être identifiée (analyse préalable AFEST, D.6313-3-1 §1).";
+    }
+    if (kind === "attestation") {
+      const hasContent = (arr: unknown, key: string): boolean =>
+        Array.isArray(arr) &&
+        arr.some((x) => {
+          if (x == null || typeof x !== "object") return false;
+          const v = (x as Record<string, unknown>)[key];
+          return typeof v === "string" && v.trim().length > 0;
+        });
+      const alternanceTracee = cs.comptesRendus.some(
+        (cr) =>
+          hasContent(cr.misesEnSituation, "cas") && hasContent(cr.phasesReflexives, "situation"),
+      );
+      if (!alternanceTracee) {
+        return "Aucune alternance tracée (mise en situation + phase réflexive) sur les comptes-rendus — requis pour attester un parcours AFEST.";
+      }
+    }
   }
   return null;
 }
@@ -127,7 +161,7 @@ export async function genererProtocoleAfestAction(
   const parsed = genSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
 
-  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId);
+  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId, "protocole");
   if (blocked) return { ok: false, error: blocked };
 
   try {
@@ -167,7 +201,7 @@ export async function genererAttestation1to1Action(
   const parsed = attestSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
 
-  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId);
+  const blocked = await checkAfestEnforcement(parsed.data.coachingSessionId, "attestation");
   if (blocked) return { ok: false, error: blocked };
 
   try {

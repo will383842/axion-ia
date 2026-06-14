@@ -13,6 +13,9 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
+/** Plafond de scan des parcours AFEST (alerte si atteint — pas de cap silencieux). */
+const COACHING_AFEST_SCAN_LIMIT = 500;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
 // ─────────────────────────────────────────────────────────────────────────────
@@ -167,25 +170,44 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.coachingSession.findMany({
       where: { estAfest: true, statut: "realisee" },
       select: {
-        cartographie: { select: { id: true } },
+        cartographie: { select: { taches: true } },
         evaluations: { select: { id: true } },
         comptesRendus: { select: { misesEnSituation: true, phasesReflexives: true } },
       },
-      take: 200,
+      take: COACHING_AFEST_SCAN_LIMIT,
     }),
   ]);
 
   // ── Données AFEST 1-to-1 (coaching) — automatisation off.13/14/15/28 ─────────
+  // ⚠️ Réinterprétation APP→AFEST : les indicateurs off.13/14/15 (libellés « APP »
+  //   dans le registre) sont ici dérivés des parcours AFEST 1-to-1. Cette
+  //   correspondance doit être CONFIRMÉE avec le certificateur COFRAC (cf. ADR
+  //   Phase 0 §7 — questions certificateur ouvertes). off.28 = AFEST stricto sensu.
+  // Validation STRUCTURELLE (anti faux-positif) : une cartographie/mise en
+  //   situation/phase réflexive VIDE ou malformée ne compte PAS comme preuve.
+  if (coachingAfestResult.length === COACHING_AFEST_SCAN_LIMIT) {
+    console.warn(
+      `[conformite] scan AFEST tronqué à ${COACHING_AFEST_SCAN_LIMIT} parcours — couverture off.13/14/15/28 possiblement sous-estimée.`,
+    );
+  }
+  const hasContent = (arr: unknown, key: string): boolean =>
+    Array.isArray(arr) &&
+    arr.some((x) => {
+      if (x == null || typeof x !== "object") return false;
+      const v = (x as Record<string, unknown>)[key];
+      return typeof v === "string" && v.trim().length > 0;
+    });
+  const cartographieRemplie = (taches: unknown): boolean =>
+    Array.isArray(taches) && taches.length > 0;
   const nbCoachingAfest = coachingAfestResult.length;
-  const coachingAfestAnalyse = coachingAfestResult.filter((c) => c.cartographie != null).length;
+  const coachingAfestAnalyse = coachingAfestResult.filter((c) =>
+    cartographieRemplie(c.cartographie?.taches),
+  ).length;
   const coachingAfestEval = coachingAfestResult.filter((c) => c.evaluations.length > 0).length;
   const coachingAfestAlternance = coachingAfestResult.filter((c) =>
     c.comptesRendus.some(
       (cr) =>
-        Array.isArray(cr.misesEnSituation) &&
-        cr.misesEnSituation.length > 0 &&
-        Array.isArray(cr.phasesReflexives) &&
-        cr.phasesReflexives.length > 0,
+        hasContent(cr.misesEnSituation, "cas") && hasContent(cr.phasesReflexives, "situation"),
     ),
   ).length;
 

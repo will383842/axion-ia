@@ -26,6 +26,22 @@ Worktree `.claude/worktrees/qualiopi-1to1` @ `0fcda368` (branche `qualiopi-1to1`
 - [~] Phase 9 — revue adversariale (workflow) + à finaliser ; fixture e2e « dossier AFEST complet » + BPF heures coaching = reste.
 - Gates verts : typecheck 0, anti-hex/anti-siren/use-client OK, 43 tests (heures+conformité). Pre-commit hook (incl. typecheck) passé.
 
+## Revue adversariale (P9) — triage appliqué (workflow 4 lentilles)
+CORRIGÉ :
+- Faux-positifs conformité : cartographie/mises-en-situation/phases VIDES ou malformées ne comptent plus (validation structurelle) ; scan AFEST loggé si tronqué.
+- Format heures FR (virgule) sur attestation + protocole (R.6313-3) ; entiers inchangés (formations collectives non régressées).
+- `heuresTotales` : saisie 0 traitée comme « non défini » → heures réelles.
+- Facture coaching : subrogation OPCO exige un client identifié (plus de destinataire « À compléter »).
+- Mention légale AFEST enrichie (L.6313-1 + éval avant/après + signature 3 parties).
+- Enforcement GATED étendu : si `afest_perimetre_certifie`, exige cartographie remplie (protocole) + alternance tracée (attestation).
+- Label UI sans jargon d'indicateurs ; +3 tests edge-case (anti faux-positif) + cohérence centièmes.
+DÉFÉRÉ (documenté, dépend du certificateur ou faux positif) :
+- Workflow signatures DocuSeal 3 parties (gros chantier, certificateur-dépendant) — champ `conventionSigneeAt` prêt.
+- CHECK DB « exactly one of (enrollment, coaching) » : invariant tenu au niveau applicatif (éviter le drift Prisma).
+- Facture conditionnée au protocole signé : politique workflow (à câbler post-certificateur).
+- Réinterprétation off.13/14/15 (libellés « APP ») depuis l'AFEST 1-to-1 : COMMENTÉE comme à valider COFRAC (off.28 = AFEST strict).
+- Faux positifs écartés : early-exit stub déjà en tête de fonction ; `perimetreCertifie` bien rendu dans le PDF.
+
 ## Reste (non bloquant pour la revue)
 - BPF : inclure les heures coaching AFEST dans `bpf/service.ts` (computeBpf).
 - Fixture e2e « dossier AFEST complet » + snapshot PDF protocole.

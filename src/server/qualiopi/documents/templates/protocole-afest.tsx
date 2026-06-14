@@ -194,7 +194,10 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
         {/* Modalités d'évaluation + durée */}
         <DocSection title="Évaluation et durée">
           <FieldRow label="Évaluation des acquis" value={data.modalitesEvaluation} />
-          <FieldRow label="Durée prévue" value={`${data.dureePrevueHeures} h`} />
+          <FieldRow
+            label="Durée prévue"
+            value={`${data.dureePrevueHeures.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} h`}
+          />
           <FieldRow label="Du" value={data.dateDebut} />
           <FieldRow label="Au" value={data.dateFin} />
           {data.perimetreCertifie ? (
