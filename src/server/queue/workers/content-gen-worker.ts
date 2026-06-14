@@ -604,20 +604,20 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       !blockingFail &&
       score >= rssAutoPublishMinScore;
 
-    // Audit indexation 2026-05-18 — auto-publish étendu blog_article + landing_ville
-    // quand policy `factoryAutoPublishAllBlogTypes=true`. Scale 500 articles/jour.
-    const allBlogAutoPublishEnabled = policies.factoryAutoPublishAllBlogTypes === true;
-    const isBlogType = contentType === "blog_article" || contentType === "landing_ville";
-    const blogAutoPublishRequested =
-      allBlogAutoPublishEnabled &&
-      isBlogType &&
-      inputPayload["autoPublish"] === true &&
-      !blockingFail &&
-      score >= rssAutoPublishMinScore;
+    // 2026-06-14 (décision Will « full auto ») — Publication automatique de TOUS
+    // les types de contenu, sans relecture humaine, dès lors que la policy
+    // `factoryAutoPublishAllBlogTypes` n'est pas explicitement désactivée
+    // (défaut TRUE désormais). On ne gate plus sur le score (la boucle qualité
+    // ci-dessus améliore d'abord les contenus faibles) ni sur un flag autoPublish
+    // dans le payload : la policy EST l'opt-in. Seuls les blocages DURS de
+    // doctrine (`blockingFail` : SIREN/prix non-SSOT) divergent vers needs_review.
+    // Pour revenir à la relecture manuelle : policy factoryAutoPublishAllBlogTypes=false.
+    const fullAutoPublishEnabled = policies.factoryAutoPublishAllBlogTypes !== false;
+    const fullAutoPublishRequested = fullAutoPublishEnabled && !blockingFail;
 
     let nextStatus: "quality_improving" | "approved" | "needs_review" = "needs_review";
     if (eligibleQualityLoop) nextStatus = "quality_improving";
-    else if (rssAutoPublishRequested || blogAutoPublishRequested) nextStatus = "approved";
+    else if (rssAutoPublishRequested || fullAutoPublishRequested) nextStatus = "approved";
 
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
@@ -702,8 +702,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       //   score >= factoryAutoPromoteTier1MinScore (default 75)
       //     → publish DIRECT tier_1_indexable (sitemap immédiat + IndexNow ping)
       //   sinon → tier_2_noindex_follow (hors sitemap, attente tier-lifecycle CTR)
-      const autoPromoteTier1MinScore =
-        policies.factoryAutoPromoteTier1MinScore ?? QUALITY_LOOP_THRESHOLD_DEFAULT;
+      // 2026-06-14 (décision Will « tout indexable ») — défaut 0 : tout contenu
+      // auto-publié est promu tier_1_indexable (sitemap + IndexNow), plus de
+      // tier_2 noindex par défaut. Monter ce seuil via policy pour re-gater.
+      const autoPromoteTier1MinScore = policies.factoryAutoPromoteTier1MinScore ?? 0;
       const shouldPromoteTier1 = score >= autoPromoteTier1MinScore;
 
       const review = await prisma.reviewQueue.findUnique({

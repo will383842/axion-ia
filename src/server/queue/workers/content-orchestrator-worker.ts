@@ -37,28 +37,15 @@ import type {
 
 const QUEUE_NAME = "content-orchestrator";
 
-// P1 2026-06-13 — Couverture des 6 verticales (avant : un_a_un /
-// sites_web_augmentes / transversal retombaient à tort sur « formation
-// intelligence artificielle »). Termes alignés doctrine (1-to-1 =
-// « accompagnement », pas « coaching »).
-const BLOG_KEYWORD_BASE: Partial<Record<ServiceSector, string>> = {
-  audits: "audit IA",
-  implementations: "implémentation IA",
-  interventions_formations: "formation intelligence artificielle",
-  un_a_un: "accompagnement IA",
-  sites_web_augmentes: "site web IA",
-};
-
-function deriveBlogKeyword(
-  serviceSector: ServiceSector | null | undefined,
-  anchorVilleSlug?: string,
-): string {
-  const base = serviceSector
-    ? (BLOG_KEYWORD_BASE[serviceSector] ?? "intelligence artificielle entreprise")
-    : "intelligence artificielle entreprise";
-  const ville = anchorVilleSlug ? ` ${anchorVilleSlug.replace(/-/g, " ")}` : "";
-  return `${base}${ville}`;
-}
+// 2026-06-14 — L'orchestrateur ne force PLUS de mot-clé template pour
+// `blog_from_keywords`. Auparavant il injectait `inputPayload.primaryKeyword`
+// via un mini-template à 5 valeurs (« audit IA » + ville), ce qui
+// court-circuitait la rotation atomique du vrai pool (~2000 mots-clés longue
+// traîne) déjà câblée dans le content-gen-worker (selectKeyword, filtré par
+// vertical de la campagne). Désormais on laisse `primaryKeyword` vide : le
+// worker pioche dans le pool riche, et la ville reste portée séparément par
+// `anchorVilleSlug` (la localisation du contenu n'en dépend pas). Résultat :
+// diversité longue traîne réellement exploitée, zéro régression géo.
 
 interface BatchSettings {
   readonly workersConcurrency: number;
@@ -168,9 +155,8 @@ async function createJobForSlot(opts: {
         inputPayload: {
           campaignName: campaign.name,
           slotIndex,
-          ...(contentType === "blog_from_keywords"
-            ? { primaryKeyword: deriveBlogKeyword(campaign.serviceSector, anchorVilleSlug) }
-            : {}),
+          // Pas de primaryKeyword forcé : le content-gen-worker sélectionne dans
+          // le pool riche via selectKeyword (rotation atomique, filtré vertical).
         },
         targetLocale: "fr",
         ...(anchorVilleSlug ? { anchorVilleSlug } : {}),

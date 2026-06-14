@@ -190,6 +190,12 @@ export async function assertCostCapAvailable(
     });
     if (!config) {
       // Provider pas seedé → skip (V0 transitoire avant pnpm content-gen:seed).
+      // 2026-06-14 — En PROD réelle, un provider absent de ProviderConfig veut
+      // dire que la génération tourne SANS plafond pour ce provider. On le rend
+      // visible (au lieu d'un bypass silencieux) pour pouvoir réagir — même
+      // logique d'observabilité que les bypass DB-down ci-dessous. Aucun bruit
+      // hors prod (stub/build/test → warn no-op).
+      warnCostGuardBypassed(provider, "provider absent de ProviderConfig (non seedé)");
       return;
     }
     if (!config.enabled) {

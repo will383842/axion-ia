@@ -21,6 +21,8 @@
 
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
+import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
+import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
   type ClaimVerdict,
   computeFactCheckScore,
@@ -32,6 +34,47 @@ import { revalidateContent } from "@/server/content-gen/shared/revalidate-conten
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-fact-check";
+
+const CORRECTION_SYSTEM_PROMPT = `Tu es un correcteur factuel. On te donne le corps HTML d'un article et une liste de phrases contenant des CHIFFRES vérifiés FAUX. Ta tâche :
+- Corrige UNIQUEMENT ces chiffres faux : remplace par une donnée exacte et plausible, OU reformule la phrase SANS le chiffre.
+- Ne réintroduis AUCUNE des valeurs signalées comme fausses.
+- Ne change RIEN d'autre : conserve la structure HTML, les titres, les liens, le ton, le reste du texte à l'identique.
+- Réponds UNIQUEMENT avec le corps HTML complet corrigé, sans commentaire ni balise de code.`;
+
+/**
+ * Correction EN PLACE des chiffres réfutés (décision Will « corriger plutôt que
+ * désindexer »). 1 appel LLM ciblé qui renvoie le HTML corrigé. Fail-safe :
+ * retourne null si l'appel échoue ou renvoie un résultat vide/incohérent → le
+ * caller garde alors l'article inchangé (jamais cassé, jamais désindexé).
+ */
+async function correctRefutedClaimsInPlace(args: {
+  readonly jobId: string;
+  readonly bodyHtml: string;
+  readonly refutedSentences: ReadonlyArray<string>;
+}): Promise<string | null> {
+  if (args.refutedSentences.length === 0) return null;
+  try {
+    const userPrompt =
+      `Phrases à corriger (chiffres faux) :\n` +
+      args.refutedSentences.map((s, i) => `${i + 1}. ${s}`).join("\n") +
+      `\n\n--- CORPS HTML ---\n${args.bodyHtml}`;
+    const res = await routerGenerate({
+      jobId: args.jobId,
+      contentType: "blog_article",
+      role: "text",
+      systemPrompt: CORRECTION_SYSTEM_PROMPT,
+      userPrompt,
+      maxTokens: 4096,
+      temperature: 0.2,
+    });
+    const cleaned = sanitizeContentGenHtml(res.output.trim());
+    // Garde-fou cohérence : un résultat trop court = correction ratée → on garde l'original.
+    if (cleaned.length < Math.floor(args.bodyHtml.length * 0.5)) return null;
+    return cleaned;
+  } catch {
+    return null;
+  }
+}
 
 export interface FactCheckJobPayload {
   readonly articleId: string;
@@ -173,29 +216,53 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     data: { factCheckScore: score },
   });
 
-  if (score < 50) {
-    // P0 2026-06-13 (décision Will) — Chiffre RÉFUTÉ (vérifié faux par Perplexity).
-    // On ne laisse PAS une affirmation fausse indexée : on RETIRE l'article de
-    // l'index (tier_3 noindex → exclu du sitemap + meta robots noindex) et on
-    // déclenche une revalidation immédiate (sans attendre l'ISR 1h). L'URL reste
-    // vivante (rétractation douce, pas de 404), réversible après correction.
-    // Le job passe en quarantaine pour correction humaine.
-    await prisma.article
-      .update({
-        where: { id: articleId },
-        data: { indexationTier: "tier_3_noindex_nofollow" },
-      })
-      .catch(() => undefined);
-    await prisma.contentGenJob
-      .update({ where: { id: contentGenJobId }, data: { status: "quarantined_factcheck" } })
-      .catch(() => undefined);
+  // 2026-06-14 (décision Will « corriger et garder en ligne ») — Quand des
+  // chiffres sont RÉFUTÉS (score < refuteScore), on NE désindexe JAMAIS. On
+  // corrige les chiffres faux EN PLACE (1 appel LLM ciblé qui réécrit le HTML),
+  // l'article reste publié + indexé. Fail-safe : si la correction échoue ou
+  // renvoie un résultat incohérent, l'article reste INCHANGÉ et EN LIGNE (signalé
+  // pour revue manuelle). Pas de boucle : le fact-check ne tourne qu'une fois
+  // après publication. Pas de doublon : on édite la traduction existante en place.
+  const cfg = await readContentGenConfig<{ refuteScore: number }>("factcheck_correction", {
+    refuteScore: 50,
+  });
+  if (score < cfg.refuteScore) {
+    const refutedSentences = claims
+      .filter((_, i) => verdicts[i]?.status === "refuted")
+      .map((c) => c.sentence);
+    const correctedHtml = await correctRefutedClaimsInPlace({
+      jobId: contentGenJobId,
+      bodyHtml: translation.body,
+      refutedSentences,
+    });
     const listPath = article.isNews ? "/fr/actualites" : "/fr/blog";
-    await revalidateContent({
-      paths: [`${listPath}/${translation.slug}`, listPath, "/sitemap.xml"],
-    }).catch(() => undefined);
-    console.warn(
-      `[fact-check] article=${articleId} score=${score} < 50 → RETRACTÉ (tier_3 noindex) + revalidate + quarantined_factcheck`,
-    );
+    if (correctedHtml) {
+      const correctedText = correctedHtml
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      await prisma.articleTranslation
+        .update({
+          where: { id: translation.id },
+          data: { body: correctedHtml, bodyText: correctedText },
+        })
+        .catch(() => undefined);
+      await revalidateContent({ paths: [`${listPath}/${translation.slug}`, listPath] }).catch(
+        () => undefined,
+      );
+      console.warn(
+        `[fact-check] article=${articleId} score=${score} < ${cfg.refuteScore} → ${refutedSentences.length} chiffre(s) CORRIGÉ(S) en place, article reste EN LIGNE + indexé`,
+      );
+    } else {
+      // Correction auto impossible (échec LLM / résultat incohérent) : article
+      // gardé EN LIGNE + indexé, signalé pour revue manuelle (PAS de désindexation).
+      await prisma.contentGenJob
+        .update({ where: { id: contentGenJobId }, data: { status: "quarantined_factcheck" } })
+        .catch(() => undefined);
+      console.warn(
+        `[fact-check] article=${articleId} score=${score} < ${cfg.refuteScore} → correction auto impossible, reste EN LIGNE, revue manuelle signalée (PAS de désindexation)`,
+      );
+    }
   }
 
   console.log(
