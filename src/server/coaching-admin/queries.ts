@@ -38,6 +38,10 @@ export async function getSessionAdmin(sessionId: string) {
       optimisations: { orderBy: [{ priorite: "asc" }, { createdAt: "asc" }] },
       comptesRendus: { orderBy: { dateSeance: "desc" } },
       journaux: { orderBy: { dateEntree: "desc" } },
+      documentsGeneres: {
+        orderBy: { createdAt: "desc" },
+        select: { id: true, type: true, numero: true, pdfUrl: true, createdAt: true },
+      },
     },
   });
 }
