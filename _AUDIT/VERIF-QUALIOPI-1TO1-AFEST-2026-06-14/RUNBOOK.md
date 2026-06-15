@@ -22,10 +22,25 @@
 - Mentions légales : NDA / Qualiopi / SIRET renseignés dans `SiteSetting` cat. `qualiopi`.
 
 ## Rejouer la vérification end-to-end (DB jetable)
+
+### Tout-en-un (recommandé)
+Docker doit tourner (Docker Desktop démarré en interactif — le moteur Linux ne
+démarre pas depuis une session headless). Puis **une seule commande** :
 ```bash
-# 1. DB jetable pgvector
+pnpm e2e:afest
+```
+Le runner (`scripts/qualiopi/e2e-afest-run.sh`) provisionne la base pgvector
+jetable, applique les migrations, lance la chaîne complète (protocole →
+attestation → kits OPCO/CPF/FT → convention → certificat → facture ventilation →
+BPF + PDF réels) puis détruit le conteneur (trap EXIT). Si Docker est absent, il
+l'indique clairement et sort en code 2. Résultats : `e2e-results.json` + `pdf/`.
+
+⚠️ La couche financement (validation + facturation par dispositif) est aussi
+couverte hors DB par 16 tests unitaires : `pnpm test src/server/qualiopi/coaching-afest/financement-1to1.spec.ts`.
+
+### Manuel (équivalent, si besoin de garder la base)
+```bash
 docker run -d --name qualiopi-e2e -e POSTGRES_PASSWORD=e2e -e POSTGRES_USER=e2e -e POSTGRES_DB=e2e -p 55433:5432 pgvector/pgvector:pg16
-# 2. migrations + fixture + chaîne
 export DATABASE_URL="postgresql://e2e:e2e@localhost:55433/e2e?schema=public"; export DIRECT_URL="$DATABASE_URL"; export SKIP_ENV_VALIDATION=true
 pnpm exec prisma migrate deploy
 pnpm exec tsx scripts/qualiopi/e2e-afest-verif.ts   # → _AUDIT/VERIF-.../e2e-results.json + pdf/

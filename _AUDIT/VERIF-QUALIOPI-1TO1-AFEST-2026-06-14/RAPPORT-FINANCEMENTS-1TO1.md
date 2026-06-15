@@ -68,16 +68,30 @@ parcours réel : barème OPCO horaire + convention + EDOF + RS → `validateCoac
 (idempotent) → facture ventilation horaire → `computeBpf` (heures + CA coaching + ligne
 CSV). Rejouable via le RUNBOOK (DB pgvector jetable). Résultats : `e2e-results.json`.
 
-**Statut d'exécution en session (2026-06-14)** : le replay sur DB live n'a pas pu
-être exécuté dans cette session — Docker Desktop refusait de démarrer son moteur
-Linux (distro WSL `docker-desktop` à l'état *Stopped*, backend absent) et la base de
-dev (port 5433) en dépend ; aucune base pgvector à identifiants connus disponible.
-Le script est néanmoins **étendu, typé (tsc 0) et rejouable en une commande** dès
-qu'une base est disponible (cf. RUNBOOK). À noter : la **machinerie de génération
-documentaire identique** (`generateDocument` + les 5 templates réutilisés ici) a
-**déjà été prouvée en rendu PDF réel sur DB jetable** lors de la phase précédente
-(PR #76, `e2e-results.json` + `pdf/`). La logique financement nouvelle est, elle,
-couverte par 16 tests unitaires à assertions arithmétiques réelles.
+**✅ EXÉCUTÉ ET VERT sur DB live (2026-06-15)** — `pnpm e2e:afest` (Docker engine
+v29.4.3, image `pgvector/pgvector:pg16`, 30 migrations appliquées dont
+`20260614150000`). Exit 0. Preuves extraites de `e2e-results.json` :
+
+| Étape | Résultat |
+|---|---|
+| heures réelles (Σ séances) | **14 h** |
+| `validateCoachingFinancement` (OPCO subrogé complet) | **null** (pré-requis OK) |
+| kit OPCO | `AXI-FORM-2026-002` |
+| kit CPF / EDOF | `AXI-FORM-2026-003` |
+| kit France Travail | `AXI-FORM-2026-004` |
+| convention tripartite | `AXI-FORM-2026-005` |
+| certificat de réalisation | `AXI-CERT-2026-001` |
+| certificat (2e appel) | **même doc** `AXI-CERT-2026-001` → idempotence ✅ |
+| facture ventilation horaire OPCO | `AXI-FACT-2026-002` (destinataire `opco`, TVA exonérée, subrogation) |
+| BPF | heures coaching **14**, parcours **1**, CA OPCO **990 €**, CSV mentionne « coaching AFEST 1-to-1 » ✅ |
+| conformité off.28 | **couvert** ; off.13/14/15 **non_applicable** (apprentissage) ✅ |
+| documents générés (8 types) | protocole_afest, emargement, attestation, **kit_opco, kit_cpf, kit_france_travail, convention_tripartite, certificat_realisation** |
+| PDF protocole rendu | 25 645 octets, `%PDF-` valide |
+
+Conteneur détruit automatiquement (trap EXIT). À noter : la validation OPCO a même
+**bloqué un 1er run** (convention tripartite absente du fixture) — preuve que le
+garde-fou L.6353-2 fonctionne sur vraie DB ; fixture corrigée (dossier subrogé =
+convention signée) puis re-run vert.
 
 ## 6. Reste à Will (inchangé)
 
