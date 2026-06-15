@@ -248,6 +248,14 @@ export default async function BlogArticle({ params }: Props) {
   // articles FS legacy stockent de la prose brute. On rend le HTML sanitisé pour
   // les DB (avec ancres h2 via buildToc) et on garde parseBody pour les FS.
   const isDbHtml = view.source === "db";
+  // P1-4 (audit content-gen 2026-06-15) — La byline des articles générés (source
+  // "db", persona éditoriale IA "Manon") pointait vers /blog/auteur/<slug> qui
+  // renvoie notFound() pour les personas (PERSONA_AUTHOR_SLUGS) → lien interne 404
+  // sur ~tous les articles générés. La vraie page persona vit sous /equipe/<slug>
+  // (DB-driven, buildPersonManonJsonLd), cohérent avec AuthorByline JSON-LD.
+  // Les articles FS legacy (auteurs humains, ex. "will") gardent /blog/auteur/<slug>.
+  const authorSlug = view.author.toLowerCase();
+  const authorHref = isDbHtml ? `/equipe/${authorSlug}` : `/blog/auteur/${authorSlug}`;
   const dbBody = isDbHtml ? buildToc(sanitizeContentGenHtml(view.body)) : null;
   // H3 — body DB avec tokens prix résolus (no-op si aucun token).
   const dbBodyHtml = dbBody ? resolvePriceTokens(dbBody.html, loc) : null;
@@ -368,7 +376,7 @@ export default async function BlogArticle({ params }: Props) {
         <Container className="text-fg-muted mt-8 flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{view.category}</Badge>
           <Link
-            href={`/blog/auteur/${view.author.toLowerCase()}` as never}
+            href={authorHref as never}
             className="hover:text-terracotta-deep focus-visible:ring-terracotta rounded-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {isFr ? "Par" : "By"} {view.author}

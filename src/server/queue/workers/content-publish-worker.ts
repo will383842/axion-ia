@@ -201,10 +201,31 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
 
   const cgJob = review.job;
 
+  // #1 2026-06-14 + P0-3 2026-06-15 — Idempotence remontée AVANT le gate
+  // fact-check. Si un Article a déjà été créé pour ce job (re-publish / retry
+  // BullMQ après échec post-insert, ou re-approbation), la publication a DÉJÀ eu
+  // lieu : on l'utilise (a) pour court-circuiter le gate fact-check (sinon un
+  // re-publish d'un job déjà publié + fact-checké < seuil quarantinerait à tort
+  // un article pourtant EN LIGNE), (b) pour le marquage idempotent "published"
+  // plus bas. Lecture seule, sûre.
+  const existingArticle = await prisma.article.findFirst({
+    where: { generatedByJobId: cgJob.id },
+    select: { id: true },
+  });
+
   // Sprint A-suite P6 — Item 4. Gate factCheckScore avant publication.
   // Si le score fact-check est inférieur au seuil configuré, le job passe en
   // quarantined (non publié) avec un message explicite. Si factCheckScore est
   // null (fact-check pas encore run), le gate est ignoré (non-bloquant).
+  //
+  // P0-3 (audit content-gen 2026-06-15) — DESIGN. Le flux nominal est
+  // POST-publish (décision Will 2026-06-14 « corriger en place plutôt que
+  // désindexer » — cf. content-fact-check-worker). À la 1re publication
+  // `factCheckScore` est null et ce gate est volontairement passif ; le score
+  // est désormais aussi écrit sur ContentGenJob (observabilité + cohérence).
+  // Le gate ne s'applique QUE tant que l'article n'existe pas encore
+  // (`!existingArticle`) : il ne désindexe jamais un contenu déjà publié — ça,
+  // c'est le rôle du fact-check post-publish (correction en place).
   interface FactCheckGateConfig {
     enabled: boolean;
     minScore: number;
@@ -214,6 +235,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     minScore: 40,
   });
   if (
+    !existingArticle &&
     factCheckGate.enabled &&
     cgJob.factCheckScore !== null &&
     cgJob.factCheckScore !== undefined &&
@@ -337,11 +359,8 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // #1 2026-06-14 — Idempotence : si un Article a déjà été créé pour ce job
   // (re-publish / retry BullMQ après échec partiel d'une étape post-insert), on
   // NE recrée PAS (Article.create n'est pas idempotent → violerait l'unique slug
-  // et créerait un doublon). On court-circuite proprement.
-  const existingArticle = await prisma.article.findFirst({
-    where: { generatedByJobId: cgJob.id },
-    select: { id: true },
-  });
+  // et créerait un doublon). On court-circuite proprement. `existingArticle` est
+  // déjà résolu en tête de pipeline (cf. gate fact-check / P0-3).
   if (existingArticle) {
     await logStep(cgJob.id, "publish", "Article déjà publié pour ce job — skip (idempotent)", {
       article_id: existingArticle.id,

@@ -2,13 +2,23 @@ name: Content-Gen · Seed (providers + 747 keywords + content templates)
 
 # Pipeline content-gen seed post-deploy :
 #   1. Wait container restart (Coolify redeploy ~3 min)
-#   2. Poll DB ready (post-migration)
-#   3. Run `pnpm content-gen:seed` via docker exec
+#   2. Poll DB ready (post-migration) — via le container WEB (a le client Prisma)
+#   3. Run `tsx prisma/seeds/content-gen/index.ts` via docker exec dans le
+#      container WORKER (Dockerfile.worker — seul à embarquer `src/` + `tsx`)
 #      → upsert ProviderConfig + CoverageDistributionProfile + AudienceMixProfile
 #                + AuthorProfile + BannedPhrase + ContentTemplate + ContentGenConfig
 #                + CoverageCampaign + RssSource + CaseStudy + Keyword (747 seeds)
 #
 # Idempotent : tous les seeds utilisent upsert. Re-run safe.
+#
+# ⚠️ P0-1 (audit content-gen 2026-06-15) — Le seed s'exécutait dans le container
+# WEB (image standalone slim), qui NE contient PAS `src/` ni `tsx`/`pnpm` : le
+# seed importe `../../../src/...` → échec silencieux (`|| echo SEED_FAILED`) →
+# DB jamais amorcée → assertKbReady fait échouer tous les jobs content-gen.
+# Fix : exécuter le seed dans le container WORKER (qui a src/+tsx) et FAIRE
+# ÉCHOUER le job si le seed rate (plus de silence). Le seed écrit dans la même
+# DB Postgres quel que soit le container → routage 100% safe.
+# Pré-requis : secret `COOLIFY_WORKER_APP_UUID` + app worker Coolify up (cf. P0-2).
 #
 # Déclenchements :
 #   - Automatique : après chaque deploy réussi de deploy-coolify.yml
@@ -133,22 +143,47 @@ jobs:
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' ls /app/prisma/seeds/content-gen/ 2>/dev/null" 2>&1 || true
 
-      - name: Exécuter pnpm content-gen:seed
+      - name: Find axion-ia WORKER container (seed target)
+        id: worker_container
         if: inputs.dry_run != 'true'
         env:
-          CONTAINER: ${{ steps.container.outputs.name }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          # P0-1 : le seed DOIT tourner dans le container worker (Dockerfile.worker),
+          # seul à embarquer src/ + tsx. Le container web slim ne peut pas l'exécuter.
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::error::Secret COOLIFY_WORKER_APP_UUID manquant — impossible de seeder."
+            echo "::error::Le seed content-gen exige le container worker (src/+tsx)."
+            echo "::error::Active-le : gh secret set COOLIFY_WORKER_APP_UUID --body '<uuid-app-worker>' (+ app worker Coolify up, cf. P0-2)."
+            exit 1
+          fi
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_WORKER_APP_UUID" \
+            '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container worker $COOLIFY_WORKER_APP_UUID introuvable (app worker Coolify down ou non créée — cf. P0-2)."
+            echo "$ROWS"; exit 1
+          fi
+          echo "✓ Worker container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Exécuter le seed content-gen (container worker)
+        if: inputs.dry_run != 'true'
+        env:
+          WORKER_CONTAINER: ${{ steps.worker_container.outputs.name }}
         timeout-minutes: 10
         run: |
           set -euo pipefail
           echo "── Seed content-gen (providers + 747 keywords + templates) ──"
-          # Le runner stage Docker contient corepack pnpm + tsx via deps stage copie.
-          # Si pnpm ou tsx absent → fallback Node direct sur l'entrypoint compilé.
+          # Exécution dans le container WORKER : tsx + src/ présents (Dockerfile.worker).
+          # `set -e` côté distant → tout échec du seed remonte en exit ≠ 0 et FAIT
+          # ÉCHOUER le job (plus de `|| echo SEED_FAILED` qui masquait l'échec).
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec '$CONTAINER' sh -c \
-            'cd /app && (corepack pnpm content-gen:seed 2>&1 || \
-              node --experimental-strip-types prisma/seeds/content-gen/index.ts 2>&1 || \
-              echo SEED_FAILED)'" 2>&1
-          echo "── Seed terminé ──"
+            "docker exec '$WORKER_CONTAINER' sh -ec \
+            'cd /app && node_modules/.bin/tsx prisma/seeds/content-gen/index.ts'" 2>&1
+          echo "── Seed terminé avec succès ──"
 
       - name: Post-check Keyword count
         if: always()
