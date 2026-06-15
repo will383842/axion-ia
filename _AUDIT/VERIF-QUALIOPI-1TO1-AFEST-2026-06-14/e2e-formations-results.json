@@ -1,0 +1,127 @@
+{
+  "documents": [
+    {
+      "type": "convention",
+      "numero": "AXI-FORM-2026-001",
+      "documentId": "5403a41c-f1c7-4f8a-88d5-4fc9cd5610dd"
+    },
+    {
+      "type": "convention_tripartite",
+      "numero": "AXI-FORM-2026-002",
+      "documentId": "c855829e-a358-4dfc-9d32-9ef4ce933025"
+    },
+    {
+      "type": "contrat",
+      "numero": "AXI-FORM-2026-003",
+      "documentId": "8304df5a-18fa-425e-b1fe-903c80d11580"
+    },
+    {
+      "type": "convocation",
+      "numero": "AXI-SESS-2026-001",
+      "documentId": "b3b9af81-2487-4c1d-8b5c-a7ec8aab8fa4"
+    },
+    {
+      "type": "emargement",
+      "numero": "AXI-SESS-2026-002",
+      "documentId": "35a12acf-af80-4c89-ada2-b8b6c7be0707"
+    },
+    {
+      "type": "positionnement",
+      "numero": "AXI-SESS-2026-003",
+      "documentId": "f8129572-ac1d-4422-9f1e-4dee0d4ed59f"
+    },
+    {
+      "type": "grille_evaluation",
+      "numero": "AXI-SESS-2026-004",
+      "documentId": "f846c33e-24b5-4f10-8899-68333c09788e"
+    },
+    {
+      "type": "satisfaction",
+      "numero": "AXI-SESS-2026-005",
+      "documentId": "a955e93d-c5cf-463e-9d40-eb67cd9470c9"
+    },
+    {
+      "type": "certificat_realisation",
+      "numero": "AXI-CERT-2026-001",
+      "documentId": "01abb82e-87fd-4784-acfe-2d78d28448c4"
+    },
+    {
+      "type": "kit_opco",
+      "numero": "AXI-FORM-2026-004",
+      "documentId": "29c3a7e8-f722-4cfa-b013-73b7d43d19bc"
+    },
+    {
+      "type": "kit_cpf",
+      "numero": "AXI-FORM-2026-005",
+      "documentId": "85e36e4a-2e49-4deb-a608-47c50b8f3141"
+    },
+    {
+      "type": "kit_france_travail",
+      "numero": "AXI-FORM-2026-006",
+      "documentId": "abc0955b-f873-4d90-ba75-e901c8a04362"
+    },
+    {
+      "type": "lettre_mission",
+      "numero": "AXI-FORM-2026-007",
+      "documentId": "c53a37fc-5299-4f0b-aa98-83a751a670f7"
+    },
+    {
+      "type": "reglement_interieur",
+      "numero": "AXI-FORM-2026-008",
+      "documentId": "362f8348-2e68-43c3-ba58-d3dd9822781c"
+    },
+    {
+      "type": "livret_accueil",
+      "numero": "AXI-FORM-2026-009",
+      "documentId": "56b4b656-3ca0-40a0-957a-9591f7753ef3"
+    }
+  ],
+  "nbDocuments": 15,
+  "attestations": [
+    {
+      "enrollment": "Alice Durand",
+      "resultat": "complete"
+    },
+    {
+      "enrollment": "Hugo Bernard",
+      "resultat": "complete"
+    },
+    {
+      "enrollment": "Léa Petit",
+      "resultat": "complete"
+    }
+  ],
+  "factureOpcoHoraire": {
+    "factureId": "c39a0745-fac4-487d-8b8d-412559ab16f7",
+    "numero": "AXI-FACT-2026-001",
+    "documentId": "b3776230-30e9-478c-a41b-3e79fdcca4a8"
+  },
+  "factureEntreprise": {
+    "factureId": "2f7293f9-0554-475b-abb8-b3fff461804b",
+    "numero": "AXI-FACT-2026-002",
+    "documentId": "aa211981-b6cf-4757-96dc-7642d549e027"
+  },
+  "factureFranceTravail": {
+    "factureId": "47c0b725-70a7-4626-83f0-1ce43e0e7e45",
+    "numero": "AXI-FACT-2026-003",
+    "documentId": "760ad52b-9941-4226-9b72-d61c446baa66"
+  },
+  "conformite": {
+    "scorePct": 24,
+    "nbIndicateurs": 32,
+    "couverts": 6,
+    "aCompleter": 19,
+    "nonApplicables": 7
+  },
+  "manifesteIndicateurs": 32,
+  "bpf": {
+    "nbSessions": 1,
+    "nbStagiairesDistincts": 3,
+    "nbHeuresStagiaires": 42,
+    "nbHeuresStagiairesCollectif": 42,
+    "caTotalHtCents": 360000,
+    "caOpco": 360000
+  },
+  "pdfConventionBytes": 29780,
+  "pdfIsValid": true
+}
