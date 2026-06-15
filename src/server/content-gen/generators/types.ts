@@ -14,6 +14,7 @@ import type {
   SearchIntent,
 } from "../../../../prisma/generated/client";
 import type { UnsplashSelectedPhoto } from "../providers/unsplash";
+import type { QualityProfile } from "../profiles/quality-profile-table";
 
 export interface GeneratorBaseInput {
   readonly jobId: string;
@@ -56,6 +57,12 @@ export interface GeneratorBaseInput {
     readonly temperature?: number;
     readonly maxTokens?: number;
   };
+  /**
+   * Profil qualité résolu (PH1, plan §2). DORMANT : aucun générateur ne le
+   * consomme encore ; calculé et persisté pour observabilité, derrière le flag
+   * `QUALITY_PROFILES_ENABLED`. Champ optionnel ⇒ zéro impact si absent.
+   */
+  readonly qualityProfile?: QualityProfile;
 }
 
 export interface GeneratedFaqItem {
