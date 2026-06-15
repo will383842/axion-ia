@@ -64,6 +64,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   Newspaper,
+  Sparkles,
   GraduationCap,
   Bot,
   Megaphone,
@@ -121,6 +122,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
   content: Newspaper,
+  content_gen: Sparkles,
   qualiopi: GraduationCap,
   "documents-interventions": FolderOpen,
   "coaching-1to1": GraduationCap,

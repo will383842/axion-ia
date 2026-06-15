@@ -433,6 +433,41 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     return;
   }
 
+  // 2026-06-15 — Fallback global d'intention de recherche : avant, une campagne
+  // SANS searchIntentMix retombait toujours sur "informational" (réglage console
+  // /settings/search-intent-distribution dormant, jamais lu). Désormais on l'utilise
+  // comme distribution par défaut. Mapping vers les valeurs enum SearchIntent
+  // (commercial → commercial_investigation). Appliqué en place aux campagnes
+  // dépourvues de mix propre (leur mix per-campagne reste prioritaire).
+  // Lecture directe de la config (clé `search_intent_distribution`) — PAS via
+  // policies.ts (use-server → tire next-auth, casse le worker). Même clé/défauts.
+  const intentDist = await readContentGenConfig<{
+    informational?: number;
+    commercial?: number;
+    local?: number;
+    transactional?: number;
+    navigational?: number;
+  }>("search_intent_distribution", {
+    informational: 50,
+    commercial: 25,
+    local: 15,
+    transactional: 5,
+    navigational: 5,
+  });
+  const globalIntentMix: Partial<Record<SearchIntent, number>> = {
+    informational: intentDist.informational ?? 0,
+    commercial_investigation: intentDist.commercial ?? 0,
+    local: intentDist.local ?? 0,
+    transactional: intentDist.transactional ?? 0,
+    navigational: intentDist.navigational ?? 0,
+  };
+  const hasGlobalIntent = Object.values(globalIntentMix).some((v) => (v ?? 0) > 0);
+  for (const c of runningCampaigns) {
+    if (hasGlobalIntent && c.searchIntentMix == null) {
+      (c as { searchIntentMix: unknown }).searchIntentMix = globalIntentMix;
+    }
+  }
+
   // Sprint 7 V2 : si dailyTargetByType configuré, on dérive `perCampaignTick`
   // depuis les décisions anti-burst (somme des enqueueCount actuels). Sinon
   // fallback V2 = ceil(campaign.dailyArticles / 96) par campagne.
