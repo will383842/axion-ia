@@ -53,20 +53,22 @@ const PRICING: Record<
     cacheRead: 0.3 / 1_000_000,
     cacheWrite: 3.75 / 1_000_000,
   },
-  // Opus 4.x — tarif 2026 réel : $5 / $25 par 1M tokens (cache read $0.5,
-  // cache write $6.25). Corrige une surfacturation 3× (ancien $15/$75) qui
-  // faisait sauter le cost-cap prématurément sur tout trafic Opus.
+  // Opus 4.x — tarif réel Anthropic : $15 / $75 par 1M tokens (cache read
+  // $1.50, cache write $18.75). Aligné sur le commentaire de doc en tête de
+  // fichier ET sur src/server/clients/claude-search.ts (qui price déjà $15/$75).
+  // NB : inerte côté content-gen (route GPT-4o → Sonnet ; Opus jamais
+  // sélectionné par défaut) — c'est un cap de sécurité correct si on l'active.
   "claude-opus-4-8": {
-    input: 5.0 / 1_000_000,
-    output: 25.0 / 1_000_000,
-    cacheRead: 0.5 / 1_000_000,
-    cacheWrite: 6.25 / 1_000_000,
+    input: 15.0 / 1_000_000,
+    output: 75.0 / 1_000_000,
+    cacheRead: 1.5 / 1_000_000,
+    cacheWrite: 18.75 / 1_000_000,
   },
   "claude-opus-4-7": {
-    input: 5.0 / 1_000_000,
-    output: 25.0 / 1_000_000,
-    cacheRead: 0.5 / 1_000_000,
-    cacheWrite: 6.25 / 1_000_000,
+    input: 15.0 / 1_000_000,
+    output: 75.0 / 1_000_000,
+    cacheRead: 1.5 / 1_000_000,
+    cacheWrite: 18.75 / 1_000_000,
   },
   "claude-haiku-4-5": {
     input: 1.0 / 1_000_000,
