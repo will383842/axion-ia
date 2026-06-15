@@ -25,6 +25,7 @@
 export type AdminNavGroup =
   | "main"
   | "content"
+  | "content_gen"
   | "qualiopi"
   | "documents-interventions"
   | "coaching-1to1"
@@ -48,6 +49,7 @@ export interface AdminNavItem {
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   content: "Contenu",
+  content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
   "documents-interventions": "Documents interventions",
   "coaching-1to1": "Coaching 1-to-1",
@@ -61,6 +63,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "content",
+  "content_gen",
   "qualiopi",
   "documents-interventions",
   "coaching-1to1",
@@ -103,42 +106,88 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
-    { href: `${base}/content-gen`, label: "Générateur contenus", icon: "🧠", group: "content" },
+    // ── Génération de contenu (groupe dédié — réorg console 2026-06-15) ──────
     {
-      href: `${base}/content-gen/city-coverage`,
-      label: "Couverture villes",
-      icon: "🏙️",
-      group: "content",
-    },
-    {
-      href: `${base}/content-gen/city-equity`,
-      label: "Équité villes",
-      icon: "⚖️",
-      group: "content",
-    },
-    {
-      href: `${base}/content-gen/cities-order`,
-      label: "Ordre villes",
-      icon: "📋",
-      group: "content",
-    },
-    {
-      href: `${base}/content-gen/coverage-map`,
-      label: "Carte couverture",
-      icon: "🗺️",
-      group: "content",
+      href: `${base}/content-gen`,
+      label: "Générateur (tableau de bord)",
+      icon: "🧠",
+      group: "content_gen",
     },
     {
       href: `${base}/content-gen/campaigns/new`,
       label: "Nouvelle campagne",
       icon: "➕",
-      group: "content",
+      group: "content_gen",
     },
+    { href: `${base}/content-gen/coverage`, label: "Campagnes", icon: "📊", group: "content_gen" },
     {
       href: `${base}/content-gen/orchestrator/adhoc`,
       label: "Lancement ad-hoc",
       icon: "⚡",
-      group: "content",
+      group: "content_gen",
+    },
+    { href: `${base}/content-gen/jobs`, label: "Jobs", icon: "🗂️", group: "content_gen" },
+    {
+      href: `${base}/content-gen/review-queue`,
+      label: "File de revue",
+      icon: "✅",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/publications`,
+      label: "Publications",
+      icon: "📰",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/rss`,
+      label: "Sources RSS (news)",
+      icon: "📡",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/templates`,
+      label: "Templates de prompts",
+      icon: "📋",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/keyword-tracking`,
+      label: "Mots-clés",
+      icon: "🎯",
+      group: "content_gen",
+    },
+    { href: `${base}/content-gen/costs`, label: "Coûts", icon: "💰", group: "content_gen" },
+    { href: `${base}/content-gen/quality`, label: "Qualité", icon: "📈", group: "content_gen" },
+    {
+      href: `${base}/content-gen/city-coverage`,
+      label: "Couverture villes",
+      icon: "🏙️",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/city-equity`,
+      label: "Équité villes",
+      icon: "⚖️",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/cities-order`,
+      label: "Ordre villes",
+      icon: "🔢",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/coverage-map`,
+      label: "Carte couverture",
+      icon: "🗺️",
+      group: "content_gen",
+    },
+    {
+      href: `${base}/content-gen/settings`,
+      label: "Réglages génération",
+      icon: "⚙️",
+      group: "content_gen",
     },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },

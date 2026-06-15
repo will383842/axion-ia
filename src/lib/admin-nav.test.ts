@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { buildAdminNav, ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 84 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1)", () => {
+  it("returns 94 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, +10 réorg console génération 2026-06-15)", () => {
     const items = buildAdminNav("admin-test-prefix");
-    expect(items.length).toBe(84);
+    expect(items.length).toBe(94);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
@@ -14,7 +14,7 @@ describe("buildAdminNav SSOT", () => {
     }
   });
 
-  it("covers all 10 groups in ADMIN_NAV_GROUP_ORDER", () => {
+  it("covers all 11 groups in ADMIN_NAV_GROUP_ORDER", () => {
     const items = buildAdminNav("admin-test-prefix");
     const groups = new Set(items.map((it) => it.group));
     for (const g of ADMIN_NAV_GROUP_ORDER) {
