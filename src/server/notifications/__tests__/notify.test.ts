@@ -4,6 +4,16 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
+// Flake fix 2026-06-15 — `notify`/`flushPendingDispatches` étaient importés via
+// `await import("../index")` DANS chaque test. Le 1er import à froid déclenche la
+// transformation Vite de tout le graphe du module (~15-23 s en local) ATTRIBUÉE
+// au corps du test → timeout 5 s dépassé (flake intermittent : vert en CI cache
+// chaud, rouge à froid/isolé). On hisse l'import au niveau module : la transfo se
+// fait en phase de collecte (hors testTimeout), les corps de test restent triviaux.
+// Sûr : `vi.mock("@/lib/redis")` est hoisté (s'applique à cet import), et `notify`
+// lit `process.env` à l'APPEL (pas à l'import) → les overrides de `beforeEach` valent.
+import { notify, flushPendingDispatches } from "../index";
+
 const fetchMock = vi.fn();
 const redisSetMock = vi.fn();
 const redisIncrMock = vi.fn();
@@ -44,7 +54,6 @@ describe("notify()", () => {
     // Promise détachée) du test courant AVANT de restaurer les mocks : sinon leur
     // fetch asynchrone se résout pendant un test ultérieur et fausse son compteur
     // d'appels → flake d'isolation inter-tests (ordre-dépendant).
-    const { flushPendingDispatches } = await import("../index");
     await flushPendingDispatches();
     globalThis.fetch = originalFetch;
     process.env.TELEGRAM_BOT_TOKEN = originalToken;
@@ -54,7 +63,6 @@ describe("notify()", () => {
 
   it("envoie en sync sur Telegram pour severity info", async () => {
     fetchMock.mockResolvedValueOnce(new Response('{"ok":true}', { status: 200 }));
-    const { notify } = await import("../index");
     const result = await notify({
       category: "CONTACT_FORM_SUBMITTED",
       payload: {
@@ -74,7 +82,6 @@ describe("notify()", () => {
 
   it("dispatche async (fire-and-forget) pour severity critical", async () => {
     fetchMock.mockResolvedValueOnce(new Response('{"ok":true}', { status: 200 }));
-    const { notify } = await import("../index");
     const result = await notify({
       category: "BACKUP_FAILED",
       payload: { type: "db", error: "disk full" },
@@ -87,7 +94,6 @@ describe("notify()", () => {
   it("skip envoi quand dédup hit", async () => {
     // 2e appel SET NX retourne null → doublon
     redisSetMock.mockResolvedValueOnce(null);
-    const { notify } = await import("../index");
     const result = await notify({
       category: "CALENDLY_INVITEE_CREATED",
       payload: {
@@ -105,7 +111,6 @@ describe("notify()", () => {
 
   it("fail-soft si TELEGRAM_BOT_TOKEN manquant", async () => {
     delete process.env.TELEGRAM_BOT_TOKEN;
-    const { notify } = await import("../index");
     const result = await notify({
       category: "NEWSLETTER_CONFIRMED",
       payload: { email: "x@y.com" },
@@ -116,7 +121,6 @@ describe("notify()", () => {
 
   it("fail-soft si fetch Telegram throw", async () => {
     fetchMock.mockRejectedValueOnce(new Error("network down"));
-    const { notify } = await import("../index");
     const result = await notify({
       category: "NEWSLETTER_PENDING",
       payload: { email: "x@y.com" },
@@ -128,7 +132,6 @@ describe("notify()", () => {
     // Simule rate-limit dépassé (count=999)
     redisIncrMock.mockResolvedValueOnce(999);
     fetchMock.mockResolvedValueOnce(new Response('{"ok":true}', { status: 200 }));
-    const { notify } = await import("../index");
     const result = await notify({
       category: "SECURITY_ALERT",
       payload: { kind: "csrf", details: {} },
@@ -140,7 +143,6 @@ describe("notify()", () => {
   it("rate-limit hit pour SECURITY_ALERT au-dessus du quota", async () => {
     // Simule rate-limit dépassé
     redisIncrMock.mockResolvedValueOnce(999);
-    const { notify } = await import("../index");
     const result = await notify({
       category: "SECURITY_ALERT",
       payload: { kind: "csrf", details: {} },
