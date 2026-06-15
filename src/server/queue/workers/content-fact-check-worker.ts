@@ -153,6 +153,13 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
       where: { id: articleId },
       data: { factCheckScore: 100 },
     });
+    // P0-3 (audit content-gen 2026-06-15) — propager AUSSI sur ContentGenJob.
+    // Le gate de publication (content-publish-worker) lit `cgJob.factCheckScore` ;
+    // sans cette écriture le champ restait toujours null → gate mort. Désormais
+    // cohérent : le score est connu et le gate mord sur tout re-publish/retry.
+    await prisma.contentGenJob
+      .update({ where: { id: contentGenJobId }, data: { factCheckScore: 100 } })
+      .catch(() => undefined);
     console.log(`[fact-check] article=${articleId} no_claims → score=100`);
     return;
   }
@@ -215,6 +222,14 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
     where: { id: articleId },
     data: { factCheckScore: score },
   });
+  // P0-3 (audit content-gen 2026-06-15) — propager AUSSI sur ContentGenJob pour
+  // que le gate de publication (content-publish-worker) ne lise plus un champ
+  // éternellement null. Le flux nominal reste post-publish (décision Will
+  // « corriger en place plutôt que désindexer ») ; le gate sert de filet de
+  // sécurité sur les re-publish/retry d'un job dont le score est désormais connu.
+  await prisma.contentGenJob
+    .update({ where: { id: contentGenJobId }, data: { factCheckScore: score } })
+    .catch(() => undefined);
 
   // 2026-06-14 (décision Will « corriger et garder en ligne ») — Quand des
   // chiffres sont RÉFUTÉS (score < refuteScore), on NE désindexe JAMAIS. On

@@ -8,9 +8,20 @@
  * (`landing-ville-by-vertical-*`) + le pipeline partagé `landing-ville-shared.ts`
  * + le dispatcher `landing-ville.ts` ont été supprimés du code.
  *
- * Les autres generators `landing-ville-{cas-usage,economic-data,ecosystem,
- * faq-extended,secteurs}.ts` restent en place — ils nourrissent les sections
- * du hub ville (`/implantations/[region]/[ville]`).
+ * Les generators ville `ville-hub-copy.ts` + `landing-ville-{cas-usage,
+ * economic-data,ecosystem,faq-extended,secteurs}.ts` alimentent les sections du
+ * hub ville (`/implantations/[region]/[ville]`).
+ *
+ * ⚠️ DESIGN ASSUMÉ (audit content-gen 2026-06-15, P1-2) — Ces generators ville
+ * NE sont VOLONTAIREMENT PAS enregistrés dans `REGISTRY` et ne sont donc PAS
+ * atteignables par `getGenerator()` / le pipeline BullMQ (content-gen-worker).
+ * Ils tournent EXCLUSIVEMENT via scripts CLI manuels
+ * (`scripts/regen-villes-complete.ts`, `regen-villes-stratified.ts`), écrivent
+ * dans la table `GeneratedVilleCopy`, puis sont consommés par le hub via
+ * `resolve-with-copy.ts`. C'est un CHOIX (contrôle du coût ~$105 pour ~2100
+ * villes/run + cadence manuelle décidée par Will), PAS un orphelin accidentel.
+ * → Ne PAS les ajouter au REGISTRY sans décision explicite (sinon
+ *   l'orchestrateur pourrait déclencher des runs villes massifs non maîtrisés).
  *
  * Note : l'enum Prisma `ContentType` contient toujours `landing_ville` (legacy
  * compat — pas de migration destructive). Les jobs queue historiques avec ce
