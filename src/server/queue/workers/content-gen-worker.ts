@@ -50,6 +50,7 @@ import {
 import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 // 2026-06-15 — Branche les ContentTemplate (console) au pipeline (override prompt).
 import { resolveTemplateOverride } from "@/server/content-gen/template-resolver";
+import { resolveQualityProfile } from "@/server/content-gen/profiles/quality-profile-table";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -613,8 +614,29 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // `outputJsonRaw` est la source de vérité que `content-publish-worker.ts`
     // lit pour créer la row Article. Sans ça, la publication throwait
     // « ContentGenJob has no outputJsonRaw » en prod.
+    // PH1 (plan §2) — Profil qualité DORMANT. Calculé + persisté pour
+    // OBSERVABILITÉ uniquement, derrière le flag `QUALITY_PROFILES_ENABLED`
+    // (défaut OFF, lecture directe process.env comme CONTENT_REFRESH_ENABLED).
+    // Ne pilote AUCUN gate ni décision en PH1 — la consommation des seuils
+    // (`QUALITY_PROFILE_GATES`) est le périmètre de PH2. Flag OFF ⇒ `qualityProfile`
+    // null ⇒ champ ABSENT de persistedOutput ⇒ comportement bit-à-bit identique.
+    const qualityProfile =
+      process.env.QUALITY_PROFILES_ENABLED === "true"
+        ? resolveQualityProfile(contentType, targetSearchIntent)
+        : null;
+    if (qualityProfile) {
+      await logStep(contentGenJobId, "validation", `Quality profile: ${qualityProfile}`, {
+        quality_profile: qualityProfile,
+        content_type: contentType,
+        search_intent: targetSearchIntent,
+        observability_only: true,
+      });
+    }
+
     const persistedOutput = {
       ...output,
+      // PH1 dormant : présent UNIQUEMENT si flag ON (sinon clé absente).
+      ...(qualityProfile ? { qualityProfile } : {}),
       finalIndexationTier,
       intentAligned: intent.aligned,
       intentWarnings: intent.warnings,
