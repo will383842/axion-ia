@@ -50,7 +50,11 @@ import {
 import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 // 2026-06-15 — Branche les ContentTemplate (console) au pipeline (override prompt).
 import { resolveTemplateOverride } from "@/server/content-gen/template-resolver";
-import { resolveQualityProfile } from "@/server/content-gen/profiles/quality-profile-table";
+import {
+  resolveQualityProfile,
+  QUALITY_PROFILE_GATES,
+} from "@/server/content-gen/profiles/quality-profile-table";
+import { evaluateBenefitConcreteness } from "@/server/content-gen/quality/benefit-concreteness-gate";
 import { getVille, getRegionByDepartement } from "@/content/villes";
 
 interface KillSwitchState {
@@ -618,43 +622,65 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       );
     }
 
+    // PH1+PH2 (plan §2/§4) — Profil qualité + benefit-gate COMMERCIAL-ONLY.
+    // DORMANT par défaut : flag `QUALITY_PROFILES_ENABLED` (profil) + config
+    // `benefit_gate.enabled` (gate). Les 2 OFF ⇒ qualityProfile=null ⇒ AUCUNE
+    // lecture config supplémentaire ⇒ benefitFail=false ⇒ blockingFail bit-à-bit
+    // identique à l'actuel. Calculé AVANT blockingFail car le benefit-gate en est
+    // un membre conditionnel.
+    const qualityProfile =
+      process.env.QUALITY_PROFILES_ENABLED === "true"
+        ? resolveQualityProfile(contentType, targetSearchIntent)
+        : null;
+    // Config gate lue UNIQUEMENT pour le profil commercial (zéro surcoût sinon).
+    const benefitGateConfig =
+      qualityProfile === "commercial"
+        ? await readContentGenConfig<{ enabled: boolean; minScore?: number }>("benefit_gate", {
+            enabled: false,
+          })
+        : { enabled: false, minScore: undefined as number | undefined };
+    // PH2 — benefit-concreteness UNIQUEMENT commercial + gate ON. fail-open : un
+    // score faible ne bloque QUE s'il a été évalué (le corpus informationnel/AEO
+    // n'est jamais évalué → jamais désindexé). Juge LLM = PH3.
+    const benefitGateActive = qualityProfile === "commercial" && benefitGateConfig.enabled === true;
+    const benefit = benefitGateActive ? evaluateBenefitConcreteness(output.bodyText) : null;
+    const benefitMin =
+      benefitGateConfig.minScore ?? QUALITY_PROFILE_GATES.commercial.benefitMin ?? 70;
+    const benefitFail = benefit !== null && benefit.score < benefitMin;
+    if (qualityProfile) {
+      await logStep(contentGenJobId, "validation", `Quality profile: ${qualityProfile}`, {
+        quality_profile: qualityProfile,
+        content_type: contentType,
+        search_intent: targetSearchIntent,
+        benefit_gate_active: benefitGateActive,
+        benefit_score: benefit?.score ?? null,
+        benefit_fail: benefitFail,
+      });
+    }
+
     // Tier final : downgrade tier_3 si plagiat OR intent hardFails OR outline dup
-    // OR faute dure doctrine OR doublon sémantique. Sinon indexationTier generator.
+    // OR faute dure doctrine OR doublon sémantique OR benefit-gate (commercial).
+    // Sinon indexationTier generator.
     const blockingFail =
       !plagiarism.passed ||
       !intent.aligned ||
       outlineBlockingFail ||
       doctrineHardFail ||
-      topicDuplicateFail;
+      topicDuplicateFail ||
+      benefitFail;
     const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
 
     // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert).
     // `outputJsonRaw` est la source de vérité que `content-publish-worker.ts`
     // lit pour créer la row Article. Sans ça, la publication throwait
     // « ContentGenJob has no outputJsonRaw » en prod.
-    // PH1 (plan §2) — Profil qualité DORMANT. Calculé + persisté pour
-    // OBSERVABILITÉ uniquement, derrière le flag `QUALITY_PROFILES_ENABLED`
-    // (défaut OFF, lecture directe process.env comme CONTENT_REFRESH_ENABLED).
-    // Ne pilote AUCUN gate ni décision en PH1 — la consommation des seuils
-    // (`QUALITY_PROFILE_GATES`) est le périmètre de PH2. Flag OFF ⇒ `qualityProfile`
-    // null ⇒ champ ABSENT de persistedOutput ⇒ comportement bit-à-bit identique.
-    const qualityProfile =
-      process.env.QUALITY_PROFILES_ENABLED === "true"
-        ? resolveQualityProfile(contentType, targetSearchIntent)
-        : null;
-    if (qualityProfile) {
-      await logStep(contentGenJobId, "validation", `Quality profile: ${qualityProfile}`, {
-        quality_profile: qualityProfile,
-        content_type: contentType,
-        search_intent: targetSearchIntent,
-        observability_only: true,
-      });
-    }
-
     const persistedOutput = {
       ...output,
-      // PH1 dormant : présent UNIQUEMENT si flag ON (sinon clé absente).
+      // PH1/PH2 dormant : présents UNIQUEMENT si flag(s) ON (sinon clés ABSENTES
+      // ⇒ persistedOutput bit-à-bit identique à l'actuel). `qualityProfile` et le
+      // calcul benefit sont résolus plus haut (avant blockingFail).
       ...(qualityProfile ? { qualityProfile } : {}),
+      ...(benefit ? { benefitConcretenessScore: benefit.score } : {}),
       finalIndexationTier,
       intentAligned: intent.aligned,
       intentWarnings: intent.warnings,
