@@ -1,23 +1,26 @@
 /**
  * Content Generator — Analytics clients (Sprint 10 V2).
  *
- * Stubs réseau pour Google Search Console + Plausible. V1 = noop si credentials
- * absents (mode skeleton). Activation prod = Will fournit :
- *   - `GOOGLE_INDEXING_SA_JSON` (JWT service account inline JSON) + `GSC_PROPERTY_URL`
- *   - `PLAUSIBLE_API_KEY` + `PLAUSIBLE_SITE_ID`
+ * Clients réseau pour Google Search Console + Plausible. Graceful degrade :
+ * retournent `null` si credentials absents (le décideur de lifecycle traite
+ * `null` comme `no_data` = noop, comportement sûr).
  *
- * SSOT env vars aligné audit indexation 2026-05-15 P0-9 :
- *   - Google Indexing JWT inline = `GOOGLE_INDEXING_SA_JSON` (cohérent .env.example,
- *     content-google-indexing-worker.ts, runbook R15, scripts/check-prod-env.sh)
- *   - GSC property = `GSC_PROPERTY_URL` (cohérent gsc-client.ts, scripts/*.mjs,
- *     .github/workflows/gsc-crawl-stats-weekly.yml)
+ * P0-4 (audit content-gen 2026-06-15) — `fetchSearchConsoleCtr` était un
+ * skeleton qui retournait TOUJOURS `null` (même avec credentials, faute de SDK),
+ * ce qui rendait le tier-lifecycle-worker totalement inopérant (jamais de
+ * promote/demote auto). Désormais il délègue à `gscPageMetricsForUrl`
+ * (`seo/gsc-client.ts`) qui appelle réellement l'API Search Analytics via le
+ * flux OAuth refresh-token DÉJÀ câblé et utilisé par `content-keyword-sync`.
  *
- * Sans credentials → retourne `null`, le décideur de lifecycle skip l'article.
- * Avec credentials → utilise les SDK officiels (`googleapis` + fetch direct).
+ * Credentials (Coolify, scope RUN) — mêmes vars que gsc-client.ts :
+ *   - `GSC_OAUTH_CLIENT_ID` / `GSC_OAUTH_CLIENT_SECRET` / `GSC_OAUTH_REFRESH_TOKEN`
+ *   - `GSC_PROPERTY_URL` (ex: `sc-domain:axion-ia.com`)
+ *   - Plausible : `PLAUSIBLE_API_KEY` + `PLAUSIBLE_SITE_ID`
  *
- * Design : les fonctions sont des "fetch one URL at a time" pour rester simple ;
- * batch optimisations possibles Sprint 11+ si volume > 1k articles/mois.
+ * Design : "fetch one URL at a time" ; batch possible Sprint 11+ si volume > 1k/mois.
  */
+
+import { gscPageMetricsForUrl } from "@/server/content-gen/seo/gsc-client";
 
 export interface CtrMetrics {
   readonly ctr: number; // 0-1
@@ -32,34 +35,27 @@ export interface PageviewMetrics {
 }
 
 /**
- * Fetch CTR via Google Search Console API.
+ * Fetch CTR/impressions réels via Google Search Console (Search Analytics API).
  *
- * V1 SKELETON : retourne `null` (les credentials/SDK ne sont pas câblés en V1).
- * Le décideur `computeTierDecision` retourne `noop` quand ctr=null, donc le
- * tier-lifecycle-worker reste safe en attendant Sprint 10.5.
+ * Délègue à `gscPageMetricsForUrl` (flux OAuth refresh-token réel). Retourne
+ * `null` si credentials absents ou erreur réseau → le décideur de lifecycle
+ * (`computeTierDecision`) traite alors `ctr=null` comme `no_data` (noop sûr).
  *
- * Activation Sprint 10.5 (quand Will fournira credentials + SDK) :
- *   1. `pnpm add googleapis` (ou client REST custom + google-auth-library)
- *   2. Setter Coolify env vars : `GOOGLE_INDEXING_SA_JSON` (JWT inline) +
- *      `GSC_PROPERTY_URL` (ex `sc-domain:axion-ia.com`)
- *   3. Décommenter le bloc `if (credentials && property)` ci-dessous et
- *      remplacer par l'appel SDK réel.
+ * @param url        URL canonique absolue de l'article (buildArticleUrl)
+ * @param daysWindow Fenêtre lookback (14 promote / 30 demote)
  */
 export async function fetchSearchConsoleCtr(
-  _url: string,
-  _daysWindow: number,
+  url: string,
+  daysWindow: number,
 ): Promise<CtrMetrics | null> {
-  const credentials = process.env.GOOGLE_INDEXING_SA_JSON;
-  const property = process.env.GSC_PROPERTY_URL;
-  if (!credentials || !property) {
-    return null; // skeleton mode V1
-  }
-  // V1 : pas de SDK installé → retourne null même si credentials présents.
-  // Will doit lancer Sprint 10.5 pour ajouter googleapis.
-  console.warn(
-    "[gsc] credentials set but googleapis SDK not installed — run Sprint 10.5 to activate",
-  );
-  return null;
+  const m = await gscPageMetricsForUrl(url, daysWindow);
+  if (!m) return null;
+  return {
+    ctr: m.ctr,
+    impressions: m.impressions,
+    clicks: m.clicks,
+    position: m.position,
+  };
 }
 
 /**

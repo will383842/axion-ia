@@ -55,6 +55,7 @@ import {
   QUALITY_PROFILE_GATES,
 } from "@/server/content-gen/profiles/quality-profile-table";
 import { evaluateBenefitConcreteness } from "@/server/content-gen/quality/benefit-concreteness-gate";
+import { getVille, getRegionByDepartement } from "@/content/villes";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -274,12 +275,29 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         });
         if (campaign?.serviceSector) campaignSector = campaign.serviceSector;
       }
+      // P1-3 (audit content-gen 2026-06-15) — Mode géo du keyword-selector.
+      // Si le job est ancré sur une ville (campagne ville-anchored,
+      // `anchorVilleSlug`), on fournit un CityRef au selector → il génère un
+      // keyword GÉO ("<vertical> IA <ville/région>") via keyword-templates au
+      // lieu d'un keyword transversal. Avant, `anchorVilleSlug` n'était JAMAIS
+      // passé à selectKeyword → le mode géo (pourtant implémenté) restait inerte.
+      const anchorVille = dbJob.anchorVilleSlug ? getVille(dbJob.anchorVilleSlug) : undefined;
+      const cityRef = anchorVille
+        ? {
+            name: anchorVille.nameFr,
+            regionName:
+              getRegionByDepartement(anchorVille.departement)?.nameFr ?? anchorVille.region,
+            departmentName: anchorVille.departementLabel ?? anchorVille.departement,
+            inseeCode: anchorVille.inseeCode,
+          }
+        : undefined;
       // P1-8 — Passer campaignId pour log structuré keyword_select_exhausted
       // et préparer l'isolation future des pools par campagne.
       // Note: spread conditionnel requis (exactOptionalPropertyTypes: true).
       const selected = await selectKeyword({
         vertical: campaignSector,
         contentType,
+        ...(cityRef ? { city: cityRef } : {}),
         ...(dbJob.campaignId ? { campaignId: dbJob.campaignId } : {}),
       });
       if (selected) {
@@ -722,13 +740,25 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // 2026-06-14 (décision Will « full auto ») — Publication automatique de TOUS
     // les types de contenu, sans relecture humaine, dès lors que la policy
     // `factoryAutoPublishAllBlogTypes` n'est pas explicitement désactivée
-    // (défaut TRUE désormais). On ne gate plus sur le score (la boucle qualité
-    // ci-dessus améliore d'abord les contenus faibles) ni sur un flag autoPublish
-    // dans le payload : la policy EST l'opt-in. Seuls les blocages DURS de
-    // doctrine (`blockingFail` : SIREN/prix non-SSOT) divergent vers needs_review.
-    // Pour revenir à la relecture manuelle : policy factoryAutoPublishAllBlogTypes=false.
+    // (défaut TRUE désormais). La policy EST l'opt-in (pas besoin du flag
+    // autoPublish dans le payload). Les blocages DURS de doctrine (`blockingFail`)
+    // divergent vers needs_review.
+    //
+    // P1-1 (audit content-gen 2026-06-15) — PLANCHER DE QUALITÉ. L'auto-publish
+    // exige désormais `score >= qualityThreshold` (même seuil que la boucle
+    // qualité, 60 par défaut). Sans ce plancher, deux trous laissaient passer du
+    // contenu faible/indexable sans relecture :
+    //   (a) `score === 0` (scorer raté/absent) : NON éligible à la boucle
+    //       (qui exige score>0) → était auto-publié tel quel.
+    //   (b) `0 < score < seuil` mais boucle épuisée (attempts ≥ max) : idem.
+    // Ce plancher est ALIGNÉ avec l'intention de Will (« la boucle améliore
+    // d'abord les contenus faibles ») : un contenu encore faible après la boucle
+    // (ou non scoré) part en needs_review au lieu d'être indexé. Les contenus
+    // ≥ seuil restent en full-auto (throughput préservé). RSS garde son propre
+    // plancher `rssAutoPublishMinScore` (75).
     const fullAutoPublishEnabled = policies.factoryAutoPublishAllBlogTypes !== false;
-    const fullAutoPublishRequested = fullAutoPublishEnabled && !blockingFail;
+    const fullAutoPublishRequested =
+      fullAutoPublishEnabled && !blockingFail && score >= qualityThreshold;
 
     let nextStatus: "quality_improving" | "approved" | "needs_review" = "needs_review";
     if (eligibleQualityLoop) nextStatus = "quality_improving";

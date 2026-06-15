@@ -183,6 +183,97 @@ export async function gscTopKeywordsForUrl(
 }
 
 /**
+ * Métriques page-level (agrégées, sans dimension) pour une URL sur N jours.
+ *
+ * Utilisé par le tier-lifecycle (`fetchSearchConsoleCtr`) pour décider
+ * promote/demote d'un article selon son CTR/impressions réels GSC. Query sans
+ * `dimensions` → Google renvoie une seule ligne agrégée pour la page filtrée.
+ *
+ * Skip silencieux + return `null` si credentials absents (graceful degrade :
+ * le décideur de lifecycle retombe alors sur `no_data` = noop, comportement sûr).
+ *
+ * @param targetUrl  URL canonique absolue (ex: https://axion-ia.com/fr/blog/abc)
+ * @param daysWindow Fenêtre lookback en jours (14 promote / 30 demote)
+ */
+export async function gscPageMetricsForUrl(
+  targetUrl: string,
+  daysWindow = 28,
+): Promise<{
+  ctr: number; // 0-1
+  impressions: number;
+  clicks: number;
+  position: number; // 1.0 = #1 SERP
+} | null> {
+  const propertyUrl = process.env["GSC_PROPERTY_URL"];
+  if (!propertyUrl) return null;
+  if (
+    !process.env["GSC_OAUTH_CLIENT_ID"] ||
+    !process.env["GSC_OAUTH_CLIENT_SECRET"] ||
+    !process.env["GSC_OAUTH_REFRESH_TOKEN"]
+  ) {
+    return null;
+  }
+
+  let accessToken: string;
+  try {
+    accessToken = await getAccessToken();
+  } catch (err) {
+    console.error("[gsc-client] OAuth refresh failed:", err);
+    return null;
+  }
+
+  const endDate = new Date();
+  const startDate = new Date(endDate.getTime() - daysWindow * 86_400_000);
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+
+  const query = {
+    startDate: fmt(startDate),
+    endDate: fmt(endDate),
+    // Pas de `dimensions` → agrégat page-level (1 ligne) pour l'URL filtrée.
+    dimensionFilterGroups: [
+      {
+        filters: [{ dimension: "page", operator: "equals", expression: targetUrl }],
+      },
+    ],
+    rowLimit: 1,
+    type: "web",
+  };
+
+  const url = `${WEBMASTERS_API}/sites/${encodeURIComponent(propertyUrl)}/searchAnalytics/query`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(query),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error(
+      `[gsc-client] page metrics failed for ${targetUrl}: ${res.status} ${text.slice(0, 150)}`,
+    );
+    return null;
+  }
+
+  const data = (await res.json()) as { rows?: GscSearchRow[] };
+  const row = data.rows?.[0];
+  if (!row) {
+    // Aucune ligne = page sans impressions sur la fenêtre (pas encore crawlée /
+    // zéro trafic). On renvoie des zéros explicites : le décideur traite
+    // impressions=0 comme "pas assez de signal" (noop), pas comme une erreur.
+    return { ctr: 0, impressions: 0, clicks: 0, position: 0 };
+  }
+  return {
+    ctr: row.ctr,
+    impressions: row.impressions,
+    clicks: row.clicks,
+    position: row.position,
+  };
+}
+
+/**
  * Test helper — retourne l'access_token courant (cached) sans appel API.
  * Utile pour smoke tests ou debug local.
  */
