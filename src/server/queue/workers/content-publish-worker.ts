@@ -313,6 +313,17 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   const topicFingerprint =
     typeof output["topicFingerprint"] === "string" ? (output["topicFingerprint"] as string) : null;
 
+  // E7 (traçabilité AI-Act) — IDs des entrées KB (KnowledgeEntry) réellement
+  // injectées dans le prompt via kbRetrieve(), propagés par le generator dans
+  // GeneratorOutput.kbEntryIds (cf. generators/types.ts) → spread dans
+  // outputJsonRaw. Persistés tels quels dans Article.kbChunkIds (schema) pour
+  // l'audit trail RAG « quels faits KB ont nourri quel article ». Garde sûre :
+  // absent / non-array / items non-string → [] (jamais d'exception).
+  const kbEntryIdsRaw = output["kbEntryIds"];
+  const kbChunkIds: string[] = Array.isArray(kbEntryIdsRaw)
+    ? kbEntryIdsRaw.filter((s): s is string => typeof s === "string" && s.length > 0)
+    : [];
+
   const isNews = cgJob.contentType === "blog_from_rss";
   const rssSourceUrl =
     typeof (cgJob.inputPayload as Record<string, unknown>)?.rssLink === "string"
@@ -392,6 +403,9 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         // l'index GIN articles_mentioned_cities_idx permet le filter
         // performant côté hub ville.
         ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
+        // E7 (traçabilité AI-Act) — IDs des entrées KB injectées via kbRetrieve()
+        // (source: GeneratorOutput.kbEntryIds). Default schema = [] si vide.
+        ...(kbChunkIds.length > 0 ? { kbChunkIds } : {}),
         // B.6 P0-4 — Hero image image-bank (URL filePath ou null si pas de match).
         ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
         // VIS-08 — Alt sémantique hero (FR ; EN miroir non requis, locale FR canonique).

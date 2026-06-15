@@ -22,6 +22,8 @@
 
 import DOMPurify from "isomorphic-dompurify";
 
+import { computeTrustTier, extractDomain, relAttrForExternalLink } from "../links/trust-tier";
+
 /** Tags HTML autorisés dans les contenus content-gen (éditorial long-form). */
 const ALLOWED_TAGS = [
   // Texte structuré
@@ -110,10 +112,13 @@ export function sanitizeContentGenHtml(html: string): string {
     RETURN_DOM_FRAGMENT: false,
   });
 
-  // P1 2026-06-13 — Anti-fuite PageRank : force `rel="nofollow noopener
-  // noreferrer"` sur TOUT lien externe (host ≠ axion-ia.com). Sans ça, chaque
-  // citation externe écrite par le LLM sortait en dofollow (fuite de PageRank).
-  // Les liens internes (relatifs `/…` ou axion-ia.com) restent dofollow.
+  // E1 2026-06-15 — Trust tier policy (V-14) : le `rel` des liens externes est
+  // dérivé de `computeTrustTier(domain)`. Les sources d'autorité (official/high
+  // : .gouv.fr, europa.eu, ISO, presse de référence…) sortent en dofollow
+  // (`rel="noopener noreferrer"`), tout le reste (standard/low/inconnu) reste en
+  // nofollow (`rel="nofollow noopener noreferrer"`) pour éviter la fuite de
+  // PageRank. Les liens internes (relatifs `/…` ou axion-ia.com) restent
+  // dofollow et ne sont pas touchés.
   const withExternalRel = ensureExternalLinkRel(sanitized);
 
   // Post-traitement : force rel="noopener noreferrer" sur tous les
@@ -133,10 +138,14 @@ export function sanitizeContentGenHtml(html: string): string {
 const SITE_HOST = "axion-ia.com";
 
 /**
- * Garantit `rel="nofollow noopener noreferrer"` sur chaque lien EXTERNE
- * (URL absolue http(s) dont le host n'est pas axion-ia.com). Fusionne avec un
- * `rel` existant sans le dupliquer. Les liens internes/relatifs sont laissés
- * intacts (dofollow voulu pour le maillage interne).
+ * Pose le bon `rel` sur chaque lien EXTERNE (URL absolue http(s) dont le host
+ * n'est pas axion-ia.com), dérivé du trust tier du domaine (doctrine V-14) :
+ *   - official / high → dofollow (`rel="noopener noreferrer"`)
+ *   - standard / low / domaine inconnu → nofollow (`rel="nofollow noopener
+ *     noreferrer"`), défaut conservateur anti-fuite PageRank
+ * Fusionne avec un `rel` existant sans dupliquer les tokens, et conserve
+ * toujours `noopener` + `noreferrer` (sécurité reverse-tabnabbing). Les liens
+ * internes/relatifs sont laissés intacts (dofollow voulu pour le maillage).
  */
 function ensureExternalLinkRel(html: string): string {
   const isExternalHref = (href: string): boolean => {
@@ -151,10 +160,19 @@ function ensureExternalLinkRel(html: string): string {
   return html.replace(/<a\b([^>]*)>/gi, (match, attrs: string) => {
     const hrefMatch = attrs.match(/href=["']([^"']*)["']/i);
     if (!hrefMatch) return match;
-    if (!isExternalHref(hrefMatch[1] ?? "")) return match;
+    const href = hrefMatch[1] ?? "";
+    if (!isExternalHref(href)) return match;
+    // `computeTrustTier` attend un DOMAINE (hostname), pas une URL complète.
+    // Défaut SÛR : domaine non extractible → nofollow (tier "standard").
+    const domain = extractDomain(href);
+    const tier = domain ? computeTrustTier(domain) : "standard";
+    const policyRel = relAttrForExternalLink(tier); // valeur complète du rel
     const relMatch = attrs.match(/rel=["']([^"']*)["']/i);
-    const tokens = new Set((relMatch?.[1] ?? "").split(/\s+/).filter(Boolean));
-    tokens.add("nofollow");
+    // Fusionne le rel existant (LLM) avec la policy, sans dupliquer les tokens,
+    // et garantit noopener + noreferrer même si la policy/le LLM les omet.
+    const tokens = new Set(
+      [...(relMatch?.[1] ?? "").split(/\s+/), ...policyRel.split(/\s+/)].filter(Boolean),
+    );
     tokens.add("noopener");
     tokens.add("noreferrer");
     const relValue = [...tokens].join(" ");

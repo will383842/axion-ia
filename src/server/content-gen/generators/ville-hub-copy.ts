@@ -24,6 +24,7 @@ import { retrieve as kbRetrieve } from "../kb-client";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeSlugInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
+import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { checkHubVsVerticalesDuplicate } from "./anti-duplicate-check";
 import { prisma } from "@/lib/prisma";
 import { getVille } from "@/content/villes";
@@ -847,6 +848,33 @@ export async function generateVilleHubCopy(
       reviewedBy: null,
     },
   });
+
+  // 🆕 Fix C2 (log-only) — signal de monitoring soft-404 (thin copy).
+  // ⚠️ STRICTEMENT additif : on NE change PAS l'indexationTier ni le status
+  // (décision #66 : toutes les villes restent indexables immédiatement).
+  // On émet uniquement un WARNING de monitoring si la copy générée est thin.
+  const soft404WordCount =
+    countWords(bestOutput.pitchFr) +
+    countWords(bestOutput.directAnswerFr) +
+    countWords(bestOutput.ecosystemFr) +
+    countWords(bestOutput.distancesFr) +
+    countWords(bestOutput.servicesContext.audit.fr) +
+    countWords(bestOutput.servicesContext.interventions.fr) +
+    countWords(bestOutput.servicesContext.implementation.fr) +
+    countWords(bestOutput.servicesContext.unAUn.fr) +
+    bestOutput.faqGeolocalisee.reduce((sum, f) => sum + countWords(f.q) + countWords(f.a), 0);
+  const soft404 = evaluateSoft404({
+    wordCount: soft404WordCount,
+    hasFullLocalBusinessJsonLd: false,
+    hasLocalCase: false,
+    faqCount: bestOutput.faqGeolocalisee.length,
+  });
+  if (soft404.isSoft404) {
+    console.warn(
+      `[ville-hub-copy] soft-404 détecté (thin) villeSlug=${villeSlug} wordCount=${soft404WordCount} ` +
+        `(seuil ${soft404.threshold}, reason ${soft404.reason}) — log-only, indexation inchangée`,
+    );
+  }
 
   return {
     villeSlug,

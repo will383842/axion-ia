@@ -64,13 +64,27 @@ async function applyPromote(
   console.log(`[tier-lifecycle] PROMOTE article=${articleId} reason=${reason}`);
 }
 
-async function applyDemote(articleId: string, reason: string): Promise<void> {
+async function applyDemote(
+  articleId: string,
+  slug: string,
+  isNews: boolean,
+  reason: string,
+): Promise<void> {
   await prisma.article.update({
     where: { id: articleId },
     data: {
       indexationTier: "tier_2_noindex_follow" as IndexationTier,
       promotedAt: null,
     },
+  });
+  // F3 — signaler la désindexation à Google/Bing (URL_DELETED via lifecycleEvent
+  // "delete"). Modelé sur applyPromote(). Fire-and-forget : ne throw jamais.
+  await enqueueIndexingForTier1({
+    articleId,
+    slug,
+    isNews,
+    origin: "tier-promote",
+    lifecycleEvent: "delete",
   });
   console.log(`[tier-lifecycle] DEMOTE article=${articleId} reason=${reason}`);
 }
@@ -115,7 +129,7 @@ async function processArticles(
       await applyPromote(article.id, t.slug, article.isNews, decision.reason);
       stats.promoted++;
     } else if (decision.action === "demote") {
-      await applyDemote(article.id, decision.reason);
+      await applyDemote(article.id, t.slug, article.isNews, decision.reason);
       stats.demoted++;
     } else if (decision.reason === "no_data") {
       stats.noData++;

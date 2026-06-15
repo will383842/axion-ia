@@ -39,6 +39,7 @@ import { findRelatedArticles } from "@/server/content-gen/links/related-articles
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
+import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -242,7 +243,12 @@ export default async function NewsArticlePage({ params }: Props) {
     { href: `/actualites/${slug}`, label: t.title },
   ];
 
-  const paragraphs = (t.bodyText ?? t.body)
+  // VIS-01 (fix C3 2026-06-15) — `bodyText` = prose plate (cas normal) rendue en
+  // paragraphes. Si `bodyText` absent, `body` = HTML content-gen → on le rend
+  // sanitisé (whitelist anti-XSS) au lieu d'échapper les balises littéralement
+  // (bug VIS-01 latent : `<p>{html}</p>` afficherait `<h2>…</h2>` en clair).
+  const bodyHtmlFallback = t.bodyText ? null : sanitizeContentGenHtml(t.body);
+  const paragraphs = (t.bodyText ?? "")
     .split(/\n{2,}/)
     .map((p) => p.trim())
     .filter((p) => p.length > 0);
@@ -336,9 +342,14 @@ export default async function NewsArticlePage({ params }: Props) {
 
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
-          {paragraphs.map((p, idx) => (
-            <p key={`p-${idx}`}>{p}</p>
-          ))}
+          {bodyHtmlFallback ? (
+            <div
+              className="prose prose-axionia max-w-none"
+              dangerouslySetInnerHTML={{ __html: bodyHtmlFallback }}
+            />
+          ) : (
+            paragraphs.map((p, idx) => <p key={`p-${idx}`}>{p}</p>)
+          )}
         </Container>
       </Section>
 

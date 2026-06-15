@@ -4,12 +4,15 @@
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { updateBatchSettings, type BatchSettings } from "@/server/actions/content-gen/policies";
+import type { ContentGenQueueHealth } from "@/server/actions/content-gen/health";
+import { QueueHealthPanel } from "./QueueHealthPanel";
 
 interface Props {
   cfg: BatchSettings;
+  health: ContentGenQueueHealth;
 }
 
-export function BatchesV2({ cfg }: Props): React.ReactElement {
+export function BatchesV2({ cfg, health }: Props): React.ReactElement {
   async function save(formData: FormData) {
     "use server";
     // dailyTargetByType édité en JSON (record type→nombre/jour). JSON invalide
@@ -125,6 +128,8 @@ export function BatchesV2({ cfg }: Props): React.ReactElement {
           </div>
         </form>
       </AdminCard>
+
+      <QueueHealthPanel health={health} />
     </AdminPageShell>
   );
 }

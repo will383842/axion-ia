@@ -32,6 +32,7 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
+import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 
@@ -124,6 +125,20 @@ export default async function GuidePiliersPage({ params }: Props) {
   // Sinon on splite par double newline pour conserver le rythme original.
   const paragraphs = guide.body.split(/\n{2,}/).filter((p) => p.trim().length > 0);
 
+  // VIS-01 (fix C3 2026-06-15) — `guide.body` provient de `translation.body`
+  // (HTML content-gen, cf. guides/loader.ts). Sans steps structurées, l'ancien
+  // rendu `<p>{guide.body}</p>` échappait les balises (h2/listes/liens visibles
+  // en clair). On rend désormais le HTML sanitisé quand le body EST du HTML ;
+  // le fallback paragraphes plats reste pour un éventuel body en prose brute.
+  // Détection ciblée sur des balises de contenu RÉELLES (pas `<[a-z]` générique,
+  // qui faux-positiverait sur de la prose contenant « <mot> »).
+  const guideBodyHtml =
+    /<(?:p|h[1-6]|ul|ol|li|a|strong|em|blockquote|table|thead|tbody|tr|td|th|div|br|img|figure|figcaption|pre|code|hr)\b/i.test(
+      guide.body,
+    )
+      ? sanitizeContentGenHtml(guide.body)
+      : null;
+
   // TOC Featured Snippets P0-4 — généré depuis les steps structurées si
   // disponibles. Chaque step.name devient un h2 dans le rendu, donc une entrée TOC.
   const tocItems: TocItem[] = guide.hasStructuredSteps
@@ -177,30 +192,37 @@ export default async function GuidePiliersPage({ params }: Props) {
           />
 
           <div className="mt-12 space-y-6">
-            {guide.hasStructuredSteps
-              ? guide.steps.map((step) => (
-                  <section
-                    key={step.position}
-                    aria-labelledby={`step-${step.position}`}
-                    className="border-border rounded-lg border bg-white p-6"
+            {guide.hasStructuredSteps ? (
+              guide.steps.map((step) => (
+                <section
+                  key={step.position}
+                  aria-labelledby={`step-${step.position}`}
+                  className="border-border rounded-lg border bg-white p-6"
+                >
+                  <h2
+                    id={`step-${step.position}`}
+                    className="text-ink text-xl font-semibold md:text-2xl"
                   >
-                    <h2
-                      id={`step-${step.position}`}
-                      className="text-ink text-xl font-semibold md:text-2xl"
-                    >
-                      <span className="text-terracotta mr-2">{step.position}.</span>
-                      {step.name}
-                    </h2>
-                    <div className="text-ink mt-3 leading-relaxed whitespace-pre-line">
-                      {step.text}
-                    </div>
-                  </section>
-                ))
-              : paragraphs.map((p, idx) => (
-                  <p key={idx} className="text-ink leading-relaxed">
-                    {p.trim()}
-                  </p>
-                ))}
+                    <span className="text-terracotta mr-2">{step.position}.</span>
+                    {step.name}
+                  </h2>
+                  <div className="text-ink mt-3 leading-relaxed whitespace-pre-line">
+                    {step.text}
+                  </div>
+                </section>
+              ))
+            ) : guideBodyHtml ? (
+              <div
+                className="prose prose-axionia text-ink max-w-none leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: guideBodyHtml }}
+              />
+            ) : (
+              paragraphs.map((p, idx) => (
+                <p key={idx} className="text-ink leading-relaxed">
+                  {p.trim()}
+                </p>
+              ))
+            )}
           </div>
 
           <AiContentDisclaimer locale="fr" className="mt-10" />

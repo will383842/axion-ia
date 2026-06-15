@@ -408,10 +408,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Pour blog_from_rss, on conserve la hero image RSS si presente (heroImageUrl).
     // Pour les autres contentTypes, on selectionne dans l'image-bank par module/city/keyword.
     const heroFromRss = contentType === "blog_from_rss" && Boolean(output.heroImage);
-    const campaignSectorForHero =
-      typeof (dbJob as Record<string, unknown>)["campaignSector"] === "string"
-        ? ((dbJob as Record<string, unknown>)["campaignSector"] as string)
-        : undefined;
+    // D1 fix (2026-06-15) — `campaignSector` n'existe PAS sur ContentGenJob : le
+    // cast ci-dessous renvoyait TOUJOURS undefined → la hero était sélectionnée
+    // sans vertical (mauvais ciblage image-bank). On dérive le vertical du
+    // `serviceSector` de la campagne, comme le fait déjà la sélection keyword.
+    const campaignSectorForHero = dbJob.campaignId
+      ? ((
+          await prisma.coverageCampaign.findUnique({
+            where: { id: dbJob.campaignId },
+            select: { serviceSector: true },
+          })
+        )?.serviceSector ?? undefined)
+      : undefined;
     const hero =
       heroFromRss || !resolvedKeyword
         ? null

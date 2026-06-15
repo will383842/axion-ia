@@ -19,6 +19,7 @@ import { KB_INTERVENTIONS_FORMATIONS } from "../../../src/server/content-gen/kb/
 import { KB_UN_A_UN } from "../../../src/server/content-gen/kb/un-a-un";
 import { KB_IMPLEMENTATIONS } from "../../../src/server/content-gen/kb/implementations";
 import { KB_SITES_WEB_AUGMENTES } from "../../../src/server/content-gen/kb/sites-web-augmentes";
+import { KB_VILLES_ALL } from "../../../src/server/content-gen/kb/villes-facts";
 import type { KbFact } from "../../../src/server/content-gen/kb/audits";
 import { servicesForVerticales, serviceTagSlug } from "../../../src/content/knowledge/services";
 
@@ -29,6 +30,12 @@ const ALL_KB_FACTS: readonly KbFact[] = [
   ...KB_UN_A_UN,
   ...KB_IMPLEMENTATIONS,
   ...KB_SITES_WEB_AUGMENTES,
+  // Sprint A Ville DRY — 180 facts villes/AI Act/ROI IA (fix A4 : ingérés comme
+  // les 5 autres verticales → KnowledgeEntry + KnowledgeTranslation + embeddings).
+  // Les verticales `villes`/`ai_act` ne correspondent à aucun service du SSOT
+  // `services.ts` : `servicesForVerticales` renvoie [] pour elles (pas de binding,
+  // pas d'erreur). Les facts taggés `audits`/`implementations` restent bindés.
+  ...KB_VILLES_ALL,
 ];
 
 /**
