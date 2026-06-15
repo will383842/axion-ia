@@ -165,6 +165,14 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // `pathnames` ont été RETIRÉS de routing.ts (2026-06-12), donc elles ne peuvent
   // plus apparaître dans le sitemap : plus besoin de les exclure ici. Les 301
   // (next.config.ts) continuent de porter le SEO.
+  // Audit "page vide / noindexed in sitemap" 2026-06-15 — `/carrieres/widget`
+  // (embed iframe, robots:noindex,nofollow) et `/carrieres/widget-builder`
+  // (outil de configuration, robots:noindex) sont émis tels quels dans
+  // pages.xml alors qu'ils portent un `<meta robots noindex>` → incohérence
+  // GSC "noindexed URL in sitemap" + crawl budget gaspillé. Même traitement
+  // que `/mes-donnees/export` ci-dessus.
+  "/carrieres/widget",
+  "/carrieres/widget-builder",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {
