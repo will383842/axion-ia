@@ -200,8 +200,22 @@ export default async function PressePage({ params }: Props) {
               datePublished: r.publishedAt,
               dateModified: r.publishedAt,
               inLanguage: loc,
-              author: { "@type": "Organization", name: "Axion-IA" },
-              publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+              author: {
+                "@type": "Organization",
+                name: "Axion-IA",
+                "@id": `${SITE_URL}/#organization`,
+              },
+              // publisher.logo (ImageObject) requis par les guidelines Google
+              // Article 2026 — aligné sur le builder canonique `buildArticleJsonLd`
+              // (seo.ts). `@id` consolide vers le nœud Organization global.
+              publisher: {
+                "@type": "Organization",
+                "@id": `${SITE_URL}/#organization`,
+                name: "Axion-IA",
+                legalName: "Axion-IA",
+                url: SITE_URL,
+                logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph-image` },
+              },
               image: `${SITE_URL}/api/og?title=${encodeURIComponent(r.title)}&accent=primary`,
             },
           })),
