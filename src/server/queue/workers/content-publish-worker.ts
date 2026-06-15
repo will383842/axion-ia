@@ -205,6 +205,14 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // Si le score fact-check est inférieur au seuil configuré, le job passe en
   // quarantined (non publié) avec un message explicite. Si factCheckScore est
   // null (fact-check pas encore run), le gate est ignoré (non-bloquant).
+  //
+  // P0-3 (audit content-gen 2026-06-15) — DESIGN. Le flux nominal est
+  // POST-publish (décision Will 2026-06-14 « corriger en place plutôt que
+  // désindexer » — cf. content-fact-check-worker). À la 1re publication
+  // `factCheckScore` est donc null et ce gate est volontairement passif.
+  // Depuis le P0-3, content-fact-check-worker écrit le score sur ContentGenJob :
+  // ce gate devient un FILET DE SÉCURITÉ réel sur tout re-publish / retry d'un
+  // job déjà fact-checké (score < minScore → quarantine, plus de gate mort).
   interface FactCheckGateConfig {
     enabled: boolean;
     minScore: number;
