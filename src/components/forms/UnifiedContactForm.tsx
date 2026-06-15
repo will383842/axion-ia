@@ -216,7 +216,7 @@ function isAdvancedType(t: UnifiedContactType | undefined): boolean {
   return t === "audit" || t === "implementation";
 }
 
-export function UnifiedContactForm({
+function UnifiedContactFormBody({
   defaultType,
   lockType = false,
   defaultSubType,
@@ -224,21 +224,27 @@ export function UnifiedContactForm({
   advancedOpenByDefault,
   source,
   className,
-}: UnifiedContactFormProps) {
+  urlType,
+  urlSubType,
+}: UnifiedContactFormProps & {
+  /** `?type=` lu dans l'URL (null en SSR / dans le fallback Suspense). */
+  urlType: string | null;
+  /** `?subType=` lu dans l'URL (null en SSR / dans le fallback Suspense). */
+  urlSubType: string | null;
+}) {
   const locale = (useLocale() === "en" ? "en" : "fr") as "fr" | "en";
   const t = LABELS[locale];
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // ?type= dans l'URL prend le pas sur defaultType si pas locké.
-  const typeFromUrl = (searchParams.get("type") as UnifiedContactType | null) ?? null;
+  const typeFromUrl = (urlType as UnifiedContactType | null) ?? null;
   const initialType: UnifiedContactType | undefined =
     !lockType && typeFromUrl && UNIFIED_CONTACT_TYPES.includes(typeFromUrl)
       ? typeFromUrl
       : defaultType;
 
   const effectiveSource = source ?? pathname ?? undefined;
-  const effectiveSubType = defaultSubType ?? searchParams.get("subType") ?? undefined;
+  const effectiveSubType = defaultSubType ?? urlSubType ?? undefined;
 
   const {
     register,
@@ -751,5 +757,46 @@ export function UnifiedContactForm({
         ))}
       </ul>
     </form>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Suspense boundary — isole `useSearchParams()`                              */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Lit `?type=` / `?subType=` côté navigateur et les passe au corps du form.
+ * Isolé dans son propre composant pour rester CONTENU dans le `<Suspense>`
+ * ci-dessous. Sans ce boundary, `useSearchParams()` force toute la PAGE hôte
+ * en rendu client (digest `BAILOUT_TO_CLIENT_SIDE_RENDERING`) → le HTML
+ * serveur sort vide (h1/sections absents), ce qui casse l'indexation et
+ * l'AEO/GEO des pages /presse, /contact et /audit/demande (pages statiques).
+ * Même pattern que `cas-concrets/CaseStudiesFilteredGrid`.
+ */
+function UnifiedContactFormWithParams(props: UnifiedContactFormProps) {
+  const searchParams = useSearchParams();
+  return (
+    <UnifiedContactFormBody
+      {...props}
+      urlType={searchParams.get("type")}
+      urlSubType={searchParams.get("subType")}
+    />
+  );
+}
+
+/**
+ * Export public. Le `fallback` rend le formulaire COMPLET avec ses valeurs par
+ * défaut (sans override `?type=`/`?subType=`) : il est émis tel quel dans le
+ * HTML statique (formulaire utilisable sans JS, zéro CLS car markup identique),
+ * puis remplacé à l'hydratation par la version qui applique les params d'URL.
+ * La page hôte reste statiquement pré-rendue (pas de bailout).
+ */
+export function UnifiedContactForm(props: UnifiedContactFormProps) {
+  return (
+    <React.Suspense
+      fallback={<UnifiedContactFormBody {...props} urlType={null} urlSubType={null} />}
+    >
+      <UnifiedContactFormWithParams {...props} />
+    </React.Suspense>
   );
 }
