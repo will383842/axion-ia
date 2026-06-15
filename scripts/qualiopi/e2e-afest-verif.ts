@@ -101,6 +101,9 @@ async function main() {
       financementType: "opco",
       subrogation: true,
       numeroDossierOpco: "OPCO-DOSSIER-TEST-001",
+      // Dossier OPCO subrogé → convention tripartite signée (L.6353-2), pré-requis
+      // bloquant de la facturation (cf. validateCoachingFinancement).
+      conventionTripartiteSigneeAt: new Date("2026-02-15"),
     },
   });
   const cs = await prisma.coachingSession.create({

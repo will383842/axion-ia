@@ -1,0 +1,216 @@
+{
+  "heuresReelles": 14,
+  "protocole": {
+    "documentId": "fcea28f3-687f-4028-b14c-d0e3d95062a0",
+    "numero": "AXI-FORM-2026-001"
+  },
+  "protocoleIdempotent": {
+    "documentId": "fcea28f3-687f-4028-b14c-d0e3d95062a0",
+    "numero": "AXI-FORM-2026-001"
+  },
+  "emargement": {
+    "documentId": "245c2387-deb2-44ee-94de-e105b131755b",
+    "numero": "AXI-SESS-2026-001"
+  },
+  "attestation": {
+    "resultat": "complete",
+    "documentId": "f6cec1c1-824d-4c9f-8090-8788433d6dd3"
+  },
+  "facture": {
+    "factureId": "b06b88bd-8dc4-475f-8fda-4d09d8dab8ac",
+    "numero": "AXI-FACT-2026-001",
+    "documentId": "87b09684-2feb-4c5d-a695-ba4ea8485362"
+  },
+  "financementValidation": null,
+  "kitOpco": {
+    "documentId": "019451a6-5b3c-42d8-b2c2-eafa7afc0586",
+    "numero": "AXI-FORM-2026-002"
+  },
+  "kitCpf": {
+    "documentId": "90c26c45-f240-4366-a492-154d1536df30",
+    "numero": "AXI-FORM-2026-003"
+  },
+  "kitFranceTravail": {
+    "documentId": "ab78238c-1f97-4e5f-b55e-d025356bfb7a",
+    "numero": "AXI-FORM-2026-004"
+  },
+  "conventionTripartite": {
+    "documentId": "11fc114d-c3f0-40c0-aa6e-088918f6bb4e",
+    "numero": "AXI-FORM-2026-005"
+  },
+  "certificat": {
+    "documentId": "60af8fd8-f470-42a0-b16b-7876fc60bda2",
+    "numero": "AXI-CERT-2026-001"
+  },
+  "certificatIdempotent": {
+    "documentId": "60af8fd8-f470-42a0-b16b-7876fc60bda2",
+    "numero": "AXI-CERT-2026-001"
+  },
+  "factureVentilation": {
+    "factureId": "8bd295ff-7fbf-4cd4-9676-45470e7e4bf6",
+    "numero": "AXI-FACT-2026-002",
+    "documentId": "d1bef9ff-df6a-4a5c-880e-078819d8432e"
+  },
+  "bpf": {
+    "nbHeuresStagiaires": 14,
+    "nbHeuresStagiairesCoaching": 14,
+    "nbCoachingParcours": 1,
+    "caTotalHtCents": 99000,
+    "caOpco": 99000
+  },
+  "bpfCsvMentionneCoaching": true,
+  "indicateursAfest": [
+    {
+      "numero": 13,
+      "statut": "non_applicable",
+      "preuves": []
+    },
+    {
+      "numero": 14,
+      "statut": "non_applicable",
+      "preuves": []
+    },
+    {
+      "numero": 15,
+      "statut": "non_applicable",
+      "preuves": []
+    },
+    {
+      "numero": 28,
+      "statut": "couvert",
+      "preuves": [
+        "1 parcours AFEST conforme(s) (analyse, alternance mises en situation/phases réflexives, évaluation — L.6313-1-2)"
+      ]
+    }
+  ],
+  "scoreConformite": 19,
+  "modeAuditeurAfest": [
+    {
+      "numero": 13,
+      "critere": 3,
+      "libelle": "Coordination des intervenants (apprentissage)",
+      "super": false,
+      "statut": "non_applicable",
+      "preuves": [],
+      "documents": []
+    },
+    {
+      "numero": 14,
+      "critere": 3,
+      "libelle": "Exercice de la citoyenneté (apprenti)",
+      "super": false,
+      "statut": "non_applicable",
+      "preuves": [],
+      "documents": []
+    },
+    {
+      "numero": 15,
+      "critere": 3,
+      "libelle": "Information sur les droits et devoirs de l'apprenti",
+      "super": false,
+      "statut": "non_applicable",
+      "preuves": [],
+      "documents": []
+    },
+    {
+      "numero": 28,
+      "critere": 6,
+      "libelle": "Formation en situation de travail (AFEST)",
+      "super": false,
+      "statut": "couvert",
+      "preuves": [
+        "1 parcours AFEST conforme(s) (analyse, alternance mises en situation/phases réflexives, évaluation — L.6313-1-2)"
+      ],
+      "documents": [
+        {
+          "type": "protocole_afest",
+          "count": 1
+        },
+        {
+          "type": "attestation",
+          "count": 1
+        },
+        {
+          "type": "emargement",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "documentsGeneres": [
+    {
+      "type": "protocole_afest",
+      "numero": "AXI-FORM-2026-001",
+      "qrToken": "0af65fc8b7288cb0be4a98e41a118edb56c0bc962fd27d72085a24198fe95f58",
+      "suppressionPrevueAt": "2031-06-15T04:46:03.012Z",
+      "hashSha256": "6869b3870e278ca904ea178d3513341fa9aa1c58fdff21d2c57e8821961cdd4e"
+    },
+    {
+      "type": "emargement",
+      "numero": "AXI-SESS-2026-001",
+      "qrToken": null,
+      "suppressionPrevueAt": "2031-06-15T04:46:03.173Z",
+      "hashSha256": "463b24237ae983ae96e4162847ba53783bba437275e75e25c2ee8d8a15177a97"
+    },
+    {
+      "type": "attestation",
+      "numero": "AXI-ATT-2026-001",
+      "qrToken": "0e2095209ec9851440fe8b7981a30faceadd1b8f9a48b0a3374ed21c3e5ffed6",
+      "suppressionPrevueAt": "2031-06-15T04:46:03.412Z",
+      "hashSha256": "c2fef9e0db4e0853b91b4be532aa1cf0e1c1fa48a75bcf85d5779f69fdac1bd6"
+    },
+    {
+      "type": "kit_opco",
+      "numero": "AXI-FORM-2026-002",
+      "qrToken": null,
+      "suppressionPrevueAt": "2031-06-15T04:46:03.783Z",
+      "hashSha256": "15cc6641e7c5d4b4c7739a7b59c1ebcd5af2fc28a70dbd370e6f19ce73e20b95"
+    },
+    {
+      "type": "kit_cpf",
+      "numero": "AXI-FORM-2026-003",
+      "qrToken": null,
+      "suppressionPrevueAt": "2031-06-15T04:46:03.914Z",
+      "hashSha256": "f5b8811bc7968fc58f1a54378cb7455ad90a1ac6f5e9cef59fa61096be37cc4f"
+    },
+    {
+      "type": "kit_france_travail",
+      "numero": "AXI-FORM-2026-004",
+      "qrToken": null,
+      "suppressionPrevueAt": "2031-06-15T04:46:04.033Z",
+      "hashSha256": "71c480e3c654b3aabd83d49cd591b1f84b381862b3b37d1c4d00c3b863ca9b47"
+    },
+    {
+      "type": "convention_tripartite",
+      "numero": "AXI-FORM-2026-005",
+      "qrToken": null,
+      "suppressionPrevueAt": "2031-06-15T04:46:04.208Z",
+      "hashSha256": "c806ba8a24921e96c97a46e3715fa87eac277be1d8f0619555a6baee05e09402"
+    },
+    {
+      "type": "certificat_realisation",
+      "numero": "AXI-CERT-2026-001",
+      "qrToken": "b57c7c22fca8e39fca0ff90d375ee35a4966ce49352ece98f93f089bbf6a24da",
+      "suppressionPrevueAt": "2031-06-15T04:46:04.349Z",
+      "hashSha256": "29c72745af287442c6e7fa20ac1f85dd20bdf7880c72e28e55ff237858a10e9b"
+    }
+  ],
+  "facturesContrat": [
+    {
+      "numero": "AXI-FACT-2026-001",
+      "destinataire": "opco",
+      "tvaExoneree": true,
+      "subrogation": true,
+      "numeroDossierOpco": "OPCO-DOSSIER-TEST-001"
+    },
+    {
+      "numero": "AXI-FACT-2026-002",
+      "destinataire": "opco",
+      "tvaExoneree": true,
+      "subrogation": true,
+      "numeroDossierOpco": "OPCO-DOSSIER-TEST-001"
+    }
+  ],
+  "pdfProtocoleBytes": 25645,
+  "pdfIsValid": true
+}
