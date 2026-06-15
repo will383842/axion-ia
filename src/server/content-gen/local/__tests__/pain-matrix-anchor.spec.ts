@@ -30,6 +30,13 @@ describe("sector-pain-matrix (PH3)", () => {
     expect(s).not.toMatch(/budget|k€|€\s*\/|typicalBudget/i);
     expect(s).toContain(c!.painStatement);
   });
+
+  it("AUCUNE des 25 entrées sérialisées ne contient de montant € (garde price-gate global)", () => {
+    for (const entry of SECTOR_PAIN_MATRIX) {
+      const s = serializePainContextForPrompt(entry);
+      expect(s, `${entry.secteur}×${entry.verticale}`).not.toMatch(/\d+\s*k?€/);
+    }
+  });
 });
 
 describe("local-anchor (PH3)", () => {

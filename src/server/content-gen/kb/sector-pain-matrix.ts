@@ -130,7 +130,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
   {
     secteur: "btp_immobilier",
     verticale: "sites_web_augmentes",
-    painStatement: "Votre site web génère des leads non qualifiés — des particuliers qui cherchent un artisan pour 500€ alors que vous faites du chantier à 50k€ minimum.",
+    painStatement: "Votre site web génère des leads non qualifiés — des particuliers qui cherchent un artisan pour un petit dépannage alors que vous faites du chantier d'envergure.",
     benefitMeasured: "Un configurateur en ligne qualifie les prospects avant qu'ils vous appellent — vous ne traitez plus que des leads à votre cible.",
     beforeScenario: "Vous recevez 20 demandes par mois. 15 sont hors cible. Vous perdez 3h à répondre à des demandes qui n'aboutiront jamais.",
     afterScenario: "Le configurateur pose 5 questions (type de chantier, surface, budget estimé, délai). Les leads hors cible sont filtrés. Vous recevez 5 demandes qualifiées.",
