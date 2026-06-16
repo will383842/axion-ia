@@ -27,7 +27,10 @@ export const BLOG_CATEGORY_LABELS: Record<string, { readonly fr: string; readonl
   "blog-formations-ia": { fr: "Formations IA", en: "AI Training" },
   "blog-coaching-1-to-1": { fr: "Coaching 1-to-1", en: "One-on-one Coaching" },
   "blog-audits-ia": { fr: "Audits IA", en: "AI Audits" },
-  "blog-implementations-ia": { fr: "Implémentations IA", en: "AI Implementations" },
+  "blog-implementations-ia": {
+    fr: "Implémentation & automatisation IA",
+    en: "AI implementation & automation",
+  },
   "blog-sites-web-augmentes": { fr: "Sites web augmentés", en: "AI-enhanced Websites" },
 };
 
