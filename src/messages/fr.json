@@ -468,5 +468,246 @@
     "leadClose": "Fermer",
     "leadSuccess": "Merci ! Nous vous recontactons rapidement.",
     "leadError": "Envoi impossible. Vérifiez vos informations et réessayez."
+  },
+  "observatoire": {
+    "meta": {
+      "resultsTitle": "L'Observatoire de l'IA dans les entreprises françaises 2026",
+      "resultsDescription": "Étude indépendante Axion-IA : maturité, usages, budgets, freins et intentions d'investissement IA des entreprises françaises. Données ouvertes (CC BY 4.0).",
+      "participateTitle": "Participer à l'Observatoire de l'IA 2026",
+      "participateDescription": "4 minutes pour situer votre entreprise face à l'adoption de l'IA en France. Comparez-vous aux dirigeants déjà interrogés."
+    },
+    "hero": {
+      "eyebrow": "Étude indépendante",
+      "title": "L'Observatoire de l'IA dans les entreprises françaises 2026",
+      "subtitle": "Maturité, usages, budgets et freins à l'IA — mesurés auprès de dirigeants et décideurs d'entreprises françaises."
+    },
+    "methodo": {
+      "title": "Méthodologie",
+      "sample": "Échantillon",
+      "sampleValue": "{count, plural, =0 {Enquête en cours — premiers résultats à venir} one {# réponse complète} other {# réponses complètes}}",
+      "period": "Période de terrain",
+      "method": "Méthode",
+      "methodValue": "Questionnaire en ligne auto-administré (16 questions), répondants = dirigeants et décideurs.",
+      "coverage": "Couverture",
+      "coverageValue": "{regions} régions · {sectors} secteurs · {sizes} tailles d'entreprise",
+      "license": "Licence"
+    },
+    "results": {
+      "inBrief": "En bref — chiffres clés",
+      "pending": "L'enquête est en cours. Les premiers résultats agrégés seront publiés dès qu'un échantillon suffisant aura répondu.",
+      "filtersTitle": "Filtrer les résultats",
+      "filterSize": "Taille d'entreprise",
+      "filterSector": "Secteur",
+      "filterRegion": "Région",
+      "filterAll": "Tout",
+      "filterApply": "Appliquer",
+      "filterReset": "Réinitialiser",
+      "basedOn": "{count, plural, =0 {Aucune réponse pour ce filtre} one {Basé sur # réponse} other {Basé sur # réponses}}",
+      "citeTitle": "Comment citer cette étude",
+      "citeBody": "Vous êtes libre de réutiliser ces données en citant la source (licence CC BY 4.0).",
+      "downloadCsv": "Télécharger les données (CSV)",
+      "participateCta": "Participer à l'enquête"
+    },
+    "form": {
+      "hook": "Où en êtes-vous vraiment avec l'IA ?",
+      "subhook": "4 minutes. Comparez votre entreprise aux dirigeants déjà interrogés.",
+      "stepOf": "Étape {current} sur {total}",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "submit": "Voir mes résultats",
+      "submitting": "Envoi…",
+      "required": "Cette réponse est requise.",
+      "multiHint": "Plusieurs choix possibles",
+      "maxHint": "{max} maximum",
+      "thanksTitle": "Merci pour votre participation !",
+      "thanksBody": "Votre réponse a bien été enregistrée. Découvrez où se situe votre entreprise.",
+      "seeResults": "Voir les résultats",
+      "error": "Une erreur est survenue. Merci de réessayer."
+    },
+    "insights": {
+      "competitors_use_ai": "{value} % des entreprises françaises pensent que leurs concurrents utilisent déjà l'IA.",
+      "no_formal_strategy": "{value} % des entreprises françaises n'ont pas de stratégie IA formalisée.",
+      "rgpd_concern": "{value} % des entreprises françaises sont préoccupées par la souveraineté de leurs données.",
+      "investment_intent": "{value} % des entreprises françaises prévoient d'augmenter leur budget IA."
+    },
+    "questions": {
+      "companySize": {
+        "label": "Quelle est la taille de votre entreprise ?",
+        "options": {
+          "TPE": "Indépendant / TPE (1-9)",
+          "PME": "PME (10-249)",
+          "ETI": "ETI (250-4999)",
+          "GRANDE_ENTREPRISE": "Grande entreprise (5000+)"
+        }
+      },
+      "sector": {
+        "label": "Dans quel secteur d'activité ?"
+      },
+      "region": {
+        "label": "Dans quelle région êtes-vous implanté ?"
+      },
+      "respondentRole": {
+        "label": "Quel est votre rôle ?",
+        "options": {
+          "ceo_founder": "Dirigeant·e / CEO",
+          "gm_coo": "Directeur·rice général·e / COO",
+          "cio_it": "DSI / responsable IT",
+          "business_director": "Directeur·rice métier",
+          "ops_manager": "Responsable opérations",
+          "other": "Autre"
+        }
+      },
+      "maturityLevel": {
+        "label": "Où en êtes-vous dans l'adoption de l'IA ?",
+        "options": {
+          "none": "Aucune démarche",
+          "exploration": "Veille / exploration",
+          "poc": "Premiers tests (POC)",
+          "production": "En production (1-2 usages)",
+          "scaled": "Déployée à l'échelle"
+        }
+      },
+      "competitorsUseAi": {
+        "label": "Pensez-vous que vos concurrents utilisent déjà l'IA ?",
+        "options": {
+          "yes_clearly": "Oui, clairement",
+          "probably": "Probablement",
+          "dont_know": "Je ne sais pas",
+          "no": "Non"
+        }
+      },
+      "hasStrategy": {
+        "label": "Avez-vous une stratégie IA formalisée ?",
+        "options": {
+          "formalized": "Oui, formalisée",
+          "in_progress": "En cours",
+          "none": "Non"
+        }
+      },
+      "useCases": {
+        "label": "Quels usages de l'IA avez-vous mis en place ?",
+        "options": {
+          "automation": "Automatisation de tâches",
+          "chatbot": "Chatbot / support client",
+          "content": "Génération de contenu",
+          "data_analysis": "Analyse de données / reporting",
+          "internal_rag": "Assistant interne (RAG)",
+          "sales": "Aide à la vente / prospection",
+          "dev": "Développement / code",
+          "none": "Aucun"
+        }
+      },
+      "tools": {
+        "label": "Quels outils d'IA utilisez-vous ?",
+        "options": {
+          "chatgpt": "ChatGPT",
+          "copilot": "Microsoft Copilot",
+          "claude": "Claude",
+          "gemini": "Gemini",
+          "mistral": "Mistral",
+          "internal": "Outils internes / sur-mesure",
+          "none": "Aucun"
+        }
+      },
+      "annualBudget": {
+        "label": "Quel est votre budget IA annuel ?",
+        "options": {
+          "zero": "0 €",
+          "lt_1k": "< 1 000 €",
+          "k1_5": "1-5 k€",
+          "k5_20": "5-20 k€",
+          "k20_100": "20-100 k€",
+          "gt_100k": "> 100 k€",
+          "dont_know": "Ne sait pas"
+        }
+      },
+      "barriers": {
+        "label": "Quels sont vos principaux freins à l'adoption de l'IA ?",
+        "options": {
+          "skills": "Manque de compétences",
+          "budget": "Budget limité",
+          "roi": "ROI incertain",
+          "security_rgpd": "Sécurité / RGPD",
+          "data_quality": "Qualité / accès aux données",
+          "internal_resistance": "Résistance interne",
+          "time": "Manque de temps",
+          "not_priority": "Pas une priorité"
+        }
+      },
+      "timeSavedPerDay": {
+        "label": "Combien de temps l'IA vous fait-elle gagner par jour ?",
+        "options": {
+          "none": "Aucun",
+          "lt_30min": "< 30 min",
+          "m30_1h": "30 min - 1 h",
+          "h1_2": "1-2 h",
+          "h2_3": "2-3 h",
+          "gt_3h": "> 3 h"
+        }
+      },
+      "rgpdConcern": {
+        "label": "Êtes-vous préoccupé par le RGPD / la souveraineté des données ?",
+        "options": {
+          "very": "Très préoccupé",
+          "somewhat": "Plutôt préoccupé",
+          "little": "Peu préoccupé",
+          "not_at_all": "Pas du tout"
+        }
+      },
+      "teamTrained": {
+        "label": "Vos équipes sont-elles formées à l'IA ?",
+        "options": {
+          "formal": "Oui, formellement",
+          "informal": "Sensibilisation informelle",
+          "none": "Non"
+        }
+      },
+      "satisfaction": {
+        "label": "Êtes-vous satisfait de vos usages IA actuels ?",
+        "options": {
+          "very_satisfied": "Très satisfait",
+          "satisfied": "Satisfait",
+          "mixed": "Mitigé",
+          "disappointed": "Déçu"
+        }
+      },
+      "investmentIntent": {
+        "label": "Quelle est votre intention d'investissement IA ?",
+        "options": {
+          "strong_increase": "Forte hausse",
+          "increase": "Hausse",
+          "stable": "Stable",
+          "decrease": "Baisse",
+          "none_budget": "Aucun budget"
+        }
+      }
+    },
+    "press": {
+      "sectionTitle": "L'Observatoire de l'IA 2026 en chiffres",
+      "sampleLabel": "réponses",
+      "sectorsLabel": "secteurs",
+      "regionsLabel": "régions",
+      "questionsLabel": "questions",
+      "seeAll": "Voir tous les résultats",
+      "downloadData": "Télécharger les données (CSV)"
+    },
+    "faq": {
+      "q1": {
+        "question": "Qui réalise l'Observatoire de l'IA 2026 ?",
+        "answer": "Axion-IA, cabinet IA opérationnel B2B, à partir des réponses de dirigeants et décideurs d'entreprises françaises."
+      },
+      "q2": {
+        "question": "Comment les données sont-elles collectées ?",
+        "answer": "Via un questionnaire en ligne auto-administré de 16 questions, ouvert aux dirigeants et décideurs d'entreprises françaises."
+      },
+      "q3": {
+        "question": "Puis-je réutiliser ces chiffres ?",
+        "answer": "Oui, sous licence Creative Commons CC BY 4.0, en citant « Observatoire Axion-IA 2026 — axion-ia.com »."
+      },
+      "q4": {
+        "question": "Quelle est la couverture de l'étude ?",
+        "answer": "L'enquête couvre 13 régions métropolitaines, 30 secteurs d'activité et 4 tailles d'entreprise ; l'échantillon s'enrichit en continu."
+      }
+    }
   }
 }

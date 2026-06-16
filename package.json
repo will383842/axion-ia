@@ -58,6 +58,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
+    "barometer:seed": "tsx prisma/seeds/barometer/index.ts",
     "content-gen:seed": "tsx prisma/seeds/content-gen/index.ts",
     "content-gen:seed-templates": "tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts",
     "content-gen:seed-cities": "tsx prisma/seeds/cities/seed-cities.ts",

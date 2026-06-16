@@ -60,6 +60,8 @@ const CONTENT_TYPE_TO_KB_TYPE: Record<ContentType, KbType> = {
   what_is_x: "glossary_term",
   faq_geo: "faq",
   case_study_local: "case_study",
+  // Observatoire IA 2026 — article d'analyse ancré sur les chiffres du baromètre.
+  barometer_insight: "article",
 };
 
 export interface KbIngestPayload {
