@@ -193,8 +193,10 @@ export async function approveReview(id: string, notes?: string): Promise<void> {
     if (result.count === 0) {
       throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
     }
-    // Enqueue publish-worker (tier-2 noindex_follow par défaut).
-    await enqueuePublish(id, false);
+    // 2026-06-16 (décision Will « tout contenu publié doit être indexé ») —
+    // l'approbation manuelle publie en tier-1 INDEXABLE (sitemap + IndexNow),
+    // pas en tier-2 noindex. L'approbation humaine vaut feu vert d'indexation.
+    await enqueuePublish(id, true);
     await logActivity({
       session,
       action: "content-gen.review.approve",
@@ -246,7 +248,7 @@ export async function bulkApproveReviews(
           reviewedAt: new Date(),
         },
       });
-      await enqueuePublish(r.id, false);
+      await enqueuePublish(r.id, true); // tout publié = indexé (tier-1), cf. approveReview
     }
     await logActivity({
       session,

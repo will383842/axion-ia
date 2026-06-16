@@ -40,6 +40,7 @@ interface CategoryItem {
   readonly publishedAt: string;
   readonly readingTime: string;
   readonly author: string;
+  readonly route: "blog" | "actualites" | "guides";
 }
 
 export async function generateStaticParams() {
@@ -61,6 +62,7 @@ async function loadItems(slug: string, locale: Locale): Promise<CategoryItem[]> 
     publishedAt: p.publishedAt,
     readingTime: p.readingTime,
     author: p.author,
+    route: "blog",
   }));
   const dbArticles: CategoryItem[] = (await getDbArticlesByCategorySlug(slug, locale)).map((a) => ({
     ...a,
@@ -106,7 +108,7 @@ export default async function BlogCategoryPage({ params }: Props) {
     hasPart: posts.map((p) => ({
       "@type": "Article",
       headline: p.title,
-      url: `${SITE_URL}/${locale}/blog/${p.slug}`,
+      url: `${SITE_URL}/${locale}/${p.route}/${p.slug}`,
       datePublished: p.publishedAt,
       author: { "@type": "Person", name: p.author },
     })),
@@ -172,7 +174,7 @@ export default async function BlogCategoryPage({ params }: Props) {
             {posts.map((p) => (
               <li key={p.slug}>
                 <ArticleCard
-                  href={`/blog/${p.slug}`}
+                  href={`/${p.route}/${p.slug}`}
                   title={p.title}
                   excerpt={p.excerpt}
                   publishedAt={p.publishedAt}

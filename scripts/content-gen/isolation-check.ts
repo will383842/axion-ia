@@ -68,6 +68,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // AdminCommandPalette ⌘K — référence des routes /content-gen pour navigation
   // rapide admin (Audit final P0-4, commit `24e050e`).
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
+  // Refonte UX nav content-gen (2026-06-16, commits 150dfe75/24655e04) — SSOT
+  // nav admin + sidebar + breadcrumbs + styles globaux référencent les routes
+  // /content-gen pour la navigation (légitime, pas de couplage code pipeline).
+  /^src\/lib\/admin-nav\.ts$/,
+  /^src\/components\/admin\/AdminSidebar\.tsx$/,
+  /^src\/components\/admin\/ui\/AdminBreadcrumbs\.tsx$/,
+  /^src\/app\/globals\.css$/,
   // KB readers — content-gen consomme la KB via getKnowledgeReadersForContentGen()
   // (lecture seule, Sprint 11.5 KB ingest URLs externes).
   /^src\/lib\/knowledge\/readers\.ts$/,
