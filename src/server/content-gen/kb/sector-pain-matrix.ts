@@ -611,7 +611,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objectionReply:
       "L'IA pré-trie, vos recruteurs décident. Elle réduit le volume à traiter, pas le pouvoir de décision humain.",
     kpiLabel: "% du temps recruteur sur les candidats vs admin",
-    typicalBudgetSignal: "1 recrutement raté coûte 15 à 30k€ en moyenne",
+    typicalBudgetSignal: "1 recrutement raté coûte 15 à 30k€ en moyenne", // price-exempt: statistique marché (coût d'un mauvais recrutement), pas un tarif Axion-IA
   },
   {
     secteur: "rh_recrutement",
