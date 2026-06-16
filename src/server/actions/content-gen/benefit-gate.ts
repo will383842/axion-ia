@@ -65,7 +65,9 @@ export async function updateBenefitGateConfig(input: {
       changes: parsed,
     });
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateBenefitGateConfig" } });
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "updateBenefitGateConfig" },
+    });
     throw e;
   }
 }

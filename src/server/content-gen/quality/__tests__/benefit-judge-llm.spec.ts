@@ -25,7 +25,9 @@ describe("benefit-judge-llm (PH3)", () => {
   });
 
   it("passe par provider-router (COST-TRACKÉ), role text + anthropic, jamais new Anthropic", async () => {
-    generateMock.mockResolvedValue({ output: '{"total":50,"passed":false,"feedback_court":"faible"}' });
+    generateMock.mockResolvedValue({
+      output: '{"total":50,"passed":false,"feedback_court":"faible"}',
+    });
     await judgeBenefitConcreteness({
       content: "c",
       context: ctx,

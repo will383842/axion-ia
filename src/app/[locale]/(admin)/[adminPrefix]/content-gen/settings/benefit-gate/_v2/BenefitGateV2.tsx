@@ -60,7 +60,7 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
           </label>
           <button
             type="submit"
-            className="w-fit rounded bg-[color:var(--color-admin-accent,#1a4dd9)] px-4 py-2 text-sm text-white"
+            className="w-fit rounded bg-[color:var(--color-admin-accent)] px-4 py-2 text-sm text-white"
           >
             Enregistrer
           </button>

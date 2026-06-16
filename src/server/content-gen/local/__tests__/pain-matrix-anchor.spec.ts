@@ -15,7 +15,7 @@ describe("sector-pain-matrix (PH3)", () => {
     const c = getSectorPainContext("comptabilite_finance", "audits");
     expect(c?.painStatement).toBeTruthy();
     expect(c?.benefitMeasured).toBeTruthy();
-    expect((c?.sectorLexicon.length ?? 0)).toBeGreaterThan(0);
+    expect(c?.sectorLexicon.length ?? 0).toBeGreaterThan(0);
   });
 
   it("secteur inexistant → undefined", () => {
@@ -43,7 +43,12 @@ describe("local-anchor (PH3)", () => {
   const fullData = {
     topSectorsNaf: [{ naf: "62", label: "Informatique", source: "x", verifiedOn: "2026" }],
     cciCompetente: { nom: "CCI Lyon Métropole", source: "x", verifiedOn: "2026" },
-    statsInsee: { etablissementsActifs: 12345, anneeReference: 2024, source: "x", verifiedOn: "2026" },
+    statsInsee: {
+      etablissementsActifs: 12345,
+      anneeReference: 2024,
+      source: "x",
+      verifiedOn: "2026",
+    },
     grandsGroupesImplantes: [
       { nom: "Acme", secteur: "Tech", typeImplantation: "siege", source: "x", verifiedOn: "2026" },
     ],

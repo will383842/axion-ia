@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  evaluateBenefitConcreteness,
-  ANTI_FLUFF_PHRASES,
-} from "../benefit-concreteness-gate";
+import { evaluateBenefitConcreteness, ANTI_FLUFF_PHRASES } from "../benefit-concreteness-gate";
 
 describe("benefit-concreteness-gate (PH2)", () => {
   it("texte commercial fort (2 chiffres + avant/après + 0 fluff) → score 100", () => {
@@ -47,9 +44,7 @@ describe("benefit-concreteness-gate (PH2)", () => {
   it("détecte le scénario avant/après", () => {
     const before = evaluateBenefitConcreteness("Avant : c'était long.");
     expect(before.hasBeforeAfter).toBe(false); // après manquant
-    const both = evaluateBenefitConcreteness(
-      "Avant : c'était long. Désormais : tout est rapide.",
-    );
+    const both = evaluateBenefitConcreteness("Avant : c'était long. Désormais : tout est rapide.");
     expect(both.hasBeforeAfter).toBe(true);
   });
 
