@@ -15,28 +15,65 @@ import {
   getBlogPostsByCategory,
   getBlogCategoryLabel,
 } from "@/content/transversal";
+import {
+  getDbArticlesByCategorySlug,
+  DB_BLOG_CATEGORY_SLUGS,
+} from "@/server/content-gen/blog/category-loader";
+import { blogCategoryLabel } from "@/server/content-gen/lib/category-mapper";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-// Audit indexation 2026-05-18 P0-7 — dynamicParams=false force Next 16 à 404
-// les slugs inconnus sans exécuter la page function (vs default `true` qui
-// rendait la page on-demand avec status 200 + meta noindex = soft 404 GSC).
-// Safe ici car generateStaticParams retourne TOUS les slugs valides FS.
+// Catégorisation content-gen 2026-06-16 — la page liste désormais aussi les
+// articles DB (content-gen) de la catégorie. ISR horaire pour refléter les
+// nouvelles publications sans rebuild. dynamicParams=false : seuls les slugs
+// FS + les 5 catégories DB content-gen sont valides (autres → 404).
 export const dynamicParams = false;
+export const revalidate = 3600;
 
-export function generateStaticParams() {
-  return getAllBlogCategorySlugs().flatMap((slug) =>
-    routing.locales.map((locale) => ({ locale, slug })),
-  );
+interface CategoryItem {
+  readonly slug: string;
+  readonly title: string;
+  readonly excerpt: string;
+  readonly publishedAt: string;
+  readonly readingTime: string;
+  readonly author: string;
+}
+
+export async function generateStaticParams() {
+  const slugs = Array.from(new Set([...getAllBlogCategorySlugs(), ...DB_BLOG_CATEGORY_SLUGS]));
+  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+}
+
+async function resolveLabel(slug: string, locale: Locale): Promise<string | null> {
+  // Label sans requête DB (build stub-safe, cf. ADR 0026) : FS legacy, sinon
+  // label statique de la catégorie content-gen.
+  return getBlogCategoryLabel(slug) ?? blogCategoryLabel(slug, locale);
+}
+
+async function loadItems(slug: string, locale: Locale): Promise<CategoryItem[]> {
+  const fsPosts: CategoryItem[] = getBlogPostsByCategory(slug).map((p) => ({
+    slug: p.slug,
+    title: p[locale].title,
+    excerpt: p[locale].excerpt,
+    publishedAt: p.publishedAt,
+    readingTime: p.readingTime,
+    author: p.author,
+  }));
+  const dbArticles: CategoryItem[] = (await getDbArticlesByCategorySlug(slug, locale)).map((a) => ({
+    ...a,
+    author: "Manon",
+  }));
+  // Content-gen (DB) en premier (contenu le plus récent), puis FS legacy.
+  return [...dbArticles, ...fsPosts];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const label = getBlogCategoryLabel(slug);
+  const label = await resolveLabel(slug, locale as Locale);
   if (!label) return {};
   const isFr = locale === "fr";
   return buildProductMetadata({
@@ -52,12 +89,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogCategoryPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const label = getBlogCategoryLabel(slug);
+  const loc = locale as Locale;
+  const label = await resolveLabel(slug, loc);
   if (!label) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
   const isFr = loc === "fr";
-  const posts = getBlogPostsByCategory(slug);
+  const posts = await loadItems(slug, loc);
 
   const collectionJsonLd = {
     "@context": "https://schema.org",
@@ -68,7 +105,7 @@ export default async function BlogCategoryPage({ params }: Props) {
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: posts.map((p) => ({
       "@type": "Article",
-      headline: p[loc].title,
+      headline: p.title,
       url: `${SITE_URL}/${locale}/blog/${p.slug}`,
       datePublished: p.publishedAt,
       author: { "@type": "Person", name: p.author },
@@ -136,8 +173,8 @@ export default async function BlogCategoryPage({ params }: Props) {
               <li key={p.slug}>
                 <ArticleCard
                   href={`/blog/${p.slug}`}
-                  title={p[loc].title}
-                  excerpt={p[loc].excerpt}
+                  title={p.title}
+                  excerpt={p.excerpt}
                   publishedAt={p.publishedAt}
                   readingTime={p.readingTime}
                 />

@@ -120,7 +120,7 @@ export async function loadBlogArticleForView(
 ): Promise<BlogArticleView | null> {
   const dbArticle = await findArticleBySlug(slug, locale).catch(() => null);
   if (dbArticle) {
-    const [rawCitations, imageAsset] = await Promise.all([
+    const [rawCitations, imageAsset, catTags] = await Promise.all([
       prisma.contentCitation
         .findMany({
           where: { articleId: dbArticle.id },
@@ -136,6 +136,16 @@ export async function loadBlogArticleForView(
             })
             .catch(() => null)
         : Promise.resolve(null),
+      // Catégorisation 2026-06-16 — catégorie réelle (serviceSector→Category) + tags persistés.
+      prisma.article
+        .findUnique({
+          where: { id: dbArticle.id },
+          select: {
+            category: { select: { nameFr: true, slug: true } },
+            tags: { select: { tag: { select: { nameFr: true } } } },
+          },
+        })
+        .catch(() => null),
     ]);
     return {
       slug: dbArticle.slug,
@@ -148,8 +158,9 @@ export async function loadBlogArticleForView(
       updatedAt: dbArticle.updatedAt ? isoDate(dbArticle.updatedAt) : null,
       readingTime: estimateReadingTimeFromBody(dbArticle.body ?? dbArticle.bodyText ?? ""),
       author: "Manon",
-      category: "Cas d'usage",
-      tags: [],
+      // Catégorisation 2026-06-16 — catégorie réelle (dérivée du serviceSector) + tags persistés.
+      category: catTags?.category?.nameFr ?? "Cas d'usage",
+      tags: catTags?.tags.map((t) => t.tag.nameFr) ?? [],
       // VIS-02 (audit visibilité 2026-06-05) — dérive le tier RÉEL de l'Article
       // (avant : hardcodé tier-2 → un article promu tier-1 restait noindex alors
       // qu'il était au sitemap = jamais indexé). KnowledgeEntry n'expose pas le

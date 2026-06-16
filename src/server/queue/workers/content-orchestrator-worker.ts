@@ -151,6 +151,9 @@ async function createJobForSlot(opts: {
         status: "queued",
         priority: 5,
         campaignId: campaign.id,
+        // Catégorisation 2026-06-16 — propage le secteur de la campagne au job
+        // (→ categoryId de l'article au publish via category-mapper).
+        ...(campaign.serviceSector ? { serviceSector: campaign.serviceSector } : {}),
         correlationId,
         inputPayload: {
           campaignName: campaign.name,

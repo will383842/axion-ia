@@ -172,6 +172,15 @@ function buildArticleBase(
     description: input.description,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    // P0 SEO 2026-06-16 — rattache l'article à son hub (Blog/actualités) : signal
+    // de collection (Google AI Overviews + AEO citabilité).
+    isPartOf: {
+      "@type": "Blog",
+      "@id": `${SITE_URL}/${input.locale}/${segment}#blog`,
+      name: "Axion-IA",
+    },
+    // P0 SEO 2026-06-16 — abstract = résumé concis (snippet Perplexity / Claude.ai).
+    ...(input.description ? { abstract: input.description } : {}),
     inLanguage: input.locale === "fr" ? "fr-FR" : "en-US",
     datePublished: new Date(input.publishedAt).toISOString(),
     dateModified: new Date(input.updatedAt).toISOString(),
