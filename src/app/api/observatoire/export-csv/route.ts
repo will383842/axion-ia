@@ -22,7 +22,9 @@ type ObsMessages = {
 const OBS = (frMessages as unknown as ObsMessages).observatoire;
 
 function csvField(v: string | number): string {
-  const s = String(v);
+  let s = String(v);
+  // Anti-injection de formule (Excel/Sheets) : neutralise un préfixe = + - @.
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 

@@ -52,7 +52,7 @@ export const STUDY_METHOD_EN =
  */
 export const STUDY_REGIONS: ReadonlyArray<Region> = REGIONS.filter((r) => r.type === "metropole");
 export const STUDY_REGION_COUNT = STUDY_REGIONS.length; // 13
-export const STUDY_SECTOR_COUNT = KB_SECTOR_TAGS.length; // 31
+export const STUDY_SECTOR_COUNT = KB_SECTOR_TAGS.length; // 30 (dérivé du SSOT)
 export const STUDY_COMPANY_SIZE_COUNT = 4; // CompanySize: TPE · PME · ETI · GRANDE_ENTREPRISE
 
 /**

@@ -96,7 +96,7 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
               </tr>
             </thead>
             <tbody>
-              {Object.keys(INSIGHT_LABELS).length === 0 ? (
+              {stats.snapshot == null ? (
                 <tr>
                   <td colSpan={2} className="admin-table-empty">
                     Aucun snapshot.

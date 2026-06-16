@@ -14,6 +14,7 @@ import {
   readLatestSnapshot,
   type BarometerSnapshotPayload,
 } from "@/server/observatoire/snapshot";
+import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
 
 export interface BarometerAdminStats {
   readonly totalResponses: number;
@@ -30,7 +31,7 @@ export async function getBarometerStats(): Promise<BarometerAdminStats> {
     const [total, seeded, snapshotRow] = await Promise.all([
       prisma.barometerResponse.count(),
       prisma.barometerResponse.count({ where: { visitorId: { startsWith: "seed:" } } }),
-      prisma.barometerSnapshot.findUnique({ where: { key: "latest" } }),
+      prisma.barometerSnapshot.findUnique({ where: { key: SNAPSHOT_KEY_LATEST } }),
     ]);
     return {
       totalResponses: total,
@@ -123,7 +124,8 @@ export async function generateBarometerArticle(insightKey?: string): Promise<Gen
   }
 }
 
-/** Wrapper compatible `<form action>` (ignore le FormData). */
-export async function generateBarometerArticleForm(_formData: FormData): Promise<void> {
-  await generateBarometerArticle();
+/** Wrapper compatible `<form action>` — lit l'angle optionnel `insightKey`. */
+export async function generateBarometerArticleForm(formData: FormData): Promise<void> {
+  const k = formData.get("insightKey");
+  await generateBarometerArticle(typeof k === "string" && k.length > 0 ? k : undefined);
 }

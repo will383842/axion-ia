@@ -124,10 +124,16 @@ async function groupSingle(col: string, baseConds: Prisma.Sql[]): Promise<Map<st
 
 /** Map value→count pour une colonne multi-choice (jsonb_array_elements_text). */
 async function groupMulti(col: string, baseConds: Prisma.Sql[]): Promise<Map<string, number>> {
+  // Garde défensive : si une ligne avait une valeur non-array (import futur hors
+  // seed/formulaire), jsonb_array_elements_text throw. Le CASE neutralise ce cas.
   const rows = await prisma.$queryRaw<Array<{ value: string; count: number }>>(
     Prisma.sql`
       SELECT elem AS value, COUNT(*)::int AS count
-      FROM barometer_responses, jsonb_array_elements_text(${Prisma.raw(col)}) AS elem
+      FROM barometer_responses,
+        jsonb_array_elements_text(
+          CASE WHEN jsonb_typeof(${Prisma.raw(col)}) = 'array'
+               THEN ${Prisma.raw(col)} ELSE '[]'::jsonb END
+        ) AS elem
       ${whereClause(baseConds)}
       GROUP BY elem
     `,
@@ -166,14 +172,23 @@ export async function aggregateBarometer(
   f: BarometerFilter = {},
 ): Promise<BarometerSnapshotPayload> {
   const conds = whereConds(f);
-  const total = await countResponses(conds);
+
+  // Requêtes indépendantes lancées en parallèle (1 count + 13 single + 3 multi).
+  const [total, singleResults, multiResults] = await Promise.all([
+    countResponses(conds),
+    Promise.all(
+      SINGLE_FIELDS.map(async ({ key, col }) => [key, await groupSingle(col, conds)] as const),
+    ),
+    Promise.all(
+      MULTI_COLUMNS.map(async ({ key, col }) => [key, await groupMulti(col, conds)] as const),
+    ),
+  ]);
 
   const distributions: Record<string, DistributionEntry[]> = {};
   const singleMaps = new Map<string, Map<string, number>>();
 
   // Single-choice
-  for (const { key, col } of SINGLE_FIELDS) {
-    const map = await groupSingle(col, conds);
+  for (const [key, map] of singleResults) {
     singleMaps.set(key, map);
     // satisfaction : base = répondants ayant répondu (non-null).
     const base = key === "satisfaction" ? sumMap(map) : total;
@@ -186,8 +201,7 @@ export async function aggregateBarometer(
   }
 
   // Multi-choice (pct sur le total de répondants).
-  for (const { key, col } of MULTI_COLUMNS) {
-    const map = await groupMulti(col, conds);
+  for (const [key, map] of multiResults) {
     const entries: DistributionEntry[] = [...map.entries()].map(([value, count]) => ({
       value,
       count,

@@ -257,21 +257,18 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       {/* EN BREF — un H2 par constat, phrase autoportante answer-first (.direct-answer) */}
       <Section tone="paper" eyebrow={t("results.inBrief")}>
         {hasData ? (
-          <dl className="grid gap-6 sm:grid-cols-2">
+          <ul className="grid list-none gap-6 sm:grid-cols-2">
             {findings.map((f) => (
-              <div key={f.key} className="border-border bg-canvas rounded-lg border p-6">
-                <dt className="sr-only">{t(`insights.${f.key}`, { value: f.value })}</dt>
-                <dd>
-                  <h2
-                    className="direct-answer text-fg text-xl leading-snug font-semibold"
-                    data-answer=""
-                  >
-                    {t(`insights.${f.key}`, { value: f.value })}
-                  </h2>
-                </dd>
-              </div>
+              <li key={f.key} className="border-border bg-canvas rounded-lg border p-6">
+                <h2
+                  className="direct-answer text-fg text-xl leading-snug font-semibold"
+                  data-answer=""
+                >
+                  {t(`insights.${f.key}`, { value: f.value })}
+                </h2>
+              </li>
             ))}
-          </dl>
+          </ul>
         ) : (
           <p className="text-fg-soft max-w-2xl text-lg leading-relaxed">{t("results.pending")}</p>
         )}
@@ -331,7 +328,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
       >
         <div className="space-y-8">
           <ObservatoireFilters
-            action={PAGE_PATH}
+            action={`/${loc}${PAGE_PATH}`}
             current={{ size: fSize, sector: fSector, region: fRegion }}
             sizeOptions={COMPANY_SIZE_VALUES.map((v) => ({
               value: v,

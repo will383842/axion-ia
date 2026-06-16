@@ -88,25 +88,23 @@ export default async function ParticiperPage({ params }: Props) {
         title={t("form.hook")}
         description={t("form.subhook")}
       >
-        <Container>
-          <BarometerForm
-            questions={questions}
-            locale={loc}
-            maturityGePoc={[...MATURITY_GE_POC]}
-            labels={{
-              stepOf: t.raw("form.stepOf") as string,
-              next: t("form.next"),
-              previous: t("form.previous"),
-              submit: t("form.submit"),
-              submitting: t("form.submitting"),
-              required: t("form.required"),
-              thanksTitle: t("form.thanksTitle"),
-              thanksBody: t("form.thanksBody"),
-              seeResults: t("form.seeResults"),
-              error: t("form.error"),
-            }}
-          />
-        </Container>
+        <BarometerForm
+          questions={questions}
+          locale={loc}
+          maturityGePoc={[...MATURITY_GE_POC]}
+          labels={{
+            stepOf: t.raw("form.stepOf") as string,
+            next: t("form.next"),
+            previous: t("form.previous"),
+            submit: t("form.submit"),
+            submitting: t("form.submitting"),
+            required: t("form.required"),
+            thanksTitle: t("form.thanksTitle"),
+            thanksBody: t("form.thanksBody"),
+            seeResults: t("form.seeResults"),
+            error: t("form.error"),
+          }}
+        />
       </Section>
     </>
   );

@@ -61,6 +61,14 @@
   - Test de régression ajouté : `content/observatoire/__tests__/questions-alignment.spec.ts`.
   - ⚠️ NON fait (impraticable hors prod / coûteux) : `pnpm build` complet (17k routes, OOM), `lhci`, Rich Results Test → **à valider post-deploy**. La page lit le snapshot avec fallback (findUnique→null sous stub) : pas de throw au build par construction.
 
+## Vérification E2E (2026-06-17) — concluante
+
+- **Routes testées en LIVE (dev server, HTTP réel)** : `/fr/observatoire-ia` **200** (H1 nom officiel, `.direct-answer`, JSON-LD Dataset), `?size=PME` **200** (filtre, action `/fr/...` locale-préfixée), `/fr/observatoire-ia/participer` **200** (form), `/api/observatoire/export-csv` **200** (118 lignes + attribution), `/fr/presse` **200** (section Observatoire + CC BY + CSV + KPIs réels 73 %/56 %). **0 erreur dev log.**
+- **Chemin de données** validé sur DB réelle : snapshot 8627 + 16 distributions, filtres PME=3208 / IDF+banque=89 / improbable=0 (dégradation propre).
+- **Deux revues adverses** (backend + frontend) : 0 bloquant. Corrigés : action filtre locale-préfixée (M4), double `Container` retiré (participer + presse), `<dl>`→`<ul>` answer-first (a11y), agrégation `Promise.all` (perf, ~17 req parallèles), garde `jsonb_typeof` (robustesse multi-choix), anti-injection-formule CSV, `"latest"`→constante, wrapper form lit `insightKey`, branche état-vide admin corrigée, commentaire 31→30, format milliers presse.
+- Re-vérifié après corrections : **typecheck complet vert**, **ESLint vert**, **55 tests verts**, **seed 8627 KPIs identiques (73/56/75/59)**.
+- Crash Turbopack au 1er compile de `/[locale]` (flakiness connue, exit natif Windows) — contourné via heap 8G + rm .next ; **pas lié au code**.
+
 ## RESTE À FAIRE (Will)
 1. **Décider publication** : en prod, lancer `pnpm barometer:seed` est DÉCONSEILLÉ (fixture dev). Lancer le formulaire, collecter du réel, afficher l'effectif réel.
 2. Push de la branche `feat/observatoire-ia` (je n'ai rien poussé) + PR.
