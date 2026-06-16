@@ -23,6 +23,8 @@ function makeArticle(overrides: Partial<Article> = {}): Article {
     featuredImage: null,
     featuredImageAltFr: null,
     featuredImageAltEn: null,
+    featuredImagePhotographerName: null,
+    featuredImagePhotographerUrl: null,
     status: "draft",
     publishedAt: null,
     readingTime: null,

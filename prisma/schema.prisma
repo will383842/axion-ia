@@ -997,26 +997,31 @@ model BookingOption {
 // ============================================================
 
 model Article {
-  id                 String        @id @default(uuid()) @db.Uuid
+  id                            String        @id @default(uuid()) @db.Uuid
   // Champs structurels (mêmes pour toutes les langues)
-  authorId           String?       @map("author_id") @db.Uuid
-  author             Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  categoryId         String?       @map("category_id") @db.Uuid
-  category           Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  featuredImage      String?       @map("featured_image") @db.VarChar(512)
+  authorId                      String?       @map("author_id") @db.Uuid
+  author                        Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId                    String?       @map("category_id") @db.Uuid
+  category                      Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage                 String?       @map("featured_image") @db.VarChar(512)
   // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO/A11y additif pour
   // featured_image. Nullable (backward compat 100%). Pré-remplissable via
   // script seed `prisma/scripts/seed-image-alts-2026-05-28.ts` (Cf. audit
   // images cross-site Phase 1).
-  featuredImageAltFr String?       @map("featured_image_alt_fr") @db.VarChar(255)
-  featuredImageAltEn String?       @map("featured_image_alt_en") @db.VarChar(255)
-  status             PublishStatus @default(draft)
-  publishedAt        DateTime?     @map("published_at")
-  readingTime        Int?          @map("reading_time")
-  viewsCount         Int           @default(0) @map("views_count")
-  commentsEnabled    Boolean       @default(false) @map("comments_enabled")
-  createdAt          DateTime      @default(now()) @map("created_at")
-  updatedAt          DateTime      @updatedAt @map("updated_at")
+  featuredImageAltFr            String?       @map("featured_image_alt_fr") @db.VarChar(255)
+  featuredImageAltEn            String?       @map("featured_image_alt_en") @db.VarChar(255)
+  // Unsplash hero 2026-06-16 (Option A) — attribution photographe CGU §6 quand
+  // featuredImage est une photo Unsplash hotlinkée (null pour image-bank, le
+  // crédit étant alors dérivé de l'ImageAsset). Rendu par <UnsplashCredit/>.
+  featuredImagePhotographerName String?       @map("featured_image_photographer_name") @db.VarChar(255)
+  featuredImagePhotographerUrl  String?       @map("featured_image_photographer_url") @db.VarChar(500)
+  status                        PublishStatus @default(draft)
+  publishedAt                   DateTime?     @map("published_at")
+  readingTime                   Int?          @map("reading_time")
+  viewsCount                    Int           @default(0) @map("views_count")
+  commentsEnabled               Boolean       @default(false) @map("comments_enabled")
+  createdAt                     DateTime      @default(now()) @map("created_at")
+  updatedAt                     DateTime      @updatedAt @map("updated_at")
 
   // ====== CONTENT GENERATOR — Sprint 1 (v1.7 / v2.5) ======
   /// Pyramide indexation 3-tiers anti-doorway HCU (default tier-2 par sécurité).
