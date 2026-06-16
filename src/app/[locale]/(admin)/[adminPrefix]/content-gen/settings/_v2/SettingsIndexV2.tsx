@@ -67,6 +67,12 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
     label: "🚀 Init KB + Presets",
     description: "Charge les 130 facts KB et les 6 presets de campagne en base (1 clic)",
   },
+  {
+    href: "kb-ingest",
+    label: "Ingestion base de connaissances",
+    description:
+      "Importer du contenu externe (URL ou sitemap) dans la base de connaissances",
+  },
 ];
 
 interface Props {

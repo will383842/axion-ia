@@ -49,7 +49,10 @@ import {
 // Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes parallèles).
 import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 // 2026-06-15 — Branche les ContentTemplate (console) au pipeline (override prompt).
-import { resolveTemplateOverride } from "@/server/content-gen/template-resolver";
+import {
+  resolveTemplateOverride,
+  type TemplateOverride,
+} from "@/server/content-gen/template-resolver";
 import {
   resolveQualityProfile,
   QUALITY_PROFILE_GATES,
@@ -171,10 +174,60 @@ export interface ContentGenJobPayload {
   readonly contentType: ContentType;
   readonly targetSearchIntent: SearchIntent;
   readonly inputPayload: Record<string, unknown>;
+  /**
+   * B4 (CONTENT-GEN-UX 2026) — template explicitement choisi via le bouton
+   * « Tester » de /templates/[id]. Présent → le worker applique CE template
+   * précis (override par id) au lieu de résoudre par contentType+isActive.
+   * Absent (campagnes, quick actions) → résolution par contentType (inchangé).
+   */
+  readonly templateId?: string;
+}
+
+/**
+ * B4 (CONTENT-GEN-UX 2026) — Résout un ContentTemplate par son id exact (override
+ * « Tester ce template »). Contrairement à `resolveTemplateOverride(contentType)`
+ * (le plus récent ACTIF pour le type), on cible LE template demandé même s'il
+ * n'est pas le plus récent / pas `isActive`. Garde-fou : on n'applique l'override
+ * que si le template existe ET correspond au `contentType` du job (sécurité :
+ * un prompt de type X ne doit pas piloter une génération de type Y).
+ *
+ * Fail-soft, miroir de `resolveTemplateOverride` : DB stub (build) / introuvable /
+ * type incohérent / erreur → null → fallback prompt code (zéro régression).
+ */
+async function resolveTemplateById(
+  templateId: string,
+  contentType: ContentType,
+): Promise<TemplateOverride | null> {
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return null;
+  try {
+    const tpl = await prisma.contentTemplate.findUnique({
+      where: { id: templateId },
+      select: {
+        id: true,
+        contentType: true,
+        systemPrompt: true,
+        defaultTemperature: true,
+        defaultMaxTokens: true,
+      },
+    });
+    if (!tpl || tpl.contentType !== contentType) return null;
+    const sp = tpl.systemPrompt?.trim();
+    return {
+      templateId: tpl.id,
+      ...(sp ? { systemPrompt: sp } : {}),
+      ...(tpl.defaultTemperature != null ? { temperature: Number(tpl.defaultTemperature) } : {}),
+      ...(tpl.defaultMaxTokens != null ? { maxTokens: tpl.defaultMaxTokens } : {}),
+    };
+  } catch {
+    return null;
+  }
 }
 
 async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
   const { contentGenJobId, contentType, targetSearchIntent, inputPayload } = job.data;
+  // B4 (CONTENT-GEN-UX 2026) — template explicitement testé : payload BullMQ en
+  // priorité, sinon `ContentGenJob.templateId` (persisté par enqueueDirectGen).
+  const explicitTemplateId = job.data.templateId;
 
   // 0. Kill switch hard-gate (§ 12 master prompt) — checked AVANT lookup DB
   // pour économiser les queries quand le switch est ON. Le worker BullMQ
@@ -386,14 +439,25 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         ? inputPayload["rssLink"]
         : undefined;
 
-    // 2026-06-15 — Résout un éventuel ContentTemplate ACTIF (éditable console
+    // 2026-06-15 — Résout un éventuel ContentTemplate (éditable console
     // /content-gen/templates) pour ce contentType. Présent → override prompt ;
     // absent / DB indispo → null → fallback prompt code (zéro régression).
-    const templateOverride = await resolveTemplateOverride(contentType);
+    //
+    // B4 (CONTENT-GEN-UX 2026) — OVERRIDE PAR ID. Si le job référence un template
+    // précis (`templateId` du payload BullMQ, sinon `dbJob.templateId` persisté
+    // par enqueueDirectGen) — typiquement le bouton « Tester » de /templates/[id]
+    // — on résout CE template précis (même s'il n'est pas le plus récent / pas
+    // `isActive`), pour que « Tester » teste bien le template affiché. Sinon
+    // (campagnes, quick actions) → résolution par contentType+isActive (inchangé).
+    const targetTemplateId = explicitTemplateId ?? dbJob.templateId ?? undefined;
+    const templateOverride = targetTemplateId
+      ? await resolveTemplateById(targetTemplateId, contentType)
+      : await resolveTemplateOverride(contentType);
     if (templateOverride) {
-      await logStep(contentGenJobId, "llm_call", "Template DB actif appliqué (override prompt)", {
+      await logStep(contentGenJobId, "llm_call", "Template DB appliqué (override prompt)", {
         template_id: templateOverride.templateId,
         has_system_prompt: Boolean(templateOverride.systemPrompt),
+        resolved_by: targetTemplateId ? "explicit_id" : "content_type",
       });
     }
 

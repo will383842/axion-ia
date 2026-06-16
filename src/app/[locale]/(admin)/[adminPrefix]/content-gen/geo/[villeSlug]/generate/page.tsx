@@ -1,13 +1,14 @@
 /**
- * Content Generator — Génération ciblée par ville (§ 12.1).
+ * Redirect 308 (permanent) — MORT→REDIR / B2 (DECISION-IA §5-E, 2026-06-16).
  *
- * V1 = form simple : variant override + provider override + tags + dry-run.
- * Le worker pick-up le job. Sprint 4 ajoute la mini-campagne en 1 clic.
+ * L'ancienne page de génération ciblée par ville n'aboutissait pas et exposait
+ * une commande CLI. La génération par ville passe désormais par le wizard
+ * unique `/campaigns/new`, pré-rempli sur la ville via `?ville=<slug>`.
+ *
+ * Aucune capacité perdue : le ciblage ville est une étape du wizard.
  */
 
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { GeoVilleGenerateV2 } from "./_v2/GeoVilleGenerateV2";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -15,10 +16,9 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; villeSlug: string }>;
 }
 
-export default async function GeoVilleGeneratePage({ params }: PageProps) {
-  const { adminPrefix, villeSlug } = await params;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  return <GeoVilleGenerateV2 adminPrefix={adminPrefix} villeSlug={villeSlug} />;
+export default async function GeoVilleGenerateRedirect({ params }: PageProps) {
+  const { locale, adminPrefix, villeSlug } = await params;
+  permanentRedirect(
+    `/${locale}/${adminPrefix}/content-gen/campaigns/new?ville=${encodeURIComponent(villeSlug)}`,
+  );
 }

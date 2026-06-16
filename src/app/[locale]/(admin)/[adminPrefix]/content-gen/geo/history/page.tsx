@@ -1,12 +1,16 @@
 /**
- * Content Generator — Geo history (§ 15.5).
+ * Redirect 308 (permanent) — FUSION (DECISION-IA §5-E, 2026-06-16).
  *
- * Journal des batches passés. V1 lit ContentGenJob agrégé par jour.
+ * `/geo/history` listait les batches passés agrégés par jour à partir de
+ * `coverageCampaign` — exactement la même matière que `/coverage` (liste des
+ * campagnes de couverture). C'était un doublon. On fusionne vers `/coverage`,
+ * source unique de suivi des campagnes.
+ *
+ * Aucune capacité perdue : l'historique des campagnes vit dans `/coverage`.
+ * Redirection 308 conservée pour les liens/bookmarks existants.
  */
 
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { GeoHistoryV2 } from "./_v2/GeoHistoryV2";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -15,9 +19,6 @@ interface PageProps {
 }
 
 export default async function GeoHistoryPage({ params }: PageProps) {
-  const { adminPrefix } = await params;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  return <GeoHistoryV2 adminPrefix={adminPrefix} />;
+  const { locale, adminPrefix } = await params;
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/coverage`);
 }

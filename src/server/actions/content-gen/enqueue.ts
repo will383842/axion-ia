@@ -34,12 +34,21 @@ const ContentTypeSchema = z.enum([
   "qa_derived",
   "faq_standalone",
 ]);
+// B5 (CONTENT-GEN-UX 2026) — aligné sur l'enum DB `SearchIntent` (8 valeurs).
+// Avant : la liste contenait `commercial` (valeur INEXISTANTE en DB) et omettait
+// `commercial_investigation` + les 3 intents 2026 (voice_search/ai_overview/
+// featured_snippet). Le dropdown « Tester » de /templates/[id] propose
+// `commercial_investigation` → la validation Zod throwait. Doit lister TOUTES
+// les valeurs de l'enum Prisma `SearchIntent` pour ne plus rejeter.
 const SearchIntentSchema = z.enum([
   "informational",
-  "commercial",
+  "commercial_investigation",
   "transactional",
   "navigational",
   "local",
+  "voice_search",
+  "ai_overview",
+  "featured_snippet",
 ]);
 const EnqueueDirectGenInputSchema = z
   .object({
@@ -161,6 +170,10 @@ export async function enqueueDirectGen(
           contentType: input.contentType,
           targetSearchIntent: input.targetSearchIntent,
           inputPayload,
+          // B4 (CONTENT-GEN-UX 2026) — propage le templateId choisi (bouton
+          // « Tester » de /templates/[id]) pour que le worker teste CE template
+          // précis (override par id) au lieu de résoudre par contentType+isActive.
+          ...(input.templateId ? { templateId: input.templateId } : {}),
         },
         { jobId: `gen-${dbJob.id}` },
       );

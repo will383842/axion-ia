@@ -80,7 +80,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
           </li>
           <li>
             <strong>Étape 4 — Première campagne test</strong> ·{" "}
-            <Link href={`${base}/coverage/new`} className="admin-link">
+            <Link href={`${base}/campaigns/new`} className="admin-link">
               Lancer une campagne →
             </Link>
           </li>

@@ -1,11 +1,14 @@
 /**
- * Content Generator — Geo batch detail.
+ * Redirect 308 (permanent) — MORT→REDIR (DECISION-IA §5-E, 2026-06-16).
  *
- * V1 = redirige vers la page campagne. Sprint 4 ajoutera burndown + pause/resume
- * spécifiques au batch.
+ * Page fantôme (détail de lot géo) sans contenu propre. Le détail d'une
+ * campagne — y compris ses lots géo — vit dans `/coverage/[id]`. On redirige
+ * sur le même `id` pour préserver les liens existants.
+ *
+ * Aucune capacité perdue : tout est dans `/coverage/[id]`.
  */
 
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -13,8 +16,9 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; id: string }>;
 }
 
-export default async function GeoBatchDetailPage({ params }: PageProps) {
+export default async function GeoBatchDetailRedirect({ params }: PageProps) {
   const { locale, adminPrefix, id } = await params;
-  // Pattern V1/V2 §3 — redirect-only page, flag check pour spec compliance.
-  redirect(`/${locale}/${adminPrefix}/content-gen/coverage/${id}`);
+  permanentRedirect(
+    `/${locale}/${adminPrefix}/content-gen/coverage/${id}`,
+  );
 }

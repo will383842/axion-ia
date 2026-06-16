@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { getBrandVoiceDriftStats } from "@/server/actions/content-gen/brand-voice";
+import { RecalibrateBrandVoiceForm } from "./RecalibrateBrandVoiceForm";
 
 interface Props {
   adminPrefix: string;
@@ -15,6 +16,13 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
   const base = `/fr/${adminPrefix}/content-gen`;
 
   const stats = await getBrandVoiceDriftStats().catch(() => null);
+
+  // Articles de référence pour la recalibration : on s'appuie sur les articles
+  // récemment analysés (dérives détectées). L'action serveur ignore ceux sans
+  // embedding et throw si aucun n'en a — feedback géré dans le form.
+  const recalibrateArticleIds = Array.from(
+    new Set((stats?.recentDrifts ?? []).map((d) => d.articleId)),
+  );
 
   const lastRunLabel = stats?.lastRunAt
     ? new Date(stats.lastRunAt).toLocaleString("fr-FR", {
@@ -28,11 +36,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
       <AdminPageHeader
         title="Détection Dérive Brand Voice"
         description="Monitoring quotidien (04:00 UTC) — similarité cosine article vs référence Manon. Alerte si < 0.80."
-        actions={
-          <Link href={`${base}/brand-voice-drift/recalibrate`} className="admin-button">
-            Recalibrer la référence
-          </Link>
-        }
+        actions={<RecalibrateBrandVoiceForm articleIds={recalibrateArticleIds} />}
       />
 
       {/* Statut embedding référence */}

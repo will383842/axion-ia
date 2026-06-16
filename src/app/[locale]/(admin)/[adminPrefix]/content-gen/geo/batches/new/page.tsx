@@ -1,28 +1,24 @@
 /**
- * Content Generator — Geo batch new (§ 15.2 batch builder).
+ * Redirect 308 (permanent) — MORT→REDIR (DECISION-IA §5-E, 2026-06-16).
  *
- * V1 = redirige vers /coverage/new avec scope région pré-rempli. Le builder
- * complet (drag&drop ordres, modes 4) arrive V1.5 si Will demande.
+ * Ancien builder de lot géo (stub trompeur, ne lançait rien). La création
+ * d'une campagne — y compris géographique — passe désormais par le wizard
+ * unique `/campaigns/new` (point d'entrée unique de lancement).
+ *
+ * Aucune capacité perdue : le ciblage villes/régions est une étape du wizard.
  */
 
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { GeoBatchesNewV2 } from "./_v2/GeoBatchesNewV2";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function NewBatchPage({ params, searchParams }: PageProps) {
-  const { adminPrefix } = await params;
-  const sp = await searchParams;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  const preselected = sp.region;
-
-  return <GeoBatchesNewV2 adminPrefix={adminPrefix} preselected={preselected} />;
+export default async function GeoBatchesNewRedirect({ params }: PageProps) {
+  const { locale, adminPrefix } = await params;
+  permanentRedirect(
+    `/${locale}/${adminPrefix}/content-gen/campaigns/new`,
+  );
 }

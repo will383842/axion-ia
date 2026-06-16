@@ -17,12 +17,18 @@ const CONTENT_TYPES = [
   { value: "faq_standalone", label: "FAQ standalone" },
 ] as const;
 
+// B5 (CONTENT-GEN-UX 2026) — aligné sur l'enum DB `SearchIntent` (8 valeurs).
+// Avant : `commercial` (inexistant en DB) → la Server Action `dispatchAdHocJob`
+// rejetait la valeur en Zod. Désormais on propose les valeurs réelles.
 const SEARCH_INTENTS = [
   { value: "informational", label: "Informationnel" },
-  { value: "commercial", label: "Commercial" },
-  { value: "local", label: "Local" },
+  { value: "commercial_investigation", label: "Commercial / comparaison" },
   { value: "transactional", label: "Transactionnel" },
   { value: "navigational", label: "Navigationnel" },
+  { value: "local", label: "Local" },
+  { value: "voice_search", label: "Recherche vocale" },
+  { value: "ai_overview", label: "Aperçu IA (AI Overview)" },
+  { value: "featured_snippet", label: "Extrait optimisé (featured snippet)" },
 ] as const;
 
 interface Props {

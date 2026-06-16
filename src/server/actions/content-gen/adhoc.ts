@@ -20,12 +20,19 @@ const CONTENT_TYPE_VALUES = [
   "faq_standalone",
 ] as const;
 
+// B5 (CONTENT-GEN-UX 2026) — aligné sur l'enum DB `SearchIntent` (8 valeurs),
+// comme `enqueue.ts`. Avant : `commercial` (valeur INEXISTANTE en DB) et omettait
+// `commercial_investigation` + les 3 intents 2026 (voice_search/ai_overview/
+// featured_snippet) → la validation Zod throwait dès qu'un de ces intents passait.
 const SEARCH_INTENT_VALUES = [
   "informational",
-  "commercial",
-  "local",
+  "commercial_investigation",
   "transactional",
   "navigational",
+  "local",
+  "voice_search",
+  "ai_overview",
+  "featured_snippet",
 ] as const;
 
 const AdHocJobSchema = z.object({

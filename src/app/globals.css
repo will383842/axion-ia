@@ -719,6 +719,76 @@
   width: 20px;
   text-align: center;
 }
+/* =============================================================
+ * Sidebar content-gen — accordéon par pôle + toggle Simple/Avancé
+ * (refonte UX content-gen 2026-06-16 — DECISION-IA.md §4).
+ * S'appuie sur les mêmes tokens que la sidebar plate ci-dessus.
+ * =============================================================*/
+.admin-nav-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 8px 6px;
+}
+.admin-nav-group-head .admin-nav-group-label {
+  margin: 0;
+}
+.admin-nav-mode-toggle {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 8px;
+  min-height: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-paper);
+  color: var(--color-fg-muted);
+  cursor: pointer;
+}
+.admin-nav-mode-toggle[aria-pressed="true"] {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.admin-nav-mode-toggle:hover {
+  background-color: var(--color-bg);
+}
+.admin-nav-pole {
+  margin-bottom: 2px;
+}
+.admin-nav-pole-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px 10px;
+  min-height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--color-fg-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  border-radius: 6px;
+  text-align: left;
+}
+.admin-nav-pole-toggle:hover {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
+.admin-nav-pole-chevron {
+  font-size: 9px;
+  width: 10px;
+  display: inline-block;
+}
+.admin-nav-pole .admin-nav-list {
+  margin-left: 6px;
+}
 .admin-input-with-toggle {
   position: relative;
   display: flex;

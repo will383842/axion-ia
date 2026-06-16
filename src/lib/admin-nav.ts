@@ -35,6 +35,22 @@ export type AdminNavGroup =
   | "ops"
   | "system";
 
+/**
+ * Pôle (sous-groupe niveau 1) du groupe `content_gen` — refonte UX 2026-06-16
+ * (cf. `_AUDIT/CONTENT-GEN-UX-2026/DECISION-IA.md` §1-§2).
+ *
+ * Taxonomie orientée tâche, ordonnée par fréquence (du plus chaud au plus froid) :
+ * Lancer > Suivre > Publier (quotidien) > Villes (occasionnel) >
+ * Qualité & Coûts (occasionnel) > Réglages (rare / setup).
+ */
+export type ContentGenPole =
+  | "lancer"
+  | "suivre"
+  | "publier"
+  | "villes"
+  | "qualite"
+  | "reglages";
+
 export interface AdminNavItem {
   href: string;
   label: string;
@@ -44,6 +60,28 @@ export interface AdminNavItem {
    */
   icon: string;
   group: AdminNavGroup;
+  /**
+   * Pôle (sous-groupe N1) — uniquement renseigné pour `group: "content_gen"`.
+   * Permet à `<AdminSidebar>` de regrouper les items en accordéon par pôle.
+   * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
+   */
+  subGroup?: ContentGenPole;
+  /**
+   * Niveau d'exposition. Défaut implicite `"simple"`.
+   * En mode Simple, la sidebar masque les items `tier: "advanced"` et les
+   * pôles entièrement avancés (Qualité & Coûts, Réglages). Le toggle
+   * « Avancé » les révèle. La command palette voit TOUS les items quel que
+   * soit le tier (aucune route « cmdk-only » ne disparaît).
+   */
+  tier?: "simple" | "advanced";
+  /**
+   * Href du parent (page N2) pour les éléments de niveau 3 atteignables par
+   * breadcrumbs mais **non rendus dans la sidebar**. Renseigner `parent`
+   * suffit à exclure l'item du rendu sidebar tout en gardant la résolution
+   * pathname → libellé pour `<AdminBreadcrumbs>`. (Non utilisé en PR Étape B,
+   * réservé aux N3 à venir.)
+   */
+  parent?: string;
 }
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
@@ -59,6 +97,33 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   ops: "Ops & monitoring",
   system: "Système",
 };
+
+/**
+ * Libellés FR clairs des 6 pôles du groupe `content_gen`.
+ * (cf. DECISION-IA.md §1 — refonte UX content-gen 2026-06-16.)
+ */
+export const CONTENT_GEN_POLE_LABELS: Record<ContentGenPole, string> = {
+  lancer: "Lancer",
+  suivre: "Suivre",
+  publier: "Publier",
+  villes: "Villes",
+  qualite: "Qualité & Coûts",
+  reglages: "Réglages",
+};
+
+/**
+ * Ordre d'affichage des pôles `content_gen` dans la sidebar :
+ * du plus chaud (quotidien) au plus froid (rare / setup).
+ * (cf. DECISION-IA.md §0 — ordre par fréquence.)
+ */
+export const CONTENT_GEN_POLE_ORDER: ReadonlyArray<ContentGenPole> = [
+  "lancer",
+  "suivre",
+  "publier",
+  "villes",
+  "qualite",
+  "reglages",
+];
 
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
@@ -106,88 +171,266 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
-    // ── Génération de contenu (groupe dédié — réorg console 2026-06-15) ──────
-    {
-      href: `${base}/content-gen`,
-      label: "Générateur (tableau de bord)",
-      icon: "🧠",
-      group: "content_gen",
-    },
+    // ── Génération de contenu (refonte UX 2026-06-16 — DECISION-IA.md §1-§3) ──
+    //   Taxonomie « tâche » en 6 pôles (subGroup) ordonnés par fréquence,
+    //   toggle Simple/Avancé (tier). Libellés FR clairs (§3 renommage).
+    //   Zéro capacité perdue : routes mortes/fusionnées retirées de la nav
+    //   mais conservées via redirections (Étape E) ; items avancés restent
+    //   accessibles via toggle + command palette.
+    //
+    // ▸ LANCER (quotidien) — point d'entrée unique = wizard /campaigns/new
     {
       href: `${base}/content-gen/campaigns/new`,
       label: "Nouvelle campagne",
       icon: "➕",
       group: "content_gen",
+      subGroup: "lancer",
+      tier: "simple",
     },
-    { href: `${base}/content-gen/coverage`, label: "Campagnes", icon: "📊", group: "content_gen" },
+    {
+      href: `${base}/content-gen/coverage/presets`,
+      label: "Modèles prêts à l'emploi",
+      icon: "✨",
+      group: "content_gen",
+      subGroup: "lancer",
+      tier: "simple",
+    },
     {
       href: `${base}/content-gen/orchestrator/adhoc`,
-      label: "Lancement ad-hoc",
+      label: "Générer une seule page",
       icon: "⚡",
       group: "content_gen",
+      subGroup: "lancer",
+      tier: "advanced",
     },
-    { href: `${base}/content-gen/jobs`, label: "Jobs", icon: "🗂️", group: "content_gen" },
+    {
+      href: `${base}/content-gen/onboarding`,
+      label: "Premiers pas",
+      icon: "🚀",
+      group: "content_gen",
+      subGroup: "lancer",
+      tier: "simple",
+    },
+    // ▾ SUIVRE (quotidien)
+    {
+      href: `${base}/content-gen`,
+      label: "Tableau de bord",
+      icon: "📊",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "simple",
+    },
+    {
+      href: `${base}/content-gen/coverage`,
+      label: "Campagnes",
+      icon: "🗂️",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "simple",
+    },
+    {
+      href: `${base}/content-gen/jobs`,
+      label: "Générations en cours",
+      icon: "⚙️",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "simple",
+    },
+    // NB — « Pilotage » (/orchestrator) et « File d'attente » (/queue) NE sont
+    // PAS des entrées de nav : ce sont des doublons fusionnés (DECISION-IA §2).
+    //   • /orchestrator → 308 → /content-gen : ses KPIs vivent déjà dans le
+    //     Tableau de bord (getOrchestratorStats) ; un 2e item « Pilotage »
+    //     mènerait à la même page → on l'a retiré pour ne pas recréer de doublon.
+    //   • /queue → 308 → /jobs?view=queue : la file temps réel est affichée sur
+    //     le Tableau de bord (carte « Queue temps réel ») et le détail dans /jobs.
+    // Les redirections (Étape E) préservent les bookmarks → zéro capacité perdue.
+    // ▸ PUBLIER (quotidien)
     {
       href: `${base}/content-gen/review-queue`,
-      label: "File de revue",
+      label: "À valider",
       icon: "✅",
       group: "content_gen",
+      subGroup: "publier",
+      tier: "simple",
     },
     {
       href: `${base}/content-gen/publications`,
-      label: "Publications",
+      label: "Contenus publiés",
       icon: "📰",
       group: "content_gen",
+      subGroup: "publier",
+      tier: "simple",
     },
     {
-      href: `${base}/content-gen/rss`,
-      label: "Sources RSS (news)",
-      icon: "📡",
-      group: "content_gen",
-    },
-    {
-      href: `${base}/content-gen/templates`,
-      label: "Templates de prompts",
+      href: `${base}/content-gen/publications-status`,
+      label: "Suivi des publications (kanban)",
       icon: "📋",
       group: "content_gen",
+      subGroup: "publier",
+      tier: "advanced",
     },
+    // ▸ VILLES (occasionnel)
     {
-      href: `${base}/content-gen/keyword-tracking`,
-      label: "Mots-clés",
-      icon: "🎯",
-      group: "content_gen",
-    },
-    { href: `${base}/content-gen/costs`, label: "Coûts", icon: "💰", group: "content_gen" },
-    { href: `${base}/content-gen/quality`, label: "Qualité", icon: "📈", group: "content_gen" },
-    {
-      href: `${base}/content-gen/city-coverage`,
-      label: "Couverture villes",
+      href: `${base}/content-gen/cities-coverage`,
+      label: "Couverture des villes",
       icon: "🏙️",
       group: "content_gen",
-    },
-    {
-      href: `${base}/content-gen/city-equity`,
-      label: "Équité villes",
-      icon: "⚖️",
-      group: "content_gen",
-    },
-    {
-      href: `${base}/content-gen/cities-order`,
-      label: "Ordre villes",
-      icon: "🔢",
-      group: "content_gen",
+      subGroup: "villes",
+      tier: "simple",
     },
     {
       href: `${base}/content-gen/coverage-map`,
-      label: "Carte couverture",
+      label: "Carte de couverture",
       icon: "🗺️",
       group: "content_gen",
+      subGroup: "villes",
+      tier: "simple",
     },
+    {
+      href: `${base}/content-gen/cities-order`,
+      label: "Ordre de génération des villes",
+      icon: "🔢",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "simple",
+    },
+    {
+      href: `${base}/content-gen/city-equity`,
+      label: "Équité entre villes",
+      icon: "⚖️",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/city-coverage`,
+      label: "Qualité des données (pilote)",
+      icon: "📐",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/geo`,
+      label: "Cockpit géo",
+      icon: "🌍",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/geo/coverage-table`,
+      label: "Tableau croisé ville × secteur",
+      icon: "📊",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "advanced",
+    },
+    // ▾ QUALITÉ & COÛTS (occasionnel — pôle entièrement avancé)
+    {
+      href: `${base}/content-gen/quality`,
+      label: "Qualité du contenu",
+      icon: "📈",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/costs`,
+      label: "Coûts",
+      icon: "💰",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/similarity-monitor`,
+      label: "Détection de doublons",
+      icon: "🔁",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/brand-voice-drift`,
+      label: "Dérive du ton éditorial",
+      icon: "🎙️",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/embeddings`,
+      label: "Suivi des vecteurs de similarité",
+      icon: "🧮",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/external-links`,
+      label: "Liens externes",
+      icon: "🔗",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/kb-readonly`,
+      label: "Base de connaissances",
+      icon: "📚",
+      group: "content_gen",
+      subGroup: "qualite",
+      tier: "advanced",
+    },
+    // ▾ RÉGLAGES (rare / setup — pôle entièrement avancé)
     {
       href: `${base}/content-gen/settings`,
       label: "Réglages génération",
       icon: "⚙️",
       group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/rss`,
+      label: "Sources RSS (actualités)",
+      icon: "📡",
+      group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/templates`,
+      label: "Modèles de prompts",
+      icon: "📋",
+      group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/keyword-tracking`,
+      label: "Suivi des positions",
+      icon: "🎯",
+      group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/landing-variants`,
+      label: "Variantes de landing",
+      icon: "🧪",
+      group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
+    },
+    {
+      href: `${base}/content-gen/author/manon`,
+      label: "Profil de l'auteur (Manon)",
+      icon: "✍️",
+      group: "content_gen",
+      subGroup: "reglages",
+      tier: "advanced",
     },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },

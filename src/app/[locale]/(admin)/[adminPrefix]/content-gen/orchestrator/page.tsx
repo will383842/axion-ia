@@ -1,12 +1,17 @@
 /**
- * Content Generator — Orchestrator (§ 12.1 v1.7).
+ * Redirect 308 (FUSION) — DECISION-IA §5-E, 2026-06-16.
  *
- * Vue globale : campagnes actives, daily plan, quota par pipeline, alertes.
+ * `/orchestrator` (vue globale KPIs/cadence) faisait doublon avec le tableau
+ * de bord `/content-gen`, qui absorbe désormais ses KPIs. Redirection 308
+ * conservée 6 mois pour les bookmarks.
+ *
+ * ⚠️ Seule la racine `/orchestrator` est fusionnée. La sous-route
+ * `/orchestrator/adhoc` (« Générer une seule page ») reste INTACTE.
+ *
+ * Aucune capacité perdue : les KPIs vivent dans `/content-gen`.
  */
 
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { OrchestratorV2 } from "./_v2/OrchestratorV2";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -14,10 +19,7 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
-export default async function OrchestratorPage({ params }: PageProps) {
-  const { adminPrefix } = await params;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  return <OrchestratorV2 adminPrefix={adminPrefix} />;
+export default async function OrchestratorRedirect({ params }: PageProps) {
+  const { locale, adminPrefix } = await params;
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen`);
 }

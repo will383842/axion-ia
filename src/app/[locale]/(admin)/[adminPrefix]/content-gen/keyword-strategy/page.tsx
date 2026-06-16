@@ -1,35 +1,24 @@
 /**
- * Console admin — Stratégie Keywords (Phase 7 Sprint Perfection 2026-05-22)
+ * Redirect 308 (permanent) — FUSION (DECISION-IA §5-E, 2026-06-16).
  *
- * Vue globale keywords : distribution verticales + intents + filtres + actions.
- * Server Component — données issues de ALL_KEYWORD_SEEDS (in-memory, pas de DB call).
+ * `/keyword-strategy` (vue globale des mots-clés : distribution verticales +
+ * intents) faisait doublon conceptuel avec `/keyword-tracking` (suivi des
+ * positions). Les deux sont fusionnés dans le pôle RÉGLAGES sous une entrée
+ * unique « Suivi des positions », la stratégie devenant un onglet de
+ * `/keyword-tracking`. On redirige définitivement vers cette page.
  *
- * Migration A-15 audit 2026-05-22 : V1 KeywordStrategyView était `'use client'`
- * avec useState/useMemo → V2 KeywordStrategyV2 = RSC pur, filtrage URL-based
- * côté serveur, zéro JS client. Suppression fall-through V1.
+ * Aucune capacité perdue : les mots-clés vivent dans `/keyword-tracking`.
  */
 
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { KeywordStrategyV2 } from "./_v2/KeywordStrategyV2";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{
-    vertical?: string;
-    intent?: string;
-    q?: string;
-    page?: string;
-  }>;
 }
 
-export default async function KeywordStrategyPage({ params, searchParams }: PageProps) {
-  const { adminPrefix } = await params;
-  const sp = await searchParams;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  return <KeywordStrategyV2 searchParams={sp} adminPrefix={adminPrefix} />;
+export default async function KeywordStrategyPage({ params }: PageProps) {
+  const { locale, adminPrefix } = await params;
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/keyword-tracking`);
 }

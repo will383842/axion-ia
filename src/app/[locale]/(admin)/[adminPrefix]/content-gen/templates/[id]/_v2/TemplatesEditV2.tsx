@@ -111,11 +111,17 @@ export function TemplatesEditV2({ template }: Props): React.ReactElement {
               defaultValue="informational"
               className="admin-input"
             >
-              <option value="informational">informational</option>
-              <option value="commercial_investigation">commercial_investigation</option>
-              <option value="transactional">transactional</option>
-              <option value="navigational">navigational</option>
-              <option value="local">local</option>
+              {/* B5 (CONTENT-GEN-UX 2026) — toutes les valeurs de l'enum Prisma
+                  SearchIntent (8), libellés FR clairs. Avant : seuls 5 intents,
+                  dont `commercial_investigation` que la validation Zod rejetait. */}
+              <option value="informational">Informationnelle</option>
+              <option value="commercial_investigation">Comparaison / avant-achat</option>
+              <option value="transactional">Transactionnelle</option>
+              <option value="navigational">Navigationnelle</option>
+              <option value="local">Locale (ville)</option>
+              <option value="voice_search">Recherche vocale</option>
+              <option value="ai_overview">Aperçu IA (Google AI Overview)</option>
+              <option value="featured_snippet">Extrait optimisé (position 0)</option>
             </select>
           </div>
           <div className="admin-field">

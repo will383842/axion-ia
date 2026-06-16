@@ -1,12 +1,14 @@
 /**
- * Sprint v7 Phase 3 commit 1 — Tests CampaignWizardV2.
+ * CONTENT-GEN-UX 2026 — Tests CampaignWizardV2 (nouvelle structure 4 étapes).
  *
- * 5 cases :
- *   1. Render step 1 — 5 verticales radio + bouton Suivant
- *   2. Navigation step 1 → 2 après sélection verticale
- *   3. Step 3 mode percentage somme initialisée = 100 (preset équilibré)
- *   4. Mode manual désactive contrainte 100%
- *   5. Step 4 submit "draft" appelle createCampaignFromWizard + router push
+ * Le wizard est devenu le POINT D'ENTRÉE unique de génération (blueprint §4.c) :
+ *   Étape 1 — Quoi générer ?            (cartes de types ; « Mix équilibré » par défaut)
+ *   Étape 2 — Pour qui / où ?           (verticale + villes)
+ *   Étape 3 — Combien / à quel rythme ? (nom + volume + estimation coût/durée en direct)
+ *   Étape 4 — Vérifier & lancer         (récap + brouillon / lancer)
+ *
+ * Le payload de `createCampaignFromWizard` (serviceSector/name/action/mixMode) est
+ * INCHANGÉ par rapport à l'ancienne structure — seule l'UX d'étapes a évolué.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -14,20 +16,10 @@ import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
 const createCampaignMock = vi.fn();
-// Mock complet : hardcode WIZARD_CONTENT_TYPES pour éviter import chain
-// next-auth → next/server qui plante en vitest jsdom.
+// Mock de la server action seule (elle chaîne next-auth → next/server, non
+// importable en jsdom). Les constantes WIZARD_SECTIONS viennent de
+// `campaign-wizard-constants` (module pur, pas besoin de mock).
 vi.mock("@/server/actions/content-gen/campaign-wizard", () => ({
-  WIZARD_CONTENT_TYPES: [
-    "landing_ville",
-    "blog_article",
-    "blog_from_rss",
-    "blog_from_keywords",
-    "blog_from_title",
-    "comparison",
-    "guide_pilier",
-    "qa_derived",
-    "faq_standalone",
-  ] as const,
   createCampaignFromWizard: (input: unknown) => createCampaignMock(input),
 }));
 
@@ -52,68 +44,68 @@ beforeEach(() => {
   createCampaignMock.mockResolvedValue({ campaignId: "camp_123", status: "draft" });
 });
 
-describe("CampaignWizardV2 — Sprint v7 Phase 3 commit 1", () => {
-  it("1 — render step 1 : 5 verticales radio + bouton Suivant", () => {
+describe("CampaignWizardV2 — CONTENT-GEN-UX 2026 (4 étapes)", () => {
+  it("1 — étape 1 « Quoi générer ? » : cartes de types + bouton Suivant", () => {
     render(<CampaignWizardV2 adminPrefix="admin" />);
 
-    expect(screen.getByText("Étape 1 — Choisir une verticale Axion-IA")).toBeTruthy();
-    expect(screen.getByText("Interventions & Formations")).toBeTruthy();
-    expect(screen.getByText("Audits IA")).toBeTruthy();
-    expect(screen.getByText("Implémentations IA")).toBeTruthy();
-    expect(screen.getByText("1-to-1 Coaching")).toBeTruthy();
-    expect(screen.getByText("Sites web augmentés IA")).toBeTruthy();
+    expect(screen.getByText("Étape 1 — Quoi générer ?")).toBeTruthy();
+    expect(screen.getByText("Pages villes")).toBeTruthy();
+    expect(screen.getByText("Articles de blog")).toBeTruthy();
+    expect(screen.getByText("Guides piliers")).toBeTruthy();
+    expect(screen.getByText("Q-R / FAQ")).toBeTruthy();
+    expect(screen.getByText("Mix équilibré")).toBeTruthy();
     expect(screen.getByText("Suivant →")).toBeTruthy();
   });
 
-  it("2 — sélection verticale + Suivant → step 2 visible", async () => {
+  it("2 — étape 1 → 2 (mix équilibré par défaut) affiche les verticales", async () => {
     const user = userEvent.setup();
     render(<CampaignWizardV2 adminPrefix="admin" />);
 
-    await user.click(screen.getByText("Audits IA"));
+    // Aucun clic requis : « Mix équilibré » (somme = 100) est l'état par défaut.
     await user.click(screen.getByText("Suivant →"));
 
-    expect(screen.getByText("Étape 2 — Nom, volume, scope villes, période")).toBeTruthy();
+    expect(screen.getByText("Étape 2 — Pour qui / où ?")).toBeTruthy();
+    expect(screen.getByText("Audits IA")).toBeTruthy();
+    expect(screen.getByText("Interventions & Formations")).toBeTruthy();
+  });
+
+  it("3 — sélection verticale → étape 3 (nom + volume)", async () => {
+    const user = userEvent.setup();
+    render(<CampaignWizardV2 adminPrefix="admin" />);
+
+    await user.click(screen.getByText("Suivant →")); // 1 → 2
+    await user.click(screen.getByText("Audits IA"));
+    await user.click(screen.getByText("Suivant →")); // 2 → 3
+
+    expect(screen.getByText("Étape 3 — Combien / à quel rythme ?")).toBeTruthy();
     expect(screen.getByLabelText("Nom de la campagne")).toBeTruthy();
-    expect(screen.getByLabelText("Articles par jour")).toBeTruthy();
+    expect(screen.getByLabelText("Contenus par jour")).toBeTruthy();
   });
 
-  it("3 — step 3 affiche somme initiale = 100 (preset équilibré)", async () => {
+  it("4 — étape 3 affiche l'estimation coût/durée en direct (M7)", async () => {
     const user = userEvent.setup();
     render(<CampaignWizardV2 adminPrefix="admin" />);
 
+    await user.click(screen.getByText("Suivant →"));
     await user.click(screen.getByText("Audits IA"));
     await user.click(screen.getByText("Suivant →"));
-    await user.type(screen.getByLabelText("Nom de la campagne"), "Test campagne");
-    await user.click(screen.getByText("Suivant →"));
 
-    // Sprint v7 Phase 8 commit 3/4 — wizard étendu 9 → 21 sliders en 6 sections.
-    expect(screen.getByText("Étape 3 — Mix types contenu (21 sliders · 6 sections)")).toBeTruthy();
-    expect(screen.getByText(/Somme :/)).toBeTruthy();
+    expect(screen.getByText("Estimation en direct")).toBeTruthy();
+    expect(screen.getByText("Coût estimé")).toBeTruthy();
+    expect(screen.getByText("Durée estimée")).toBeTruthy();
   });
 
-  it("4 — Mode manual masque le badge 'Somme doit = 100'", async () => {
+  it("5 — étape 4 « Enregistrer en brouillon » → createCampaignFromWizard + redirection", async () => {
     const user = userEvent.setup();
     render(<CampaignWizardV2 adminPrefix="admin" />);
 
+    await user.click(screen.getByText("Suivant →")); // 1 → 2
     await user.click(screen.getByText("Audits IA"));
-    await user.click(screen.getByText("Suivant →"));
-    await user.type(screen.getByLabelText("Nom de la campagne"), "Test");
-    await user.click(screen.getByText("Suivant →"));
-
-    await user.click(screen.getByLabelText("Quotas manuels"));
-    expect(screen.queryByText("Somme doit = 100")).toBeNull();
-  });
-
-  it("5 — Step 4 submit draft → createCampaignFromWizard appelé + router push", async () => {
-    const user = userEvent.setup();
-    render(<CampaignWizardV2 adminPrefix="admin" />);
-
-    await user.click(screen.getByText("Audits IA"));
-    await user.click(screen.getByText("Suivant →"));
+    await user.click(screen.getByText("Suivant →")); // 2 → 3
     await user.type(screen.getByLabelText("Nom de la campagne"), "Test campagne audits");
-    await user.click(screen.getByText("Suivant →"));
-    await user.click(screen.getByText("Suivant →"));
-    expect(screen.getByText("Étape 4 — Récapitulatif")).toBeTruthy();
+    await user.click(screen.getByText("Suivant →")); // 3 → 4
+
+    expect(screen.getByText("Étape 4 — Vérifier & lancer")).toBeTruthy();
 
     await user.click(screen.getByText("Enregistrer en brouillon"));
 

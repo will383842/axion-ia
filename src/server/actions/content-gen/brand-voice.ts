@@ -172,6 +172,54 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
 }
 
 /**
+ * État retourné par `recalibrateBrandVoiceForm` (compatible `useActionState`).
+ */
+export interface RecalibrateBrandVoiceFormState {
+  readonly status: "idle" | "success" | "error";
+  readonly message: string;
+}
+
+/**
+ * Adaptateur `<form action>` pour `recalibrateBrandVoice`.
+ *
+ * Lit les `articleId` depuis le `FormData` (champs `articleIds` multiples ou
+ * un champ unique séparé par des virgules), délègue à `recalibrateBrandVoice`
+ * (l'action métier existante — non réinventée) et renvoie un état lisible
+ * pour `useActionState`. Aucune logique de calibration dupliquée ici.
+ */
+export async function recalibrateBrandVoiceForm(
+  _prevState: RecalibrateBrandVoiceFormState,
+  formData: FormData,
+): Promise<RecalibrateBrandVoiceFormState> {
+  const raw = formData.getAll("articleIds");
+  const articleIds = raw
+    .flatMap((v) => (typeof v === "string" ? v.split(",") : []))
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  if (articleIds.length === 0) {
+    return {
+      status: "error",
+      message:
+        "Aucun article disponible pour la recalibration. Publiez/ingérez d'abord des articles de référence.",
+    };
+  }
+
+  try {
+    const result = await recalibrateBrandVoice(articleIds);
+    return {
+      status: "success",
+      message: `Référence recalibrée sur ${result.articlesUsed} article(s) — embedding de dimension ${result.embeddingDimension}.`,
+    };
+  } catch (e) {
+    return {
+      status: "error",
+      message: e instanceof Error ? e.message : "Échec de la recalibration de la référence.",
+    };
+  }
+}
+
+/**
  * Retourne les stats de dérive brand voice sur les 30 derniers jours.
  * Lit le ContentGenAuditLog (action="brand_voice_drift_flag") + ContentGenConfig last run.
  */

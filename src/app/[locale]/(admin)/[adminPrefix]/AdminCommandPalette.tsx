@@ -6,265 +6,77 @@
 //
 // Trigger : `Cmd+K` (Mac) / `Ctrl+K` (Windows/Linux).
 //
-// V1 — items :
-//   - Pages principales (Dashboard, Réservations, Devis, Factures, Paiements,
-//     Échéanciers, Calendrier, Heatmap, Reschedule, Options, Cadrage,
-//     Submissions)
-//   - Pages contenu (Blog, Case-studies, FAQ, Help, Témoignages, Catégories,
-//     Newsletter, Connaissances)
-//   - Système (Users, 2FA, Activity logs, Settings, Infra, Alerts, Analytics)
+// SSOT — fin du drift (PR5 / refonte UX content-gen 2026-06-16) :
+//   Les items ne sont PLUS hardcodés ici. La palette consomme désormais
+//   `buildAdminNav()` (src/lib/admin-nav.ts), la source unique de vérité
+//   partagée avec la sidebar (`<AdminSidebar>`) et les breadcrumbs.
+//   → plus aucune dérive possible entre la sidebar et la palette.
 //
-// V1.5+ : search dynamique submissions/bookings/factures via Server Action.
+//   La palette affiche TOUS les items, quel que soit leur `tier`
+//   ("simple" ET "advanced") : ainsi aucune route avancée (ex. accessible
+//   uniquement via la palette en mode Simple de la sidebar) ne disparaît.
+//
+//   Regroupement (heading cmdk) :
+//   - groupes standard → libellé clair du groupe (ADMIN_NAV_GROUP_LABELS),
+//   - groupe `content_gen` → « Génération de contenu · <Pôle> » pour
+//     conserver la taxonomie en 6 pôles (CONTENT_GEN_POLE_LABELS).
 
 import { Command } from "cmdk";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  buildAdminNav,
+  ADMIN_NAV_GROUP_LABELS,
+  ADMIN_NAV_GROUP_ORDER,
+  CONTENT_GEN_POLE_LABELS,
+  CONTENT_GEN_POLE_ORDER,
+  type AdminNavItem,
+  type AdminNavGroup,
+  type ContentGenPole,
+} from "@/lib/admin-nav";
 
-interface CommandItem {
-  label: string;
-  hint?: string;
-  href: string;
-  icon: string;
-  group: string;
+interface PaletteItem extends AdminNavItem {
+  /** Libellé du groupe affiché dans le heading cmdk (groupe ou pôle). */
+  groupLabel: string;
 }
 
-function buildItems(base: string): CommandItem[] {
-  return [
-    // ── main ──
-    { label: "Tableau de bord", icon: "📊", href: `${base}`, group: "Main" },
-    { label: "Réservations", icon: "📋", href: `${base}/reservations`, group: "Main" },
-    { label: "Devis", icon: "📄", href: `${base}/devis`, group: "Main" },
-    { label: "Factures", icon: "🧾", href: `${base}/factures`, group: "Main" },
-    { label: "Paiements", icon: "💶", href: `${base}/paiements`, group: "Main" },
-    { label: "Échéanciers", icon: "📅", href: `${base}/echeanciers`, group: "Main" },
-    { label: "Options 48h", icon: "⏳", href: `${base}/options`, group: "Main" },
-    { label: "Submissions", icon: "📥", href: `${base}/submissions`, group: "Main" },
-    // ── calendrier ──
-    { label: "Calendrier", icon: "🗓️", href: `${base}/calendrier`, group: "Calendrier" },
-    { label: "Heatmap géo", icon: "🗺️", href: `${base}/calendrier/heatmap`, group: "Calendrier" },
-    {
-      label: "Reschedule drag-drop (D60)",
-      icon: "🔄",
-      href: `${base}/calendrier/reschedule`,
-      group: "Calendrier",
-    },
-    // ── filtres rapides réservations ──
-    {
-      label: "Réservations — Prêts à valider (D49)",
-      icon: "✓",
-      href: `${base}/reservations?status=awaiting_admin_validation`,
-      group: "Filtres",
-      hint: "awaiting_admin_validation",
-    },
-    {
-      label: "Réservations — En attente client",
-      icon: "⏳",
-      href: `${base}/reservations?status=contract_payment_sent`,
-      group: "Filtres",
-    },
-    {
-      label: "Réservations — Confirmées",
-      icon: "🟢",
-      href: `${base}/reservations?status=confirmed`,
-      group: "Filtres",
-    },
-    {
-      label: "Réservations — En pause",
-      icon: "⏸",
-      href: `${base}/reservations?status=paused`,
-      group: "Filtres",
-    },
-    {
-      label: "Factures — En retard",
-      icon: "⚠️",
-      href: `${base}/factures?status=overdue`,
-      group: "Filtres",
-    },
-    {
-      label: "Devis — Envoyés (en attente)",
-      icon: "📤",
-      href: `${base}/devis?status=sent`,
-      group: "Filtres",
-    },
-    // ── contenu ──
-    { label: "Connaissances", icon: "📚", href: `${base}/connaissances`, group: "Contenu" },
-    { label: "Blog", icon: "📝", href: `${base}/blog`, group: "Contenu" },
-    { label: "Catégories", icon: "🏷️", href: `${base}/categories`, group: "Contenu" },
-    { label: "Cas concrets", icon: "🏆", href: `${base}/case-studies`, group: "Contenu" },
-    { label: "Témoignages", icon: "💬", href: `${base}/testimonials`, group: "Contenu" },
-    { label: "FAQ", icon: "❓", href: `${base}/faq`, group: "Contenu" },
-    { label: "Centre d'aide", icon: "❔", href: `${base}/help`, group: "Contenu" },
-    { label: "Newsletter", icon: "📧", href: `${base}/newsletter`, group: "Contenu" },
-    // ── content-gen (Sprint 1-12 + audit final P0-4 fix) ──
-    {
-      label: "Content Gen — Tableau de bord",
-      icon: "🧠",
-      href: `${base}/content-gen`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Campagnes couverture",
-      icon: "🎯",
-      href: `${base}/content-gen/coverage`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Cockpit géographique",
-      icon: "🗺️",
-      href: `${base}/content-gen/geo`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Jobs (queue inspector)",
-      icon: "⚙️",
-      href: `${base}/content-gen/jobs`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Review queue",
-      icon: "✅",
-      href: `${base}/content-gen/review-queue`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Publications kanban",
-      icon: "🗂️",
-      href: `${base}/content-gen/publications-status`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Templates",
-      icon: "📐",
-      href: `${base}/content-gen/templates`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Profil Manon",
-      icon: "✍️",
-      href: `${base}/content-gen/author/manon`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Sources RSS",
-      icon: "📰",
-      href: `${base}/content-gen/rss`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Réglages (12 sections)",
-      icon: "⚙️",
-      href: `${base}/content-gen/settings`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Kill switch 🔴",
-      icon: "🛑",
-      href: `${base}/content-gen/settings/kill-switch`,
-      group: "Content Gen",
-      hint: "URGENCE",
-    },
-    {
-      label: "Content Gen — Coûts (30j)",
-      icon: "💰",
-      href: `${base}/content-gen/costs`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Similarity monitor",
-      icon: "🔍",
-      href: `${base}/content-gen/similarity-monitor`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Quality dashboard (V2)",
-      icon: "📈",
-      href: `${base}/content-gen/quality`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Keyword tracking (V2)",
-      icon: "🔑",
-      href: `${base}/content-gen/keyword-tracking`,
-      group: "Content Gen",
-    },
-    {
-      label: "Content Gen — Onboarding 5 étapes",
-      icon: "🚀",
-      href: `${base}/content-gen/onboarding`,
-      group: "Content Gen",
-    },
-    // ── image-bank (Sprint 1-7 V1) ──
-    {
-      label: "Image bank — Overview",
-      icon: "🖼️",
-      href: `${base}/image-bank`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Library",
-      icon: "📚",
-      href: `${base}/image-bank/library`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Upload",
-      icon: "⬆️",
-      href: `${base}/image-bank/upload`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Bulk import CSV",
-      icon: "📥",
-      href: `${base}/image-bank/bulk-import`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Quality queue",
-      icon: "✅",
-      href: `${base}/image-bank/quality`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Analytics",
-      icon: "📈",
-      href: `${base}/image-bank/analytics`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Categories",
-      icon: "🗂️",
-      href: `${base}/image-bank/categories`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Tags",
-      icon: "🏷️",
-      href: `${base}/image-bank/tags`,
-      group: "Image bank",
-    },
-    {
-      label: "Image bank — Settings",
-      icon: "⚙️",
-      href: `${base}/image-bank/settings`,
-      group: "Image bank",
-    },
-    // ── ops ──
-    { label: "Analytics & SEO", icon: "📊", href: `${base}/analytics`, group: "Ops" },
-    { label: "Infra & outils", icon: "🔧", href: `${base}/infra`, group: "Ops" },
-    { label: "Alertes ops", icon: "🚨", href: `${base}/alerts`, group: "Ops" },
-    // ── système ──
-    { label: "Utilisateurs", icon: "👥", href: `${base}/users`, group: "Système" },
-    { label: "Activity logs", icon: "📜", href: `${base}/activity-logs`, group: "Système" },
-    { label: "Paramètres", icon: "⚙️", href: `${base}/settings`, group: "Système" },
-    { label: "2FA — sécurité", icon: "🔐", href: `${base}/2fa/setup`, group: "Système" },
-  ];
+/**
+ * Calcule la clé d'ordre d'un groupe pour le rendu cmdk.
+ * Les groupes suivent `ADMIN_NAV_GROUP_ORDER`. Au sein de `content_gen`,
+ * les pôles suivent `CONTENT_GEN_POLE_ORDER` (du plus chaud au plus froid).
+ */
+function groupSortKey(group: AdminNavGroup, subGroup?: ContentGenPole): number {
+  const groupIndex = ADMIN_NAV_GROUP_ORDER.indexOf(group);
+  const poleIndex = subGroup ? CONTENT_GEN_POLE_ORDER.indexOf(subGroup) : 0;
+  // 100 places pour le rang groupe, +rang pôle pour content_gen.
+  return groupIndex * 100 + poleIndex;
+}
+
+/** Heading cmdk : « Génération de contenu · <Pôle> » pour content_gen, sinon libellé groupe. */
+function headingFor(group: AdminNavGroup, subGroup?: ContentGenPole): string {
+  const groupLabel = ADMIN_NAV_GROUP_LABELS[group];
+  if (group === "content_gen" && subGroup) {
+    return `${groupLabel} · ${CONTENT_GEN_POLE_LABELS[subGroup]}`;
+  }
+  return groupLabel;
 }
 
 export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const base = `/fr/${adminPrefix}`;
-  const items = buildItems(base);
+
+  // Items dérivés du SSOT — mémoïsés (recalcul uniquement si adminPrefix change).
+  const items = useMemo<PaletteItem[]>(
+    () =>
+      buildAdminNav(adminPrefix)
+        // N3 résolus par breadcrumbs uniquement (jamais en sidebar) : on les
+        // expose tout de même dans la palette pour ne perdre aucune route.
+        .map((item) => ({
+          ...item,
+          groupLabel: headingFor(item.group, item.subGroup),
+        })),
+    [adminPrefix],
+  );
 
   // Raccourci global Cmd+K / Ctrl+K
   useEffect(() => {
@@ -281,12 +93,24 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  // Group items par section pour cmdk groups
-  const grouped = items.reduce<Record<string, CommandItem[]>>((acc, item) => {
-    if (!acc[item.group]) acc[item.group] = [];
-    acc[item.group]!.push(item);
-    return acc;
-  }, {});
+  // Group items par heading (groupe / pôle), en respectant l'ordre du SSOT.
+  const groups = useMemo(() => {
+    const byLabel = new Map<string, { sortKey: number; items: PaletteItem[] }>();
+    for (const item of items) {
+      const existing = byLabel.get(item.groupLabel);
+      if (existing) {
+        existing.items.push(item);
+      } else {
+        byLabel.set(item.groupLabel, {
+          sortKey: groupSortKey(item.group, item.subGroup),
+          items: [item],
+        });
+      }
+    }
+    return Array.from(byLabel.entries())
+      .sort((a, b) => a[1].sortKey - b[1].sortKey)
+      .map(([label, value]) => ({ label, items: value.items }));
+  }, [items]);
 
   function select(href: string) {
     setOpen(false);
@@ -316,12 +140,12 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
         />
         <Command.List className="admin-cmdk-list">
           <Command.Empty className="admin-cmdk-empty">Aucun résultat.</Command.Empty>
-          {Object.entries(grouped).map(([group, groupItems]) => (
-            <Command.Group key={group} heading={group} className="admin-cmdk-group">
-              {groupItems.map((item) => (
+          {groups.map((group) => (
+            <Command.Group key={group.label} heading={group.label} className="admin-cmdk-group">
+              {group.items.map((item) => (
                 <Command.Item
                   key={item.href}
-                  value={`${item.group} ${item.label} ${item.hint ?? ""}`}
+                  value={`${group.label} ${item.label}`}
                   onSelect={() => select(item.href)}
                   className="admin-cmdk-item"
                 >
@@ -329,11 +153,6 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
                     {item.icon}
                   </span>
                   <span>{item.label}</span>
-                  {item.hint && (
-                    <span className="admin-cmdk-hint" aria-hidden="true">
-                      {item.hint}
-                    </span>
-                  )}
                 </Command.Item>
               ))}
             </Command.Group>

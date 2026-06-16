@@ -1,12 +1,15 @@
 /**
- * Content Generator — Monitoring redirect (P0-10 Sprint correctif admin).
+ * Redirect 308 (permanent) — MORT→REDIR (DECISION-IA §5-E, 2026-06-16).
  *
- * Le lien "Voir monitoring →" dans le bandeau anomalies du layout pointe sur
- * cette route. V1 = redirect immédiat vers /jobs?status=failed pour afficher
- * les jobs en échec. Une vraie page monitoring dédiée sera Sprint dédié.
+ * `/monitoring` était un stub placeholder sans contenu propre. La supervision
+ * des échecs vit dans `/jobs?status=failed` (filtre dédié). On redirige
+ * définitivement, route retirée de la nav mais conservée pour les liens
+ * existants (bandeau anomalies du layout, bookmarks).
+ *
+ * Aucune capacité perdue : tout est dans `/jobs`.
  */
 
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -16,5 +19,7 @@ interface PageProps {
 
 export default async function MonitoringPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  redirect(`/${locale}/${adminPrefix}/content-gen/jobs?status=failed`);
+  permanentRedirect(
+    `/${locale}/${adminPrefix}/content-gen/jobs?status=failed`,
+  );
 }

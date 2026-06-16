@@ -58,7 +58,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         }
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
-            <Link href={`${base}/coverage/new`} className="admin-button-cta">
+            <Link href={`${base}/campaigns/new`} className="admin-button-cta">
               + Nouvelle campagne
             </Link>
             <Link href={`${base}/settings/kill-switch`} className="admin-button-ghost">
@@ -78,7 +78,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             <Link href={`${base}/coverage/presets`} className="admin-button-cta">
               Choisir un preset →
             </Link>
-            <Link href={`${base}/coverage/new`} className="admin-button-ghost">
+            <Link href={`${base}/campaigns/new`} className="admin-button-ghost">
               Campagne libre
             </Link>
           </div>
@@ -192,8 +192,8 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             <strong>Failed :</strong> {kpis.activeQueue.failed}
           </li>
           <li>
-            <Link href={`${base}/queue`} className="admin-button-ghost">
-              Inspecter BullMQ →
+            <Link href={`${base}/jobs`} className="admin-button-ghost">
+              Voir la file d&apos;attente →
             </Link>
           </li>
         </ul>
@@ -203,7 +203,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         <h2 className="admin-h2">Génération unitaire (§ 12.2)</h2>
         <p className="admin-meta">
           Lance 1 contenu pour test ou ad-hoc. Pour la production en masse, utiliser{" "}
-          <Link href={`${base}/coverage/new`} className="admin-link">
+          <Link href={`${base}/campaigns/new`} className="admin-link">
             Nouvelle campagne
           </Link>
           .

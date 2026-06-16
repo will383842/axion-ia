@@ -211,7 +211,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       const anomalyNotif: AdminNotificationItem = {
         id: row.key,
         title: labelMap[row.key] ?? row.key,
-        href: `${adminBase}/content-gen/monitoring`,
+        href: `${adminBase}/content-gen/jobs?status=failed`,
         severity: "destructive",
         createdAt: row.updatedAt.toISOString(),
         ...(val.message ? { description: val.message } : {}),

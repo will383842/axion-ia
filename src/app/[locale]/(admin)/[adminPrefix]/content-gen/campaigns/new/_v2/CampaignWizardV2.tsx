@@ -1,9 +1,16 @@
-// Sprint v7 Phase 3 commit 1 — Wizard 4 steps /content-gen/campaigns/new.
+// Wizard 4 étapes /content-gen/campaigns/new — POINT D'ENTRÉE UNIQUE.
 //
-// State machine simple via useState(currentStep). FormData accumulé entre
-// steps puis submit Step 4 → createCampaignFromWizard server action.
+// Étape 1 — Quoi générer ?        (cartes de types + presets en raccourci)
+// Étape 2 — Pour qui / où ?       (verticale + villes + public)
+// Étape 3 — Combien / à quel rythme ? (volume + estimation coût&durée en direct = M7)
+// Étape 4 — Vérifier & lancer     (récap + Lancer → redirection /coverage/[id] = M8)
 //
-// 9 sliders ContentType actuels (les 19 Phase 8 viendront ensuite).
+// State machine via useState(step). FormData accumulé entre étapes puis submit
+// Étape 4 → createCampaignFromWizard server action (RÉUTILISÉE, non réécrite).
+//
+// B6 : accepte presetSeed (pré-remplissage depuis /coverage/presets?preset=).
+// M5 : targetPerCity replié dans un bloc « avancé ».
+// M7 : estimation coût&durée recalculée en direct à l'étape 3.
 
 "use client";
 // use-client: state machine wizard + sliders interactifs + sonner toast —
@@ -23,18 +30,19 @@ import {
   type WizardContentType,
 } from "@/server/actions/content-gen/campaign-wizard-constants";
 
+import type { PresetWizardSeed, ServiceSector } from "./preset-mapping";
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 interface Props {
   readonly adminPrefix: string;
+  /** B6 — état initial dérivé d'un preset (?preset=<slug>). */
+  readonly presetSeed?: PresetWizardSeed;
+  /** Nom du preset (affiché en bandeau). */
+  readonly presetName?: string;
+  /** Slug de ville pré-sélectionné (?ville=<slug>, redirection villes). */
+  readonly villeSlug?: string;
 }
-
-type ServiceSector =
-  | "interventions_formations"
-  | "audits"
-  | "implementations"
-  | "un_a_un"
-  | "sites_web_augmentes";
 
 type VilleScopeMode = "global_queue" | "custom_subset";
 type MixMode = "percentage" | "manual";
@@ -99,38 +107,157 @@ const DEFAULT_WEIGHTS_BALANCED: Record<WizardContentType, number> = {
   glossary_term: 3,
 };
 
+// ── Étape 1 — « Quoi générer ? » : cartes de grands types ─────────────────────
+// Chaque carte applique un mix focalisé (somme = 100). « Mix équilibré » garde
+// le preset par défaut ; le détail fin reste accessible en mode avancé (étape 3).
+interface QuickType {
+  id: string;
+  fr: string;
+  desc: string;
+  emoji: string;
+  weights: Record<WizardContentType, number>;
+}
+
+function focusedWeights(active: Partial<Record<WizardContentType, number>>): Record<
+  WizardContentType,
+  number
+> {
+  const zeroed = Object.fromEntries(
+    Object.keys(DEFAULT_WEIGHTS_BALANCED).map((k) => [k, 0]),
+  ) as Record<WizardContentType, number>;
+  return { ...zeroed, ...active };
+}
+
+const QUICK_TYPES: QuickType[] = [
+  {
+    id: "pages_villes",
+    fr: "Pages villes",
+    desc: "Landing pages locales par ville",
+    emoji: "🏙️",
+    weights: focusedWeights({ landing_ville: 100 }),
+  },
+  {
+    id: "blog",
+    fr: "Articles de blog",
+    desc: "Articles éditoriaux & actualités",
+    emoji: "📝",
+    weights: focusedWeights({ blog_article: 60, blog_from_title: 20, blog_from_keywords: 20 }),
+  },
+  {
+    id: "guides",
+    fr: "Guides piliers",
+    desc: "Contenus de fond, forte autorité",
+    emoji: "📘",
+    weights: focusedWeights({ guide_pilier: 100 }),
+  },
+  {
+    id: "qr_faq",
+    fr: "Q-R / FAQ",
+    desc: "Questions-réponses & FAQ géo",
+    emoji: "❓",
+    weights: focusedWeights({ qa_derived: 40, faq_standalone: 30, faq_geo: 30 }),
+  },
+  {
+    id: "equilibre",
+    fr: "Mix équilibré",
+    desc: "Répartition recommandée des 21 types",
+    emoji: "⚖️",
+    weights: { ...DEFAULT_WEIGHTS_BALANCED },
+  },
+];
+
+// M7 — Estimation coût & durée (affichage indicatif côté wizard).
+// Hypothèses internes : ~0,03 $ / contenu (Sonnet + juges + embeddings),
+// ~1,5 min de génération effective / contenu réparti sur les workers.
+const EST_COST_PER_ARTICLE_USD = 0.03;
+const EST_MINUTES_PER_ARTICLE = 1.5;
+
+function estimateTotals(dailyArticles: number): {
+  totalArticles: number;
+  costUsd: number;
+  durationDays: number;
+} {
+  const totalArticles = Math.max(0, Math.round(dailyArticles * 30));
+  const costUsd = totalArticles * EST_COST_PER_ARTICLE_USD;
+  // Durée = nb de jours pour écouler le volume au rythme dailyArticles/jour.
+  const durationDays = dailyArticles > 0 ? Math.ceil(totalArticles / dailyArticles) : 0;
+  return { totalArticles, costUsd, durationDays };
+}
+
+function formatCost(usd: number): string {
+  if (usd >= 100) return `~${Math.round(usd)} $`;
+  return `~${usd.toFixed(1)} $`;
+}
+
+function formatDuration(days: number): string {
+  if (days <= 1) return "~1 jour";
+  if (days < 31) return `~${days} jours`;
+  const months = Math.round(days / 30);
+  return months <= 1 ? "~1 mois" : `~${months} mois`;
+}
+
 // ─── Composant principal ────────────────────────────────────────────────────
 
-export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
+export function CampaignWizardV2({
+  adminPrefix,
+  presetSeed,
+  presetName,
+  villeSlug,
+}: Props): React.ReactElement {
   const router = useRouter();
-  const [state, setState] = useState<WizardState>({
-    step: 1,
-    serviceSector: null,
-    name: "",
-    dailyArticles: 200,
-    targetPerCity: 50,
-    villeScopeMode: "global_queue",
-    customVilleSlugs: [],
-    customVilleInput: "",
-    startDate: "",
-    endDate: "",
-    mixMode: "percentage",
-    contentTypeWeights: { ...DEFAULT_WEIGHTS_BALANCED },
-    submitting: false,
+  const base = `/fr/${adminPrefix}/content-gen`;
+
+  // B6 — état initial dérivé du preset / de la ville (?preset / ?ville).
+  const [state, setState] = useState<WizardState>(() => {
+    const presetWeights = presetSeed?.contentTypeWeights;
+    const seededWeights: Record<WizardContentType, number> = presetWeights
+      ? focusedWeights(presetWeights)
+      : { ...DEFAULT_WEIGHTS_BALANCED };
+    const hasVille = typeof villeSlug === "string" && villeSlug.length > 0;
+    return {
+      step: 1,
+      serviceSector: presetSeed?.serviceSector ?? null,
+      name: presetName ? `Campagne ${presetName}` : "",
+      dailyArticles: presetSeed?.dailyArticles ?? 200,
+      targetPerCity: presetSeed?.targetPerCity ?? 50,
+      villeScopeMode: hasVille ? "custom_subset" : "global_queue",
+      customVilleSlugs: hasVille ? [villeSlug] : [],
+      customVilleInput: hasVille ? villeSlug : "",
+      startDate: "",
+      endDate: "",
+      mixMode: "percentage",
+      contentTypeWeights: seededWeights,
+      submitting: false,
+    };
   });
+
+  // Détail fin du mix (mode avancé étape 1) + targetPerCity avancé (M5).
+  const [showMixDetail, setShowMixDetail] = useState(false);
+  const [showAdvancedScope, setShowAdvancedScope] = useState(false);
 
   function update<K extends keyof WizardState>(key: K, value: WizardState[K]): void {
     setState((s) => ({ ...s, [key]: value }));
   }
 
-  const canGoStep2 = !!state.serviceSector;
-  const canGoStep3 = state.name.trim().length >= 2 && state.dailyArticles >= 1;
   const weightsSum = Object.values(state.contentTypeWeights).reduce((a, b) => a + b, 0);
-  const canGoStep4 = state.mixMode === "manual" || Math.abs(weightsSum - 100) <= 1;
+  const hasContentType = weightsSum > 0;
+  const mixValid = state.mixMode === "manual" || Math.abs(weightsSum - 100) <= 1;
+  const canGoStep2 = hasContentType && mixValid;
+  const canGoStep3 = !!state.serviceSector;
+  const canGoStep4 = state.name.trim().length >= 2 && state.dailyArticles >= 1;
+
+  const est = estimateTotals(state.dailyArticles);
+
+  /** Carte « quoi » active si ses poids correspondent exactement à l'état. */
+  function isQuickTypeActive(qt: QuickType): boolean {
+    return (Object.keys(qt.weights) as WizardContentType[]).every(
+      (k) => (state.contentTypeWeights[k] ?? 0) === qt.weights[k],
+    );
+  }
 
   async function handleSubmit(action: "draft" | "launch"): Promise<void> {
     if (!state.serviceSector) {
-      toast.error("Verticale manquante (step 1)");
+      toast.error("Choisissez une verticale (étape 2)");
       return;
     }
     update("submitting", true);
@@ -149,7 +276,8 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
         action,
       });
       toast.success(action === "launch" ? "Campagne lancée" : "Brouillon enregistré");
-      router.push(`/fr/${adminPrefix}/content-gen/coverage/${result.campaignId}`);
+      // M8 — redirection vers le détail de la campagne créée.
+      router.push(`${base}/coverage/${result.campaignId}`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Erreur création campagne";
       toast.error(`Échec : ${msg}`);
@@ -157,12 +285,20 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
     }
   }
 
+  const STEP_LABELS = ["Quoi", "Pour qui / où", "Combien / rythme", "Vérifier & lancer"];
+
   return (
     <AdminPageShell>
       <AdminPageHeader
         title="Nouvelle campagne"
-        description={`Étape ${state.step} sur 4 — wizard 21 sliders × 6 sections (9 V1 + 12 Phase 8).`}
+        description={`Point d'entrée unique de génération — étape ${state.step} sur 4.`}
       />
+
+      {presetName ? (
+        <div className="mb-[var(--space-admin-4,8px)]">
+          <AdminBadge tone="info">Pré-rempli depuis le modèle « {presetName} »</AdminBadge>
+        </div>
+      ) : null}
 
       {/* Stepper visuel */}
       <div className="mb-[var(--space-admin-6,16px)] flex items-center gap-[var(--space-admin-3,6px)]">
@@ -182,13 +318,7 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
               {state.step > n ? "✓" : n}
             </span>
             <span className="hidden text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)] sm:inline">
-              {n === 1
-                ? "Verticale"
-                : n === 2
-                  ? "Volume & scope"
-                  : n === 3
-                    ? "Mix contenu"
-                    : "Récap"}
+              {STEP_LABELS[n - 1]}
             </span>
             {n < 4 ? (
               <span className="hidden h-px flex-1 bg-[color:var(--color-admin-border)] sm:inline" />
@@ -197,14 +327,185 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
         ))}
       </div>
 
-      {/* Step 1 — Verticale */}
+      {/* ── Étape 1 — Quoi générer ? ─────────────────────────────────────── */}
       {state.step === 1 ? (
         <AdminCard>
           <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
-            Étape 1 — Choisir une verticale Axion-IA
+            Étape 1 — Quoi générer ?
           </h2>
+          <p className="mb-[var(--space-admin-4,8px)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+            Choisissez un type de contenu. Vous pourrez affiner la répartition fine plus bas.
+          </p>
+
           <div
             className="grid grid-cols-1 gap-[var(--space-admin-3,6px)] sm:grid-cols-2 lg:grid-cols-3"
+            role="radiogroup"
+            aria-label="Type de contenu"
+          >
+            {QUICK_TYPES.map((qt) => {
+              const active = isQuickTypeActive(qt);
+              return (
+                <button
+                  key={qt.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => update("contentTypeWeights", { ...qt.weights })}
+                  className={cn(
+                    "flex flex-col items-start gap-1 rounded border p-4 text-left transition",
+                    active
+                      ? "border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-surface-2)] ring-2 ring-[color:var(--color-admin-accent)]"
+                      : "border-[color:var(--color-admin-border)] hover:bg-[color:var(--color-admin-surface-2)]",
+                  )}
+                >
+                  <span className="text-[length:var(--text-admin-lg)]">{qt.emoji}</span>
+                  <span className="font-semibold text-[color:var(--color-admin-fg)]">{qt.fr}</span>
+                  <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+                    {qt.desc}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Raccourci presets */}
+          <div className="mt-[var(--space-admin-5,12px)] flex flex-wrap items-center gap-[var(--space-admin-3,6px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]">
+            <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+              … ou partir d&apos;un modèle prêt à l&apos;emploi :
+            </span>
+            <button
+              type="button"
+              onClick={() => router.push(`${base}/coverage/presets`)}
+              className="rounded border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-2)]"
+            >
+              ✨ Voir les modèles prêts à l&apos;emploi
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push(`${base}/orchestrator/adhoc`)}
+              className="rounded border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-2)]"
+            >
+              ⚡ Générer une seule page maintenant
+            </button>
+          </div>
+
+          {/* Détail fin du mix (avancé) */}
+          <div className="mt-[var(--space-admin-5,12px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]">
+            <button
+              type="button"
+              onClick={() => setShowMixDetail((v) => !v)}
+              className="flex items-center gap-2 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-soft)] hover:text-[color:var(--color-admin-fg)]"
+              aria-expanded={showMixDetail}
+            >
+              <span>{showMixDetail ? "▾" : "▸"}</span>
+              Personnaliser la répartition fine des types (avancé)
+            </button>
+
+            {showMixDetail ? (
+              <div className="mt-[var(--space-admin-4,8px)]">
+                <div className="mb-[var(--space-admin-4,8px)] flex items-center gap-2">
+                  <span className="text-[length:var(--text-admin-sm)]">Mode :</span>
+                  <label className="flex items-center gap-1">
+                    <input
+                      type="radio"
+                      name="mixMode"
+                      checked={state.mixMode === "percentage"}
+                      onChange={() => update("mixMode", "percentage")}
+                    />
+                    % Répartition
+                  </label>
+                  <label className="flex items-center gap-1">
+                    <input
+                      type="radio"
+                      name="mixMode"
+                      checked={state.mixMode === "manual"}
+                      onChange={() => update("mixMode", "manual")}
+                    />
+                    Quotas manuels
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => update("contentTypeWeights", { ...DEFAULT_WEIGHTS_BALANCED })}
+                    className="ml-auto rounded border border-[color:var(--color-admin-border)] px-2 py-1 text-[length:var(--text-admin-xs)] hover:bg-[color:var(--color-admin-surface-2)]"
+                  >
+                    Mix équilibré
+                  </button>
+                </div>
+                <div className="space-y-[var(--space-admin-5,12px)]">
+                  {WIZARD_SECTIONS.map((section) => (
+                    <div key={section.id}>
+                      <h3 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+                        {section.label} ({section.types.length})
+                      </h3>
+                      <div className="space-y-[var(--space-admin-3,6px)]">
+                        {section.types.map((ct) => (
+                          <div
+                            key={ct}
+                            className="grid grid-cols-12 items-center gap-2 border-b border-[color:var(--color-admin-border)] py-2"
+                          >
+                            <span className="col-span-4 font-mono text-[length:var(--text-admin-sm)]">
+                              {ct}
+                            </span>
+                            <input
+                              type="range"
+                              min={0}
+                              max={state.mixMode === "percentage" ? 100 : 500}
+                              value={state.contentTypeWeights[ct as WizardContentType] ?? 0}
+                              onChange={(e) =>
+                                update("contentTypeWeights", {
+                                  ...state.contentTypeWeights,
+                                  [ct]: parseInt(e.target.value, 10) || 0,
+                                })
+                              }
+                              className="col-span-6"
+                              aria-label={`Slider ${ct}`}
+                            />
+                            <span className="col-span-2 text-right text-[length:var(--text-admin-sm)] font-semibold">
+                              {state.contentTypeWeights[ct as WizardContentType] ?? 0}
+                              {state.mixMode === "percentage" ? "%" : ""}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-[var(--space-admin-4,8px)] flex items-center gap-2">
+                  <span className="text-[length:var(--text-admin-sm)]">
+                    Somme :{" "}
+                    <strong
+                      className={cn(
+                        mixValid
+                          ? "text-[color:var(--color-admin-success-fg)]"
+                          : "text-[color:var(--color-admin-destructive-fg)]",
+                      )}
+                    >
+                      {weightsSum}
+                      {state.mixMode === "percentage" ? "%" : ""}
+                    </strong>
+                  </span>
+                  {state.mixMode === "percentage" && !mixValid ? (
+                    <AdminBadge tone="destructive">Somme doit = 100</AdminBadge>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </AdminCard>
+      ) : null}
+
+      {/* ── Étape 2 — Pour qui / où ? ────────────────────────────────────── */}
+      {state.step === 2 ? (
+        <AdminCard>
+          <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
+            Étape 2 — Pour qui / où ?
+          </h2>
+
+          <h3 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+            Verticale Axion-IA *
+          </h3>
+          <div
+            className="mb-[var(--space-admin-5,12px)] grid grid-cols-1 gap-[var(--space-admin-3,6px)] sm:grid-cols-2 lg:grid-cols-3"
             role="radiogroup"
             aria-label="Verticale Axion-IA"
           >
@@ -231,79 +532,32 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
               </button>
             ))}
           </div>
-        </AdminCard>
-      ) : null}
 
-      {/* Step 2 — Volume & scope */}
-      {state.step === 2 ? (
-        <AdminCard>
-          <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
-            Étape 2 — Nom, volume, scope villes, période
-          </h2>
-          <div className="grid grid-cols-1 gap-[var(--space-admin-4,8px)] sm:grid-cols-2">
-            <label className="flex flex-col gap-1 sm:col-span-2">
-              <span className="text-[length:var(--text-admin-sm)] font-medium">Nom *</span>
-              <input
-                type="text"
-                value={state.name}
-                onChange={(e) => update("name", e.target.value)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
-                placeholder="ex: Campagne Audits Q3 2026"
-                aria-label="Nom de la campagne"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[length:var(--text-admin-sm)] font-medium">
-                Articles/jour * (1..1000)
-              </span>
-              <input
-                type="number"
-                min={1}
-                max={1000}
-                value={state.dailyArticles}
-                onChange={(e) => update("dailyArticles", parseInt(e.target.value, 10) || 1)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
-                aria-label="Articles par jour"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[length:var(--text-admin-sm)] font-medium">
-                Cible articles/ville * (1..200)
-              </span>
-              <input
-                type="number"
-                min={1}
-                max={200}
-                value={state.targetPerCity}
-                onChange={(e) => update("targetPerCity", parseInt(e.target.value, 10) || 1)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
-                aria-label="Cible par ville"
-              />
-            </label>
-            <fieldset className="sm:col-span-2">
-              <legend className="mb-1 text-[length:var(--text-admin-sm)] font-medium">
-                Scope villes
-              </legend>
-              <div className="flex flex-col gap-1">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="villeScopeMode"
-                    checked={state.villeScopeMode === "global_queue"}
-                    onChange={() => update("villeScopeMode", "global_queue")}
-                  />
-                  File globale (2150 villes ordre `/cities-order`)
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="villeScopeMode"
-                    checked={state.villeScopeMode === "custom_subset"}
-                    onChange={() => update("villeScopeMode", "custom_subset")}
-                  />
-                  Sous-ensemble personnalisé (saisir slugs séparés par virgule)
-                </label>
-                {state.villeScopeMode === "custom_subset" ? (
+          <fieldset>
+            <legend className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+              Villes ciblées
+            </legend>
+            <div className="flex flex-col gap-1">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="villeScopeMode"
+                  checked={state.villeScopeMode === "global_queue"}
+                  onChange={() => update("villeScopeMode", "global_queue")}
+                />
+                Toutes les villes (file globale, ordre « Ordre de génération »)
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="villeScopeMode"
+                  checked={state.villeScopeMode === "custom_subset"}
+                  onChange={() => update("villeScopeMode", "custom_subset")}
+                />
+                Sélection de villes (saisir les identifiants séparés par une virgule)
+              </label>
+              {state.villeScopeMode === "custom_subset" ? (
+                <>
                   <textarea
                     rows={3}
                     value={state.customVilleInput}
@@ -318,143 +572,144 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
                     }}
                     placeholder="paris, lyon, marseille, ..."
                     className="admin-input mt-2 rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
-                    aria-label="Slugs villes personnalisés"
+                    aria-label="Identifiants villes sélectionnées"
                   />
-                ) : null}
-                {state.villeScopeMode === "custom_subset" ? (
                   <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
                     {state.customVilleSlugs.length} ville(s) sélectionnée(s)
                   </span>
-                ) : null}
-              </div>
-            </fieldset>
+                </>
+              ) : null}
+            </div>
+          </fieldset>
+        </AdminCard>
+      ) : null}
+
+      {/* ── Étape 3 — Combien / à quel rythme ? ──────────────────────────── */}
+      {state.step === 3 ? (
+        <AdminCard>
+          <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
+            Étape 3 — Combien / à quel rythme ?
+          </h2>
+          <div className="grid grid-cols-1 gap-[var(--space-admin-4,8px)] sm:grid-cols-2">
+            <label className="flex flex-col gap-1 sm:col-span-2">
+              <span className="text-[length:var(--text-admin-sm)] font-medium">
+                Nom de la campagne *
+              </span>
+              <input
+                type="text"
+                value={state.name}
+                onChange={(e) => update("name", e.target.value)}
+                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                placeholder="ex: Campagne Audits Q3 2026"
+                aria-label="Nom de la campagne"
+              />
+            </label>
             <label className="flex flex-col gap-1">
               <span className="text-[length:var(--text-admin-sm)] font-medium">
-                Date début (optionnel)
+                Contenus par jour * (1 à 1000)
+              </span>
+              <input
+                type="number"
+                min={1}
+                max={1000}
+                value={state.dailyArticles}
+                onChange={(e) => update("dailyArticles", parseInt(e.target.value, 10) || 1)}
+                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                aria-label="Contenus par jour"
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-[length:var(--text-admin-sm)] font-medium">
+                Date de début (optionnel)
               </span>
               <input
                 type="date"
                 value={state.startDate}
                 onChange={(e) => update("startDate", e.target.value)}
                 className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
-                aria-label="Date début"
+                aria-label="Date de début"
               />
             </label>
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1 sm:col-span-2">
               <span className="text-[length:var(--text-admin-sm)] font-medium">
-                Date fin (optionnel)
+                Date de fin (optionnel)
               </span>
               <input
                 type="date"
                 value={state.endDate}
                 onChange={(e) => update("endDate", e.target.value)}
                 className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
-                aria-label="Date fin"
+                aria-label="Date de fin"
               />
             </label>
           </div>
-        </AdminCard>
-      ) : null}
 
-      {/* Step 3 — Mix contenu (21 sliders groupés en 6 sections — Phase 8) */}
-      {state.step === 3 ? (
-        <AdminCard>
-          <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
-            Étape 3 — Mix types contenu (21 sliders · 6 sections)
-          </h2>
-          <div className="mb-[var(--space-admin-4,8px)] flex items-center gap-2">
-            <span className="text-[length:var(--text-admin-sm)]">Mode :</span>
-            <label className="flex items-center gap-1">
-              <input
-                type="radio"
-                name="mixMode"
-                checked={state.mixMode === "percentage"}
-                onChange={() => update("mixMode", "percentage")}
-              />
-              % Répartition
-            </label>
-            <label className="flex items-center gap-1">
-              <input
-                type="radio"
-                name="mixMode"
-                checked={state.mixMode === "manual"}
-                onChange={() => update("mixMode", "manual")}
-              />
-              Quotas manuels
-            </label>
+          {/* M5 — targetPerCity replié dans un bloc avancé */}
+          <div className="mt-[var(--space-admin-4,8px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]">
             <button
               type="button"
-              onClick={() => update("contentTypeWeights", { ...DEFAULT_WEIGHTS_BALANCED })}
-              className="ml-auto rounded border border-[color:var(--color-admin-border)] px-2 py-1 text-[length:var(--text-admin-xs)] hover:bg-[color:var(--color-admin-surface-2)]"
+              onClick={() => setShowAdvancedScope((v) => !v)}
+              className="flex items-center gap-2 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-soft)] hover:text-[color:var(--color-admin-fg)]"
+              aria-expanded={showAdvancedScope}
             >
-              Preset équilibré
+              <span>{showAdvancedScope ? "▾" : "▸"}</span>
+              Options avancées
             </button>
-          </div>
-          <div className="space-y-[var(--space-admin-5,12px)]">
-            {WIZARD_SECTIONS.map((section) => (
-              <div key={section.id}>
-                <h3 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                  {section.label} ({section.types.length})
-                </h3>
-                <div className="space-y-[var(--space-admin-3,6px)]">
-                  {section.types.map((ct) => (
-                    <div
-                      key={ct}
-                      className="grid grid-cols-12 items-center gap-2 border-b border-[color:var(--color-admin-border)] py-2"
-                    >
-                      <span className="col-span-4 font-mono text-[length:var(--text-admin-sm)]">
-                        {ct}
-                      </span>
-                      <input
-                        type="range"
-                        min={0}
-                        max={state.mixMode === "percentage" ? 100 : 500}
-                        value={state.contentTypeWeights[ct as WizardContentType] ?? 0}
-                        onChange={(e) =>
-                          update("contentTypeWeights", {
-                            ...state.contentTypeWeights,
-                            [ct]: parseInt(e.target.value, 10) || 0,
-                          })
-                        }
-                        className="col-span-6"
-                        aria-label={`Slider ${ct}`}
-                      />
-                      <span className="col-span-2 text-right text-[length:var(--text-admin-sm)] font-semibold">
-                        {state.contentTypeWeights[ct as WizardContentType] ?? 0}
-                        {state.mixMode === "percentage" ? "%" : ""}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-[var(--space-admin-4,8px)] flex items-center gap-2">
-            <span className="text-[length:var(--text-admin-sm)]">
-              Somme :{" "}
-              <strong
-                className={cn(
-                  canGoStep4
-                    ? "text-[color:var(--color-admin-success-fg)]"
-                    : "text-[color:var(--color-admin-destructive-fg)]",
-                )}
-              >
-                {weightsSum}
-                {state.mixMode === "percentage" ? "%" : ""}
-              </strong>
-            </span>
-            {state.mixMode === "percentage" && !canGoStep4 ? (
-              <AdminBadge tone="destructive">Somme doit = 100</AdminBadge>
+            {showAdvancedScope ? (
+              <label className="mt-[var(--space-admin-3,6px)] flex max-w-sm flex-col gap-1">
+                <span className="text-[length:var(--text-admin-sm)] font-medium">
+                  Cible de contenus par ville (1 à 200)
+                </span>
+                <input
+                  type="number"
+                  min={1}
+                  max={200}
+                  value={state.targetPerCity}
+                  onChange={(e) => update("targetPerCity", parseInt(e.target.value, 10) || 1)}
+                  className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                  aria-label="Cible de contenus par ville"
+                />
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                  Plafond de contenus générés par ville. Laissez la valeur par défaut si vous
+                  n&apos;avez pas de besoin spécifique.
+                </span>
+              </label>
             ) : null}
+          </div>
+
+          {/* M7 — Estimation en direct */}
+          <div className="mt-[var(--space-admin-5,12px)] rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-2)] p-4">
+            <h3 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+              Estimation en direct
+            </h3>
+            <dl className="grid grid-cols-1 gap-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] sm:grid-cols-3">
+              <div>
+                <dt className="text-[color:var(--color-admin-fg-soft)]">Contenus / mois</dt>
+                <dd className="font-semibold">{est.totalArticles.toLocaleString("fr-FR")}</dd>
+              </div>
+              <div>
+                <dt className="text-[color:var(--color-admin-fg-soft)]">Coût estimé</dt>
+                <dd className="font-semibold">{formatCost(est.costUsd)}</dd>
+              </div>
+              <div>
+                <dt className="text-[color:var(--color-admin-fg-soft)]">Durée estimée</dt>
+                <dd className="font-semibold">{formatDuration(est.durationDays)}</dd>
+              </div>
+            </dl>
+            <p className="mt-[var(--space-admin-2,4px)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+              Estimation indicative ({formatCost(EST_COST_PER_ARTICLE_USD)} et ~
+              {EST_MINUTES_PER_ARTICLE} min par contenu). Le coût réel dépend des fournisseurs IA
+              configurés.
+            </p>
           </div>
         </AdminCard>
       ) : null}
 
-      {/* Step 4 — Récap + Submit */}
+      {/* ── Étape 4 — Vérifier & lancer ──────────────────────────────────── */}
       {state.step === 4 ? (
         <AdminCard>
           <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
-            Étape 4 — Récapitulatif
+            Étape 4 — Vérifier & lancer
           </h2>
           <dl className="grid grid-cols-1 gap-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] sm:grid-cols-2">
             <div>
@@ -468,24 +723,28 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
               <dd className="font-semibold">{state.name || "—"}</dd>
             </div>
             <div>
-              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Articles/jour</dt>
-              <dd className="font-semibold">{state.dailyArticles}</dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Cible/ville</dt>
-              <dd className="font-semibold">{state.targetPerCity}</dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Scope villes</dt>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">
+                Villes ciblées
+              </dt>
               <dd className="font-semibold">
                 {state.villeScopeMode === "global_queue"
-                  ? "File globale 2150 villes"
-                  : `Custom (${state.customVilleSlugs.length})`}
+                  ? "Toutes les villes"
+                  : `Sélection (${state.customVilleSlugs.length})`}
               </dd>
             </div>
             <div>
-              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Mode mix</dt>
-              <dd className="font-semibold">{state.mixMode}</dd>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Volume</dt>
+              <dd className="font-semibold">
+                {state.dailyArticles}/jour · ~{est.totalArticles.toLocaleString("fr-FR")} contenus
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Coût estimé</dt>
+              <dd className="font-semibold">{formatCost(est.costUsd)}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Durée estimée</dt>
+              <dd className="font-semibold">{formatDuration(est.durationDays)}</dd>
             </div>
           </dl>
           <div className="mt-[var(--space-admin-5,12px)] flex flex-wrap gap-[var(--space-admin-3,6px)]">
@@ -503,7 +762,7 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
               disabled={state.submitting}
               className="rounded border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)] px-4 py-2 text-white hover:opacity-90 disabled:opacity-50"
             >
-              {state.submitting ? "Lancement…" : "Lancer la campagne"}
+              {state.submitting ? "Lancement…" : "🚀 Lancer la campagne"}
             </button>
           </div>
         </AdminCard>
@@ -524,15 +783,19 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
             type="button"
             onClick={() => {
               if (state.step === 1 && !canGoStep2) {
-                toast.error("Sélectionnez une verticale");
+                toast.error(
+                  state.mixMode === "percentage" && !mixValid
+                    ? `Répartition fine : la somme doit = 100 (actuel : ${weightsSum})`
+                    : "Choisissez un type de contenu",
+                );
                 return;
               }
               if (state.step === 2 && !canGoStep3) {
-                toast.error("Nom + articles/jour requis");
+                toast.error("Choisissez une verticale");
                 return;
               }
               if (state.step === 3 && !canGoStep4) {
-                toast.error(`Somme sliders doit = 100 (actuel : ${weightsSum})`);
+                toast.error("Nom + contenus/jour requis");
                 return;
               }
               update("step", (state.step + 1) as 1 | 2 | 3 | 4);
