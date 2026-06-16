@@ -44,6 +44,7 @@ import { persistArticleEmbedding } from "@/server/content-gen/dedup/persist-arti
 import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-links/helpers";
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
+import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
 
 const QUEUE_NAME = "content-publish";
 
@@ -391,6 +392,15 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     ...(cgJob.correlationId ? { correlationId: cgJob.correlationId } : {}),
   });
 
+  // Catégorisation (2026-06-16) : catégorie de blog dérivée du secteur de service
+  // du job (propagé depuis la campagne) + tags générés par le LLM à persister.
+  const resolvedCategoryId = await resolveCategoryIdForSector(cgJob.serviceSector);
+  const generatedTags: string[] = Array.isArray((output as { tags?: unknown }).tags)
+    ? ((output as { tags?: unknown }).tags as unknown[])
+        .filter((t): t is string => typeof t === "string" && t.trim().length > 0)
+        .slice(0, 8)
+    : [];
+
   const article = await prisma.$transaction(async (tx) => {
     const a = await tx.article.create({
       data: {
@@ -406,6 +416,8 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         generatedByJobId: cgJob.id,
         // P0-6 — Traçabilité directe campagne → article.
         ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),
+        // Catégorisation 2026-06-16 — catégorie de blog dérivée du serviceSector du job.
+        ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
         ...(directAnswer ? { directAnswer } : {}),
         ...(faqJson ? { faqJson: faqJson as never } : {}),
         templateVariant: cgJob.templateId ?? null,
@@ -435,6 +447,29 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(topicFingerprint ? { topicFingerprint } : {}),
       },
     });
+
+    // Catégorisation 2026-06-16 — persiste les tags générés par le LLM
+    // (upsert ArticleTag par slug puis liens article↔tag). Fail-soft.
+    if (generatedTags.length > 0) {
+      const tagIds: string[] = [];
+      for (const name of generatedTags) {
+        const tagSlug = slugify(name);
+        if (!tagSlug) continue;
+        const tag = await tx.articleTag.upsert({
+          where: { slug: tagSlug },
+          update: {},
+          create: { slug: tagSlug, nameFr: name, nameEn: name },
+          select: { id: true },
+        });
+        tagIds.push(tag.id);
+      }
+      if (tagIds.length > 0) {
+        await tx.articleTagOnArticle.createMany({
+          data: tagIds.map((tagId) => ({ articleId: a.id, tagId })),
+          skipDuplicates: true,
+        });
+      }
+    }
 
     // Translation FR (en V1 — EN exclu doctrine v1.2)
     await tx.articleTranslation.create({

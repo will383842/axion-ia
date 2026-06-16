@@ -890,10 +890,13 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       //   score >= factoryAutoPromoteTier1MinScore (default 75)
       //     → publish DIRECT tier_1_indexable (sitemap immédiat + IndexNow ping)
       //   sinon → tier_2_noindex_follow (hors sitemap, attente tier-lifecycle CTR)
-      // 2026-06-14 (décision Will « tout indexable ») — défaut 0 : tout contenu
-      // auto-publié est promu tier_1_indexable (sitemap + IndexNow), plus de
-      // tier_2 noindex par défaut. Monter ce seuil via policy pour re-gater.
-      const autoPromoteTier1MinScore = policies.factoryAutoPromoteTier1MinScore ?? 0;
+      // 2026-06-16 (décision Will, remplace le « 0 tout-indexable » du 2026-06-14)
+      // — défaut 50 : un article n'est promu tier_1_indexable (sitemap + IndexNow)
+      // que si score >= 50, APRÈS la boucle qualité (§27) qui ré-enrichit les
+      // articles sous le seuil quality_loop. En dessous de 50 → tier_2
+      // noindex_follow (garde-fou anti-doorway HCU, rattrapage via tier-lifecycle
+      // CTR). Override via policy `factoryAutoPromoteTier1MinScore`.
+      const autoPromoteTier1MinScore = policies.factoryAutoPromoteTier1MinScore ?? 50;
       // 2026-06-14 — Garde-fou soft-404 : même en « tout indexable », on n'indexe
       // PAS un contenu que le generator a jugé dégénéré/vide (soft-404 →
       // finalIndexationTier=tier_3). Ce contenu est tout de même publié, mais en

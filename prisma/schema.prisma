@@ -3253,6 +3253,10 @@ model ContentGenJob {
   campaignId String?
   campaign   CoverageCampaign? @relation(fields: [campaignId], references: [id])
 
+  // Secteur de service propagé depuis la campagne (ou l'enqueue direct) →
+  // détermine la catégorie de blog de l'article au publish (categorization).
+  serviceSector ServiceSector? @map("service_sector")
+
   // Inputs
   inputPayload Json
   targetLocale Locale @default(fr)
