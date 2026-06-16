@@ -18,7 +18,5 @@ interface PageProps {
 
 export default async function GeoBatchesNewRedirect({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  permanentRedirect(
-    `/${locale}/${adminPrefix}/content-gen/campaigns/new`,
-  );
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/campaigns/new`);
 }

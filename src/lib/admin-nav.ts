@@ -43,13 +43,7 @@ export type AdminNavGroup =
  * Lancer > Suivre > Publier (quotidien) > Villes (occasionnel) >
  * Qualité & Coûts (occasionnel) > Réglages (rare / setup).
  */
-export type ContentGenPole =
-  | "lancer"
-  | "suivre"
-  | "publier"
-  | "villes"
-  | "qualite"
-  | "reglages";
+export type ContentGenPole = "lancer" | "suivre" | "publier" | "villes" | "qualite" | "reglages";
 
 export interface AdminNavItem {
   href: string;

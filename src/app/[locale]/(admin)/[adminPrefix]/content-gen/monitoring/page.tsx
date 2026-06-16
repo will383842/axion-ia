@@ -19,7 +19,5 @@ interface PageProps {
 
 export default async function MonitoringPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  permanentRedirect(
-    `/${locale}/${adminPrefix}/content-gen/jobs?status=failed`,
-  );
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/jobs?status=failed`);
 }

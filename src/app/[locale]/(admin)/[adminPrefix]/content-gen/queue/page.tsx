@@ -20,7 +20,5 @@ interface PageProps {
 
 export default async function QueueRedirect({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  permanentRedirect(
-    `/${locale}/${adminPrefix}/content-gen/jobs?view=queue`,
-  );
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/jobs?view=queue`);
 }

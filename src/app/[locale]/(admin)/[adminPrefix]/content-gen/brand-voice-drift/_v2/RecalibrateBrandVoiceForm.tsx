@@ -42,20 +42,12 @@ export function RecalibrateBrandVoiceForm({ articleIds }: Props): React.ReactEle
         </span>
       )}
       {state.status === "success" && (
-        <span
-          role="status"
-          className="text-xs"
-          style={{ color: "var(--color-admin-success)" }}
-        >
+        <span role="status" className="text-xs" style={{ color: "var(--color-admin-success)" }}>
           {state.message}
         </span>
       )}
       {state.status === "error" && (
-        <span
-          role="alert"
-          className="text-xs"
-          style={{ color: "var(--color-admin-terracotta)" }}
-        >
+        <span role="alert" className="text-xs" style={{ color: "var(--color-admin-terracotta)" }}>
           {state.message}
         </span>
       )}

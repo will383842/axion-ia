@@ -19,11 +19,7 @@ import {
   ingestKbFromSitemap,
   ingestKbFromUrl,
 } from "@/server/actions/content-gen/kb-ingest-external";
-import {
-  KbIngestV2,
-  type SitemapIngestState,
-  type UrlIngestState,
-} from "./_v2/KbIngestV2";
+import { KbIngestV2, type SitemapIngestState, type UrlIngestState } from "./_v2/KbIngestV2";
 
 export const dynamic = "force-dynamic";
 
@@ -31,10 +27,7 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
-async function ingestUrlAction(
-  _prev: UrlIngestState,
-  formData: FormData,
-): Promise<UrlIngestState> {
+async function ingestUrlAction(_prev: UrlIngestState, formData: FormData): Promise<UrlIngestState> {
   "use server";
   const url = String(formData.get("url") ?? "");
   try {

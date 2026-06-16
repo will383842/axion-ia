@@ -118,10 +118,9 @@ interface QuickType {
   weights: Record<WizardContentType, number>;
 }
 
-function focusedWeights(active: Partial<Record<WizardContentType, number>>): Record<
-  WizardContentType,
-  number
-> {
+function focusedWeights(
+  active: Partial<Record<WizardContentType, number>>,
+): Record<WizardContentType, number> {
   const zeroed = Object.fromEntries(
     Object.keys(DEFAULT_WEIGHTS_BALANCED).map((k) => [k, 0]),
   ) as Record<WizardContentType, number>;

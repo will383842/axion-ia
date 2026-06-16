@@ -70,8 +70,7 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
   {
     href: "kb-ingest",
     label: "Ingestion base de connaissances",
-    description:
-      "Importer du contenu externe (URL ou sitemap) dans la base de connaissances",
+    description: "Importer du contenu externe (URL ou sitemap) dans la base de connaissances",
   },
 ];
 

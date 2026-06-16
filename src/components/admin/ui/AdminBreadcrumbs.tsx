@@ -114,10 +114,7 @@ function canonicalizeLocale(path: string): string {
  * Trouve l'item SSOT correspondant à un pathname (match exact sur le href
  * normalisé, querystring ignoré). Retourne `undefined` si aucun item exact.
  */
-function findNavItem(
-  pathname: string,
-  nav: ReadonlyArray<AdminNavItem>,
-): AdminNavItem | undefined {
+function findNavItem(pathname: string, nav: ReadonlyArray<AdminNavItem>): AdminNavItem | undefined {
   return nav.find((item) => normalizePath(item.href) === pathname);
 }
 

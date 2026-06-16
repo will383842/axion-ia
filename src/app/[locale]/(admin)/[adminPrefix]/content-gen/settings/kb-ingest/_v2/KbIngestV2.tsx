@@ -97,7 +97,8 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
               </p>
             ) : (
               <p style={{ color: "crimson" }}>
-                ❌ <strong>Rejetée</strong> — {urlState.result.rejectReason ?? urlState.result.status}
+                ❌ <strong>Rejetée</strong> —{" "}
+                {urlState.result.rejectReason ?? urlState.result.status}
               </p>
             )}
           </div>
