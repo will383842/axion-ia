@@ -37,6 +37,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { buildPh3PromptAugmentation } from "../prompt-augmentation";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
@@ -148,15 +149,17 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×5], tags }`;
 
+      // PH3b — pain-matrix (commercial) + ancrage local APPENDUS. No-op si flag OFF.
+      const ph3Aug = buildPh3PromptAugmentation(input);
       lastPromptHash = hashPrompt(
-        SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent) + userPrompt,
+        SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent) + ph3Aug + userPrompt,
       );
 
       const llmResult = await routerGenerate({
         jobId: input.jobId,
         contentType: "comparison",
         role: "text",
-        systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent),
+        systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent) + ph3Aug,
         userPrompt,
         maxTokens: 4096,
         temperature: iteration === 0 ? 0.65 : 0.5,

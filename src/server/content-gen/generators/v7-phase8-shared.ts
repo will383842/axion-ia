@@ -32,6 +32,7 @@
  */
 
 import { hashPrompt } from "../provenance/provenance-logger";
+import { buildPh3PromptAugmentation } from "../prompt-augmentation";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -118,7 +119,9 @@ export async function runV7Phase8Pipeline(
   // 2. External links 4 sources d'autorité (audit 2026-05-24)
   const externalLinksCtx = injectExternalLinks(input, { count: 4, minAuthority: 4 });
 
-  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}`;
+  // PH3b — augmentation pain-matrix + ancrage local APPENDUE APRÈS la brand-voice
+  // (jamais en remplacement). No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
+  const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType(config.contentTypeSlug)}${buildPh3PromptAugmentation(input)}`;
 
   let bestParsed: ParsedOutput | null = null;
   let bestScore = -1;
