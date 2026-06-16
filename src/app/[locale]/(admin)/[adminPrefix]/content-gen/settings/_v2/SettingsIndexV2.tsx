@@ -52,6 +52,11 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
     description: "Toggle + seuils + budget mensuel",
   },
   {
+    href: "benefit-gate",
+    label: "Benefit-gate & profils (v2)",
+    description: "Gate bénéfice concret (commercial) + juge LLM PH3 + profils qualité",
+  },
+  {
     href: "qa-policies",
     label: "Q/R post-process",
     description: "Auto-create pages, seuil mots, CTR promotion",
