@@ -25,6 +25,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { buildPh3PromptAugmentation } from "../prompt-augmentation";
 import { applySystemPromptOverride } from "@/server/content-gen/template-resolver";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
@@ -145,15 +146,18 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
         input.templateOverride,
         "blog_article",
       );
+      // PH3b — ancrage local (+ pain-matrix si profil commercial) APPENDU APRÈS les
+      // directives. No-op (chaîne vide) si flag QUALITY_PROFILES_ENABLED OFF.
+      const ph3Aug = buildPh3PromptAugmentation(input);
       lastPromptHash = hashPrompt(
-        effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent) + userPrompt,
+        effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent) + ph3Aug + userPrompt,
       );
 
       const llmResult = await routerGenerate({
         jobId: input.jobId,
         contentType: "blog_article",
         role: "text",
-        systemPrompt: effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent),
+        systemPrompt: effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent) + ph3Aug,
         userPrompt,
         maxTokens: input.templateOverride?.maxTokens ?? 4096,
         temperature: input.templateOverride?.temperature ?? (iteration === 0 ? 0.7 : 0.5),

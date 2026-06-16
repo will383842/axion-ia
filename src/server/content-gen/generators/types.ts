@@ -25,6 +25,10 @@ export interface GeneratorBaseInput {
   readonly anchorVilleSlug?: string;
   readonly anchorDepartementCode?: string;
   readonly anchorRegionSlug?: string;
+  /** PH3b — Secteur INDUSTRIE (pain-matrix), injecté par une campagne pilote. */
+  readonly targetSecteur?: string;
+  /** PH3b — Verticale (ServiceSector) pour la pain-matrix + le benefit-judge. */
+  readonly vertical?: string;
   readonly primaryKeyword?: string;
   readonly secondaryKeywords?: ReadonlyArray<string>;
   readonly templateVariant?: string;

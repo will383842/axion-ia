@@ -408,6 +408,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         ? { anchorDepartementCode: dbJob.anchorDepartementCode }
         : {}),
       ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
+      // PH3b — secteur/vertical (pain-matrix), injectés par une campagne pilote
+      // via inputPayload. Absents = pas de contexte douleur (augmentation no-op).
+      ...(typeof inputPayload["targetSecteur"] === "string"
+        ? { targetSecteur: inputPayload["targetSecteur"] }
+        : {}),
+      ...(typeof inputPayload["vertical"] === "string"
+        ? { vertical: inputPayload["vertical"] }
+        : {}),
       ...(dbJob.targetAudienceSize ? { targetAudienceSize: dbJob.targetAudienceSize } : {}),
       ...(dbJob.targetAudienceOrganisation
         ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
