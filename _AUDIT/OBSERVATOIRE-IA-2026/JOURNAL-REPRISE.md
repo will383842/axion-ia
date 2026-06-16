@@ -37,9 +37,16 @@
   - ✅ `src/app/[locale]/observatoire-ia/page.tsx` (H1 nom officiel, H2 constats `.direct-answer`, méthodo `dl`, filtres+charts, citer, FAQ, CTA ; JSON-LD `Dataset`+`WebPage` speakable+`FAQPage` ; `buildProductMetadata` ; ISR 3600 ; fallback stub). **ESLint clean.**
   - ✅ `src/app/api/observatoire/export-csv/route.ts` (agrégats CC BY, force-dynamic/nodejs).
   - ✅ FAQ i18n ajoutée (4 Q/R), parité 599 clés.
-  - **RESTE T4** : llms.txt (ajouter l'URL) ; vérifier rendu réel (build de la route).
-- [ ] **T5 — Formulaire public + Server Action** (`/observatoire-ia/participer` + `src/server/actions/observatoire/public.ts`, Zod strict, honeypot, sans requireAdmin).
-- [ ] **T6 — Dashboard admin + nav + recalcul** (`(admin)/.../content-gen/observatoire/`, `server/actions/observatoire/admin.ts` requireAdmin, `admin-nav.ts`, worker snapshot).
+  - **RESTE T4** : llms.txt (ajouter l'URL en T9) ; build réel de la route (T9).
+  - **Commit `772e34ce`** (T1-T4, tous hooks verts).
+- [x] **T5 — Formulaire public + Server Action** ✅ (typecheck+lint OK)
+  - `src/server/actions/observatoire/public.ts` (`submitBarometerResponse`, Zod strict `z.nativeEnum`, honeypot `website` + horodatage MIN_FILL 3s + rate-limit IP, hashIp anonyme, Sentry, PAS de requireAdmin, pas de recompute synchrone).
+  - `src/components/observatoire/BarometerForm.tsx` (client, multi-étapes, satisfaction conditionnelle maturité≥POC, honeypot, barre de progression) + `participer/page.tsx` (résout libellés i18n+SSOT).
+- [x] **T6 — Dashboard admin + nav** ✅ (typecheck+lint OK)
+  - `src/server/actions/observatoire/admin.ts` (`requireAdmin` : `getBarometerStats` réel vs seedé, `recomputeBarometerSnapshot` + `recomputeBarometerSnapshotForm` + revalidatePath).
+  - `(admin)/.../content-gen/observatoire/page.tsx` + `_v2/ObservatoireV2.tsx` (AdminPageShell wide, effectifs, KPIs, bouton recalcul).
+  - `admin-nav.ts` : entrée groupe content_gen / subGroup « suivre ».
+  - **CHOIX** : recalcul = Server Action (bouton admin). ⚠️ Worker BullMQ cron de recalcul auto NON fait (évite de toucher `workers[]` partagé) → **suivi à faire** : cron de recompute périodique en prod.
 - [ ] **T7 — Presse enrichie** (`content/press.ts` + `presse/page.tsx`, bloc Observatoire, fallback honnête).
 - [ ] **T8 — Générateur `barometer_insight`** (`generators/barometer-insight.ts` + `index.ts` REGISTRY + `registry-phase8.spec.ts` + `WIZARD_*` + `CONTENT_TYPE_TO_KB_TYPE` ; injection « DONNÉES VÉRIFIÉES » du snapshot façon `local-anchor`).
 - [ ] **T9 — Vérif globale** : `typecheck` (NODE_OPTIONS heap 8G), `test` ciblés, `i18n:check`, build route, checklist §10. **Pas de push (Will décide).**
