@@ -4,6 +4,10 @@
 import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/i18n/routing";
 import { BLOG_CATEGORY_SLUGS } from "@/server/content-gen/lib/category-mapper";
+import {
+  resolveArticleRoute,
+  type ArticleRouteSegment,
+} from "@/server/content-gen/blog/resolve-article-route";
 
 export interface BlogCategoryArticle {
   readonly slug: string;
@@ -11,6 +15,7 @@ export interface BlogCategoryArticle {
   readonly excerpt: string;
   readonly publishedAt: string;
   readonly readingTime: string;
+  readonly route: ArticleRouteSegment;
 }
 
 /** Slugs des 5 catégories de blog content-gen (mappées aux ServiceSector). */
@@ -42,6 +47,8 @@ export async function getDbArticlesByCategorySlug(
       select: {
         readingTime: true,
         publishedAt: true,
+        isNews: true,
+        templateVariant: true,
         translations: {
           where: { locale },
           select: { slug: true, title: true, excerpt: true },
@@ -60,6 +67,7 @@ export async function getDbArticlesByCategorySlug(
         excerpt: t.excerpt ?? "",
         publishedAt: a.publishedAt ? a.publishedAt.toISOString() : "",
         readingTime: a.readingTime ? `${a.readingTime} min` : "6 min",
+        route: resolveArticleRoute({ isNews: a.isNews, templateVariant: a.templateVariant }),
       },
     ];
   });

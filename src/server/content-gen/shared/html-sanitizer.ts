@@ -101,7 +101,9 @@ export function sanitizeContentGenHtml(html: string): string {
     ALLOWED_ATTR,
     // Forbidden tags/attrs explicite (défense en profondeur — DOMPurify gère
     // déjà ces cas mais on documente l'intent).
-    FORBID_TAGS: ["script", "iframe", "object", "embed", "form", "input", "style", "svg"],
+    // h1 INTERDIT : le H1 unique de la page est rendu au niveau page (titleAs="h1").
+    // Empêche tout double-H1 si le LLM en produit un (SEO/AEO hygiène 2026).
+    FORBID_TAGS: ["h1", "script", "iframe", "object", "embed", "form", "input", "style", "svg"],
     FORBID_ATTR: ["style", "srcdoc"],
     // URI safe : seuls http/https/mailto/tel autorisés (pas de javascript:).
     ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[/#?])/i,
