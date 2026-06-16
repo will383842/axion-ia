@@ -447,7 +447,9 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(bodyText ? { bodyText } : {}),
         metaTitle,
         ...(metaDescription ? { metaDescription } : {}),
-        ...(wordCount !== null ? { wordCount } : {}),
+        // wordCount n'est pas persisté : article_translations n'a pas de colonne
+        // word_count ; les pages /blog et /actualites le recalculent à la volée
+        // depuis le body (et le JSON-LD le reçoit via wordCount ci-dessous).
       },
     });
 

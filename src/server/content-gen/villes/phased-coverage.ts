@@ -1,11 +1,11 @@
 /**
  * AXION-IA — Phased Coverage Campaign
- * 
+ *
  * Extension de CoverageCampaign pour gérer :
  * - La profondeur par ville (phases 1→5 avec dépendances)
  * - La priorité sectorielle par ville (tous les secteurs ne sont pas égaux partout)
  * - L'ordre de publication anti-cannibalization
- * 
+ *
  * À ajouter dans prisma/schema.prisma + migrations
  */
 
@@ -14,17 +14,17 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type CoveragePhase =
-  | "PHASE_1_HUB"           // Hub ville (fondation)
-  | "PHASE_2_PILIERS"       // Guides piliers sectoriels
-  | "PHASE_3_DOULEURS"      // Pain points + blog articles
-  | "PHASE_4_CONVERSION"    // Comparatifs, ROI, cas clients
-  | "PHASE_5_LONGTAIL";     // FAQ, QA, what_is, voice search
+  | "PHASE_1_HUB" // Hub ville (fondation)
+  | "PHASE_2_PILIERS" // Guides piliers sectoriels
+  | "PHASE_3_DOULEURS" // Pain points + blog articles
+  | "PHASE_4_CONVERSION" // Comparatifs, ROI, cas clients
+  | "PHASE_5_LONGTAIL"; // FAQ, QA, what_is, voice search
 
 export type CityTier =
-  | "TIER_1_METROPOLE"      // Paris, Lyon, Marseille, Toulouse, Nice, Bordeaux, Nantes, Strasbourg
-  | "TIER_2_GRANDE_VILLE"   // 100k-500k hab
-  | "TIER_3_VILLE_MOYENNE"  // 20k-100k hab
-  | "TIER_4_BASSIN";        // <20k mais bassin économique identifié
+  | "TIER_1_METROPOLE" // Paris, Lyon, Marseille, Toulouse, Nice, Bordeaux, Nantes, Strasbourg
+  | "TIER_2_GRANDE_VILLE" // 100k-500k hab
+  | "TIER_3_VILLE_MOYENNE" // 20k-100k hab
+  | "TIER_4_BASSIN"; // <20k mais bassin économique identifié
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MATRICE DE PROFONDEUR PAR PHASE
@@ -35,12 +35,12 @@ export type CityTier =
 export interface PhaseDefinition {
   phase: CoveragePhase;
   label: string;
-  contentTypes: string[];           // ContentType[] de ton système
+  contentTypes: string[]; // ContentType[] de ton système
   dependsOnPhase: CoveragePhase | null;
-  minArticlesInDepPhase: number;    // Minimum d'articles publiés dans la phase précédente
-  dailyCapPerCity: number;          // Articles/jour max pour cette phase × ville
+  minArticlesInDepPhase: number; // Minimum d'articles publiés dans la phase précédente
+  dailyCapPerCity: number; // Articles/jour max pour cette phase × ville
   indexationTier: "tier_1" | "tier_2" | "tier_3";
-  targetIntents: string[];          // SearchIntent[]
+  targetIntents: string[]; // SearchIntent[]
 }
 
 export const PHASE_DEFINITIONS: PhaseDefinition[] = [
@@ -57,7 +57,7 @@ export const PHASE_DEFINITIONS: PhaseDefinition[] = [
     ],
     dependsOnPhase: null,
     minArticlesInDepPhase: 0,
-    dailyCapPerCity: 6,             // Les 6 sections du hub, générées en 1 jour
+    dailyCapPerCity: 6, // Les 6 sections du hub, générées en 1 jour
     indexationTier: "tier_1",
     targetIntents: ["local", "navigational"],
   },
@@ -66,8 +66,8 @@ export const PHASE_DEFINITIONS: PhaseDefinition[] = [
     label: "Guides piliers sectoriels",
     contentTypes: ["guide_pilier"],
     dependsOnPhase: "PHASE_1_HUB",
-    minArticlesInDepPhase: 4,       // Au moins 4 sections hub publiées
-    dailyCapPerCity: 2,             // 1-2 guides piliers par jour
+    minArticlesInDepPhase: 4, // Au moins 4 sections hub publiées
+    dailyCapPerCity: 2, // 1-2 guides piliers par jour
     indexationTier: "tier_1",
     targetIntents: ["informational", "commercial_investigation"],
   },
@@ -83,7 +83,7 @@ export const PHASE_DEFINITIONS: PhaseDefinition[] = [
       "long_tail_keyword",
     ],
     dependsOnPhase: "PHASE_2_PILIERS",
-    minArticlesInDepPhase: 3,       // Au moins 3 piliers publiés
+    minArticlesInDepPhase: 3, // Au moins 3 piliers publiés
     dailyCapPerCity: 5,
     indexationTier: "tier_1",
     targetIntents: ["informational", "local", "featured_snippet"],
@@ -119,7 +119,7 @@ export const PHASE_DEFINITIONS: PhaseDefinition[] = [
     ],
     dependsOnPhase: "PHASE_4_CONVERSION",
     minArticlesInDepPhase: 5,
-    dailyCapPerCity: 10,            // Volume maximal, contenu court
+    dailyCapPerCity: 10, // Volume maximal, contenu court
     indexationTier: "tier_1",
     targetIntents: ["voice_search", "ai_overview", "featured_snippet", "informational"],
   },
@@ -134,7 +134,7 @@ export const PHASE_DEFINITIONS: PhaseDefinition[] = [
 export interface CitySectorPriority {
   villeSlug: string;
   cityTier: CityTier;
-  secteursPrioritaires: string[];   // Secteur[], dans l'ordre de priorité
+  secteursPrioritaires: string[]; // Secteur[], dans l'ordre de priorité
   verticalesPrioritaires: string[]; // Verticale[], dans l'ordre
   notes: string;
 }
@@ -151,7 +151,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "rh_recrutement",
     ],
     verticalesPrioritaires: ["audits", "implementations", "interventions_formations"],
-    notes: "Grenoble = tissu industriel (Schneider, STMicro) + pôle santé + universités. Secteur public secondaire.",
+    notes:
+      "Grenoble = tissu industriel (Schneider, STMicro) + pôle santé + universités. Secteur public secondaire.",
   },
   {
     villeSlug: "lyon",
@@ -164,8 +165,14 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "commerce_retail",
       "juridique",
     ],
-    verticalesPrioritaires: ["audits", "implementations", "interventions_formations", "sites_web_augmentes"],
-    notes: "Lyon = 1er pôle tertiaire hors Paris. Finance, pharma (Sanofi, bioMérieux), logistique (hub A6/A7). Toutes verticales pertinentes.",
+    verticalesPrioritaires: [
+      "audits",
+      "implementations",
+      "interventions_formations",
+      "sites_web_augmentes",
+    ],
+    notes:
+      "Lyon = 1er pôle tertiaire hors Paris. Finance, pharma (Sanofi, bioMérieux), logistique (hub A6/A7). Toutes verticales pertinentes.",
   },
   {
     villeSlug: "paris",
@@ -178,7 +185,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "collectivites_public",
     ],
     verticalesPrioritaires: ["audits", "un_a_un", "implementations"],
-    notes: "Paris = concentrations de cabinets (compta, avocats), grands comptes RH, retail premium. Concurrence SEO maximale — différenciation sectorielle obligatoire.",
+    notes:
+      "Paris = concentrations de cabinets (compta, avocats), grands comptes RH, retail premium. Concurrence SEO maximale — différenciation sectorielle obligatoire.",
   },
   {
     villeSlug: "bordeaux",
@@ -191,7 +199,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "comptabilite_finance",
     ],
     verticalesPrioritaires: ["audits", "sites_web_augmentes", "implementations"],
-    notes: "Bordeaux = économie mixte tourisme/viticulture/BTP + croissance démographique forte. Artisanat en tension.",
+    notes:
+      "Bordeaux = économie mixte tourisme/viticulture/BTP + croissance démographique forte. Artisanat en tension.",
   },
   {
     villeSlug: "marseille",
@@ -204,7 +213,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "restauration_hotellerie",
     ],
     verticalesPrioritaires: ["audits", "interventions_formations", "implementations"],
-    notes: "Marseille = port (logistique dominante), BTP en rénovation urbaine massive, secteur informel fort → formation pertinente.",
+    notes:
+      "Marseille = port (logistique dominante), BTP en rénovation urbaine massive, secteur informel fort → formation pertinente.",
   },
   {
     villeSlug: "toulouse",
@@ -217,7 +227,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "comptabilite_finance",
     ],
     verticalesPrioritaires: ["audits", "implementations", "un_a_un"],
-    notes: "Toulouse = aéronautique (Airbus, supply chain), IHU cancer, croissance soutenue. Profils ingénieurs → formations techniques bien reçues.",
+    notes:
+      "Toulouse = aéronautique (Airbus, supply chain), IHU cancer, croissance soutenue. Profils ingénieurs → formations techniques bien reçues.",
   },
   {
     villeSlug: "nantes",
@@ -230,7 +241,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "comptabilite_finance",
     ],
     verticalesPrioritaires: ["audits", "sites_web_augmentes", "interventions_formations"],
-    notes: "Nantes = croissance urbaine rapide, secteur numérique émergent, PME industrielles. BTP en tension de main d'œuvre.",
+    notes:
+      "Nantes = croissance urbaine rapide, secteur numérique émergent, PME industrielles. BTP en tension de main d'œuvre.",
   },
   {
     villeSlug: "strasbourg",
@@ -243,7 +255,8 @@ export const CITY_SECTOR_PRIORITIES: CitySectorPriority[] = [
       "comptabilite_finance",
     ],
     verticalesPrioritaires: ["audits", "interventions_formations", "implementations"],
-    notes: "Strasbourg = institutions européennes (dimension juridique/public forte), pôle santé (CHU), logistique Rhin.",
+    notes:
+      "Strasbourg = institutions européennes (dimension juridique/public forte), pôle santé (CHU), logistique Rhin.",
   },
 ];
 
@@ -265,7 +278,7 @@ export interface CityContentPlan {
 
 /**
  * Calcule le plan de contenu complet pour une ville
- * 
+ *
  * Exemple pour Lyon (Tier 1, 6 secteurs prioritaires) :
  * Phase 1 : 6 sections hub = 6 URLs
  * Phase 2 : 6 secteurs × 5 verticales = 30 guides piliers
@@ -275,9 +288,7 @@ export interface CityContentPlan {
  * Phase 5 : 6 × 5 × 5 long-tail = 150 contenus
  * TOTAL : ~396 URLs pour Lyon
  */
-export function computeCityContentPlan(
-  cityPriority: CitySectorPriority
-): CityContentPlan {
+export function computeCityContentPlan(cityPriority: CitySectorPriority): CityContentPlan {
   const nbSecteurs = cityPriority.secteursPrioritaires.length;
   const nbVerticales = cityPriority.verticalesPrioritaires.length;
 
@@ -292,9 +303,7 @@ export function computeCityContentPlan(
       phase: "PHASE_2_PILIERS" as CoveragePhase,
       urlCount: nbSecteurs * nbVerticales,
       estimatedDays: Math.ceil((nbSecteurs * nbVerticales) / 2),
-      contentBreakdown: [
-        { contentType: "guide_pilier", count: nbSecteurs * nbVerticales },
-      ],
+      contentBreakdown: [{ contentType: "guide_pilier", count: nbSecteurs * nbVerticales }],
     },
     {
       phase: "PHASE_3_DOULEURS" as CoveragePhase,
