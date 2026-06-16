@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/server/actions/content-gen/_auth";
+import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import {
   recomputeAndPersistSnapshot,
   readLatestSnapshot,
@@ -80,4 +81,49 @@ export async function recomputeBarometerSnapshotForm(_formData: FormData): Promi
 export async function getLatestSnapshot(): Promise<BarometerSnapshotPayload | null> {
   await requireAdmin();
   return readLatestSnapshot();
+}
+
+const INSIGHT_ANGLE: Record<string, string> = {
+  competitors_use_ai: "concurrence et adoption de l'IA dans les entreprises françaises",
+  no_formal_strategy: "stratégie IA des entreprises françaises en 2026",
+  rgpd_concern: "souveraineté des données et IA en France",
+  investment_intent: "intentions d'investissement IA des entreprises françaises",
+};
+
+export type GenerateArticleState = { ok: true; jobId: string } | { ok: false; error: string };
+
+/**
+ * Crée un job de génération d'article `barometer_insight` (review-queue).
+ * INTÉGRITÉ : refuse si aucun échantillon réel — jamais d'article sans chiffres.
+ */
+export async function generateBarometerArticle(insightKey?: string): Promise<GenerateArticleState> {
+  await requireAdmin();
+  try {
+    const snap = await readLatestSnapshot();
+    if (!snap || snap.totalResponses === 0) {
+      return {
+        ok: false,
+        error: "Aucune réponse réelle — impossible de générer un article sans chiffres vérifiés.",
+      };
+    }
+    const primaryKeyword =
+      (insightKey && INSIGHT_ANGLE[insightKey]) ||
+      "état de l'adoption de l'IA dans les entreprises françaises 2026";
+    const res = await enqueueDirectGen({
+      contentType: "barometer_insight",
+      targetSearchIntent: "ai_overview",
+      primaryKeyword,
+    });
+    return { ok: true, jobId: res.jobId };
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "observatoire", action: "generateBarometerArticle" },
+    });
+    return { ok: false, error: "La génération a échoué." };
+  }
+}
+
+/** Wrapper compatible `<form action>` (ignore le FormData). */
+export async function generateBarometerArticleForm(_formData: FormData): Promise<void> {
+  await generateBarometerArticle();
 }

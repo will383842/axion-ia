@@ -5,6 +5,7 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import {
   getBarometerStats,
   recomputeBarometerSnapshotForm,
+  generateBarometerArticleForm,
 } from "@/server/actions/observatoire/admin";
 
 const INSIGHT_LABELS: Record<string, string> = {
@@ -67,6 +68,19 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
         <form action={recomputeBarometerSnapshotForm} className="mt-[var(--space-admin-4)]">
           <button type="submit" className="admin-btn admin-btn-primary">
             Recalculer maintenant
+          </button>
+        </form>
+      </AdminCard>
+
+      <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Générer un article d’analyse</h2>
+        <p className="admin-help">
+          Crée un article « barometer_insight » ancré sur les chiffres RÉELS du snapshot
+          (review-queue). Refusé si aucun échantillon réel.
+        </p>
+        <form action={generateBarometerArticleForm} className="mt-[var(--space-admin-4)]">
+          <button type="submit" className="admin-btn admin-btn-primary">
+            Générer un article
           </button>
         </form>
       </AdminCard>

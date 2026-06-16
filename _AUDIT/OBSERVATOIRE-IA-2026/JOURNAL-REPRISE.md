@@ -47,9 +47,25 @@
   - `(admin)/.../content-gen/observatoire/page.tsx` + `_v2/ObservatoireV2.tsx` (AdminPageShell wide, effectifs, KPIs, bouton recalcul).
   - `admin-nav.ts` : entrée groupe content_gen / subGroup « suivre ».
   - **CHOIX** : recalcul = Server Action (bouton admin). ⚠️ Worker BullMQ cron de recalcul auto NON fait (évite de toucher `workers[]` partagé) → **suivi à faire** : cron de recompute périodique en prod.
-- [ ] **T7 — Presse enrichie** (`content/press.ts` + `presse/page.tsx`, bloc Observatoire, fallback honnête).
-- [ ] **T8 — Générateur `barometer_insight`** (`generators/barometer-insight.ts` + `index.ts` REGISTRY + `registry-phase8.spec.ts` + `WIZARD_*` + `CONTENT_TYPE_TO_KB_TYPE` ; injection « DONNÉES VÉRIFIÉES » du snapshot façon `local-anchor`).
-- [ ] **T9 — Vérif globale** : `typecheck` (NODE_OPTIONS heap 8G), `test` ciblés, `i18n:check`, build route, checklist §10. **Pas de push (Will décide).**
+- [x] **T7 — Presse enrichie** ✅ (lint OK)
+  - `presse/page.tsx` : section « Observatoire IA 2026 en chiffres » (4 tuiles KPI, insights si données, CC BY, liens résultats + CSV), fallback honnête (pas de faux % si vide). i18n via namespace `observatoire.press.*`.
+- [x] **T8 — Générateur `barometer_insight`** ✅ (typecheck+lint+tests OK)
+  - `generators/barometer-insight.ts` : lit le snapshot, bloc « DONNÉES VÉRIFIÉES — NE PAS MODIFIER », **refuse de générer si 0 réponse réelle** (intégrité), boucle qualité ≤3×, indexationTier dérivé du score. Enregistré dans `REGISTRY`.
+  - `enqueue.ts` : `barometer_insight` ajouté à `ContentTypeSchema`. `admin.ts` : `generateBarometerArticle(insightKey)` + form wrapper + bouton dashboard (refuse si pas de données réelles).
+  - `quality-profile-table` + spec : 21 → **22** ContentType. `kb-feeder` : mapping `barometer_insight → article` (fait en T1-fix).
+  - **`barometer_insight` HORS wizard** → `WIZARD_CONTENT_TYPES` reste à 21, test phase8 inchangé (vert).
+  - **Publication** : le `content-publish-worker` est générique (Article) et **gère déjà l'absence de colonne `wordCount`** (ligne 485) → le bug connu est résolu dans cette base, pas de traitement spécial.
+- [x] **T9 — Vérif globale** ✅
+  - **typecheck complet vert** (heap 8G), **i18n:check 599 clés**, **tests : 65 (registry+profils+persona) + 14 (alignement questionnaire↔enums) verts**.
+  - llms.txt : URL Observatoire + CSV ajoutée (AEO/GEO).
+  - Test de régression ajouté : `content/observatoire/__tests__/questions-alignment.spec.ts`.
+  - ⚠️ NON fait (impraticable hors prod / coûteux) : `pnpm build` complet (17k routes, OOM), `lhci`, Rich Results Test → **à valider post-deploy**. La page lit le snapshot avec fallback (findUnique→null sous stub) : pas de throw au build par construction.
+
+## RESTE À FAIRE (Will)
+1. **Décider publication** : en prod, lancer `pnpm barometer:seed` est DÉCONSEILLÉ (fixture dev). Lancer le formulaire, collecter du réel, afficher l'effectif réel.
+2. Push de la branche `feat/observatoire-ia` (je n'ai rien poussé) + PR.
+3. Cron de recompute snapshot auto (optionnel) — actuellement recalcul manuel via bouton admin.
+4. Post-deploy : Rich Results Test (Dataset), lhci, vérifier `/fr/observatoire-ia` 200.
 
 ## Pièges / rappels
 

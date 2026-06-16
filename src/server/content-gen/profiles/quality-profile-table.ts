@@ -32,7 +32,7 @@ export const QUALITY_PROFILES: readonly QualityProfile[] = [
 ] as const;
 
 /**
- * Profil de BASE par `ContentType` (couvre EXHAUSTIVEMENT les 21 valeurs de
+ * Profil de BASE par `ContentType` (couvre EXHAUSTIVEMENT les 22 valeurs de
  * l'enum Prisma). Le type `Record<ContentType, QualityProfile>` force la
  * compilation à échouer si un futur `ContentType` n'est pas mappé ici — garde
  * structurelle (doublée par un test runtime). Référence : plan §2.
