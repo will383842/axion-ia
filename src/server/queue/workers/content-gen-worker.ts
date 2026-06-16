@@ -55,6 +55,12 @@ import {
   QUALITY_PROFILE_GATES,
 } from "@/server/content-gen/profiles/quality-profile-table";
 import { evaluateBenefitConcreteness } from "@/server/content-gen/quality/benefit-concreteness-gate";
+import { judgeBenefitConcreteness } from "@/server/content-gen/quality/benefit-judge-llm";
+import {
+  getSectorPainContext,
+  type Secteur,
+  type Verticale,
+} from "@/server/content-gen/kb/sector-pain-matrix";
 import { getVille, getRegionByDepartement } from "@/content/villes";
 
 interface KillSwitchState {
@@ -635,18 +641,47 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Config gate lue UNIQUEMENT pour le profil commercial (zéro surcoût sinon).
     const benefitGateConfig =
       qualityProfile === "commercial"
-        ? await readContentGenConfig<{ enabled: boolean; minScore?: number }>("benefit_gate", {
-            enabled: false,
-          })
-        : { enabled: false, minScore: undefined as number | undefined };
+        ? await readContentGenConfig<{ enabled: boolean; minScore?: number; llmJudge?: boolean }>(
+            "benefit_gate",
+            { enabled: false },
+          )
+        : { enabled: false, minScore: undefined as number | undefined, llmJudge: false };
     // PH2 — benefit-concreteness UNIQUEMENT commercial + gate ON. fail-open : un
     // score faible ne bloque QUE s'il a été évalué (le corpus informationnel/AEO
-    // n'est jamais évalué → jamais désindexé). Juge LLM = PH3.
+    // n'est jamais évalué → jamais désindexé).
     const benefitGateActive = qualityProfile === "commercial" && benefitGateConfig.enabled === true;
     const benefit = benefitGateActive ? evaluateBenefitConcreteness(output.bodyText) : null;
     const benefitMin =
       benefitGateConfig.minScore ?? QUALITY_PROFILE_GATES.commercial.benefitMin ?? 70;
-    const benefitFail = benefit !== null && benefit.score < benefitMin;
+    // PH3 — juge LLM COST-TRACKÉ (provider-router), DORMANT : seulement si benefit
+    // évalué (commercial + gate ON) ET flag `benefit_gate.llmJudge` ON ET un
+    // sectorPainContext résolu (pain-matrix) depuis le job (targetSecteur + vertical
+    // que le pilote injecte). fail-open : juge null (skip/erreur réseau) → ignoré.
+    const painCtx =
+      benefit !== null &&
+      benefitGateConfig.llmJudge === true &&
+      typeof inputPayload["targetSecteur"] === "string" &&
+      typeof inputPayload["vertical"] === "string"
+        ? getSectorPainContext(
+            inputPayload["targetSecteur"] as Secteur,
+            inputPayload["vertical"] as Verticale,
+          )
+        : undefined;
+    const benefitJudge = painCtx
+      ? await judgeBenefitConcreteness({
+          content: output.bodyText,
+          context: {
+            painStatement: painCtx.painStatement,
+            benefitMeasured: painCtx.benefitMeasured,
+            sectorLexicon: painCtx.sectorLexicon,
+          },
+          jobId: contentGenJobId,
+          contentType,
+        })
+      : null;
+    const benefitFail =
+      benefit !== null &&
+      (benefit.score < benefitMin || (benefitJudge !== null && !benefitJudge.passed));
     if (qualityProfile) {
       await logStep(contentGenJobId, "validation", `Quality profile: ${qualityProfile}`, {
         quality_profile: qualityProfile,
