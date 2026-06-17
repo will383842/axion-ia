@@ -51,13 +51,22 @@ export const KB_CLIENT_HUB_ROUTE = { fr: "/mes-ressources", en: "/my-resources" 
 
 /**
  * Construit l'URL publique d'une entrée KB.
- * Retourne `null` si l'entrée est `team`/`will_only` (pas d'URL publique).
+ * Retourne `null` si le type n'a PAS de route de détail dédiée.
+ *
+ * Audit indexation 2026-06-17 (décision Will « ne plus les exposer ») : les types
+ * sans route (`null` dans KB_PUBLIC_ROUTES — methodology, sop, industry_use_case,
+ * comparison, automation_recipe, etc.) généraient auparavant une URL de hub
+ * `/ressources/<type>/<slug>` **qui n'a aucune route** → soft-404 (HTTP 200) poussé
+ * dans sitemap / RSS / llms.txt / maillage interne, gaspillant du crawl budget.
+ * Ce sont des faits RAG/grounding, pas des pages destinées au public. On renvoie
+ * donc `null` : tous les call sites (knowledge-sitemap/rss/llms-txt, client-surface,
+ * actions KB) court-circuitent déjà sur `null` → ces URLs disparaissent proprement.
  */
 export function buildKbPublicUrl(type: KbType, locale: "fr" | "en", slug: string): string | null {
   const route = KB_PUBLIC_ROUTES[type];
   if (route) {
     return `${route[locale]}/${slug}`;
   }
-  // Types internes audience='public' → URL canonique via hub
-  return `${KB_HUB_ROUTE[locale]}/${type}/${slug}`;
+  // Type sans route de détail dédiée → pas d'URL publique (anti soft-404).
+  return null;
 }

@@ -56,6 +56,11 @@ export async function generateMetadata({
   });
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
   if (!isFr) return { ...base, robots: { index: false, follow: true } };
+  // Anti-yoyo (audit indexation 2026-06-17) : au build GH Actions
+  // (DATABASE_URL=stub.invalid), `listPublishedJobOffers()` renvoie [] → on figerait
+  // un `noindex` dans la page pré-rendue (exposé à Googlebot 0-1h post-deploy avant
+  // l'ISR). Fail-OPEN : on garde `index` au build stub ; l'ISR recalcule en prod.
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return base;
   const offers = await listPublishedJobOffers();
   if (offers.length === 0) return { ...base, robots: { index: false, follow: true } };
   return base;

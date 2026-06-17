@@ -217,9 +217,12 @@ describe("KB SSOT — routes", () => {
     expect(buildKbPublicUrl("glossary_term", "fr", "rag")).toBe("/glossaire/rag");
   });
 
-  it("buildKbPublicUrl falls back to hub for internal types", () => {
-    expect(buildKbPublicUrl("methodology", "fr", "agile")).toBe("/ressources/methodology/agile");
-    expect(buildKbPublicUrl("sop", "en", "deploy")).toBe("/resources/sop/deploy");
+  it("buildKbPublicUrl returns null for internal types without a dedicated route", () => {
+    // Audit indexation 2026-06-17 : les types sans route (null dans KB_PUBLIC_ROUTES)
+    // ne génèrent plus d'URL /ressources/<type>/<slug> (soft-404) → renvoient null.
+    expect(buildKbPublicUrl("methodology", "fr", "agile")).toBeNull();
+    expect(buildKbPublicUrl("sop", "en", "deploy")).toBeNull();
+    expect(buildKbPublicUrl("industry_use_case", "fr", "kb-fact-ua-017-fr")).toBeNull();
   });
 });
 

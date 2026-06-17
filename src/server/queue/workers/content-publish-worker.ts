@@ -387,7 +387,14 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   }
 
   // Article + Translation insert (transaction)
-  const indexationTier = promoteToTier1 ? "tier_1_indexable" : "tier_2_noindex_follow";
+  // Décision Will 2026-06-17 (audit indexation) : tout contenu GÉNÉRÉ + PUBLIÉ doit
+  // être automatiquement indexable. La publication n'a lieu qu'après les gates qualité
+  // (auto-publish ≥ seuil / approbation), donc un article publié est par définition
+  // éligible à l'index → `tier_1_indexable` systématique (plus de naissance noindex).
+  // `promotedAt` est posé plus bas pour protéger l'article du demote auto (cf.
+  // content-tier-lifecycle-worker : respectManualPromote) → reste indexable.
+  // (`promoteToTier1` reste loggué pour la traçabilité mais ne gate plus le tier.)
+  const indexationTier = "tier_1_indexable";
 
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
   if (cgJob.correlationId) {
@@ -423,7 +430,9 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(cgJob.seoScore !== null ? { seoScore: cgJob.seoScore } : {}),
         ...(cgJob.readabilityScore !== null ? { readabilityScore: cgJob.readabilityScore } : {}),
         ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
-        ...(promoteToTier1 ? { promotedAt: new Date() } : {}),
+        // Toujours posé (cf. tier ci-dessus) : marque l'article comme indexable
+        // « décidé » → le worker tier-lifecycle ne le rétrograde pas (respectManualPromote).
+        promotedAt: new Date(),
         generatedByJobId: cgJob.id,
         // P0-6 — Traçabilité directe campagne → article.
         ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),

@@ -820,6 +820,31 @@ export function listGlossaryTermSlugs(): readonly string[] {
 }
 
 /**
+ * Seuil anti-doorway HCU 2024 + substance AEO 2026 : un terme dont la définition
+ * cumulée (FR + EN + exemples) fait moins de 80 mots est trop thin pour être indexé.
+ * SSOT partagé entre `/glossaire/[slug]/page.tsx` (qui émet `noindex`) ET le sitemap
+ * (audit indexation 2026-06-17 : avant ce partage, le sitemap listait les termes thin
+ * que la page rendait `noindex` → incohérence sitemap↔page, perte de confiance Google).
+ */
+export const GLOSSARY_MIN_INDEX_WORDS = 80;
+
+/** Compte les mots cumulés (FR + EN + exemples) d'un terme. */
+export function glossaryTermWordCount(term: GlossaryTermExtended): number {
+  const text = [term.fr, term.en, ...term.examples].join(" ");
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+/**
+ * True si le terme est suffisamment substantiel pour être indexé (≥ 80 mots cumulés).
+ * Source de vérité unique pour la page détail ET le sitemap.
+ */
+export function isGlossaryTermIndexable(slug: string): boolean {
+  const term = getGlossaryTermBySlug(slug);
+  if (!term) return false;
+  return glossaryTermWordCount(term) >= GLOSSARY_MIN_INDEX_WORDS;
+}
+
+/**
  * Récupère les N termes liés à un slug donné (via `relatedSlugs[]`).
  * Filtre silencieusement les slugs cassés (anti-crash) — un test couvre l'intégrité.
  */
