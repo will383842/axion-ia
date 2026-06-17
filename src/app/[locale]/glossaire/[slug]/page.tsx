@@ -41,6 +41,7 @@ import {
   ALL_GLOSSARY_TERMS_EXTENDED,
   getGlossaryTermBySlug,
   getRelatedGlossaryTerms,
+  isGlossaryTermIndexable,
   listGlossaryTermSlugs,
 } from "@/content/glossary-extension";
 
@@ -65,20 +66,6 @@ export async function generateStaticParams() {
   return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
 }
 
-/**
- * Heuristique anti-doorway HCU 2024 : noindex si la définition est trop courte
- * (< 80 mots cumulés FR ou EN + examples). Les pages thin sont crawlables mais
- * exclues des SERP — exigence Helpful Content Update Google 2024+.
- *
- * 80 mots est aussi le seuil minimum pour qu'une réponse AEO (Perplexity/Bing
- * Copilot/SGE) ait du substance citable. En dessous, on n'a pas le droit
- * éditorial de prétendre couvrir un terme.
- */
-function isThinDefinition(text: string): boolean {
-  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-  return wordCount < 80;
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
@@ -92,10 +79,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description.length > 160 ? `${description.slice(0, 157).trim()}…` : description;
 
   // Anti-doorway HCU 2024 + AEO 2026 : noindex si définition < 80 mots cumulés
-  // (FR + EN + examples). On veut pas que Google indexe des cards thin de 1
-  // ligne — soit la page est substantielle, soit elle redirige vers le hub.
-  const cumulativeText = [term.fr, term.en, ...term.examples].join(" ");
-  const thin = isThinDefinition(cumulativeText);
+  // (FR + EN + examples). SSOT partagé avec le sitemap (`isGlossaryTermIndexable`)
+  // pour qu'un terme thin ne soit JAMAIS sitemappé tout en étant `noindex` (audit
+  // indexation 2026-06-17 — fin de l'incohérence sitemap↔page).
+  const thin = !isGlossaryTermIndexable(slug);
 
   const meta = buildProductMetadata({
     locale,

@@ -45,6 +45,15 @@ export default auth(async (req) => {
     }
   }
 
+  // 0a. Racine `/` → 301 (permanent) vers `/fr`. next-intl émet un 307 (temporaire)
+  //     sur la racine ; or `/` est l'URL la plus crawlée et EN est désactivé →
+  //     defaultLocale toujours `fr`. Un 307 fait re-crawler `/` en boucle (Google
+  //     re-teste les redirections temporaires) → gaspillage de crawl budget. Le 301
+  //     consolide définitivement vers `/fr` (audit indexation 2026-06-17).
+  if (req.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL(`/fr${req.nextUrl.search}`, req.url), 301);
+  }
+
   // 0bis. Force 301 (permanent) au lieu du 307 (temporary) émis par next-intl
   //       pour les routes sans préfixe locale (`/a-propos`, `/galerie`, etc.).
   //       Audit GSC 2026-05-28 D-6 (`_AUDIT/GSC-INDEXATION-2026-05-28`) — le 307
@@ -187,6 +196,26 @@ export default auth(async (req) => {
     );
     // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
     response.headers.set("x-nonce", nonce);
+
+    // 4. Crawl perf ⭐ (audit indexation 2026-06-17) — DÉBLOCAGE DU CACHE CDN.
+    //    Auth.js (`__Host-authjs.csrf-token`, `__Secure-authjs.callback-url`) +
+    //    next-intl (`NEXT_LOCALE`) posent des `Set-Cookie` sur CHAQUE réponse.
+    //    Cloudflare REFUSE de mettre en cache toute réponse portant `Set-Cookie`
+    //    → `cf-cache-status: BYPASS` sur 100 % du HTML → Googlebot tape l'origine
+    //    VPS à froid (~900-1600 ms mesuré) → Google bride son rythme de crawl.
+    //    On retire les `Set-Cookie` des pages PUBLIQUES (GET, hors admin + espaces
+    //    authentifiés) : aucun de ces cookies n'y est utile (la locale vient du
+    //    path `/fr`, EN désactivé ; le csrf Auth.js n'est requis que sur le flux
+    //    login admin — route NON strippée ci-dessous, donc le login reste intact).
+    //    Effet : réponses cacheables à l'edge → crawl plus rapide ET plus large.
+    const pathname = req.nextUrl.pathname;
+    const isAdminRoute = adminPathRegex.test(pathname);
+    const isAuthSpace = /^\/(fr|en)\/(espace-formateur|espace-ressources|mes-donnees)(\/|$)/.test(
+      pathname,
+    );
+    if (req.method === "GET" && !isAdminRoute && !isAuthSpace) {
+      response.headers.delete("set-cookie");
+    }
   }
   return response;
 });

@@ -77,14 +77,20 @@ async function applyDemote(
       promotedAt: null,
     },
   });
-  // F3 — signaler la désindexation à Google/Bing (URL_DELETED via lifecycleEvent
-  // "delete"). Modelé sur applyPromote(). Fire-and-forget : ne throw jamais.
+  // Anti-yoyo (audit indexation 2026-06-17, décision Will) : un demote de tier ne
+  // SUPPRIME pas la page (elle reste 200 en ligne, juste noindex,follow). On ne doit
+  // donc JAMAIS émettre `URL_DELETED` (= demande de suppression définitive Google/Bing)
+  // sur un simple demote — réservé à l'archivage/suppression réel (cf. actions KB
+  // delete-entry / _transition). On signale un simple `URL_UPDATED`.
+  // NB : avec la publication systématique en tier_1 + promotedAt (content-publish-worker),
+  // les articles sont désormais protégés du demote (respectManualPromote) → ce chemin
+  // est quasi inerte, mais on garde la sémantique correcte en défense-en-profondeur.
   await enqueueIndexingForTier1({
     articleId,
     slug,
     isNews,
     origin: "tier-promote",
-    lifecycleEvent: "delete",
+    lifecycleEvent: "update",
   });
   console.log(`[tier-lifecycle] DEMOTE article=${articleId} reason=${reason}`);
 }

@@ -29,7 +29,7 @@ import { listFaqs, isFaqItemIndexable } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
-import { listGlossaryTermSlugs } from "@/content/glossary-extension";
+import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
 import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sub-sitemap dédié
@@ -893,7 +893,11 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
   // 2) Chaque terme /glossaire/[slug] (FR canonique + EN miroir si activé).
   // Slugs identiques en FR et EN (les termes IA sont des sigles anglo-saxons
   // ou des concepts internationaux — pas de translation des slugs).
-  const slugs = listGlossaryTermSlugs();
+  // Audit indexation 2026-06-17 : n'inclure QUE les termes réellement indexables
+  // (définition ≥ 80 mots cumulés). Les termes thin rendent `noindex` côté page
+  // (`glossaire/[slug]/page.tsx`) → les sitemapper créait une incohérence
+  // sitemap↔page (Google perd confiance dans le sitemap). SSOT = isGlossaryTermIndexable.
+  const slugs = listGlossaryTermSlugs().filter((slug) => isGlossaryTermIndexable(slug));
   for (const slug of slugs) {
     const frUrl = `${SITE_URL}/fr/glossaire/${slug}`;
     const enUrl = `${SITE_URL}/en/glossary/${slug}`;

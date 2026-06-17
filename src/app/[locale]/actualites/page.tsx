@@ -60,6 +60,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "Veille hebdomadaire sur l'IA opérationnelle pour dirigeants de PME et ETI : décisions Search Console, sorties produits Anthropic/Mistral/OpenAI, retours terrain.",
     alternates: { fr: "/actualites", en: "/actualites" },
   });
+  // Anti-yoyo (audit indexation 2026-06-17) : au build GH Actions
+  // (DATABASE_URL=stub.invalid), `countPublishedNews()` renvoie 0 → on figerait un
+  // `noindex` dans la page pré-rendue, exposé à Googlebot pendant la fenêtre 0-1h
+  // post-deploy avant que l'ISR repeuple. Fail-OPEN : on garde `index` au build stub ;
+  // l'ISR (revalidate=3600) recalcule la vraie décision en prod (DATABASE_URL réel).
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) return base;
   // Soft-404 fix (2026-06-14) : si 0 actualité publiée, le hub n'a aucun contenu
   // à indexer → noindex,follow (évite le soft-404). L'ISR (revalidate=3600)
   // repassera index dès qu'un article est publié.
