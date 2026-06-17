@@ -15,7 +15,7 @@
 
 import NextAuth from "next-auth";
 import createIntlMiddleware from "next-intl/middleware";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
@@ -27,7 +27,7 @@ import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
 
-export default auth(async (req) => {
+const authPipeline = auth(async (req) => {
   // 0. EN locale disabled (2026-05-16) — 301 redirect /en/* → /fr/équivalent.
   //    Toggle via Coolify env var `EN_LOCALE_ENABLED=true` pour réactiver.
   //    Voir AGENTS.md « EN re-enable procedure ».
@@ -196,29 +196,61 @@ export default auth(async (req) => {
     );
     // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
     response.headers.set("x-nonce", nonce);
-
-    // 4. Crawl perf ⭐ (audit indexation 2026-06-17) — DÉBLOCAGE DU CACHE CDN.
-    //    Auth.js (`__Host-authjs.csrf-token`, `__Secure-authjs.callback-url`) +
-    //    next-intl (`NEXT_LOCALE`) posent des `Set-Cookie` sur CHAQUE réponse.
-    //    Cloudflare REFUSE de mettre en cache toute réponse portant `Set-Cookie`
-    //    → `cf-cache-status: BYPASS` sur 100 % du HTML → Googlebot tape l'origine
-    //    VPS à froid (~900-1600 ms mesuré) → Google bride son rythme de crawl.
-    //    On retire les `Set-Cookie` des pages PUBLIQUES (GET, hors admin + espaces
-    //    authentifiés) : aucun de ces cookies n'y est utile (la locale vient du
-    //    path `/fr`, EN désactivé ; le csrf Auth.js n'est requis que sur le flux
-    //    login admin — route NON strippée ci-dessous, donc le login reste intact).
-    //    Effet : réponses cacheables à l'edge → crawl plus rapide ET plus large.
-    const pathname = req.nextUrl.pathname;
-    const isAdminRoute = adminPathRegex.test(pathname);
-    const isAuthSpace = /^\/(fr|en)\/(espace-formateur|espace-ressources|mes-donnees)(\/|$)/.test(
-      pathname,
-    );
-    if (req.method === "GET" && !isAdminRoute && !isAuthSpace) {
-      response.headers.delete("set-cookie");
-    }
   }
   return response;
 });
+
+// ── Crawl perf ⭐ (audit indexation 2026-06-17) — DÉBLOCAGE DU CACHE CDN ──────────
+// Auth.js pose `__Host-authjs.csrf-token` + `__Secure-authjs.callback-url` sur
+// CHAQUE réponse, et il les ajoute APRÈS l'exécution du handler ci-dessus (le
+// wrapper `auth()` enveloppe le handler). Un `delete` à l'intérieur du handler ne
+// les retire donc pas (confirmé en prod : seul `NEXT_LOCALE`, posé par next-intl
+// dans le handler, disparaissait). Cloudflare refuse de cacher toute réponse portant
+// `Set-Cookie` → `cf-cache-status: BYPASS` sur 100 % du HTML → Googlebot tape
+// l'origine à froid (~900-1600 ms) → Google bride le crawl rate.
+//
+// Solution : on enveloppe le pipeline auth dans une fonction EXTERNE qui nettoie la
+// réponse FINALE (après qu'Auth.js a posé ses cookies). On retire les Set-Cookie des
+// pages PUBLIQUES (GET, hors admin + espaces authentifiés) mais on PRÉSERVE le cookie
+// de session (`*session-token*`) → les admins connectés gardent leur session, et le
+// login admin (route non strippée) garde son csrf. Les requêtes anonymes / Googlebot
+// n'ont pas de session-token → réponse SANS Set-Cookie → cacheable à l'edge.
+//
+// `try/catch` fail-safe : un échec de strip ne doit JAMAIS casser la réponse — pire
+// cas, on retombe sur le comportement actuel (BYPASS). proxy.ts s'exécutant à chaque
+// requête, c'est la garantie anti-régression site-wide.
+const STRIP_AUTH_SPACE = /^\/(fr|en)\/(espace-formateur|espace-ressources|mes-donnees)(\/|$)/;
+
+export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
+  const res = await (
+    authPipeline as unknown as (r: NextRequest, e: NextFetchEvent) => Promise<Response | undefined>
+  )(req, ev);
+  try {
+    if (res && req.method === "GET") {
+      const pathname = req.nextUrl.pathname;
+      const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
+      const isAdminRoute = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`).test(pathname);
+      if (
+        !isAdminRoute &&
+        !STRIP_AUTH_SPACE.test(pathname) &&
+        typeof res.headers.getSetCookie === "function"
+      ) {
+        const setCookies = res.headers.getSetCookie();
+        if (setCookies.length > 0) {
+          res.headers.delete("set-cookie");
+          // Réinjecte UNIQUEMENT le cookie de session (préserve les sessions connectées) ;
+          // retire csrf/callback/NEXT_LOCALE qui bloquent le cache CDN.
+          for (const cookie of setCookies) {
+            if (/session-token/i.test(cookie)) res.headers.append("set-cookie", cookie);
+          }
+        }
+      }
+    }
+  } catch {
+    // fail-safe — ne jamais casser la réponse pour un strip de cookie.
+  }
+  return res;
+}
 
 export const config = {
   // Tout sauf API publiques + assets statiques + sitemap/robots/llms/manifest/icons.
