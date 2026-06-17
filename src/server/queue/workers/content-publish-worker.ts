@@ -9,7 +9,8 @@
  *  2. Récupère outputJsonRaw du job (sortie generator)
  *  3. Insert/Update Article DB :
  *     - status: published
- *     - indexationTier: tier_1_indexable (si promoteToTier1) sinon tier_2_noindex_follow
+ *     - indexationTier: tier_1_indexable systématique (audit indexation 2026-06-17 —
+ *       tout contenu publié = indexable ; protégé du demote via promotedAt)
  *     - generatedByJobId = job.id
  *     - quality scores copiés depuis job
  *     - JSON-LD wired : NewsArticle si blog_from_rss, Article sinon
