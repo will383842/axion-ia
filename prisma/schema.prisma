@@ -1035,6 +1035,11 @@ model Article {
   promotedAt          DateTime?      @map("promoted_at")
   /// FK ContentGenJob.id (cuid String — pas @db.Uuid)
   generatedByJobId    String?        @map("generated_by_job_id")
+  /// Traçabilité campagne → article (P0-6). Colonne créée par la migration
+  /// 20260521150200_add_article_campaign_id (VARCHAR(25) = cuid CoverageCampaign,
+  /// PAS @db.Uuid). Écrit par content-publish-worker ; sans ce champ au modèle,
+  /// `article.create({ data: { campaignId } })` throw « Unknown argument ».
+  campaignId          String?        @map("campaign_id") @db.VarChar(25)
   directAnswer        String?        @map("direct_answer") @db.Text
   faqJson             Json?          @map("faq_json")
   /// IDs des KnowledgeEntry KB utilisées (audit trail RAG)
@@ -1103,6 +1108,8 @@ model Article {
   @@index([indexationTier, status])
   @@index([isNews, publishedAt(sort: Desc)])
   @@index([generatedByJobId])
+  /// Index articles_campaign_id_idx créé par migration 20260521150200.
+  @@index([campaignId])
   /// Index GIN sur mentioned_cities pour filter `getBlogPostsByVille` performant
   /// (~10K articles cible, requête `WHERE 'paris' = ANY(mentioned_cities)`).
   @@index([mentionedCities], type: Gin)

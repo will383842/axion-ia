@@ -112,12 +112,25 @@ export async function selectHeroImage(input: SelectHeroImageInput): Promise<Sele
   if (!bank) return null;
   return {
     source: "image-bank",
-    url: bank.filePath,
+    url: normalizeBankPath(bank.filePath),
     alt: bank.alt,
     assetId: bank.assetId,
     photographerName: null,
     photographerUrl: null,
   };
+}
+
+/**
+ * L'image-bank stocke `filePath` SANS slash de tête (ex. `images/xxx.webp`,
+ * cf. seed-images.ts). Posé tel quel dans `Article.featuredImage`, il casse le
+ * rendu : `<Image src="images/xxx.webp">` throw (next/image exige un chemin
+ * local commençant par `/`) et og:image/JSON-LD produisent `${SITE_URL}` +
+ * `images/...` = URL malformée sans séparateur. On garantit donc un `/` de tête
+ * pour les chemins locaux (les URLs Unsplash `http(s)://` passent intactes).
+ */
+function normalizeBankPath(filePath: string): string {
+  if (/^https?:\/\//.test(filePath)) return filePath;
+  return `/${filePath.replace(/^\/+/, "")}`;
 }
 
 /** Test-only — expose les helpers internes pour les specs. */

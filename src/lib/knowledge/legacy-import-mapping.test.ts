@@ -42,6 +42,7 @@ function makeArticle(overrides: Partial<Article> = {}): Article {
     plagiarismScore: null,
     promotedAt: null,
     generatedByJobId: null,
+    campaignId: null,
     directAnswer: null,
     faqJson: null,
     kbChunkIds: [],

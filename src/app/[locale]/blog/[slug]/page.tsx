@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound, redirect } from "next/navigation";
+import { notFound, redirect, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -241,6 +241,15 @@ export default async function BlogArticle({ params }: Props) {
       }
     }
     notFound();
+  }
+
+  // Route-aware canonical (2026-06-17) — un guide (slug `guide-`/`guide_`) est la
+  // page canonique sous /guides/[slug] (cf. isGuideArticle). loadBlogArticleForView
+  // sert pourtant N'IMPORTE quel Article par slug → sans ce redirect, le même guide
+  // est indexable sous /blog/guide-x ET /guides/guide-x (URL dupliquée). 308 vers
+  // la canonique /guides. Miroir de resolveArticleRoute (condition slug).
+  if (slug.startsWith("guide-") || slug.startsWith("guide_")) {
+    permanentRedirect(`/${loc}/guides/${slug}`);
   }
 
   const wordCount = view.body.trim().split(/\s+/).length;
