@@ -200,6 +200,13 @@ export const routing = defineRouting({
     // communiqué de presse. Slug = `PressRelease.slug` côté `src/content/press.ts`.
     // FR canonique `/presse/[slug]`, EN miroir `/press/[slug]` (cohérence /presse).
     "/presse/[slug]": { fr: "/presse/[slug]", en: "/press/[slug]" },
+    // Observatoire de l'IA 2026 — slug FR = EN (EN désactivé : on évite le bug
+    // 307 self-loop next-intl qui n'apparaît que sur les mappings fr ≠ en).
+    "/observatoire-ia": { fr: "/observatoire-ia", en: "/observatoire-ia" },
+    "/observatoire-ia/participer": {
+      fr: "/observatoire-ia/participer",
+      en: "/observatoire-ia/participer",
+    },
     "/blog": "/blog",
     "/blog/[slug]": "/blog/[slug]",
     // Sprint actualités factory (P0-5 audit E2E 2026-05-15) — FR-only par

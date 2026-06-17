@@ -37,6 +37,16 @@ import {
 } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getRealTestimonialsOnly } from "@/server/actions/content-gen/real-testimonials";
+import { Link } from "@/i18n/navigation";
+import { readLatestSnapshot } from "@/server/observatoire/snapshot";
+import {
+  STUDY_SECTOR_COUNT,
+  STUDY_REGION_COUNT,
+  STUDY_QUESTION_COUNT,
+  STUDY_LICENSE_LABEL,
+  STUDY_LICENSE_URL,
+  BAROMETER_INSIGHT_KEYS,
+} from "@/content/observatoire/study";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -69,6 +79,14 @@ export default async function PressePage({ params }: Props) {
   // Build-time stub-aware : `getRealTestimonialsOnly` retourne [] si
   // DATABASE_URL=stub.invalid (cf. `real-testimonials.ts`).
   const realTestimonials = await getRealTestimonialsOnly();
+
+  // Observatoire IA 2026 — snapshot avec fallback honnête (pas de faux chiffre
+  // si l'enquête n'a pas encore d'échantillon ; build/stub → null).
+  const tObs = await getTranslations({ locale: loc, namespace: "observatoire" });
+  const obsSnapshot = await readLatestSnapshot();
+  const obsTotal = obsSnapshot?.totalResponses ?? 0;
+  const obsHasData = obsTotal > 0;
+  const obsCsvUrl = `${SITE_URL}/api/observatoire/export-csv`;
 
   const facts = PRESS_FACTS.map((f) => ({
     id: f.id,
@@ -338,6 +356,90 @@ export default async function PressePage({ params }: Props) {
             </p>
           </div>
           <PressFacts eyebrow={t("factsEyebrow")} facts={facts} />
+        </div>
+      </Section>
+
+      {/* OBSERVATOIRE IA 2026 — KPIs presse + CC BY + liens (fallback honnête) */}
+      <Section
+        id="observatoire"
+        tone="sand"
+        eyebrow={isFr ? "Étude indépendante" : "Independent study"}
+        title={tObs("press.sectionTitle")}
+      >
+        <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
+            <dt className="text-fg-muted text-xs font-medium uppercase">
+              {tObs("press.sampleLabel")}
+            </dt>
+            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
+              {obsTotal.toLocaleString(isFr ? "fr-FR" : "en-US")}
+            </dd>
+          </div>
+          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
+            <dt className="text-fg-muted text-xs font-medium uppercase">
+              {tObs("press.sectorsLabel")}
+            </dt>
+            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
+              {STUDY_SECTOR_COUNT}
+            </dd>
+          </div>
+          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
+            <dt className="text-fg-muted text-xs font-medium uppercase">
+              {tObs("press.regionsLabel")}
+            </dt>
+            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
+              {STUDY_REGION_COUNT}
+            </dd>
+          </div>
+          <div className="border-border bg-canvas rounded-lg border p-5 text-center">
+            <dt className="text-fg-muted text-xs font-medium uppercase">
+              {tObs("press.questionsLabel")}
+            </dt>
+            <dd className="text-fg mt-1 text-2xl font-semibold tabular-nums">
+              {STUDY_QUESTION_COUNT}
+            </dd>
+          </div>
+        </dl>
+
+        {obsHasData ? (
+          <ul className="mt-8 grid max-w-3xl gap-3">
+            {BAROMETER_INSIGHT_KEYS.map((key) => {
+              const value = obsSnapshot?.insights?.[key];
+              if (value == null || value <= 0) return null;
+              return (
+                <li key={key} className="text-fg text-lg leading-snug">
+                  {tObs(`insights.${key}`, { value })}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="text-fg-soft mt-8 max-w-2xl text-base leading-relaxed">
+            {tObs("results.pending")}
+          </p>
+        )}
+
+        <div className="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href={STUDY_LICENSE_URL}
+            target="_blank"
+            rel="license noopener"
+            className="border-border text-fg-soft inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-medium"
+          >
+            {STUDY_LICENSE_LABEL}
+          </a>
+          <Button asChild shape="pill">
+            <Link href="/observatoire-ia">
+              {tObs("press.seeAll")}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </Button>
+          <Button asChild shape="pill" variant="outline">
+            <a href={obsCsvUrl}>
+              <Download className="h-4 w-4" aria-hidden="true" />
+              {tObs("press.downloadData")}
+            </a>
+          </Button>
         </div>
       </Section>
 

@@ -58,6 +58,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
+    "barometer:seed": "tsx prisma/seeds/barometer/index.ts",
     "content-gen:seed": "tsx prisma/seeds/content-gen/index.ts",
     "content-gen:seed-templates": "tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts",
     "content-gen:seed-cities": "tsx prisma/seeds/cities/seed-cities.ts",
@@ -283,7 +284,7 @@
       "@tailwindcss/oxide",
       "sharp"
     ],
-    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. Sprint Final P1-19 (2026-05-22) — overrides supplémentaires devDeps moderate/low : brace-expansion >=5.0.6 (DoS minimatch transitive), ws >=8.20.1 (memory disclosure jsdom transitive), tmp >=0.2.4 (symlink traversal lhci transitive), esbuild >=0.25.0 (CORS dev server vitest>vite transitive), uuid >=11.1.1 (buffer bounds lhci transitive), qs >=6.15.2 (prototype pollution lhci>express transitive). Override vite >=6.4.2 incompatible vitest 2.x SSR (peer ^5.0.0) — reporté V1.5 (upgrade vitest 3.x ou 4.x). Vuln vite path traversal n'affecte que dev server exposé via --host, non-applicable prod/CI.",
+    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. Sprint Final P1-19 (2026-05-22) — overrides supplémentaires devDeps moderate/low : brace-expansion >=5.0.6 (DoS minimatch transitive), ws >=8.20.1 (memory disclosure jsdom transitive), tmp >=0.2.4 (symlink traversal lhci transitive), esbuild >=0.25.0 (CORS dev server vitest>vite transitive), uuid >=11.1.1 (buffer bounds lhci transitive), qs >=6.15.2 (prototype pollution lhci>express transitive). Override vite >=6.4.2 incompatible vitest 2.x SSR (peer ^5.0.0) — reporté V1.5 (upgrade vitest 3.x ou 4.x). Vuln vite path traversal n'affecte que dev server exposé via --host, non-applicable prod/CI. 2026-06-17 — bump ws >=8.20.1 → >=8.21.0 (GHSA-96hv-2xvq-fx4p, DoS via fragments, path prod openai>ws) + ajout form-data >=4.0.6 (GHSA-hmw2-7cc7-3qxx, CRLF injection, path prod @anthropic-ai/sdk>@types/node-fetch>form-data) : les 2 dernières CVE high --prod restantes.",
     "overrides": {
       "postcss": ">=8.5.10",
       "brace-expansion@>=5.0.0 <5.0.6": ">=5.0.6",
@@ -292,7 +293,7 @@
       "esbuild@<=0.24.2": ">=0.25.0",
       "uuid@<11.1.1": ">=11.1.1",
       "qs@<6.15.2": ">=6.15.2",
-      "form-data@<4.0.6": ">=4.0.6"
+      "form-data@>=4.0.0 <4.0.6": ">=4.0.6"
     }
   }
 }

@@ -63,6 +63,7 @@ export function GET() {
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
 - [Glossaire](${SITE_URL}/fr/glossaire) — termes IA opérationnelle (RAG, fine-tuning, agents, etc.).
 - [Guide IA pour entreprises 2026](${SITE_URL}/fr/guide-ia) — vue d'ensemble enjeux + roadmap.
+- [Observatoire de l'IA 2026](${SITE_URL}/fr/observatoire-ia) — étude Axion-IA sur l'adoption de l'IA dans les entreprises françaises (maturité, usages, budgets, freins, RGPD, intentions d'investissement). Données ouvertes CC BY 4.0, export CSV : ${SITE_URL}/api/observatoire/export-csv. Méthodo : questionnaire 16 questions, 13 régions × 30 secteurs × 4 tailles.
 
 ## Implantations géographiques
 

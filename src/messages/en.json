@@ -468,5 +468,246 @@
     "leadClose": "Close",
     "leadSuccess": "Thank you! We'll get back to you shortly.",
     "leadError": "Could not send. Please check your details and try again."
+  },
+  "observatoire": {
+    "meta": {
+      "resultsTitle": "The 2026 AI in French Companies Observatory",
+      "resultsDescription": "Independent Axion-IA study: AI maturity, use cases, budgets, barriers and investment intent of French companies. Open data (CC BY 4.0).",
+      "participateTitle": "Take part in the 2026 AI Observatory",
+      "participateDescription": "4 minutes to benchmark your company against AI adoption in France. Compare yourself to the executives already surveyed."
+    },
+    "hero": {
+      "eyebrow": "Independent study",
+      "title": "The 2026 AI in French Companies Observatory",
+      "subtitle": "AI maturity, use cases, budgets and barriers — measured among executives and decision-makers of French companies."
+    },
+    "methodo": {
+      "title": "Methodology",
+      "sample": "Sample",
+      "sampleValue": "{count, plural, =0 {Survey in progress — first results coming soon} one {# complete response} other {# complete responses}}",
+      "period": "Field period",
+      "method": "Method",
+      "methodValue": "Self-administered online questionnaire (16 questions), respondents = executives and decision-makers.",
+      "coverage": "Coverage",
+      "coverageValue": "{regions} regions · {sectors} sectors · {sizes} company sizes",
+      "license": "License"
+    },
+    "results": {
+      "inBrief": "At a glance — key figures",
+      "pending": "The survey is ongoing. The first aggregated results will be published as soon as a sufficient sample has responded.",
+      "filtersTitle": "Filter results",
+      "filterSize": "Company size",
+      "filterSector": "Sector",
+      "filterRegion": "Region",
+      "filterAll": "All",
+      "filterApply": "Apply",
+      "filterReset": "Reset",
+      "basedOn": "{count, plural, =0 {No response for this filter} one {Based on # response} other {Based on # responses}}",
+      "citeTitle": "How to cite this study",
+      "citeBody": "You are free to reuse this data with attribution (CC BY 4.0 license).",
+      "downloadCsv": "Download the data (CSV)",
+      "participateCta": "Take the survey"
+    },
+    "form": {
+      "hook": "Where do you really stand with AI?",
+      "subhook": "4 minutes. Compare your company to the executives already surveyed.",
+      "stepOf": "Step {current} of {total}",
+      "next": "Next",
+      "previous": "Previous",
+      "submit": "See my results",
+      "submitting": "Sending…",
+      "required": "This answer is required.",
+      "multiHint": "Multiple choices allowed",
+      "maxHint": "{max} max",
+      "thanksTitle": "Thank you for taking part!",
+      "thanksBody": "Your response has been recorded. Discover where your company stands.",
+      "seeResults": "See the results",
+      "error": "Something went wrong. Please try again."
+    },
+    "insights": {
+      "competitors_use_ai": "{value}% of French companies believe their competitors already use AI.",
+      "no_formal_strategy": "{value}% of French companies have no formal AI strategy.",
+      "rgpd_concern": "{value}% of French companies are concerned about the sovereignty of their data.",
+      "investment_intent": "{value}% of French companies plan to increase their AI budget."
+    },
+    "questions": {
+      "companySize": {
+        "label": "What is the size of your company?",
+        "options": {
+          "TPE": "Sole trader / micro (1-9)",
+          "PME": "SME (10-249)",
+          "ETI": "Mid-cap (250-4999)",
+          "GRANDE_ENTREPRISE": "Large enterprise (5000+)"
+        }
+      },
+      "sector": {
+        "label": "In which sector do you operate?"
+      },
+      "region": {
+        "label": "In which region are you based?"
+      },
+      "respondentRole": {
+        "label": "What is your role?",
+        "options": {
+          "ceo_founder": "Founder / CEO",
+          "gm_coo": "General Manager / COO",
+          "cio_it": "CIO / IT lead",
+          "business_director": "Business unit director",
+          "ops_manager": "Operations manager",
+          "other": "Other"
+        }
+      },
+      "maturityLevel": {
+        "label": "Where are you in your AI adoption?",
+        "options": {
+          "none": "No initiative",
+          "exploration": "Watching / exploring",
+          "poc": "First tests (POC)",
+          "production": "In production (1-2 use cases)",
+          "scaled": "Deployed at scale"
+        }
+      },
+      "competitorsUseAi": {
+        "label": "Do you think your competitors already use AI?",
+        "options": {
+          "yes_clearly": "Yes, clearly",
+          "probably": "Probably",
+          "dont_know": "I don't know",
+          "no": "No"
+        }
+      },
+      "hasStrategy": {
+        "label": "Do you have a formal AI strategy?",
+        "options": {
+          "formalized": "Yes, formalized",
+          "in_progress": "In progress",
+          "none": "No"
+        }
+      },
+      "useCases": {
+        "label": "Which AI use cases have you implemented?",
+        "options": {
+          "automation": "Task automation",
+          "chatbot": "Chatbot / customer support",
+          "content": "Content generation",
+          "data_analysis": "Data analysis / reporting",
+          "internal_rag": "Internal assistant (RAG)",
+          "sales": "Sales / prospecting support",
+          "dev": "Development / code",
+          "none": "None"
+        }
+      },
+      "tools": {
+        "label": "Which AI tools do you use?",
+        "options": {
+          "chatgpt": "ChatGPT",
+          "copilot": "Microsoft Copilot",
+          "claude": "Claude",
+          "gemini": "Gemini",
+          "mistral": "Mistral",
+          "internal": "Internal / custom tools",
+          "none": "None"
+        }
+      },
+      "annualBudget": {
+        "label": "What is your annual AI budget?",
+        "options": {
+          "zero": "€0",
+          "lt_1k": "< €1,000",
+          "k1_5": "€1-5k",
+          "k5_20": "€5-20k",
+          "k20_100": "€20-100k",
+          "gt_100k": "> €100k",
+          "dont_know": "Don't know"
+        }
+      },
+      "barriers": {
+        "label": "What are your main barriers to AI adoption?",
+        "options": {
+          "skills": "Lack of skills",
+          "budget": "Limited budget",
+          "roi": "Uncertain ROI",
+          "security_rgpd": "Security / GDPR",
+          "data_quality": "Data quality / access",
+          "internal_resistance": "Internal resistance",
+          "time": "Lack of time",
+          "not_priority": "Not a priority"
+        }
+      },
+      "timeSavedPerDay": {
+        "label": "How much time does AI save you per day?",
+        "options": {
+          "none": "None",
+          "lt_30min": "< 30 min",
+          "m30_1h": "30 min - 1 h",
+          "h1_2": "1-2 h",
+          "h2_3": "2-3 h",
+          "gt_3h": "> 3 h"
+        }
+      },
+      "rgpdConcern": {
+        "label": "Are you concerned about GDPR / data sovereignty?",
+        "options": {
+          "very": "Very concerned",
+          "somewhat": "Somewhat concerned",
+          "little": "Slightly concerned",
+          "not_at_all": "Not at all"
+        }
+      },
+      "teamTrained": {
+        "label": "Are your teams trained in AI?",
+        "options": {
+          "formal": "Yes, formally",
+          "informal": "Informal awareness",
+          "none": "No"
+        }
+      },
+      "satisfaction": {
+        "label": "Are you satisfied with your current AI use?",
+        "options": {
+          "very_satisfied": "Very satisfied",
+          "satisfied": "Satisfied",
+          "mixed": "Mixed",
+          "disappointed": "Disappointed"
+        }
+      },
+      "investmentIntent": {
+        "label": "What is your AI investment intent?",
+        "options": {
+          "strong_increase": "Strong increase",
+          "increase": "Increase",
+          "stable": "Stable",
+          "decrease": "Decrease",
+          "none_budget": "No budget"
+        }
+      }
+    },
+    "press": {
+      "sectionTitle": "The 2026 AI Observatory in figures",
+      "sampleLabel": "responses",
+      "sectorsLabel": "sectors",
+      "regionsLabel": "regions",
+      "questionsLabel": "questions",
+      "seeAll": "See all results",
+      "downloadData": "Download the data (CSV)"
+    },
+    "faq": {
+      "q1": {
+        "question": "Who runs the 2026 AI Observatory?",
+        "answer": "Axion-IA, a B2B operational AI consultancy, based on responses from executives and decision-makers of French companies."
+      },
+      "q2": {
+        "question": "How is the data collected?",
+        "answer": "Through a self-administered online questionnaire of 16 questions, open to executives and decision-makers of French companies."
+      },
+      "q3": {
+        "question": "Can I reuse these figures?",
+        "answer": "Yes, under the Creative Commons CC BY 4.0 license, citing “Observatoire Axion-IA 2026 — axion-ia.com”."
+      },
+      "q4": {
+        "question": "What is the study's coverage?",
+        "answer": "The survey covers 13 metropolitan regions, 30 sectors and 4 company sizes; the sample grows continuously."
+      }
+    }
   }
 }

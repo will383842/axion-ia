@@ -33,6 +33,7 @@ export async function Footer() {
     { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },
     { href: "/comparaisons", label: isFr ? "Comparatifs" : "Comparisons" },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
+    { href: ROUTES.barometre, label: isFr ? "Observatoire IA 2026" : "AI Observatory 2026" },
     { href: "/galerie", label: isFr ? "Banque d'images" : "Image bank" },
     { href: "/faq", label: "FAQ" },
   ];

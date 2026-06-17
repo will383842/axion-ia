@@ -33,6 +33,7 @@ const ContentTypeSchema = z.enum([
   "guide_pilier",
   "qa_derived",
   "faq_standalone",
+  "barometer_insight",
 ]);
 // B5 (CONTENT-GEN-UX 2026) — aligné sur l'enum DB `SearchIntent` (8 valeurs).
 // Avant : la liste contenait `commercial` (valeur INEXISTANTE en DB) et omettait
