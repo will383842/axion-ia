@@ -67,7 +67,11 @@ export async function getDbArticlesByCategorySlug(
         excerpt: t.excerpt ?? "",
         publishedAt: a.publishedAt ? a.publishedAt.toISOString() : "",
         readingTime: a.readingTime ? `${a.readingTime} min` : "6 min",
-        route: resolveArticleRoute({ isNews: a.isNews, templateVariant: a.templateVariant }),
+        route: resolveArticleRoute({
+          isNews: a.isNews,
+          templateVariant: a.templateVariant,
+          slug: t.slug,
+        }),
       },
     ];
   });

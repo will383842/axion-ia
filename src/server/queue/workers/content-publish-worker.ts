@@ -326,6 +326,17 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // la page retombait sur alt={title} (signal Google Images faible).
   const heroImageAlt =
     typeof output["heroImageAlt"] === "string" ? (output["heroImageAlt"] as string) : null;
+  // Unsplash hero (Option A 2026-06-16) — attribution photographe CGU §6,
+  // renseignée uniquement quand la hero est une photo Unsplash hotlinkée
+  // (null pour image-bank : le crédit est alors dérivé de l'ImageAsset côté loader).
+  const heroPhotographerName =
+    typeof output["heroImagePhotographerName"] === "string"
+      ? (output["heroImagePhotographerName"] as string)
+      : null;
+  const heroPhotographerUrl =
+    typeof output["heroImagePhotographerUrl"] === "string"
+      ? (output["heroImagePhotographerUrl"] as string)
+      : null;
 
   // B.7 P0-6 P1.5 — Outline SimHash propage depuis content-gen-worker.
   const outlineSimhash =
@@ -441,6 +452,9 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
         // VIS-08 — Alt sémantique hero (FR ; EN miroir non requis, locale FR canonique).
         ...(heroImageAlt ? { featuredImageAltFr: heroImageAlt } : {}),
+        // Unsplash hero (Option A 2026-06-16) — attribution CGU §6 (Unsplash only).
+        ...(heroPhotographerName ? { featuredImagePhotographerName: heroPhotographerName } : {}),
+        ...(heroPhotographerUrl ? { featuredImagePhotographerUrl: heroPhotographerUrl } : {}),
         // B.7 P0-6 — Outline SimHash (couche dedup 3, persiste pour future comparaison).
         ...(outlineSimhash ? { outlineSimhash } : {}),
         // #2 2026-06-14 — Fingerprint sémantique (dedup cross-entry topic).

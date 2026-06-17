@@ -177,6 +177,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // P4 Sprint correctif 2026-05-21 — migrations Manon qui referencent content-gen
   // dans des commentaires SQL (FK FK campaignId Article). Pas de violation isolation.
   /^prisma\/migrations\/\d+_add_article_campaign_id\/migration\.sql$/,
+  // Hero Unsplash (Option A 2026-06-16) — migration additive des colonnes
+  // featured_image_photographer_name/url sur articles. Le commentaire SQL
+  // mentionne "content-gen" (contexte) mais le nom de migration ne matche pas
+  // le pattern _content_gen_. Exception explicite (même cas que ci-dessus).
+  /^prisma\/migrations\/\d+_article_unsplash_credit\/migration\.sql$/,
   // P1.5 B.4 — Routes API admin articles : RGPD art.17 (forget) + AI Act art.50 (provenance).
   // Consomment des données content-gen (purge cascade + trace LLM) mais sont des
   // endpoints admin transverses, pas du code content-gen core.
@@ -272,6 +277,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/qualiopi\//,
   /^src\/server\/actions\/qualiopi\//,
   /^src\/server\/queue\/workers\/qualiopi-.*\.ts$/,
+  // Observatoire IA 2026 — CONSOMMATEUR LÉGITIME des briques content-gen :
+  // les actions admin/public de l'observatoire importent `requireAdmin` et
+  // `enqueueDirectGen` (src/server/actions/content-gen/*) pour générer les
+  // insights `barometer_insight`. Même cas que qualiopi/carrieres : module
+  // distinct qui réutilise le pipeline, pas du code content-gen core. (Débloque
+  // l'isolation-check rouge sur main introduite par le merge observatoire.)
+  /^src\/server\/actions\/observatoire\//,
   /^src\/server\/chatbot\/generation\//,
   /^src\/server\/chatbot\/ingestion\//,
   /^src\/content\/villes\/copy\//,

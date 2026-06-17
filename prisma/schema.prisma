@@ -997,26 +997,31 @@ model BookingOption {
 // ============================================================
 
 model Article {
-  id                 String        @id @default(uuid()) @db.Uuid
+  id                            String        @id @default(uuid()) @db.Uuid
   // Champs structurels (mêmes pour toutes les langues)
-  authorId           String?       @map("author_id") @db.Uuid
-  author             Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  categoryId         String?       @map("category_id") @db.Uuid
-  category           Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  featuredImage      String?       @map("featured_image") @db.VarChar(512)
+  authorId                      String?       @map("author_id") @db.Uuid
+  author                        Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId                    String?       @map("category_id") @db.Uuid
+  category                      Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage                 String?       @map("featured_image") @db.VarChar(512)
   // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO/A11y additif pour
   // featured_image. Nullable (backward compat 100%). Pré-remplissable via
   // script seed `prisma/scripts/seed-image-alts-2026-05-28.ts` (Cf. audit
   // images cross-site Phase 1).
-  featuredImageAltFr String?       @map("featured_image_alt_fr") @db.VarChar(255)
-  featuredImageAltEn String?       @map("featured_image_alt_en") @db.VarChar(255)
-  status             PublishStatus @default(draft)
-  publishedAt        DateTime?     @map("published_at")
-  readingTime        Int?          @map("reading_time")
-  viewsCount         Int           @default(0) @map("views_count")
-  commentsEnabled    Boolean       @default(false) @map("comments_enabled")
-  createdAt          DateTime      @default(now()) @map("created_at")
-  updatedAt          DateTime      @updatedAt @map("updated_at")
+  featuredImageAltFr            String?       @map("featured_image_alt_fr") @db.VarChar(255)
+  featuredImageAltEn            String?       @map("featured_image_alt_en") @db.VarChar(255)
+  // Unsplash hero 2026-06-16 (Option A) — attribution photographe CGU §6 quand
+  // featuredImage est une photo Unsplash hotlinkée (null pour image-bank, le
+  // crédit étant alors dérivé de l'ImageAsset). Rendu par <UnsplashCredit/>.
+  featuredImagePhotographerName String?       @map("featured_image_photographer_name") @db.VarChar(255)
+  featuredImagePhotographerUrl  String?       @map("featured_image_photographer_url") @db.VarChar(500)
+  status                        PublishStatus @default(draft)
+  publishedAt                   DateTime?     @map("published_at")
+  readingTime                   Int?          @map("reading_time")
+  viewsCount                    Int           @default(0) @map("views_count")
+  commentsEnabled               Boolean       @default(false) @map("comments_enabled")
+  createdAt                     DateTime      @default(now()) @map("created_at")
+  updatedAt                     DateTime      @updatedAt @map("updated_at")
 
   // ====== CONTENT GENERATOR — Sprint 1 (v1.7 / v2.5) ======
   /// Pyramide indexation 3-tiers anti-doorway HCU (default tier-2 par sécurité).
@@ -1030,6 +1035,11 @@ model Article {
   promotedAt          DateTime?      @map("promoted_at")
   /// FK ContentGenJob.id (cuid String — pas @db.Uuid)
   generatedByJobId    String?        @map("generated_by_job_id")
+  /// Traçabilité campagne → article (P0-6). Colonne créée par la migration
+  /// 20260521150200_add_article_campaign_id (VARCHAR(25) = cuid CoverageCampaign,
+  /// PAS @db.Uuid). Écrit par content-publish-worker ; sans ce champ au modèle,
+  /// `article.create({ data: { campaignId } })` throw « Unknown argument ».
+  campaignId          String?        @map("campaign_id") @db.VarChar(25)
   directAnswer        String?        @map("direct_answer") @db.Text
   faqJson             Json?          @map("faq_json")
   /// IDs des KnowledgeEntry KB utilisées (audit trail RAG)
@@ -1098,6 +1108,8 @@ model Article {
   @@index([indexationTier, status])
   @@index([isNews, publishedAt(sort: Desc)])
   @@index([generatedByJobId])
+  /// Index articles_campaign_id_idx créé par migration 20260521150200.
+  @@index([campaignId])
   /// Index GIN sur mentioned_cities pour filter `getBlogPostsByVille` performant
   /// (~10K articles cible, requête `WHERE 'paris' = ANY(mentioned_cities)`).
   @@index([mentionedCities], type: Gin)

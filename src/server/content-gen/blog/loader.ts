@@ -127,8 +127,10 @@ export async function loadBlogArticleForView(
           include: { externalReference: { select: { url: true, title: true } } },
         })
         .catch(() => []),
-      // CGU Unsplash §6 — lookup photographe depuis ImageAsset par filePath.
-      dbArticle.featuredImage
+      // CGU Unsplash §6 — lookup photographe depuis ImageAsset par filePath
+      // (cas image-bank uniquement ; pour une hero Unsplash hotlinkée — URL http —
+      // le crédit est porté directement par l'Article, pas par un ImageAsset).
+      dbArticle.featuredImage && !dbArticle.featuredImage.startsWith("http")
         ? prisma.imageAsset
             .findFirst({
               where: { filePath: { contains: dbArticle.featuredImage.split("/").pop() ?? "" } },
@@ -173,11 +175,15 @@ export async function loadBlogArticleForView(
       featuredImageAlt: dbArticle.featuredImageAlt ?? null,
       // VIS-03 — Snippet 0 généré (fallback excerpt côté page si null).
       directAnswer: dbArticle.directAnswer ?? null,
-      // CGU Unsplash §6 — attribution photographe (null si pas image Unsplash).
+      // CGU Unsplash §6 — attribution photographe. Priorité au crédit porté par
+      // l'Article (hero Unsplash hotlinkée, Option A 2026-06-16) ; fallback sur
+      // l'ImageAsset (hero image-bank de source Unsplash). null sinon.
       photographerName:
-        imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerName ?? null) : null,
+        dbArticle.featuredImagePhotographerName ??
+        (imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerName ?? null) : null),
       photographerUrl:
-        imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerUrl ?? null) : null,
+        dbArticle.featuredImagePhotographerUrl ??
+        (imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerUrl ?? null) : null),
       citations: rawCitations.map((c) => ({
         name: c.externalReference.title,
         url: c.externalReference.url,

@@ -65,6 +65,13 @@ export interface PublicEntryFacade {
    * Optionnel : null si pas d'image / pas d'alt.
    */
   readonly featuredImageAlt?: string | null;
+  /**
+   * Unsplash hero (Option A 2026-06-16) — attribution photographe CGU §6, posée
+   * sur l'Article quand la hero est une photo Unsplash hotlinkée. Optionnel :
+   * null pour image-bank (le crédit est alors dérivé de l'ImageAsset côté loader).
+   */
+  readonly featuredImagePhotographerName?: string | null;
+  readonly featuredImagePhotographerUrl?: string | null;
 }
 
 // ============================================================
@@ -461,6 +468,9 @@ export async function findArticleBySlug(
         (locale === "fr"
           ? translation.article.featuredImageAltFr
           : translation.article.featuredImageAltEn) ?? null,
+      // Unsplash hero (Option A 2026-06-16) — attribution CGU §6 (null = image-bank).
+      featuredImagePhotographerName: translation.article.featuredImagePhotographerName ?? null,
+      featuredImagePhotographerUrl: translation.article.featuredImagePhotographerUrl ?? null,
     };
   }
 

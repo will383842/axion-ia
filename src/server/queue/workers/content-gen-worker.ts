@@ -38,7 +38,7 @@ import type { ContentType, SearchIntent } from "../../../../prisma/generated/cli
 // B.5 P1.5 — Rotation 747 keyword seeds.
 import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyword-selector";
 // B.6 P1.5 P0-4 — Assignment hero image depuis image-bank (read-only).
-import { assignHeroImage } from "@/server/content-gen/images/assign-hero-image";
+import { selectHeroImage } from "@/server/content-gen/images/select-hero-image";
 // B.7 P1.5 P0-6 — Outline SimHash dedup (couche A.3 post-IA).
 import { checkOutlineDedup } from "@/server/content-gen/quality/dedup-guard";
 // #2 2026-06-14 — Dedup sémantique cross-entry (topic-fingerprint Voyage SimHash).
@@ -524,18 +524,19 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     const hero =
       heroFromRss || !resolvedKeyword
         ? null
-        : await assignHeroImage({
+        : await selectHeroImage({
+            jobId: contentGenJobId,
+            contentType,
             ...(campaignSectorForHero ? { vertical: campaignSectorForHero } : {}),
             primaryKeyword: resolvedKeyword,
             ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
             ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
           });
     if (hero) {
-      await logStep(contentGenJobId, "hero_image_assigned", `Hero image from image-bank`, {
+      await logStep(contentGenJobId, "hero_image_assigned", `Hero image (${hero.source})`, {
+        source: hero.source,
         asset_id: hero.assetId,
-        slug: hero.slug,
-        width: hero.width,
-        height: hero.height,
+        photographer: hero.photographerName,
       });
     } else if (!heroFromRss) {
       await logStep(
@@ -795,11 +796,15 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       plagiarismMaxSimilarity: plagiarism.maxSimilarity,
       plagiarismThreshold,
       plagiarismCorpusSize: corpus.size,
-      // B.6 P0-4 — Hero image assignee depuis image-bank (null si pas de match).
-      // content-publish-worker lit ces champs et les persiste dans Article.featuredImage.
+      // Hero image — Unsplash primaire (Option A 2026-06-16) ou image-bank fallback.
+      // content-publish-worker lit ces champs et les persiste dans Article.featuredImage
+      // + featuredImagePhotographerName/Url (attribution CGU §6, Unsplash uniquement).
       heroImageAssetId: hero?.assetId ?? null,
-      heroImageFilePath: hero?.filePath ?? null,
+      heroImageFilePath: hero?.url ?? null,
       heroImageAlt: hero?.alt ?? null,
+      heroImageSource: hero?.source ?? null,
+      heroImagePhotographerName: hero?.photographerName ?? null,
+      heroImagePhotographerUrl: hero?.photographerUrl ?? null,
       // B.7 P0-6 — Outline SimHash + verdict dedup.
       outlineSimhash: outlineDedup.outlineSimhash,
       outlineDedupVerdict: outlineDedup.verdict,
