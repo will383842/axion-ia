@@ -69,6 +69,13 @@
 - Re-vérifié après corrections : **typecheck complet vert**, **ESLint vert**, **55 tests verts**, **seed 8627 KPIs identiques (73/56/75/59)**.
 - Crash Turbopack au 1er compile de `/[locale]` (flakiness connue, exit natif Windows) — contourné via heap 8G + rm .next ; **pas lié au code**.
 
+## Vérification E2E approfondie #2 (2026-06-17, post-push PR #103)
+
+- **6 audits adverses parallèles** (schéma↔migration, agrégation, write-path, page+SEO, i18n/CSV/exports, admin+générateur) + checks dynamiques (typecheck vert, suite complète 16 959 verte au pre-push, specs ciblées 40 vertes).
+- **5/6 couches : PASS net.** Confirmé : migration additive en lockstep (0 dérive, ContentType ALTER TYPE présent), agrégation injection-safe + build-stub-safe + `pct` zéro-safe, write-path Zod strict + visitorId=hashIp non-injectable, page 0 chiffre hardcodé + JSON-LD Dataset valide + CLS 0, parité i18n FR↔EN complète, CSV anti-injection + agrégats-only.
+- **1 finding réel CORRIGÉ (intégrité)** : la garde anti-fabrication du générateur + de l'action admin testait `snapshot.totalResponses === 0` — or `aggregateBarometer` n'exclut PAS le seed → `totalResponses` inclut les 8627 fixtures. Le message d'erreur et le cahier des charges disaient pourtant « 0 réponse RÉELLE ». **Fix (durcissement, validé Will)** : nouveau `countRealResponses()` dans `snapshot.ts` (réel = total − `seed:%`, même sémantique que le dashboard, stub-safe) ; garde du générateur (`barometer-insight.ts`) et de `generateBarometerArticle` (`admin.ts`) portent désormais sur le compte réel. Régression verrouillée par `admin-gate.spec.ts` (refuse si 0 réel même avec total=8627). Effet voulu : en dev, générer un article exige ≥1 vraie réponse.
+- Mineurs notés (non corrigés, non bloquants) : fan-out 17 req // sur vue filtrée (charge), rate-limit anti-abus par-IP fail-open sans cap global, pas de réconciliation numérique post-génération (prose LLM pourrait dériver des chiffres verrouillés). Cosmétique corrigé : commentaire `study.ts` 31→30.
+
 ## RESTE À FAIRE (Will)
 1. **Décider publication** : en prod, lancer `pnpm barometer:seed` est DÉCONSEILLÉ (fixture dev). Lancer le formulaire, collecter du réel, afficher l'effectif réel.
 2. Push de la branche `feat/observatoire-ia` (je n'ai rien poussé) + PR.

@@ -47,7 +47,7 @@ export const STUDY_METHOD_EN =
 /**
  * Couverture dérivée des SSOT (jamais hardcodée).
  * - Régions : 13 métropole (`type === "metropole"`).
- * - Secteurs : 31 tags `KB_SECTOR_TAGS`.
+ * - Secteurs : 30 tags `KB_SECTOR_TAGS`.
  * - Tailles : 4 valeurs de l'enum Prisma `CompanySize`.
  */
 export const STUDY_REGIONS: ReadonlyArray<Region> = REGIONS.filter((r) => r.type === "metropole");

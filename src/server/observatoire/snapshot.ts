@@ -266,6 +266,21 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
 }
 
 /**
+ * Compte les réponses RÉELLES (hors fixture de seed `seed:%`). C'est le COMPTEUR
+ * D'INTÉGRITÉ : la publication d'un article `barometer_insight` doit refuser tant
+ * qu'aucune réponse réelle n'existe — `totalResponses` du snapshot inclut le seed
+ * dev (8627) et ne doit JAMAIS servir de garde anti-fabrication. Même sémantique
+ * que le dashboard admin (réel = total − seedé). Stub-safe (count → 0 au build).
+ */
+export async function countRealResponses(): Promise<number> {
+  const [total, seeded] = await Promise.all([
+    prisma.barometerResponse.count(),
+    prisma.barometerResponse.count({ where: { visitorId: { startsWith: "seed:" } } }),
+  ]);
+  return total - seeded;
+}
+
+/**
  * Lit le snapshot pré-calculé. Renvoie null si absent (build/stub → fallback
  * « enquête en cours », jamais de throw).
  */

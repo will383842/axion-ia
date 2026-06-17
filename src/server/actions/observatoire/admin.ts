@@ -12,6 +12,7 @@ import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import {
   recomputeAndPersistSnapshot,
   readLatestSnapshot,
+  countRealResponses,
   type BarometerSnapshotPayload,
 } from "@/server/observatoire/snapshot";
 import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
@@ -100,8 +101,11 @@ export type GenerateArticleState = { ok: true; jobId: string } | { ok: false; er
 export async function generateBarometerArticle(insightKey?: string): Promise<GenerateArticleState> {
   await requireAdmin();
   try {
-    const snap = await readLatestSnapshot();
-    if (!snap || snap.totalResponses === 0) {
+    // Garde d'intégrité : on s'appuie sur le compte RÉEL (hors seed), pas sur
+    // `snap.totalResponses` qui inclut la fixture dev — sinon le seed pourrait
+    // être publié comme une vraie étude (risque L121-2).
+    const [snap, realResponses] = await Promise.all([readLatestSnapshot(), countRealResponses()]);
+    if (!snap || realResponses === 0) {
       return {
         ok: false,
         error: "Aucune réponse réelle — impossible de générer un article sans chiffres vérifiés.",

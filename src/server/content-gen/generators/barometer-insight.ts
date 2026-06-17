@@ -25,7 +25,11 @@ import { injectBrandVoice } from "../brand/brand-voice";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
-import { readLatestSnapshot, type BarometerSnapshotPayload } from "@/server/observatoire/snapshot";
+import {
+  readLatestSnapshot,
+  countRealResponses,
+  type BarometerSnapshotPayload,
+} from "@/server/observatoire/snapshot";
 import { STUDY_NAME_FR, STUDY_ATTRIBUTION } from "@/content/observatoire/study";
 
 const QUALITY_THRESHOLD = 60;
@@ -98,11 +102,16 @@ export const barometerInsightGenerator: Generator = {
   contentType: "barometer_insight",
 
   async generate(input: GeneratorBaseInput): Promise<GeneratorOutput> {
-    const snapshot = await readLatestSnapshot();
-    if (!snapshot || snapshot.totalResponses === 0) {
-      // Intégrité : pas de chiffres vérifiés → pas d'article.
+    // Intégrité : la garde porte sur le compte RÉEL (hors fixture seed `seed:%`),
+    // pas sur `snapshot.totalResponses` qui inclut le seed dev (8627). Sans ça,
+    // une base seedée publierait des chiffres fabriqués comme une vraie étude.
+    const [snapshot, realResponses] = await Promise.all([
+      readLatestSnapshot(),
+      countRealResponses(),
+    ]);
+    if (!snapshot || realResponses === 0) {
       throw new Error(
-        "barometer_insight: aucun snapshot avec des réponses réelles — génération refusée (jamais de chiffre fabriqué).",
+        "barometer_insight: aucune réponse réelle (hors seed) — génération refusée (jamais de chiffre fabriqué).",
       );
     }
 
