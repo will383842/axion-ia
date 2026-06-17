@@ -7,6 +7,7 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { resolveArticleRoute } from "@/server/content-gen/blog/resolve-article-route";
 import {
   archiveArticle,
   demoteArticle,
@@ -165,6 +166,23 @@ export async function PublicationsV2({
                             </Link>
                             <br />
                             <code className="text-[length:var(--text-admin-xs)]">{t.slug}</code>
+                            {a.status === "published" ? (
+                              <>
+                                {" · "}
+                                <a
+                                  href={`/fr/${resolveArticleRoute({
+                                    isNews: a.isNews,
+                                    templateVariant: a.templateVariant,
+                                    slug: t.slug,
+                                  })}/${t.slug}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="admin-link text-[length:var(--text-admin-xs)]"
+                                >
+                                  Voir en ligne ↗
+                                </a>
+                              </>
+                            ) : null}
                           </>
                         ) : (
                           "—"

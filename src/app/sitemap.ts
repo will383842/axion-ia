@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
+import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
   getAllBlogCategorySlugs,
@@ -639,6 +640,25 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
   }
 
   const indexableSlugs = Array.from(datesBySlug.keys());
+
+  // Catégories content-gen (DB-driven) ayant >=1 article publié non-news.
+  // Audit e2e 2026-06-17 : les 5 hubs /blog/categorie/blog-* (générés par
+  // generateStaticParams) n'étaient pas découvrables via le sitemap (seules les
+  // catégories FS l'étaient). On exclut les catégories vides (anti-thin, cohérent
+  // avec le noindex de la page catégorie). Au build stub (cf. ADR 0026) la requête
+  // renvoie [] ; l'ISR (revalidate 86400) repeuple avec la vraie DB.
+  const cgCategorySlugs = (
+    await prisma.category
+      .findMany({
+        where: {
+          slug: { in: [...DB_BLOG_CATEGORY_SLUGS] },
+          articles: { some: { status: "published", isNews: false } },
+        },
+        select: { slug: true },
+      })
+      .catch(() => [])
+  ).map((c) => c.slug);
+
   return buildDynamic(
     [
       {
@@ -651,7 +671,7 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
       {
         fr: "/blog/categorie/:slug",
         en: "/blog/category/:slug",
-        slugs: getAllBlogCategorySlugs(),
+        slugs: [...getAllBlogCategorySlugs(), ...cgCategorySlugs],
         changeFrequency: "monthly",
         priority: 0.5,
       },

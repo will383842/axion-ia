@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = await resolveLabel(slug, locale as Locale);
   if (!label) return {};
   const isFr = locale === "fr";
-  return buildProductMetadata({
+  const base = buildProductMetadata({
     locale,
     path: `/blog/categorie/${slug}`,
     title: isFr ? `${label} · Articles Axion-IA` : `${label} · Axion-IA articles`,
@@ -86,6 +86,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? `Articles Axion-IA dans la catégorie ${label}.`
       : `Axion-IA articles in the ${label} category.`,
   });
+  // Anti-thin (audit e2e 2026-06-17) : noindex une catégorie réellement vide
+  // (runtime, hors build stub) pour éviter qu'une page hub sans article soit
+  // indexée. follow:true conserve le maillage interne. Au build stub (ADR 0026)
+  // la requête renvoie [] → on ne noindex PAS (sinon toutes les catégories le
+  // seraient au build) ; l'ISR (revalidate 3600) réévalue avec la vraie DB.
+  const isStubBuild = process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
+  if (!isStubBuild) {
+    const posts = await loadItems(slug, locale as Locale);
+    if (posts.length === 0) {
+      return { ...base, robots: { index: false, follow: true } };
+    }
+  }
+  return base;
 }
 
 export default async function BlogCategoryPage({ params }: Props) {
