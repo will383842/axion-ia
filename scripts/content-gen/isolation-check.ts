@@ -277,6 +277,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/qualiopi\//,
   /^src\/server\/actions\/qualiopi\//,
   /^src\/server\/queue\/workers\/qualiopi-.*\.ts$/,
+  // Observatoire IA 2026 — CONSOMMATEUR LÉGITIME des briques content-gen :
+  // les actions admin/public de l'observatoire importent `requireAdmin` et
+  // `enqueueDirectGen` (src/server/actions/content-gen/*) pour générer les
+  // insights `barometer_insight`. Même cas que qualiopi/carrieres : module
+  // distinct qui réutilise le pipeline, pas du code content-gen core. (Débloque
+  // l'isolation-check rouge sur main introduite par le merge observatoire.)
+  /^src\/server\/actions\/observatoire\//,
   /^src\/server\/chatbot\/generation\//,
   /^src\/server\/chatbot\/ingestion\//,
   /^src\/content\/villes\/copy\//,
