@@ -536,13 +536,19 @@ jobs:
           # `/en` retiré 2026-05-16 : EN locale désactivé (cf. AGENTS.md
           # "EN re-enable procedure"), `/en` répond 301 → /fr, ce qui faisait
           # fail le LHCI gate (SEO penalty pour URL testée qui redirect).
-          # Remplacé par `/fr/interventions` = page produit stratégique.
           # Quand EN sera réactivé, restore `--url=https://axion-ia.com/en`.
+          #
+          # Audit indexation 2026-06-17 — URLs de test = pages INDEXABLES uniquement.
+          # `/fr/interventions` (301 → /formations) et `/fr/reserver` (noindex, funnel)
+          # faisaient échouer l'assertion SEO `is-crawlable` (>=0.9) du gate sans que ce
+          # soit une régression. Remplacés par `/fr/formations` (cible canonique du 301)
+          # et `/fr/contact` (page stratégique indexable). Les Web Vitals de `/reserver`
+          # restent couverts par `nightly.yml`.
           URLS=(
             --url=https://axion-ia.com/fr
-            --url=https://axion-ia.com/fr/interventions
+            --url=https://axion-ia.com/fr/formations
             --url=https://axion-ia.com/fr/audit
-            --url=https://axion-ia.com/fr/reserver
+            --url=https://axion-ia.com/fr/contact
             --url=https://axion-ia.com/fr/implantations/ile-de-france/paris
           )
           LH_SETTINGS=(--settings.preset=desktop --settings.throttlingMethod=devtools)
