@@ -38,6 +38,7 @@ import { comparisonGenerator } from "./comparison";
 import { guidePilierGenerator } from "./guide-pilier";
 import { qaDerivedGenerator } from "./qa-derived";
 import { faqStandaloneGenerator } from "./faq-standalone";
+import { barometerInsightGenerator } from "./barometer-insight";
 // Sprint v7 Phase 8 commit 2/4 — 12 nouveaux generators content types.
 import {
   longTailKeywordGenerator,
@@ -76,6 +77,9 @@ const REGISTRY: Partial<Record<ContentType, Generator>> = {
   what_is_x: whatIsXGenerator,
   faq_geo: faqGeoGenerator,
   case_study_local: caseStudyLocalGenerator,
+  // Observatoire IA 2026 — article ancré sur le BarometerSnapshot (hors wizard,
+  // piloté par l'action admin generateBarometerArticle).
+  barometer_insight: barometerInsightGenerator,
 };
 
 export function getGenerator(contentType: ContentType): Generator {

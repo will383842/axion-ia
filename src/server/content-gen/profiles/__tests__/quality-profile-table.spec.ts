@@ -29,8 +29,9 @@ describe("quality-profile-table (PH1)", () => {
       }
     });
 
-    it("couvre exactement 21 ContentType", () => {
-      expect(Object.keys(PROFILE_BY_CONTENT_TYPE)).toHaveLength(21);
+    it("couvre exactement 22 ContentType", () => {
+      // 21 (9 V1 + 12 Phase 8) + barometer_insight (Observatoire IA 2026).
+      expect(Object.keys(PROFILE_BY_CONTENT_TYPE)).toHaveLength(22);
     });
   });
 

@@ -230,6 +230,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "suivre",
       tier: "simple",
     },
+    {
+      href: `${base}/content-gen/observatoire`,
+      label: "Observatoire IA 2026",
+      icon: "📊",
+      group: "content_gen",
+      subGroup: "suivre",
+      tier: "advanced",
+    },
     // NB — « Pilotage » (/orchestrator) et « File d'attente » (/queue) NE sont
     // PAS des entrées de nav : ce sont des doublons fusionnés (DECISION-IA §2).
     //   • /orchestrator → 308 → /content-gen : ses KPIs vivent déjà dans le

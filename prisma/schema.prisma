@@ -2726,6 +2726,11 @@ enum ContentType {
   what_is_x
   faq_geo
   case_study_local
+  // ─── Observatoire IA 2026 ─────────────────────────────────────────────────
+  // Ajouté par migration observatoire_ia_2026. Générateur d'articles ancrés sur
+  // les chiffres réels du BarometerSnapshot ("DONNÉES VÉRIFIÉES").
+  // Generator : src/server/content-gen/generators/barometer-insight.ts
+  barometer_insight
 }
 
 /// 12 statuts pipeline (§ 5.1 + § 27 boucle qualité v1.7).
@@ -6775,4 +6780,152 @@ model CoachingTransition {
   @@index([coachingSessionId, createdAt])
   @@index([triggeredBy])
   @@map("coaching_transitions")
+}
+
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║  OBSERVATOIRE DE L'IA DANS LES ENTREPRISES FRANÇAISES 2026                 ║
+// ║  Enquête first-party auto-administrée. Données CC BY 4.0.                  ║
+// ║  Réutilise les SSOT : CompanySize (enum), Locale (enum), KB_SECTOR_TAGS    ║
+// ║  (sector = slug String), regions.ts (region = slug String).               ║
+// ║  Enums dédiés ci-dessous = uniquement les dimensions absentes des SSOT.    ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+
+/// Q5 — Niveau de maturité IA. Valeurs = slugs EN stables (réf. questions.ts).
+enum MaturityLevel {
+  none
+  exploration
+  poc
+  production
+  scaled
+}
+
+/// Q6 — Perception de l'usage IA chez les concurrents (KPI presse « 72 % »).
+enum CompetitorsUseAi {
+  yes_clearly
+  probably
+  dont_know
+  no
+}
+
+/// Q7 — Existence d'une stratégie IA formalisée (KPI presse « 59 % sans »).
+enum HasStrategy {
+  formalized
+  in_progress
+  none
+}
+
+/// Q10 — Budget IA annuel. Préfixes lettres (un identifiant enum ne peut
+/// pas commencer par un chiffre).
+enum AnnualBudget {
+  zero
+  lt_1k
+  k1_5
+  k5_20
+  k20_100
+  gt_100k
+  dont_know
+}
+
+/// Q12 — Temps gagné par jour grâce à l'IA.
+enum TimeSavedPerDay {
+  none
+  lt_30min
+  m30_1h
+  h1_2
+  h2_3
+  gt_3h
+}
+
+/// Q13 — Préoccupation RGPD / souveraineté des données (KPI presse « 73 % »).
+enum RgpdConcern {
+  very
+  somewhat
+  little
+  not_at_all
+}
+
+/// Q14 — Niveau de formation des équipes à l'IA.
+enum TeamTrained {
+  formal
+  informal
+  none
+}
+
+/// Q15 — Satisfaction (posée seulement si maturité ≥ POC ; colonne nullable).
+enum Satisfaction {
+  very_satisfied
+  satisfied
+  mixed
+  disappointed
+}
+
+/// Q16 — Intention d'investissement IA (KPI presse « 60 % vont investir »).
+enum InvestmentIntent {
+  strong_increase
+  increase
+  stable
+  decrease
+  none_budget
+}
+
+/// Q4 — Rôle du répondant (décideur).
+enum RespondentRole {
+  ceo_founder
+  gm_coo
+  cio_it
+  business_director
+  ops_manager
+  other
+}
+
+/// Une réponse complète au questionnaire de l'Observatoire. Colonnes typées
+/// pour agrégation rapide + index ; multi-choix et payload brut en Json.
+model BarometerResponse {
+  id               String           @id @default(uuid()) @db.Uuid
+  locale           Locale           @default(fr)
+  visitorId        String?          @map("visitor_id") @db.VarChar(120)
+  // Dimensions typées (SSOT réutilisés pour size ; slugs String pour sector/region)
+  companySize      CompanySize      @map("company_size")
+  sector           String           @map("sector") @db.VarChar(80)
+  region           String           @map("region") @db.VarChar(80)
+  respondentRole   RespondentRole   @map("respondent_role")
+  maturityLevel    MaturityLevel    @map("maturity_level")
+  competitorsUseAi CompetitorsUseAi @map("competitors_use_ai")
+  hasStrategy      HasStrategy      @map("has_strategy")
+  annualBudget     AnnualBudget     @map("annual_budget")
+  timeSavedPerDay  TimeSavedPerDay  @map("time_saved_per_day")
+  rgpdConcern      RgpdConcern      @map("rgpd_concern")
+  teamTrained      TeamTrained      @map("team_trained")
+  satisfaction     Satisfaction?
+  investmentIntent InvestmentIntent @map("investment_intent")
+  // Questions multi-choix : tableaux de slugs EN
+  useCases         Json             @map("use_cases")
+  tools            Json
+  barriers         Json
+  // Payload brut (toutes réponses, audit + ré-agrégation future)
+  rawAnswers       Json             @map("raw_answers")
+  submittedAt      DateTime         @default(now()) @map("submitted_at")
+  createdAt        DateTime         @default(now()) @map("created_at")
+
+  @@index([companySize])
+  @@index([sector])
+  @@index([region])
+  @@index([maturityLevel])
+  @@index([submittedAt])
+  @@map("barometer_responses")
+}
+
+/// Agrégats pré-calculés (modèle clé/payload). Les pages publiques lisent
+/// TOUJOURS ce snapshot (clé "latest"), jamais un groupBy live — au build
+/// `stub.invalid`, groupBy renvoie [] (cf. ADR 0026).
+model BarometerSnapshot {
+  id             String   @id @default(uuid()) @db.Uuid
+  key            String   @unique @db.VarChar(60)
+  computedAt     DateTime @default(now()) @map("computed_at")
+  totalResponses Int      @default(0) @map("total_responses")
+  payload        Json
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("barometer_snapshots")
 }

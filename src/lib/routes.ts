@@ -24,6 +24,8 @@ export const ROUTES = {
   about: "/a-propos",
   contact: "/contact",
   press: "/presse",
+  barometre: "/observatoire-ia",
+  barometreParticiper: "/observatoire-ia/participer",
   blog: "/blog",
   faq: "/faq",
   help: "/centre-aide",

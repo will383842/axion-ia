@@ -32,7 +32,7 @@ export const QUALITY_PROFILES: readonly QualityProfile[] = [
 ] as const;
 
 /**
- * Profil de BASE par `ContentType` (couvre EXHAUSTIVEMENT les 21 valeurs de
+ * Profil de BASE par `ContentType` (couvre EXHAUSTIVEMENT les 22 valeurs de
  * l'enum Prisma). Le type `Record<ContentType, QualityProfile>` force la
  * compilation à échouer si un futur `ContentType` n'est pas mappé ici — garde
  * structurelle (doublée par un test runtime). Référence : plan §2.
@@ -59,6 +59,8 @@ export const PROFILE_BY_CONTENT_TYPE: Record<ContentType, QualityProfile> = {
   blog_article: "informational_aeo",
   blog_from_keywords: "informational_aeo",
   blog_from_title: "informational_aeo",
+  // Observatoire IA 2026 — données first-party citables (AEO/GEO), pas commercial.
+  barometer_insight: "informational_aeo",
   // ── local (hubs/landings villes — ancrage économique réel) ──────────────────
   landing_ville: "local",
   // ── news (veille RSS — fraîcheur) ───────────────────────────────────────────
