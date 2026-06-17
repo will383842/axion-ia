@@ -20,6 +20,7 @@ import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
+import { resolveLegacyRedirect } from "./lib/legacy-redirects";
 import { verifyFormateurSession } from "./lib/formateur-session";
 import { FORMATEUR_COOKIE_NAME } from "./server/formateur/routes";
 import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
@@ -52,6 +53,24 @@ const authPipeline = auth(async (req) => {
   //     consolide définitivement vers `/fr` (audit indexation 2026-06-17).
   if (req.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL(`/fr${req.nextUrl.search}`, req.url), 301);
+  }
+
+  // 0a-bis. Aplatissement des chaînes de redirection legacy (audit indexation 2026-06-17).
+  //   Un ancien slug NON-préfixé créait une chaîne à 2 sauts :
+  //     `/interventions` → (0bis ajoute /fr) `/fr/interventions` → (next.config) `/fr/formations`.
+  //   On résout ici DIRECTEMENT vers la cible finale en UN SEUL 301. La carte vit dans
+  //   `lib/legacy-redirects` (miroir des redirections figées de next.config). Si aucun
+  //   match → fall-through vers 0bis (préfixage `/fr` normal, comportement inchangé).
+  //   NB : les formes PRÉFIXÉES (`/fr/interventions`) restent gérées en 1 saut par next.config.
+  {
+    const path = req.nextUrl.pathname;
+    const firstSeg = path.split("/")[1] ?? "";
+    if (firstSeg !== "fr" && firstSeg !== "en") {
+      const target = resolveLegacyRedirect(path);
+      if (target) {
+        return NextResponse.redirect(new URL(`/fr${target}${req.nextUrl.search}`, req.url), 301);
+      }
+    }
   }
 
   // 0bis. Force 301 (permanent) au lieu du 307 (temporary) émis par next-intl
