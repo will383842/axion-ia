@@ -35,6 +35,13 @@ export interface SeoScoreInput {
   readonly citationCount?: number;
   readonly canonical?: string;
   readonly hasPersonManonJsonLd?: boolean;
+  /**
+   * Le contenu est rendu dans une page qui fournit le <h1> au niveau page (le
+   * titre de l'article), le body n'en contient pas par design (sanitizer FORBID
+   * h1). Quand true, on crédite le H1 + le mot-clé-dans-H1 (le titre EST le h1).
+   * Corrige le mismatch body-scorer vs page réelle pour les articles content-gen.
+   */
+  readonly hasPageH1?: boolean;
   readonly primaryKeyword?: string;
   readonly searchIntent?: SearchIntent;
   /** Type de contenu pour ajuster seuils (article/guide). */
@@ -66,7 +73,10 @@ function scoreMetaDescription(meta: string): { got: number; reason?: string } {
   return { got: 3, reason: `Meta ${len} chars trop court/long` };
 }
 
-function scoreH1Unique(html: string): { got: number; reason?: string } {
+function scoreH1Unique(html: string, hasPageH1?: boolean): { got: number; reason?: string } {
+  // Articles content-gen : le titre est rendu en <h1> au niveau page, le body
+  // n'a pas de h1 (sanitizer FORBID). On crédite le h1 page-level garanti.
+  if (hasPageH1 && (html.match(/<h1[\s>]/gi)?.length ?? 0) === 0) return { got: 8 };
   const h1Matches = html.match(/<h1[\s>]/gi) ?? [];
   if (h1Matches.length === 1) return { got: 8 };
   if (h1Matches.length === 0) return { got: 0, reason: "Pas de H1" };
@@ -84,11 +94,15 @@ function scorePrimaryKeyword(
   bodyText: string,
   title: string,
   primaryKeyword: string | undefined,
+  hasPageH1?: boolean,
 ): { got: number; reason?: string } {
   if (!primaryKeyword) return { got: 0, reason: "primaryKeyword absent" };
   const kw = primaryKeyword.toLowerCase();
   const inTitle = title.toLowerCase().includes(kw);
-  const inH1 = /<h1[^>]*>([^<]*)</.exec(bodyText.toLowerCase())?.[1]?.includes(kw) ?? false;
+  // Pour content-gen, le titre EST le <h1> de la page → on teste le titre.
+  const inH1 = hasPageH1
+    ? title.toLowerCase().includes(kw)
+    : (/<h1[^>]*>([^<]*)</.exec(bodyText.toLowerCase())?.[1]?.includes(kw) ?? false);
   const bodyMatches = (bodyText.toLowerCase().match(new RegExp(kw, "g")) ?? []).length;
   let score = 0;
   if (inTitle) score += 4;
@@ -215,12 +229,12 @@ export function computeSeoScore(input: SeoScoreInput): SeoScoreResult {
   const checks = [
     { criterion: "Title 50-60 chars", max: 10, ...scoreTitle(input.title) },
     { criterion: "Meta 140-160 chars", max: 10, ...scoreMetaDescription(input.metaDescription) },
-    { criterion: "H1 unique", max: 8, ...scoreH1Unique(input.bodyHtml) },
+    { criterion: "H1 unique", max: 8, ...scoreH1Unique(input.bodyHtml, input.hasPageH1) },
     { criterion: "3-8 H2", max: 10, ...scoreH2Structure(input.bodyHtml) },
     {
       criterion: "Primary KW title+H1+body",
       max: 12,
-      ...scorePrimaryKeyword(input.bodyText, input.title, input.primaryKeyword),
+      ...scorePrimaryKeyword(input.bodyText, input.title, input.primaryKeyword, input.hasPageH1),
     },
     { criterion: "Direct answer 40-80 mots", max: 8, ...scoreDirectAnswer(input.directAnswer) },
     { criterion: "FAQ 4+", max: 8, ...scoreFaq(input.faqCount) },
