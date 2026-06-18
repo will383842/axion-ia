@@ -41,9 +41,9 @@ import { prisma } from "@/lib/prisma";
 // livrera les builders correspondants.
 const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-news.xml",
-  // KB DB-aware (content-gen, audience=public). Déplacé de la convention metadata
-  // `generateSitemaps()` (où le compte au build stub.invalid = 0 → 404 fantômes)
-  // vers un Route Handler runtime. Cf. `app/sitemap-knowledge.xml/route.ts`.
+  // KB DB-aware (entrées KB publiques, audience=public). Déplacé de la convention
+  // metadata `generateSitemaps()` (où le compte au build stub.invalid = 0 → 404
+  // fantômes) vers un Route Handler runtime. Cf. `app/sitemap-knowledge.xml/route.ts`.
   "/sitemap-knowledge.xml",
   // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
   // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
