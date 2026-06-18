@@ -1,5 +1,33 @@
 import { describe, it, expect } from "vitest";
-import { articlePageSeoDefaults, qualityFromScores } from "../article-quality";
+import {
+  articlePageSeoDefaults,
+  qualityFromScores,
+  appendSourcesSection,
+} from "../article-quality";
+
+describe("appendSourcesSection — citations d'autorité garanties (round 4)", () => {
+  const links = [
+    { url: "https://www.insee.fr/x", title: "INSEE" },
+    { url: "https://dares.travail-emploi.gouv.fr/y", title: "DARES" },
+  ];
+
+  it("ajoute des <a href=https> comptés comme citations", () => {
+    const out = appendSourcesSection("<p>corps</p>", links);
+    const httpsLinks = (out.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
+    expect(httpsLinks).toBe(2);
+    expect(out).toContain("INSEE");
+  });
+
+  it("est idempotent (pas de double section)", () => {
+    const once = appendSourcesSection("<p>x</p>", links);
+    const twice = appendSourcesSection(once, links);
+    expect((twice.match(/id="sources-axion"/g) ?? []).length).toBe(1);
+  });
+
+  it("no-op si aucun lien", () => {
+    expect(appendSourcesSection("<p>x</p>", [])).toBe("<p>x</p>");
+  });
+});
 
 describe("articlePageSeoDefaults — SEO page-level garanti", () => {
   it("crédite Person Manon + H1 + canonical + hero, et dérive le contentKind", () => {
