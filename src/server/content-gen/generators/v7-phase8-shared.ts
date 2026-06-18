@@ -61,6 +61,23 @@ const MAX_QUALITY_ITERATIONS = 3;
 const BUDGET_CAP_USD = 0.15;
 const MIN_WORD_COUNT = 1200;
 
+/**
+ * Mappe un ContentType (slug) vers le `contentKind` du SEO scorer, qui ajuste
+ * les seuils (notamment la cible de longueur). Sans ça, les 12 types Phase-8
+ * étaient tous notés comme "article" (cible 800 mots), pénalisant les types
+ * volontairement courts (FAQ) ou longs (guides/landing).
+ */
+export function seoContentKind(
+  slug: string,
+): "article" | "guide" | "landing" | "faq" | "comparison" {
+  if (slug === "guide_pilier") return "guide";
+  if (slug === "landing_ville") return "landing";
+  if (slug === "faq_geo" || slug === "faq_standalone" || slug === "qa_derived") return "faq";
+  if (slug === "comparison" || slug === "vs_comparator" || slug === "alternative_to")
+    return "comparison";
+  return "article";
+}
+
 export interface V7Phase8GeneratorConfig {
   /** Slug enum ContentType (string cast côté local en attendant regen client). */
   readonly contentTypeSlug: string;
@@ -220,8 +237,15 @@ label : ${config.recommendedCtaLabel}
       citationCount,
       ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
       searchIntent: input.targetSearchIntent,
-      contentKind: "article",
-      hasPersonManonJsonLd: false,
+      // CORRECTIF SCORING 2026-06-17 : le contentKind était codé "article" pour
+      // les 12 types Phase-8 → faq_geo (court par design) était noté avec la
+      // cible long-form (800 mots) et perdait 10 pts word-count. On dérive le
+      // vrai kind du type pour appliquer les bons seuils.
+      contentKind: seoContentKind(config.contentTypeSlug),
+      // Chaque article content-gen est rendu avec le nœud JSON-LD Person "Manon"
+      // (persona éditoriale, cf. blog/[slug]/page.tsx). Le flag était codé false
+      // → 3 pts SEO perdus à tort sur TOUS les types. C'est garanti par le rendu.
+      hasPersonManonJsonLd: true,
     });
 
     const score = doctrine.passed
