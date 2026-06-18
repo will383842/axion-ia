@@ -21,10 +21,12 @@ import {
   getAllBlogCompanySizeSlugs,
   getAllBlogServiceTypeSlugs,
 } from "@/content/blog";
-import {
-  buildKnowledgeSitemapChunk,
-  countKnowledgePublicEntries,
-} from "@/server/exporters/knowledge-sitemap";
+// KB sub-sitemap : déplacé hors de `generateSitemaps()` (build-time stub.invalid
+// → count toujours 0 → IDs `knowledge-N` jamais déclarés → 404 fantômes côté GSC).
+// Désormais émis par le Route Handler runtime `app/sitemap-knowledge.xml/route.ts`
+// (lit la vraie DB via ISR), référencé dans `app/sitemap-index.xml` (CUSTOM_SITEMAPS).
+// `buildExcludeSlugsByType` (exporté plus bas) reste le SSOT de dédup, réutilisé
+// par ce Route Handler.
 import { listFaqs, isFaqItemIndexable } from "@/lib/knowledge/readers";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
@@ -299,14 +301,15 @@ function getVillesSitemapIds(): string[] {
   return ids;
 }
 
-// `generateSitemaps` — déclare tous les sub-sitemaps (statiques + dynamiques villes + KB).
+// `generateSitemaps` — déclare les sub-sitemaps statiques + dynamiques villes.
 // Next.js 16 wrap ces IDs dans `/sitemap.xml` (sitemap-index auto) et expose
 // chaque enfant à `/sitemap/<id>.xml`.
 //
-// KB DB-aware (Sprint SEO 2026-05-14) : `knowledge-1`, `knowledge-2`, ... chunkés
-// à 1 000 entries/chunk. Le compte vient de `countKnowledgePublicEntries()` qui
-// lit la DB (audience='public', status published/deprecated, deletedAt null).
-// Bootstrap-safe : 0 chunks si table pas migrée (premier deploy KB).
+// ⚠️ NE déclare PLUS les chunks KB (`knowledge-N`) : leur compte se faisait au
+// build via `countKnowledgePublicEntries()`, qui retourne toujours 0 sous le
+// build stub.invalid (ADR 0026) → IDs jamais déclarés → 404. Le KB est désormais
+// émis au runtime par `app/sitemap-knowledge.xml/route.ts` (référencé dans
+// `app/sitemap-index.xml`). La dédup reste portée par `buildExcludeSlugsByType()`.
 export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   const staticIds: StaticSitemapId[] = [
     "pages",
@@ -351,18 +354,12 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   // côté public) ; la divulgation Qualiopi légale reste une couche DB séparée.
   staticIds.push("formations");
 
-  // KB : dériver le nombre de chunks depuis le count DB. Lecture unique au
-  // build (puis next-intl SSG fige). Bootstrap-safe (count=0 si P2021).
-  const kbCount = await countKnowledgePublicEntries();
-  const kbChunkCount = kbCount > 0 ? Math.ceil((kbCount * 2) / SITEMAP_CHUNK_SIZE) : 0;
-  const knowledgeIds: string[] = [];
-  for (let i = 1; i <= kbChunkCount; i++) knowledgeIds.push(`knowledge-${i}`);
-
-  return [
-    ...staticIds.map((id) => ({ id })),
-    ...getVillesSitemapIds().map((id) => ({ id })),
-    ...knowledgeIds.map((id) => ({ id })),
-  ];
+  // KB : plus de chunks `knowledge-N` ici. Le compte se faisait au build via
+  // `countKnowledgePublicEntries()` qui retourne TOUJOURS 0 sous le build stub
+  // (ADR 0026) → IDs jamais déclarés → `/sitemap/knowledge-N.xml` en 404.
+  // Le KB est désormais émis par `app/sitemap-knowledge.xml/route.ts` (runtime,
+  // vraie DB), référencé dans `app/sitemap-index.xml`.
+  return [...staticIds.map((id) => ({ id })), ...getVillesSitemapIds().map((id) => ({ id }))];
 }
 
 /**
@@ -507,21 +504,11 @@ export default async function sitemap(props: {
     return filterEnIfDisabled(buildVillesByRegionSitemap(rest, 1, VILLES_EDITORIAL, dripNow));
   }
 
-  // KB DB-aware (Sprint SEO 2026-05-14) : `knowledge-<chunkIdx>`.
-  // Couvre les entries `audience='public'` publiées via le content-gen V1.
-  // Dédup vs slugs déjà émis par les builders TS (blog tier-1, case studies,
-  // help, faq, glossaire, guide) pour éviter doublons sitemap-index.
-  if (id.startsWith("knowledge-")) {
-    const chunkMatch = id.slice("knowledge-".length).match(/^(\d+)$/);
-    if (!chunkMatch) return [];
-    return filterEnIfDisabled(
-      await buildKnowledgeSitemapChunk(
-        parseInt(chunkMatch[1]!, 10),
-        SITEMAP_CHUNK_SIZE,
-        buildExcludeSlugsByType(),
-      ),
-    );
-  }
+  // KB DB-aware : déplacé vers le Route Handler runtime
+  // `app/sitemap-knowledge.xml/route.ts` (cf. note en tête de fichier). Plus
+  // d'ID `knowledge-*` servi par la convention metadata. Un éventuel ancien
+  // `/sitemap/knowledge-N.xml` connu de Google tombe naturellement en 404 (param
+  // non déclaré) et sera retiré de l'index par Google.
 
   return [];
 }
@@ -539,7 +526,7 @@ export default async function sitemap(props: {
  * IMPORTANT : tenir cette map en sync avec les builders. Tout nouveau builder
  * TS qui émet des slugs pour un type KB doit ajouter son set ici.
  */
-function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<string>> {
+export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<string>> {
   const map = new Map<string, Set<string>>();
 
   // article ← @/content/blog (tier-1 only, déjà filtré par getIndexableBlogPosts)
