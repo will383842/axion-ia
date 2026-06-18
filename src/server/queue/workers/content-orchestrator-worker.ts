@@ -24,6 +24,7 @@ import {
   computeAntiBurstSchedule,
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
+import { buildWeightedSequence } from "@/server/content-gen/scheduler/type-sequence";
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type {
@@ -294,6 +295,12 @@ async function processSequentialCampaign(
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
 
+  // Séquence de types entrelacée pour toute la campagne, indexée par slot global.
+  const typeSeq = buildWeightedSequence(
+    typeDist,
+    Math.max(campaign.totalTargetCount, campaign.generatedCount + toEnqueue),
+  );
+
   let enqueued = 0;
   for (let i = 0; i < toEnqueue; i++) {
     const slotIndex = campaign.generatedCount + i;
@@ -304,7 +311,7 @@ async function processSequentialCampaign(
       contentType = next[0] as ContentType;
       remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
     } else {
-      contentType = sampleWeighted(typeDist, slotIndex);
+      contentType = typeSeq[slotIndex] ?? sampleWeighted(typeDist, slotIndex);
     }
     if (!contentType) continue;
     const aud = sampleAudienceMix(audienceMix, slotIndex);
@@ -349,6 +356,7 @@ async function processParallelCampaign(
     searchIntentMix: unknown;
     scope: string;
     generatedCount: number;
+    totalTargetCount: number;
   },
   toEnqueue: number,
   hasPerTypeMode: boolean,
@@ -364,6 +372,12 @@ async function processParallelCampaign(
   const deptAnchors = campaign.anchorDepartementCodes;
   const regionAnchors = campaign.anchorRegionSlugs;
 
+  // Séquence de types entrelacée pour toute la campagne, indexée par slot global.
+  const typeSeq = buildWeightedSequence(
+    typeDist,
+    Math.max(campaign.totalTargetCount, campaign.generatedCount + toEnqueue),
+  );
+
   let enqueued = 0;
   for (let i = 0; i < toEnqueue; i++) {
     const slotIndex = campaign.generatedCount + i;
@@ -374,7 +388,7 @@ async function processParallelCampaign(
       contentType = next[0] as ContentType;
       remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
     } else {
-      contentType = sampleWeighted(typeDist, slotIndex);
+      contentType = typeSeq[slotIndex] ?? sampleWeighted(typeDist, slotIndex);
     }
     if (!contentType) continue;
     const aud = sampleAudienceMix(audienceMix, slotIndex);

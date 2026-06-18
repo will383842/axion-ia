@@ -53,12 +53,42 @@ interface CountRow {
 }
 
 /**
+ * Construit une requête FTS en OU (ranked best-match) à partir d'une requête
+ * libre. CORRECTIF GROUNDING 2026-06-17 : passer la requête brute à
+ * `websearch_to_tsquery` faisait un ET implicite de TOUS les mots — une requête
+ * comme « formation intelligence artificielle Grenoble » exigeait qu'un seul
+ * fait KB contienne les 4 termes → 0 résultat (alors que « formation » seul
+ * matchait 88 faits). On joint les termes significatifs par ` OR ` (syntaxe
+ * websearch → `|`), de sorte qu'un fait matchant N'IMPORTE quel terme soit
+ * candidat ; `ts_rank_cd` classe ensuite par recouvrement/pertinence et la
+ * LIMIT k garde le top. websearch_to_tsquery gère accents (fr_unaccent) et
+ * stopwords proprement, on reste donc robuste.
+ */
+export function buildOrTsQuery(raw: string): string {
+  // length >= 2 pour conserver les termes-clés courts mais cruciaux du domaine
+  // (« IA », « ML », « BI »…). La suppression des stopwords (le/la/pour/sur…)
+  // et le stemming sont délégués à websearch_to_tsquery + config fr_unaccent —
+  // inutile (et risqué) de les répliquer ici.
+  const terms = raw
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .split(/[^a-z0-9]+/)
+    .filter((t) => t.length >= 2);
+  const uniq = Array.from(new Set(terms)).slice(0, 12);
+  return uniq.join(" OR ");
+}
+
+/**
  * Exécute une recherche FTS sur knowledge_translations.
  * Audience filter applied côté SQL (sécurité — pas de fuite de team/will_only).
  */
 export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchResult> {
   const q = params.query.trim();
   if (!q) return { hits: [], total: 0 };
+  // Requête FTS en OU (best-match ranked) — cf. buildOrTsQuery. Fallback sur la
+  // requête brute si aucun terme significatif (>2 car.) n'est extrait.
+  const ftsQuery = buildOrTsQuery(q) || q;
 
   const limit = Math.min(params.limit ?? 25, 100);
   const offset = params.offset ?? 0;
@@ -126,7 +156,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
     LIMIT ${limit} OFFSET ${offset};
     `,
     tsConfig,
-    q,
+    ftsQuery,
     params.locale,
     audienceArr,
     ...(typesArr.length > 0 ? [typesArr] : []),
@@ -161,7 +191,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       AND kt.search_vector @@ websearch_to_tsquery($1::regconfig, $2);
     `,
     tsConfig,
-    q,
+    ftsQuery,
     params.locale,
     audienceArr,
     ...(typesArr.length > 0 ? [typesArr] : []),

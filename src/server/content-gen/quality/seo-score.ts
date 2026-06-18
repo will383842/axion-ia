@@ -128,7 +128,11 @@ function scoreWordCount(
   kind: SeoScoreInput["contentKind"],
 ): { got: number; reason?: string } {
   const words = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
-  const target = kind === "guide" ? 2000 : kind === "landing" ? 1500 : 800;
+  // Cible de longueur par type : un guide pilier est long, une FAQ géo est
+  // volontairement plus concise (intro + Q/R). Sans le cas "faq", les FAQ
+  // étaient notées sur la cible article (800) → 0 pt malgré une longueur
+  // appropriée à leur format.
+  const target = kind === "guide" ? 2000 : kind === "landing" ? 1500 : kind === "faq" ? 600 : 800;
   if (words >= target) return { got: 10 };
   if (words >= target * 0.7) return { got: 5, reason: `${words} mots (cible ${target}+)` };
   return { got: 0, reason: `${words} mots — trop court (cible ${target}+)` };
