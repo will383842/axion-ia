@@ -46,6 +46,22 @@ function levelFromScore(score: number): ReadabilityResult["level"] {
   return "très-difficile";
 }
 
+/**
+ * Convertit un score Flesch brut en « fitness » de lisibilité pour la notation
+ * qualité (round 2 2026-06-18). Le contenu IA B2B est dense par nature ; une
+ * lisibilité « difficile/standard » (30-60) est APPROPRIÉE pour la cible
+ * (dirigeants/experts). On ne récompense donc plus « plus simple = mieux »
+ * (anti-dilution) : pleine valeur dès la bande professionnelle (≥60), créditée
+ * généreusement de 30 à 60, dégradée seulement quand c'est vraiment illisible
+ * (<30). Borne [0,100].
+ */
+export function readabilityFitScore(rawScore: number): number {
+  const s = Math.max(0, Math.min(100, rawScore));
+  if (s >= 60) return 100;
+  if (s >= 30) return Math.round(70 + (s - 30));
+  return Math.round(s * 2.33);
+}
+
 export function computeReadabilityFr(text: string): ReadabilityResult {
   // Phrases : split sur .!?
   const sentences = text

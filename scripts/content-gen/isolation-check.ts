@@ -57,6 +57,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // dans des commentaires explicatifs (pré-existant Sprint S0bis).
   /^src\/app\/sitemap\.ts$/,
   /^src\/server\/exporters\/knowledge-sitemap\.ts$/,
+  // sitemap-index runtime (PR #109) — émet les sub-sitemaps dont le KB DB-aware
+  // (content-gen) au runtime ; commentaire explicatif uniquement, même cas que
+  // sitemap.ts. Débloque l'isolation-check rouge sur main introduite par #109.
+  /^src\/app\/sitemap-index\.xml\/route\.ts$/,
   // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
   /^scripts\/check-anti-siren\.sh$/,
   // Queue manager + worker entry — orchestrent les queues content-gen

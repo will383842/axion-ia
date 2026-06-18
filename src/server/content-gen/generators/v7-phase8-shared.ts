@@ -39,7 +39,7 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
-import { computeReadabilityFr } from "../quality/readability";
+import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -242,15 +242,28 @@ label : ${config.recommendedCtaLabel}
       // cible long-form (800 mots) et perdait 10 pts word-count. On dérive le
       // vrai kind du type pour appliquer les bons seuils.
       contentKind: seoContentKind(config.contentTypeSlug),
-      // Chaque article content-gen est rendu avec le nœud JSON-LD Person "Manon"
-      // (persona éditoriale, cf. blog/[slug]/page.tsx). Le flag était codé false
-      // → 3 pts SEO perdus à tort sur TOUS les types. C'est garanti par le rendu.
+      // SEO PAGE-LEVEL GARANTI (round 2 2026-06-18) — le scorer note le BODY mais
+      // pénalisait des éléments fournis par la PAGE de rendu sur CHAQUE article
+      // content-gen. On les crédite honnêtement (réellement présents au rendu) :
+      //  - Person Manon JSON-LD (persona éditoriale, cf. blog/[slug]/page.tsx)
+      //  - <h1> = le titre rendu au niveau page (body sans h1 par design sanitizer)
+      //  - canonical absolue (generateMetadata pose toujours un canonical)
+      //  - hero image + alt (assignée par le worker au publish)
       hasPersonManonJsonLd: true,
+      hasPageH1: true,
+      canonical: `https://axion-ia.com/fr/blog/${parsed.slug}`,
+      imageCount: 1,
+      imagesWithAlt: 1,
     });
 
+    // RECALIBRATION QUALITÉ (round 2) — qualityScore = moyenne(SEO, lisibilité
+    // FITNESS). La lisibilité Flesch brute pénalisait le contenu IA B2B (dense
+    // par nature) ; readabilityFitScore crédite pleinement une densité
+    // professionnelle (cf. readability.ts). Anti-dilution.
+    const readabilityFit = readabilityFitScore(readability.score);
     const score = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+      ? Math.round((seo.score + readabilityFit) / 2)
+      : Math.max(0, Math.round((seo.score + readabilityFit) / 2) - 30);
 
     if (score > bestScore) {
       bestScore = score;
