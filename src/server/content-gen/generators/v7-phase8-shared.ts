@@ -40,6 +40,7 @@ import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
+import { seoContentKind } from "./seo-content-kind";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -60,23 +61,6 @@ const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 3;
 const BUDGET_CAP_USD = 0.15;
 const MIN_WORD_COUNT = 1200;
-
-/**
- * Mappe un ContentType (slug) vers le `contentKind` du SEO scorer, qui ajuste
- * les seuils (notamment la cible de longueur). Sans ça, les 12 types Phase-8
- * étaient tous notés comme "article" (cible 800 mots), pénalisant les types
- * volontairement courts (FAQ) ou longs (guides/landing).
- */
-export function seoContentKind(
-  slug: string,
-): "article" | "guide" | "landing" | "faq" | "comparison" {
-  if (slug === "guide_pilier") return "guide";
-  if (slug === "landing_ville") return "landing";
-  if (slug === "faq_geo" || slug === "faq_standalone" || slug === "qa_derived") return "faq";
-  if (slug === "comparison" || slug === "vs_comparator" || slug === "alternative_to")
-    return "comparison";
-  return "article";
-}
 
 export interface V7Phase8GeneratorConfig {
   /** Slug enum ContentType (string cast côté local en attendant regen client). */

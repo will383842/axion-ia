@@ -12,6 +12,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
+import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { outlineFeedback } from "../quality/outline-validator";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -203,14 +204,11 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
         citationCount,
         primaryKeyword: input.primaryKeyword ?? topic,
         searchIntent: input.targetSearchIntent,
-        contentKind: "article",
-        hasPersonManonJsonLd: false,
+        ...articlePageSeoDefaults(parsed.slug ?? "", "blog_article"),
       });
 
       const doctrine = await checkDoctrine(bodyText);
-      const qualityScore = doctrine.passed
-        ? Math.round((seo.score + readability.score) / 2)
-        : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+      const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
       if (qualityScore >= QUALITY_THRESHOLD) {
         await logStep(
@@ -273,13 +271,10 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
       citationCount: finalCitationCount,
       primaryKeyword: input.primaryKeyword ?? topic,
       searchIntent: input.targetSearchIntent,
-      contentKind: "article",
-      hasPersonManonJsonLd: false,
+      ...articlePageSeoDefaults(parsed.slug ?? "", "blog_article"),
     });
 
-    const qualityScore = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+    const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
     const soft404 = evaluateSoft404({
       wordCount,

@@ -10,6 +10,7 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
+import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -233,13 +234,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       faqCount,
       primaryKeyword: input.primaryKeyword ?? topic,
       searchIntent: input.targetSearchIntent,
-      contentKind: "article",
-      hasPersonManonJsonLd: false,
+      ...articlePageSeoDefaults(parsed.slug ?? "", "faq_standalone"),
     });
 
-    const qualityScore = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 20);
+    const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
     const soft404 = evaluateSoft404({
       wordCount,

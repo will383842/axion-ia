@@ -39,6 +39,7 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
+import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -141,7 +142,6 @@ export const guidePilierGenerator: Generator = {
         audiences: ["public"],
         types: ["industry_use_case", "case_study", "methodology", "doctrine"],
       },
-      ...(sectorTagSlugs.length > 0 ? { sectorTagSlugs } : {}),
       mode: "hybrid",
     });
     const kbContext = kbChunks
@@ -324,13 +324,10 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       citationCount,
       ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
       searchIntent: input.targetSearchIntent,
-      contentKind: "guide",
-      hasPersonManonJsonLd: true,
+      ...articlePageSeoDefaults(outline.slug ?? "", "guide_pilier"),
     });
 
-    let qualityScore = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+    let qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
     // Pénalité section failures (chaque placeholder pénalise -10 pts max -50)
     qualityScore = Math.max(0, qualityScore - Math.min(50, sectionFailures * 10));
 

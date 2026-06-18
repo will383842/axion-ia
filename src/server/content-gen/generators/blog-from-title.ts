@@ -21,6 +21,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
+import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -201,14 +202,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         internalLinkCount,
         primaryKeyword: mandatoryTitle,
         searchIntent: input.targetSearchIntent,
-        contentKind: "article",
-        hasPersonManonJsonLd: false,
+        ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_title"),
       });
 
       const doctrine = await checkDoctrine(bodyText);
-      const qualityScore = doctrine.passed
-        ? Math.round((seo.score + readability.score) / 2)
-        : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+      const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
       if (qualityScore >= QUALITY_THRESHOLD) {
         await logStep(
@@ -287,13 +285,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       internalLinkCount: finalInternalLinkCount,
       primaryKeyword: mandatoryTitle,
       searchIntent: input.targetSearchIntent,
-      contentKind: "article",
-      hasPersonManonJsonLd: false,
+      ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_title"),
     });
 
-    const qualityScore = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+    const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
     const soft404 = evaluateSoft404({
       wordCount,
