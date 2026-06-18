@@ -12,7 +12,11 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
-import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
+import {
+  articlePageSeoDefaults,
+  qualityFromScores,
+  appendSourcesSection,
+} from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { outlineFeedback } from "../quality/outline-validator";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -242,6 +246,10 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
     }
 
     parsed = { ...parsed, bodyHtml: sanitizeContentGenHtml(parsed.bodyHtml ?? "") };
+    parsed = {
+      ...parsed,
+      bodyHtml: appendSourcesSection(parsed.bodyHtml ?? "", externalLinksCtx.links),
+    };
     parsed = {
       ...parsed,
       bodyHtml: injectInternalLinks(parsed.bodyHtml, input.primaryKeyword ?? topic),

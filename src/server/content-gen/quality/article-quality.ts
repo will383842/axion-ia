@@ -62,3 +62,26 @@ export function qualityFromScores(
   const base = Math.round((seoScore + readabilityFitScore(readabilityRawScore)) / 2);
   return doctrinePassed ? base : Math.max(0, base - 30);
 }
+
+/**
+ * Append une section « Sources » HTML avec les liens d'autorité sélectionnés
+ * (INSEE/DARES/BPI/EU AI Act…). CORRECTIF CITATIONS round 4 2026-06-18 : le LLM
+ * n'intégrait JAMAIS les liens externes fournis dans le prompt → citationCount=0
+ * sur TOUS les articles (−6 pts SEO). On les pose donc déterministe, en fin de
+ * body : vraies sources d'autorité (bon pour l'EEAT) + citationCount garanti.
+ * Idempotent (no-op si déjà une section Sources ou si aucun lien).
+ */
+export function appendSourcesSection(
+  bodyHtml: string,
+  links: ReadonlyArray<{ url: string; title: string }>,
+): string {
+  if (!links || links.length === 0) return bodyHtml;
+  if (/id="sources-axion"/.test(bodyHtml)) return bodyHtml; // déjà injecté
+  const items = links
+    .slice(0, 6)
+    .map(
+      (l) => `<li><a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title}</a></li>`,
+    )
+    .join("");
+  return `${bodyHtml}\n<section id="sources-axion"><h2>Sources</h2><ul>${items}</ul></section>`;
+}

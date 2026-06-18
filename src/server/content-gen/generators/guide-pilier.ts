@@ -39,7 +39,11 @@ import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
-import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
+import {
+  articlePageSeoDefaults,
+  qualityFromScores,
+  appendSourcesSection,
+} from "../quality/article-quality";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -296,7 +300,10 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       .join("\n\n");
 
     // P1-12 — Liens internes contextuels injectés après assembly des sections.
-    const enrichedBody = injectInternalLinks(assembledBody, input.primaryKeyword ?? safeKeyword);
+    const enrichedBody = appendSourcesSection(
+      injectInternalLinks(assembledBody, input.primaryKeyword ?? safeKeyword),
+      externalLinksCtx.links,
+    );
 
     const bodyText = enrichedBody
       .replace(/<[^>]+>/g, " ")

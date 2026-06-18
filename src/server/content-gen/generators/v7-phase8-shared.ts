@@ -41,6 +41,7 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { computeReadabilityFr, readabilityFitScore } from "../quality/readability";
 import { seoContentKind } from "./seo-content-kind";
+import { appendSourcesSection } from "../quality/article-quality";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
@@ -201,6 +202,8 @@ label : ${config.recommendedCtaLabel}
     }
 
     parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
+    // Round 4 — section Sources d'autorité déterministe (citations garanties).
+    parsed.bodyHtml = appendSourcesSection(parsed.bodyHtml, externalLinksCtx.links);
     const bodyText = parsed.bodyHtml
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
