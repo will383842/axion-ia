@@ -41,6 +41,10 @@ import { prisma } from "@/lib/prisma";
 // livrera les builders correspondants.
 const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-news.xml",
+  // KB DB-aware (content-gen, audience=public). Déplacé de la convention metadata
+  // `generateSitemaps()` (où le compte au build stub.invalid = 0 → 404 fantômes)
+  // vers un Route Handler runtime. Cf. `app/sitemap-knowledge.xml/route.ts`.
+  "/sitemap-knowledge.xml",
   // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
   // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
   "/sitemaps/images-fr.xml",
@@ -161,8 +165,14 @@ export async function GET(): Promise<Response> {
   });
 
   const customBlocks = CUSTOM_SITEMAPS.map((path) => {
-    // sitemap-news.xml lastmod = max(publishedAt) Article isNews
-    const lm = path === "/sitemap-news.xml" ? lastmods.news : lastmods.fallback;
+    // sitemap-news.xml      → max(updatedAt) Article isNews
+    // sitemap-knowledge.xml → max(updatedAt) KnowledgeEntry (signal fraîcheur réel)
+    const lm =
+      path === "/sitemap-news.xml"
+        ? lastmods.news
+        : path === "/sitemap-knowledge.xml"
+          ? lastmods.knowledge
+          : lastmods.fallback;
     return `  <sitemap>
     <loc>${SITE_URL}${path}</loc>
     <lastmod>${lm}</lastmod>
