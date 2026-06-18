@@ -29,6 +29,7 @@
 import { generateSitemaps } from "../sitemap";
 import { SITE_URL } from "@/lib/seo";
 import { prisma } from "@/lib/prisma";
+import { countKnowledgePublicEntries } from "@/server/exporters/knowledge-sitemap";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -44,6 +45,10 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // KB DB-aware (entrées KB publiques, audience=public). Déplacé de la convention
   // metadata `generateSitemaps()` (où le compte au build stub.invalid = 0 → 404
   // fantômes) vers un Route Handler runtime. Cf. `app/sitemap-knowledge.xml/route.ts`.
+  // ⚠️ Listé CONDITIONNELLEMENT (cf. GET) : uniquement si `countKnowledgePublicEntries() > 0`.
+  // Tant qu'il n'y a aucune ressource KB publique (`/ressources` vide), on ne le
+  // référence PAS — sinon Google lirait un `<urlset>` vide et le flaggerait
+  // « Balise XML manquante : url ». Il réapparaît automatiquement dès publication.
   "/sitemap-knowledge.xml",
   // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
   // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
@@ -156,6 +161,15 @@ export async function GET(): Promise<Response> {
   const sitemaps = await generateSitemaps();
   const lastmods = await getDifferentiatedLastmod();
 
+  // Le sitemap KB n'est référencé que s'il a réellement du contenu public à
+  // lister. Sinon Google lirait un `<urlset>` vide (« Balise XML manquante :
+  // url »). `countKnowledgePublicEntries()` est DB-aware + stub-safe (=> 0 au
+  // build stub → non listé ; recompté au runtime via ISR/revalidate).
+  const kbPublicCount = await countKnowledgePublicEntries();
+  const customSitemaps = CUSTOM_SITEMAPS.filter(
+    (path) => path !== "/sitemap-knowledge.xml" || kbPublicCount > 0,
+  );
+
   const generatedBlocks = sitemaps.map(({ id }) => {
     const lm = lastmodForGeneratedId(id, lastmods);
     return `  <sitemap>
@@ -164,7 +178,7 @@ export async function GET(): Promise<Response> {
   </sitemap>`;
   });
 
-  const customBlocks = CUSTOM_SITEMAPS.map((path) => {
+  const customBlocks = customSitemaps.map((path) => {
     // sitemap-news.xml      → max(updatedAt) Article isNews
     // sitemap-knowledge.xml → max(updatedAt) KnowledgeEntry (signal fraîcheur réel)
     const lm =
