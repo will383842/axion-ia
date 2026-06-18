@@ -37,10 +37,16 @@ const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
 // `listKnowledgeSitemapEntries`) + warn pour signaler le besoin de chunking.
 const KB_SITEMAP_MAX_URLS = 45000;
 
-// ISR runtime (vraie DB). `force-static` + `revalidate` : la 1re requête en prod
-// rend depuis la vraie `DATABASE_URL`, puis sert depuis le cache du worker.
-export const dynamic = "force-static";
-export const revalidate = 3600;
+// Rendu DYNAMIQUE au runtime (vraie DB à CHAQUE requête, comme `sitemap-news.xml`).
+// Volontairement PAS `force-static` : sous le build stub.invalid (ADR 0026) la
+// version pré-rendue serait VIDE, et resterait servie ~1h (jusqu'à la 1re
+// revalidation ISR) après chaque deploy. Or un `<urlset>` sans `<url>` est flaggé
+// par Google Search Console (« Balise XML manquante : url » → sitemap en erreur).
+// En `force-dynamic` le sitemap reflète TOUJOURS la DB live (jamais vide tant qu'il
+// y a du KB public) ; le cache CDN (Cache-Control s-maxage=600) absorbe la charge
+// des crawls. Au build, la route dynamique n'est même pas pré-rendue (pas de stub).
+export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 function escapeXml(input: string): string {
   return input
