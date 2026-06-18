@@ -25,6 +25,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
+import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
@@ -91,7 +92,6 @@ export const comparisonGenerator: Generator = {
         audiences: ["public"],
         types: ["industry_use_case", "case_study", "methodology"],
       },
-      ...(sectorTagSlugs.length > 0 ? { sectorTagSlugs } : {}),
       mode: "hybrid",
     });
 
@@ -215,14 +215,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         internalLinkCount,
         primaryKeyword: topic,
         searchIntent: "commercial_investigation",
-        contentKind: "comparison",
-        hasPersonManonJsonLd: false,
+        ...articlePageSeoDefaults(parsed.slug ?? "", "comparison"),
       });
 
       const doctrine = await checkDoctrine(bodyText);
-      const qualityScore = doctrine.passed
-        ? Math.round((seo.score + readability.score) / 2)
-        : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+      const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
       const hasStructure = hasComparativeSections(parsed.bodyHtml ?? "");
       const hasTable = hasComparisonTable(parsed.bodyHtml ?? "");
@@ -314,13 +311,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       internalLinkCount: finalInternalLinkCount,
       primaryKeyword: topic,
       searchIntent: "commercial_investigation",
-      contentKind: "comparison",
-      hasPersonManonJsonLd: false,
+      ...articlePageSeoDefaults(parsed.slug ?? "", "comparison"),
     });
 
-    const qualityScore = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+    const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
     const soft404 = evaluateSoft404({
       wordCount,

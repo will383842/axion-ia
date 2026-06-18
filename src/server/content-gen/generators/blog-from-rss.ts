@@ -36,6 +36,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
+import { articlePageSeoDefaults, qualityFromScores } from "../quality/article-quality";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { checkRssSimilarity } from "../quality/plagiarism";
@@ -240,14 +241,11 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         internalLinkCount,
         primaryKeyword: topic,
         searchIntent: input.targetSearchIntent,
-        contentKind: "article",
-        hasPersonManonJsonLd: false,
+        ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_rss"),
       });
 
       const doctrine = await checkDoctrine(bodyText);
-      const qualityScore = doctrine.passed
-        ? Math.round((seo.score + readability.score) / 2)
-        : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+      const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
       // V-06 P0b — gate Jaccard 0.10 vs résumé source RSS. Doit passer AVANT
       // d'accepter l'output, sinon un article "qualité OK" pourrait régurgiter
@@ -353,13 +351,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       internalLinkCount: finalInternalLinkCount,
       primaryKeyword: topic,
       searchIntent: input.targetSearchIntent,
-      contentKind: "article",
-      hasPersonManonJsonLd: false,
+      ...articlePageSeoDefaults(parsed.slug ?? "", "blog_from_rss"),
     });
 
-    const qualityScore = doctrine.passed
-      ? Math.round((seo.score + readability.score) / 2)
-      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+    const qualityScore = qualityFromScores(seo.score, readability.score, doctrine.passed);
 
     const soft404 = evaluateSoft404({
       wordCount,
