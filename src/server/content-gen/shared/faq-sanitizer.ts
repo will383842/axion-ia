@@ -24,7 +24,9 @@
  * Vecteurs OWASP couverts : voir tests `faq-sanitizer.test.ts`.
  */
 
-import DOMPurify from "isomorphic-dompurify";
+// Instance DOMPurify ISOLÉE (anti-pollution des globals Node par jsdom — cf.
+// dompurify-isolated.ts). Ne JAMAIS importer isomorphic-dompurify ici.
+import DOMPurify from "./dompurify-isolated";
 
 /**
  * Whitelist FAQ — TRÈS restreinte (≤ 8 tags) alignée P2-8 instructions.

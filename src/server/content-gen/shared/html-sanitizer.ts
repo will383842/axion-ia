@@ -20,7 +20,10 @@
  * data:text/html, SVG onload).
  */
 
-import DOMPurify from "isomorphic-dompurify";
+// Instance DOMPurify ISOLÉE (anti-pollution des globals Node par jsdom — cf.
+// dompurify-isolated.ts ; ne jamais importer isomorphic-dompurify ici, sous
+// peine de casser tous les appels OpenAI du worker).
+import DOMPurify from "./dompurify-isolated";
 
 import { computeTrustTier, extractDomain, relAttrForExternalLink } from "../links/trust-tier";
 
