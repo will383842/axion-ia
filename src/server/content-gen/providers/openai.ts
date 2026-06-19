@@ -96,7 +96,13 @@ function getClient(): OpenAI {
   if (!apiKey) {
     throw new ProviderError("OPENAI_API_KEY not set", "auth_failed", "openai", false);
   }
-  return new OpenAI({ apiKey, timeout: DEFAULT_TIMEOUT_MS });
+  // CORRECTIF 2026-06-19 — Forcer le fetch NATIF de Node. Le client HTTP par
+  // défaut du SDK openai (node-fetch bundlé) coupe les réponses longues
+  // (« Invalid response body … Premature close » à ~9s) sur les gros prompts de
+  // génération (8000 maxTokens, 30-60s), faisant échouer TOUS les jobs content-gen.
+  // Le fetch natif (globalThis.fetch / undici) tient les requêtes longues. Vérifié
+  // en prod : SDK défaut → Premature close ; SDK + fetch natif → OK (13s).
+  return new OpenAI({ apiKey, timeout: DEFAULT_TIMEOUT_MS, fetch: globalThis.fetch });
 }
 
 export const openaiProvider: IProvider = {
