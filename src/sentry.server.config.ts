@@ -13,6 +13,18 @@ if (dsn) {
     // Dev reste 1.0 (full tracing local pour debug). Errors restent 100 %
     // (sampleRate par défaut, non changé — visibilité incidents préservée).
     tracesSampleRate: process.env["NODE_ENV"] === "production" ? 0.02 : 1.0,
+    // Bruit non-actionnable : `controller[kState].transformAlgorithm is not a
+    // function` (node:internal/webstreams/transformstream). Bug Next.js/Node 22
+    // CONNU et non résolu (vercel/next.js#75995) : le contrôleur du TransformStream
+    // que Next utilise pour streamer le RSC est corrompu quand une connexion se
+    // FERME PRÉMATURÉMENT en plein stream (bot/crawler qui coupe, health-check,
+    // buffer proxy). 100 % côté serveur Node, `handled = yes`, NON fatal : les
+    // requêtes complètes ne sont pas affectées. Amplifié par notre runtime Alpine
+    // (musl) + Node 22 — cf. AGENTS.md, runtime `node:22-alpine`. On NE swappe PAS
+    // l'image de base (Dockerfile musl/Prisma trop couplé, ADR 0026) pour un event
+    // cosmétique ; on le drop ici pour qu'il ne déclenche plus d'alerte high-priority.
+    // Cf. _AUDIT/SENTRY-TRANSFORMSTREAM-2026-06-19/DECISION.md.
+    ignoreErrors: [/transformAlgorithm is not a function/],
     environment: process.env["NEXT_PUBLIC_APP_ENV"] ?? "development",
     // Méta-cert 2026-05-15 AGENT 17 P1 — release tracking explicite.
     // Source priorisée : SENTRY_RELEASE (CI/Coolify), npm_package_version (build),
