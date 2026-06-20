@@ -28,7 +28,6 @@ on:
 permissions:
   contents: read
   actions: write
-  secrets: write
 
 jobs:
   oauth:
@@ -97,6 +96,48 @@ jobs:
 
           echo "Refresh token obtenu (${#REFRESH_TOKEN} chars)"
 
-          gh secret set GSC_OAUTH_REFRESH_TOKEN --body "$REFRESH_TOKEN" --repo "$GITHUB_REPOSITORY"
-          echo ""
-          echo "✅ GSC_OAUTH_REFRESH_TOKEN mis a jour avec scope webmasters (write)"
+          # Chiffrer le secret avec la cle publique du repo via l'API GitHub
+          pip3 install PyNaCl --quiet 2>/dev/null
+
+          # Recuperer la cle publique du repo
+          PUB_KEY_RESP=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/public-key")
+          echo "Public key response: $PUB_KEY_RESP"
+
+          KEY_ID=$(echo "$PUB_KEY_RESP" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['key_id'])")
+          PUB_KEY=$(echo "$PUB_KEY_RESP" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['key'])")
+
+          # Chiffrer le token
+          ENCRYPTED=$(python3 -c "
+          import base64
+          from nacl import encoding, public
+
+          def encrypt(public_key_str, secret_value):
+              pk = public.PublicKey(public_key_str, encoding.Base64Encoder())
+              sealed = public.SealedBox(pk)
+              encrypted = sealed.encrypt(secret_value.encode('utf-8'))
+              return base64.b64encode(encrypted).decode('utf-8')
+
+          import sys
+          result = encrypt(sys.argv[1], sys.argv[2])
+          print(result)
+          " "$PUB_KEY" "$REFRESH_TOKEN")
+
+          # Mettre à jour le secret
+          HTTP_STATUS=$(curl -s -o /tmp/secret_resp.json -w "%{http_code}" \
+            -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/GSC_OAUTH_REFRESH_TOKEN" \
+            -d "{\"encrypted_value\":\"$ENCRYPTED\",\"key_id\":\"$KEY_ID\"}")
+
+          echo "HTTP status: $HTTP_STATUS"
+          cat /tmp/secret_resp.json
+
+          if [ "$HTTP_STATUS" = "201" ] || [ "$HTTP_STATUS" = "204" ]; then
+            echo ""
+            echo "✅ GSC_OAUTH_REFRESH_TOKEN mis a jour avec scope webmasters (write)"
+          else
+            echo "::error::Echec mise à jour du secret - HTTP $HTTP_STATUS"
+            exit 1
+          fi
