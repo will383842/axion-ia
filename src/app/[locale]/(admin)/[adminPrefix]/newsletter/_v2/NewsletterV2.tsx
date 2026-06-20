@@ -3,13 +3,29 @@
 // Newsletter V2 — AdminPageShell + AdminPageHeader + AdminCard + AdminStatCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminStatCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
   confirmed: "Confirmé",
   unsubscribed: "Désabonné",
   bounced: "Bounce",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  confirmed: "success",
+  pending: "warning",
+  unsubscribed: "neutral",
+  bounced: "neutral",
 };
 
 interface SubscriberRow {
@@ -50,6 +66,32 @@ export function NewsletterV2({
   stats,
   csvUrl,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<SubscriberRow>> = [
+    { key: "createdAt", header: "Date inscription", cell: (s) => s.createdAt.toISOString().slice(0, 10) },
+    { key: "email", header: "Email", cell: (s) => s.email },
+    { key: "locale", header: "Locale", cell: (s) => s.locale.toUpperCase() },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (s) => (
+        <AdminBadge tone={STATUS_TONE[s.status] ?? "neutral"}>
+          {STATUS_LABELS[s.status] ?? s.status}
+        </AdminBadge>
+      ),
+    },
+    { key: "source", header: "Source", cell: (s) => s.source ?? "—" },
+    {
+      key: "confirmedAt",
+      header: "Confirmé le",
+      cell: (s) => (s.confirmedAt ? s.confirmedAt.toISOString().slice(0, 10) : "—"),
+    },
+    {
+      key: "unsubscribedAt",
+      header: "Désabonné le",
+      cell: (s) => (s.unsubscribedAt ? s.unsubscribedAt.toISOString().slice(0, 10) : "—"),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -176,48 +218,16 @@ export function NewsletterV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Date inscription</th>
-                <th>Email</th>
-                <th>Locale</th>
-                <th>Statut</th>
-                <th>Source</th>
-                <th>Confirmé le</th>
-                <th>Désabonné le</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucun abonné trouvé.
-                  </td>
-                </tr>
-              ) : (
-                items.map((s) => (
-                  <tr key={s.id}>
-                    <td>{s.createdAt.toISOString().slice(0, 10)}</td>
-                    <td>{s.email}</td>
-                    <td>{s.locale.toUpperCase()}</td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${s.status}`}>
-                        {STATUS_LABELS[s.status] ?? s.status}
-                      </span>
-                    </td>
-                    <td>{s.source ?? "—"}</td>
-                    <td>{s.confirmedAt ? s.confirmedAt.toISOString().slice(0, 10) : "—"}</td>
-                    <td>{s.unsubscribedAt ? s.unsubscribedAt.toISOString().slice(0, 10) : "—"}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucun abonné trouvé." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(s) => s.id}
+          caption="Liste des abonnés newsletter"
+        />
+      )}
     </AdminPageShell>
   );
 }

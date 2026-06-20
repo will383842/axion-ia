@@ -3,12 +3,27 @@
 // Blog V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
   published: "Publié",
   archived: "Archivé",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
+// non défini pour draft/published/archived → badge neutre non coloré).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  draft: "warning",
+  archived: "neutral",
 };
 
 interface ArticleRow {
@@ -38,6 +53,32 @@ export function BlogV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<ArticleRow>> = [
+    {
+      key: "publishedAt",
+      header: "Date publi",
+      cell: (a) => (a.publishedAt ? a.publishedAt.toISOString().slice(0, 10) : "—"),
+    },
+    { key: "title", header: "Titre (FR)", cell: (a) => a.translations[0]?.title ?? "(sans titre)" },
+    {
+      key: "slug",
+      header: "Slug",
+      cell: (a) => <code className="admin-meta-small">{a.translations[0]?.slug ?? "—"}</code>,
+    },
+    { key: "category", header: "Catégorie", cell: (a) => a.category?.nameFr ?? "—" },
+    { key: "author", header: "Auteur", cell: (a) => a.author?.name ?? "—" },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (a) => (
+        <AdminBadge tone={STATUS_TONE[a.status] ?? "neutral"}>
+          {STATUS_LABELS[a.status] ?? a.status}
+        </AdminBadge>
+      ),
+    },
+    { key: "views", header: "Vues", cell: (a) => a.viewsCount },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -96,56 +137,21 @@ export function BlogV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Date publi</th>
-                <th>Titre (FR)</th>
-                <th>Slug</th>
-                <th>Catégorie</th>
-                <th>Auteur</th>
-                <th>Statut</th>
-                <th>Vues</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="admin-table-empty">
-                    Aucun article trouvé.
-                  </td>
-                </tr>
-              ) : (
-                items.map((a) => (
-                  <tr key={a.id}>
-                    <td>{a.publishedAt ? a.publishedAt.toISOString().slice(0, 10) : "—"}</td>
-                    <td>{a.translations[0]?.title ?? "(sans titre)"}</td>
-                    <td>
-                      <code className="admin-meta-small">{a.translations[0]?.slug ?? "—"}</code>
-                    </td>
-                    <td>{a.category?.nameFr ?? "—"}</td>
-                    <td>{a.author?.name ?? "—"}</td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${a.status}`}>
-                        {STATUS_LABELS[a.status] ?? a.status}
-                      </span>
-                    </td>
-                    <td>{a.viewsCount}</td>
-                    <td>
-                      <Link href={`/fr/${adminPrefix}/blog/${a.id}`} className="admin-link">
-                        Éditer →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucun article trouvé." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(a) => a.id}
+          caption="Liste des articles de blog"
+          rowAction={(a) => (
+            <Link href={`/fr/${adminPrefix}/blog/${a.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

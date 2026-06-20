@@ -1,8 +1,19 @@
-// Liste admin des offres d'emploi — AdminPageShell + AdminCard + table CSS
+// Liste admin des offres d'emploi — AdminPageShell + AdminCard + <AdminTable>
 // (miroir de FaqV2). Colonne « Candidatures » = compteur + lien filtré.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
 import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
 
@@ -15,6 +26,17 @@ const WORKMODE_LABELS: Record<string, string> = {
   on_site: "Sur site",
   hybrid: "Hybride",
   remote: "Remote",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
+// non défini pour draft/published/archived → badge neutre non coloré).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  open: "success",
+  active: "success",
+  draft: "warning",
+  closed: "neutral",
+  archived: "neutral",
+  filled: "neutral",
 };
 
 interface Props {
@@ -34,6 +56,50 @@ export function JobOffersV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<JobOfferListItem>> = [
+    { key: "order", header: "Ordre", cell: (o) => o.displayOrder },
+    { key: "category", header: "Catégorie", cell: (o) => careerCategoryLabel(o.category, true) },
+    {
+      key: "title",
+      header: "Titre (FR)",
+      cell: (o) => (
+        <>
+          {o.titleFr}
+          {o.filledAt ? <span className="admin-meta-small"> · pourvu</span> : null}
+        </>
+      ),
+    },
+    {
+      key: "location",
+      header: "Lieu",
+      cell: (o) => o.city ?? WORKMODE_LABELS[o.workMode] ?? "—",
+    },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (o) => (
+        <AdminBadge tone={STATUS_TONE[o.status] ?? "neutral"}>
+          {STATUS_LABELS[o.status] ?? o.status}
+        </AdminBadge>
+      ),
+    },
+    {
+      key: "applications",
+      header: "Candidatures",
+      cell: (o) =>
+        o.applicationsCount > 0 ? (
+          <Link
+            href={`/fr/${adminPrefix}/candidatures?offerId=${o.id}`}
+            className="admin-link"
+          >
+            {o.applicationsCount}
+          </Link>
+        ) : (
+          "0"
+        ),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -110,69 +176,21 @@ export function JobOffersV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Ordre</th>
-                <th>Catégorie</th>
-                <th>Titre (FR)</th>
-                <th>Lieu</th>
-                <th>Statut</th>
-                <th>Candidatures</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucune offre trouvée.
-                  </td>
-                </tr>
-              ) : (
-                items.map((o) => (
-                  <tr key={o.id}>
-                    <td>{o.displayOrder}</td>
-                    <td>{careerCategoryLabel(o.category, true)}</td>
-                    <td>
-                      {o.titleFr}
-                      {o.filledAt ? <span className="admin-meta-small"> · pourvu</span> : null}
-                    </td>
-                    <td>{o.city ?? WORKMODE_LABELS[o.workMode] ?? "—"}</td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${o.status}`}>
-                        {STATUS_LABELS[o.status] ?? o.status}
-                      </span>
-                    </td>
-                    <td>
-                      {o.applicationsCount > 0 ? (
-                        <Link
-                          href={`/fr/${adminPrefix}/candidatures?offerId=${o.id}`}
-                          className="admin-link"
-                        >
-                          {o.applicationsCount}
-                        </Link>
-                      ) : (
-                        "0"
-                      )}
-                    </td>
-                    <td>
-                      <Link
-                        href={`/fr/${adminPrefix}/offres-emploi/${o.id}`}
-                        className="admin-link"
-                      >
-                        Éditer →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucune offre trouvée." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(o) => o.id}
+          caption="Liste des offres d'emploi"
+          rowAction={(o) => (
+            <Link href={`/fr/${adminPrefix}/offres-emploi/${o.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

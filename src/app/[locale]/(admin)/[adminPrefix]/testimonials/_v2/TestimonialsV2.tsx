@@ -1,15 +1,33 @@
 // Refonte admin mai 2026 — PR 9 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 9).
 //
-// Testimonials V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard.
+// Testimonials V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard (filtres).
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
   published: "Publié",
   refused: "Refusé",
   archived: "Archivé",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  pending: "warning",
+  refused: "neutral",
+  archived: "neutral",
 };
 const MODULE_LABELS: Record<string, string> = {
   intervention: "Intervention",
@@ -53,6 +71,50 @@ export function TestimonialsV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<TestimonialRow>> = [
+    { key: "order", header: "Ordre", cell: (t) => t.displayOrder },
+    {
+      key: "person",
+      header: "Personne",
+      cell: (t) => (
+        <>
+          <div className="flex items-center gap-2">
+            <span>
+              {t.firstName} {t.lastName}
+            </span>
+            {t.isReal ? (
+              <span title="Testimonial vérifié : source identifiable + consentement RGPD">
+                <AdminBadge tone="success">✓ Authentifié</AdminBadge>
+              </span>
+            ) : null}
+          </div>
+          <code className="admin-meta-small">{t.slug}</code>
+        </>
+      ),
+    },
+    {
+      key: "company",
+      header: "Société",
+      cell: (t) => (
+        <>
+          <div>{t.company ?? "—"}</div>
+          <div className="admin-meta-small">{t.sector ?? ""}</div>
+        </>
+      ),
+    },
+    { key: "module", header: "Module", cell: (t) => (t.module ? MODULE_LABELS[t.module] : "—") },
+    { key: "rating", header: "Note", cell: (t) => (t.rating ? `${t.rating}/5` : "—") },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (t) => (
+        <AdminBadge tone={STATUS_TONE[t.status] ?? "neutral"}>
+          {STATUS_LABELS[t.status] ?? t.status}
+        </AdminBadge>
+      ),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -129,70 +191,21 @@ export function TestimonialsV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Ordre</th>
-                <th>Personne</th>
-                <th>Société</th>
-                <th>Module</th>
-                <th>Note</th>
-                <th>Statut</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucun témoignage trouvé.
-                  </td>
-                </tr>
-              ) : (
-                items.map((t) => (
-                  <tr key={t.id}>
-                    <td>{t.displayOrder}</td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <span>
-                          {t.firstName} {t.lastName}
-                        </span>
-                        {t.isReal ? (
-                          <span
-                            className="admin-badge admin-badge-published"
-                            title="Testimonial vérifié : source identifiable + consentement RGPD"
-                          >
-                            ✓ Authentifié
-                          </span>
-                        ) : null}
-                      </div>
-                      <code className="admin-meta-small">{t.slug}</code>
-                    </td>
-                    <td>
-                      <div>{t.company ?? "—"}</div>
-                      <div className="admin-meta-small">{t.sector ?? ""}</div>
-                    </td>
-                    <td>{t.module ? MODULE_LABELS[t.module] : "—"}</td>
-                    <td>{t.rating ? `${t.rating}/5` : "—"}</td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${t.status}`}>
-                        {STATUS_LABELS[t.status] ?? t.status}
-                      </span>
-                    </td>
-                    <td>
-                      <Link href={`/fr/${adminPrefix}/testimonials/${t.id}`} className="admin-link">
-                        Éditer →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucun témoignage trouvé." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(t) => t.id}
+          caption="Liste des témoignages"
+          rowAction={(t) => (
+            <Link href={`/fr/${adminPrefix}/testimonials/${t.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

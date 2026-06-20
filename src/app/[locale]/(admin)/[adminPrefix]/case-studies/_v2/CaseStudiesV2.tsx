@@ -3,12 +3,27 @@
 // Case studies V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
   published: "Publié",
   archived: "Archivé",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
+// non défini pour draft/published/archived → badge neutre non coloré).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  draft: "warning",
+  archived: "neutral",
 };
 
 interface CaseStudyRow {
@@ -39,6 +54,37 @@ export function CaseStudiesV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<CaseStudyRow>> = [
+    {
+      key: "publishedAt",
+      header: "Date publi",
+      cell: (c) => (c.publishedAt ? c.publishedAt.toISOString().slice(0, 10) : "—"),
+    },
+    {
+      key: "title",
+      header: "Titre (FR)",
+      cell: (c) => (
+        <>
+          <div>{c.translations[0]?.title ?? "(sans titre)"}</div>
+          <code className="admin-meta-small">{c.translations[0]?.slug ?? ""}</code>
+        </>
+      ),
+    },
+    { key: "sector", header: "Secteur", cell: (c) => c.sector },
+    { key: "region", header: "Région", cell: (c) => c.region ?? "—" },
+    { key: "size", header: "Taille", cell: (c) => c.companySizeRange },
+    { key: "roi", header: "ROI", cell: (c) => (c.roiWeeks ? `${c.roiWeeks} sem.` : "—") },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (c) => (
+        <AdminBadge tone={STATUS_TONE[c.status] ?? "neutral"}>
+          {STATUS_LABELS[c.status] ?? c.status}
+        </AdminBadge>
+      ),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -110,57 +156,21 @@ export function CaseStudiesV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Date publi</th>
-                <th>Titre (FR)</th>
-                <th>Secteur</th>
-                <th>Région</th>
-                <th>Taille</th>
-                <th>ROI</th>
-                <th>Statut</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="admin-table-empty">
-                    Aucun cas concret trouvé.
-                  </td>
-                </tr>
-              ) : (
-                items.map((c) => (
-                  <tr key={c.id}>
-                    <td>{c.publishedAt ? c.publishedAt.toISOString().slice(0, 10) : "—"}</td>
-                    <td>
-                      <div>{c.translations[0]?.title ?? "(sans titre)"}</div>
-                      <code className="admin-meta-small">{c.translations[0]?.slug ?? ""}</code>
-                    </td>
-                    <td>{c.sector}</td>
-                    <td>{c.region ?? "—"}</td>
-                    <td>{c.companySizeRange}</td>
-                    <td>{c.roiWeeks ? `${c.roiWeeks} sem.` : "—"}</td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${c.status}`}>
-                        {STATUS_LABELS[c.status] ?? c.status}
-                      </span>
-                    </td>
-                    <td>
-                      <Link href={`/fr/${adminPrefix}/case-studies/${c.id}`} className="admin-link">
-                        Éditer →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucun cas concret trouvé." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(c) => c.id}
+          caption="Liste des cas concrets"
+          rowAction={(c) => (
+            <Link href={`/fr/${adminPrefix}/case-studies/${c.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

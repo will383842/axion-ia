@@ -1,9 +1,20 @@
 // Refonte admin mai 2026 — PR 9 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 9).
 //
-// FAQ V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard.
+// FAQ V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard (filtres).
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const CATEGORY_LABELS: Record<string, string> = {
   general: "Général",
@@ -17,6 +28,13 @@ const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
   published: "Publié",
   archived: "Archivé",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
+// non défini pour draft/published/archived → badge neutre non coloré).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  draft: "warning",
+  archived: "neutral",
 };
 
 interface FAQRow {
@@ -46,6 +64,28 @@ export function FaqV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<FAQRow>> = [
+    { key: "order", header: "Ordre", cell: (f) => f.displayOrder, width: "70px" },
+    { key: "category", header: "Catégorie", cell: (f) => CATEGORY_LABELS[f.category] ?? f.category },
+    { key: "question", header: "Question (FR)", cell: (f) => f.questionFr },
+    {
+      key: "slug",
+      header: "Slug",
+      cell: (f) => <code className="admin-meta-small">{f.slug}</code>,
+      hiddenBelow: "md",
+    },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (f) => (
+        <AdminBadge tone={STATUS_TONE[f.status] ?? "neutral"}>
+          {STATUS_LABELS[f.status] ?? f.status}
+        </AdminBadge>
+      ),
+    },
+    { key: "views", header: "Vues", cell: (f) => f.viewCount, align: "right", width: "80px" },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -122,54 +162,21 @@ export function FaqV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Ordre</th>
-                <th>Catégorie</th>
-                <th>Question (FR)</th>
-                <th>Slug</th>
-                <th>Statut</th>
-                <th>Vues</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucune question trouvée.
-                  </td>
-                </tr>
-              ) : (
-                items.map((f) => (
-                  <tr key={f.id}>
-                    <td>{f.displayOrder}</td>
-                    <td>{CATEGORY_LABELS[f.category] ?? f.category}</td>
-                    <td>{f.questionFr}</td>
-                    <td>
-                      <code className="admin-meta-small">{f.slug}</code>
-                    </td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${f.status}`}>
-                        {STATUS_LABELS[f.status] ?? f.status}
-                      </span>
-                    </td>
-                    <td>{f.viewCount}</td>
-                    <td>
-                      <Link href={`/fr/${adminPrefix}/faq/${f.id}`} className="admin-link">
-                        Éditer →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucune question trouvée." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(f) => f.id}
+          caption="Liste des questions FAQ"
+          rowAction={(f) => (
+            <Link href={`/fr/${adminPrefix}/faq/${f.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }
