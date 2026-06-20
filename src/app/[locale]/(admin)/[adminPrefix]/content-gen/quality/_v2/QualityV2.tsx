@@ -2,7 +2,14 @@
 //
 // Quality dashboard V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { getQualityImprovementAttemptsDistribution } from "@/server/actions/content-gen/dashboard";
 
@@ -192,6 +199,16 @@ export async function QualityV2(): Promise<React.ReactElement> {
     return Math.round(weighted / totalArticles);
   };
 
+  const columns: ReadonlyArray<AdminTableColumn<DailyScore>> = [
+    { key: "day", header: "Jour", cell: (d) => <span className="tabular-nums">{d.day}</span> },
+    { key: "count", header: "Articles", cell: (d) => d.count },
+    { key: "seo", header: "SEO", cell: (d) => d.avgSeo || "—" },
+    { key: "quality", header: "Quality", cell: (d) => d.avgQuality || "—" },
+    { key: "readability", header: "Readability", cell: (d) => d.avgReadability || "—" },
+    { key: "factCheck", header: "Fact-check", cell: (d) => d.avgFactCheck || "—" },
+    { key: "editorial", header: "Editorial", cell: (d) => d.avgEditorial || "—" },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -212,42 +229,18 @@ export async function QualityV2(): Promise<React.ReactElement> {
 
       <AdminCard variant="compact">
         <h2 className="admin-h2">Détail par jour</h2>
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Jour</th>
-                <th>Articles</th>
-                <th>SEO</th>
-                <th>Quality</th>
-                <th>Readability</th>
-                <th>Fact-check</th>
-                <th>Editorial</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dailyScores.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucun article publié sur les {WINDOW_DAYS} derniers jours.
-                  </td>
-                </tr>
-              ) : (
-                dailyScores.map((d) => (
-                  <tr key={d.day}>
-                    <td className="tabular-nums">{d.day}</td>
-                    <td>{d.count}</td>
-                    <td>{d.avgSeo || "—"}</td>
-                    <td>{d.avgQuality || "—"}</td>
-                    <td>{d.avgReadability || "—"}</td>
-                    <td>{d.avgFactCheck || "—"}</td>
-                    <td>{d.avgEditorial || "—"}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        {dailyScores.length === 0 ? (
+          <AdminEmptyState
+            title={`Aucun article publié sur les ${WINDOW_DAYS} derniers jours.`}
+          />
+        ) : (
+          <AdminTable
+            columns={columns}
+            rows={dailyScores}
+            getRowId={(d) => d.day}
+            caption="Scores moyens des articles publiés par jour"
+          />
+        )}
       </AdminCard>
 
       {/* Sprint Final P1-13 — Bloc additionnel distribution boucle qualité */}

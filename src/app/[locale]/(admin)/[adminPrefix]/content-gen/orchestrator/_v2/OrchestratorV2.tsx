@@ -3,7 +3,15 @@
 // Orchestrator V2 — AdminPageShell + AdminPageHeader + AdminCard + AdminStatCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminStatCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { getOrchestratorStats } from "@/server/actions/content-gen/geo";
 import { getBatchSettings } from "@/server/actions/content-gen/policies";
 
@@ -11,8 +19,60 @@ interface Props {
   adminPrefix: string;
 }
 
+type ActiveCampaign = Awaited<
+  ReturnType<typeof getOrchestratorStats>
+>["activeCampaigns"][number];
+
 export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.ReactElement> {
   const [stats, batches] = await Promise.all([getOrchestratorStats(), getBatchSettings()]);
+
+  const campaignColumns: ReadonlyArray<AdminTableColumn<ActiveCampaign>> = [
+    { key: "name", header: "Nom", cell: (c) => c.name },
+    { key: "scope", header: "Scope", cell: (c) => c.scope },
+    {
+      key: "avancement",
+      header: "Avancement",
+      cell: (c) => {
+        const pct =
+          c.totalTargetCount > 0
+            ? Math.round((c.generatedCount / c.totalTargetCount) * 100)
+            : 0;
+        return (
+          <div className="flex flex-col gap-[var(--space-admin-1)]" style={{ minWidth: 160 }}>
+            <span className="text-[length:var(--text-admin-xs)] tabular-nums">
+              {c.generatedCount}/{c.totalTargetCount} ({pct}%)
+            </span>
+            <progress
+              value={c.generatedCount}
+              max={c.totalTargetCount}
+              aria-label={`${pct}% généré`}
+              style={{
+                width: "100%",
+                height: 6,
+                accentColor:
+                  pct < 33
+                    ? "var(--color-admin-destructive)"
+                    : pct < 66
+                      ? "var(--color-admin-warning)"
+                      : "var(--color-admin-success)",
+              }}
+            />
+          </div>
+        );
+      },
+    },
+    { key: "status", header: "Statut", cell: (c) => c.status },
+    {
+      key: "eta",
+      header: "ETA",
+      cell: (c) =>
+        c.etaDays != null ? (
+          <span className="admin-meta">~{c.etaDays}j</span>
+        ) : (
+          <span className="admin-meta">—</span>
+        ),
+    },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -34,80 +94,24 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Campagnes actives</h2>
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Scope</th>
-                <th>Avancement</th>
-                <th>Statut</th>
-                <th>ETA</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stats.activeCampaigns.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="admin-table-empty">
-                    Aucune campagne active.
-                  </td>
-                </tr>
-              ) : (
-                stats.activeCampaigns.map((c) => {
-                  const pct =
-                    c.totalTargetCount > 0
-                      ? Math.round((c.generatedCount / c.totalTargetCount) * 100)
-                      : 0;
-                  return (
-                    <tr key={c.id}>
-                      <td>{c.name}</td>
-                      <td>{c.scope}</td>
-                      <td style={{ minWidth: 160 }}>
-                        <div className="flex flex-col gap-[var(--space-admin-1)]">
-                          <span className="text-[length:var(--text-admin-xs)] tabular-nums">
-                            {c.generatedCount}/{c.totalTargetCount} ({pct}%)
-                          </span>
-                          <progress
-                            value={c.generatedCount}
-                            max={c.totalTargetCount}
-                            aria-label={`${pct}% généré`}
-                            style={{
-                              width: "100%",
-                              height: 6,
-                              accentColor:
-                                pct < 33
-                                  ? "var(--color-admin-destructive)"
-                                  : pct < 66
-                                    ? "var(--color-admin-warning)"
-                                    : "var(--color-admin-success)",
-                            }}
-                          />
-                        </div>
-                      </td>
-                      <td>{c.status}</td>
-                      <td>
-                        {c.etaDays != null ? (
-                          <span className="admin-meta">~{c.etaDays}j</span>
-                        ) : (
-                          <span className="admin-meta">—</span>
-                        )}
-                      </td>
-                      <td>
-                        <Link
-                          href={`/fr/${adminPrefix}/content-gen/coverage/${c.id}`}
-                          className="admin-button-ghost"
-                        >
-                          Détail
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+        {stats.activeCampaigns.length === 0 ? (
+          <AdminEmptyState title="Aucune campagne active." />
+        ) : (
+          <AdminTable
+            columns={campaignColumns}
+            rows={stats.activeCampaigns}
+            getRowId={(c) => c.id}
+            caption="Liste des campagnes actives"
+            rowAction={(c) => (
+              <Link
+                href={`/fr/${adminPrefix}/content-gen/coverage/${c.id}`}
+                className="admin-button-ghost"
+              >
+                Détail
+              </Link>
+            )}
+          />
+        )}
       </AdminCard>
 
       <AdminCard>

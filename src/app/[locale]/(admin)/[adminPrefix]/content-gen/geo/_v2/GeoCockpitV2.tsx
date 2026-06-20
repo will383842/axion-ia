@@ -4,9 +4,19 @@
 // IMPORTANT : GeoEventsBanner préservé intégralement (contrat SSE inchangé).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminStatCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
 import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
+
+type RegionRow = Awaited<ReturnType<typeof listRegionGeoStats>>[number];
 
 interface Props {
   adminPrefix: string;
@@ -17,6 +27,15 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
 
   const base = `/fr/${adminPrefix}/content-gen/geo`;
   const totalPublished = regions.reduce((a, r) => a + r.publishedJobs, 0);
+
+  const regionColumns: ReadonlyArray<AdminTableColumn<RegionRow>> = [
+    { key: "region", header: "Région", cell: (r) => r.name },
+    { key: "phase", header: "Phase", cell: (r) => r.publicationPhase },
+    { key: "published", header: "Publié", cell: (r) => r.publishedJobs },
+    { key: "running", header: "En cours", cell: (r) => r.runningJobs },
+    { key: "failed", header: "Failed", cell: (r) => r.failedJobs },
+    { key: "review", header: "Review", cell: (r) => r.pendingReviewJobs },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -61,41 +80,21 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Progression par région</h2>
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Région</th>
-                <th>Phase</th>
-                <th>Publié</th>
-                <th>En cours</th>
-                <th>Failed</th>
-                <th>Review</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {regions.map((r) => (
-                <tr key={r.slug}>
-                  <td>{r.name}</td>
-                  <td>{r.publicationPhase}</td>
-                  <td>{r.publishedJobs}</td>
-                  <td>{r.runningJobs}</td>
-                  <td>{r.failedJobs}</td>
-                  <td>{r.pendingReviewJobs}</td>
-                  <td>
-                    <Link
-                      href={`${base}/batches/new?region=${r.slug}`}
-                      className="admin-button-ghost"
-                    >
-                      Batch
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {regions.length === 0 ? (
+          <AdminEmptyState title="Aucune région." />
+        ) : (
+          <AdminTable
+            columns={regionColumns}
+            rows={regions}
+            getRowId={(r) => r.slug}
+            caption="Progression par région"
+            rowAction={(r) => (
+              <Link href={`${base}/batches/new?region=${r.slug}`} className="admin-button-ghost">
+                Batch
+              </Link>
+            )}
+          />
+        )}
       </AdminCard>
 
       <AdminCard>

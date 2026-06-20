@@ -3,7 +3,16 @@
 // Web Vitals V2 — AdminPageShell + AdminPageHeader + AdminCard + AdminStatCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminStatCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const WINDOW_HOURS = 24;
 const MIN_SAMPLES = 5;
@@ -54,18 +63,21 @@ function classifyRating(metric: string, value: number): "good" | "needs_improvem
   return "poor";
 }
 
+// Track 2 : pill CrUX → <AdminBadge> (success=good, warning=needs-improvement,
+// destructive=poor). Labels inchangés.
+const RATING_LABELS: Record<"good" | "needs_improvement" | "poor", string> = {
+  good: "● Good",
+  needs_improvement: "● Needs improvement",
+  poor: "● Poor",
+};
+const RATING_TONE: Record<"good" | "needs_improvement" | "poor", "success" | "warning" | "destructive"> = {
+  good: "success",
+  needs_improvement: "warning",
+  poor: "destructive",
+};
+
 function ratingPill(rating: "good" | "needs_improvement" | "poor") {
-  const labels = {
-    good: "● Good",
-    needs_improvement: "● Needs improvement",
-    poor: "● Poor",
-  };
-  const cls = {
-    good: "admin-severity-info",
-    needs_improvement: "admin-severity-warning",
-    poor: "admin-severity-critical",
-  };
-  return <span className={`admin-status-pill ${cls[rating]}`}>{labels[rating]}</span>;
+  return <AdminBadge tone={RATING_TONE[rating] ?? "neutral"}>{RATING_LABELS[rating]}</AdminBadge>;
 }
 
 function budgetPill(breach: boolean) {
@@ -98,6 +110,46 @@ export function WebVitalsV2({
   recomputeEnabled,
   triggerRecomputeAction,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<AggregateRow>> = [
+    {
+      key: "url",
+      header: "Route",
+      cell: (row) => <code>{row.url}</code>,
+    },
+    {
+      key: "metric",
+      header: "Métrique",
+      cell: (row) => <strong>{row.metric}</strong>,
+    },
+    {
+      key: "p75",
+      header: "p75",
+      cell: (row) => (
+        <span className={row.breach ? "font-bold" : ""}>{fmtValue(row.metric, row.p75)}</span>
+      ),
+    },
+    {
+      key: "budget",
+      header: "Budget",
+      cell: (row) => fmtValue(row.metric, row.budget),
+    },
+    {
+      key: "count",
+      header: "n",
+      cell: (row) => row.count,
+    },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (row) => budgetPill(row.breach),
+    },
+    {
+      key: "rating",
+      header: "Rating CrUX",
+      cell: (row) => ratingPill(classifyRating(row.metric, row.p75)),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -174,59 +226,27 @@ export function WebVitalsV2({
           Détail (route × métrique) — top {Math.min(TABLE_CAP, aggregatesLength)}
         </h2>
         {display.length === 0 ? (
-          <p className="admin-meta-block">
-            Aucune ligne fiable dans la fenêtre {WINDOW_HOURS}h (chaque combinaison requiert ≥{" "}
-            {MIN_SAMPLES} samples). C&apos;est normal en faible trafic — patientez 24-48h après mise
-            en production pour des données stables.
-          </p>
+          <AdminEmptyState
+            title={`Aucune ligne fiable dans la fenêtre ${WINDOW_HOURS}h (chaque combinaison requiert ≥ ${MIN_SAMPLES} samples). C'est normal en faible trafic — patientez 24-48h après mise en production pour des données stables.`}
+          />
         ) : (
-          <div className="admin-table-wrapper mt-[var(--space-admin-3)]">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Route</th>
-                  <th>Métrique</th>
-                  <th>p75</th>
-                  <th>Budget</th>
-                  <th>n</th>
-                  <th>Statut</th>
-                  <th>Rating CrUX</th>
-                  <th>PSI</th>
-                </tr>
-              </thead>
-              <tbody>
-                {display.map((row, idx) => {
-                  const rating = classifyRating(row.metric, row.p75);
-                  return (
-                    <tr key={`${row.url}-${row.metric}-${idx}`}>
-                      <td>
-                        <code>{row.url}</code>
-                      </td>
-                      <td>
-                        <strong>{row.metric}</strong>
-                      </td>
-                      <td className={row.breach ? "font-bold" : ""}>
-                        {fmtValue(row.metric, row.p75)}
-                      </td>
-                      <td>{fmtValue(row.metric, row.budget)}</td>
-                      <td>{row.count}</td>
-                      <td>{budgetPill(row.breach)}</td>
-                      <td>{ratingPill(rating)}</td>
-                      <td>
-                        <a
-                          href={psiUrl(row.url)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="admin-link"
-                        >
-                          ↗
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="mt-[var(--space-admin-3)]">
+            <AdminTable
+              columns={columns}
+              rows={display}
+              getRowId={(row) => `${row.url}-${row.metric}`}
+              caption="Détail Web Vitals par route et métrique"
+              rowAction={(row) => (
+                <a
+                  href={psiUrl(row.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="admin-link"
+                >
+                  ↗
+                </a>
+              )}
+            />
           </div>
         )}
       </AdminCard>
