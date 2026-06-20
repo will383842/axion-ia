@@ -14,6 +14,7 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { ImportCatalogFormationsButton } from "@/components/admin/qualiopi/ImportCatalogFormationsButton";
 import { listFormations } from "@/server/qualiopi/formations/formations";
 
 export const dynamic = "force-dynamic";
@@ -70,12 +71,15 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
         title="Formations"
         description="Catalogue des formations issues du Formation Engine. Chaque formation est rattachée à une offre du référentiel offres_site."
         actions={
-          <Link
-            href={`/${locale}/${adminPrefix}/qualiopi/formations/new`}
-            className="admin-button shrink-0"
-          >
-            + Nouvelle formation
-          </Link>
+          <div className="flex flex-wrap items-start justify-end gap-[var(--space-admin-3)]">
+            <ImportCatalogFormationsButton />
+            <Link
+              href={`/${locale}/${adminPrefix}/qualiopi/formations/new`}
+              className="admin-button shrink-0"
+            >
+              + Nouvelle formation
+            </Link>
+          </div>
         }
       />
 
@@ -91,8 +95,9 @@ export default async function QualiopiFormationsPage({ params }: PageProps) {
 
       {formations.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucune formation. Lancez une génération depuis le Formation Engine pour créer la première
-          fiche.
+          Aucune formation en base. Cliquez sur <strong>« Importer le catalogue »</strong> pour
+          créer d&apos;un coup les 17 formations du catalogue (prêtes pour sessions, conventions et
+          factures), ou lancez une génération depuis le Formation Engine.
         </p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
