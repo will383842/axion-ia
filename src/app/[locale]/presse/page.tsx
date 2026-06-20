@@ -234,7 +234,7 @@ export default async function PressePage({ params }: Props) {
                 url: SITE_URL,
                 logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph-image` },
               },
-              image: `${SITE_URL}/api/og?title=${encodeURIComponent(r.title)}&accent=primary`,
+              image: `${SITE_URL}/api/og?title=${encodeURIComponent(r.title)}`,
             },
           })),
         }

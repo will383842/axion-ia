@@ -38,6 +38,14 @@ const COMMON_DISALLOW = [
   "/sections",
   "/fr/sections",
   "/en/sections",
+  // Brand-fix 2026-06-20 — logos CLIENTS (Jardiland, Gedimat, Safti…) servis
+  // sous /logos/clients/*.svg. Affichés via le bandeau preuve-sociale
+  // (ClientLogosBand) haut de page, Google Images les indexait comme image
+  // représentative des pages (ex: jardiland.svg sur /fr/implantations/guadeloupe)
+  // → SERP off-brand (marques tierces multicolores au lieu du logo Axion-IA).
+  // Disallow longest-match > Allow `/` : empêche Googlebot-Image de les fetcher.
+  // Les logos restent visibles pour les visiteurs (le navigateur ignore robots.txt).
+  "/logos/clients/",
 ];
 
 // Audit GSC 2026-05-18 — "Bloquée par robots.txt" sur `/api/og?title=...`.
@@ -52,7 +60,18 @@ const COMMON_DISALLOW = [
 //
 // `/opengraph-image` (root, file convention Next 16) n'est pas concerné — il
 // est déjà sous `Allow: /` par défaut (pas dans COMMON_DISALLOW).
-const COMMON_ALLOW = ["/", "/api/og"];
+//
+// Audit images 2026-06-20 — CAUSE RACINE « 0 image dans Google Images ».
+// Les pages galerie + grilles rendent leurs visuels via `next/image` →
+// `<img src="/_next/image?url=%2Fimages%2F...webp&w=...&q=...">`. Or le wildcard
+// `Disallow: /_next/` ci-dessus empêchait Googlebot-Image de fetcher l'image
+// TELLE QU'AFFICHÉE sur la page (Google Images indexe en priorité l'`<img>` du
+// DOM hôte, pas seulement le `<image:loc>` du sitemap). Même mécanisme que
+// `/api/og` ci-dessus : `Allow: /_next/image` (longest-match) débloque
+// l'optimiseur sans rouvrir le reste de `/_next/` (chunks JS, data, etc.).
+// SOS-Expat (jumeau indexé dans Google Images) sert ses images en fichiers
+// statiques directs, sans optimiseur ni chemin disallowed — d'où l'écart.
+const COMMON_ALLOW = ["/", "/api/og", "/_next/image"];
 
 const AI_BOTS_ALLOWED = [
   "GPTBot", // OpenAI training

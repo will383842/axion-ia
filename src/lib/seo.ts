@@ -74,8 +74,12 @@ interface ProductSeoInput {
    * + `twitter.images` for LinkedIn/Slack/Twitter/Facebook previews.
    */
   ogImage?: string;
-  /** Optional accent for `/api/og` dynamic image (primary/purple/orange/green). */
-  ogAccent?: "primary" | "purple" | "orange" | "green";
+  /**
+   * Optional accent for `/api/og` dynamic image (purple/orange/green). Le défaut
+   * (accent omis) = terracotta, signature de marque. `primary` (bleu) RETIRÉ
+   * 2026-06-20 — la marque ne doit jamais émettre de carte OG bleue.
+   */
+  ogAccent?: "purple" | "orange" | "green";
   /**
    * VIS-05/SEO-05 — type OpenGraph. Défaut "website" (rétro-compat). Les pages
    * d'article (blog/actualites/guides/connaissances/centre-aide) passent

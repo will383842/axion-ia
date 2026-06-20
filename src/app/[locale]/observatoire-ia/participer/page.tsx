@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t("meta.participateTitle"),
     description: t("meta.participateDescription"),
     alternates: { fr: PAGE_PATH, en: PAGE_PATH },
-    ogAccent: "primary",
+    // Brand-fix 2026-06-20 — défaut terracotta (était "primary"/bleu off-brand).
   });
 }
 

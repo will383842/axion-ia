@@ -157,7 +157,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
   ];
 
   const pageUrl = `${SITE_URL}/${loc}${isFr ? "/presse" : "/press"}/${slug}`;
-  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(copy.title)}&accent=primary`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(copy.title)}`;
 
   // Body splittable en paragraphes (la fixture press.ts utilise des phrases
   // longues sans double-saut de ligne — on chunke par phrase pour rythmer la

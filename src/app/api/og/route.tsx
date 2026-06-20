@@ -10,9 +10,16 @@ export const runtime = "edge";
 // not available. Hex values mirror globals.css palette deliberately
 // (doctrine v3 Editorial Premium Light, ADR 0002).
 const ACCENTS: Record<string, string> = {
-  primary: "#1a4dd9", // hex-ok: --color-primary v3 (was Webflow Blue #146ef5 v1)
+  // Brand-fix 2026-06-20 — accent par défaut = terracotta (signature de marque,
+  // cf. globals.css --color-terracotta + manifest theme_color). Avant, le défaut
+  // était `primary` (bleu) → Google Images indexait des cartes OG bleues
+  // off-brand pour la majorité des pages (toutes celles qui passent par
+  // buildProductMetadata sans `ogAccent`). Le token bleu `primary` est RETIRÉ
+  // volontairement : la marque ne doit jamais émettre de carte OG bleue. Un
+  // éventuel `accent=primary` résiduel retombe sur terracotta (fallback ci-dessous).
+  terracotta: "#c24a1b", // hex-ok: --color-terracotta v3 (signature marque)
   purple: "#7c3aed", // hex-ok: accent-purple token
-  orange: "#f97316", // hex-ok: accent-orange token
+  orange: "#c24a1b", // hex-ok: alias terracotta (était #f97316 orange vif off-brand)
   green: "#16a34a", // hex-ok: accent-green token
 };
 
@@ -25,7 +32,7 @@ export function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const title = searchParams.get("title") ?? "Axion-IA — Cabinet IA opérationnel";
   const eyebrow = searchParams.get("eyebrow") ?? "Axion-IA";
-  const accent = ACCENTS[searchParams.get("accent") ?? "primary"] ?? ACCENTS["primary"];
+  const accent = ACCENTS[searchParams.get("accent") ?? "terracotta"] ?? ACCENTS["terracotta"];
 
   return new ImageResponse(
     <div
