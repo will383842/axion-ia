@@ -448,6 +448,16 @@
     animation-delay: 0s !important;
   }
 }
+/* =============================================================
+ * ⚠️ GARDE — NE PAS réintroduire de classes `.admin-*` ici.
+ * Les ~1250 lignes de classes utilitaires `.admin-*` ont été relocalisées
+ * dans src/app/admin.css (Étape 1 unification design console, juin 2026,
+ * ADR 0028 cloisonnement admin). globals.css ne doit plus contenir AUCUN
+ * style admin. Toute règle admin va dans admin.css (tokens + classes +
+ * composants src/components/admin/ui partagent la même source).
+ * `check-radius.ts` saute désormais admin.css (doctrine rayons admin propre).
+ * =============================================================*/
+
 /* P1-20 audit Sprint A — sticky header (max 96px) masque les cibles d'ancre.
    scroll-margin-top global évite que chaque composant gère ça individuellement. */
 [id] {
