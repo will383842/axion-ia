@@ -9,7 +9,10 @@ import {
   AdminCard,
   AdminStatCard,
   AdminBadge,
+  AdminTable,
+  AdminEmptyState,
 } from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   getCitiesStats,
   listCities,
@@ -98,6 +101,58 @@ export async function CitiesCoverageV2({
     { tier: 2, label: tierLabel(2), total: stats.tier2Total, covered: stats.tier2Covered },
     { tier: 3, label: tierLabel(3), total: stats.tier3Total, covered: stats.tier3Covered },
     { tier: 4, label: tierLabel(4), total: stats.tier4Total, covered: stats.tier4Covered },
+  ];
+
+  const columns: ReadonlyArray<AdminTableColumn<CityRow>> = [
+    {
+      key: "rang",
+      header: "Rang",
+      cell: (city) => (
+        <span className="text-[color:var(--color-admin-fg-soft)] tabular-nums">
+          {city.priority}
+        </span>
+      ),
+    },
+    { key: "ville", header: "Ville", cell: (city) => <span className="font-medium">{city.name}</span> },
+    {
+      key: "population",
+      header: "Population",
+      cell: (city) => <span className="tabular-nums">{formatPop(city.population)}</span>,
+    },
+    { key: "dept", header: "Dept.", cell: (city) => city.departmentCode },
+    {
+      key: "region",
+      header: "Région",
+      cell: (city) => (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+          {city.regionName}
+        </span>
+      ),
+    },
+    {
+      key: "tier",
+      header: "Tier",
+      cell: (city) => <AdminBadge tone="neutral">{`T${city.populationTier}`}</AdminBadge>,
+    },
+    {
+      key: "etat",
+      header: "État",
+      cell: (city) => (
+        <AdminBadge tone={cityStateTone(city)}>
+          {cityStateIcon(city)}{" "}
+          {city.isCovered
+            ? "Couverte"
+            : city.articlesCount > 0
+              ? "En cours"
+              : "À faire"}
+        </AdminBadge>
+      ),
+    },
+    {
+      key: "articles",
+      header: "Articles",
+      cell: (city) => <span className="tabular-nums">{city.articlesCount}</span>,
+    },
   ];
 
   return (
@@ -198,59 +253,16 @@ export async function CitiesCoverageV2({
 
       {/* Table villes */}
       <AdminCard>
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Rang</th>
-                <th>Ville</th>
-                <th>Population</th>
-                <th>Dept.</th>
-                <th>Région</th>
-                <th>Tier</th>
-                <th>État</th>
-                <th>Articles</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cities.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="admin-table-empty">
-                    Aucune ville ne correspond aux filtres.
-                  </td>
-                </tr>
-              ) : (
-                cities.map((city) => (
-                  <tr key={city.id}>
-                    <td className="text-[color:var(--color-admin-fg-soft)] tabular-nums">
-                      {city.priority}
-                    </td>
-                    <td className="font-medium">{city.name}</td>
-                    <td className="tabular-nums">{formatPop(city.population)}</td>
-                    <td>{city.departmentCode}</td>
-                    <td className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                      {city.regionName}
-                    </td>
-                    <td>
-                      <AdminBadge tone="neutral">{`T${city.populationTier}`}</AdminBadge>
-                    </td>
-                    <td>
-                      <AdminBadge tone={cityStateTone(city)}>
-                        {cityStateIcon(city)}{" "}
-                        {city.isCovered
-                          ? "Couverte"
-                          : city.articlesCount > 0
-                            ? "En cours"
-                            : "À faire"}
-                      </AdminBadge>
-                    </td>
-                    <td className="tabular-nums">{city.articlesCount}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        {cities.length === 0 ? (
+          <AdminEmptyState title="Aucune ville ne correspond aux filtres." />
+        ) : (
+          <AdminTable
+            columns={columns}
+            rows={cities}
+            getRowId={(city) => city.id}
+            caption="Liste des villes et leur couverture content-gen"
+          />
+        )}
 
         {/* Pagination — P1 fix: conserver tous les filtres actifs (covered inclus) */}
         {totalPages > 1 && (

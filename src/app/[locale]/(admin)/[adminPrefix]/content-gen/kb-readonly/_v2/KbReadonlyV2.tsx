@@ -3,11 +3,26 @@
 // KB read-only V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 
 interface Props {
   adminPrefix: string;
+}
+
+interface KbRow {
+  id: string;
+  slug: string;
+  type: string;
+  audience: string;
+  updatedAt: Date;
 }
 
 export async function KbReadonlyV2({ adminPrefix }: Props): Promise<React.ReactElement> {
@@ -25,6 +40,24 @@ export async function KbReadonlyV2({ adminPrefix }: Props): Promise<React.ReactE
       select: { id: true, slug: true, type: true, audience: true, updatedAt: true },
     }),
   ]);
+
+  const columns: ReadonlyArray<AdminTableColumn<KbRow>> = [
+    {
+      key: "slug",
+      header: "Slug",
+      cell: (e) => (
+        <Link
+          href={`/fr/${adminPrefix}/content-gen/kb-readonly/${e.id}`}
+          className="admin-link"
+        >
+          <code>{e.slug}</code>
+        </Link>
+      ),
+    },
+    { key: "type", header: "Type", cell: (e) => e.type },
+    { key: "audience", header: "Audience", cell: (e) => e.audience },
+    { key: "updatedAt", header: "Maj", cell: (e) => e.updatedAt.toISOString().slice(0, 10) },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -46,35 +79,16 @@ export async function KbReadonlyV2({ adminPrefix }: Props): Promise<React.ReactE
 
       <AdminCard variant="compact">
         <h2 className="admin-h2">25 dernières entrées publiées</h2>
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Slug</th>
-                <th>Type</th>
-                <th>Audience</th>
-                <th>Maj</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recent.map((e) => (
-                <tr key={e.id}>
-                  <td>
-                    <Link
-                      href={`/fr/${adminPrefix}/content-gen/kb-readonly/${e.id}`}
-                      className="admin-link"
-                    >
-                      <code>{e.slug}</code>
-                    </Link>
-                  </td>
-                  <td>{e.type}</td>
-                  <td>{e.audience}</td>
-                  <td>{e.updatedAt.toISOString().slice(0, 10)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {recent.length === 0 ? (
+          <AdminEmptyState title="Aucune entrée publiée." />
+        ) : (
+          <AdminTable
+            columns={columns}
+            rows={recent}
+            getRowId={(e) => e.id}
+            caption="25 dernières entrées KB publiées"
+          />
+        )}
       </AdminCard>
     </AdminPageShell>
   );
