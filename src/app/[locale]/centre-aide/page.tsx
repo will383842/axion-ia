@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: locale === "fr" ? "Centre d'aide · Axion-IA" : "Help center · Axion-IA",
     description:
       locale === "fr"
-        ? "Centre d'aide Axion-IA : guides pratiques, tutoriels, support utilisateur."
+        ? "Centre d'aide Axion-IA : guides pratiques, tutoriels et réponses concrètes pour préparer un audit IA, cadrer une intervention et bien utiliser nos services."
         : "Axion-IA help center: practical guides, tutorials, user support.",
     alternates: { fr: "/centre-aide", en: "/help" },
   });
