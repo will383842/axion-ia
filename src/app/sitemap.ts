@@ -336,13 +336,18 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "presse",
     "implementation",
     "implantations",
-    "services-villes-audit",
-    "services-villes-interventions",
-    "services-villes-implementation",
-    // Sprint S+2 City Domination — 4e verticale industrialisation Phase 1.
-    "services-villes-un-a-un",
-    // 2026-06-04 — 5e verticale `sites-web-augmentes` × villes.
-    "services-villes-sites-web-augmentes",
+    // Audit indexation 2026-06-20 — décision Will (B) : les ~5000 pages
+    // services×villes (`/audit/par-ville/<ville>`, `/formations/par-ville/...`,
+    // etc.) sont RETIRÉES du sitemap. Elles sont orphelines (0 lien interne,
+    // sitemap-only) et diluaient le crawl-budget d'un domaine jeune. On concentre
+    // le crawl sur les ~1776 villes-hub (sub-sitemaps villes, inchangés).
+    // Les pages restent LIVE + indexables (pas de noindex) — simplement plus
+    // annoncées. Réintroduire ces ids une fois l'autorité installée (+ backlinks).
+    //   "services-villes-audit", "services-villes-interventions",
+    //   "services-villes-implementation", "services-villes-un-a-un",
+    //   "services-villes-sites-web-augmentes",
+    // (le `case` correspondant dans `sitemap()` + l'union de type sont conservés,
+    //  inertes : aucune génération tant que l'id n'est pas dans `staticIds`.)
     // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
     // ~22 URLs V1 (11 outils × 2 locales). Statique.
     "stack-ia-tools",
