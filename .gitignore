@@ -72,3 +72,6 @@ Thumbs.db
 
 # CV de candidature (dev) — jamais committés
 .cv-storage/
+
+# Console documents (dev local storage, hors web-root)
+.console-docs/
