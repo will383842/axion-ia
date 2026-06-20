@@ -485,6 +485,58 @@ jobs:
           }
           echo "Cloudflare cache purged ✓"
 
+      # Audit indexation 2026-06-20 : `purge_everything` vide TOUT le cache edge à
+      # chaque deploy → mesuré live `cf-cache-status: MISS` sur 100% du HTML jusqu'à
+      # ce qu'un visiteur (ou Googlebot) re-render chaque page. Sur un domaine jeune
+      # à faible trafic, Googlebot tape alors l'origine VPS mono-instance → crawl-rate
+      # plafonné. Ce warmer re-render + re-cache immédiatement les URLs stratégiques
+      # juste après la purge, pour que les crawlers retombent sur `HIT` (origine non
+      # sollicitée). Best-effort : n'échoue jamais le deploy (warming = optimisation).
+      - name: Warm Cloudflare edge cache (top URLs)
+        if: success()
+        env:
+          SITE: "https://axion-ia.com"
+        run: |
+          set -uo pipefail
+          # Liste curée des pages à plus fort enjeu SEO (hubs + top villes + clés).
+          # Volontairement bornée (~40 URLs) pour rester rapide ; le reste se réchauffe
+          # au fil du trafic organique + des crawls.
+          PATHS=(
+            "/fr"
+            "/fr/audit" "/fr/formations" "/fr/implementation" "/fr/un-a-un"
+            "/fr/sites-web" "/fr/a-propos" "/fr/contact" "/fr/presse" "/fr/carrieres"
+            "/fr/implantations"
+            "/fr/implantations/ile-de-france" "/fr/implantations/auvergne-rhone-alpes"
+            "/fr/implantations/provence-alpes-cote-d-azur" "/fr/implantations/occitanie"
+            "/fr/implantations/nouvelle-aquitaine" "/fr/implantations/hauts-de-france"
+            "/fr/implantations/grand-est" "/fr/implantations/pays-de-la-loire"
+            "/fr/implantations/bretagne" "/fr/implantations/normandie"
+            "/fr/implantations/bourgogne-franche-comte" "/fr/implantations/centre-val-de-loire"
+            "/fr/implantations/ile-de-france/paris"
+            "/fr/implantations/auvergne-rhone-alpes/lyon"
+            "/fr/implantations/provence-alpes-cote-d-azur/marseille"
+            "/fr/implantations/occitanie/toulouse"
+            "/fr/implantations/nouvelle-aquitaine/bordeaux"
+            "/fr/implantations/hauts-de-france/lille"
+            "/fr/implantations/auvergne-rhone-alpes/grenoble"
+            "/fr/implantations/pays-de-la-loire/nantes"
+            "/fr/implantations/grand-est/strasbourg"
+            "/fr/implantations/occitanie/montpellier"
+            "/fr/implantations/bretagne/rennes"
+            "/sitemap-index.xml" "/robots.txt"
+          )
+          ok=0; miss=0
+          for p in "${PATHS[@]}"; do
+            # UA neutre + 2 hits espacés : le 1er render+cache, le 2e confirme HIT.
+            curl -sS -o /dev/null -m 20 -A "AxionIA-CacheWarmer/1.0" "${SITE}${p}" || true
+            status=$(curl -sS -o /dev/null -m 20 -A "AxionIA-CacheWarmer/1.0" \
+              -w "%{http_code}" -D /tmp/h.txt "${SITE}${p}" || echo "000")
+            cc=$(grep -i '^cf-cache-status:' /tmp/h.txt | tr -d '\r' | awk '{print $2}')
+            echo "  ${status} ${cc:-?}  ${p}"
+            [ "${cc}" = "HIT" ] && ok=$((ok+1)) || miss=$((miss+1))
+          done
+          echo "::notice::Cache warm — HIT:${ok} non-HIT:${miss} (best-effort, non bloquant)"
+
   # ───────────────────────────────────────────────────────────────────────
   # Lighthouse CI hard fail post-deploy — Audit E2E 2026-05-11 P0-CONF-17.
   # AGENTS.md déclare « Lighthouse CI gate les PR » mais `pnpm lhci` n'était
@@ -569,3 +621,52 @@ jobs:
           # Mesure réelle (à chaud) + assertions strictes (lighthouserc.json).
           pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=2 "${LH_SETTINGS[@]}"
           pnpm exec lhci assert
+
+  # ───────────────────────────────────────────────────────────────────────
+  # IndexNow post-deploy — Audit indexation 2026-06-20.
+  # `scripts/indexnow-ping.ts` tourne en `postbuild` DANS le builder Docker, où
+  # `INDEXNOW_KEY` (secret Coolify scope RUN) est ABSENT → le ping no-op (exit 0)
+  # → les ~1776 villes indexables n'étaient JAMAIS soumises à IndexNow
+  # (Bing/Yandex/Seznam/Naver). Ce job ré-exécute le ping APRÈS le deploy, avec la
+  # clé injectée, contre la prod live. Best-effort : `if: always()`-friendly via
+  # `|| true`, ne bloque jamais le verdict pipeline (la soumission moteur est une
+  # optimisation, pas un critère de santé du deploy).
+  indexnow:
+    name: IndexNow ping (post-deploy)
+    needs: deploy
+    if: needs.deploy.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile --filter . --prod=false
+
+      - name: Ping IndexNow (strategic paths + villes indexables)
+        env:
+          # ⚠️ La valeur DOIT correspondre exactement au fichier servi
+          # `/public/3a5c32d22b04f1430690cc33eaec6be9.txt` (sinon IndexNow 403/422).
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
+        run: |
+          set -uo pipefail
+          if [ -z "${INDEXNOW_KEY:-}" ]; then
+            echo "::warning::INDEXNOW_KEY secret absent — ping IndexNow skip (no-op)."
+            exit 0
+          fi
+          # Le script gère lui-même l'absence de clé (no-op exit 0) et n'échoue pas
+          # le pipeline ; `|| true` en ceinture-bretelles.
+          pnpm exec tsx scripts/indexnow-ping.ts || true
