@@ -3789,6 +3789,13 @@ model ImageAssetTranslation {
 
   aiSummary  String? @map("ai_summary") @db.Text
   embedTitle String? @map("embed_title") @db.VarChar(255)
+  // OCR du texte présent DANS l'image (détecté par Claude Vision à l'enrichment).
+  // Audit images 2026-06-20 : l'enrichment écrivait déjà `embeddedText` mais la
+  // colonne n'existait pas → crash Prisma « Unknown argument » dès qu'une image
+  // contenait du texte → enrichment KO → image thin → noindex. Cette colonne
+  // répare ce bug latent ET alimente la propriété schema.org `text` de
+  // l'ImageObject (citabilité IA / Google Vision — AEO).
+  embeddedText String? @map("embedded_text") @db.Text
 
   isPublished Boolean   @default(false) @map("is_published")
   publishedAt DateTime? @map("published_at")

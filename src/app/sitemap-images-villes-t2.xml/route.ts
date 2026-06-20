@@ -1,16 +1,16 @@
 // Route Handler — Sitemap Google Image 1.1 — Villes Tier 2 (50 000 – 99 999 hab).
 //
-// 83 villes avec image générique auto-générée par Sharp (template terracotta
-// + overlay nom de la ville — cf. script generate-city-images-tier2.ts).
-//
-// Image slug pattern T2 : axion-ia-{ville.slug}-formation-ia-banniere
-// (même pattern que T1, images générées via Sharp template)
+// Audit images 2026-06-20 — FIX 404 : le pattern
+// `axion-ia-{ville.slug}-formation-ia-banniere` ne correspondait à aucun fichier
+// (les images Sharp par-ville n'ont jamais été générées sur disque). → toutes les
+// `<image:loc>` T2 étaient en 404. On pointe une bannière générique RÉELLE (comme
+// T3/T4), garantissant du 200.
 //
 // Référencé dans `app/sitemap-index.xml/route.ts` (CUSTOM_SITEMAPS).
 
 import { VILLES, isVilleIndexable } from "@/content/villes";
 import { SITEMAP_CACHE_HEADER } from "@/server/image-bank/constants";
-import { buildVillesSitemapXml } from "@/server/image-bank/utils/villes-sitemap";
+import { buildVillesSitemapXml, GENERIC_SLUG_T3 } from "@/server/image-bank/utils/villes-sitemap";
 
 // Drip-aware sitemap (Will 2026-05-28 — audit GSC `_AUDIT/GSC-INDEXATION-2026-05-28`).
 // Filtre sur la cohorte drip + présence copy. Les ~83 villes T2 sont toutes
@@ -28,8 +28,8 @@ export function GET(): Response {
 
   const body = buildVillesSitemapXml(
     t2,
-    (v) => `axion-ia-${v.slug}-formation-ia-banniere`,
-    "Tier 2 — population 50 000–99 999 — template Sharp auto",
+    () => GENERIC_SLUG_T3,
+    "Tier 2 — population 50 000–99 999 — bannière générique (fichier réel)",
   );
 
   return new Response(body, {

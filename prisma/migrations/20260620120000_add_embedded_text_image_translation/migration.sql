@@ -1,0 +1,11 @@
+-- Audit images 2026-06-20 — ajoute la colonne `embedded_text` (OCR du texte dans
+-- l'image) à `image_asset_translations`.
+--
+-- Pourquoi : l'enrichment (image-seo-enrichment.service.ts) écrivait déjà
+-- `embeddedText` dans l'upsert, mais la colonne n'existait pas → crash Prisma
+-- « Unknown argument embeddedText » dès qu'une image contenait du texte détecté
+-- par Claude Vision → l'enrichment échouait → l'image restait thin → noindex.
+--
+-- Additive + nullable → safe (aucune réécriture, aucune valeur par défaut requise).
+-- Alimente aussi la propriété schema.org `text` de l'ImageObject (AEO / citabilité IA).
+ALTER TABLE "image_asset_translations" ADD COLUMN "embedded_text" TEXT;

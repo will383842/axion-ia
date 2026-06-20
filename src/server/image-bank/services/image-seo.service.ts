@@ -114,6 +114,14 @@ export class ImageSeoService {
       schema.abstract = translation.aiSummary;
     }
 
+    // Texte OCR présent DANS l'image (schema.org `text`) — Google Vision et les
+    // LLMs l'exploitent pour comprendre/citer le contenu visuel (AEO). Audit
+    // images 2026-06-20 : seul vrai gap AEO restant, données alimentées par
+    // l'enrichment Claude Vision (`embeddedText`).
+    if (translation.embeddedText) {
+      schema.text = translation.embeddedText;
+    }
+
     if (image.thumbnailPath) {
       const thumbnailUrl = absoluteUrl(this.config.siteUrl, image.thumbnailPath);
       schema.thumbnailUrl = thumbnailUrl;
