@@ -5,14 +5,25 @@
 //
 // RSS list V2 — AdminPageShell + AdminPageHeader + AdminCard.
 // Server Actions toggleRssSourceInDb + removeRssSourceFromDb (Prisma-backed).
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// statut Actif → <AdminBadge>.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   listRssSourcesFromDb,
   removeRssSourceFromDb,
   toggleRssSourceInDb,
 } from "@/server/actions/content-gen/rss-sources";
+
+type RssSourceRow = Awaited<ReturnType<typeof listRssSourcesFromDb>>[number];
 
 interface Props {
   adminPrefix: string;
@@ -33,6 +44,31 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
     await removeRssSourceFromDb(String(formData.get("id") ?? ""));
   }
 
+  const columns: ReadonlyArray<AdminTableColumn<RssSourceRow>> = [
+    { key: "name", header: "Nom", cell: (s) => s.name },
+    {
+      key: "url",
+      header: "URL",
+      cell: (s) => (
+        <a href={s.url} target="_blank" rel="noopener" className="admin-link">
+          <code>{s.url.slice(0, 60)}</code>
+        </a>
+      ),
+    },
+    { key: "tags", header: "Tags", cell: (s) => s.tags.join(", ") },
+    { key: "poll", header: "Poll (min)", cell: (s) => s.pollIntervalMin },
+    { key: "autoPublish", header: "Auto-pub", cell: (s) => (s.autoPublish ? "✅" : "—") },
+    {
+      key: "enabled",
+      header: "Actif",
+      cell: (s) => (
+        <AdminBadge tone={s.enabled ? "success" : "neutral"}>
+          {s.enabled ? "✅" : "🚫"}
+        </AdminBadge>
+      ),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -50,74 +86,45 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
         }
       />
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>URL</th>
-                <th>Tags</th>
-                <th>Poll (min)</th>
-                <th>Auto-pub</th>
-                <th>Actif</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sources.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucune source RSS configurée.
-                  </td>
-                </tr>
-              ) : (
-                sources.map((s) => (
-                  <tr key={s.id}>
-                    <td>{s.name}</td>
-                    <td>
-                      <a href={s.url} target="_blank" rel="noopener" className="admin-link">
-                        <code>{s.url.slice(0, 60)}</code>
-                      </a>
-                    </td>
-                    <td>{s.tags.join(", ")}</td>
-                    <td>{s.pollIntervalMin}</td>
-                    <td>{s.autoPublish ? "✅" : "—"}</td>
-                    <td>{s.enabled ? "✅" : "🚫"}</td>
-                    <td className="flex gap-[var(--space-admin-2)]">
-                      <form action={doToggle}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <input type="hidden" name="enabled" value={(!s.enabled).toString()} />
-                        <button
-                          type="submit"
-                          className="admin-button-ghost text-[length:var(--text-admin-xs)]"
-                        >
-                          {s.enabled ? "Désactiver" : "Activer"}
-                        </button>
-                      </form>
-                      <Link
-                        href={`/fr/${adminPrefix}/content-gen/rss/${s.id}`}
-                        className="admin-button-ghost text-[length:var(--text-admin-xs)]"
-                      >
-                        Éditer
-                      </Link>
-                      <form action={doRemove}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <button
-                          type="submit"
-                          className="admin-button-ghost text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-destructive)]"
-                        >
-                          Retirer
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {sources.length === 0 ? (
+        <AdminEmptyState title="Aucune source RSS configurée." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={sources}
+          getRowId={(s) => s.id}
+          caption="Liste des sources RSS"
+          rowAction={(s) => (
+            <div className="flex gap-[var(--space-admin-2)]">
+              <form action={doToggle}>
+                <input type="hidden" name="id" value={s.id} />
+                <input type="hidden" name="enabled" value={(!s.enabled).toString()} />
+                <button
+                  type="submit"
+                  className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+                >
+                  {s.enabled ? "Désactiver" : "Activer"}
+                </button>
+              </form>
+              <Link
+                href={`/fr/${adminPrefix}/content-gen/rss/${s.id}`}
+                className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+              >
+                Éditer
+              </Link>
+              <form action={doRemove}>
+                <input type="hidden" name="id" value={s.id} />
+                <button
+                  type="submit"
+                  className="admin-button-ghost text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-destructive)]"
+                >
+                  Retirer
+                </button>
+              </form>
+            </div>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

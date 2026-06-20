@@ -1,8 +1,18 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
 //
 // Banned phrases V2 — AdminPageShell + AdminPageHeader + AdminCard.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>.
+// Les deux formes inline (toggle/suppression) par ligne → rowAction
+// (server actions préservées verbatim). Pas de badge (sévérité = texte brut).
 
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   createBannedPhrase,
   deleteBannedPhrase,
@@ -41,6 +51,13 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
     "use server";
     await deleteBannedPhrase(String(formData.get("id")));
   }
+
+  const columns: ReadonlyArray<AdminTableColumn<PhraseRow>> = [
+    { key: "pattern", header: "Pattern", cell: (r) => <code>{r.pattern}</code> },
+    { key: "severity", header: "Sévérité", cell: (r) => r.severity },
+    { key: "reason", header: "Raison", cell: (r) => r.reason ?? "—" },
+    { key: "isActive", header: "Actif", cell: (r) => (r.isActive ? "✅" : "🚫") },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -91,60 +108,33 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Pattern</th>
-                <th>Sévérité</th>
-                <th>Raison</th>
-                <th>Actif</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="admin-table-empty">
-                    Aucune phrase interdite — bonne nouvelle.
-                  </td>
-                </tr>
-              ) : (
-                rows.map((r) => (
-                  <tr key={r.id}>
-                    <td>
-                      <code>{r.pattern}</code>
-                    </td>
-                    <td>{r.severity}</td>
-                    <td>{r.reason ?? "—"}</td>
-                    <td>{r.isActive ? "✅" : "🚫"}</td>
-                    <td>
-                      <form action={toggle} className="inline">
-                        <input type="hidden" name="id" value={r.id} />
-                        <input
-                          type="hidden"
-                          name="isActive"
-                          value={r.isActive ? "false" : "true"}
-                        />
-                        <button type="submit" className="admin-button-ghost">
-                          {r.isActive ? "Désactiver" : "Activer"}
-                        </button>
-                      </form>{" "}
-                      <form action={remove} className="inline">
-                        <input type="hidden" name="id" value={r.id} />
-                        <button type="submit" className="admin-button-ghost">
-                          Supprimer
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {rows.length === 0 ? (
+        <AdminEmptyState title="Aucune phrase interdite — bonne nouvelle." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={rows}
+          getRowId={(r) => r.id}
+          caption="Liste des phrases interdites"
+          rowAction={(r) => (
+            <>
+              <form action={toggle} className="inline">
+                <input type="hidden" name="id" value={r.id} />
+                <input type="hidden" name="isActive" value={r.isActive ? "false" : "true"} />
+                <button type="submit" className="admin-button-ghost">
+                  {r.isActive ? "Désactiver" : "Activer"}
+                </button>
+              </form>{" "}
+              <form action={remove} className="inline">
+                <input type="hidden" name="id" value={r.id} />
+                <button type="submit" className="admin-button-ghost">
+                  Supprimer
+                </button>
+              </form>
+            </>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

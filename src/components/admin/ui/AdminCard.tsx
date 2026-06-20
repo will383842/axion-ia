@@ -21,11 +21,13 @@ interface AdminCardProps {
   className?: string;
 }
 
+// P2 respiration juin 2026 — informational/interactive 16→20px (token
+// --space-admin-card) ; compact reste à 12px (listes/tables inline denses).
 const PADDING_CLASS: Record<NonNullable<AdminCardProps["variant"]>, string> = {
   compact: "p-[var(--space-admin-5,12px)]",
-  informational: "p-[var(--space-admin-6,16px)]",
+  informational: "p-[var(--space-admin-card,20px)]",
   interactive:
-    "p-[var(--space-admin-6,16px)] transition-shadow hover:shadow-[var(--shadow-admin-3)]",
+    "p-[var(--space-admin-card,20px)] transition-shadow hover:shadow-[var(--shadow-admin-3)]",
 };
 
 const ELEVATION_CLASS: Record<NonNullable<AdminCardProps["elevation"]>, string> = {

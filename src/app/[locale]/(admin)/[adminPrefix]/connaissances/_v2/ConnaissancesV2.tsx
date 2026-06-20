@@ -1,13 +1,36 @@
 // Refonte admin mai 2026 — PR 9 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 9).
 //
 // Connaissances V2 (liste KB) — AdminPageShell + AdminPageHeader + AdminCard.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { KB_TYPES, getKbTypeMeta } from "@/content/knowledge/types";
 import { KB_DOMAINS } from "@/content/knowledge/domains";
 import { KB_AUDIENCES } from "@/content/knowledge/audiences";
 import { KB_STATUSES, getStatusLabel } from "@/content/knowledge/statuses";
+
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
+// non défini pour les statuts KB → badge neutre non coloré).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  approved: "success",
+  draft: "warning",
+  review: "warning",
+  scheduled: "warning",
+  archived: "neutral",
+  deprecated: "neutral",
+};
 
 interface EntryRow {
   id: string;
@@ -37,6 +60,32 @@ export function ConnaissancesV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<EntryRow>> = [
+    { key: "type", header: "Type", cell: (e) => getKbTypeMeta(e.type as never).labelFr },
+    {
+      key: "title",
+      header: "Titre (FR)",
+      cell: (e) => e.translations.find((t) => t.locale === "fr")?.title ?? "(sans titre)",
+    },
+    {
+      key: "slug",
+      header: "Slug",
+      cell: (e) => <code className="admin-meta-small">{e.slug}</code>,
+    },
+    { key: "domain", header: "Domaine", cell: (e) => e.domain },
+    { key: "audience", header: "Audience", cell: (e) => e.audience },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (e) => (
+        <AdminBadge tone={STATUS_TONE[e.status] ?? "neutral"}>
+          {getStatusLabel(e.status as never, "fr")}
+        </AdminBadge>
+      ),
+    },
+    { key: "updatedAt", header: "Maj", cell: (e) => e.updatedAt.toISOString().slice(0, 10) },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -144,62 +193,21 @@ export function ConnaissancesV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Titre (FR)</th>
-                <th>Slug</th>
-                <th>Domaine</th>
-                <th>Audience</th>
-                <th>Statut</th>
-                <th>Maj</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="admin-table-empty">
-                    Aucune entrée trouvée.
-                  </td>
-                </tr>
-              ) : (
-                items.map((e) => {
-                  const fr = e.translations.find((t) => t.locale === "fr");
-                  return (
-                    <tr key={e.id}>
-                      <td>{getKbTypeMeta(e.type as never).labelFr}</td>
-                      <td>{fr?.title ?? "(sans titre)"}</td>
-                      <td>
-                        <code className="admin-meta-small">{e.slug}</code>
-                      </td>
-                      <td>{e.domain}</td>
-                      <td>{e.audience}</td>
-                      <td>
-                        <span className={`admin-badge admin-badge-${e.status}`}>
-                          {getStatusLabel(e.status as never, "fr")}
-                        </span>
-                      </td>
-                      <td>{e.updatedAt.toISOString().slice(0, 10)}</td>
-                      <td>
-                        <Link
-                          href={`/fr/${adminPrefix}/connaissances/${e.id}`}
-                          className="admin-link"
-                        >
-                          Éditer →
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucune entrée trouvée." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(e) => e.id}
+          caption="Liste des entrées de la base de connaissances"
+          rowAction={(e) => (
+            <Link href={`/fr/${adminPrefix}/connaissances/${e.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

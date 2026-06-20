@@ -3,9 +3,20 @@
 // Jobs list V2 — utilise AdminPageShell + AdminPageHeader + AdminCard.
 // Filtres status + type + template + secteur + ville + search préservés.
 // SP-04 P1 — prev/next pagination buttons.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badge statut → <AdminBadge>. Filtres / pagination / KPIs / server actions
+// inchangés.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
 import { listTemplates } from "@/server/actions/content-gen/templates";
 import {
@@ -40,6 +51,21 @@ const TYPES: ReadonlyArray<ContentType> = [
   "qa_derived",
   "faq_standalone",
 ];
+
+// Track 2 : tonalité du badge dérivée du statut job (labels inchangés).
+// Record<string, …> volontaire (pas exhaustif sur l'enum) : le `?? "neutral"`
+// au point d'usage couvre les statuts non listés (generating_*, running_qa,
+// approved, …) → tonalité neutre par défaut.
+const STATUS_TONE: Record<string, "success" | "warning" | "destructive" | "neutral"> = {
+  queued: "warning",
+  running: "warning",
+  quality_improving: "warning",
+  needs_review: "warning",
+  publishing: "warning",
+  published: "success",
+  failed: "destructive",
+  cancelled: "neutral",
+};
 
 interface Props {
   adminPrefix: string;
@@ -83,6 +109,59 @@ export async function JobsListV2({
     "use server";
     await retryAllFailed();
   }
+
+  type JobRow = (typeof result.rows)[number];
+
+  const columns: ReadonlyArray<AdminTableColumn<JobRow>> = [
+    {
+      key: "date",
+      header: "Date",
+      cell: (r) => (
+        <Link href={`${base}/${r.id}`} className="admin-link">
+          {r.createdAt.toISOString().slice(0, 16)}
+        </Link>
+      ),
+    },
+    { key: "type", header: "Type", cell: (r) => r.contentType },
+    {
+      key: "secteur",
+      header: "Secteur",
+      cell: (r) =>
+        r.serviceSector ? (
+          <span className="admin-meta-small">{SERVICE_SECTOR_LABELS[r.serviceSector]}</span>
+        ) : (
+          <span className="admin-meta">—</span>
+        ),
+    },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (r) => (
+        <AdminBadge tone={STATUS_TONE[r.status] ?? "neutral"}>{r.status}</AdminBadge>
+      ),
+    },
+    { key: "ville", header: "Ville", cell: (r) => r.anchorVilleSlug ?? "—" },
+    { key: "score", header: "Score", cell: (r) => r.qualityScore ?? "—" },
+    {
+      key: "cost",
+      header: "Coût",
+      cell: (r) => (r.costUsd ? `$${Number(r.costUsd).toFixed(4)}` : "—"),
+    },
+    {
+      key: "duration",
+      header: "Durée",
+      cell: (r) => (r.durationMs ? `${(r.durationMs / 1000).toFixed(1)} s` : "—"),
+    },
+    {
+      key: "error",
+      header: "Erreur",
+      cell: (r) => (
+        <span title={r.errorMessage ?? ""}>
+          {r.errorMessage ? r.errorMessage.slice(0, 40) : "—"}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -208,60 +287,16 @@ export async function JobsListV2({
       </AdminCard>
 
       <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Secteur</th>
-                <th>Statut</th>
-                <th>Ville</th>
-                <th>Score</th>
-                <th>Coût</th>
-                <th>Durée</th>
-                <th>Erreur</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.rows.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="admin-table-empty">
-                    Aucun job — lancez une génération depuis le dashboard.
-                  </td>
-                </tr>
-              ) : (
-                result.rows.map((r) => (
-                  <tr key={r.id}>
-                    <td>
-                      <Link href={`${base}/${r.id}`} className="admin-link">
-                        {r.createdAt.toISOString().slice(0, 16)}
-                      </Link>
-                    </td>
-                    <td>{r.contentType}</td>
-                    <td>
-                      {r.serviceSector ? (
-                        <span className="admin-meta-small">
-                          {SERVICE_SECTOR_LABELS[r.serviceSector]}
-                        </span>
-                      ) : (
-                        <span className="admin-meta">—</span>
-                      )}
-                    </td>
-                    <td>{r.status}</td>
-                    <td>{r.anchorVilleSlug ?? "—"}</td>
-                    <td>{r.qualityScore ?? "—"}</td>
-                    <td>{r.costUsd ? `$${Number(r.costUsd).toFixed(4)}` : "—"}</td>
-                    <td>{r.durationMs ? `${(r.durationMs / 1000).toFixed(1)} s` : "—"}</td>
-                    <td title={r.errorMessage ?? ""}>
-                      {r.errorMessage ? r.errorMessage.slice(0, 40) : "—"}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        {result.rows.length === 0 ? (
+          <AdminEmptyState title="Aucun job — lancez une génération depuis le dashboard." />
+        ) : (
+          <AdminTable
+            columns={columns}
+            rows={result.rows}
+            getRowId={(r) => r.id}
+            caption="Liste des jobs content-gen"
+          />
+        )}
 
         {/* Pagination P1 */}
         {result.totalPages > 1 && (

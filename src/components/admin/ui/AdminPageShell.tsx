@@ -18,7 +18,11 @@ interface AdminPageShellProps {
   children: React.ReactNode;
   /**
    * Largeur du contenu :
-   * - "full" (default) : max-width 1280px (cohérent .admin-main historique).
+   * - "full" (default) : max-width 1440px (refonte largeur juin 2026 — était
+   *   1280px, mais le cap réel était 960px car le <main> portait `.admin-main`
+   *   (globals.css max-width:960px). Cap levé côté layout V2 ; le shell
+   *   redevient la SSOT de largeur. 1440px = densité dashboard 2026 sans
+   *   lignes de tableau trop longues).
    * - "narrow" : max-width 720px (formulaires longs, settings).
    * - "wide" : sans contrainte (tables très denses, content-gen jobs).
    */
@@ -27,7 +31,7 @@ interface AdminPageShellProps {
 }
 
 const WIDTH_CLASS: Record<NonNullable<AdminPageShellProps["width"]>, string> = {
-  full: "max-w-[1280px]",
+  full: "max-w-[1440px]",
   narrow: "max-w-[720px]",
   wide: "max-w-none",
 };

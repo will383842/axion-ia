@@ -3,7 +3,14 @@
 // Queue BullMQ V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
 
 interface Props {
@@ -58,48 +65,43 @@ export async function QueueV2({ adminPrefix }: Props): Promise<React.ReactElemen
   );
 }
 
+interface JobRow {
+  id: string;
+  contentType: string;
+  anchorVilleSlug: string | null;
+  errorMessage: string | null;
+  createdAt: Date;
+}
+
 function JobMini({
   rows,
   adminPrefix,
 }: {
-  rows: ReadonlyArray<{
-    id: string;
-    contentType: string;
-    anchorVilleSlug: string | null;
-    errorMessage: string | null;
-    createdAt: Date;
-  }>;
+  rows: ReadonlyArray<JobRow>;
   adminPrefix: string;
 }) {
-  if (rows.length === 0) return <p className="admin-meta-block">Aucun job dans cet état.</p>;
+  if (rows.length === 0) return <AdminEmptyState title="Aucun job dans cet état." />;
+  const columns: ReadonlyArray<AdminTableColumn<JobRow>> = [
+    { key: "type", header: "Type", cell: (r) => r.contentType },
+    { key: "ville", header: "Ville", cell: (r) => r.anchorVilleSlug ?? "—" },
+    { key: "date", header: "Date", cell: (r) => r.createdAt.toISOString().slice(0, 16) },
+    {
+      key: "error",
+      header: "Erreur",
+      cell: (r) => (r.errorMessage ? r.errorMessage.slice(0, 60) : "—"),
+    },
+  ];
   return (
-    <div className="admin-table-wrapper">
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Type</th>
-            <th>Ville</th>
-            <th>Date</th>
-            <th>Erreur</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.slice(0, 20).map((r) => (
-            <tr key={r.id}>
-              <td>
-                <Link href={`/fr/${adminPrefix}/content-gen/jobs/${r.id}`} className="admin-link">
-                  <code>{r.id.slice(0, 10)}…</code>
-                </Link>
-              </td>
-              <td>{r.contentType}</td>
-              <td>{r.anchorVilleSlug ?? "—"}</td>
-              <td>{r.createdAt.toISOString().slice(0, 16)}</td>
-              <td>{r.errorMessage ? r.errorMessage.slice(0, 60) : "—"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <AdminTable
+      columns={columns}
+      rows={rows.slice(0, 20)}
+      getRowId={(r) => r.id}
+      caption="Liste des jobs de la file"
+      rowAction={(r) => (
+        <Link href={`/fr/${adminPrefix}/content-gen/jobs/${r.id}`} className="admin-link">
+          <code>{r.id.slice(0, 10)}…</code>
+        </Link>
+      )}
+    />
   );
 }

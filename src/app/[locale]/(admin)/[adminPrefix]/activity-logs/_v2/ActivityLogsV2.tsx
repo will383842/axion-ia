@@ -3,7 +3,14 @@
 // Activity logs V2 — AdminPageShell + AdminPageHeader + AdminCard. Read-only.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 interface LogRow {
   id: string;
@@ -48,6 +55,63 @@ export function ActivityLogsV2({
   users,
   stats,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<LogRow>> = [
+    {
+      key: "date",
+      header: "Date",
+      cell: (l) => (
+        <>
+          <div>{l.createdAt.toISOString().slice(0, 10)}</div>
+          <div className="admin-meta-small">{l.createdAt.toISOString().slice(11, 19)}</div>
+        </>
+      ),
+    },
+    {
+      key: "user",
+      header: "Utilisateur",
+      cell: (l) =>
+        l.adminUser ? (
+          <>
+            <div>{l.adminUser.name}</div>
+            <div className="admin-meta-small">{l.adminUser.email}</div>
+          </>
+        ) : (
+          <span className="admin-meta-small">—</span>
+        ),
+    },
+    {
+      key: "action",
+      header: "Action",
+      cell: (l) => <code className="admin-meta-small">{l.action}</code>,
+    },
+    { key: "targetType", header: "Type cible", cell: (l) => l.targetType ?? "—" },
+    {
+      key: "targetId",
+      header: "Target ID",
+      cell: (l) =>
+        l.targetId ? (
+          <code className="admin-meta-small">{l.targetId.slice(0, 8)}…</code>
+        ) : (
+          "—"
+        ),
+    },
+    {
+      key: "ip",
+      header: "IP",
+      cell: (l) => <span className="admin-meta-small">{l.ipAddress ?? "—"}</span>,
+    },
+    {
+      key: "changes",
+      header: "Changements",
+      cell: (l) =>
+        l.changes ? (
+          <pre className="admin-json admin-json-cell">{JSON.stringify(l.changes, null, 2)}</pre>
+        ) : (
+          "—"
+        ),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -179,74 +243,16 @@ export function ActivityLogsV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Utilisateur</th>
-                <th>Action</th>
-                <th>Type cible</th>
-                <th>Target ID</th>
-                <th>IP</th>
-                <th>Changements</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucune entrée trouvée.
-                  </td>
-                </tr>
-              ) : (
-                items.map((l) => (
-                  <tr key={l.id}>
-                    <td>
-                      <div>{l.createdAt.toISOString().slice(0, 10)}</div>
-                      <div className="admin-meta-small">
-                        {l.createdAt.toISOString().slice(11, 19)}
-                      </div>
-                    </td>
-                    <td>
-                      {l.adminUser ? (
-                        <>
-                          <div>{l.adminUser.name}</div>
-                          <div className="admin-meta-small">{l.adminUser.email}</div>
-                        </>
-                      ) : (
-                        <span className="admin-meta-small">—</span>
-                      )}
-                    </td>
-                    <td>
-                      <code className="admin-meta-small">{l.action}</code>
-                    </td>
-                    <td>{l.targetType ?? "—"}</td>
-                    <td>
-                      {l.targetId ? (
-                        <code className="admin-meta-small">{l.targetId.slice(0, 8)}…</code>
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                    <td className="admin-meta-small">{l.ipAddress ?? "—"}</td>
-                    <td>
-                      {l.changes ? (
-                        <pre className="admin-json admin-json-cell">
-                          {JSON.stringify(l.changes, null, 2)}
-                        </pre>
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucune entrée trouvée." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(l) => l.id}
+          caption="Journal d'audit"
+        />
+      )}
     </AdminPageShell>
   );
 }

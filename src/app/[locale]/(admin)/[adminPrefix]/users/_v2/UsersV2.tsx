@@ -1,9 +1,20 @@
 // Refonte admin mai 2026 — PR 11 (ADR 0028 IMPLEMENTATION-PLAN.md).
 //
 // Users V2 — AdminPageShell + AdminPageHeader + AdminCard.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const ROLE_LABELS: Record<string, string> = {
   super_admin: "Super Admin",
@@ -14,6 +25,18 @@ const ROLE_LABELS: Record<string, string> = {
 const STATUS_LABELS: Record<string, string> = {
   active: "Actif",
   suspended: "Suspendu",
+};
+// Track 2 : tonalité des badges dérivée des enums (avant : `.admin-badge-${role}`
+// / `.admin-badge-${status}` non définis → badge neutre non coloré).
+const ROLE_TONE: Record<string, "info" | "neutral"> = {
+  super_admin: "info",
+  admin: "info",
+  editor: "neutral",
+  reader: "neutral",
+};
+const STATUS_TONE: Record<string, "success" | "neutral"> = {
+  active: "success",
+  suspended: "neutral",
 };
 
 interface UserRow {
@@ -45,6 +68,35 @@ export function UsersV2({
   totalPages,
   isSuperAdmin,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<UserRow>> = [
+    { key: "name", header: "Nom", cell: (u) => u.name },
+    { key: "email", header: "Email", cell: (u) => u.email },
+    {
+      key: "role",
+      header: "Rôle",
+      cell: (u) => (
+        <AdminBadge tone={ROLE_TONE[u.role] ?? "neutral"}>
+          {ROLE_LABELS[u.role] ?? u.role}
+        </AdminBadge>
+      ),
+    },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (u) => (
+        <AdminBadge tone={STATUS_TONE[u.status] ?? "neutral"}>
+          {STATUS_LABELS[u.status] ?? u.status}
+        </AdminBadge>
+      ),
+    },
+    { key: "twoFactor", header: "2FA", cell: (u) => (u.twoFactorEnabled ? "✓" : "✗") },
+    {
+      key: "lastLogin",
+      header: "Dernier login",
+      cell: (u) => (u.lastLoginAt ? u.lastLoginAt.toISOString().slice(0, 10) : "—"),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -132,56 +184,21 @@ export function UsersV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Rôle</th>
-                <th>Statut</th>
-                <th>2FA</th>
-                <th>Dernier login</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucun utilisateur trouvé.
-                  </td>
-                </tr>
-              ) : (
-                items.map((u) => (
-                  <tr key={u.id}>
-                    <td>{u.name}</td>
-                    <td>{u.email}</td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${u.role}`}>
-                        {ROLE_LABELS[u.role] ?? u.role}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${u.status}`}>
-                        {STATUS_LABELS[u.status] ?? u.status}
-                      </span>
-                    </td>
-                    <td>{u.twoFactorEnabled ? "✓" : "✗"}</td>
-                    <td>{u.lastLoginAt ? u.lastLoginAt.toISOString().slice(0, 10) : "—"}</td>
-                    <td>
-                      <Link href={`/fr/${adminPrefix}/users/${u.id}`} className="admin-link">
-                        Détail →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucun utilisateur trouvé." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(u) => u.id}
+          caption="Liste des utilisateurs admin"
+          rowAction={(u) => (
+            <Link href={`/fr/${adminPrefix}/users/${u.id}`} className="admin-link">
+              Détail →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

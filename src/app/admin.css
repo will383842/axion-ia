@@ -69,12 +69,17 @@
     --space-admin-7: 24px;
     --space-admin-8: 32px;
     --space-admin-9: 48px;
+    /* Padding intérieur des cartes (P2 respiration juin 2026) — palier 20px
+       intermédiaire entre 16 et 24 : assez d'air pour ne plus paraître
+       « tassé » sans casser la densité. Consommé par AdminCard. */
+    --space-admin-card: 20px;
 
-    /* ----- Typography (11-14 dominants vs public 14-18) ----- */
+    /* ----- Typography (P2 respiration juin 2026 : base 14→15px — le corps des
+       tables/descriptions respire d'un cran ; reste sous le public 16-18). ----- */
     --text-admin-xs: 11px;
     --text-admin-sm: 12px;
     --text-admin-md: 13px;
-    --text-admin-base: 14px;
+    --text-admin-base: 15px;
     --text-admin-lg: 16px;
     --text-admin-xl: 20px;
     --text-admin-2xl: 24px;
@@ -82,17 +87,26 @@
     --lh-admin-body: 1.5;
     --lh-admin-loose: 1.65;
 
-    /* ----- Border radius (4-12 max vs public 12-16) ----- */
+    /* ----- Border radius — modernisé juin 2026 (P1 audit design console)
+     * Était 4/6/8/12. Cartes/boutons/tables/inputs consomment surtout `md`
+     * (6→10) et `lg` (8→12) : à 6px le rendu tombait en « Bootstrap 2016 »
+     * (trop carré). 10-12px = standard dashboard 2026 (Linear/Vercel/Stripe,
+     * réfs citées en tête de ce fichier). `sm` (4px) conservé pour les micro-
+     * éléments (chips, focus rings). Toujours < public (16-28px). ----- */
     --radius-admin-sm: 4px;
-    --radius-admin-md: 6px;
-    --radius-admin-lg: 8px;
-    --radius-admin-xl: 12px;
+    --radius-admin-md: 10px;
+    --radius-admin-lg: 12px;
+    --radius-admin-xl: 16px;
 
-    /* ----- Shadows (elevation 1-4, subtles, pas de gros shadow) ----- */
-    --shadow-admin-1: 0 1px 0 rgb(0 0 0 / 0.04);
-    --shadow-admin-2: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
-    --shadow-admin-3: 0 4px 10px rgb(0 0 0 / 0.06), 0 2px 4px rgb(0 0 0 / 0.04);
-    --shadow-admin-4: 0 12px 24px rgb(0 0 0 / 0.1), 0 4px 8px rgb(0 0 0 / 0.06);
+    /* ----- Shadows — adoucies juin 2026 (P1 audit design console)
+     * Étaient quasi plates (`1` = 0 1px 0) → cartes « collées » au fond,
+     * effet daté. Nouvelles ombres : douces + diffuses, échelle d'élévation
+     * monotone (1<2<3<4) pour que les états hover (cards interactives → `3`,
+     * stat cards → `2`) restent lisibles. ----- */
+    --shadow-admin-1: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.06);
+    --shadow-admin-2: 0 2px 6px rgb(0 0 0 / 0.05), 0 8px 18px rgb(0 0 0 / 0.07);
+    --shadow-admin-3: 0 6px 16px rgb(0 0 0 / 0.08), 0 3px 6px rgb(0 0 0 / 0.05);
+    --shadow-admin-4: 0 16px 32px rgb(0 0 0 / 0.12), 0 6px 12px rgb(0 0 0 / 0.07);
 
     /* ----- Z-index ----- */
     --z-admin-base: 0;
@@ -234,6 +248,43 @@
 }
 
 /* =============================================================
+ * Refonte largeur juin 2026 (P0 audit design console 2026-06-20).
+ *
+ * PROBLÈME : le <main> du shell V2 (layout.tsx) porte `.admin-main`, défini
+ * dans globals.css avec `max-width: 960px` + `padding: 32px 24px`. Ce cap
+ * 960px écrasait silencieusement le `max-w-[1440px]` d'AdminPageShell → tout
+ * le contenu admin était bridé à 960px centrés, d'où d'énormes marges vides
+ * sur grand écran (« pas assez de largeur »).
+ *
+ * FIX cloisonné `.admin-layout-v2` (le login V1 `.admin-layout` garde son
+ * cadrage 960px centré, voulu pour un formulaire étroit) :
+ *  1. On lève le cap : le shell redevient la SSOT de largeur.
+ *  2. On annule le padding legacy du <main> UNIQUEMENT quand la page passe
+ *     par AdminPageShell (`:has(.admin-page-shell)`, ~95 % des pages) — le
+ *     shell porte déjà gouttières + largeur, sinon on doublait le padding.
+ *     Les rares pages SANS shell (ex. /coaching) conservent le padding du
+ *     <main> et ne se collent donc pas au rail.
+ *
+ * ⚠️ Règle NON-LAYERED volontairement : `.admin-main` est défini dans
+ * globals.css SANS @layer. En cascade CSS, une règle non-layered l'emporte
+ * sur toute règle layered indépendamment de la spécificité — un override
+ * placé dans `@layer admin-fixes` serait donc inopérant ici. On reste donc
+ * hors layer (même choix que le bloc font-family ci-dessus), la spécificité
+ * `.admin-layout-v2 .admin-main` (0,2,0) > `.admin-main` (0,1,0) tranche.
+ * =============================================================*/
+.admin-layout-v2 .admin-main {
+  max-width: none;
+}
+.admin-layout-v2 .admin-main:has(.admin-page-shell) {
+  padding: 0;
+}
+
+/* L'ancien bloc override P3 « surfaces legacy » a été supprimé : les rayons
+   modernes (10-12px) + l'ombre douce sont désormais bakés DIRECTEMENT dans les
+   règles `.admin-card / .admin-input / .admin-button / .admin-alert / …`
+   relocalisées plus bas dans ce fichier (plus besoin d'override cross-fichier). */
+
+/* =============================================================
  * Reduced motion strict (audit A5 critère 8 — déjà conforme globals.css
  * mais on étend explicitement aux composants admin v2).
  * =============================================================*/
@@ -282,4 +333,1280 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+}
+
+/* =============================================================
+ * Classes utilitaires `.admin-*` — RELOCALISÉES depuis globals.css
+ * (Étape 1 unification design console, juin 2026, audit 2026-06-20).
+ *
+ * Ces ~1250 lignes étaient à l'origine dans globals.css (« Pages temporaires
+ * V1 minimal », cf. ancien commentaire). Elles sont déplacées ici VERBATIM
+ * (cloisonnement admin, ADR 0028 — globals.css ne contient plus aucun
+ * `.admin-*`). Désormais TOUT le style admin vit dans ce seul fichier
+ * (tokens + classes utilitaires) + la lib de composants src/components/admin/ui
+ * qui consomme les mêmes tokens → un seul système.
+ *
+ * NON-LAYERED (comme dans globals.css à l'origine) : priorité forte volontaire.
+ * Référencent des tokens publics (--color-bg, --font-manrope, …) résolus
+ * globalement via globals.css @theme — pattern déjà utilisé plus haut.
+ *
+ * Modernisation appliquée (ex-override P0/P3, désormais baké à la source) :
+ *  - rayons cartes/inputs/boutons/alertes 6-8px → 10-12px (tokens admin)
+ *  - .admin-card : ombre douce --shadow-admin-1
+ *  - .admin-layout : font-family retirée (Inter géré plus haut, sinon Manrope
+ *    réapparaîtrait par ordre source)
+ *  - largeur .admin-main : voir override P0 conservé plus haut
+ * =============================================================*/
+/* =============================================================
+ * Sprint 15 step 5 / M9 V1 — Admin pages classes
+ * Pages temporaires V1 minimal. M9 livrera des composants stylises plus
+ * complets (sidebar, topbar, breadcrumbs, etc.) — ces classes seront
+ * remplacees a ce moment-la.
+ * Tokens : --color-bg, --color-paper, --color-fg, --color-fg-muted,
+ *          --color-primary, --color-border, --color-sand-deep.
+ * ============================================================= */
+
+.admin-layout {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  /* font-family retirée à la relocalisation : Inter est imposé plus haut
+     (`.admin-layout-v2, .admin-layout`). Sinon Manrope réapparaîtrait ici
+     par ordre source (régression police admin). */
+  color: var(--color-fg);
+}
+.admin-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-paper);
+}
+.admin-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-brand {
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.admin-tagline {
+  font-size: 12px;
+  color: var(--color-fg-muted);
+}
+.admin-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.admin-h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.admin-h1-large {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.admin-h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+.admin-h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.admin-form-block {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-admin-md); /* 6 → 10px */
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: var(--color-bg);
+}
+.admin-lede {
+  font-size: 14px;
+  color: var(--color-fg-muted);
+  margin: 0 0 24px;
+}
+.admin-meta {
+  font-size: 14px;
+  color: var(--color-fg-muted);
+  margin: 0;
+}
+.admin-meta-block {
+  font-size: 13px;
+  color: var(--color-fg-muted);
+  margin: 0 0 16px;
+}
+.admin-meta-block:last-child {
+  margin-bottom: 0;
+}
+.admin-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.admin-login-section {
+  max-width: 420px;
+  margin: 48px auto;
+}
+.admin-2fa-section {
+  max-width: 560px;
+  margin: 32px auto;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.admin-field {
+  display: block;
+}
+.admin-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.admin-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-admin-md); /* 6 → 10px */
+  font-size: 14px;
+  background-color: var(--color-paper);
+  color: var(--color-fg);
+}
+.admin-input-totp {
+  letter-spacing: 0.2em;
+  font-family: var(--font-inconsolata, monospace);
+}
+.admin-input-totp-large {
+  font-size: 16px;
+  letter-spacing: 0.4em;
+  font-family: var(--font-inconsolata, monospace);
+  text-align: center;
+}
+.admin-button {
+  width: 100%;
+  padding: 12px 24px;
+  background-color: var(--color-primary);
+  color: var(--color-primary-fg);
+  border: none;
+  border-radius: var(--radius-admin-md); /* 6 → 10px */
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0;
+}
+.admin-button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+.admin-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.admin-button-ghost {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-admin-md); /* 6 → 10px */
+  background-color: var(--color-paper);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.admin-alert {
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-admin-md); /* 6 → 10px */
+}
+.admin-alert-error {
+  color: var(--color-accent-red);
+  background-color: var(--color-terracotta-soft);
+  border: 1px solid var(--color-accent-red);
+}
+.admin-alert-success {
+  color: var(--color-sage);
+  background-color: var(--color-sage-soft);
+  border: 1px solid var(--color-sage);
+}
+
+.admin-dashboard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.admin-card {
+  padding: 24px;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-admin-lg); /* 8 → 12px (modernisation, ex-override P3 bakée) */
+  box-shadow: var(--shadow-admin-1); /* élévation douce (était plat) */
+}
+.admin-card-label {
+  font-size: 12px;
+  color: var(--color-fg-muted);
+  margin: 0;
+  text-transform: uppercase;
+}
+.admin-kpi-value {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 8px 0 0;
+}
+.admin-kpi-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+.admin-kpi-link:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-terracotta);
+}
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 64px);
+}
+.admin-shell-noaside {
+  grid-template-columns: 1fr;
+}
+.admin-sidebar {
+  border-right: 1px solid var(--color-border);
+  background-color: var(--color-paper);
+  padding: 16px 8px;
+  overflow-y: auto;
+}
+.admin-nav-group {
+  margin-bottom: 18px;
+}
+.admin-nav-group-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-fg-muted);
+  margin: 0 8px 6px;
+  font-weight: 600;
+}
+.admin-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: inherit;
+  text-decoration: none;
+}
+.admin-nav-link:hover {
+  background-color: var(--color-bg);
+}
+.admin-nav-icon {
+  font-size: 15px;
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+}
+/* =============================================================
+ * Sidebar content-gen — accordéon par pôle + toggle Simple/Avancé
+ * (refonte UX content-gen 2026-06-16 — DECISION-IA.md §4).
+ * S'appuie sur les mêmes tokens que la sidebar plate ci-dessus.
+ * =============================================================*/
+.admin-nav-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 8px 6px;
+}
+.admin-nav-group-head .admin-nav-group-label {
+  margin: 0;
+}
+.admin-nav-mode-toggle {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 8px;
+  min-height: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-paper);
+  color: var(--color-fg-muted);
+  cursor: pointer;
+}
+.admin-nav-mode-toggle[aria-pressed="true"] {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.admin-nav-mode-toggle:hover {
+  background-color: var(--color-bg);
+}
+.admin-nav-pole {
+  margin-bottom: 2px;
+}
+.admin-nav-pole-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px 10px;
+  min-height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--color-fg-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  border-radius: 6px;
+  text-align: left;
+}
+.admin-nav-pole-toggle:hover {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
+.admin-nav-pole-chevron {
+  font-size: 9px;
+  width: 10px;
+  display: inline-block;
+}
+.admin-nav-pole .admin-nav-list {
+  margin-left: 6px;
+}
+.admin-input-with-toggle {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.admin-input-with-toggle .admin-input {
+  flex: 1;
+  padding-right: 88px;
+}
+.admin-input-toggle {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--color-fg-muted);
+  border-radius: 4px;
+}
+.admin-input-toggle:hover {
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+}
+.admin-status-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.admin-status-ok {
+  color: var(--color-success);
+}
+.admin-status-degraded,
+.admin-status-down {
+  color: var(--color-warning);
+}
+.admin-status-down {
+  color: var(--color-error);
+}
+.admin-status-not-configured,
+.admin-status-unknown {
+  color: var(--color-fg-muted);
+}
+.admin-severity-critical {
+  color: var(--color-error);
+}
+.admin-severity-warning {
+  color: var(--color-warning);
+}
+.admin-severity-info {
+  color: var(--color-fg-muted);
+}
+.admin-alert-badge {
+  display: inline-block;
+  background-color: var(--color-error);
+  color: var(--color-bg);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+}
+.admin-infra-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+.admin-infra-card:hover {
+  border-color: var(--color-fg);
+}
+.admin-infra-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.admin-2fa-secret-card {
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.admin-2fa-code {
+  display: block;
+  padding: 12px;
+  background-color: var(--color-bg);
+  font-family: var(--font-inconsolata, monospace);
+  font-size: 13px;
+  word-break: break-all;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  margin: 8px 0 0;
+}
+.admin-2fa-uri-hint {
+  font-size: 11px;
+  color: var(--color-fg-muted);
+  margin: 8px 0 0;
+}
+.admin-2fa-uri {
+  word-break: break-all;
+}
+
+/* Admin tableau + filtres + detail (M9 Tier 1 section 1 — Soumissions) */
+
+.admin-back {
+  display: inline-block;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.admin-meta-small {
+  font-size: 12px;
+  color: var(--color-fg-muted);
+}
+
+.admin-filters {
+  margin-bottom: 24px;
+}
+.admin-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.admin-filters-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-table-wrapper {
+  padding: 0;
+  overflow-x: auto;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.admin-table th {
+  background-color: var(--color-bg);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+}
+.admin-table tbody tr:hover {
+  background-color: var(--color-sand-soft, var(--color-bg));
+}
+.admin-table-empty {
+  text-align: center;
+  padding: 32px;
+  color: var(--color-fg-muted);
+}
+
+.admin-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.admin-badge-new {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.admin-badge-in_progress {
+  background-color: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.admin-badge-processed {
+  background-color: var(--color-sage-soft);
+  color: var(--color-sage);
+}
+.admin-badge-archived {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-badge-pending {
+  background-color: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.admin-badge-confirmed,
+.admin-badge-validated {
+  background-color: var(--color-sage-soft);
+  color: var(--color-sage);
+}
+.admin-badge-prereserved {
+  background-color: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+}
+.admin-badge-reserved {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.admin-badge-available {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-badge-blocked {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-badge-cancelled,
+.admin-badge-refused,
+.admin-badge-expired {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+.admin-pagination-info {
+  font-size: 13px;
+  color: var(--color-fg-muted);
+}
+
+.admin-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.admin-card-wide {
+  grid-column: 1 / -1;
+}
+.admin-dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  font-size: 13px;
+}
+.admin-dt {
+  font-weight: 600;
+  color: var(--color-fg-muted);
+  margin: 0;
+}
+.admin-dd {
+  margin: 0;
+}
+.admin-json {
+  background-color: var(--color-bg);
+  padding: 12px;
+  border-radius: 4px;
+  font-family: var(--font-inconsolata, monospace);
+  font-size: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid var(--color-border);
+}
+.admin-textarea {
+  resize: vertical;
+  min-height: 80px;
+  border-radius: var(--radius-admin-md); /* 10px — cohérence inputs (était hérité de .admin-input) */
+  font-family: var(--font-manrope, system-ui);
+}
+
+/* M9 T1.2 — Options admin urgency + boutons */
+.admin-button-active {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.admin-urgency-critical {
+  background-color: var(--color-terracotta-soft);
+}
+.admin-urgency-high {
+  background-color: var(--color-terracotta-soft);
+}
+.admin-urgency-medium td:first-child::before {
+  content: "⚠ ";
+  color: var(--color-terracotta);
+}
+.admin-button-validate {
+  background-color: var(--color-sage);
+}
+.admin-button-validate:hover:not(:disabled) {
+  background-color: var(--color-sage);
+  filter: brightness(0.92);
+}
+.admin-button-refuse {
+  background-color: var(--color-accent-red);
+}
+.admin-button-refuse:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+.admin-form-refuse {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 8px;
+}
+
+/* M9 T1.3 — Calendrier admin grid */
+.admin-calendar-grid-wrapper {
+  padding: 16px;
+}
+.admin-calendar-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.admin-calendar-header {
+  padding: 8px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+}
+.admin-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.admin-calendar-cell {
+  min-height: 90px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-paper);
+  font-size: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-calendar-cell-empty {
+  border: 1px dashed var(--color-border);
+  background-color: var(--color-bg);
+}
+.admin-calendar-cell-date {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.admin-calendar-cell-today {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+.admin-calendar-cell-available {
+  background-color: var(--color-paper);
+}
+.admin-calendar-cell-reserved {
+  background-color: var(--color-sage-soft);
+}
+/* Pré-réservation publique (option_pending → awaiting_admin_validation) :
+   ambre = action admin attendue (valider). Validé = confirmé (verrouillé). */
+.admin-calendar-cell-prereserved {
+  background-color: var(--color-terracotta-soft);
+}
+.admin-calendar-cell-validated {
+  background-color: var(--color-sage-soft);
+}
+/* Journée cliquable (a des demandes) → ouvre /reservations?date= */
+.admin-calendar-cell-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+.admin-calendar-cell-link:hover {
+  box-shadow: 0 0 0 2px var(--color-terracotta);
+  transform: translateY(-1px);
+}
+/* Compteurs demandes/validées : badges côte à côte qui peuvent passer à la ligne */
+.admin-calendar-cell-counts {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.admin-calendar-cell-blocked {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+}
+.admin-calendar-cell-status {
+  display: flex;
+}
+.admin-calendar-cell-meta {
+  font-size: 11px;
+  color: var(--color-fg-muted);
+}
+.admin-calendar-panel {
+  margin-top: 16px;
+}
+
+/* M9 T2.1 — FAQ admin form rows */
+.admin-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* M9 T2.3 — Categories details */
+.admin-details {
+  margin: 16px 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-admin-lg); /* 8 → 12px */
+}
+.admin-details-summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-fg);
+  user-select: none;
+}
+.admin-details[open] .admin-details-summary {
+  border-bottom: 1px solid var(--color-border);
+}
+.admin-details > .admin-form-row {
+  padding: 16px;
+}
+
+/* M9 T2.4 — Tiptap editor + Blog tabs */
+.tiptap-wrapper {
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  background-color: var(--color-paper);
+}
+.tiptap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  border-radius: 6px 6px 0 0;
+}
+.tiptap-toolbar button {
+  padding: 4px 10px;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font-manrope, system-ui);
+}
+.tiptap-toolbar button:hover:not(:disabled) {
+  background-color: var(--color-sand);
+}
+.tiptap-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.tiptap-toolbar .tiptap-btn-active {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.tiptap-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-border);
+  margin: 0 4px;
+}
+.tiptap-editor {
+  padding: 12px 16px;
+  min-height: 240px;
+}
+.tiptap-content {
+  outline: none;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.tiptap-content h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+}
+.tiptap-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+}
+.tiptap-content p {
+  margin: 8px 0;
+}
+.tiptap-content ul,
+.tiptap-content ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+.tiptap-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 16px;
+  margin: 12px 0;
+  color: var(--color-fg-muted);
+  font-style: italic;
+}
+.tiptap-content code {
+  background-color: var(--color-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--font-inconsolata, monospace);
+  font-size: 12px;
+}
+.tiptap-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 24px 0;
+}
+
+/* Blog form: tags + tabs */
+.admin-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg);
+}
+.admin-tag-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.admin-tag-checkbox:hover {
+  border-color: var(--color-primary);
+}
+.admin-tag-checkbox input {
+  margin: 0;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border);
+  margin: 16px 0 0;
+}
+.admin-tab {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-fg-muted);
+  font-family: var(--font-manrope, system-ui);
+}
+.admin-tab-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+.admin-tab-content {
+  padding: 16px 0;
+}
+.admin-tab-content-hidden {
+  display: none;
+}
+
+.admin-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 10px 0;
+}
+
+/* M9 T2.5 — Mono input pour JSON */
+.admin-mono {
+  font-family: var(--font-inconsolata, monospace);
+  font-size: 12px;
+}
+
+/* M9 T3.2 — Settings JSON cell display */
+.admin-json-cell {
+  max-width: 320px;
+  max-height: 100px;
+  overflow: auto;
+  margin: 0;
+}
+
+/* M9 T3.3 — Users role badges + actions stack */
+.admin-badge-super_admin {
+  background-color: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+  border: 1px solid var(--color-terracotta);
+}
+.admin-badge-admin {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.admin-badge-editor {
+  background-color: var(--color-sand);
+  color: var(--color-fg);
+}
+.admin-badge-reader {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-badge-active {
+  background-color: var(--color-sage-soft);
+  color: var(--color-sage);
+}
+.admin-badge-suspended {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.admin-card-inline {
+  padding: 16px;
+}
+
+/* Sprint E — drag-drop calendar reschedule (D60) */
+.admin-reschedule-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 768px) {
+  .admin-reschedule-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.admin-reschedule-bookings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.admin-reschedule-booking {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-paper);
+  cursor: grab;
+  user-select: none;
+  transition:
+    background-color 120ms,
+    border-color 120ms,
+    transform 80ms;
+}
+.admin-reschedule-booking:hover {
+  border-color: var(--color-terracotta);
+  background: var(--color-bg);
+}
+.admin-reschedule-booking-dragging {
+  opacity: 0.5;
+  transform: scale(0.97);
+  cursor: grabbing;
+}
+.admin-reschedule-slots {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.admin-reschedule-slot {
+  padding: 8px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  text-align: center;
+  min-height: 56px;
+  background: var(--color-paper);
+  transition:
+    background-color 120ms,
+    border-color 120ms;
+}
+.admin-reschedule-slot-available {
+  background: var(--color-sage-soft);
+  border-color: var(--color-sage);
+}
+.admin-reschedule-slot-reserved {
+  background: var(--color-terracotta-soft);
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-deep);
+}
+.admin-reschedule-slot-blocked {
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  opacity: 0.6;
+}
+.admin-reschedule-slot-over {
+  background: var(--color-sage);
+  color: var(--color-paper);
+  border-color: var(--color-sage);
+  transform: scale(1.03);
+}
+.admin-reschedule-slot-date {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Modal generic */
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.admin-modal-close-area {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 0;
+}
+
+/* Sprint F — Cmd+K palette */
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.admin-cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-paper);
+  color: var(--color-fg-muted);
+  cursor: pointer;
+}
+.admin-cmdk-trigger:hover {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta);
+}
+.admin-cmdk-dialog {
+  position: fixed;
+  top: 15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(640px, 90vw);
+  max-height: 70vh;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.admin-cmdk-input {
+  padding: 14px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 15px;
+  outline: none;
+  background: transparent;
+  color: var(--color-fg);
+  font-family: inherit;
+}
+.admin-cmdk-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+}
+.admin-cmdk-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-fg-muted);
+  font-size: 13px;
+}
+.admin-cmdk-group {
+  margin-bottom: 6px;
+}
+.admin-cmdk-group [cmdk-group-heading] {
+  padding: 6px 12px 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+  font-weight: 700;
+}
+.admin-cmdk-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.admin-cmdk-item[data-selected="true"],
+.admin-cmdk-item:hover {
+  background: var(--color-bg);
+  color: var(--color-terracotta);
+}
+.admin-cmdk-icon {
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.admin-cmdk-hint {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-fg-muted);
+}
+.admin-modal {
+  background: var(--color-paper);
+  border-radius: var(--radius-admin-lg); /* 8 → 12px */
+  padding: 24px;
+  max-width: 480px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Generic admin grid + KPI helpers (extension Sprint 3 admin UI). */
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.admin-kpi-card {
+  padding: 16px;
+}
+.admin-kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  margin: 0;
+}
+.admin-inline-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+.admin-inline-list > li {
+  font-size: 14px;
+}
+.admin-quick-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-quick-actions > li > a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--color-bg);
+  transition: background-color 120ms ease;
+}
+.admin-quick-actions > li > a:hover {
+  background-color: var(--color-paper);
+}
+.admin-dashboard-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }

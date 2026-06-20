@@ -34,7 +34,13 @@ const REM_LIMIT = 0.5; // 8px ≈ 0.5rem
 for (const root of ROOTS) {
   for (const file of walk(root)) {
     // globals.css holds canonical radius tokens — skip it.
-    if (file.endsWith("globals.css")) continue;
+    // admin.css : feuille de style cloisonnée de la console admin. L'admin a sa
+    // PROPRE doctrine de rayons (cf. en-tête admin.css : « radius 4-12 max vs
+    // public 12-16 ») ; le cap 8px de Design.md §5 vise le SITE PUBLIC (admin =
+    // noindex, hors budget Web Vitals). Ces rayons admin (pills 999px, cmdk
+    // 12px, cartes 12px…) vivaient dans globals.css (déjà sauté) avant l'Étape 1
+    // d'unification (juin 2026) ; on préserve l'exemption après relocalisation.
+    if (file.endsWith("globals.css") || file.endsWith("admin.css")) continue;
 
     const lines = fs.readFileSync(file, "utf-8").split(/\r?\n/);
     lines.forEach((line, idx) => {

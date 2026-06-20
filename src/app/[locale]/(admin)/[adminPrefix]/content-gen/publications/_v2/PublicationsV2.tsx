@@ -5,7 +5,14 @@
 // SP-04 P0-9 — pagination prev/next + indicateur Page X / Y.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { resolveArticleRoute } from "@/server/content-gen/blog/resolve-article-route";
 import {
@@ -75,6 +82,58 @@ export async function PublicationsV2({
     return qs ? `${base}?${qs}` : base;
   }
 
+  type ArticleRow = (typeof recent)[number];
+
+  const columns: ReadonlyArray<AdminTableColumn<ArticleRow>> = [
+    {
+      key: "publishedAt",
+      header: "Publié le",
+      cell: (a) => a.publishedAt?.toISOString().slice(0, 16) ?? "—",
+    },
+    {
+      key: "title",
+      header: "Titre",
+      cell: (a) => {
+        const t = a.translations[0];
+        return t ? (
+          <>
+            <Link href={`${base}/${a.id}/edit`} className="admin-link">
+              {t.title.slice(0, 70)}
+            </Link>
+            <br />
+            <code className="text-[length:var(--text-admin-xs)]">{t.slug}</code>
+            {a.status === "published" ? (
+              <>
+                {" · "}
+                <a
+                  href={`/fr/${resolveArticleRoute({
+                    isNews: a.isNews,
+                    templateVariant: a.templateVariant,
+                    slug: t.slug,
+                  })}/${t.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="admin-link text-[length:var(--text-admin-xs)]"
+                >
+                  Voir en ligne ↗
+                </a>
+              </>
+            ) : null}
+          </>
+        ) : (
+          "—"
+        );
+      },
+    },
+    {
+      key: "tier",
+      header: "Tier",
+      cell: (a) => a.indexationTier.replace(/^tier_/, "tier-").replace(/_.*$/, ""),
+    },
+    { key: "quality", header: "Quality", cell: (a) => a.qualityScore ?? "—" },
+    { key: "seo", header: "SEO", cell: (a) => a.seoScore ?? "—" },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -133,79 +192,24 @@ export async function PublicationsV2({
       </AdminCard>
 
       <AdminCard variant="compact" className="mb-0">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Publié le</th>
-                <th>Titre</th>
-                <th>Tier</th>
-                <th>Quality</th>
-                <th>SEO</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recent.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="admin-table-empty">
-                    Aucune publication.
-                  </td>
-                </tr>
-              ) : (
-                recent.map((a) => {
-                  const t = a.translations[0];
-                  return (
-                    <tr key={a.id}>
-                      <td>{a.publishedAt?.toISOString().slice(0, 16) ?? "—"}</td>
-                      <td>
-                        {t ? (
-                          <>
-                            <Link href={`${base}/${a.id}/edit`} className="admin-link">
-                              {t.title.slice(0, 70)}
-                            </Link>
-                            <br />
-                            <code className="text-[length:var(--text-admin-xs)]">{t.slug}</code>
-                            {a.status === "published" ? (
-                              <>
-                                {" · "}
-                                <a
-                                  href={`/fr/${resolveArticleRoute({
-                                    isNews: a.isNews,
-                                    templateVariant: a.templateVariant,
-                                    slug: t.slug,
-                                  })}/${t.slug}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="admin-link text-[length:var(--text-admin-xs)]"
-                                >
-                                  Voir en ligne ↗
-                                </a>
-                              </>
-                            ) : null}
-                          </>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td>{a.indexationTier.replace(/^tier_/, "tier-").replace(/_.*$/, "")}</td>
-                      <td>{a.qualityScore ?? "—"}</td>
-                      <td>{a.seoScore ?? "—"}</td>
-                      <td>
-                        <ActionsCell
-                          articleId={a.id}
-                          status={a.status}
-                          tier={a.indexationTier}
-                          adminPrefix={adminPrefix}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+        {recent.length === 0 ? (
+          <AdminEmptyState title="Aucune publication." />
+        ) : (
+          <AdminTable
+            columns={columns}
+            rows={recent}
+            getRowId={(a) => a.id}
+            caption="Liste des publications content-gen"
+            rowAction={(a) => (
+              <ActionsCell
+                articleId={a.id}
+                status={a.status}
+                tier={a.indexationTier}
+                adminPrefix={adminPrefix}
+              />
+            )}
+          />
+        )}
 
         {/* Pagination P0-9 */}
         {totalPages > 1 && (

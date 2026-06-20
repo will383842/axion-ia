@@ -2,7 +2,15 @@
 //
 // Audience mix V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   deleteAudienceMixProfile,
   upsertAudienceMixProfile,
@@ -51,6 +59,24 @@ export function AudienceMixV2({ rows }: Props): React.ReactElement {
     "use server";
     await deleteAudienceMixProfile(String(formData.get("slug")));
   }
+
+  const columns: ReadonlyArray<AdminTableColumn<MixRow>> = [
+    { key: "slug", header: "Slug", cell: (r) => <code>{r.slug}</code> },
+    { key: "name", header: "Nom", cell: (r) => r.name },
+    {
+      key: "default",
+      header: "Défaut",
+      cell: (r) =>
+        r.isDefault ? <AdminBadge tone="success">Défaut</AdminBadge> : "—",
+    },
+    {
+      key: "mix",
+      header: "Mix",
+      cell: (r) => (
+        <code className="text-[length:var(--text-admin-xs)]">{JSON.stringify(r.mix)}</code>
+      ),
+    },
+  ];
 
   return (
     <AdminPageShell>
@@ -118,51 +144,21 @@ export function AudienceMixV2({ rows }: Props): React.ReactElement {
 
       <AdminCard variant="compact">
         <h2 className="admin-h2">Profils existants</h2>
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Slug</th>
-                <th>Nom</th>
-                <th>Défaut</th>
-                <th>Mix</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="admin-table-empty">
-                    Aucun profil — créez-en un ci-dessus.
-                  </td>
-                </tr>
-              ) : (
-                rows.map((r) => (
-                  <tr key={r.id}>
-                    <td>
-                      <code>{r.slug}</code>
-                    </td>
-                    <td>{r.name}</td>
-                    <td>{r.isDefault ? "✅" : "—"}</td>
-                    <td>
-                      <code className="text-[length:var(--text-admin-xs)]">
-                        {JSON.stringify(r.mix)}
-                      </code>
-                    </td>
-                    <td>
-                      <form action={remove} className="inline">
-                        <input type="hidden" name="slug" value={r.slug} />
-                        <button type="submit" className="admin-button-ghost">
-                          Supprimer
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <AdminTable
+          columns={columns}
+          rows={rows}
+          getRowId={(r) => r.id}
+          caption="Profils de mix d'audiences existants"
+          emptyState={<AdminEmptyState title="Aucun profil — créez-en un ci-dessus." />}
+          rowAction={(r) => (
+            <form action={remove} className="inline">
+              <input type="hidden" name="slug" value={r.slug} />
+              <button type="submit" className="admin-button-ghost">
+                Supprimer
+              </button>
+            </form>
+          )}
+        />
       </AdminCard>
     </AdminPageShell>
   );

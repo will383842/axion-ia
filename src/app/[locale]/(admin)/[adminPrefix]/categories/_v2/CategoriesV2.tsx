@@ -1,14 +1,32 @@
 // Refonte admin mai 2026 — PR 9 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 9).
 //
 // Categories V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
   published: "Publié",
   archived: "Archivé",
+};
+// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
+// non défini pour draft/published/archived → badge neutre non coloré).
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  published: "success",
+  draft: "warning",
+  archived: "neutral",
 };
 const MODULE_LABELS: Record<string, string> = {
   intervention: "Intervention",
@@ -43,6 +61,32 @@ export function CategoriesV2({
   page,
   totalPages,
 }: Props): React.ReactElement {
+  const columns: ReadonlyArray<AdminTableColumn<CategoryRow>> = [
+    { key: "order", header: "Ordre", cell: (c) => c.displayOrder },
+    { key: "name", header: "Nom (FR)", cell: (c) => c.nameFr },
+    { key: "slug", header: "Slug", cell: (c) => <code className="admin-meta-small">{c.slug}</code> },
+    { key: "module", header: "Module", cell: (c) => (c.module ? MODULE_LABELS[c.module] : "Blog") },
+    {
+      key: "parent",
+      header: "Parent",
+      cell: (c) =>
+        c.parentId ? (
+          <code className="admin-meta-small">{c.parentId.slice(0, 8)}…</code>
+        ) : (
+          "—"
+        ),
+    },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (c) => (
+        <AdminBadge tone={STATUS_TONE[c.status] ?? "neutral"}>
+          {STATUS_LABELS[c.status] ?? c.status}
+        </AdminBadge>
+      ),
+    },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -120,60 +164,21 @@ export function CategoriesV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Ordre</th>
-                <th>Nom (FR)</th>
-                <th>Slug</th>
-                <th>Module</th>
-                <th>Parent</th>
-                <th>Statut</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="admin-table-empty">
-                    Aucune catégorie trouvée.
-                  </td>
-                </tr>
-              ) : (
-                items.map((c) => (
-                  <tr key={c.id}>
-                    <td>{c.displayOrder}</td>
-                    <td>{c.nameFr}</td>
-                    <td>
-                      <code className="admin-meta-small">{c.slug}</code>
-                    </td>
-                    <td>{c.module ? MODULE_LABELS[c.module] : "Blog"}</td>
-                    <td>
-                      {c.parentId ? (
-                        <code className="admin-meta-small">{c.parentId.slice(0, 8)}…</code>
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                    <td>
-                      <span className={`admin-badge admin-badge-${c.status}`}>
-                        {STATUS_LABELS[c.status] ?? c.status}
-                      </span>
-                    </td>
-                    <td>
-                      <Link href={`/fr/${adminPrefix}/categories/${c.id}`} className="admin-link">
-                        Éditer →
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {items.length === 0 ? (
+        <AdminEmptyState title="Aucune catégorie trouvée." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={items}
+          getRowId={(c) => c.id}
+          caption="Liste des catégories"
+          rowAction={(c) => (
+            <Link href={`/fr/${adminPrefix}/categories/${c.id}`} className="admin-link">
+              Éditer →
+            </Link>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }
