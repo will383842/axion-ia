@@ -28,6 +28,7 @@ on:
 permissions:
   contents: read
   actions: write  # pour gh secret set
+    secrets: write  # pour gh secret set
 
 jobs:
   oauth:
