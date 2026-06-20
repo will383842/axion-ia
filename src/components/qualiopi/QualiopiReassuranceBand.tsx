@@ -27,7 +27,7 @@ export async function QualiopiReassuranceBand() {
       className="bg-sage-soft text-fg border-border border-t"
     >
       <div className="mx-auto flex max-w-[1920px] flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2.5 text-center text-sm sm:px-6 lg:px-10">
-        <span className="font-semibold">
+        <span data-speakable className="font-semibold">
           {isFr
             ? "Organisme de formation certifié Qualiopi"
             : "Qualiopi-certified training provider"}

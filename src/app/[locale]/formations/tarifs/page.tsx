@@ -26,6 +26,8 @@ import {
 } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
+import { QualiopiFinancingFaq } from "@/components/qualiopi/QualiopiFinancingFaq";
+import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
 
 export const revalidate = 3600;
 
@@ -62,11 +64,16 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const { minEur, maxEur } = getFormationCatalogPriceRange();
+  // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
+  // Le flag est lu au runtime ; l'ISR (revalidate) régénère la meta en Phase B.
+  const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
+    ? " Organisme certifié Qualiopi, formations finançables (OPCO/CPF)."
+    : "";
   return buildProductMetadata({
     locale,
     path: "/formations/tarifs",
     title: "Tarifs des formations IA en entreprise | Axion-IA",
-    description: `Tarifs HT par groupe (pas par personne) des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} (4 h) à ${formatAmount(maxEur, "fr")} (3 jours), dans vos locaux, sur vos cas réels.`,
+    description: `Tarifs HT par groupe (pas par personne) des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} (4 h) à ${formatAmount(maxEur, "fr")} (3 jours), dans vos locaux, sur vos cas réels.${qualiopiSuffix}`,
   });
 }
 
@@ -201,6 +208,10 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
           </Container>
         </Section>
       ) : null}
+
+      {/* FAQ Financement & certification (FAQPage + Speakable) — gated Phase B,
+          rend null hors Phase B. */}
+      <QualiopiFinancingFaq />
 
       <CtaBlock
         eyebrow="Un devis ?"
