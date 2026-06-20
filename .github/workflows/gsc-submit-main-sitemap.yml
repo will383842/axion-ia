@@ -1,0 +1,139 @@
+name: GSC · Submit main sitemap
+
+# Soumet le sitemap PRINCIPAL (/sitemap-index.xml) à Google Search Console via API
+# OAuth2. C'est le trou identifié par l'audit indexation 2026-06-20 : seuls les 4
+# sitemaps IMAGES étaient soumis par API (gsc-submit-image-sitemaps.yml), jamais
+# l'index principal qui référence les ~17k routes (villes/pages/services). Sur un
+# domaine jeune sans backlink, la découverte dépendait d'une soumission manuelle.
+#
+# Réutilise les credentials GSC déjà configurés (GSC_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN).
+# ⚠️ Le REFRESH_TOKEN doit avoir le scope 'webmasters' (write), PAS 'webmasters.readonly'
+#    (sinon HTTP 403). Régénérer via gsc-oauth-refresh-write.yml si besoin.
+# Idempotent — re-soumettre le même sitemap est sans effet de bord (Google relit).
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (log URLs, pas de soumission GSC)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+  schedule:
+    # Hebdomadaire, lundi 06:12 UTC (heure creuse, décalée des autres crons SEO).
+    # Re-soumettre régulièrement maintient le sitemap "frais" côté GSC et relance
+    # la découverte des nouvelles URLs (villes/articles) sans attendre un crawl passif.
+    - cron: "12 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    name: Submit main sitemap to GSC
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+        run: |
+          for v in GSC_OAUTH_CLIENT_ID GSC_OAUTH_CLIENT_SECRET GSC_OAUTH_REFRESH_TOKEN; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing secret $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK"
+
+      - name: Get OAuth2 access token
+        id: token
+        env:
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+        run: |
+          set -euo pipefail
+          RESP=$(curl -s -X POST "https://oauth2.googleapis.com/token" \
+            -d "client_id=${GSC_OAUTH_CLIENT_ID}" \
+            -d "client_secret=${GSC_OAUTH_CLIENT_SECRET}" \
+            -d "refresh_token=${GSC_OAUTH_REFRESH_TOKEN}" \
+            -d "grant_type=refresh_token")
+          ACCESS_TOKEN=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+          if [ -z "$ACCESS_TOKEN" ]; then
+            echo "::error::Failed to get access token. Response: $RESP"
+            exit 1
+          fi
+          echo "Access token OK (${#ACCESS_TOKEN} chars)"
+          echo "access_token=$ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Submit sitemaps (dry-run)
+        if: inputs.dry_run == 'true'
+        run: |
+          echo "::notice::DRY_RUN — sitemaps qui seraient soumis :"
+          echo "  https://axion-ia.com/sitemap-index.xml"
+
+      - name: Add URL-prefix property + submit main sitemap
+        if: inputs.dry_run != 'true'
+        env:
+          ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
+          TARGET_SITE: "https://axion-ia.com/"
+        run: |
+          set -euo pipefail
+          SITE_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('${TARGET_SITE}', safe=''))")
+          BASE_SITES="https://www.googleapis.com/webmasters/v3/sites"
+
+          # Étape 1 : s'assurer que la URL-prefix property existe (auto-vérifiée
+          # car sc-domain:axion-ia.com est déjà vérifié). No-op si déjà présente.
+          echo "── Ajout property URL-prefix: ${TARGET_SITE} ──"
+          HTTP_ADD=$(curl -s -o /tmp/add_resp.json -w "%{http_code}" \
+            -X PUT "${BASE_SITES}/${SITE_ENCODED}" \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}")
+          echo "HTTP add: $HTTP_ADD"
+          cat /tmp/add_resp.json 2>/dev/null || true
+          echo ""
+          if [ "$HTTP_ADD" = "204" ] || [ "$HTTP_ADD" = "200" ]; then
+            echo "::notice::✅ Property ajoutée : ${TARGET_SITE}"
+          elif [ "$HTTP_ADD" = "400" ]; then
+            echo "::notice::Property déjà existante ou token insuffisant — tentative soumission quand même"
+          else
+            echo "::warning::Add property HTTP $HTTP_ADD — on tente quand même"
+          fi
+
+          # Étape 2 : soumettre le sitemap-index principal. Google lit récursivement
+          # tous les sous-sitemaps qu'il référence (villes par région, pages, etc.).
+          SITEMAPS=(
+            "https://axion-ia.com/sitemap-index.xml"
+          )
+
+          ALL_OK=true
+          for SITEMAP in "${SITEMAPS[@]}"; do
+            SM_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$SITEMAP', safe=''))")
+            echo "── Submitting: $SITEMAP ──"
+            HTTP=$(curl -s -o /tmp/gsc_resp.json -w "%{http_code}" \
+              -X POST "${BASE_SITES}/${SITE_ENCODED}/sitemaps/${SM_ENCODED}" \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              -H "Content-Type: application/json")
+            echo "HTTP: $HTTP"
+            cat /tmp/gsc_resp.json 2>/dev/null || true
+            echo ""
+            if [ "$HTTP" = "200" ] || [ "$HTTP" = "204" ]; then
+              echo "::notice::✅ Submitted: $SITEMAP"
+            else
+              echo "::warning::GSC response $HTTP for $SITEMAP"
+              ALL_OK=false
+            fi
+          done
+
+          if [ "$ALL_OK" = "false" ]; then
+            echo "::error::La soumission a échoué."
+            echo "::error::Si HTTP 403 : le token n'a que le scope readonly."
+            echo "::error::Solution : régénérer GSC_OAUTH_REFRESH_TOKEN avec scope 'webmasters' (gsc-oauth-refresh-write.yml)."
+            exit 1
+          fi
+          echo "── Soumission réussie ──"
