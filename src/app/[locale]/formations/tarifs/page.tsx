@@ -25,6 +25,7 @@ import {
   getFormationCatalogPriceRange,
 } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
+import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 
 export const revalidate = 3600;
 
@@ -96,6 +97,9 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               moins cher qu&apos;une formation catalogue en salle extérieure, sans déplacer vos
               équipes.
             </p>
+            {/* Réassurance Qualiopi (Phase B) — formations finançables (OPCO/CPF).
+                Pastille texte seul, rend null hors Phase B. */}
+            <QualiopiBadge variant="inline" className="mt-6" />
           </div>
         </Container>
       </section>

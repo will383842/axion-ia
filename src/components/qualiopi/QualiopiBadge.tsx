@@ -2,9 +2,19 @@ import { getLocale } from "next-intl/server";
 import { getQualiopiPublicIdentity } from "@/server/qualiopi/config/public-identity";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 
+interface QualiopiBadgeProps {
+  className?: string;
+  /**
+   * `card` (défaut) — bloc complet logo + mention + n° (footer, institutionnel).
+   * `inline` — pastille compacte texte seul (zéro image → Web Vitals safe) pour
+   * les pages stratégiques (fiches formations, tarifs, home).
+   */
+  variant?: "card" | "inline";
+}
+
 /**
  * Badge officiel « Organisme de formation certifié Qualiopi » — communication
- * GÉNÉRALE (footer, pages institutionnelles). Server Component.
+ * GÉNÉRALE (footer, pages institutionnelles, réassurance produit). Server Component.
  *
  * Rend `null` hors Phase B (flag + certificat renseigné) : aucun coût, aucune
  * fuite avant l'obtention de l'agrément.
@@ -19,21 +29,51 @@ import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-menti
  *     à une action de formation. Ce composant est réservé à la communication
  *     générale — NE PAS l'embarquer dans un PDF réglementaire.
  *
+ * La variante `inline` n'affiche PAS le logo (texte seul) : la règle stricte
+ * d'usage du logo ne s'y applique pas, mais on conserve la catégorie certifiée.
+ *
  * Le fichier logo officiel est livré par le certificateur À LA certification
  * (kit de communication). Tant que `qualiopi_logo_path` est vide, on affiche un
  * libellé textuel conforme — aucun faux logo n'est inventé.
  */
-export async function QualiopiBadge({ className }: { className?: string }) {
+export async function QualiopiBadge({ className, variant = "card" }: QualiopiBadgeProps) {
   const identity = await getQualiopiPublicIdentity();
   if (!identity) return null;
 
   const locale = await getLocale();
   const isFr = locale === "fr";
-  const mention = formatMentionMarqueQualiopi(identity.categoriesCertifiees);
   const title = isFr
     ? "Organisme de formation certifié Qualiopi"
     : "Qualiopi-certified training provider";
 
+  if (variant === "inline") {
+    const label = isFr
+      ? `Certifié Qualiopi · ${identity.categoriesCertifiees}`
+      : `Qualiopi-certified · ${identity.categoriesCertifiees}`;
+    return (
+      <span
+        className={`bg-sage-soft text-sage inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${className ?? ""}`.trim()}
+        title={title}
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-3.5 w-3.5 shrink-0"
+        >
+          <path d="M12 3 4 6v6c0 4 3.4 6.9 8 9 4.6-2.1 8-5 8-9V6l-8-3Z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        {label}
+      </span>
+    );
+  }
+
+  const mention = formatMentionMarqueQualiopi(identity.categoriesCertifiees);
   return (
     <div
       className={`bg-paper text-fg border-border rounded-md border p-3 ${className ?? ""}`.trim()}

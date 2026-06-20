@@ -40,6 +40,16 @@ export function GET() {
     getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
     "fr",
   );
+  // Phase B (divulgation publique OF) — route edge sans DB, lecture env flag
+  // inline (cf. llms.txt). Bloc omis tant que la Phase A est active.
+  const qualiopiCertified = process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
+  const qualiopiBlock = qualiopiCertified
+    ? `
+
+## Certification qualité (Qualiopi)
+
+Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État français (Ministère du Travail). À ce titre, les formations, audits et accompagnements 1-to-1 sont **finançables** par les dispositifs de formation professionnelle (OPCO, CPF selon le dispositif et l'éligibilité). Identifiants légaux (n° de déclaration d'activité, n° de certificat) : ${SITE_URL}/fr/mentions-legales.`
+    : "";
 
   const faqBlock = FAQ_GLOBAL.map(
     (f) => `### ${f.fr.question}\n\n${f.fr.answer}\n\n(EN) ${f.en.answer}`,
@@ -79,7 +89,7 @@ URL : ${SITE_URL}/fr/implementation
 
 ### Module 4 — ${SERVICE_BY_ID.unAUn.officialFr} (à partir de ${coachingEntry})
 1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 30 min gratuit, progression mesurable à chaque étape.
-URL : ${SITE_URL}/fr/un-a-un
+URL : ${SITE_URL}/fr/un-a-un${qualiopiBlock}
 
 ## FAQ
 

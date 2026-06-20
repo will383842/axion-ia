@@ -562,7 +562,7 @@ export function buildOrganizationJsonLd({
             "@id": `${SITE_URL}/#qualiopi`,
             name: "Certification Qualiopi",
             description: qualiopiCertification.description,
-            credentialCategory: "Qualiopi",
+            credentialCategory: "certification qualité",
             ...(qualiopiCertification.number ? { identifier: qualiopiCertification.number } : {}),
             recognizedBy: [
               {

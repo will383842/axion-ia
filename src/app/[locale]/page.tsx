@@ -44,6 +44,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { Illustration } from "@/components/visual/Illustration";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
+import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -866,6 +867,12 @@ export default async function Home({ params }: HomeProps) {
                   </p>
                 </div>
               ))}
+            </div>
+
+            {/* Réassurance Qualiopi (Phase B) — centrée sous les trust signals,
+                hors zone LCP du hero. Pastille texte seul, null hors Phase B. */}
+            <div className="mt-10 flex justify-center sm:mt-12">
+              <QualiopiBadge variant="inline" />
             </div>
 
             {/* Tagline finale — pleine largeur centrée, serif italic */}
