@@ -74,6 +74,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+// ISR — le hub dépend de la config (catalogue + Phase B) et du layout partagé
+// (bandeau + JSON-LD Qualiopi). 1h : repeuple le contenu DB-dépendant figé au
+// build stub une fois la Phase B activée, sans rebuild.
+export const revalidate = 3600;
+
 export default async function FormationsHub({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();

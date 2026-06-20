@@ -34,6 +34,18 @@ export function GET() {
     getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
     "fr",
   );
+  // Phase B (divulgation publique OF). Route edge sans DB → on lit l'env flag
+  // OF_PUBLIC_DISCLOSURE_ENABLED directement (le helper serveur dédié n'est pas
+  // importable ici : edge runtime + cloisonnement). Bloc omis tant que la Phase A
+  // est active. Catégorie = défaut SSOT du registre de config.
+  const qualiopiCertified = process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
+  const qualiopiSection = qualiopiCertified
+    ? `
+
+## Certification qualité
+
+- Axion-IA est un **organisme de formation certifié Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État (Ministère du Travail). Les formations, audits et accompagnements 1-to-1 sont à ce titre **finançables** (OPCO, CPF selon le dispositif). Mentions légales : ${SITE_URL}/fr/mentions-legales.`
+    : "";
   const body = `# Axion-IA
 
 > Cabinet IA opérationnel B2B pour entreprises. Fondé en France, implanté en Europe.
@@ -48,7 +60,7 @@ export function GET() {
 - [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — 17 formations intra-entreprise sur site (4 h à 3 jours), à partir de ${essentiellePrice}. Tarifs HT par groupe : ${SITE_URL}/fr/formations/tarifs.
 - [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
-- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
+- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.${qualiopiSection}
 
 ## Preuve & méthode
 

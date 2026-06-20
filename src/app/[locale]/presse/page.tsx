@@ -65,6 +65,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+// ISR — la page lit des données DB (témoignages réels, observatoire) + le layout
+// partagé (bandeau + JSON-LD Qualiopi). 1h : corrige aussi le contenu DB figé
+// vide au build stub (témoignages/chiffres), repeuplé au runtime.
+export const revalidate = 3600;
+
 export default async function PressePage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();

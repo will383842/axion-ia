@@ -28,6 +28,27 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   qualiopi_numero: { ...str(), description: "N° du certificat Qualiopi." },
   qualiopi_organisme: { ...str(), description: "Organisme certificateur Qualiopi (COFRAC)." },
   qualiopi_validite: { ...str(), description: "Date d'expiration Qualiopi (ISO YYYY-MM-DD)." },
+  qualiopi_date_obtention: {
+    ...str(),
+    description: "Date de délivrance du certificat Qualiopi (ISO YYYY-MM-DD).",
+  },
+  // Catégorie(s) d'actions certifiées figurant sur le certificat — OBLIGATOIRE
+  // dans la mention qui accompagne la marque Qualiopi (règles d'usage officielles
+  // du Ministère du Travail). Valeurs possibles : « Actions de formation »,
+  // « Bilans de compétences », « VAE », « Actions de formation par apprentissage »
+  // (séparées par « , » si plusieurs). Défaut = la catégorie visée par Axion-IA.
+  qualiopi_categories_certifiees: {
+    ...str("Actions de formation"),
+    description: "Catégorie(s) d'actions certifiées (mention obligatoire de la marque Qualiopi).",
+  },
+  // Chemin/URL du fichier LOGO OFFICIEL Qualiopi (≠ logo Axion-IA `logo_url`).
+  // Livré par le certificateur dans le kit de communication À LA certification.
+  // Tant que vide : le badge public affiche un libellé textuel conforme, jamais
+  // un faux logo. Ex. attendu : "/qualiopi/qualiopi-logo.png".
+  qualiopi_logo_path: {
+    ...str(),
+    description: "Chemin du fichier logo officiel Qualiopi (kit certificateur).",
+  },
   siret: { ...str(), description: "SIRET Axion-IA SAS." },
   raison_sociale: { ...str("Axion-IA SAS"), description: "Raison sociale (SAS France)." },
   adresse_siege: { ...str(), description: "Adresse du siège social (domiciliation Paris)." },

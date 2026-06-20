@@ -19,6 +19,7 @@ import { buildCourseJsonLd, buildProductMetadata } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
 import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
@@ -272,6 +273,9 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   Éligible CPF
                 </span>
               )}
+              {/* Réassurance Qualiopi (Phase B) — pastille texte seul, zéro image
+                  (Web Vitals safe). Rend null hors Phase B. */}
+              <QualiopiBadge variant="inline" />
             </div>
 
             {/* Titre principal (indicateur 1 — intitulé) */}

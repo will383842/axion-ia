@@ -36,6 +36,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // au strict minimum — décision Will 2026-05-26. Le formulaire est unifié et
 // couvre 7 cas (autre + devis + audit + implementation + formation + 1-à-1 +
 // partenariat) ; le formulaire sert à tout via `autre` par défaut.
+// ISR — la page consomme le layout partagé (bandeau + JSON-LD Qualiopi gated
+// Phase B, DB-sourcés au runtime). 24h suffit (formulaire, contenu stable).
+export const revalidate = 86400;
+
 export default async function Contact({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();

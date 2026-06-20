@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { LEGAL_MENTIONS, formatHeuresCentiemes, DOCUMENT_RETENTION_YEARS } from "./legal-mentions";
+import {
+  LEGAL_MENTIONS,
+  formatHeuresCentiemes,
+  formatMentionMarqueQualiopi,
+  DOCUMENT_RETENTION_YEARS,
+} from "./legal-mentions";
 
 describe("LEGAL_MENTIONS — bases juridiques exactes", () => {
   it("convention cite L.6353-1 et L.6353-2", () => {
@@ -26,6 +31,22 @@ describe("LEGAL_MENTIONS — bases juridiques exactes", () => {
   });
   it("conservation légale = 5 ans", () => {
     expect(DOCUMENT_RETENTION_YEARS).toBe(5);
+  });
+});
+
+describe("formatMentionMarqueQualiopi — mention obligatoire de la marque", () => {
+  it("contient le verbatim officiel + la catégorie certifiée", () => {
+    const m = formatMentionMarqueQualiopi("Actions de formation");
+    expect(m).toContain(
+      "La certification qualité a été délivrée au titre de la ou des catégories d'actions suivantes :",
+    );
+    expect(m).toContain("Actions de formation");
+    expect(m.endsWith(".")).toBe(true);
+  });
+  it("trim la catégorie et accepte une liste", () => {
+    const m = formatMentionMarqueQualiopi("  Actions de formation, Bilans de compétences  ");
+    expect(m).toContain("Actions de formation, Bilans de compétences");
+    expect(m).not.toContain("  Actions");
   });
 });
 
