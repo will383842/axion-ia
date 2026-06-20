@@ -69,12 +69,17 @@
     --space-admin-7: 24px;
     --space-admin-8: 32px;
     --space-admin-9: 48px;
+    /* Padding intérieur des cartes (P2 respiration juin 2026) — palier 20px
+       intermédiaire entre 16 et 24 : assez d'air pour ne plus paraître
+       « tassé » sans casser la densité. Consommé par AdminCard. */
+    --space-admin-card: 20px;
 
-    /* ----- Typography (11-14 dominants vs public 14-18) ----- */
+    /* ----- Typography (P2 respiration juin 2026 : base 14→15px — le corps des
+       tables/descriptions respire d'un cran ; reste sous le public 16-18). ----- */
     --text-admin-xs: 11px;
     --text-admin-sm: 12px;
     --text-admin-md: 13px;
-    --text-admin-base: 14px;
+    --text-admin-base: 15px;
     --text-admin-lg: 16px;
     --text-admin-xl: 20px;
     --text-admin-2xl: 24px;
@@ -82,17 +87,26 @@
     --lh-admin-body: 1.5;
     --lh-admin-loose: 1.65;
 
-    /* ----- Border radius (4-12 max vs public 12-16) ----- */
+    /* ----- Border radius — modernisé juin 2026 (P1 audit design console)
+     * Était 4/6/8/12. Cartes/boutons/tables/inputs consomment surtout `md`
+     * (6→10) et `lg` (8→12) : à 6px le rendu tombait en « Bootstrap 2016 »
+     * (trop carré). 10-12px = standard dashboard 2026 (Linear/Vercel/Stripe,
+     * réfs citées en tête de ce fichier). `sm` (4px) conservé pour les micro-
+     * éléments (chips, focus rings). Toujours < public (16-28px). ----- */
     --radius-admin-sm: 4px;
-    --radius-admin-md: 6px;
-    --radius-admin-lg: 8px;
-    --radius-admin-xl: 12px;
+    --radius-admin-md: 10px;
+    --radius-admin-lg: 12px;
+    --radius-admin-xl: 16px;
 
-    /* ----- Shadows (elevation 1-4, subtles, pas de gros shadow) ----- */
-    --shadow-admin-1: 0 1px 0 rgb(0 0 0 / 0.04);
-    --shadow-admin-2: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
-    --shadow-admin-3: 0 4px 10px rgb(0 0 0 / 0.06), 0 2px 4px rgb(0 0 0 / 0.04);
-    --shadow-admin-4: 0 12px 24px rgb(0 0 0 / 0.1), 0 4px 8px rgb(0 0 0 / 0.06);
+    /* ----- Shadows — adoucies juin 2026 (P1 audit design console)
+     * Étaient quasi plates (`1` = 0 1px 0) → cartes « collées » au fond,
+     * effet daté. Nouvelles ombres : douces + diffuses, échelle d'élévation
+     * monotone (1<2<3<4) pour que les états hover (cards interactives → `3`,
+     * stat cards → `2`) restent lisibles. ----- */
+    --shadow-admin-1: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.06);
+    --shadow-admin-2: 0 2px 6px rgb(0 0 0 / 0.05), 0 8px 18px rgb(0 0 0 / 0.07);
+    --shadow-admin-3: 0 6px 16px rgb(0 0 0 / 0.08), 0 3px 6px rgb(0 0 0 / 0.05);
+    --shadow-admin-4: 0 16px 32px rgb(0 0 0 / 0.12), 0 6px 12px rgb(0 0 0 / 0.07);
 
     /* ----- Z-index ----- */
     --z-admin-base: 0;
@@ -231,6 +245,84 @@
   .admin-nav-link {
     min-height: 32px; /* 32px desktop, dépasse les 24px requis */
   }
+}
+
+/* =============================================================
+ * Refonte largeur juin 2026 (P0 audit design console 2026-06-20).
+ *
+ * PROBLÈME : le <main> du shell V2 (layout.tsx) porte `.admin-main`, défini
+ * dans globals.css avec `max-width: 960px` + `padding: 32px 24px`. Ce cap
+ * 960px écrasait silencieusement le `max-w-[1440px]` d'AdminPageShell → tout
+ * le contenu admin était bridé à 960px centrés, d'où d'énormes marges vides
+ * sur grand écran (« pas assez de largeur »).
+ *
+ * FIX cloisonné `.admin-layout-v2` (le login V1 `.admin-layout` garde son
+ * cadrage 960px centré, voulu pour un formulaire étroit) :
+ *  1. On lève le cap : le shell redevient la SSOT de largeur.
+ *  2. On annule le padding legacy du <main> UNIQUEMENT quand la page passe
+ *     par AdminPageShell (`:has(.admin-page-shell)`, ~95 % des pages) — le
+ *     shell porte déjà gouttières + largeur, sinon on doublait le padding.
+ *     Les rares pages SANS shell (ex. /coaching) conservent le padding du
+ *     <main> et ne se collent donc pas au rail.
+ *
+ * ⚠️ Règle NON-LAYERED volontairement : `.admin-main` est défini dans
+ * globals.css SANS @layer. En cascade CSS, une règle non-layered l'emporte
+ * sur toute règle layered indépendamment de la spécificité — un override
+ * placé dans `@layer admin-fixes` serait donc inopérant ici. On reste donc
+ * hors layer (même choix que le bloc font-family ci-dessus), la spécificité
+ * `.admin-layout-v2 .admin-main` (0,2,0) > `.admin-main` (0,1,0) tranche.
+ * =============================================================*/
+.admin-layout-v2 .admin-main {
+  max-width: none;
+}
+.admin-layout-v2 .admin-main:has(.admin-page-shell) {
+  padding: 0;
+}
+
+/* =============================================================
+ * P3 — Modernisation des surfaces legacy `.admin-*` (juin 2026,
+ * audit design console 2026-06-20).
+ *
+ * CONSTAT : ~45 pages V2 (+ le login V1) rendent encore leur contenu via les
+ * classes globals.css `.admin-card / .admin-form-block / .admin-input /
+ * .admin-button / .admin-alert / .admin-details / .admin-modal`, dont les
+ * rayons sont HARDCODÉS à 4-8px + look plat. P1 n'avait modernisé que le
+ * chemin « composants src/components/admin/ui » (tokens). On aligne ici le
+ * chemin « classes legacy » sur la même charte — SANS toucher globals.css
+ * (doctrine ADR 0028 : globals.css intouchable) et SANS migrer 45 fichiers
+ * un par un. Quand ces pages migreront vers les primitifs V2, ces overrides
+ * deviendront sans objet (à retirer alors).
+ *
+ * ⚠️ NON-LAYERED + spécificité 0,2,0 (`.admin-layout(-v2) .admin-X`) pour
+ * battre les règles unlayered 0,1,0 de globals.css (cf. leçon cascade P0).
+ * Cloisonné aux shells admin → zéro effet hors console.
+ * =============================================================*/
+.admin-layout-v2 .admin-card,
+.admin-layout .admin-card {
+  border-radius: var(--radius-admin-lg); /* 8 → 12px */
+  box-shadow: var(--shadow-admin-1); /* ajoute l'élévation douce (était plat) */
+}
+.admin-layout-v2 .admin-form-block,
+.admin-layout .admin-form-block,
+.admin-layout-v2 .admin-input,
+.admin-layout .admin-input,
+.admin-layout-v2 .admin-textarea,
+.admin-layout .admin-textarea,
+.admin-layout-v2 .admin-button,
+.admin-layout .admin-button,
+.admin-layout-v2 .admin-button-ghost,
+.admin-layout .admin-button-ghost,
+.admin-layout-v2 .admin-button-cta,
+.admin-layout .admin-button-cta,
+.admin-layout-v2 .admin-alert,
+.admin-layout .admin-alert {
+  border-radius: var(--radius-admin-md); /* 6 → 10px */
+}
+.admin-layout-v2 .admin-details,
+.admin-layout .admin-details,
+.admin-layout-v2 .admin-modal,
+.admin-layout .admin-modal {
+  border-radius: var(--radius-admin-lg); /* 8 → 12px */
 }
 
 /* =============================================================

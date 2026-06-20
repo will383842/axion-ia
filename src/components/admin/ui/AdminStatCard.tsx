@@ -21,15 +21,17 @@ interface AdminStatCardProps {
   className?: string;
 }
 
-const TONE_BORDER: Record<StatTone, string> = {
-  default: "border-[color:var(--color-admin-border)]",
-  success:
-    "border-l-4 border-l-[color:var(--color-admin-success)] border-[color:var(--color-admin-border)]",
-  warning:
-    "border-l-4 border-l-[color:var(--color-admin-warning)] border-[color:var(--color-admin-border)]",
-  destructive:
-    "border-l-4 border-l-[color:var(--color-admin-destructive)] border-[color:var(--color-admin-border)]",
-  info: "border-l-4 border-l-[color:var(--color-admin-info)] border-[color:var(--color-admin-border)]",
+// Refonte juin 2026 (P1 audit design console) — l'accent de tonalité passait
+// par une grosse bordure-gauche 4px (pattern « alerte Bootstrap » daté). On
+// remplace par une pastille de couleur 6px devant le label : bordure de carte
+// uniforme + signal de tonalité discret et moderne (réf. dots de statut
+// Linear/Vercel). `default` = aucune pastille.
+const TONE_DOT: Record<StatTone, string | null> = {
+  default: null,
+  success: "bg-[color:var(--color-admin-success)]",
+  warning: "bg-[color:var(--color-admin-warning)]",
+  destructive: "bg-[color:var(--color-admin-destructive)]",
+  info: "bg-[color:var(--color-admin-info)]",
 };
 
 function deltaTone(delta: string): "up" | "down" | "neutral" {
@@ -57,19 +59,26 @@ export function AdminStatCard({
     <div
       className={cn(
         "admin-stat-card flex flex-col gap-[var(--space-admin-2)]",
-        "rounded-[var(--radius-admin-md)] border bg-[color:var(--color-admin-paper)]",
-        "p-[var(--space-admin-5)] shadow-[var(--shadow-admin-1)]",
-        TONE_BORDER[tone],
+        "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
+        "bg-[color:var(--color-admin-paper)]",
+        "p-[var(--space-admin-6)] shadow-[var(--shadow-admin-1)]",
         href && "transition-shadow hover:shadow-[var(--shadow-admin-2)]",
         className,
       )}
     >
       <span
         className={cn(
+          "flex items-center gap-[var(--space-admin-2)]",
           "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
           "text-[color:var(--color-admin-fg-muted)]",
         )}
       >
+        {TONE_DOT[tone] ? (
+          <span
+            aria-hidden="true"
+            className={cn("h-[6px] w-[6px] shrink-0 rounded-full", TONE_DOT[tone])}
+          />
+        ) : null}
         {label}
       </span>
       <div className="flex items-baseline gap-[var(--space-admin-3)]">

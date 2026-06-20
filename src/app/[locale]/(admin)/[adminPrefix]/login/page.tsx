@@ -25,12 +25,17 @@ export default async function AdminLoginPage({ params }: PageProps) {
 
   return (
     <section className="admin-login-section">
-      <h1 className="admin-h1">Connexion admin</h1>
-      <p className="admin-lede">
-        Connectez-vous avec votre email et mot de passe. Si la 2FA est activée sur votre compte, un
-        code TOTP à 6 chiffres vous sera demandé.
-      </p>
-      <LoginForm />
+      {/* P3 refonte juin 2026 — contenu encapsulé dans une carte (rayon 12px +
+          ombre douce, héritée des overrides legacy admin.css) pour une page de
+          connexion moderne, centrée, au lieu du H1 + form « nu » historique. */}
+      <div className="admin-card">
+        <h1 className="admin-h1">Connexion admin</h1>
+        <p className="admin-lede">
+          Connectez-vous avec votre email et mot de passe. Si la 2FA est activée sur votre compte,
+          un code TOTP à 6 chiffres vous sera demandé.
+        </p>
+        <LoginForm />
+      </div>
     </section>
   );
 }
