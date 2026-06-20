@@ -17,6 +17,7 @@ import {
 } from "../../../src/server/qualiopi/config/registry";
 import { seedOffresSite, reconcileOffresFromSkeleton } from "./offres";
 import { seedOffresV2, reconcileOffresV2 } from "./offres-v2";
+import { seedCatalogFormations } from "./catalog-formations";
 import { seedGrilleQualite } from "./grille";
 import { seedGrilleV2 } from "./grille-v2";
 
@@ -60,6 +61,7 @@ async function main(): Promise<void> {
   await reconcileOffresFromSkeleton(prisma);
   await seedOffresV2(prisma);
   await reconcileOffresV2(prisma);
+  await seedCatalogFormations(prisma);
   await seedGrilleQualite(prisma);
   await seedGrilleV2(prisma);
 }
