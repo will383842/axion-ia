@@ -1312,7 +1312,8 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     category: "Avant l'intervention",
     fr: {
       title: "Comment préparer une intervention IA ?",
-      excerpt: "Liste des données, participants et objectifs à clarifier avant le jour J.",
+      excerpt:
+        "Comment préparer une intervention IA Axion-IA : les 3-5 process à cibler, les participants à mobiliser, les données à réunir et la journée à bloquer.",
       body: "Une intervention Axion-IA réussie repose sur 4 préparatifs : (1) lister 3-5 process candidats à l'IA, (2) inviter 1 décideur + 2-3 opérationnels concernés, (3) préparer un échantillon de données anonymisées (factures, emails, comptes-rendus) pour démos, (4) bloquer 1 journée complète sans réunions parallèles. Aucune installation logicielle n'est requise — l'intervenant arrive avec son équipement et ses modèles IA.",
     },
     en: {
@@ -1326,7 +1327,8 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     category: "Comprendre un audit IA",
     fr: {
       title: "Quel est le périmètre d'un audit IA Axion-IA ?",
-      excerpt: "Cartographie complète, chiffrage par opportunité, plan d'implémentation priorisé.",
+      excerpt:
+        "Le périmètre d'un audit IA Axion-IA : cartographie des process, 8-15 opportunités IA scorées et chiffrées, plan d'implémentation priorisé sur 5 jours.",
       body: "L'audit IA Axion-IA couvre 5 jours d'analyse : (1) cartographie de vos process actuels via interviews ; (2) identification de 8-15 opportunités IA scorées ROI/complexité ; (3) chiffrage individuel chaque opportunité (effort + coût + délai) ; (4) plan d'implémentation priorisé ; (5) recommandations gouvernance données + sourcing modèles. Livrable : document PDF 25-40 pages + atelier de restitution 2 h.",
     },
     en: {

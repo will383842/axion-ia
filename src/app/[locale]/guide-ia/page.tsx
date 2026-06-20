@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Enterprise AI guide · 40 pages · free",
     description:
       locale === "fr"
-        ? "Guide IA opérationnel 40 pages : usages, coûts, ROI, gouvernance, écueils."
+        ? "Guide IA opérationnel de 40 pages pour dirigeants et équipes : cas d'usage concrets, coûts réels, calcul du ROI, gouvernance, sécurité et écueils à éviter."
         : "40-page operational AI guide: use cases, costs, ROI, governance, pitfalls.",
     alternates: { fr: "/guide-ia", en: "/ai-guide" },
   });
