@@ -429,6 +429,23 @@ interface OrganizationJsonLdInput {
   vatID?: string;
   /** Numéro d'immatriculation RCS / SIREN. Will fournit plus tard. */
   registrationNumber?: string;
+  /**
+   * Certification Qualiopi (Phase B uniquement). Émet un nœud `hasCredential`
+   * (`EducationalOccupationalCredential`) reconnu par le Ministère du Travail —
+   * signal SEO/AEO/GEO « organisme de formation certifié » sur TOUTES les pages
+   * (le nœud `#organization` est partagé + hérité par le `provider` des Course).
+   * Données passées par la couche qualiopi (DB-sourcée, gated) ; `description`
+   * porte la mention obligatoire pré-formatée. Omis si absent. seo.ts reste
+   * générique (n'importe jamais le module qualiopi).
+   */
+  qualiopiCertification?: {
+    /** N° de certificat Qualiopi. */
+    number: string;
+    /** Mention obligatoire complète (pré-formatée : catégories + validité). */
+    description: string;
+    /** Organisme certificateur (COFRAC), optionnel. */
+    issuer?: string;
+  };
 }
 
 // Layout-level Organization JSON-LD — single source of truth for AEO/GEO 2026
@@ -450,6 +467,7 @@ export function buildOrganizationJsonLd({
   contactType,
   vatID = env.COMPANY_VAT_NUMBER,
   registrationNumber = env.COMPANY_REGISTRATION_NUMBER,
+  qualiopiCertification,
 }: OrganizationJsonLdInput) {
   const isFr = locale === "fr";
   const resolvedContactType = contactType ?? (isFr ? "Service client" : "Customer service");
@@ -531,6 +549,31 @@ export function buildOrganizationJsonLd({
             "@type": "PropertyValue",
             propertyID: "immatriculation RCS",
             value: registrationNumber,
+          },
+        }
+      : {}),
+    // Certification Qualiopi (Phase B) — `hasCredential` reconnu par le Ministère
+    // du Travail. Émis sur TOUTES les pages via le nœud #organization partagé +
+    // hérité par le `provider` des Course (fiches formations). Omis si absent.
+    ...(qualiopiCertification
+      ? {
+          hasCredential: {
+            "@type": "EducationalOccupationalCredential",
+            "@id": `${SITE_URL}/#qualiopi`,
+            name: "Certification Qualiopi",
+            description: qualiopiCertification.description,
+            credentialCategory: "Qualiopi",
+            ...(qualiopiCertification.number ? { identifier: qualiopiCertification.number } : {}),
+            recognizedBy: [
+              {
+                "@type": "GovernmentOrganization",
+                name: "Ministère du Travail",
+                url: "https://travail-emploi.gouv.fr/qualiopi-la-marque-de-certification-qualite-des-prestataires-de-formation",
+              },
+              ...(qualiopiCertification.issuer
+                ? [{ "@type": "Organization", name: qualiopiCertification.issuer }]
+                : []),
+            ],
           },
         }
       : {}),

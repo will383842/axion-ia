@@ -46,6 +46,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+// ISR — la page consomme le layout partagé (bandeau + JSON-LD Qualiopi gated
+// Phase B, DB-sourcés au runtime). Sans `revalidate`, la page resterait figée
+// au build stub. 24h suffit (contenu evergreen).
+export const revalidate = 86400;
+
 export default async function About({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();

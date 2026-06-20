@@ -8,6 +8,7 @@ import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { QualiopiReassuranceBand } from "@/components/qualiopi/QualiopiReassuranceBand";
+import { getQualiopiCredentialForJsonLd } from "@/components/qualiopi/organization-credential";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { SpeculationRules } from "@/components/perf/SpeculationRules";
 import { Plausible } from "@/components/analytics/Plausible";
@@ -189,10 +190,16 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     locale: Locale;
     vatID?: string;
     registrationNumber?: string;
+    qualiopiCertification?: { number: string; description: string; issuer?: string };
   } = { locale: locale as Locale };
   if (env.COMPANY_VAT_NUMBER) organizationJsonLdInput.vatID = env.COMPANY_VAT_NUMBER;
   if (env.COMPANY_REGISTRATION_NUMBER)
     organizationJsonLdInput.registrationNumber = env.COMPANY_REGISTRATION_NUMBER;
+  // Certification Qualiopi (Phase B, DB-sourcée) → nœud #organization sur toutes
+  // les pages. `null` hors Phase B (build stub inclus) ⇒ champ omis, 0 régression.
+  // L'ISR repeuple au runtime une fois la Phase B activée.
+  const qualiopiCredential = await getQualiopiCredentialForJsonLd();
+  if (qualiopiCredential) organizationJsonLdInput.qualiopiCertification = qualiopiCredential;
   const organizationJsonLd = buildOrganizationJsonLd(organizationJsonLdInput);
   const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
 
