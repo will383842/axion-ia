@@ -37,6 +37,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/verifier-attestation\//,
   /^src\/app\/api\/qualiopi\//,
   /^src\/components\/admin\/qualiopi\//,
+  // Composants PUBLICS Qualiopi (badge, bandeau, section mentions légales) —
+  // surfaces de divulgation Phase B, flag-gated. Importés par le layout/footer/
+  // mentions-légales QUI n'importent QUE depuis `@/components/qualiopi/`.
+  /^src\/components\/qualiopi\//,
   /^src\/server\/queue\/workers\/qualiopi-.*-worker(\.spec)?\.ts$/,
   /^src\/server\/queue\/workers\/__tests__\/qualiopi-.*\.(spec|test)\.ts$/,
   /^prisma\/seeds\/qualiopi\//,
@@ -65,6 +69,14 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/instrumentation\.ts$/,
   // Routing i18n — pathnames /formations (Phase B).
   /^src\/i18n\/routing\.ts$/,
+  // ── Références transverses légitimes (chantier AFEST 1-to-1 + handicap) ──
+  // Coaching AFEST : l'admin coaching consomme la couche qualiopi coaching-afest
+  // (heures, financement, kits). Surfaces métier de l'AFEST, pas une fuite.
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/coaching\//,
+  /^src\/components\/admin\/coaching\//,
+  // Page publique d'accessibilité — référence le SSOT `HANDICAP_PARTENAIRES`
+  // (relais handicap, indicateur 26), exposé par `qualiopi/legal/legal-mentions`.
+  /^src\/app\/\[locale\]\/accessibilite\//,
 ];
 
 /**

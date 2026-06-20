@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
+import { QualiopiReassuranceBand } from "@/components/qualiopi/QualiopiReassuranceBand";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { SpeculationRules } from "@/components/perf/SpeculationRules";
 import { Plausible } from "@/components/analytics/Plausible";
@@ -286,6 +287,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <main id="main" className="flex-1">
             {children}
           </main>
+          {/* Bandeau réassurance Qualiopi — rendu sur toutes les pages, en bas
+              (au-dessus du footer) pour ne pas peser sur le LCP/CLS above-fold.
+              Rend `null` hors Phase B (OF_PUBLIC_DISCLOSURE_ENABLED + certificat). */}
+          <QualiopiReassuranceBand />
           <Footer />
           {/* P-304 — WebVitals dépend de `useLocale()` next-intl, doit donc
               être enfant du provider sinon prerender throw. */}

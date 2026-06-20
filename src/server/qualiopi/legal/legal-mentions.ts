@@ -46,6 +46,26 @@ export const LEGAL_MENTIONS = {
 
 export type LegalMentionKey = keyof typeof LEGAL_MENTIONS;
 
+/**
+ * Mention OBLIGATOIRE accompagnant la marque/logo Qualiopi (règles d'usage
+ * officielles du Ministère du Travail). Le logo ne peut JAMAIS apparaître seul :
+ * il doit toujours être suivi de la ou des catégorie(s) d'actions certifiées
+ * telles qu'inscrites sur le certificat.
+ *
+ * ⚠️ RAPPEL D'USAGE : le logo Qualiopi est INTERDIT sur les attestations,
+ * certificats de réalisation et tout support lié EXCLUSIVEMENT à une action de
+ * formation. Il est réservé à la communication générale (site, présentations,
+ * supports institutionnels). Ne JAMAIS embarquer le logo dans un PDF
+ * réglementaire — seules les mentions textuelles (NDA, exonération TVA, etc.)
+ * y figurent.
+ *
+ * @param categoriesCertifiees ex. « Actions de formation » (ou liste « A, B »).
+ */
+export function formatMentionMarqueQualiopi(categoriesCertifiees: string): string {
+  const cat = categoriesCertifiees.trim();
+  return `La certification qualité a été délivrée au titre de la ou des catégories d'actions suivantes : ${cat}.`;
+}
+
 /** Partenaire/relais externe vers qui orienter un stagiaire en situation de handicap. */
 export interface HandicapPartenaire {
   nom: string;

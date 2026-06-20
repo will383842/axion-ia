@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
 import { SERVICES, serviceFooter } from "@/content/services";
+import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 
@@ -159,6 +160,10 @@ export async function Footer() {
             <div className="mt-6">
               <SocialLinks />
             </div>
+            {/* Badge officiel Qualiopi — rendu uniquement en Phase B
+                (OF_PUBLIC_DISCLOSURE_ENABLED + certificat renseigné), sinon null.
+                Communication générale autorisée (jamais sur les PDF/attestations). */}
+            <QualiopiBadge className="mt-6 lg:max-w-[15rem]" />
           </div>
 
           {/* Link columns */}
