@@ -596,7 +596,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       hasGeoMeta: Boolean(dbJob.anchorVilleSlug || dbJob.anchorRegionSlug),
       hasComparisonTable: /<table[\s>]/i.test(output.bodyHtml),
       hasPrimaryCta: /(href=["'][^"']*reserver|<button|cta-primary)/i.test(output.bodyHtml),
-      citationCount: output.citations.length,
+      // CORRECTIF 2026-06-20 — le tableau `output.citations` n'est rempli que si
+      // le LLM remplit explicitement le champ JSON `citations` (quasi jamais), ce
+      // qui faisait échouer le hard-gate « Intent informational sans citations »
+      // ALORS QUE le body contient bien ≥4 liens d'autorité injectés par
+      // `appendSourcesSection`/`injectExternalLinks` → demote tier_3_noindex +
+      // needs_review à tort. On prend le max avec le nombre RÉEL de liens externes
+      // présents dans le body rendu (aligné avec le scorer SEO + le commentaire du
+      // validator « max(citationCount, liens externes) »).
+      citationCount: Math.max(
+        output.citations.length,
+        (output.bodyHtml.match(/<a\b[^>]*href=["']https?:\/\//gi) ?? []).length,
+      ),
     });
     await logStep(
       contentGenJobId,
