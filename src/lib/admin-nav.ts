@@ -83,7 +83,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
-  "documents-interventions": "Documents interventions",
+  "documents-interventions": "Documents",
   "coaching-1to1": "Coaching 1-to-1",
   "image-bank": "Banque d'images",
   chatbot: "Chatbot",
@@ -543,13 +543,11 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🔔",
       group: "qualiopi",
     },
-    // ── Documents interventions (bibliothèque pédagogique par prestation) ──
-    {
-      href: `${base}/documents-interventions`,
-      label: "Documents interventions",
-      icon: "📂",
-      group: "documents-interventions",
-    },
+    // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
+    //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,
+    //   InterventionDocument) + Implémentations / Sites web (buckets de fichiers
+    //   génériques, ConsoleDocument). Autres : documents transverses (plaquette,
+    //   pièces admin). « Annuaire équipe » + « Importer un kit » = utilitaires.
     {
       href: `${base}/documents-interventions/formations`,
       label: "Formations",
@@ -564,8 +562,26 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/documents-interventions/audit`,
-      label: "Audits",
+      label: "Audit",
       icon: "🔍",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/implementations`,
+      label: "Implémentations",
+      icon: "⚙️",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/sites-web`,
+      label: "Sites web",
+      icon: "🌐",
+      group: "documents-interventions",
+    },
+    {
+      href: `${base}/documents-interventions/autres`,
+      label: "Autres",
+      icon: "📎",
       group: "documents-interventions",
     },
     {

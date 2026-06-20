@@ -6948,3 +6948,45 @@ model BarometerSnapshot {
 
   @@map("barometer_snapshots")
 }
+
+// ============================================================
+// CONSOLE DOCUMENTS — bibliothèque générique de documents admin
+// (hub « Documents » → sous-onglet « Autres » + buckets « Implémentations »
+//  et « Sites web »). Distinct des InterventionDocument (kits pédagogiques
+//  Qualiopi versionnés) : ici de simples fichiers uploadés à télécharger /
+//  imprimer. Stockage hors web-root (volume disque), servi uniquement via
+//  route admin authentifiée (jamais d'URL publique / CDN).
+// ============================================================
+
+/// Section (sous-onglet / bucket) d'un document console.
+enum ConsoleDocSection {
+  implementations
+  sites_web
+  autres
+}
+
+model ConsoleDocument {
+  id          String            @id @default(uuid()) @db.Uuid
+  section     ConsoleDocSection
+  title       String            @db.VarChar(200)
+  description String?           @db.Text
+
+  // Fichier — stocké sur volume disque hors web-root (cf. console-documents/storage.ts).
+  fileName    String  @map("file_name") @db.VarChar(255)
+  storagePath String  @map("storage_path") @db.VarChar(512)
+  mimeType    String  @map("mime_type") @db.VarChar(120)
+  sizeBytes   Int     @map("size_bytes")
+  hashSha256  String  @map("hash_sha256") @db.VarChar(64)
+
+  /// Donnée personnelle sensible (ex. casier judiciaire) — accès durci, jamais en cache.
+  sensitive Boolean @default(false)
+
+  sortOrder    Int     @default(0) @map("sort_order")
+  uploadedById String? @map("uploaded_by_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([section, sortOrder])
+  @@map("console_documents")
+}
