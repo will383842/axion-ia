@@ -21,7 +21,7 @@ jobs:
       name: production
       url: https://axion-ia.com
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
