@@ -1,8 +1,19 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
 //
 // Keyword tracking V2 — AdminPageShell + AdminPageHeader + AdminCard.
+// Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
+// badges → <AdminBadge>. Le formulaire de filtres garde les classes
+// utilitaires admin.css (legit — pas de composant filtre dédié).
 
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 
 function PositionTrend({ delta }: { delta: number | null }) {
@@ -56,6 +67,72 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
 
   const isGap = (position: number, impressions: number): boolean =>
     position >= 11 && position <= 20 && impressions > 100;
+
+  type KeywordRow = (typeof rows)[number] & { isCanib: boolean; gap: boolean };
+  const enrichedRows: ReadonlyArray<KeywordRow> = rows.map((r) => ({
+    ...r,
+    isCanib: (keywordCounts.get(r.keyword) ?? 0) > 1,
+    gap: isGap(Number(r.position), r.impressions),
+  }));
+
+  const columns: ReadonlyArray<AdminTableColumn<KeywordRow>> = [
+    { key: "keyword", header: "Keyword", cell: (r) => r.keyword },
+    {
+      key: "url",
+      header: "URL",
+      cell: (r) => (
+        <code className="text-[length:var(--text-admin-xs)]">
+          {r.targetUrl.replace(/^https?:\/\//, "")}
+        </code>
+      ),
+    },
+    {
+      key: "position",
+      header: "Pos.",
+      cell: (r) => <span className="tabular-nums">{Number(r.position).toFixed(1)}</span>,
+    },
+    {
+      key: "trend",
+      header: "Tendance",
+      cell: (r) => (
+        <PositionTrend delta={r.positionDelta !== null ? Number(r.positionDelta) : null} />
+      ),
+    },
+    {
+      key: "ctr",
+      header: "CTR",
+      cell: (r) => (r.ctr !== null ? `${(Number(r.ctr) * 100).toFixed(2)}%` : "—"),
+    },
+    {
+      key: "impressions",
+      header: "Imp.",
+      cell: (r) => <span className="tabular-nums">{r.impressions}</span>,
+    },
+    {
+      key: "source",
+      header: "Source",
+      cell: (r) => <AdminBadge tone="neutral">{r.source}</AdminBadge>,
+    },
+    {
+      key: "flag",
+      header: "Flag",
+      cell: (r) => (
+        <>
+          {r.gap ? <AdminBadge tone="warning">opportunity</AdminBadge> : null}{" "}
+          {r.isCanib ? <AdminBadge tone="destructive">cannibalization</AdminBadge> : null}
+        </>
+      ),
+    },
+    {
+      key: "sync",
+      header: "Sync",
+      cell: (r) => (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          {r.syncedAt.toISOString().slice(0, 10)}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -120,72 +197,16 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Keyword</th>
-                <th>URL</th>
-                <th>Pos.</th>
-                <th>Tendance</th>
-                <th>CTR</th>
-                <th>Imp.</th>
-                <th>Source</th>
-                <th>Flag</th>
-                <th>Sync</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="admin-table-empty">
-                    Aucun mot-clé tracké. Le worker sync GSC/SerpAPI tournera dès activation Sprint
-                    10.5/12.5.
-                  </td>
-                </tr>
-              ) : (
-                rows.map((r) => {
-                  const isCanib = (keywordCounts.get(r.keyword) ?? 0) > 1;
-                  const gap = isGap(Number(r.position), r.impressions);
-                  return (
-                    <tr key={r.id}>
-                      <td>{r.keyword}</td>
-                      <td>
-                        <code className="text-[length:var(--text-admin-xs)]">
-                          {r.targetUrl.replace(/^https?:\/\//, "")}
-                        </code>
-                      </td>
-                      <td className="tabular-nums">{Number(r.position).toFixed(1)}</td>
-                      <td>
-                        <PositionTrend
-                          delta={r.positionDelta !== null ? Number(r.positionDelta) : null}
-                        />
-                      </td>
-                      <td>{r.ctr !== null ? `${(Number(r.ctr) * 100).toFixed(2)}%` : "—"}</td>
-                      <td className="tabular-nums">{r.impressions}</td>
-                      <td>
-                        <span className="admin-badge">{r.source}</span>
-                      </td>
-                      <td>
-                        {gap ? (
-                          <span className="admin-badge admin-badge-warn">opportunity</span>
-                        ) : null}{" "}
-                        {isCanib ? (
-                          <span className="admin-badge admin-badge-danger">cannibalization</span>
-                        ) : null}
-                      </td>
-                      <td className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        {r.syncedAt.toISOString().slice(0, 10)}
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {enrichedRows.length === 0 ? (
+        <AdminEmptyState title="Aucun mot-clé tracké. Le worker sync GSC/SerpAPI tournera dès activation Sprint 10.5/12.5." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={enrichedRows}
+          getRowId={(r) => r.id}
+          caption="Liste des mots-clés trackés"
+        />
+      )}
     </AdminPageShell>
   );
 }

@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { Pause, Play, PlayCircle } from "lucide-react";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import {
   listCampaigns,
   pauseCampaign,
@@ -54,6 +62,48 @@ export async function CoverageListV2({
   const sector = (sp["serviceSector"] as ServiceSector | undefined) || undefined;
   const rows = await listCampaigns(status, sector);
   const base = `/fr/${adminPrefix}/content-gen/coverage`;
+
+  type CampaignRow = (typeof rows)[number];
+  const columns: ReadonlyArray<AdminTableColumn<CampaignRow>> = [
+    {
+      key: "name",
+      header: "Nom",
+      cell: (r) => (
+        <Link href={`${base}/${r.id}`} className="admin-link">
+          {r.name}
+        </Link>
+      ),
+    },
+    {
+      key: "sector",
+      header: "Secteur",
+      cell: (r) =>
+        r.serviceSector ? (
+          <AdminBadge tone="info">{SERVICE_SECTOR_LABELS[r.serviceSector]}</AdminBadge>
+        ) : (
+          <span className="admin-meta">—</span>
+        ),
+    },
+    { key: "scope", header: "Scope", cell: (r) => r.scope },
+    { key: "target", header: "Cible", cell: (r) => r.totalTargetCount },
+    { key: "status", header: "Statut", cell: (r) => r.status },
+    {
+      key: "counts",
+      header: "Gen/Pub/Fail",
+      cell: (r) => `${r.generatedCount} / ${r.publishedCount} / ${r.failedCount}`,
+    },
+    {
+      key: "cost",
+      header: "Coût est.",
+      cell: (r) =>
+        r.estimatedCostUsd ? `$${Number(r.estimatedCostUsd).toFixed(2)}` : "—",
+    },
+    {
+      key: "createdAt",
+      header: "Créée",
+      cell: (r) => r.createdAt.toISOString().slice(0, 10),
+    },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -118,109 +168,54 @@ export async function CoverageListV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Secteur</th>
-                <th>Scope</th>
-                <th>Cible</th>
-                <th>Statut</th>
-                <th>Gen/Pub/Fail</th>
-                <th>Coût est.</th>
-                <th>Créée</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="admin-table-empty">
-                    Aucune campagne. Créez-en une.
-                  </td>
-                </tr>
-              ) : (
-                rows.map((r) => (
-                  <tr key={r.id}>
-                    <td>
-                      <Link href={`${base}/${r.id}`} className="admin-link">
-                        {r.name}
-                      </Link>
-                    </td>
-                    <td>
-                      {r.serviceSector ? (
-                        <span className="admin-badge admin-badge-sector">
-                          {SERVICE_SECTOR_LABELS[r.serviceSector]}
-                        </span>
-                      ) : (
-                        <span className="admin-meta">—</span>
-                      )}
-                    </td>
-                    <td>{r.scope}</td>
-                    <td>{r.totalTargetCount}</td>
-                    <td>{r.status}</td>
-                    <td>
-                      {r.generatedCount} / {r.publishedCount} / {r.failedCount}
-                    </td>
-                    <td>
-                      {r.estimatedCostUsd
-                        ? `$${Number(r.estimatedCostUsd).toFixed(2)}`
-                        : "—"}
-                    </td>
-                    <td>{r.createdAt.toISOString().slice(0, 10)}</td>
-                    <td>
-                      <div className="flex items-center gap-[var(--space-admin-2)]">
-                        {r.status === "running" ? (
-                          <form action={pauseRow.bind(null, r.id)} className="inline">
-                            <button
-                              type="submit"
-                              title="Mettre en pause"
-                              aria-label="Mettre en pause cette campagne"
-                              className="admin-button-ghost"
-                            >
-                              <Pause size={16} />
-                            </button>
-                          </form>
-                        ) : r.status === "paused" ? (
-                          <form
-                            action={resumeRow.bind(null, r.id)}
-                            className="inline"
-                          >
-                            <button
-                              type="submit"
-                              title="Reprendre"
-                              aria-label="Reprendre cette campagne"
-                              className="admin-button-ghost"
-                            >
-                              <Play size={16} />
-                            </button>
-                          </form>
-                        ) : r.status === "draft" ? (
-                          <form
-                            action={launchRow.bind(null, r.id)}
-                            className="inline"
-                          >
-                            <button
-                              type="submit"
-                              title="Lancer la campagne"
-                              aria-label="Lancer cette campagne"
-                              className="admin-button-ghost"
-                            >
-                              <PlayCircle size={16} />
-                            </button>
-                          </form>
-                        ) : null}
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {rows.length === 0 ? (
+        <AdminEmptyState title="Aucune campagne. Créez-en une." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={rows}
+          getRowId={(r) => r.id}
+          caption="Liste des campagnes de couverture"
+          rowAction={(r) => (
+            <div className="flex items-center gap-[var(--space-admin-2)]">
+              {r.status === "running" ? (
+                <form action={pauseRow.bind(null, r.id)} className="inline">
+                  <button
+                    type="submit"
+                    title="Mettre en pause"
+                    aria-label="Mettre en pause cette campagne"
+                    className="admin-button-ghost"
+                  >
+                    <Pause size={16} />
+                  </button>
+                </form>
+              ) : r.status === "paused" ? (
+                <form action={resumeRow.bind(null, r.id)} className="inline">
+                  <button
+                    type="submit"
+                    title="Reprendre"
+                    aria-label="Reprendre cette campagne"
+                    className="admin-button-ghost"
+                  >
+                    <Play size={16} />
+                  </button>
+                </form>
+              ) : r.status === "draft" ? (
+                <form action={launchRow.bind(null, r.id)} className="inline">
+                  <button
+                    type="submit"
+                    title="Lancer la campagne"
+                    aria-label="Lancer cette campagne"
+                    className="admin-button-ghost"
+                  >
+                    <PlayCircle size={16} />
+                  </button>
+                </form>
+              ) : null}
+            </div>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }

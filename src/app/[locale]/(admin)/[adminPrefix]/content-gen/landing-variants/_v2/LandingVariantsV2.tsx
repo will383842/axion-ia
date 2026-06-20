@@ -3,7 +3,8 @@
 // Landing variants V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminTable } from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const V1_VARIANTS = [
@@ -15,6 +16,11 @@ const V1_VARIANTS = [
   { slug: "secteur-retail", label: "Secteur retail" },
 ];
 
+interface VariantRow {
+  slug: string;
+  label: string;
+}
+
 interface Props {
   adminPrefix: string;
 }
@@ -24,6 +30,12 @@ export async function LandingVariantsV2({ adminPrefix }: Props): Promise<React.R
     "default",
   ]);
 
+  const columns: ReadonlyArray<AdminTableColumn<VariantRow>> = [
+    { key: "slug", header: "Slug", cell: (v) => <code>{v.slug}</code> },
+    { key: "label", header: "Libellé", cell: (v) => v.label },
+    { key: "active", header: "Actif", cell: (v) => (active.includes(v.slug) ? "✅" : "🚫") },
+  ];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -31,39 +43,20 @@ export async function LandingVariantsV2({ adminPrefix }: Props): Promise<React.R
         description="6 variantes V1 (default + 5 sectoriels). Toggle ON/OFF + override par ville."
       />
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Slug</th>
-                <th>Libellé</th>
-                <th>Actif</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {V1_VARIANTS.map((v) => (
-                <tr key={v.slug}>
-                  <td>
-                    <code>{v.slug}</code>
-                  </td>
-                  <td>{v.label}</td>
-                  <td>{active.includes(v.slug) ? "✅" : "🚫"}</td>
-                  <td>
-                    <Link
-                      href={`/fr/${adminPrefix}/content-gen/landing-variants/${v.slug}`}
-                      className="admin-button-ghost"
-                    >
-                      Détail
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      <AdminTable
+        columns={columns}
+        rows={V1_VARIANTS}
+        getRowId={(v) => v.slug}
+        caption="Liste des variantes de landing ville"
+        rowAction={(v) => (
+          <Link
+            href={`/fr/${adminPrefix}/content-gen/landing-variants/${v.slug}`}
+            className="admin-button-ghost"
+          >
+            Détail
+          </Link>
+        )}
+      />
     </AdminPageShell>
   );
 }

@@ -3,7 +3,15 @@
 // Templates list V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminTable,
+  AdminBadge,
+  AdminEmptyState,
+} from "@/components/admin/ui";
+import type { AdminTableColumn } from "@/components/admin/ui";
 import { listTemplates, toggleTemplate } from "@/server/actions/content-gen/templates";
 import type { ContentType } from "../../../../../../../../prisma/generated/client";
 
@@ -18,6 +26,8 @@ const CONTENT_TYPES: ReadonlyArray<ContentType> = [
   "qa_derived",
   "faq_standalone",
 ] satisfies ReadonlyArray<ContentType>;
+
+type TemplateRow = Awaited<ReturnType<typeof listTemplates>>[number];
 
 interface Props {
   adminPrefix: string;
@@ -43,6 +53,36 @@ export async function TemplatesListV2({
     "use server";
     await toggleTemplate(String(formData.get("id")), formData.get("isActive") === "true");
   }
+
+  const columns: ReadonlyArray<AdminTableColumn<TemplateRow>> = [
+    { key: "type", header: "Type", cell: (r) => r.contentType },
+    {
+      key: "slug",
+      header: "Slug",
+      cell: (r) => (
+        <Link href={`${base}/${r.id}`} className="admin-link">
+          <code>{r.slug}</code>
+        </Link>
+      ),
+    },
+    { key: "variant", header: "Variant", cell: (r) => r.variant ?? "—" },
+    { key: "version", header: "Version", cell: (r) => `v${r.version}` },
+    {
+      key: "stats",
+      header: "Gen/Pub/Failed",
+      cell: (r) => `${r.generatedItems} / ${r.publishedItems} / ${r.failedItems}`,
+    },
+    { key: "model", header: "Modèle", cell: (r) => r.defaultModel ?? "—" },
+    {
+      key: "active",
+      header: "Actif",
+      cell: (r) => (
+        <AdminBadge tone={r.isActive ? "success" : "neutral"}>
+          {r.isActive ? "✅" : "🚫"}
+        </AdminBadge>
+      ),
+    },
+  ];
 
   return (
     <AdminPageShell width="wide">
@@ -114,67 +154,30 @@ export async function TemplatesListV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Slug</th>
-                <th>Variant</th>
-                <th>Version</th>
-                <th>Gen/Pub/Failed</th>
-                <th>Modèle</th>
-                <th>Actif</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="admin-table-empty">
-                    Aucun template — créez-en un.
-                  </td>
-                </tr>
-              ) : (
-                rows.map((r) => (
-                  <tr key={r.id}>
-                    <td>{r.contentType}</td>
-                    <td>
-                      <Link href={`${base}/${r.id}`} className="admin-link">
-                        <code>{r.slug}</code>
-                      </Link>
-                    </td>
-                    <td>{r.variant ?? "—"}</td>
-                    <td>v{r.version}</td>
-                    <td>
-                      {r.generatedItems} / {r.publishedItems} / {r.failedItems}
-                    </td>
-                    <td>{r.defaultModel ?? "—"}</td>
-                    <td>{r.isActive ? "✅" : "🚫"}</td>
-                    <td className="flex gap-[var(--space-admin-2)]">
-                      <Link href={`${base}/${r.id}`} className="admin-button-ghost">
-                        Éditer
-                      </Link>
-                      <form action={toggle} className="inline">
-                        <input type="hidden" name="id" value={r.id} />
-                        <input
-                          type="hidden"
-                          name="isActive"
-                          value={r.isActive ? "false" : "true"}
-                        />
-                        <button type="submit" className="admin-button-ghost">
-                          {r.isActive ? "Désactiver" : "Activer"}
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </AdminCard>
+      {rows.length === 0 ? (
+        <AdminEmptyState title="Aucun template — créez-en un." />
+      ) : (
+        <AdminTable
+          columns={columns}
+          rows={rows}
+          getRowId={(r) => r.id}
+          caption="Liste des templates de prompts"
+          rowAction={(r) => (
+            <div className="flex gap-[var(--space-admin-2)]">
+              <Link href={`${base}/${r.id}`} className="admin-button-ghost">
+                Éditer
+              </Link>
+              <form action={toggle} className="inline">
+                <input type="hidden" name="id" value={r.id} />
+                <input type="hidden" name="isActive" value={r.isActive ? "false" : "true"} />
+                <button type="submit" className="admin-button-ghost">
+                  {r.isActive ? "Désactiver" : "Activer"}
+                </button>
+              </form>
+            </div>
+          )}
+        />
+      )}
     </AdminPageShell>
   );
 }
