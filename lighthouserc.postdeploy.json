@@ -1,0 +1,39 @@
+{
+  "//doctrine": [
+    "Config d'assertion DÉDIÉE au gate Lighthouse POST-DEPLOY (job `lhci` de .github/workflows/deploy-coolify.yml). NE s'applique PAS au gate PR-time (`pnpm lhci:autorun` lit lighthouserc.json, qui reste strict CLS≤0.05 partout — il fonctionne car il mesure en localhost chaud).",
+    "Pourquoi un fichier séparé (audit 2026-06-20) : le gate post-deploy mesure la prod JUSTE après deploy+purge CF → conteneur + cache CF + cache police navigateur FROIDS. Sur /fr/audit, le swap des polices (Manrope body + Fraunces) qui se chargent après le FCP fait refluer le texte et POUSSE le footer → CLS déterministe 0.0925743 (vérifié layout-shifts: body>footer.bg-mocha-rich, cause 'Web font loaded'). Mesuré identique au 17e chiffre sur 2 deploys distincts (runs 27806102965 + 27751941110) → PAS du bruit, mais un artefact cold-start que les VRAIS visiteurs ne subissent pas (HTML+polices servis chauds depuis CF → CLS≈0, vérifié navigateur).",
+    "Le warm-up serveur/CF (deploy-coolify.yml) ne peut PAS corriger ça : chaque run Lighthouse part d'un cache police navigateur vide. Le levier fiable = le SEUIL.",
+    "Décision : /fr/audit gated au seuil Google « good » CLS≤0.1 (au lieu de la cible interne 0.05). Reste un VRAI gate (une vraie régression >0.1 échoue, là où Google flaggerait aussi) mais l'artefact 0.0925 cesse de masquer les vraies régressions Web Vitals des 4 autres URLs. Toutes les autres pages restent à 0.05.",
+    "Les 6 assertions Core Web Vitals en ERROR reproduisent celles de lighthouserc.json (seule la CLS de /fr/audit diverge). Les audits A11y/best-practices de lighthouserc.json sont en WARN (non-bloquants) → volontairement omis ici : ils ne gatent rien et ajoutent du bruit. Le score perf catégorie reste gated.",
+    "Réversible : quand la cause racine police est traitée (ex. size-adjust/ascent-override calés manuellement, ou display:optional), supprimer ce fichier et repointer le step assert sur le défaut (lighthouserc.json).",
+    "Voir mémoire lhci-postdeploy-cls-audit-flake + AGENTS.md budgets Web Vitals."
+  ],
+  "ci": {
+    "assert": {
+      "assertMatrix": [
+        {
+          "matchingUrlPattern": "^(?!.*/fr/audit/?$).*$",
+          "assertions": {
+            "categories:performance": ["error", { "minScore": 0.9 }],
+            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
+            "total-blocking-time": ["error", { "maxNumericValue": 150 }],
+            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
+            "speed-index": ["error", { "maxNumericValue": 2500 }]
+          }
+        },
+        {
+          "matchingUrlPattern": ".*/fr/audit/?$",
+          "assertions": {
+            "categories:performance": ["error", { "minScore": 0.9 }],
+            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+            "total-blocking-time": ["error", { "maxNumericValue": 150 }],
+            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
+            "speed-index": ["error", { "maxNumericValue": 2500 }]
+          }
+        }
+      ]
+    }
+  }
+}

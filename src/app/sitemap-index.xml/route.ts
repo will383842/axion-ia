@@ -26,10 +26,10 @@
 //     `xmlns:news`). Cf. `app/sitemap-news.xml/route.ts` + audit
 //     Sitemap+IndexNow 2026-05-15 AGENT 4 §4.1.3 P0-3.
 
-import { generateSitemaps } from "../sitemap";
+import { generateSitemaps, buildExcludeSlugsByType } from "../sitemap";
 import { SITE_URL } from "@/lib/seo";
 import { prisma } from "@/lib/prisma";
-import { countKnowledgePublicEntries } from "@/server/exporters/knowledge-sitemap";
+import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitemap";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -45,9 +45,10 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // KB DB-aware (entrées KB publiques, audience=public). Déplacé de la convention
   // metadata `generateSitemaps()` (où le compte au build stub.invalid = 0 → 404
   // fantômes) vers un Route Handler runtime. Cf. `app/sitemap-knowledge.xml/route.ts`.
-  // ⚠️ Listé CONDITIONNELLEMENT (cf. GET) : uniquement si `countKnowledgePublicEntries() > 0`.
-  // Tant qu'il n'y a aucune ressource KB publique (`/ressources` vide), on ne le
-  // référence PAS — sinon Google lirait un `<urlset>` vide et le flaggerait
+  // ⚠️ Listé CONDITIONNELLEMENT (cf. GET) : uniquement si `listKnowledgeSitemapEntries()`
+  // émet au moins une URL (après dédup vs builders TS). Tant qu'il n'y a aucune
+  // ressource KB publique émise (`/ressources` vide OU toutes dédupliquées), on ne
+  // le référence PAS — sinon Google lirait un `<urlset>` vide et le flaggerait
   // « Balise XML manquante : url ». Il réapparaît automatiquement dès publication.
   "/sitemap-knowledge.xml",
   // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
@@ -161,13 +162,22 @@ export async function GET(): Promise<Response> {
   const sitemaps = await generateSitemaps();
   const lastmods = await getDifferentiatedLastmod();
 
-  // Le sitemap KB n'est référencé que s'il a réellement du contenu public à
-  // lister. Sinon Google lirait un `<urlset>` vide (« Balise XML manquante :
-  // url »). `countKnowledgePublicEntries()` est DB-aware + stub-safe (=> 0 au
-  // build stub → non listé ; recompté au runtime via ISR/revalidate).
-  const kbPublicCount = await countKnowledgePublicEntries();
+  // Le sitemap KB n'est référencé que s'il émet RÉELLEMENT au moins une URL.
+  //
+  // Audit indexation 2026-06-20 — on gate désormais sur le nombre d'entrées
+  // EFFECTIVEMENT émises par `listKnowledgeSitemapEntries()` (= APRÈS dédup vs
+  // builders TS + filtre FR-translation + URL publique valide), et NON plus sur
+  // le compte brut `countKnowledgePublicEntries()`. Constat live : des entrées
+  // KB publiques toutes dédupliquées (slugs déjà émis par blog/cas-concrets/faq)
+  // donnaient `count > 0` mais `list = 0` → l'index listait un `<urlset>` VIDE
+  // que Google flagge « Balise XML manquante : url » — exactement ce que ce gate
+  // devait empêcher. On réutilise ici le MÊME calcul que la route
+  // `sitemap-knowledge.xml` → cohérence index↔route garantie. Stub-safe
+  // (`listKnowledgeSitemapEntries()` => [] au build stub → non listé ; recompté
+  // au runtime via ISR/revalidate).
+  const kbEmittableCount = (await listKnowledgeSitemapEntries(buildExcludeSlugsByType())).length;
   const customSitemaps = CUSTOM_SITEMAPS.filter(
-    (path) => path !== "/sitemap-knowledge.xml" || kbPublicCount > 0,
+    (path) => path !== "/sitemap-knowledge.xml" || kbEmittableCount > 0,
   );
 
   const generatedBlocks = sitemaps.map(({ id }) => {
