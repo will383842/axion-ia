@@ -63,11 +63,16 @@ export async function generateMetadata({
   // consolidation SEO robuste, indépendante de la redirection runtime.
   const cat = getFormationV2(slug);
   if (cat) {
+    // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
+    // Flag lu au runtime ; l'ISR régénère la meta en Phase B (sinon suffixe absent).
+    const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
+      ? " · Certifié Qualiopi, finançable OPCO/CPF."
+      : "";
     return buildProductMetadata({
       locale,
       path: `/formations/${cat.slugFr}`,
       title: cat.metaTitleFr,
-      description: cat.metaDescriptionFr,
+      description: `${cat.metaDescriptionFr}${qualiopiSuffix}`,
     });
   }
 
