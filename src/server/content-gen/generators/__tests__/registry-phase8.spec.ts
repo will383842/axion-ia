@@ -13,7 +13,12 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { getGenerator } from "../index";
+import {
+  getGenerator,
+  REGISTRY_CONTENT_TYPES,
+  REGISTERED_CONTENT_TYPE_NAMES,
+  isContentTypeRegistered,
+} from "../index";
 import {
   longTailKeywordGenerator,
   painPointSolutionGenerator,
@@ -67,6 +72,17 @@ describe("Phase 8 — Registry 12 generators", () => {
       expect(gen).toBe(PHASE8_GENERATORS_BY_SLUG[slug]);
     },
   );
+
+  it("registered-types LÉGER aligné 1:1 sur les clés de REGISTRY (zéro dérive)", () => {
+    // La liste légère (sans import de générateur, lue par l'orchestrateur) DOIT
+    // matcher exactement REGISTRY. Si un générateur est ajouté/retiré sans MAJ de
+    // registered-types.ts, ce test pète.
+    expect(new Set(REGISTERED_CONTENT_TYPE_NAMES)).toEqual(new Set(REGISTRY_CONTENT_TYPES));
+    expect(REGISTERED_CONTENT_TYPE_NAMES.length).toBe(REGISTRY_CONTENT_TYPES.length);
+    // landing_ville (CLI-only) n'est JAMAIS générable via le registre.
+    expect(isContentTypeRegistered("landing_ville" as ContentType)).toBe(false);
+    expect(isContentTypeRegistered("blog_article" as ContentType)).toBe(true);
+  });
 
   it("getGenerator throw si ContentType inconnu (anti-régression typo)", () => {
     expect(() => getGenerator("nonexistent_type" as ContentType)).toThrow(

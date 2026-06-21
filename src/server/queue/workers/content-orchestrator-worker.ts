@@ -25,9 +25,7 @@ import {
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
 import { buildWeightedSequence } from "@/server/content-gen/scheduler/type-sequence";
-import { isContentTypeRegistered } from "@/server/content-gen/generators";
-import { getNearbyVilles } from "@/lib/geo";
-import { getVille } from "@/content/villes";
+import { isContentTypeRegistered } from "@/server/content-gen/generators/registered-types";
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type {
@@ -168,12 +166,18 @@ export function sampleTargetSecteur(
  */
 const MAX_EXPANDED_VILLES = 300;
 const NEARBY_PER_ANCHOR = 25;
-export function expandVilleAnchors(
+// Import paresseux de geo/villes (modules lourds : ~2150 communes + case-studies)
+// → l'orchestrateur ne les charge QUE si une campagne utilise « ville & alentours ».
+export async function expandVilleAnchors(
   baseSlugs: string[],
   mode: string,
   radiusKm: number | null,
-): string[] {
+): Promise<string[]> {
   if (mode === "none" || baseSlugs.length === 0) return baseSlugs;
+  const [{ getNearbyVilles }, { getVille }] = await Promise.all([
+    import("@/lib/geo"),
+    import("@/content/villes"),
+  ]);
   const out = new Set<string>(baseSlugs);
   const radius = radiusKm && radiusKm > 0 ? radiusKm : 50;
   for (const slug of baseSlugs) {

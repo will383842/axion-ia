@@ -159,15 +159,17 @@ describe("multi-axes — helpers purs", () => {
     expect(sampleTargetSecteur({}, 0)).toBeNull();
   });
 
-  it("expandVilleAnchors : none = no-op ; radius étend ; ancres préservées", () => {
-    expect(expandVilleAnchors(["paris"], "none", null)).toEqual(["paris"]);
-    const expanded = expandVilleAnchors(["paris"], "radius", 50);
+  it("expandVilleAnchors : none = no-op ; radius étend ; ancres préservées", async () => {
+    expect(await expandVilleAnchors(["paris"], "none", null)).toEqual(["paris"]);
+    const expanded = await expandVilleAnchors(["paris"], "radius", 50);
     expect(expanded).toContain("paris");
     expect(expanded.length).toBeGreaterThan(1); // Paris a des communes < 50 km
     // same_departement : toutes les communes renvoyées partagent le département.
-    const dept = expandVilleAnchors(["lyon"], "same_departement", null);
+    const dept = await expandVilleAnchors(["lyon"], "same_departement", null);
     expect(dept).toContain("lyon");
-  });
+    // Timeout élargi : 1er appel = import dynamique de geo + villes (~2150 communes
+    // + case-studies), volontairement paresseux pour alléger le boot du worker.
+  }, 30000);
 });
 
 // ─── Comportement orchestrateur ──────────────────────────────────────────────
