@@ -12,6 +12,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  SignatureZone,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -61,17 +62,6 @@ export interface ConventionTripartiteData {
 // ============================================================
 
 const local = StyleSheet.create({
-  signatureLabel: {
-    fontSize: 9,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  signatureLu: {
-    fontSize: 8,
-    fontStyle: "italic",
-    marginBottom: 12,
-    color: pdfStyles.legalNote.color,
-  },
   subrogationNote: {
     fontSize: 9,
     fontStyle: "italic",
@@ -102,19 +92,6 @@ const local = StyleSheet.create({
   amountValue: {
     fontSize: 10,
     fontWeight: "bold",
-  },
-  threeColZone: {
-    flexDirection: "row" as const,
-    marginTop: 24,
-    gap: 12,
-  },
-  signatureBoxThird: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: pdfStyles.signatureBox.borderColor,
-    minHeight: 80,
-    padding: 8,
-    borderRadius: 2,
   },
 });
 
@@ -157,11 +134,11 @@ export function ConventionTripartitePdf({
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
             Organisme de formation (prestataire)
           </Text>
-          <FieldRow label="Raison sociale" value={identite.raisonSociale || "Axion-IA SAS"} />
-          <FieldRow label="SIRET" value={identite.siret || "—"} />
-          <FieldRow label="NDA" value={identite.nda || "—"} />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi || "—"} />
-          <FieldRow label="Siège social" value={identite.adresseSiege || "—"} />
+          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
+          <FieldRow label="SIRET" value={identite.siret} required />
+          <FieldRow label="NDA" value={identite.nda} required />
+          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
 
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
@@ -252,31 +229,19 @@ export function ConventionTripartitePdf({
           </Text>
         </DocSection>
 
-        {/* 6. Signatures — 3 colonnes */}
+        {/* 6. Signatures — 3 parties */}
         <DocSection title="6. Signatures">
-          <Text style={pdfStyles.paragraph}>
-            Fait à _________________________, le {data.dateConvention}
-          </Text>
-          <View style={local.threeColZone}>
-            <View style={local.signatureBoxThird}>
-              <Text style={local.signatureLabel}>Pour l'organisme de formation</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{identite.raisonSociale || "Axion-IA SAS"}</Text>
-              <Text style={pdfStyles.legalNote}>Nom, qualité, signature et cachet</Text>
-            </View>
-            <View style={local.signatureBoxThird}>
-              <Text style={local.signatureLabel}>Pour le client</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{data.client.raisonSociale}</Text>
-              <Text style={pdfStyles.legalNote}>Nom, qualité, signature et cachet</Text>
-            </View>
-            <View style={local.signatureBoxThird}>
-              <Text style={local.signatureLabel}>Pour l'OPCO</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{data.opco.nom}</Text>
-              <Text style={pdfStyles.legalNote}>Nom, qualité, signature et cachet</Text>
-            </View>
-          </View>
+          <SignatureZone
+            faitLe={`_________________________, le ${data.dateConvention}`}
+            parties={[
+              {
+                titre: "Pour l'organisme de formation",
+                nom: identite.raisonSociale || "Axion-IA SAS",
+              },
+              { titre: "Pour le client", nom: data.client.raisonSociale },
+              { titre: "Pour l'OPCO", nom: data.opco.nom },
+            ]}
+          />
         </DocSection>
       </QualiopiPage>
     </Document>

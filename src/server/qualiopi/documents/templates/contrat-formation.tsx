@@ -17,6 +17,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  SignatureZone,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -62,17 +63,6 @@ export interface ContratFormationData {
 // ============================================================
 
 const local = StyleSheet.create({
-  signatureLabel: {
-    fontSize: 9,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  signatureLu: {
-    fontSize: 8,
-    fontStyle: "italic",
-    marginBottom: 12,
-    color: pdfStyles.legalNote.color,
-  },
   listItem: {
     fontSize: 10,
     marginBottom: 2,
@@ -145,11 +135,11 @@ export function ContratFormationPdf({
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
             L'organisme de formation (prestataire)
           </Text>
-          <FieldRow label="Raison sociale" value={identite.raisonSociale || "Axion-IA SAS"} />
-          <FieldRow label="SIRET" value={identite.siret || "—"} />
-          <FieldRow label="NDA" value={identite.nda || "—"} />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi || "—"} />
-          <FieldRow label="Siège social" value={identite.adresseSiege || "—"} />
+          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
+          <FieldRow label="SIRET" value={identite.siret} required />
+          <FieldRow label="NDA" value={identite.nda} required />
+          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
           <FieldRow label="Téléphone" value={identite.telephone || "—"} />
 
@@ -259,28 +249,21 @@ export function ContratFormationPdf({
 
         {/* 7. Signatures */}
         <DocSection title="7. Signatures">
-          <Text style={local.signatureLu}>
-            Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie.
-          </Text>
-          <Text style={pdfStyles.paragraph}>
-            Fait à _________________________, le {data.dateContrat}
-          </Text>
-          <View style={pdfStyles.signatureZone}>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={local.signatureLabel}>Pour l'organisme de formation</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{identite.raisonSociale || "Axion-IA SAS"}</Text>
-              <Text style={pdfStyles.legalNote}>Nom, qualité, signature et cachet</Text>
-            </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={local.signatureLabel}>Le stagiaire</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{data.stagiaire.nomPrenom}</Text>
-              <Text style={pdfStyles.legalNote}>
-                Mention manuscrite « Lu et approuvé », date et signature
-              </Text>
-            </View>
-          </View>
+          <SignatureZone
+            intro="Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie."
+            faitLe={`_________________________, le ${data.dateContrat}`}
+            parties={[
+              {
+                titre: "Pour l'organisme de formation",
+                nom: identite.raisonSociale || "Axion-IA SAS",
+              },
+              {
+                titre: "Le stagiaire",
+                nom: data.stagiaire.nomPrenom,
+                mention: "Mention manuscrite « Lu et approuvé », date et signature",
+              },
+            ]}
+          />
         </DocSection>
       </QualiopiPage>
     </Document>
