@@ -129,6 +129,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/centre-aide\/\[slug\]\/page\.tsx$/,
   /^src\/app\/\[locale\]\/guides\/\[slug\]\/page\.tsx$/,
   /^src\/components\/content-gen\/Tombstone\.tsx$/,
+  // ArticleFaq — composant de rendu public (FAQPage) qui importe
+  // `sanitizeFaqAnswer` depuis src/server/content-gen/shared : le marqueur
+  // "content-gen" vient du seul chemin d'import, pas d'un couplage métier.
+  /^src\/components\/content-gen\/ArticleFaq\.tsx$/,
   /^src\/features\/admin-blog\/actions\.ts$/,
   /^src\/i18n\/routing\.ts$/,
   /^src\/lib\/image-utils\.ts$/,

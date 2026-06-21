@@ -163,8 +163,10 @@ const EXEMPT_FILES: ReadonlySet<string> = new Set([
 // ── Détection des montants € en dur ─────────────────────────────────────────
 // Couvre « 490 € », « 1 900 € HT », « 12 000 € », « 120 k€ » (FR) et « €490 »,
 // « €1,900 » (EN). `\s` matche les espaces insécables FR ( ,  ).
-const EURO_AFTER = /\d[\d.,\s]*(?:€|k€|M€|EUR\b|euros?\b)/i;
-const EURO_BEFORE = /(?:€|k€|M€)\s*\d/i;
+// Anti-récidive mojibake (2026-06-21) : `â‚¬` = corruption cp1252 du « € » (5
+// fichiers villes l'avaient → ÉVASION du garde-fou). Détecté comme un « € ».
+const EURO_AFTER = /\d[\d.,\s]*(?:€|â‚¬|k€|M€|EUR\b|euros?\b)/i;
+const EURO_BEFORE = /(?:€|â‚¬|k€|M€)\s*\d/i;
 
 function lineHasEuroLiteral(line: string, frOnly = false): boolean {
   // frOnly : seulement le format FR (nombre AVANT devise) ; ignore « €990 » (EN).

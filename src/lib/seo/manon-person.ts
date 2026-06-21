@@ -22,3 +22,30 @@ export async function getManonPersonJsonLd(): Promise<Record<string, unknown> | 
     .catch(() => null);
   return author?.slug === "manon" ? buildPersonManonJsonLd(author) : null;
 }
+
+/**
+ * Chantier templates 2026-06-21 — données VISIBLES de byline pour Manon, lues
+ * depuis le SSOT `AuthorProfile` (pas de valeurs hardcodées). Sert à enrichir
+ * `<AuthorByline>` (photo + rôle) sur les articles générés. Le nœud Person
+ * JSON-LD riche reste émis par `getManonPersonJsonLd` (la byline est alors
+ * appelée avec `emitJsonLd={false}` pour éviter un Person en double).
+ *
+ * PAS de LinkedIn : Manon est une persona IA, elle n'a aucun profil social
+ * (doctrine v2.1, `AuthorProfile.linkedinUrl` null) → aucun `sameAs` émis.
+ * Stub-safe : retourne `null` si la DB est inaccessible (build `stub.invalid`).
+ */
+export interface ManonBylineData {
+  readonly avatarUrl: string;
+  readonly bio: string;
+}
+
+export async function getManonByline(): Promise<ManonBylineData | null> {
+  const author = await prisma.authorProfile
+    .findUnique({ where: { slug: "manon" } })
+    .catch(() => null);
+  if (author?.slug !== "manon") return null;
+  return {
+    avatarUrl: author.photoUrl256,
+    bio: author.jobTitle,
+  };
+}

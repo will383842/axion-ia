@@ -1,26 +1,26 @@
-﻿// AUTO-GENERATED 2026-05-27 â€” T4 batch #21 Claude Code (Will).
-// Saint-Pierre-des-Corps (37, Indre-et-Loire) â€” gare TGV Tours, nÅ“ud ferroviaire LGV Atlantique, SNCF/logistique.
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #21 Claude Code (Will).
+// Saint-Pierre-des-Corps (37, Indre-et-Loire) — gare TGV Tours, nœud ferroviaire LGV Atlantique, SNCF/logistique.
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-des-Corps (37), commune industrielle et ferroviaire de l'agglomÃ©ration de Tours, accueille la gare TGV principale (LGV Atlantique, Paris Ã  1h05). NÅ“ud logistique SNCF historique, ateliers de maintenance ferroviaire. Tissu PME logistique/transport, TPE artisans, industries de transformation, commerces. Axion-IA y intervient pour tous types d'activitÃ©s.",
+    "Saint-Pierre-des-Corps (37), commune industrielle et ferroviaire de l'agglomération de Tours, accueille la gare TGV principale (LGV Atlantique, Paris à 1h05). Nœud logistique SNCF historique, ateliers de maintenance ferroviaire. Tissu PME logistique/transport, TPE artisans, industries de transformation, commerces. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Saint-Pierre-des-Corps (37), commune industrielle et ferroviaire de l'agglomÃ©ration de Tours, accueille la gare TGV principale (LGV Atlantique, Paris Ã  1h05). NÅ“ud logistique SNCF historique, ateliers de maintenance ferroviaire. Tissu PME logistique/transport, TPE artisans, industries de transformation, commerces. Axion-IA y intervient pour tous types d'activitÃ©s.",
+    "Saint-Pierre-des-Corps (37), commune industrielle et ferroviaire de l'agglomération de Tours, accueille la gare TGV principale (LGV Atlantique, Paris à 1h05). Nœud logistique SNCF historique, ateliers de maintenance ferroviaire. Tissu PME logistique/transport, TPE artisans, industries de transformation, commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient Ã  Saint-Pierre-des-Corps (37). Nous accompagnons tous types d'activitÃ©s : PME logistique et transport ferroviaire, ateliers maintenance SNCF, TPE artisans, industries de transformation, commerces et services aux entreprises du nÅ“ud TGV Tours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-des-Corps (37). Nous accompagnons tous types d'activités : PME logistique et transport ferroviaire, ateliers maintenance SNCF, TPE artisans, industries de transformation, commerces et services aux entreprises du nœud TGV Tours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient Ã  Saint-Pierre-des-Corps (37). Nous accompagnons tous types d'activitÃ©s : PME logistique et transport ferroviaire, ateliers maintenance SNCF, TPE artisans, industries de transformation, commerces et services aux entreprises du nÅ“ud TGV Tours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-des-Corps (37). Nous accompagnons tous types d'activités : PME logistique et transport ferroviaire, ateliers maintenance SNCF, TPE artisans, industries de transformation, commerces et services aux entreprises du nœud TGV Tours.",
   seoHook: "logistique transport & maintenance sncf",
   ecosystemFr:
-    "Saint-Pierre-des-Corps est le nÅ“ud ferroviaire de Tours MÃ©tropole : gare TGV LGV Atlantique (Paris Ã  1h05), ateliers SNCF de maintenance (technicentre historique), fret ferroviaire. Tissu PME logistique/transport, sous-traitants ferroviaire, industries de transformation, TPE artisans BTP, commerces.",
+    "Saint-Pierre-des-Corps est le nœud ferroviaire de Tours Métropole : gare TGV LGV Atlantique (Paris à 1h05), ateliers SNCF de maintenance (technicentre historique), fret ferroviaire. Tissu PME logistique/transport, sous-traitants ferroviaire, industries de transformation, TPE artisans BTP, commerces.",
   ecosystemEn:
-    "Saint-Pierre-des-Corps est le nÅ“ud ferroviaire de Tours MÃ©tropole : gare TGV LGV Atlantique (Paris Ã  1h05), ateliers SNCF de maintenance (technicentre historique), fret ferroviaire. Tissu PME logistique/transport, sous-traitants ferroviaire, industries de transformation, TPE artisans BTP, commerces.",
+    "Saint-Pierre-des-Corps est le nœud ferroviaire de Tours Métropole : gare TGV LGV Atlantique (Paris à 1h05), ateliers SNCF de maintenance (technicentre historique), fret ferroviaire. Tissu PME logistique/transport, sous-traitants ferroviaire, industries de transformation, TPE artisans BTP, commerces.",
   distancesFr:
-    "Gare TGV Saint-Pierre-des-Corps (Paris-Montparnasse Ã  1h05 LGV Atlantique). Tours centre Ã  5 min. AÃ©roport Tours Val de Loire Ã  15 min. JouÃ©-lÃ¨s-Tours Ã  10 min.",
+    "Gare TGV Saint-Pierre-des-Corps (Paris-Montparnasse à 1h05 LGV Atlantique). Tours centre à 5 min. Aéroport Tours Val de Loire à 15 min. Joué-lès-Tours à 10 min.",
   distancesEn:
-    "Gare TGV Saint-Pierre-des-Corps (Paris-Montparnasse Ã  1h05 LGV Atlantique). Tours centre Ã  5 min. AÃ©roport Tours Val de Loire Ã  15 min. JouÃ©-lÃ¨s-Tours Ã  10 min.",
+    "Gare TGV Saint-Pierre-des-Corps (Paris-Montparnasse à 1h05 LGV Atlantique). Tours centre à 5 min. Aéroport Tours Val de Loire à 15 min. Joué-lès-Tours à 10 min.",
   topSectorsNaf: [
     "Logistique & transport ferroviaire",
     "Maintenance SNCF (technicentre)",
@@ -30,42 +30,42 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Ã  Saint-Pierre-des-Corps : diagnostic adaptÃ© aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
-      en: "Audit IA Ã  Saint-Pierre-des-Corps : diagnostic adaptÃ© aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      fr: "Audit IA à Saint-Pierre-des-Corps : diagnostic adapté aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pierre-des-Corps : diagnostic adapté aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site Ã  Saint-Pierre-des-Corps : formats adaptÃ©s Ã  la logistique, maintenance ferroviaire, industrie, commerce. Vos Ã©quipes repartent autonomes.",
-      en: "Interventions IA sur site Ã  Saint-Pierre-des-Corps : formats adaptÃ©s Ã  la logistique, maintenance ferroviaire, industrie, commerce. Vos Ã©quipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Pierre-des-Corps : formats adaptés à la logistique, maintenance ferroviaire, industrie, commerce. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Saint-Pierre-des-Corps : formats adaptés à la logistique, maintenance ferroviaire, industrie, commerce. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "ImplÃ©mentation IA Ã  Saint-Pierre-des-Corps : maintenance prÃ©dictive ateliers ferroviaires, optimisation flux logistique, automatisation planification transport, classification documents industriels.",
-      en: "ImplÃ©mentation IA Ã  Saint-Pierre-des-Corps : maintenance prÃ©dictive ateliers ferroviaires, optimisation flux logistique, automatisation planification transport, classification documents industriels.",
+      fr: "Implémentation IA à Saint-Pierre-des-Corps : maintenance prédictive ateliers ferroviaires, optimisation flux logistique, automatisation planification transport, classification documents industriels.",
+      en: "Implémentation IA à Saint-Pierre-des-Corps : maintenance prédictive ateliers ferroviaires, optimisation flux logistique, automatisation planification transport, classification documents industriels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 Ã  Saint-Pierre-des-Corps : sessions dans vos locaux industriels, ateliers ou en visio. PME logistique, sous-traitants ferroviaire, artisans, gÃ©rants TPE/PME corpopÃ©trussiens.",
-      en: "Coaching 1-to-1 Ã  Saint-Pierre-des-Corps : sessions dans vos locaux industriels, ateliers ou en visio. PME logistique, sous-traitants ferroviaire, artisans, gÃ©rants TPE/PME corpopÃ©trussiens.",
+      fr: "Coaching 1-to-1 à Saint-Pierre-des-Corps : sessions dans vos locaux industriels, ateliers ou en visio. PME logistique, sous-traitants ferroviaire, artisans, gérants TPE/PME corpopétrussiens.",
+      en: "Coaching 1-to-1 à Saint-Pierre-des-Corps : sessions dans vos locaux industriels, ateliers ou en visio. PME logistique, sous-traitants ferroviaire, artisans, gérants TPE/PME corpopétrussiens.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il Ã  Saint-Pierre-des-Corps et Tours ?",
-      a: "Oui, Axion-IA intervient Ã  Saint-Pierre-des-Corps et toute Tours MÃ©tropole (Tours, JouÃ©-lÃ¨s-Tours, Chambray-lÃ¨s-Tours, Saint-Cyr-sur-Loire). Gare TGV sur place, Paris Ã  1h05.",
+      q: "Axion-IA intervient-il à Saint-Pierre-des-Corps et Tours ?",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-des-Corps et toute Tours Métropole (Tours, Joué-lès-Tours, Chambray-lès-Tours, Saint-Cyr-sur-Loire). Gare TGV sur place, Paris à 1h05.",
     },
     {
       q: "Travaillez-vous avec les PME logistique et transport ferroviaire ?",
-      a: "Oui, maintenance prÃ©dictive, optimisation flux, planification transport, classification documents techniques, automatisation reporting. Cas IA spÃ©cifiques au ferroviaire.",
+      a: "Oui, maintenance prédictive, optimisation flux, planification transport, classification documents techniques, automatisation reporting. Cas IA spécifiques au ferroviaire.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels SNCF ?",
-      a: "Oui, diagnostic IA adaptÃ© aux ateliers maintenance, gestion qualitÃ©, traÃ§abilitÃ© piÃ¨ces, automatisation processus industriels.",
+      a: "Oui, diagnostic IA adapté aux ateliers maintenance, gestion qualité, traçabilité pièces, automatisation processus industriels.",
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit sur place 1 190 â‚¬ HT, intervention 1 journÃ©e formation, coaching 1-to-1. Automatisation devis, gestion clients, facturation.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Automatisation devis, gestion clients, facturation.",
     },
     {
-      q: "Comment se rendre Ã  Saint-Pierre-des-Corps ?",
-      a: "Gare TGV Saint-Pierre-des-Corps directement sur place (Paris-Montparnasse 1h05). AccÃ¨s immÃ©diat. Frais de dÃ©placement en sus du forfait.",
+      q: "Comment se rendre à Saint-Pierre-des-Corps ?",
+      a: "Gare TGV Saint-Pierre-des-Corps directement sur place (Paris-Montparnasse 1h05). Accès immédiat. Frais de déplacement en sus du forfait.",
     },
   ],
 };

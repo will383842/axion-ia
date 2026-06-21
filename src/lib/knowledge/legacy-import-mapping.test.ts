@@ -45,6 +45,11 @@ function makeArticle(overrides: Partial<Article> = {}): Article {
     campaignId: null,
     directAnswer: null,
     faqJson: null,
+    // Chantier templates 2026-06-21 — point clé + citation expert (nullable).
+    keyTakeaway: null,
+    expertQuoteName: null,
+    expertQuoteTitle: null,
+    expertQuoteText: null,
     kbChunkIds: [],
     templateVariant: null,
     searchIntent: null,

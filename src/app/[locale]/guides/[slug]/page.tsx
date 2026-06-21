@@ -16,6 +16,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, permanentRedirect } from "next/navigation";
+import Image from "next/image";
 import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -30,11 +31,16 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
-import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
+import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
+import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
 // pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
@@ -115,6 +121,9 @@ export default async function GuidePiliersPage({ params }: Props) {
 
   // VIS-05 — co-émet le nœud Person Manon (résout l'author @id du HowTo/Article).
   const personJsonLd = await getManonPersonJsonLd();
+  // Chantier templates 2026-06-21 — byline enrichie (photo/rôle/LinkedIn depuis
+  // AuthorProfile). emitJsonLd={false} : le Person riche est personJsonLd ci-dessus.
+  const manonByline = await getManonByline();
 
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
@@ -141,14 +150,13 @@ export default async function GuidePiliersPage({ params }: Props) {
 
   // TOC Featured Snippets P0-4 — généré depuis les steps structurées si
   // disponibles. Chaque step.name devient un h2 dans le rendu, donc une entrée TOC.
+  // Chantier templates 2026-06-21 — FIX ancres mortes : l'ancre du sommaire
+  // DOIT être identique à l'`id` de la section (`step-${position}`, cf. rendu
+  // ci-dessous). Avant : l'ancre était un slug du nom → ne matchait jamais
+  // l'id `step-N` → clics du sommaire sans effet. `step-${position}` est unique.
   const tocItems: TocItem[] = guide.hasStructuredSteps
     ? guide.steps.map((s) => ({
-        anchor: s.name
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[̀-ͯ]/g, "")
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, ""),
+        anchor: `step-${s.position}`,
         title: s.name,
         level: 2 as const,
       }))
@@ -186,10 +194,36 @@ export default async function GuidePiliersPage({ params }: Props) {
           {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
           <AuthorByline
             authorName="Manon"
+            authorSlug="manon"
+            {...(manonByline
+              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+              : {})}
             publishedAt={guide.publishedAt ? new Date(guide.publishedAt) : null}
             lastReviewedAt={guide.updatedAt ? new Date(guide.updatedAt) : null}
+            emitJsonLd={false}
             locale="fr"
           />
+
+          {/* Chantier templates 2026-06-21 — héros Unsplash (avant : aucune
+              image sur /guides). LCP priority, ratio 16/9 réservé (CLS=0). */}
+          {guide.featuredImage ? (
+            <div className="mt-8">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                <Image
+                  src={guide.featuredImage}
+                  alt={guide.featuredImageAlt ?? guide.title}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={guide.photographerName}
+                photographerUrl={guide.photographerUrl}
+              />
+            </div>
+          ) : null}
 
           <div className="mt-12 space-y-6">
             {guide.hasStructuredSteps ? (
@@ -228,6 +262,25 @@ export default async function GuidePiliersPage({ params }: Props) {
           <AiContentDisclaimer locale="fr" className="mt-10" />
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — point clé + citation expert (rendus
+          seulement si renseignés). Hors de la section cream pour éviter une
+          imbrication de <Section>. */}
+      <ArticleKeyTakeaway text={guide.keyTakeaway} locale="fr" />
+      <ArticleExpertQuote quote={guide.expertQuote} locale="fr" />
+
+      {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées,
+          mêmes composants que /blog). guide.updatedAt = Date → ISO court. */}
+      <ArticleFaq
+        items={guide.faqItems}
+        locale="fr"
+        dateModified={guide.updatedAt.toISOString().slice(0, 10)}
+      />
+      <ArticleSources
+        items={guide.citations}
+        locale="fr"
+        lastVerified={guide.updatedAt.toISOString().slice(0, 10)}
+      />
 
       {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
       <SuggestedContent

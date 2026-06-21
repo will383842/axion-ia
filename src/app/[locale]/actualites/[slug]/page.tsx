@@ -19,6 +19,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect } from "next/navigation";
+import Image from "next/image";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -40,6 +41,12 @@ import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
+import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
+import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
+import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
+import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -214,6 +221,24 @@ export default async function NewsArticlePage({ params }: Props) {
   // Query séparée car Article n'expose pas la relation inverse Prisma.
   const citations = await loadArticleCitations(article.id);
 
+  // Chantier templates 2026-06-21 — FAQ (Article.faqJson, jamais rendue) +
+  // date de dernière mise à jour visible (avant : seulement « Publié le »).
+  const faqItems = parseFaqItems(article.faqJson);
+  const keyTakeaway = article.keyTakeaway ?? null;
+  const expertQuote =
+    article.expertQuoteName && article.expertQuoteText
+      ? {
+          name: article.expertQuoteName,
+          title: article.expertQuoteTitle ?? null,
+          text: article.expertQuoteText,
+        }
+      : null;
+  const updatedIso = article.updatedAt ? article.updatedAt.toISOString().slice(0, 10) : null;
+  const showUpdated =
+    article.updatedAt != null &&
+    article.publishedAt != null &&
+    article.updatedAt.getTime() !== article.publishedAt.getTime();
+
   // VIS-14 — NewsArticle émis SYSTÉMATIQUEMENT (avant : seulement si source
   // tracée → une actu éditoriale sans source n'avait aucun JSON-LD article).
   // La source (isBasedOn) reste conditionnelle côté factory.
@@ -308,6 +333,14 @@ export default async function NewsArticlePage({ params }: Props) {
               </time>
             </>
           ) : null}
+          {showUpdated && article.updatedAt ? (
+            <>
+              <span aria-hidden="true">·</span>
+              <time dateTime={article.updatedAt.toISOString()} className="tabular-nums">
+                Mis à jour le {article.updatedAt.toLocaleDateString("fr-FR")}
+              </time>
+            </>
+          ) : null}
           {sourceName ? (
             <>
               <span aria-hidden="true">·</span>
@@ -331,6 +364,28 @@ export default async function NewsArticlePage({ params }: Props) {
         </Container>
       </Section>
 
+      {/* Chantier templates 2026-06-21 — Héros (avant : aucune image sur les
+          actualités). Image Unsplash de l'Article, LCP priority, ratio réservé
+          (CLS=0), crédit Unsplash. Rendu seulement si featuredImage présent. */}
+      {article.featuredImage ? (
+        <Container className="max-w-4xl">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+            <Image
+              src={article.featuredImage}
+              alt={article.featuredImageAltFr ?? t.title}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              className="object-cover"
+            />
+          </div>
+          <UnsplashCredit
+            photographerName={article.featuredImagePhotographerName}
+            photographerUrl={article.featuredImagePhotographerUrl}
+          />
+        </Container>
+      ) : null}
+
       {tldrText ? (
         <Section>
           <Container className="max-w-3xl">
@@ -345,6 +400,9 @@ export default async function NewsArticlePage({ params }: Props) {
         </Section>
       ) : null}
 
+      {/* Chantier templates 2026-06-21 — « Point clé » (si renseigné). */}
+      <ArticleKeyTakeaway text={keyTakeaway} locale="fr" />
+
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
           {bodyHtmlFallback ? (
@@ -357,6 +415,18 @@ export default async function NewsArticlePage({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — citation d'expert nommé (si renseignée). */}
+      <ArticleExpertQuote quote={expertQuote} locale="fr" />
+
+      {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées).
+          citations (déjà chargées) mappées vers {name, url}. */}
+      <ArticleFaq items={faqItems} locale="fr" dateModified={updatedIso} />
+      <ArticleSources
+        items={citations.map((c) => ({ name: c.title, url: c.url }))}
+        locale="fr"
+        lastVerified={updatedIso}
+      />
 
       <Section>
         <Container className="max-w-3xl">

@@ -1042,6 +1042,14 @@ model Article {
   campaignId          String?        @map("campaign_id") @db.VarChar(25)
   directAnswer        String?        @map("direct_answer") @db.Text
   faqJson             Json?          @map("faq_json")
+  /// Chantier templates 2026-06-21 — « Point clé » (encadré distinct de la
+  /// réponse directe) + « Citation expert nommé » (levier AEO le plus fort).
+  /// Optionnels : rendus UNIQUEMENT s'ils contiennent du vrai contenu (admin
+  /// ou générateur). Jamais de valeur inventée. Migration additive nullable.
+  keyTakeaway         String?        @map("key_takeaway") @db.Text
+  expertQuoteName     String?        @map("expert_quote_name")
+  expertQuoteTitle    String?        @map("expert_quote_title")
+  expertQuoteText     String?        @map("expert_quote_text") @db.Text
   /// IDs des KnowledgeEntry KB utilisées (audit trail RAG)
   kbChunkIds          String[]       @default([]) @map("kb_chunk_ids")
   templateVariant     String?        @map("template_variant") @db.VarChar(60)

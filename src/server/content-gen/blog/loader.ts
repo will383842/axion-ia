@@ -18,6 +18,7 @@ import { resolveTier } from "@/content/blog";
 import { findArticleBySlug, listPublishedArticles } from "@/lib/knowledge/readers";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
+import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 
 /** Vue unifiée d'un article — shape consommée par la route /blog/[slug]. */
 export interface BlogArticleView {
@@ -56,6 +57,16 @@ export interface BlogArticleView {
   readonly photographerUrl: string | null;
   /** Sources citées (ContentCitation DB) — émises en isBasedOn JSON-LD. */
   readonly citations: ReadonlyArray<{ name: string; url: string }>;
+  /**
+   * FAQ structurée (Article.faqJson). Écrite par les generators mais jamais
+   * rendue avant le chantier templates 2026-06-21 → alimente l'accordéon FAQ
+   * `<ArticleFaq>` + le schéma FAQPage. Vide pour les articles FS legacy.
+   */
+  readonly faqItems: ReadonlyArray<{ question: string; answer: string }>;
+  /** « Point clé » (Article.keyTakeaway) — encadré distinct du directAnswer. null si vide. */
+  readonly keyTakeaway: string | null;
+  /** Citation d'expert nommé (Article.expertQuote*). null si non renseignée. */
+  readonly expertQuote: { name: string; title: string | null; text: string } | null;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
 }
@@ -86,6 +97,9 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     photographerName: null,
     photographerUrl: null,
     citations: [],
+    faqItems: [],
+    keyTakeaway: null,
+    expertQuote: null,
     fsPost: post,
   };
 }
@@ -152,6 +166,14 @@ export async function loadBlogArticleForView(
           select: {
             category: { select: { nameFr: true, slug: true } },
             tags: { select: { tag: { select: { nameFr: true } } } },
+            // Chantier templates 2026-06-21 — FAQ structurée (écrite par les
+            // generators, jamais rendue jusqu'ici). Alimente <ArticleFaq>.
+            faqJson: true,
+            // Point clé + citation expert (champs réels, rendus si remplis).
+            keyTakeaway: true,
+            expertQuoteName: true,
+            expertQuoteTitle: true,
+            expertQuoteText: true,
           },
         })
         .catch(() => null),
@@ -197,6 +219,16 @@ export async function loadBlogArticleForView(
         name: c.externalReference.title,
         url: c.externalReference.url,
       })),
+      faqItems: parseFaqItems(catTags?.faqJson),
+      keyTakeaway: catTags?.keyTakeaway ?? null,
+      expertQuote:
+        catTags?.expertQuoteName && catTags?.expertQuoteText
+          ? {
+              name: catTags.expertQuoteName,
+              title: catTags.expertQuoteTitle ?? null,
+              text: catTags.expertQuoteText,
+            }
+          : null,
       fsPost: null,
     };
   }
@@ -245,6 +277,9 @@ export async function loadBlogIndexForView(
     photographerName: null,
     photographerUrl: null,
     citations: [],
+    faqItems: [],
+    keyTakeaway: null,
+    expertQuote: null,
     fsPost: null,
   }));
 

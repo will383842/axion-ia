@@ -18,6 +18,7 @@
 
 import type { Locale } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
+import { parseFaqItems, type FaqItem } from "@/server/content-gen/shared/faq-items";
 
 export interface GuideStep {
   readonly position: number;
@@ -36,6 +37,20 @@ export interface GuideArticleView {
   readonly steps: ReadonlyArray<GuideStep>;
   readonly hasStructuredSteps: boolean;
   readonly readingTimeMinutes: number;
+  /** FAQ structurée (Article.faqJson) — accordéon + FAQPage (chantier 2026-06-21). */
+  readonly faqItems: ReadonlyArray<FaqItem>;
+  /** Sources citées (ContentCitation) — section Sources & méthodologie visible. */
+  readonly citations: ReadonlyArray<{ name: string; url: string }>;
+  /** Héros Unsplash (Article.featuredImage) — avant : aucune image sur /guides. */
+  readonly featuredImage: string | null;
+  readonly featuredImageAlt: string | null;
+  /** Attribution Unsplash (CGU §6) — null si pas de photo Unsplash. */
+  readonly photographerName: string | null;
+  readonly photographerUrl: string | null;
+  /** « Point clé » (Article.keyTakeaway). null si vide. */
+  readonly keyTakeaway: string | null;
+  /** Citation d'expert nommé (Article.expertQuote*). null si non renseignée. */
+  readonly expertQuote: { name: string; title: string | null; text: string } | null;
 }
 
 const GUIDE_TEMPLATE_VARIANT_PATTERNS = ["guide", "guide_pilier"];
@@ -137,6 +152,14 @@ export async function loadGuideForView(
   const body = translation.body || translation.bodyText || "";
   const steps = parseStepsFromBody(body);
 
+  // Chantier templates 2026-06-21 — sources citées (visibles + nofollow).
+  const rawCitations = await prisma.contentCitation
+    .findMany({
+      where: { articleId: translation.article.id },
+      include: { externalReference: { select: { url: true, title: true } } },
+    })
+    .catch(() => []);
+
   return {
     slug: translation.slug,
     title: translation.title,
@@ -148,6 +171,27 @@ export async function loadGuideForView(
     steps,
     hasStructuredSteps: steps.length >= 2,
     readingTimeMinutes: estimateReadingTime(body),
+    // Chantier templates 2026-06-21 — FAQ (jamais rendue) + sources visibles.
+    faqItems: parseFaqItems(translation.article.faqJson),
+    citations: rawCitations.map((c) => ({
+      name: c.externalReference.title,
+      url: c.externalReference.url,
+    })),
+    // Chantier templates 2026-06-21 — héros Unsplash (avant : aucune image).
+    featuredImage: translation.article.featuredImage ?? null,
+    featuredImageAlt: translation.article.featuredImageAltFr ?? null,
+    photographerName: translation.article.featuredImagePhotographerName ?? null,
+    photographerUrl: translation.article.featuredImagePhotographerUrl ?? null,
+    // Chantier templates 2026-06-21 — point clé + citation expert (si remplis).
+    keyTakeaway: translation.article.keyTakeaway ?? null,
+    expertQuote:
+      translation.article.expertQuoteName && translation.article.expertQuoteText
+        ? {
+            name: translation.article.expertQuoteName,
+            title: translation.article.expertQuoteTitle ?? null,
+            text: translation.article.expertQuoteText,
+          }
+        : null,
   };
 }
 

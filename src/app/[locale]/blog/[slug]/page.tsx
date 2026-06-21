@@ -24,6 +24,10 @@ import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
+import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
+import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { getVille } from "@/content/villes";
@@ -39,7 +43,7 @@ import { resolvePriceTokens } from "@/content/pricing-tokens";
 // VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
 import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
-import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -343,6 +347,10 @@ export default async function BlogArticle({ params }: Props) {
   // VIS-05/09 — Person Manon co-émis pour les articles DB (résout l'author @id
   // de la factory). FS legacy = auteur humain → pas de nœud Manon.
   const personJsonLd = isDbHtml ? await getManonPersonJsonLd() : null;
+  // Chantier templates 2026-06-21 — byline enrichie pour Manon (articles DB) :
+  // photo + rôle + LinkedIn lus depuis AuthorProfile. emitJsonLd={false} côté
+  // byline pour ne pas dupliquer le Person riche (personJsonLd ci-dessus).
+  const manonByline = isDbHtml ? await getManonByline() : null;
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
@@ -448,8 +456,12 @@ export default async function BlogArticle({ params }: Props) {
           <AuthorByline
             authorName={view.author}
             authorSlug={view.author.toLowerCase()}
+            {...(manonByline
+              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+              : {})}
             publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
             lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
+            emitJsonLd={!isDbHtml}
             locale={loc}
           />
         </Container>
@@ -485,6 +497,10 @@ export default async function BlogArticle({ params }: Props) {
           </Container>
         </Section>
       ) : null}
+
+      {/* Chantier templates 2026-06-21 — encadré « Point clé » (distinct du
+          TL;DR), rendu seulement si Article.keyTakeaway est renseigné. */}
+      <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
 
       {/* P3 TOC Featured Snippets — rendu si article > 1500 mots et headings détectés. */}
       {tocItems.length >= 2 && (
@@ -524,6 +540,27 @@ export default async function BlogArticle({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
+          le plus fort), rendue seulement si une vraie citation est renseignée. */}
+      <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
+
+      {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
+          (Article.faqJson) était déjà écrite par les generators mais jamais
+          rendue. Accordéon natif (0 JS), Speakable via data-faq-q/data-faq-a. */}
+      <ArticleFaq
+        items={view.faqItems}
+        locale={loc}
+        dateModified={view.updatedAt ?? view.publishedAt}
+      />
+
+      {/* Chantier templates 2026-06-21 — Sources & méthodologie visibles
+          (view.citations était émis JSON-LD only). Liens nofollow + date. */}
+      <ArticleSources
+        items={view.citations}
+        locale={loc}
+        lastVerified={view.updatedAt ?? view.publishedAt}
+      />
 
       {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
       {anchorVilleHref ? (
