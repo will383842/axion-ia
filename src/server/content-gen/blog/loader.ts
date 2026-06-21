@@ -63,6 +63,10 @@ export interface BlogArticleView {
    * `<ArticleFaq>` + le schéma FAQPage. Vide pour les articles FS legacy.
    */
   readonly faqItems: ReadonlyArray<{ question: string; answer: string }>;
+  /** « Point clé » (Article.keyTakeaway) — encadré distinct du directAnswer. null si vide. */
+  readonly keyTakeaway: string | null;
+  /** Citation d'expert nommé (Article.expertQuote*). null si non renseignée. */
+  readonly expertQuote: { name: string; title: string | null; text: string } | null;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
 }
@@ -94,6 +98,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     photographerUrl: null,
     citations: [],
     faqItems: [],
+    keyTakeaway: null,
+    expertQuote: null,
     fsPost: post,
   };
 }
@@ -163,6 +169,11 @@ export async function loadBlogArticleForView(
             // Chantier templates 2026-06-21 — FAQ structurée (écrite par les
             // generators, jamais rendue jusqu'ici). Alimente <ArticleFaq>.
             faqJson: true,
+            // Point clé + citation expert (champs réels, rendus si remplis).
+            keyTakeaway: true,
+            expertQuoteName: true,
+            expertQuoteTitle: true,
+            expertQuoteText: true,
           },
         })
         .catch(() => null),
@@ -209,6 +220,15 @@ export async function loadBlogArticleForView(
         url: c.externalReference.url,
       })),
       faqItems: parseFaqItems(catTags?.faqJson),
+      keyTakeaway: catTags?.keyTakeaway ?? null,
+      expertQuote:
+        catTags?.expertQuoteName && catTags?.expertQuoteText
+          ? {
+              name: catTags.expertQuoteName,
+              title: catTags.expertQuoteTitle ?? null,
+              text: catTags.expertQuoteText,
+            }
+          : null,
       fsPost: null,
     };
   }
@@ -258,6 +278,8 @@ export async function loadBlogIndexForView(
     photographerUrl: null,
     citations: [],
     faqItems: [],
+    keyTakeaway: null,
+    expertQuote: null,
     fsPost: null,
   }));
 

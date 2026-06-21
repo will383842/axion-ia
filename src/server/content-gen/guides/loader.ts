@@ -47,6 +47,10 @@ export interface GuideArticleView {
   /** Attribution Unsplash (CGU §6) — null si pas de photo Unsplash. */
   readonly photographerName: string | null;
   readonly photographerUrl: string | null;
+  /** « Point clé » (Article.keyTakeaway). null si vide. */
+  readonly keyTakeaway: string | null;
+  /** Citation d'expert nommé (Article.expertQuote*). null si non renseignée. */
+  readonly expertQuote: { name: string; title: string | null; text: string } | null;
 }
 
 const GUIDE_TEMPLATE_VARIANT_PATTERNS = ["guide", "guide_pilier"];
@@ -178,6 +182,16 @@ export async function loadGuideForView(
     featuredImageAlt: translation.article.featuredImageAltFr ?? null,
     photographerName: translation.article.featuredImagePhotographerName ?? null,
     photographerUrl: translation.article.featuredImagePhotographerUrl ?? null,
+    // Chantier templates 2026-06-21 — point clé + citation expert (si remplis).
+    keyTakeaway: translation.article.keyTakeaway ?? null,
+    expertQuote:
+      translation.article.expertQuoteName && translation.article.expertQuoteText
+        ? {
+            name: translation.article.expertQuoteName,
+            title: translation.article.expertQuoteTitle ?? null,
+            text: translation.article.expertQuoteText,
+          }
+        : null,
   };
 }
 

@@ -44,6 +44,8 @@ import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitiz
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
+import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
@@ -222,6 +224,15 @@ export default async function NewsArticlePage({ params }: Props) {
   // Chantier templates 2026-06-21 — FAQ (Article.faqJson, jamais rendue) +
   // date de dernière mise à jour visible (avant : seulement « Publié le »).
   const faqItems = parseFaqItems(article.faqJson);
+  const keyTakeaway = article.keyTakeaway ?? null;
+  const expertQuote =
+    article.expertQuoteName && article.expertQuoteText
+      ? {
+          name: article.expertQuoteName,
+          title: article.expertQuoteTitle ?? null,
+          text: article.expertQuoteText,
+        }
+      : null;
   const updatedIso = article.updatedAt ? article.updatedAt.toISOString().slice(0, 10) : null;
   const showUpdated =
     article.updatedAt != null &&
@@ -389,6 +400,9 @@ export default async function NewsArticlePage({ params }: Props) {
         </Section>
       ) : null}
 
+      {/* Chantier templates 2026-06-21 — « Point clé » (si renseigné). */}
+      <ArticleKeyTakeaway text={keyTakeaway} locale="fr" />
+
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
           {bodyHtmlFallback ? (
@@ -401,6 +415,9 @@ export default async function NewsArticlePage({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — citation d'expert nommé (si renseignée). */}
+      <ArticleExpertQuote quote={expertQuote} locale="fr" />
 
       {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées).
           citations (déjà chargées) mappées vers {name, url}. */}

@@ -26,6 +26,8 @@ import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
+import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { getVille } from "@/content/villes";
@@ -496,6 +498,10 @@ export default async function BlogArticle({ params }: Props) {
         </Section>
       ) : null}
 
+      {/* Chantier templates 2026-06-21 — encadré « Point clé » (distinct du
+          TL;DR), rendu seulement si Article.keyTakeaway est renseigné. */}
+      <ArticleKeyTakeaway text={view.keyTakeaway} locale={loc} />
+
       {/* P3 TOC Featured Snippets — rendu si article > 1500 mots et headings détectés. */}
       {tocItems.length >= 2 && (
         <Container className="max-w-3xl">
@@ -534,6 +540,10 @@ export default async function BlogArticle({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — citation d'expert nommé (levier AEO
+          le plus fort), rendue seulement si une vraie citation est renseignée. */}
+      <ArticleExpertQuote quote={view.expertQuote} locale={loc} />
 
       {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
           (Article.faqJson) était déjà écrite par les generators mais jamais

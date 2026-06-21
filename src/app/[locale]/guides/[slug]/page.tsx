@@ -38,6 +38,8 @@ import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { ArticleKeyTakeaway } from "@/components/content-gen/ArticleKeyTakeaway";
+import { ArticleExpertQuote } from "@/components/content-gen/ArticleExpertQuote";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
@@ -260,6 +262,12 @@ export default async function GuidePiliersPage({ params }: Props) {
           <AiContentDisclaimer locale="fr" className="mt-10" />
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — point clé + citation expert (rendus
+          seulement si renseignés). Hors de la section cream pour éviter une
+          imbrication de <Section>. */}
+      <ArticleKeyTakeaway text={guide.keyTakeaway} locale="fr" />
+      <ArticleExpertQuote quote={guide.expertQuote} locale="fr" />
 
       {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées,
           mêmes composants que /blog). guide.updatedAt = Date → ISO court. */}
