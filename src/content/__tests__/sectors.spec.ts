@@ -6,7 +6,12 @@ import {
   isClientSectorSlug,
   clientSectorLabel,
 } from "@/content/sectors";
-import { SECTOR_PAIN_MATRIX } from "@/server/content-gen/kb/sector-pain-matrix";
+import {
+  SECTOR_PAIN_MATRIX,
+  getSectorPainContext,
+  type Secteur,
+  type Verticale,
+} from "@/server/content-gen/kb/sector-pain-matrix";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 
 // Miroir runtime du type `BlogSector` (src/content/blog/types.ts:26). Si ce type
@@ -63,6 +68,33 @@ describe("SSOT secteurs client (src/content/sectors.ts)", () => {
         expect(kbSlugs.has(tag)).toBe(true);
       }
     }
+  });
+
+  it("pain-matrix : couverture COMPLÈTE 50/50 (10 secteurs × 5 verticales)", () => {
+    const verticales: Verticale[] = [
+      "audits",
+      "interventions_formations",
+      "implementations",
+      "un_a_un",
+      "sites_web_augmentes",
+    ];
+    const secteurs = CLIENT_SECTOR_SLUGS as readonly Secteur[];
+    expect(SECTOR_PAIN_MATRIX.length).toBe(secteurs.length * verticales.length);
+    for (const s of secteurs) {
+      for (const v of verticales) {
+        const ctx = getSectorPainContext(s, v);
+        expect(ctx, `combo manquant : ${s} × ${v}`).toBeDefined();
+        // Qualité minimale : tous les champs riches renseignés.
+        expect(ctx!.painStatement.length).toBeGreaterThan(20);
+        expect(ctx!.benefitMeasured.length).toBeGreaterThan(20);
+        expect(ctx!.sectorLexicon.length).toBeGreaterThanOrEqual(5);
+      }
+    }
+  });
+
+  it("pain-matrix : aucun doublon de combinaison secteur × verticale", () => {
+    const keys = SECTOR_PAIN_MATRIX.map((c) => `${c.secteur}::${c.verticale}`);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 
   it("helpers : lookup, garde de type, libellé", () => {
