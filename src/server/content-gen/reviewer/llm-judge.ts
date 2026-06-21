@@ -38,6 +38,18 @@ export const JUDGE_THRESHOLDS = {
   IMPROVE_MIN: 6.0,
 } as const;
 
+/**
+ * Seuils du juge — pilotables en base (chantier 2026-06-21, Étape 5 « réglages »).
+ * `reviewArticle` lit la clé ContentGenConfig `judge_thresholds`
+ * (`{ publishMin?, improveMin? }`) et passe les valeurs ici ; défaut =
+ * `JUDGE_THRESHOLDS` (8.5 / 6.0). Will peut donc ajuster la barre qualité SANS
+ * redéploiement. Les fonctions pures gardent le défaut → tests inchangés.
+ */
+export interface JudgeThresholds {
+  readonly PUBLISH_MIN: number;
+  readonly IMPROVE_MIN: number;
+}
+
 // ── Types ────────────────────────────────────────────────────────────────────
 
 export type JudgeVerdict = "publish" | "improve" | "reject";
@@ -263,11 +275,15 @@ function asIssues(value: unknown): JudgeIssue[] {
   return out;
 }
 
-function deriveVerdict(globalScore: number, issues: ReadonlyArray<JudgeIssue>): JudgeVerdict {
+function deriveVerdict(
+  globalScore: number,
+  issues: ReadonlyArray<JudgeIssue>,
+  thresholds: JudgeThresholds = JUDGE_THRESHOLDS,
+): JudgeVerdict {
   const hasP0 = issues.some((i) => i.severity === "P0");
   const hasP1 = issues.some((i) => i.severity === "P1");
-  if (globalScore < JUDGE_THRESHOLDS.IMPROVE_MIN || hasP0) return "reject";
-  if (globalScore < JUDGE_THRESHOLDS.PUBLISH_MIN || hasP1) return "improve";
+  if (globalScore < thresholds.IMPROVE_MIN || hasP0) return "reject";
+  if (globalScore < thresholds.PUBLISH_MIN || hasP1) return "improve";
   return "publish";
 }
 
@@ -281,7 +297,10 @@ function deriveVerdict(globalScore: number, issues: ReadonlyArray<JudgeIssue>): 
  *    (n'accepte pas le verdict LLM tel quel — anti-hallucination).
  *  - Si parse fail (JSON invalide) → throw avec contexte.
  */
-export function parseJudgeResponse(raw: string): JudgeResult {
+export function parseJudgeResponse(
+  raw: string,
+  thresholds: JudgeThresholds = JUDGE_THRESHOLDS,
+): JudgeResult {
   // Strip ```json ... ``` fences si presents.
   let text = raw.trim();
   if (text.startsWith("```")) {
@@ -327,7 +346,7 @@ export function parseJudgeResponse(raw: string): JudgeResult {
   const globalScore = Math.round((llmWeightedSum / 0.9) * 10) / 10;
 
   const issues = asIssues(obj["issues"]);
-  const verdict = deriveVerdict(globalScore, issues);
+  const verdict = deriveVerdict(globalScore, issues, thresholds);
   const reasoning = typeof obj["reasoning"] === "string" ? obj["reasoning"] : "";
 
   return { verdict, globalScore, dimensions, issues, reasoning };
@@ -346,8 +365,16 @@ export function parseJudgeResponse(raw: string): JudgeResult {
  *
  * Echec gracieux : si l'API throw (rate limit, auth, etc.) — la fonction relais
  * l'erreur au caller (worker logue + bascule status `error`).
+ *
+ * Étape 5 (réglages DB) — `thresholds` injecté par l'appelant (le worker
+ * `content-quality-improver` lit la clé ContentGenConfig `judge_thresholds` et
+ * passe les valeurs). Défaut = `JUDGE_THRESHOLDS` (8.5 / 6.0). La lecture config
+ * reste DANS le worker pour que `llm-judge` demeure pur (testable sans server action).
  */
-export async function reviewArticle(article: ArticleForReview): Promise<JudgeResult> {
+export async function reviewArticle(
+  article: ArticleForReview,
+  thresholds: JudgeThresholds = JUDGE_THRESHOLDS,
+): Promise<JudgeResult> {
   const userPrompt = buildUserPrompt(article);
   const response = await anthropicProvider.generate({
     jobId: article.jobId,
@@ -360,7 +387,7 @@ export async function reviewArticle(article: ArticleForReview): Promise<JudgeRes
     temperature: 0.2,
   });
 
-  const baseResult = parseJudgeResponse(response.output);
+  const baseResult = parseJudgeResponse(response.output, thresholds);
 
   // ── Dimension linguisticDiversity (Phase G) ──────────────────────────────
   const textForAnalysis = article.bodyText ?? article.bodyHtml;
@@ -411,7 +438,7 @@ export async function reviewArticle(article: ArticleForReview): Promise<JudgeRes
   const finalGlobalScore =
     Math.round((llmWeightedSum + dimensionScore * LINGUISTIC_DIVERSITY_WEIGHT) * 10) / 10;
 
-  const finalVerdict = deriveVerdict(finalGlobalScore, allIssues);
+  const finalVerdict = deriveVerdict(finalGlobalScore, allIssues, thresholds);
 
   const linguisticDiversity: LinguisticDiversityDimension = {
     score: diversityScore,

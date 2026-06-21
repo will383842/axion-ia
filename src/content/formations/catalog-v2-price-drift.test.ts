@@ -43,7 +43,7 @@ describe("Garde anti-dérive — prix prose catalog-v2 ⊆ FORMATION_PRICE_MATRI
       if (t.startsWith("//") || t.startsWith("*") || t.startsWith("/*")) return; // commentaires
       // Montants « 1 200 € », « 990 € », espaces normaux/insécables/fins.
       for (const m of line.matchAll(/(\d[\d   ]*\d|\d)\s*€/g)) {
-        const n = Number.parseInt(m[1].replace(/\D/g, ""), 10);
+        const n = Number.parseInt((m[1] ?? "").replace(/\D/g, ""), 10);
         if (Number.isNaN(n)) continue;
         scanned += 1;
         if (!values.has(n)) {

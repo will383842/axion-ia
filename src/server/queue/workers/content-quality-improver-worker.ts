@@ -20,7 +20,12 @@ import {
 } from "@/server/actions/content-gen/_settings";
 import { logGeneration, logStep } from "@/server/content-gen/shared/generation-log";
 // B.8 P1.5 P0-3 — LLM-as-judge (Claude Sonnet reviewer multi-dim).
-import { reviewArticle, type JudgeResult } from "@/server/content-gen/reviewer/llm-judge";
+import {
+  reviewArticle,
+  JUDGE_THRESHOLDS,
+  type JudgeResult,
+  type JudgeThresholds,
+} from "@/server/content-gen/reviewer/llm-judge";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // P1-3 — Sentry capture pour observabilité prod (audit S+4-C).
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -190,6 +195,21 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   //  - publish : status=needs_review (review queue humain final)
   //  - improve : increment attempts, re-queue jusqu'a maxAttemptsAuto
   //  - reject : status=needs_review (escalate Will) + log P0 issues
+  // Étape 5 (réglages DB) — seuils du juge LLM pilotables sans redéploiement
+  // (clé ContentGenConfig `judge_thresholds`). Défaut = valeurs éditoriales Will
+  // (8.5 / 6.0). Fallback sûr sur le défaut si DB indispo ou valeur absente.
+  const jt = await readContentGenConfig<{ publishMin?: number; improveMin?: number }>(
+    "judge_thresholds",
+    {},
+  );
+  const clampJudge = (n: number) => Math.max(0, Math.min(10, n));
+  const judgeThresholds: JudgeThresholds = {
+    PUBLISH_MIN:
+      typeof jt.publishMin === "number" ? clampJudge(jt.publishMin) : JUDGE_THRESHOLDS.PUBLISH_MIN,
+    IMPROVE_MIN:
+      typeof jt.improveMin === "number" ? clampJudge(jt.improveMin) : JUDGE_THRESHOLDS.IMPROVE_MIN,
+  };
+
   const output = dbJob.outputJsonRaw as Record<string, unknown> | null;
   let judge: JudgeResult | null = null;
   if (output && typeof output["title"] === "string" && typeof output["bodyHtml"] === "string") {
@@ -222,7 +242,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
           return pk ? { primaryKeyword: pk } : {};
         })(),
         jobId: contentGenJobId,
-      });
+      }, judgeThresholds);
     } catch (err) {
       await logGeneration({
         jobId: contentGenJobId,
