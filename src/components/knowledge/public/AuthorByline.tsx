@@ -16,6 +16,12 @@ export interface AuthorBylineProps {
   readonly lastReviewedAt?: Date | null;
   readonly factChecked?: boolean;
   readonly locale: "fr" | "en";
+  /**
+   * Émet le nœud Person JSON-LD de la byline. Défaut `true` (rétro-compat).
+   * Passer `false` sur les pages qui co-émettent DÉJÀ un Person riche
+   * (`getManonPersonJsonLd`) pour éviter un nœud Person en double.
+   */
+  readonly emitJsonLd?: boolean;
 }
 
 export function AuthorByline(props: AuthorBylineProps) {
@@ -29,6 +35,7 @@ export function AuthorByline(props: AuthorBylineProps) {
     lastReviewedAt,
     factChecked,
     locale,
+    emitJsonLd = true,
   } = props;
   const isFr = locale === "fr";
 
@@ -90,7 +97,7 @@ export function AuthorByline(props: AuthorBylineProps) {
           ) : null}
         </p>
       </div>
-      <JsonLd data={personJsonLd} />
+      {emitJsonLd ? <JsonLd data={personJsonLd} /> : null}
     </aside>
   );
 }

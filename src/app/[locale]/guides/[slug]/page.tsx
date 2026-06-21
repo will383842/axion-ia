@@ -31,7 +31,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
-import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
@@ -119,6 +119,9 @@ export default async function GuidePiliersPage({ params }: Props) {
 
   // VIS-05 — co-émet le nœud Person Manon (résout l'author @id du HowTo/Article).
   const personJsonLd = await getManonPersonJsonLd();
+  // Chantier templates 2026-06-21 — byline enrichie (photo/rôle/LinkedIn depuis
+  // AuthorProfile). emitJsonLd={false} : le Person riche est personJsonLd ci-dessus.
+  const manonByline = await getManonByline();
 
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
@@ -189,8 +192,13 @@ export default async function GuidePiliersPage({ params }: Props) {
           {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
           <AuthorByline
             authorName="Manon"
+            authorSlug="manon"
+            {...(manonByline
+              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+              : {})}
             publishedAt={guide.publishedAt ? new Date(guide.publishedAt) : null}
             lastReviewedAt={guide.updatedAt ? new Date(guide.updatedAt) : null}
+            emitJsonLd={false}
             locale="fr"
           />
 

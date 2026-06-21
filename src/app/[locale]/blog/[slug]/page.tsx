@@ -41,7 +41,7 @@ import { resolvePriceTokens } from "@/content/pricing-tokens";
 // VIS-09 — articles DB (content-gen, auteur Manon) émis via la factory
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
 import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
-import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
+import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -345,6 +345,10 @@ export default async function BlogArticle({ params }: Props) {
   // VIS-05/09 — Person Manon co-émis pour les articles DB (résout l'author @id
   // de la factory). FS legacy = auteur humain → pas de nœud Manon.
   const personJsonLd = isDbHtml ? await getManonPersonJsonLd() : null;
+  // Chantier templates 2026-06-21 — byline enrichie pour Manon (articles DB) :
+  // photo + rôle + LinkedIn lus depuis AuthorProfile. emitJsonLd={false} côté
+  // byline pour ne pas dupliquer le Person riche (personJsonLd ci-dessus).
+  const manonByline = isDbHtml ? await getManonByline() : null;
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
@@ -450,8 +454,12 @@ export default async function BlogArticle({ params }: Props) {
           <AuthorByline
             authorName={view.author}
             authorSlug={view.author.toLowerCase()}
+            {...(manonByline
+              ? { authorAvatarUrl: manonByline.avatarUrl, authorBio: manonByline.bio }
+              : {})}
             publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
             lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
+            emitJsonLd={!isDbHtml}
             locale={loc}
           />
         </Container>
