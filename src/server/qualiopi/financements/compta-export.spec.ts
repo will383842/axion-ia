@@ -31,11 +31,11 @@ function makeFacture(overrides: Partial<FactureCsvRow> = {}): FactureCsvRow {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("facturesToCsv", () => {
-  it("génère un en-tête avec 7 colonnes séparées par `;`", () => {
+  it("génère un en-tête avec 10 colonnes séparées par `;` (régime + TVA + TTC)", () => {
     const csv = facturesToCsv([]);
     const header = csv.split("\n")[0]!;
     const cols = header.split(";");
-    expect(cols).toHaveLength(7);
+    expect(cols).toHaveLength(10);
   });
 
   it("retourne seulement l'en-tête si la liste est vide", () => {
@@ -104,7 +104,7 @@ describe("facturesToCsv", () => {
     expect(dataLine.endsWith("sess-test-uuid")).toBe(true);
   });
 
-  it("chaque ligne a bien 7 colonnes", () => {
+  it("chaque ligne a bien 10 colonnes", () => {
     const factures = [
       makeFacture(),
       makeFacture({ numero: "AXI-FACT-2026-002", destinataire: "opco" }),
@@ -114,7 +114,7 @@ describe("facturesToCsv", () => {
     for (const line of lines) {
       // Compte les `;` hors guillemets (approximatif ici car pas de champs multi-lignes)
       const rawCount = (line.match(/;/g) ?? []).length;
-      expect(rawCount).toBe(6); // 7 colonnes → 6 séparateurs
+      expect(rawCount).toBe(9); // 10 colonnes → 9 séparateurs
     }
   });
 });

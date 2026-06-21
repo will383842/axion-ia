@@ -20,6 +20,14 @@ import { computeVentilationDossier, computeForfait } from "./opco-calcul";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  computeTotauxFacture,
+  isRegimeTva,
+  REGIME_TVA_DEFAUT,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
@@ -150,6 +158,13 @@ export async function genererFactureFormation(
 
   const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
 
+  // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
+  const regimeTvaConfig = await getQualiopiConfig("regime_tva");
+  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const tauxStandard =
+    (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
+
   let factureCreee: { id: string; numero: string } | null = null;
   let documentId: string | null = null;
 
@@ -165,6 +180,8 @@ export async function genererFactureFormation(
       dateEmission: formatDate(now),
       dateEcheance: formatDate(echeance),
       identite,
+      regimeTva,
+      tauxTvaStandardPercent: tauxStandard,
       client: {
         raisonSociale: destinataireNom,
         ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
@@ -208,7 +225,10 @@ export async function genererFactureFormation(
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
           montantHtCents: totalHtCents,
-          tvaExoneree: true,
+          tvaExoneree: totaux.totalTvaCents === 0,
+          regimeTva,
+          montantTvaCents: totaux.totalTvaCents,
+          montantTtcCents: totaux.totalTtcCents,
           lignes: lignes as never,
           subrogation: session.opcoSubrogation,
           ...(session.numeroDossierOpco !== null && session.numeroDossierOpco !== undefined

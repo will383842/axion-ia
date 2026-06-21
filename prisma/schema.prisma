@@ -5699,9 +5699,17 @@ model FactureFormation {
   destinataireSiret             String?                      @map("destinataire_siret") @db.VarChar(20)
   destinataireAdresse           String?                      @map("destinataire_adresse") @db.Text
   montantHtCents                Int                          @map("montant_ht_cents")
-  /// Exonération TVA art. 261-4-4° CGI (true par défaut pour la formation pro).
+  /// Exonération TVA (dérivé : true si montantTvaCents == 0). Conservé pour
+  /// rétro-compat / export ; la source de vérité est `regimeTva`.
   tvaExoneree                   Boolean                      @default(true) @map("tva_exoneree")
-  /// Lignes : [{ designation, quantite, prixUnitaireHtCents }].
+  /// Régime de TVA appliqué (snapshot) : "assujetti" | "exoneration_261" |
+  /// "franchise_293b". Qualiopi n'a aucun effet sur la TVA — cf. legal/tva.ts.
+  regimeTva                     String                       @default("assujetti") @map("regime_tva") @db.VarChar(30)
+  /// Montant total de TVA (centimes). 0 si exonéré/franchise.
+  montantTvaCents               Int                          @default(0) @map("montant_tva_cents")
+  /// Montant total TTC (centimes) = HT + TVA. Null pour les anciennes factures.
+  montantTtcCents               Int?                         @map("montant_ttc_cents")
+  /// Lignes : [{ designation, quantite, prixUnitaireHtCents, tauxTvaPercent? }].
   lignes                        Json                         @default("[]")
   subrogation                   Boolean                      @default(false)
   numeroDossierOpco             String?                      @map("numero_dossier_opco") @db.VarChar(60)

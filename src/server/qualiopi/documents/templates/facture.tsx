@@ -29,6 +29,12 @@ import {
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
+  computeTotauxFacture,
+  mentionTva,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
+import {
   brandColor,
   QUALIOPI_PDF_TYPE as T,
   QUALIOPI_PDF_SPACE as S,
@@ -106,6 +112,12 @@ export interface LigneFacture {
   designation: string;
   quantite: number;
   prixUnitaireHtCents: number;
+  /**
+   * Taux de TVA de la ligne (%). Override pour les factures MIXTES (ex. ligne
+   * de conseil/audit à 20 % sur une facture sinon exonérée). Sinon, le taux est
+   * dérivé du régime de TVA de la facture.
+   */
+  tauxTvaPercent?: number;
 }
 
 export interface ClientFacture {
@@ -142,6 +154,13 @@ export interface FactureData {
   identite: OrganismeIdentite;
   client: ClientFacture;
   lignes: LigneFacture[];
+  /**
+   * Régime de TVA appliqué (assujetti 20 % / exonération 261-4-4° / franchise
+   * 293 B). Capturé depuis la config au moment de l'émission (instantané).
+   */
+  regimeTva: RegimeTva;
+  /** Taux standard appliqué en régime assujetti (%). Défaut 20. */
+  tauxTvaStandardPercent?: number;
   subrogationOpco?: SubrogationOpco;
   rib?: RibFacture;
   estCopie?: boolean;
@@ -154,7 +173,15 @@ export interface FactureData {
 export function FacturePdf({ data }: { data: FactureData }): React.ReactElement {
   const { identite } = data;
 
-  const totalHtCents = data.lignes.reduce((acc, l) => acc + l.quantite * l.prixUnitaireHtCents, 0);
+  const tauxStandard = data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD;
+  const totaux = computeTotauxFacture(data.lignes, data.regimeTva, tauxStandard);
+  const tauxLigne = (ligne: LigneFacture): number =>
+    typeof ligne.tauxTvaPercent === "number"
+      ? ligne.tauxTvaPercent
+      : data.regimeTva === "assujetti"
+        ? tauxStandard
+        : 0;
+  const mentionRegimeTva = mentionTva(data.regimeTva);
 
   return (
     <Document>
@@ -196,32 +223,40 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           <DataTable
             columns={[
               { key: "designation", header: "Désignation", flex: 3 },
-              { key: "qte", header: "Qté", flex: 1, align: "right" },
-              { key: "pu", header: "P.U. HT", flex: 1.5, align: "right" },
-              { key: "total", header: "Total HT", flex: 1.5, align: "right" },
+              { key: "qte", header: "Qté", flex: 0.8, align: "right" },
+              { key: "pu", header: "P.U. HT", flex: 1.4, align: "right" },
+              { key: "tva", header: "TVA", flex: 0.8, align: "right" },
+              { key: "total", header: "Total HT", flex: 1.4, align: "right" },
             ]}
             rows={data.lignes.map((ligne) => ({
               designation: ligne.designation,
               qte: String(ligne.quantite),
               pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
+              tva: `${tauxLigne(ligne)} %`,
               total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
             }))}
           />
         </DocSection>
 
-        {/* Totaux */}
+        {/* Totaux — ventilation TVA par taux (régime de TVA appliqué) */}
         <View style={styles.totalsBlock}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total HT</Text>
-            <Text style={styles.totalValue}>{formatEurosFromCents(totalHtCents)}</Text>
+            <Text style={styles.totalValue}>{formatEurosFromCents(totaux.totalHtCents)}</Text>
           </View>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>TVA (0 %)</Text>
-            <Text style={styles.totalValue}>{formatEurosFromCents(0)}</Text>
-          </View>
+          {totaux.ventilation.map((v) => (
+            <View key={v.tauxPercent} style={styles.totalRow}>
+              <Text style={styles.totalLabel}>
+                {totaux.ventilation.length > 1
+                  ? `TVA ${v.tauxPercent} % (base ${formatEurosFromCents(v.baseHtCents)})`
+                  : `TVA (${v.tauxPercent} %)`}
+              </Text>
+              <Text style={styles.totalValue}>{formatEurosFromCents(v.montantTvaCents)}</Text>
+            </View>
+          ))}
           <View style={styles.totalTtcRow}>
             <Text style={styles.totalTtcLabel}>Total TTC</Text>
-            <Text style={styles.totalTtcValue}>{formatEurosFromCents(totalHtCents)}</Text>
+            <Text style={styles.totalTtcValue}>{formatEurosFromCents(totaux.totalTtcCents)}</Text>
           </View>
         </View>
 
@@ -253,7 +288,12 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
 
         {/* Conditions de règlement + mentions légales obligatoires */}
         <LegalCallout variant="legal" title="Conditions de règlement et mentions légales">
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          {/* Mention de TVA selon le régime (exonération 261-4-4° ou franchise
+              293 B). En régime assujetti : pas de mention d'exonération, la TVA
+              figure dans les totaux. */}
+          {mentionRegimeTva ? (
+            <Text style={styles.legalLine}>{mentionRegimeTva}</Text>
+          ) : null}
           <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
           <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
           <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>

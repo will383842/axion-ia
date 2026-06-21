@@ -41,6 +41,7 @@ function makeFacture(overrides: Partial<FactureData> = {}): FactureData {
     lignes: [
       { designation: "Formation IA appliquée — 2 jours", quantite: 1, prixUnitaireHtCents: 280000 },
     ],
+    regimeTva: "assujetti",
     ...overrides,
   };
 }
@@ -69,10 +70,6 @@ describe("FacturePdf — mentions obligatoires", () => {
     expect(text).toContain("Date de réalisation de la prestation");
   });
 
-  it("porte la mention d'exonération de TVA (art. 261-4-4° CGI)", () => {
-    expect(text).toContain(LEGAL_MENTIONS.factureExonerationTva);
-  });
-
   it("porte les pénalités de retard (art. L.441-10 C. com.)", () => {
     expect(text).toContain(LEGAL_MENTIONS.facturePenalitesRetard);
     expect(text).toContain("trois fois le taux d'intérêt légal");
@@ -87,11 +84,55 @@ describe("FacturePdf — mentions obligatoires", () => {
     expect(text).toContain(LEGAL_MENTIONS.factureEscompte);
   });
 
-  it("affiche le total HT et le total TTC formatés", () => {
-    // 280 000 centimes → 2 800,00 € (espace insécable normalisé).
+  it("régime assujetti (défaut) : Total HT 2 800, ligne/TVA 20 %, Total TTC 3 360", () => {
     expect(text).toContain("Total HT");
+    expect(text).toContain("20 %");
     expect(text).toContain("Total TTC");
+    expect(text).toContain("3 360,00");
     expect(text.replace(/ | /g, " ")).toContain("2 800,00");
+  });
+});
+
+describe("FacturePdf — régimes de TVA", () => {
+  it("assujetti : aucune mention d'exonération / franchise", () => {
+    const text = factureText(makeFacture({ regimeTva: "assujetti" }));
+    expect(text).not.toContain(LEGAL_MENTIONS.factureExonerationTva);
+    expect(text).not.toContain(LEGAL_MENTIONS.factureFranchiseTva);
+  });
+
+  it("exonération 261-4-4° : TVA 0 %, TTC = HT, mention d'exonération", () => {
+    const text = factureText(makeFacture({ regimeTva: "exoneration_261" }));
+    expect(text).toContain(LEGAL_MENTIONS.factureExonerationTva);
+    expect(text).toContain("0 %");
+    expect(text).toContain("2 800,00"); // HT = TTC
+    expect(text).not.toContain("3 360,00");
+  });
+
+  it("franchise 293 B : mention « TVA non applicable, art. 293 B »", () => {
+    const text = factureText(makeFacture({ regimeTva: "franchise_293b" }));
+    expect(text).toContain(LEGAL_MENTIONS.factureFranchiseTva);
+    expect(text).toContain("293 B");
+    expect(text).not.toContain(LEGAL_MENTIONS.factureExonerationTva);
+  });
+
+  it("facture MIXTE (formation 0 % + conseil 20 %) : ventile les 2 taux", () => {
+    const text = factureText(
+      makeFacture({
+        regimeTva: "exoneration_261",
+        lignes: [
+          { designation: "Formation IA — 2 jours", quantite: 1, prixUnitaireHtCents: 200000 },
+          {
+            designation: "Audit IA (conseil)",
+            quantite: 1,
+            prixUnitaireHtCents: 100000,
+            tauxTvaPercent: 20,
+          },
+        ],
+      }),
+    );
+    expect(text).toContain("0 %");
+    expect(text).toContain("20 %");
+    expect(text).toContain("3 200,00"); // 3000 HT + 200 TVA
   });
 });
 

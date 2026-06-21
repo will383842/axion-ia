@@ -16,6 +16,14 @@ import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  computeTotauxFacture,
+  isRegimeTva,
+  REGIME_TVA_DEFAUT,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
@@ -88,6 +96,13 @@ export async function genererFactureCoaching(
   echeance.setDate(echeance.getDate() + 30);
   const fmt = (d: Date) => d.toLocaleDateString("fr-FR");
 
+  // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
+  const regimeTvaConfig = await getQualiopiConfig("regime_tva");
+  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const tauxStandard =
+    (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  const totaux = computeTotauxFacture(calc.lignes, regimeTva, tauxStandard);
+
   let factureCreee: { id: string; numero: string } | null = null;
   let documentId: string | null = null;
 
@@ -102,6 +117,8 @@ export async function genererFactureCoaching(
       dateEmission: fmt(now),
       dateEcheance: fmt(echeance),
       identite,
+      regimeTva,
+      tauxTvaStandardPercent: tauxStandard,
       client: {
         raisonSociale: destinataireNom,
         ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
@@ -136,7 +153,10 @@ export async function genererFactureCoaching(
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
           montantHtCents: calc.totalHtCents,
-          tvaExoneree: true,
+          tvaExoneree: totaux.totalTvaCents === 0,
+          regimeTva,
+          montantTvaCents: totaux.totalTvaCents,
+          montantTtcCents: totaux.totalTtcCents,
           lignes: calc.lignes as never,
           subrogation: calc.subrogation,
           ...(calc.numeroDossier != null ? { numeroDossierOpco: calc.numeroDossier } : {}),
