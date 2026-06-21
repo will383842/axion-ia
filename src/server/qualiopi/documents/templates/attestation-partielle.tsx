@@ -19,6 +19,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  LegalCallout,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -33,17 +34,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 1.6,
     marginBottom: 14,
-  },
-  partielBanner: {
-    backgroundColor: brandColor("sand"),
-    padding: 8,
-    marginBottom: 12,
-    borderRadius: 2,
-  },
-  partielBannerText: {
-    fontSize: 9,
-    fontStyle: "italic",
-    textAlign: "center",
   },
   resultRow: {
     flexDirection: "row",
@@ -167,12 +157,11 @@ export function AttestationPartiellePdf({
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
-        {/* Bannière partielle */}
-        <View style={styles.partielBanner}>
-          <Text style={styles.partielBannerText}>
-            ATTESTATION PARTIELLE — formation non complétée (assiduité 60–79 %)
-          </Text>
-        </View>
+        {/* Bannière partielle — signalée fortement */}
+        <LegalCallout variant="warning" title="Attestation partielle">
+          Formation non complétée (assiduité comprise entre 60 % et 79 %). Les compétences sont
+          déclarées partiellement validées.
+        </LegalCallout>
 
         {/* Phrase certificative */}
         <View style={pdfStyles.section}>
@@ -252,7 +241,7 @@ export function AttestationPartiellePdf({
           <View style={pdfStyles.signatureZone}>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>
-                {`Fait à ${identite.adresseSiege || "Paris"}, le ${data.dateEmission}`}
+                {`Fait à ${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
               <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
             </View>

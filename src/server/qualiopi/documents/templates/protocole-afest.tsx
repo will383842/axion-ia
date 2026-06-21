@@ -222,7 +222,7 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
             </View>
           </View>
           <Text style={pdfStyles.paragraph}>
-            {`Fait à ${identite.adresseSiege || "Paris"}, le ${data.dateEmission}`}
+            {`Fait à ${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
           </Text>
         </DocSection>
       </QualiopiPage>
