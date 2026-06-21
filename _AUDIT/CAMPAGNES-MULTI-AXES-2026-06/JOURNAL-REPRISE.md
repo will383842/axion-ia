@@ -63,20 +63,52 @@ pour commitlint). PAS encore commité au moment de ce snapshot.
 
 ---
 
+## ✅ FAIT — Phase 0a résidus (audit E2E) — commit `ea397675`
+
+Audit adversarial E2E de la phase 0a (3 agents) → 2 fuites résiduelles fermées :
+- `templates.ts` : `landing_ville` retiré du Zod (template sinon intestable).
+- `jobs.ts` : garde-fou `enqueueGenJob` (retry) ne re-enqueue plus un job
+  `landing_ville` legacy (le filtre liste reste = lecture seule légitime).
+Reste vérifié SAIN : orchestrateur (registeredTypeDist 2 chemins), adhoc/enqueue
+Zod, worker (échec gracieux), CLI scripts (bypass REGISTRY assumé).
+
+## ✅ FAIT — Phase 0b SSOT secteurs — commit `ea397675`
+
+`src/content/sectors.ts` = SSOT des **10 secteurs client** (alignés 1:1 sur la
+pain-matrix = seuls secteurs produisant du contenu différencié) + mappings
+BlogSector/KB + helpers. Pur, client-safe. Test drift-guard `sectors.spec.ts` (5).
+(Choix 10 et non ~20 : secteur sans entrée pain-matrix = injection no-op ;
+étendre = remplir la pain-matrix en Phase 2.)
+
+## ✅ FAIT — Phase 1 (les 8 axes) — `e114a6d8` (backend) + `0560b7d1` (UI)
+
+**Schema** additif, migration `20260621120000`, rétro-compat totale — CoverageCampaign :
+`serviceSectorWeights` (axe 2), `targetSecteurWeights` (axe 3), `villeSurroundingMode`
++ `villeSurroundingRadiusKm` (axe 6), `durationMode` (axe 8) + enums
+`VilleSurroundingMode`/`DurationMode`. ⚠️ Migration **NON appliquée DB** (Will :
+`prisma migrate deploy` au déploiement).
+
+**Orchestrateur** : `sampleServiceSector`/`sampleTargetSecteur` par slot (seeds
+91/53) → pose `inputPayload.vertical`+`targetSecteur` (réveille pain-matrix) ;
+`expandVilleAnchors` étend les villes EXPLICITES au rayon 50 km / département (file
+globale NON étendue) ; `durationMode=unlimited` jamais complété par compteur ;
+worker `campaignSector` préfère `inputPayload.vertical`.
+
+**Server action** `campaign-wizard.ts` : Zod + persistance des 8 axes (proportions ;
+audienceMix « SIZE:ORG »). Vocabulaires dans `campaign-wizard-constants.ts`.
+
+**UI** `CampaignWizardV2.tsx` : `WeightEditor` réutilisable ; étape 2 ville &
+alentours + bloc repliable « Ciblage avancé multi-axes » (% activité/secteur/audience) ;
+étape 3 durée fixe/illimitée + % intention ; étape 4 récap. Tout optionnel.
+
+**Tests** : `orchestrator-multi-axes.test.ts` (8) + `sectors.spec.ts` (5) + registry (20).
+
+⚠️ **NON poussé / NON déployé.** Reste Will : pousser branche → PR → main ; au
+deploy `prisma migrate deploy` applique la migration ; **redéployer le worker**
+(app Coolify séparée) pour activer le sampling ; `QUALITY_PROFILES_ENABLED=true`
+requis pour que l'axe 3 (pain-matrix) agisse réellement.
+
 ## ⏳ À FAIRE
-
-### Phase 0b — SSOT secteurs
-Créer `src/content/sectors.ts` : ~20 secteurs canoniques, éditables console, mappant
-les 4 taxonomies incohérentes existantes :
-- pain-matrix (`sector-pain-matrix.ts`, 10 secteurs)
-- blog `BlogSector` (16)
-- KB `KB_SECTOR_TAGS` (27)
-→ une seule source, le reste dérive.
-
-### Phase 1 — Wizard multi-axes (le cœur)
-- **Schema Prisma** : `serviceSectorWeights` (Json), `targetSecteur` + `targetSecteurWeights` (Json), `durationMode` (enum fixed/unlimited), `villeSurroundingMode` + rayon (défaut 50 km). Migration additive (jamais de DROP, cf. mémoire drift prod).
-- **Orchestrateur** : échantillonner secteur d'activité + secteur client, **passer `targetSecteur` + `vertical` au job** (réveille la pain-matrix via `prompt-augmentation.ts`, qui exige `QUALITY_PROFILES_ENABLED=true` + profil commercial + targetSecteur + vertical) ; exposer `searchIntentMix` + `audienceMix` ; étendre ville+alentours via `getNearbyVilles` (50 km).
-- **UI wizard** : sliders pour les 8 axes. Réutiliser le pattern `CoverageDistributionProfile` (profils nommés SSOT). Tout éditable console. MAJ snapshot `admin-nav.test.ts` (110).
 
 ### Phase 2 — Qualité
 - Activer `benefit_gate` (console, page admin PH4 = Will).
