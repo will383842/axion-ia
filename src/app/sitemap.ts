@@ -80,6 +80,21 @@ import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
  */
 const SITEMAP_CHUNK_SIZE = 1000;
 
+// Cap d'articles DB dans le sub-sitemap `blog` (P3 scaling 2026-06-21). Limite
+// hard Google = 50 000 URLs/sitemap ; on plafonne les articles à 45 000 pour
+// laisser ~5 000 d'en-tête à la taxonomie (catégories/tags/auteurs/secteurs/…).
+// Couvre « des dizaines de milliers » d'articles (~16 mois à 100/jour) dans un
+// SEUL sitemap valide. Avant : cap arbitraire 5 000 → les articles au-delà
+// disparaissaient du sitemap (invisibles Googlebot/Bingbot).
+//
+// ⚠️ Au-delà de ~50 000 articles, il faudra un chunking RUNTIME dédié (pattern
+// `sitemap-knowledge.xml/route.ts`) : `generateSitemaps()` tourne au build sous
+// `stub.invalid` (DB → 0) et ne peut PAS énumérer des chunks `blog-N` dépendant
+// d'un compte DB. L'alerte ci-dessous (≥ 40 000) prévient AVANT d'atteindre le
+// plafond pour planifier ce chantier.
+const BLOG_SITEMAP_MAX_URLS = 45_000;
+const BLOG_SITEMAP_ALERT_THRESHOLD = 40_000;
+
 // Drip indexation (Will 2026-05-28) — le sitemap se régénère toutes les 24h
 // (ISR). La cohorte indexable (`getIndexableVilles` / `isVilleIndexable`) est
 // calculée depuis la date runtime, donc à chaque revalidation le sitemap inclut
@@ -610,7 +625,7 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
         updatedAt: true,
         translations: { where: { locale: "fr" }, take: 1, select: { slug: true } },
       },
-      take: 5000,
+      take: BLOG_SITEMAP_MAX_URLS,
     });
     dbArticles = rows
       .map((r) => {
@@ -619,6 +634,15 @@ async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
         return { slug: t.slug, updatedAt: r.updatedAt, publishedAt: r.publishedAt };
       })
       .filter((r): r is { slug: string; updatedAt: Date; publishedAt: Date | null } => r !== null);
+    // P3 (2026-06-21) — alerte AVANT le plafond Google (50k) : prévoir le chunking
+    // runtime dédié quand on approche. `take` plafonne déjà à 45k, donc si on
+    // atteint ce seuil, des articles commencent à être tronqués du sitemap.
+    if (dbArticles.length >= BLOG_SITEMAP_ALERT_THRESHOLD) {
+      console.warn(
+        `[sitemap] blog articles=${dbArticles.length} ≥ ${BLOG_SITEMAP_ALERT_THRESHOLD} ` +
+          `(plafond ${BLOG_SITEMAP_MAX_URLS}, limite Google 50k) — planifier le chunking runtime du sitemap blog.`,
+      );
+    }
   } catch {
     // best-effort — DB peut être down au build SSG
     dbArticles = [];
