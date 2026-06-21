@@ -64,17 +64,17 @@ export function CategoriesV2({
   const columns: ReadonlyArray<AdminTableColumn<CategoryRow>> = [
     { key: "order", header: "Ordre", cell: (c) => c.displayOrder },
     { key: "name", header: "Nom (FR)", cell: (c) => c.nameFr },
-    { key: "slug", header: "Slug", cell: (c) => <code className="admin-meta-small">{c.slug}</code> },
+    {
+      key: "slug",
+      header: "Slug",
+      cell: (c) => <code className="admin-meta-small">{c.slug}</code>,
+    },
     { key: "module", header: "Module", cell: (c) => (c.module ? MODULE_LABELS[c.module] : "Blog") },
     {
       key: "parent",
       header: "Parent",
       cell: (c) =>
-        c.parentId ? (
-          <code className="admin-meta-small">{c.parentId.slice(0, 8)}…</code>
-        ) : (
-          "—"
-        ),
+        c.parentId ? <code className="admin-meta-small">{c.parentId.slice(0, 8)}…</code> : "—",
     },
     {
       key: "status",

@@ -25,6 +25,7 @@ import {
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
 import { buildWeightedSequence } from "@/server/content-gen/scheduler/type-sequence";
+import { isContentTypeRegistered } from "@/server/content-gen/generators/registered-types";
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type {
@@ -91,6 +92,27 @@ function sampleWeighted<K extends string>(
   return entries[entries.length - 1]![0];
 }
 
+/**
+ * Filtre une distribution de types sur les types RÉELLEMENT générables (REGISTRY).
+ * Retire les types sans générateur (ex. `landing_ville`, CLI-only) AVANT
+ * l'échantillonnage → l'orchestrateur ne crée plus de jobs voués à échouer
+ * « No generator registered ». Re-normalisation implicite (les % restants se
+ * répartissent sur les types valides). Si AUCUN type valide → renvoie tel quel
+ * (le worker tranchera, mais on log) pour ne pas générer un vide silencieux.
+ */
+function registeredTypeDist(dist: Record<ContentType, number>): Record<ContentType, number> {
+  const filtered = Object.fromEntries(
+    Object.entries(dist).filter(([t]) => isContentTypeRegistered(t as ContentType)),
+  ) as Record<ContentType, number>;
+  const dropped = Object.keys(dist).filter((t) => !isContentTypeRegistered(t as ContentType));
+  if (dropped.length > 0) {
+    console.warn(
+      `[orchestrator] types non générables ignorés (CLI-only/absents): ${dropped.join(", ")}`,
+    );
+  }
+  return Object.keys(filtered).length > 0 ? filtered : dist;
+}
+
 function sampleAudienceMix(
   mix: Record<string, number>,
   slotIndex: number,
@@ -103,6 +125,86 @@ function sampleAudienceMix(
 }
 
 /**
+ * Échantillonne l'ACTIVITÉ Axion-IA (axe 2 multi-axes) pour un slot.
+ * Si `serviceSectorWeights` est renseigné → tirage pondéré déterministe (seed 91,
+ * décorrélé des autres axes). Sinon → fallback sur le singleton `serviceSector`
+ * de la campagne (rétro-compat des campagnes mono-activité).
+ */
+export function sampleServiceSector(
+  weights: Record<string, number> | null,
+  slotIndex: number,
+  fallback: ServiceSector | null,
+): ServiceSector | null {
+  if (weights && Object.keys(weights).length > 0) {
+    const picked = sampleWeighted(weights, slotIndex, 91);
+    if (picked) return picked as ServiceSector;
+  }
+  return fallback;
+}
+
+/**
+ * Échantillonne le SECTEUR CLIENT (axe 3 multi-axes) pour un slot.
+ * `null` si la campagne ne cible aucun secteur (→ pain-matrix dormante,
+ * comportement historique). Seed 53, décorrélé des autres axes.
+ */
+export function sampleTargetSecteur(
+  weights: Record<string, number> | null,
+  slotIndex: number,
+): string | null {
+  if (weights && Object.keys(weights).length > 0) {
+    return sampleWeighted(weights, slotIndex, 53);
+  }
+  return null;
+}
+
+/**
+ * Étend une liste de villes d'ancrage aux communes « alentours » (axe 6).
+ * - `radius` : ajoute les communes dans `radiusKm` (défaut 50) de chaque ancre.
+ * - `same_departement` : ajoute les communes du même département que chaque ancre.
+ * Dédupliqué, ordre stable (ancres d'abord), borné à `MAX_EXPANDED` pour éviter
+ * l'explosion du pool. `none` ou liste vide → renvoyé tel quel.
+ */
+const MAX_EXPANDED_VILLES = 300;
+const NEARBY_PER_ANCHOR = 25;
+// Import paresseux de geo/villes (modules lourds : ~2150 communes + case-studies)
+// → l'orchestrateur ne les charge QUE si une campagne utilise « ville & alentours ».
+export async function expandVilleAnchors(
+  baseSlugs: string[],
+  mode: string,
+  radiusKm: number | null,
+): Promise<string[]> {
+  if (mode === "none" || baseSlugs.length === 0) return baseSlugs;
+  const [{ getNearbyVilles }, { getVille }] = await Promise.all([
+    import("@/lib/geo"),
+    import("@/content/villes"),
+  ]);
+  const out = new Set<string>(baseSlugs);
+  const radius = radiusKm && radiusKm > 0 ? radiusKm : 50;
+  for (const slug of baseSlugs) {
+    if (out.size >= MAX_EXPANDED_VILLES) break;
+    const origin = getVille(slug);
+    if (!origin) continue;
+    if (mode === "radius") {
+      const nearby = getNearbyVilles(origin.geo, NEARBY_PER_ANCHOR, {
+        excludeSlug: slug,
+        maxKm: radius,
+      });
+      for (const n of nearby) {
+        if (out.size >= MAX_EXPANDED_VILLES) break;
+        out.add(n.ville.slug);
+      }
+    } else if (mode === "same_departement") {
+      const nearby = getNearbyVilles(origin.geo, NEARBY_PER_ANCHOR, { excludeSlug: slug });
+      for (const n of nearby) {
+        if (out.size >= MAX_EXPANDED_VILLES) break;
+        if (n.ville.departement === origin.departement) out.add(n.ville.slug);
+      }
+    }
+  }
+  return Array.from(out);
+}
+
+/**
  * Crée 1 ContentGenJob row + enqueue BullMQ pour un slot donné.
  * Factorisée pour partager la logique entre mode parallel et sequential.
  *
@@ -112,9 +214,12 @@ async function createJobForSlot(opts: {
   campaign: {
     id: string;
     name: string;
-    serviceSector: ServiceSector | null;
   };
   contentType: ContentType;
+  /** Activité Axion-IA résolue pour CE slot (axe 2) — pilote vertical + KB. */
+  serviceSector: ServiceSector | null;
+  /** Secteur client échantillonné pour CE slot (axe 3) — réveille la pain-matrix. */
+  targetSecteur: string | null;
   aud: { size: CompanySize; org: OrganisationType } | null;
   searchIntent: SearchIntent | "informational";
   anchorVilleSlug?: string;
@@ -125,6 +230,8 @@ async function createJobForSlot(opts: {
   const {
     campaign,
     contentType,
+    serviceSector,
+    targetSecteur,
     aud,
     searchIntent,
     anchorVilleSlug,
@@ -152,15 +259,20 @@ async function createJobForSlot(opts: {
         status: "queued",
         priority: 5,
         campaignId: campaign.id,
-        // Catégorisation 2026-06-16 — propage le secteur de la campagne au job
-        // (→ categoryId de l'article au publish via category-mapper).
-        ...(campaign.serviceSector ? { serviceSector: campaign.serviceSector } : {}),
+        // Catégorisation 2026-06-16 — propage l'activité (échantillonnée par slot
+        // en multi-axes, sinon singleton campagne) au job → categoryId au publish.
+        ...(serviceSector ? { serviceSector } : {}),
         correlationId,
         inputPayload: {
           campaignName: campaign.name,
           slotIndex,
           // Pas de primaryKeyword forcé : le content-gen-worker sélectionne dans
           // le pool riche via selectKeyword (rotation atomique, filtré vertical).
+          // `vertical` (= activité du slot) pilote KB + pain-matrix côté worker.
+          ...(serviceSector ? { vertical: serviceSector } : {}),
+          // `targetSecteur` (secteur client) réveille la pain-matrix sectorielle
+          // (cf. prompt-augmentation.ts, gated QUALITY_PROFILES_ENABLED + commercial).
+          ...(targetSecteur ? { targetSecteur } : {}),
         },
         targetLocale: "fr",
         ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
@@ -203,13 +315,23 @@ async function resolveVilleAnchors(campaign: {
   customVilleSlugs: string[];
   anchorVilleSlugs: string[];
   scope: string;
+  villeSurroundingMode?: string;
+  villeSurroundingRadiusKm?: number | null;
 }): Promise<string[]> {
+  const surroundingMode = campaign.villeSurroundingMode ?? "none";
+  const radiusKm = campaign.villeSurroundingRadiusKm ?? null;
+
+  // Listes de villes EXPLICITES (custom_subset / anchors) → on peut étendre aux
+  // alentours (axe 6). La file globale top-200 n'est PAS étendue (déjà large +
+  // explosion combinatoire). « ville & alentours » = choisir des villes précises.
   if (campaign.villeScopeMode === "custom_subset") {
-    return campaign.customVilleSlugs.length > 0
-      ? campaign.customVilleSlugs
-      : campaign.anchorVilleSlugs;
+    const base =
+      campaign.customVilleSlugs.length > 0 ? campaign.customVilleSlugs : campaign.anchorVilleSlugs;
+    return expandVilleAnchors(base, surroundingMode, radiusKm);
   }
-  if (campaign.anchorVilleSlugs.length > 0) return campaign.anchorVilleSlugs;
+  if (campaign.anchorVilleSlugs.length > 0) {
+    return expandVilleAnchors(campaign.anchorVilleSlugs, surroundingMode, radiusKm);
+  }
   if (campaign.scope === "ville" || campaign.scope === "multi") {
     const rows = await prisma.cityGenerationOrder.findMany({
       orderBy: [{ pinned: "desc" }, { rank: "asc" }],
@@ -231,6 +353,8 @@ async function processSequentialCampaign(
     id: string;
     name: string;
     serviceSector: ServiceSector | null;
+    serviceSectorWeights: unknown;
+    targetSecteurWeights: unknown;
     anchorDepartementCodes: string[];
     anchorRegionSlugs: string[];
     typeDistribution: unknown;
@@ -289,11 +413,15 @@ async function processSequentialCampaign(
   }
 
   // Ville courante terminée (ou jamais démarrée) → créer les jobs pour cette ville
-  const typeDist = (
-    campaign.contentTypeWeights != null ? campaign.contentTypeWeights : campaign.typeDistribution
-  ) as Record<ContentType, number>;
+  const typeDist = registeredTypeDist(
+    (campaign.contentTypeWeights != null
+      ? campaign.contentTypeWeights
+      : campaign.typeDistribution) as Record<ContentType, number>,
+  );
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
+  const serviceSectorWeights = campaign.serviceSectorWeights as Record<string, number> | null;
+  const targetSecteurWeights = campaign.targetSecteurWeights as Record<string, number> | null;
 
   // Séquence de types entrelacée pour toute la campagne, indexée par slot global.
   const typeSeq = buildWeightedSequence(
@@ -316,9 +444,17 @@ async function processSequentialCampaign(
     if (!contentType) continue;
     const aud = sampleAudienceMix(audienceMix, slotIndex);
     const searchIntent = intentMix ? sampleWeighted(intentMix, slotIndex, 73) : "informational";
+    const serviceSector = sampleServiceSector(
+      serviceSectorWeights,
+      slotIndex,
+      campaign.serviceSector,
+    );
+    const targetSecteur = sampleTargetSecteur(targetSecteurWeights, slotIndex);
     const ok = await createJobForSlot({
       campaign,
       contentType,
+      serviceSector,
+      targetSecteur,
       aud,
       searchIntent: (searchIntent ?? "informational") as SearchIntent,
       anchorVilleSlug: currentCitySlug,
@@ -348,6 +484,8 @@ async function processParallelCampaign(
     id: string;
     name: string;
     serviceSector: ServiceSector | null;
+    serviceSectorWeights: unknown;
+    targetSecteurWeights: unknown;
     anchorDepartementCodes: string[];
     anchorRegionSlugs: string[];
     typeDistribution: unknown;
@@ -364,11 +502,15 @@ async function processParallelCampaign(
   forcedVilleSlug: string | undefined,
   villeAnchors: string[],
 ): Promise<number> {
-  const typeDist = (
-    campaign.contentTypeWeights != null ? campaign.contentTypeWeights : campaign.typeDistribution
-  ) as Record<ContentType, number>;
+  const typeDist = registeredTypeDist(
+    (campaign.contentTypeWeights != null
+      ? campaign.contentTypeWeights
+      : campaign.typeDistribution) as Record<ContentType, number>,
+  );
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
+  const serviceSectorWeights = campaign.serviceSectorWeights as Record<string, number> | null;
+  const targetSecteurWeights = campaign.targetSecteurWeights as Record<string, number> | null;
   const deptAnchors = campaign.anchorDepartementCodes;
   const regionAnchors = campaign.anchorRegionSlugs;
 
@@ -393,6 +535,12 @@ async function processParallelCampaign(
     if (!contentType) continue;
     const aud = sampleAudienceMix(audienceMix, slotIndex);
     const searchIntent = intentMix ? sampleWeighted(intentMix, slotIndex, 73) : "informational";
+    const serviceSector = sampleServiceSector(
+      serviceSectorWeights,
+      slotIndex,
+      campaign.serviceSector,
+    );
+    const targetSecteur = sampleTargetSecteur(targetSecteurWeights, slotIndex);
 
     let anchorVilleSlug: string | undefined = forcedVilleSlug;
     let anchorDepartementCode: string | undefined;
@@ -416,6 +564,8 @@ async function processParallelCampaign(
     const ok = await createJobForSlot({
       campaign,
       contentType,
+      serviceSector,
+      targetSecteur,
       aud,
       searchIntent: (searchIntent ?? "informational") as SearchIntent,
       ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
@@ -534,8 +684,14 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       continue;
     }
 
-    const remaining = campaign.totalTargetCount - campaign.generatedCount;
-    if (remaining <= 0) {
+    // Axe 8 — durée : une campagne `unlimited` ne se complète JAMAIS par compteur
+    // (totalTargetCount ignoré) ; seuls l'arrêt manuel (pause/stop) ou endDate la
+    // terminent. `fixed` conserve le comportement historique (stop à la cible).
+    const isUnlimited = campaign.durationMode === "unlimited";
+    const remaining = isUnlimited
+      ? Number.MAX_SAFE_INTEGER
+      : campaign.totalTargetCount - campaign.generatedCount;
+    if (!isUnlimited && remaining <= 0) {
       await prisma.coverageCampaign.update({
         where: { id: campaign.id },
         data: { status: "completed", completedAt: new Date() },

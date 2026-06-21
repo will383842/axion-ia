@@ -26,6 +26,7 @@ import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import { getVille } from "@/content/villes";
 // VIS-01 (audit visibilité 2026-06-05) — rendu HTML sanitisé du body des
 // articles DB (bodyHtml) + injection d'ancres h2. Aligne /blog sur le chemin
 // correct déjà utilisé par /connaissances (avant : parseBody rendait le HTML
@@ -73,7 +74,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         };
       }
     }
-    return {};
+    // P0 soft-404 (2026-06-21) — slug inconnu SANS tombstone. Avant : `return {}`
+    // → métadonnées vides → la page héritait du `robots: index, follow` du
+    // `[locale]/layout.tsx` et était servie en 200 INDEXABLE (Google indexait des
+    // URLs blog inexistantes à l'infini = gaspillage de crawl + soft-404). On
+    // émet désormais un noindex/nofollow explicite (la page appelle aussi
+    // `notFound()` → rendu `[locale]/not-found.tsx`). Aligné avec le catch-all.
+    return { robots: { index: false, follow: false } };
   }
   // V-07 sprint UX 2026-05-22 — préfère DB metaTitle/metaDescription si fournis
   // (champs SEO-tunés au moment de la rédaction Manon ou via factory content-gen).
@@ -362,6 +369,15 @@ export default async function BlogArticle({ params }: Props) {
     limit: 4,
   });
 
+  // Maillage ville (2026-06-21) — lien RETOUR article → page locale, si l'article
+  // est ancré sur une ville indexable. Complète le maillage bidirectionnel (la
+  // page ville liste déjà ses articles). `getVille` donne region + nom.
+  const anchorVille = view.villeSlug ? getVille(view.villeSlug) : undefined;
+  const anchorVilleHref =
+    anchorVille && anchorVille.copy
+      ? `/implantations/${anchorVille.region}/${anchorVille.slug}`
+      : null;
+
   return (
     <>
       {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
@@ -508,6 +524,24 @@ export default async function BlogArticle({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
+      {anchorVilleHref ? (
+        <Section>
+          <Container className="max-w-3xl">
+            <p className="text-fg-muted text-sm">
+              {isFr ? "Cet article concerne " : "This article covers "}
+              <Link
+                href={anchorVilleHref as never}
+                className="text-primary font-medium hover:underline"
+              >
+                {isFr ? `l'IA à ${anchorVille?.nameFr}` : `AI in ${anchorVille?.nameFr}`}
+              </Link>
+              {isFr ? " — voir la page locale." : " — see the local page."}
+            </p>
+          </Container>
+        </Section>
+      ) : null}
 
       <Section>
         <Container className="max-w-3xl">

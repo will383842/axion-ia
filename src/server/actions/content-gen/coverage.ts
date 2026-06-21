@@ -130,6 +130,12 @@ export interface CampaignDetail extends CampaignRow {
   readonly audienceMix: Record<string, number>;
   readonly searchIntentMix: Record<string, number> | null;
   readonly estimatedDurationMinutes: number | null;
+  // Axes multi-axes (2026-06-21) — exposés pour l'affichage du détail campagne.
+  readonly serviceSectorWeights: Record<string, number> | null;
+  readonly targetSecteurWeights: Record<string, number> | null;
+  readonly villeSurroundingMode: string;
+  readonly villeSurroundingRadiusKm: number | null;
+  readonly durationMode: string;
 }
 
 export async function listCampaigns(
@@ -163,6 +169,11 @@ export async function getCampaign(id: string): Promise<CampaignDetail | null> {
     audienceMix: r.audienceMix as Record<string, number>,
     searchIntentMix: r.searchIntentMix as Record<string, number> | null,
     estimatedDurationMinutes: r.estimatedDurationMinutes,
+    serviceSectorWeights: r.serviceSectorWeights as Record<string, number> | null,
+    targetSecteurWeights: r.targetSecteurWeights as Record<string, number> | null,
+    villeSurroundingMode: r.villeSurroundingMode,
+    villeSurroundingRadiusKm: r.villeSurroundingRadiusKm,
+    durationMode: r.durationMode,
   };
 }
 

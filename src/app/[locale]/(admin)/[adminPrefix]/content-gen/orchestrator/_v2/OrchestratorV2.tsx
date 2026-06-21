@@ -19,9 +19,7 @@ interface Props {
   adminPrefix: string;
 }
 
-type ActiveCampaign = Awaited<
-  ReturnType<typeof getOrchestratorStats>
->["activeCampaigns"][number];
+type ActiveCampaign = Awaited<ReturnType<typeof getOrchestratorStats>>["activeCampaigns"][number];
 
 export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.ReactElement> {
   const [stats, batches] = await Promise.all([getOrchestratorStats(), getBatchSettings()]);
@@ -34,9 +32,7 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
       header: "Avancement",
       cell: (c) => {
         const pct =
-          c.totalTargetCount > 0
-            ? Math.round((c.generatedCount / c.totalTargetCount) * 100)
-            : 0;
+          c.totalTargetCount > 0 ? Math.round((c.generatedCount / c.totalTargetCount) * 100) : 0;
         return (
           <div className="flex flex-col gap-[var(--space-admin-1)]" style={{ minWidth: 160 }}>
             <span className="text-[length:var(--text-admin-xs)] tabular-nums">

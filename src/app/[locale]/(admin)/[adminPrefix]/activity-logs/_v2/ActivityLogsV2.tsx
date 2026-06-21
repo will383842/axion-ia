@@ -89,11 +89,7 @@ export function ActivityLogsV2({
       key: "targetId",
       header: "Target ID",
       cell: (l) =>
-        l.targetId ? (
-          <code className="admin-meta-small">{l.targetId.slice(0, 8)}…</code>
-        ) : (
-          "—"
-        ),
+        l.targetId ? <code className="admin-meta-small">{l.targetId.slice(0, 8)}…</code> : "—",
     },
     {
       key: "ip",

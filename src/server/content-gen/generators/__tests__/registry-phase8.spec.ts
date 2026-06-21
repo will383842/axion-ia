@@ -13,7 +13,12 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { getGenerator } from "../index";
+import {
+  getGenerator,
+  REGISTRY_CONTENT_TYPES,
+  REGISTERED_CONTENT_TYPE_NAMES,
+  isContentTypeRegistered,
+} from "../index";
 import {
   longTailKeywordGenerator,
   painPointSolutionGenerator,
@@ -68,6 +73,17 @@ describe("Phase 8 — Registry 12 generators", () => {
     },
   );
 
+  it("registered-types LÉGER aligné 1:1 sur les clés de REGISTRY (zéro dérive)", () => {
+    // La liste légère (sans import de générateur, lue par l'orchestrateur) DOIT
+    // matcher exactement REGISTRY. Si un générateur est ajouté/retiré sans MAJ de
+    // registered-types.ts, ce test pète.
+    expect(new Set(REGISTERED_CONTENT_TYPE_NAMES)).toEqual(new Set(REGISTRY_CONTENT_TYPES));
+    expect(REGISTERED_CONTENT_TYPE_NAMES.length).toBe(REGISTRY_CONTENT_TYPES.length);
+    // landing_ville (CLI-only) n'est JAMAIS générable via le registre.
+    expect(isContentTypeRegistered("landing_ville" as ContentType)).toBe(false);
+    expect(isContentTypeRegistered("blog_article" as ContentType)).toBe(true);
+  });
+
   it("getGenerator throw si ContentType inconnu (anti-régression typo)", () => {
     expect(() => getGenerator("nonexistent_type" as ContentType)).toThrow(
       /No generator registered/,
@@ -75,22 +91,24 @@ describe("Phase 8 — Registry 12 generators", () => {
   });
 });
 
-describe("Phase 8 — Wizard 21 sliders × 6 sections", () => {
-  it("WIZARD_CONTENT_TYPES expose 21 entrées (9 V1 + 12 Phase 8)", () => {
-    expect(WIZARD_CONTENT_TYPES.length).toBe(21);
+describe("Phase 8 — Wizard 20 sliders × 6 sections", () => {
+  it("WIZARD_CONTENT_TYPES expose 20 entrées (8 V1 + 12 Phase 8 ; landing_ville retiré, CLI-only)", () => {
+    expect(WIZARD_CONTENT_TYPES.length).toBe(20);
     const uniques = new Set(WIZARD_CONTENT_TYPES);
-    expect(uniques.size).toBe(21);
+    expect(uniques.size).toBe(20);
+    // landing_ville est CLI-only (hors REGISTRY) → jamais proposé au wizard.
+    expect(WIZARD_CONTENT_TYPES).not.toContain("landing_ville");
   });
 
   it("WIZARD_SECTIONS expose 6 sections", () => {
     expect(WIZARD_SECTIONS.length).toBe(6);
   });
 
-  it("WIZARD_SECTIONS couvre les 21 types sans doublon", () => {
+  it("WIZARD_SECTIONS couvre les 20 types sans doublon", () => {
     const allTypes = WIZARD_SECTIONS.flatMap((s) => s.types);
-    expect(allTypes.length).toBe(21);
+    expect(allTypes.length).toBe(20);
     const uniques = new Set(allTypes);
-    expect(uniques.size).toBe(21);
+    expect(uniques.size).toBe(20);
     // Tous les types du wizard sont mentionnés exactement une fois dans une section.
     for (const ct of WIZARD_CONTENT_TYPES) {
       expect(allTypes).toContain(ct);
@@ -110,9 +128,9 @@ describe("Phase 8 — Wizard 21 sliders × 6 sections", () => {
     expect(actualIds).toEqual(expectedIds);
   });
 
-  it("Section 'core' contient landing_ville + blog_article + guide_pilier", () => {
+  it("Section 'core' contient blog_article + guide_pilier (landing_ville retiré, CLI-only)", () => {
     const core = WIZARD_SECTIONS.find((s) => s.id === "core");
-    expect(core?.types).toEqual(["landing_ville", "blog_article", "guide_pilier"]);
+    expect(core?.types).toEqual(["blog_article", "guide_pilier"]);
   });
 
   it("Section 'seo-longtail' contient les 5 types SEO étendus", () => {

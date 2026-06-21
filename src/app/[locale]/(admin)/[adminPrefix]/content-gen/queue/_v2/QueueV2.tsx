@@ -73,13 +73,7 @@ interface JobRow {
   createdAt: Date;
 }
 
-function JobMini({
-  rows,
-  adminPrefix,
-}: {
-  rows: ReadonlyArray<JobRow>;
-  adminPrefix: string;
-}) {
+function JobMini({ rows, adminPrefix }: { rows: ReadonlyArray<JobRow>; adminPrefix: string }) {
   if (rows.length === 0) return <AdminEmptyState title="Aucun job dans cet état." />;
   const columns: ReadonlyArray<AdminTableColumn<JobRow>> = [
     { key: "type", header: "Type", cell: (r) => r.contentType },

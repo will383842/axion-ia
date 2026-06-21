@@ -84,7 +84,14 @@ export default async function FaqPage({ params }: Props) {
     label: isFr ? c.labelFr : c.labelEn,
   }));
 
-  const faqJsonLd = buildFaqSpeakableJsonLd({ items, speakableSelector: "[data-aeo='faq-intro']" });
+  // AEO (2026-06-21) — `additionalSelectors` ÉTEND le défaut Speakable (qui couvre
+  // déjà question `[data-faq-q]` + réponse `[data-faq-a]`/`itemprop=text`) avec
+  // l'intro. Avant : `speakableSelector` ÉCRASAIT ce défaut → seule l'intro était
+  // « speakable » (voix/LLM ne lisaient pas les réponses). Désormais : intro + Q + R.
+  const faqJsonLd = buildFaqSpeakableJsonLd({
+    items,
+    additionalSelectors: ["[data-aeo='faq-intro']"],
+  });
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/faq", label: "FAQ" }];

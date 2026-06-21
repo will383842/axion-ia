@@ -8,8 +8,9 @@ import { prisma } from "@/lib/prisma";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 import { requireAdminWriteRateLimited } from "./_auth";
 
+// `landing_ville` exclu : CLI-only, hors REGISTRY content-gen (generators/index.ts)
+// → un dispatch ad-hoc sur ce type créerait un job « No generator registered ».
 const CONTENT_TYPE_VALUES = [
-  "landing_ville",
   "blog_article",
   "blog_from_rss",
   "blog_from_keywords",

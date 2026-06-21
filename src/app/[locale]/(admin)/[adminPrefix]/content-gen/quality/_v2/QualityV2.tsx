@@ -230,9 +230,7 @@ export async function QualityV2(): Promise<React.ReactElement> {
       <AdminCard variant="compact">
         <h2 className="admin-h2">Détail par jour</h2>
         {dailyScores.length === 0 ? (
-          <AdminEmptyState
-            title={`Aucun article publié sur les ${WINDOW_DAYS} derniers jours.`}
-          />
+          <AdminEmptyState title={`Aucun article publié sur les ${WINDOW_DAYS} derniers jours.`} />
         ) : (
           <AdminTable
             columns={columns}

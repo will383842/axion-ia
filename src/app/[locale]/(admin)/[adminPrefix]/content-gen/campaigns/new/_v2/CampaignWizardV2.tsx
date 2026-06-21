@@ -27,10 +27,69 @@ import { cn } from "@/lib/utils";
 import { createCampaignFromWizard } from "@/server/actions/content-gen/campaign-wizard";
 import {
   WIZARD_SECTIONS,
+  WIZARD_SERVICE_SECTORS,
+  WIZARD_SEARCH_INTENTS,
+  WIZARD_COMPANY_SIZES,
+  WIZARD_ORG_TYPES,
+  WIZARD_SURROUNDING_MODES,
+  WIZARD_DURATION_MODES,
   type WizardContentType,
 } from "@/server/actions/content-gen/campaign-wizard-constants";
+import { CLIENT_SECTORS } from "@/content/sectors";
 
 import type { PresetWizardSeed, ServiceSector } from "./preset-mapping";
+
+// ─── Éditeur de pondérations (axes multi-axes : activité/secteur/intention/audience)
+// Liste de lignes label + input %. Une somme = 0 → l'axe est inactif (réglage par
+// défaut côté serveur). Proportions : la somme n'a pas à valoir 100 (normalisée).
+
+interface WeightOption {
+  readonly value: string;
+  readonly labelFr: string;
+}
+
+function WeightEditor({
+  options,
+  value,
+  onChange,
+  ariaLabel,
+  inactiveHint,
+}: {
+  readonly options: ReadonlyArray<WeightOption>;
+  readonly value: Record<string, number>;
+  readonly onChange: (next: Record<string, number>) => void;
+  readonly ariaLabel: string;
+  readonly inactiveHint: string;
+}): React.ReactElement {
+  const sum = Object.values(value).reduce((a, b) => a + (b || 0), 0);
+  return (
+    <div role="group" aria-label={ariaLabel} className="flex flex-col gap-1.5">
+      {options.map((o) => (
+        <label key={o.value} className="flex items-center justify-between gap-3">
+          <span className="text-[length:var(--text-admin-sm)]">{o.labelFr}</span>
+          <input
+            type="number"
+            min={0}
+            max={1000}
+            value={value[o.value] ?? 0}
+            onChange={(e) => {
+              const n = parseInt(e.target.value, 10) || 0;
+              const next = { ...value };
+              if (n <= 0) delete next[o.value];
+              else next[o.value] = n;
+              onChange(next);
+            }}
+            className="admin-input w-20 rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-2 py-1 text-right"
+            aria-label={`${ariaLabel} — ${o.labelFr}`}
+          />
+        </label>
+      ))}
+      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+        {sum > 0 ? `Somme : ${sum} (proportions, normalisées automatiquement)` : inactiveHint}
+      </span>
+    </div>
+  );
+}
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -60,6 +119,15 @@ interface WizardState {
   endDate: string;
   mixMode: MixMode;
   contentTypeWeights: Record<WizardContentType, number>;
+  // ── Axes multi-axes (tous optionnels : vides = comportement par défaut) ──
+  serviceSectorWeights: Record<string, number>; // axe 2 — {} = activité unique
+  targetSecteurWeights: Record<string, number>; // axe 3 — {} = aucun ciblage
+  searchIntentMix: Record<string, number>; // axe 4 — {} = fallback global
+  audienceSizeWeights: Record<string, number>; // axe 5 — {} = défaut
+  audienceOrg: string; // type d'organisation appliqué aux tailles (axe 5)
+  villeSurroundingMode: "none" | "radius" | "same_departement"; // axe 6
+  villeSurroundingRadiusKm: number; // axe 6
+  durationMode: "fixed" | "unlimited"; // axe 8
   submitting: boolean;
 }
 
@@ -78,10 +146,9 @@ const SERVICE_LABELS: Record<ServiceSector, { fr: string; desc: string }> = {
 // Default 'équilibré' : core 30% + sources 12% + comparatifs 11% + Q&A 13% +
 // SEO long-tail 19% + conversion 15% = 100%.
 const DEFAULT_WEIGHTS_BALANCED: Record<WizardContentType, number> = {
-  // Section 1 — Core (3) = 30%
-  landing_ville: 10,
-  blog_article: 12,
-  guide_pilier: 8,
+  // Section 1 — Core (2) = 30% (landing_ville retiré, CLI-only — % redistribué)
+  blog_article: 18,
+  guide_pilier: 12,
   // Section 2 — Sources externes (3) = 12%
   blog_from_rss: 5,
   blog_from_keywords: 5,
@@ -129,11 +196,11 @@ function focusedWeights(
 
 const QUICK_TYPES: QuickType[] = [
   {
-    id: "pages_villes",
-    fr: "Pages villes",
-    desc: "Landing pages locales par ville",
+    id: "contenu_local",
+    fr: "Contenu local",
+    desc: "Problème/solution, cas d'usage et FAQ ancrés ville",
     emoji: "🏙️",
-    weights: focusedWeights({ landing_ville: 100 }),
+    weights: focusedWeights({ pain_point_solution: 40, case_study_local: 30, faq_geo: 30 }),
   },
   {
     id: "blog",
@@ -226,6 +293,14 @@ export function CampaignWizardV2({
       endDate: "",
       mixMode: "percentage",
       contentTypeWeights: seededWeights,
+      serviceSectorWeights: {},
+      targetSecteurWeights: {},
+      searchIntentMix: {},
+      audienceSizeWeights: {},
+      audienceOrg: "entreprise_privee",
+      villeSurroundingMode: "none",
+      villeSurroundingRadiusKm: 50,
+      durationMode: "fixed",
       submitting: false,
     };
   });
@@ -233,6 +308,8 @@ export function CampaignWizardV2({
   // Détail fin du mix (mode avancé étape 1) + targetPerCity avancé (M5).
   const [showMixDetail, setShowMixDetail] = useState(false);
   const [showAdvancedScope, setShowAdvancedScope] = useState(false);
+  // Ciblage avancé multi-axes (étape 2) : activité / secteur client / audience.
+  const [showMultiAxes, setShowMultiAxes] = useState(false);
 
   function update<K extends keyof WizardState>(key: K, value: WizardState[K]): void {
     setState((s) => ({ ...s, [key]: value }));
@@ -261,6 +338,13 @@ export function CampaignWizardV2({
     }
     update("submitting", true);
     try {
+      // Axe 5 — recompose audienceMix « SIZE:ORG » depuis les poids par taille.
+      const audienceMix: Record<string, number> = {};
+      for (const [size, w] of Object.entries(state.audienceSizeWeights)) {
+        if (w > 0) audienceMix[`${size}:${state.audienceOrg}`] = w;
+      }
+      const hasWeights = (r: Record<string, number>): boolean =>
+        Object.values(r).some((v) => v > 0);
       const result = await createCampaignFromWizard({
         serviceSector: state.serviceSector,
         name: state.name.trim(),
@@ -272,6 +356,20 @@ export function CampaignWizardV2({
         ...(state.endDate ? { endDate: new Date(state.endDate).toISOString() } : {}),
         mixMode: state.mixMode,
         contentTypeWeights: state.contentTypeWeights,
+        // ── Axes multi-axes : envoyés uniquement si renseignés ──
+        ...(hasWeights(state.serviceSectorWeights)
+          ? { serviceSectorWeights: state.serviceSectorWeights }
+          : {}),
+        ...(hasWeights(state.targetSecteurWeights)
+          ? { targetSecteurWeights: state.targetSecteurWeights }
+          : {}),
+        ...(hasWeights(state.searchIntentMix) ? { searchIntentMix: state.searchIntentMix } : {}),
+        ...(hasWeights(audienceMix) ? { audienceMix } : {}),
+        villeSurroundingMode: state.villeSurroundingMode,
+        ...(state.villeSurroundingMode === "radius"
+          ? { villeSurroundingRadiusKm: state.villeSurroundingRadiusKm }
+          : {}),
+        durationMode: state.durationMode,
         action,
       });
       toast.success(action === "launch" ? "Campagne lancée" : "Brouillon enregistré");
@@ -579,7 +677,118 @@ export function CampaignWizardV2({
                 </>
               ) : null}
             </div>
+
+            {/* Axe 6 — ville & alentours (étend les villes choisies) */}
+            <div className="mt-[var(--space-admin-4,8px)]">
+              <span className="mb-[var(--space-admin-2,4px)] block text-[length:var(--text-admin-sm)] font-semibold">
+                Ville &amp; alentours
+              </span>
+              <div className="flex flex-col gap-1">
+                {WIZARD_SURROUNDING_MODES.map((m) => (
+                  <label key={m.value} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="villeSurroundingMode"
+                      checked={state.villeSurroundingMode === m.value}
+                      onChange={() => update("villeSurroundingMode", m.value)}
+                    />
+                    {m.labelFr}
+                  </label>
+                ))}
+                {state.villeSurroundingMode === "radius" ? (
+                  <label className="mt-1 flex max-w-xs items-center gap-2">
+                    <span className="text-[length:var(--text-admin-sm)]">Rayon (km)</span>
+                    <input
+                      type="number"
+                      min={5}
+                      max={200}
+                      value={state.villeSurroundingRadiusKm}
+                      onChange={(e) =>
+                        update("villeSurroundingRadiusKm", parseInt(e.target.value, 10) || 50)
+                      }
+                      className="admin-input w-24 rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-2 py-1"
+                      aria-label="Rayon en km"
+                    />
+                  </label>
+                ) : null}
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                  Étend les villes <strong>choisies</strong> aux communes proches (la file globale
+                  n&apos;est pas étendue).
+                </span>
+              </div>
+            </div>
           </fieldset>
+
+          {/* Ciblage avancé multi-axes : % activité (axe 2), % secteur client
+                (axe 3), % audience (axe 5). Vides = réglages par défaut. */}
+          <div className="mt-[var(--space-admin-5,12px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]">
+            <button
+              type="button"
+              onClick={() => setShowMultiAxes((v) => !v)}
+              className="flex items-center gap-2 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-soft)] hover:text-[color:var(--color-admin-fg)]"
+              aria-expanded={showMultiAxes}
+            >
+              <span>{showMultiAxes ? "▾" : "▸"}</span>
+              Ciblage avancé (multi-axes) — activité, secteur client, audience
+            </button>
+            {showMultiAxes ? (
+              <div className="mt-[var(--space-admin-4,8px)] grid grid-cols-1 gap-[var(--space-admin-5,12px)] lg:grid-cols-3">
+                <div>
+                  <h4 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+                    % par activité Axion-IA
+                  </h4>
+                  <WeightEditor
+                    ariaLabel="Pondération par activité"
+                    options={WIZARD_SERVICE_SECTORS}
+                    value={state.serviceSectorWeights}
+                    onChange={(next) => update("serviceSectorWeights", next)}
+                    inactiveHint="Inactif → l'activité unique choisie ci-dessus est utilisée."
+                  />
+                </div>
+                <div>
+                  <h4 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+                    % par secteur client
+                  </h4>
+                  <WeightEditor
+                    ariaLabel="Pondération par secteur client"
+                    options={CLIENT_SECTORS.map((s) => ({ value: s.slug, labelFr: s.labelFr }))}
+                    value={state.targetSecteurWeights}
+                    onChange={(next) => update("targetSecteurWeights", next)}
+                    inactiveHint="Inactif → contenu non ciblé par secteur (pain-matrix dormante)."
+                  />
+                </div>
+                <div>
+                  <h4 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+                    % par audience
+                  </h4>
+                  <label className="mb-[var(--space-admin-2,4px)] flex flex-col gap-1">
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                      Type d&apos;organisation
+                    </span>
+                    <select
+                      value={state.audienceOrg}
+                      onChange={(e) => update("audienceOrg", e.target.value)}
+                      className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-2 py-1"
+                      aria-label="Type d'organisation"
+                    >
+                      {WIZARD_ORG_TYPES.map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.labelFr}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <WeightEditor
+                    ariaLabel="Pondération par taille d'entreprise"
+                    options={WIZARD_COMPANY_SIZES}
+                    value={state.audienceSizeWeights}
+                    onChange={(next) => update("audienceSizeWeights", next)}
+                    inactiveHint="Inactif → audience par défaut."
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
         </AdminCard>
       ) : null}
 
@@ -643,6 +852,32 @@ export function CampaignWizardV2({
             </label>
           </div>
 
+          {/* Axe 8 — mode de durée */}
+          <fieldset className="mt-[var(--space-admin-4,8px)]">
+            <legend className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+              Durée de la campagne
+            </legend>
+            <div className="flex flex-col gap-1">
+              {WIZARD_DURATION_MODES.map((d) => (
+                <label key={d.value} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="durationMode"
+                    checked={state.durationMode === d.value}
+                    onChange={() => update("durationMode", d.value)}
+                  />
+                  {d.labelFr}
+                </label>
+              ))}
+              {state.durationMode === "unlimited" ? (
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                  La campagne tourne en continu au rythme indiqué jusqu&apos;à un arrêt manuel (ou
+                  la date de fin si renseignée).
+                </span>
+              ) : null}
+            </div>
+          </fieldset>
+
           {/* M5 — targetPerCity replié dans un bloc avancé */}
           <div className="mt-[var(--space-admin-4,8px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]">
             <button
@@ -673,6 +908,21 @@ export function CampaignWizardV2({
                   n&apos;avez pas de besoin spécifique.
                 </span>
               </label>
+            ) : null}
+            {/* Axe 4 — % intention de recherche (sinon réglage global console) */}
+            {showAdvancedScope ? (
+              <div className="mt-[var(--space-admin-4,8px)] max-w-sm">
+                <h4 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold">
+                  % par intention de recherche
+                </h4>
+                <WeightEditor
+                  ariaLabel="Pondération par intention de recherche"
+                  options={WIZARD_SEARCH_INTENTS}
+                  value={state.searchIntentMix}
+                  onChange={(next) => update("searchIntentMix", next)}
+                  inactiveHint="Inactif → distribution globale par défaut (réglages console)."
+                />
+              </div>
             ) : null}
           </div>
 
@@ -743,7 +993,43 @@ export function CampaignWizardV2({
             </div>
             <div>
               <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Durée estimée</dt>
-              <dd className="font-semibold">{formatDuration(est.durationDays)}</dd>
+              <dd className="font-semibold">
+                {state.durationMode === "unlimited"
+                  ? "Sans limite (arrêt manuel)"
+                  : formatDuration(est.durationDays)}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Activités</dt>
+              <dd className="font-semibold">
+                {Object.keys(state.serviceSectorWeights).length > 0
+                  ? `Mix de ${Object.keys(state.serviceSectorWeights).length} activités`
+                  : state.serviceSector
+                    ? SERVICE_LABELS[state.serviceSector].fr
+                    : "—"}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">
+                Secteurs clients
+              </dt>
+              <dd className="font-semibold">
+                {Object.keys(state.targetSecteurWeights).length > 0
+                  ? `${Object.keys(state.targetSecteurWeights).length} ciblé(s)`
+                  : "Non ciblé"}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">
+                Ville &amp; alentours
+              </dt>
+              <dd className="font-semibold">
+                {state.villeSurroundingMode === "radius"
+                  ? `Rayon ${state.villeSurroundingRadiusKm} km`
+                  : state.villeSurroundingMode === "same_departement"
+                    ? "Tout le département"
+                    : "Villes choisies"}
+              </dd>
             </div>
           </dl>
           <div className="mt-[var(--space-admin-5,12px)] flex flex-wrap gap-[var(--space-admin-3,6px)]">
