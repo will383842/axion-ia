@@ -538,7 +538,7 @@ Fichiers de référence :
 | `buildFaqJsonLd`           | `FAQPage`                                                                                  | FAQs basiques                                   |
 | `buildFaqSpeakableJsonLd`  | `FAQPage` + `speakable`                                                                    | FAQs voice-first (Assistant + Alexa + Bixby)    |
 | `buildBreadcrumbJsonLd`    | `BreadcrumbList`                                                                           | toutes pages > niveau 1                         |
-| `buildOrganizationJsonLd`  | `Organization` (10 champs + slots `vatID` FR / `siren`)                                     | layout-level                                    |
+| `buildOrganizationJsonLd`  | `Organization` (10 champs + slots `vatID` FR / `siren`)                                    | layout-level                                    |
 | `buildWebsiteJsonLd`       | `WebSite` + `SearchAction`                                                                 | layout-level                                    |
 | `buildPersonJsonLd`        | `Person` + worksFor + knowsAbout + sameAs                                                  | `/a-propos`, `/blog/auteur/[slug]`              |
 | `buildArticleJsonLd`       | `Article` + `dateModified` + Person author + `wordCount` + `keywords` + `mainEntityOfPage` | `/blog/[slug]`, `/cas-concrets/[slug]`          |

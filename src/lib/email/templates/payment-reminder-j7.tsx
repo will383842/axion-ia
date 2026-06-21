@@ -101,7 +101,9 @@ export function PaymentReminderJ7Email({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{greeting}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.reminder(invoiceNumber, amountTtc, dueDate)}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.reminder(invoiceNumber, amountTtc, dueDate)}
+      </Text>
       <Text style={emailStyles.paragraphStyle}>{t.regularize(invoiceNumber, deadlineDate)}</Text>
       <Text style={{ ...emailStyles.paragraphStyle, whiteSpace: "pre-line" }}>{t.close}</Text>
     </EmailLayout>

@@ -57,7 +57,10 @@ const COPY = {
   },
 } as const;
 
-export const cadrageJ1ReminderSubject = (locale: Locale, _payload: Record<string, unknown>): string =>
+export const cadrageJ1ReminderSubject = (
+  locale: Locale,
+  _payload: Record<string, unknown>,
+): string =>
   locale === "fr"
     ? "Votre call de cadrage, c'est demain — Axion-IA"
     : "Your kickoff call is tomorrow — Axion-IA";

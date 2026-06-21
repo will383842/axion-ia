@@ -54,7 +54,10 @@ const COPY = {
   },
 } as const;
 
-export const cadrageH2ReminderSubject = (locale: Locale, _payload: Record<string, unknown>): string =>
+export const cadrageH2ReminderSubject = (
+  locale: Locale,
+  _payload: Record<string, unknown>,
+): string =>
   locale === "fr"
     ? "Votre call commence dans 2 heures — Axion-IA"
     : "Your call starts in 2 hours — Axion-IA";

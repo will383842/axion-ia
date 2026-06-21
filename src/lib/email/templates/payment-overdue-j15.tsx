@@ -118,7 +118,11 @@ export function PaymentOverdueJ15Email({
       <Text style={emailStyles.paragraphStyle}>{t.relationship}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.regularize(invoiceNumber, deadlineDate)}</Text>
       <Text
-        style={{ ...emailStyles.paragraphStyle, fontSize: "13px", color: emailStyles.COLORS.textMuted }}
+        style={{
+          ...emailStyles.paragraphStyle,
+          fontSize: "13px",
+          color: emailStyles.COLORS.textMuted,
+        }}
       >
         {t.legal}
       </Text>
