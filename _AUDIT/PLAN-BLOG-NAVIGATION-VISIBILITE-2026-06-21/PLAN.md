@@ -98,17 +98,18 @@ Trois couches, du moins au plus fort, **toutes anti-doorway** :
 
 ---
 
-## 6. Le pivot critique : repasser en « indexation méritée » (G5)
+## 6. Indexation : DÉCISION WILL = tout reste en tier-1
 
-C'est **LA décision** qui conditionne tout le scaling. Aujourd'hui `content-publish-worker` force `tier_1 + promotedAt` sur **tout** → à 100/j, le sitemap explose et le crawl meurt.
+**Décision arrêtée (2026-06-21) : on garde `tier_1_indexable` systématique au publish** (`content-publish-worker.ts:398,436` — pas de changement). Tout contenu publié est donc indexé immédiatement.
 
-**Cible :**
-- Publier en **`tier_2_noindex_follow` par défaut** (l'article est en ligne, crawlable, maillé, transmet le jus — mais hors sitemap/hors index).
-- **Promotion auto tier-1** si `qualityScore ≥ 80` (contenu premium prouvé d'emblée) — seuil configurable `factoryAutoPromoteTier1MinScore`.
-- Sinon, **promotion gagnée** par le lifecycle CTR (>3 % @14j) déjà codé.
-- Effet : seuls les ~20–30 % d'articles premium/performants entrent au sitemap → **crawl budget concentré**, indexation effective, zéro signal « ferme ».
+**Conséquence : le filtre d'indexation se déplace EN AMONT (avant publication).** Comme on n'utilise plus le tier-2 pour temporiser l'index, la protection du budget de crawl repose ENTIÈREMENT sur 4 leviers — qui deviennent donc **non négociables** :
 
-> C'est un **arbitrage produit** : visibilité immédiate de tout (risqué, famine) **vs** visibilité durable du contenu qui mérite (recommandé). Décision Will requise.
+1. **Gates qualité stricts = le vrai filtre.** Ce qui est publié EST indexé → le seuil de publication EST le seuil d'index. Garder soft-404 (≥350 mots), dedup topic/outline, plagiat, doctrine actifs. ⚠️ Le seuil auto-publish a été baissé à 65 — à surveiller : à tier-1-for-all, publier = indexer, donc 65 doit rester un plancher crédible (sinon HCU).
+2. **IndexNow + GSC API = compensation crawl (devient P1, pas P4).** Sans throttle par tier, on DOIT pousser activement chaque publication à Bing/Yandex/Google (quota 10k/j). C'est ce qui remplace la temporisation.
+3. **Sitemap discipliné + paginé** (cf. §7, cap 5000 actuel = bloquant).
+4. **Maillage interne dense** (hubs → nouveaux articles ≤ 2 clics) = amorce le crawl.
+
+**Nuance santé d'index (à arbitrer) :** aujourd'hui `promotedAt` est posé au publish → il **bloque la démotion auto**. À l'échelle (dizaines de milliers), les articles à CTR<1 % restent indexés à vie → gonflement + risque HCU long terme. **Recommandation :** laisser le lifecycle **démoter les sous-performants chroniques** (CTR<1 % @30j/100imp → tier-2 noindex, page reste en ligne) tout en gardant la **naissance en tier-1** voulue par Will. = « tout indexé d'emblée, mais on élague ce qui ne performe jamais ». Réversible, sain, ne contredit pas la décision.
 
 ---
 
@@ -133,17 +134,18 @@ C'est **LA décision** qui conditionne tout le scaling. Aujourd'hui `content-pub
 - secteur/service/taille : passer en hybride DB+FS (comme catégorie).
 - Sitemap : vérifier inclusion + pagination (G6).
 
-**PHASE 2 — Maillage ville (G3, cœur visibilité locale)**
-- Bloc « Contenus IA à {Ville} » sur `/implantations/{ville}` (requête `anchorVilleSlug, tier_1`).
-- Lien article → page ville ancrée.
-- Hub-ville-blog mérité `/fr/blog/ville/{ville}` (seuil ≥5 tier-1), `dynamicParams=false` sur slugs éligibles, sitemap conditionnel.
+**PHASE 2 — Maillage ville (G3, cœur visibilité locale) — déjà 60 % câblé**
+- ✅ EXISTE : `getBlogArticlesByVille(villeSlug, limit)` (`get-articles-by-ville.ts`, filtre `tier_1 + mentionedCities`), données `anchorVilleSlug`+`mentionedCities[]` persistées au publish.
+- ⚠️ À FAIRE : câbler le helper dans `/implantations/{ville}` (la page a des **placeholders `articlesCount:0`** non branchés) → bloc « Contenus IA à {Ville} ».
+- À FAIRE : lien article → page ville ancrée (maillage retour).
+- À FAIRE : hub-ville-blog mérité `/fr/blog/ville/{ville}` (seuil ≥5 tier-1 distincts, compteur DB déterministe fail-open), `dynamicParams=false` sur slugs éligibles, sitemap conditionnel.
 
-**PHASE 3 — Indexation méritée (G5, décision Will)**
-- `content-publish-worker` : défaut `tier_2`, auto-promote `tier_1` si score ≥ 80 ; retirer le `promotedAt` systématique.
-- Activer le lifecycle CTR (déjà codé) une fois le trafic GSC branché.
+**PHASE 3 — Sitemap scalable + découverte active (remplace l'ancien pivot tier)**
+- 🔴 **Paginer le sitemap blog** : remplacer le `take: 5000` dur (`sitemap.ts:613`) par des chunks tier-1 (`blog-1.xml`, `blog-2.xml`, 5000/chunk) déclarés dans `sitemap-index.xml`. Bloquant au-delà de 5000 articles (~50 j).
+- **Activer IndexNow on-publish** (clé déjà prévue) + câbler **GSC Indexing API** pour tier-1 + monitoring couverture (`gsc-hcu-monitor` existe).
 
-**PHASE 4 — Découverte active (G8)**
-- Activer IndexNow on-promote ; câbler GSC Indexing API ; monitoring couverture.
+**PHASE 4 — Santé d'index à l'échelle (option recommandée §6)**
+- Laisser le lifecycle **démoter les sous-performants chroniques** (CTR<1 %@30j) sans toucher la naissance tier-1 → évite le gonflement d'index sur le long terme. *(Décision Will : activer ou non.)*
 
 ---
 
@@ -159,7 +161,35 @@ C'est **LA décision** qui conditionne tout le scaling. Aujourd'hui `content-pub
 
 ## 10. Décisions requises de Will avant codage
 
-1. **Indexation méritée (§6)** : OK pour défaut tier-2 + auto-promote score ≥ 80 ? (recommandé pour scaler sans pénalité) — ou garder « tout tier-1 » (risqué) ?
+1. ~~Indexation méritée~~ → **TRANCHÉ : on garde tout tier-1** (§6). Reste à confirmer l'**option santé d'index** (§6/P4) : laisser démoter les sous-performants chroniques (CTR<1 %@30j) ? *(recommandé pour la santé long terme, n'enlève pas la naissance tier-1)*.
 2. **Seuil hub-ville** : ≥ 5 articles tier-1 distincts par ville pour ouvrir `/fr/blog/ville/{ville}` ? (ajustable)
-3. **Périmètre Phase 1** : showcase éditorial conservé en haut + liste DB dessous (recommandé) ou 100 % DB ?
-4. **Priorité** : on attaque dans l'ordre P0→P4, ou tu veux remonter une phase ?
+3. **Périmètre index `/fr/blog`** : showcase éditorial en haut + liste DB dessous (recommandé) ou 100 % DB ?
+4. **Priorité/ordre** : P0→P4 dans l'ordre, ou remonter une phase ?
+
+---
+
+## 11. Vérification de bout en bout (raccordement complet)
+
+Chaîne opérationnelle tracée et vérifiée dans le code (✅ = fonctionnel, ⚠️ = à brancher, 🔴 = bloquant scale) :
+
+| # | Maillon | État vérifié | Action plan |
+|---|---|---|---|
+| 1 | Orchestrateur : diversité de types + drip + cap/tick | ✅ `content-orchestrator-worker` + `type-sequence.ts` | — |
+| 2 | Génération + gates (soft-404/plagiat/dedup/doctrine/citations) | ✅ (citations corrigées ce jour) | maintenir seuils |
+| 3 | Score ≥ seuil → publish | ✅ seuil 65 (DB config) | P0 : revérifier 65 crédible (tier-1=index) |
+| 4 | Publish → Article tier-1 + `anchorVilleSlug` + `mentionedCities[]` + `promotedAt` | ✅ `content-publish-worker:398,436,744` | P4 : option démote sous-perf |
+| 5 | Découverte active IndexNow/GSC on-publish | ⚠️ infra présente, activation à confirmer | **P3** |
+| 6 | Sitemap blog (tier-1 only) | ⚠️ OK mais **cap dur 5000** `sitemap.ts:613` | 🔴 **P3 pagination** |
+| 7 | Hub maître `/fr/blog` | 🔴 **statique FS**, ignore la DB | **P1 DB-driven** |
+| 8 | Hubs type d'activité `/categorie/*` | ✅ DB-driven | P1 : lier depuis le hub |
+| 9 | Hubs secteur/service/taille | ⚠️ FS-only | **P1 hybride DB** |
+| 10 | Dimension ville — helper `getBlogArticlesByVille` (tier-1) | ✅ existe | — |
+| 11 | Page ville `/implantations/{ville}` affiche les articles | ⚠️ **placeholders `articlesCount:0`** non câblés | **P2 câbler** |
+| 12 | Hub-ville `/fr/blog/ville/{ville}` (mérité) | ❌ n'existe pas | **P2 créer** |
+| 13 | Article `/blog/{slug}` robots/tier + related tier-1 | ✅ `blog/[slug]/page.tsx`, `related-articles.ts` | P2 : ajouter lien ville |
+| 14 | Soft-404 (URL morte → vrai 404) | 🔴 renvoie 200 (bug next-intl) | **P0** |
+| 15 | EN désactivé (301→FR) | ✅ `proxy.ts` gère `/en/*` | les nouveaux hubs héritent du 301, **rien à coder EN** |
+| 16 | Build stub (`stub.invalid`) → fail-open | ✅ pattern en place | respecter sur nouveaux compteurs (hub-ville) |
+| 17 | Web Vitals (LCP/INP/CLS/JS) sur pages modifiées | gate `lhci`+`size-limit` | requêtes DB en ISR + pagination, valider à chaque PR |
+
+**Verdict :** le pipeline production→publication→ville est **déjà raccordé jusqu'à l'Article (maillons 1-4, 10, 13)**. Les trous sont uniquement côté **surfaçage/navigation** (7, 9, 11, 12), **scale crawl** (5, 6, 14) — tous adressés par P0→P3. Aucune dépendance manquante, aucune donnée à reconstruire (ville déjà persistée). Le plan est **complet et exécutable en l'état**.
