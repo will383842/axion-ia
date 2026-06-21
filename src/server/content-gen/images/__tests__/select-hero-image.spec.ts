@@ -1,13 +1,17 @@
 /**
- * Tests select-hero-image.ts — Unsplash primaire (Option A 2026-06-16) + fallback
- * image-bank.
+ * Tests select-hero-image.ts — Unsplash primaire (Option A 2026-06-16).
+ *
+ * MAJ 2026-06-21 : doctrine « Unsplash uniquement » → le fallback image-bank est
+ * désactivé par défaut, réactivable via `HERO_IMAGE_BANK_FALLBACK=true`.
  *
  * Couvre :
- * 1. Pas de clé Unsplash → fallback image-bank.
- * 2. Clé + Unsplash OK → source 'unsplash' avec attribution photographe.
- * 3. Clé mais Unsplash throw → fallback image-bank (jamais throw).
- * 4. Clé mais 0 source (Unsplash throw + bank null) → null.
- * 5. buildUnsplashQuery : retire le slug ville + 'pme'/'tpe'.
+ * 1. Pas de clé Unsplash + fallback OFF (défaut) → null (jamais image-bank).
+ * 2. Pas de clé Unsplash + fallback ON → image-bank.
+ * 3. Clé + Unsplash OK → source 'unsplash' avec attribution photographe.
+ * 4. Clé mais Unsplash throw + fallback OFF → null (bank jamais appelé).
+ * 5. Clé mais Unsplash throw + fallback ON → image-bank.
+ * 6. Fallback ON + Unsplash throw + bank null → null.
+ * 7. buildUnsplashQuery : retire le slug ville + 'pme'/'tpe'.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -56,20 +60,39 @@ function unsplashOutput(): string {
 }
 
 const ORIGINAL_KEY = process.env.UNSPLASH_ACCESS_KEY;
+const ORIGINAL_FALLBACK = process.env.HERO_IMAGE_BANK_FALLBACK;
 
 beforeEach(() => {
   generateMock.mockReset();
   assignHeroImageMock.mockReset();
+  // Défaut « Unsplash uniquement » : fallback OFF sauf opt-in explicite par test.
+  delete process.env.HERO_IMAGE_BANK_FALLBACK;
 });
 
 afterEach(() => {
   if (ORIGINAL_KEY === undefined) delete process.env.UNSPLASH_ACCESS_KEY;
   else process.env.UNSPLASH_ACCESS_KEY = ORIGINAL_KEY;
+  if (ORIGINAL_FALLBACK === undefined) delete process.env.HERO_IMAGE_BANK_FALLBACK;
+  else process.env.HERO_IMAGE_BANK_FALLBACK = ORIGINAL_FALLBACK;
 });
 
-describe("selectHeroImage — Unsplash primaire + fallback bank", () => {
-  it("sans clé Unsplash → fallback image-bank", async () => {
+describe("selectHeroImage — Unsplash uniquement (fallback bank opt-in)", () => {
+  it("sans clé Unsplash + fallback OFF (défaut) → null, bank jamais appelé", async () => {
     delete process.env.UNSPLASH_ACCESS_KEY;
+    const res = await selectHeroImage({
+      jobId: "job-1",
+      contentType: "blog_article",
+      vertical: "audits",
+      primaryKeyword: "audit IA",
+    });
+    expect(generateMock).not.toHaveBeenCalled();
+    expect(assignHeroImageMock).not.toHaveBeenCalled();
+    expect(res).toBeNull();
+  });
+
+  it("sans clé Unsplash + fallback ON → image-bank", async () => {
+    delete process.env.UNSPLASH_ACCESS_KEY;
+    process.env.HERO_IMAGE_BANK_FALLBACK = "true";
     assignHeroImageMock.mockResolvedValue(BANK_HIT);
     const res = await selectHeroImage({
       jobId: "job-1",
@@ -99,8 +122,21 @@ describe("selectHeroImage — Unsplash primaire + fallback bank", () => {
     expect(assignHeroImageMock).not.toHaveBeenCalled();
   });
 
-  it("avec clé mais Unsplash throw → fallback image-bank", async () => {
+  it("avec clé mais Unsplash throw + fallback OFF → null, bank jamais appelé", async () => {
     process.env.UNSPLASH_ACCESS_KEY = "test-key";
+    generateMock.mockRejectedValue(new Error("rate limited"));
+    const res = await selectHeroImage({
+      jobId: "job-1",
+      contentType: "blog_article",
+      primaryKeyword: "audit IA",
+    });
+    expect(assignHeroImageMock).not.toHaveBeenCalled();
+    expect(res).toBeNull();
+  });
+
+  it("avec clé mais Unsplash throw + fallback ON → image-bank", async () => {
+    process.env.UNSPLASH_ACCESS_KEY = "test-key";
+    process.env.HERO_IMAGE_BANK_FALLBACK = "true";
     generateMock.mockRejectedValue(new Error("rate limited"));
     assignHeroImageMock.mockResolvedValue(BANK_HIT);
     const res = await selectHeroImage({
@@ -111,8 +147,9 @@ describe("selectHeroImage — Unsplash primaire + fallback bank", () => {
     expect(res?.source).toBe("image-bank");
   });
 
-  it("Unsplash throw + bank null → null", async () => {
+  it("fallback ON + Unsplash throw + bank null → null", async () => {
     process.env.UNSPLASH_ACCESS_KEY = "test-key";
+    process.env.HERO_IMAGE_BANK_FALLBACK = "true";
     generateMock.mockRejectedValue(new Error("down"));
     assignHeroImageMock.mockResolvedValue(null);
     const res = await selectHeroImage({

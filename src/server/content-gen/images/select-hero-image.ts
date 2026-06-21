@@ -4,7 +4,11 @@
  * Décision Will 2026-06-16 : les articles content-gen doivent porter une PHOTO
  * Unsplash fraîche, plus seulement une image-bank. Unsplash = photos réelles
  * (PAS de l'IA générative) → compatible avec la doctrine [[feedback_no_dalle_images]]
- * (0 image IA). On garde l'image-bank en FALLBACK robuste.
+ * (0 image IA).
+ *
+ * MAJ Will 2026-06-21 : « Unsplash UNIQUEMENT ». Le fallback image-bank est
+ * désormais DÉSACTIVÉ par défaut (les héros publiés ne doivent plus venir de la
+ * banque interne). Il reste réactivable via `HERO_IMAGE_BANK_FALLBACK=true`.
  *
  * Pipeline :
  *   1. Unsplash (si clé + provider activé) : recherche par mot-clé → meilleure
@@ -14,9 +18,10 @@
  *      L'attribution photographe (CGU §6) est portée par `photographerName/Url`
  *      et persistée sur l'Article (cf. content-publish-worker), rendue par
  *      <UnsplashCredit/>.
- *   2. Fallback image-bank (`assignHeroImage`) : si Unsplash indisponible
- *      (clé absente, provider désactivé, 0 résultat libre, erreur réseau).
- *   3. null : aucune source → le worker logue `hero_image_pending`.
+ *   2. Fallback image-bank (`assignHeroImage`) : UNIQUEMENT si
+ *      `HERO_IMAGE_BANK_FALLBACK=true` (désactivé par défaut — Unsplash only).
+ *   3. null : aucune source (ou Unsplash indisponible) → le worker logue
+ *      `hero_image_pending`.
  *
  * Le worker ne dépend QUE de ce module pour la hero ; il n'appelle plus
  * `assignHeroImage` directement.
@@ -107,6 +112,14 @@ async function tryUnsplash(input: SelectHeroImageInput): Promise<SelectedHero | 
 export async function selectHeroImage(input: SelectHeroImageInput): Promise<SelectedHero | null> {
   const unsplash = await tryUnsplash(input);
   if (unsplash) return unsplash;
+
+  // Doctrine « Unsplash uniquement » (Will 2026-06-21) : par défaut, PAS de
+  // fallback image-bank. Si Unsplash est indisponible (clé absente, rate-limit,
+  // 0 résultat, réseau), on laisse la hero vide → le worker logue
+  // `hero_image_pending` (assignation manuelle) et la page rend simplement sans
+  // image (pas de régression). Le fallback image-bank reste réactivable sans
+  // redéploiement via `HERO_IMAGE_BANK_FALLBACK=true` (réversibilité).
+  if (process.env.HERO_IMAGE_BANK_FALLBACK !== "true") return null;
 
   const bank = await assignHeroImage(input);
   if (!bank) return null;
