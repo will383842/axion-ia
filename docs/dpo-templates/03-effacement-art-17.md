@@ -36,7 +36,7 @@ Nous accusons réception de votre demande d'effacement, conformément à l'artic
 - Audit trail : un journal anonymisé (hash SHA-256 de votre email, sans réidentification possible) est conservé conformément aux obligations RGPD de traçabilité (art. 30).
 
 **Données conservées (obligation légale)** :
-[Si applicable] Conformément au Code de commerce français (art. L123-22), les factures et données de réservation déjà honorées sont conservées 10 ans à compter de la clôture de l'exercice. Cette conservation repose sur l'article 6.1.c du RGPD (obligation légale du responsable de traitement). À l'issue de ce délai, ces données seront supprimées automatiquement par notre cron de purge RGPD.
+[Si applicable] Conformément au Code de commerce français (art. L123-22), les factures et données de réservation déjà honorées sont conservées 10 ans à compter de la clôture de l'exercice. Cette conservation repose sur l'article 6.1.c du RGPD (obligation légale du responsable de traitement). À l'issue de ce délai légal, ces données peuvent être supprimées sur demande, dans le respect de nos obligations comptables.
 
 Si vous avez des questions sur cette décision ou sur les données qui restent conservées, répondez à ce message.
 
@@ -61,7 +61,7 @@ We acknowledge receipt of your erasure request, in accordance with GDPR article 
 - Audit trail: an anonymised log (SHA-256 hash of your email, no re-identification possible) is retained per GDPR record-keeping obligations (art. 30).
 
 **Retained data (legal obligation)**:
-[If applicable] In accordance with the French Commercial Code (Code de commerce, art. L123-22), invoices and fulfilled booking data are retained for 10 years from the end of the financial year. This retention relies on GDPR article 6.1.c (legal obligation of the controller). At the end of this period, this data will be automatically deleted by our GDPR purge cron.
+[If applicable] In accordance with the French Commercial Code (Code de commerce, art. L123-22), invoices and fulfilled booking data are retained for 10 years from the end of the financial year. This retention relies on GDPR article 6.1.c (legal obligation of the controller). After this legal period, the data may be deleted upon request, in compliance with our accounting obligations.
 
 If you have questions about this decision or about the data that remains retained, reply to this message.
 
