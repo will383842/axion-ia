@@ -214,35 +214,38 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   let judge: JudgeResult | null = null;
   if (output && typeof output["title"] === "string" && typeof output["bodyHtml"] === "string") {
     try {
-      judge = await reviewArticle({
-        title: output["title"] as string,
-        ...(typeof output["metaTitle"] === "string"
-          ? { metaTitle: output["metaTitle"] as string }
-          : {}),
-        ...(typeof output["metaDescription"] === "string"
-          ? { metaDescription: output["metaDescription"] as string }
-          : {}),
-        bodyHtml: output["bodyHtml"] as string,
-        ...(typeof output["bodyText"] === "string"
-          ? { bodyText: output["bodyText"] as string }
-          : {}),
-        ...(Array.isArray(output["faq"])
-          ? {
-              faq: (output["faq"] as ReadonlyArray<Record<string, unknown>>)
-                .filter(
-                  (q): q is { question: string; answer: string } =>
-                    typeof q["question"] === "string" && typeof q["answer"] === "string",
-                )
-                .map((q) => ({ question: q.question, answer: q.answer })),
-            }
-          : {}),
-        ...((): { primaryKeyword?: string } => {
-          const ip = dbJob.inputPayload as Record<string, unknown> | null;
-          const pk = ip && typeof ip["primaryKeyword"] === "string" ? ip["primaryKeyword"] : null;
-          return pk ? { primaryKeyword: pk } : {};
-        })(),
-        jobId: contentGenJobId,
-      }, judgeThresholds);
+      judge = await reviewArticle(
+        {
+          title: output["title"] as string,
+          ...(typeof output["metaTitle"] === "string"
+            ? { metaTitle: output["metaTitle"] as string }
+            : {}),
+          ...(typeof output["metaDescription"] === "string"
+            ? { metaDescription: output["metaDescription"] as string }
+            : {}),
+          bodyHtml: output["bodyHtml"] as string,
+          ...(typeof output["bodyText"] === "string"
+            ? { bodyText: output["bodyText"] as string }
+            : {}),
+          ...(Array.isArray(output["faq"])
+            ? {
+                faq: (output["faq"] as ReadonlyArray<Record<string, unknown>>)
+                  .filter(
+                    (q): q is { question: string; answer: string } =>
+                      typeof q["question"] === "string" && typeof q["answer"] === "string",
+                  )
+                  .map((q) => ({ question: q.question, answer: q.answer })),
+              }
+            : {}),
+          ...((): { primaryKeyword?: string } => {
+            const ip = dbJob.inputPayload as Record<string, unknown> | null;
+            const pk = ip && typeof ip["primaryKeyword"] === "string" ? ip["primaryKeyword"] : null;
+            return pk ? { primaryKeyword: pk } : {};
+          })(),
+          jobId: contentGenJobId,
+        },
+        judgeThresholds,
+      );
     } catch (err) {
       await logGeneration({
         jobId: contentGenJobId,

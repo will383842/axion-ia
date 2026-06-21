@@ -72,7 +72,7 @@ export function ArticleFaq({ items, locale, dateModified }: ArticleFaqProps) {
             >
               <summary
                 data-faq-q
-                className="text-fg marker:content-none flex cursor-pointer list-none items-center justify-between gap-3 font-medium [&::-webkit-details-marker]:hidden"
+                className="text-fg flex cursor-pointer list-none items-center justify-between gap-3 font-medium marker:content-none [&::-webkit-details-marker]:hidden"
               >
                 <span>{p.question}</span>
                 <svg

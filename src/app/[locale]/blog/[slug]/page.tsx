@@ -548,7 +548,11 @@ export default async function BlogArticle({ params }: Props) {
       {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
           (Article.faqJson) était déjà écrite par les generators mais jamais
           rendue. Accordéon natif (0 JS), Speakable via data-faq-q/data-faq-a. */}
-      <ArticleFaq items={view.faqItems} locale={loc} dateModified={view.updatedAt ?? view.publishedAt} />
+      <ArticleFaq
+        items={view.faqItems}
+        locale={loc}
+        dateModified={view.updatedAt ?? view.publishedAt}
+      />
 
       {/* Chantier templates 2026-06-21 — Sources & méthodologie visibles
           (view.citations était émis JSON-LD only). Liens nofollow + date. */}

@@ -44,8 +44,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
             «&nbsp;{text}&nbsp;»
           </blockquote>
           <figcaption className="text-fg-muted mt-3 text-sm not-italic">
-            —{" "}
-            <span className="text-fg font-semibold">{name}</span>
+            — <span className="text-fg font-semibold">{name}</span>
             {title.length > 0 ? `, ${title}` : ""}
           </figcaption>
         </figure>
