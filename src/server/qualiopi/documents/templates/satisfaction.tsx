@@ -15,9 +15,9 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
+  LegalCallout,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
@@ -181,12 +181,10 @@ export function SatisfactionPdf({
         {...(data.estCopie !== undefined ? { estCopie: data.estCopie } : {})}
       >
         {/* Mention indicateur + intro */}
-        <View style={{ marginBottom: 10 }}>
-          <Text style={pdfStyles.legalNote}>
-            Indicateur Qualiopi n°31 — Recueil de la satisfaction des bénéficiaires. Questionnaire
-            anonyme (nom facultatif).
-          </Text>
-        </View>
+        <LegalCallout variant="info">
+          Indicateur Qualiopi n°31 — Recueil de la satisfaction des bénéficiaires. Questionnaire
+          anonyme (nom facultatif).
+        </LegalCallout>
 
         {/* En-tête formation */}
         <View style={{ marginBottom: 10 }}>
@@ -291,10 +289,10 @@ export function SatisfactionPdf({
           <FreeComment num={17} label="Commentaire libre — tout autre remarque ou suggestion" />
         </DocSection>
 
-        <Text style={pdfStyles.legalNote}>
+        <LegalCallout variant="legal">
           Données traitées conformément au RGPD — Indicateur 31. Résultats agrégés pour amélioration
           continue. Droit d'accès : {identite.dpoEmail || identite.email || "contact@formation"}.
-        </Text>
+        </LegalCallout>
       </QualiopiPage>
     </Document>
   );

@@ -49,6 +49,14 @@ vi.mock("@/server/qualiopi/documents/documents-service", () => ({
   }),
 }));
 
+// Mock config (sinon site-settings → _guards → next-auth est chargé). Régime
+// par défaut = assujetti (20 %).
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn(async (key: string) =>
+    key === "regime_tva" ? "assujetti" : key === "taux_tva_standard_percent" ? 20 : "",
+  ),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { genererFactureFormation } from "./facturation-service";
 
@@ -156,7 +164,11 @@ describe("genererFactureFormation", () => {
       data: Record<string, unknown>;
     };
     expect(createArg.data["montantHtCents"]).toBe(300_000);
-    expect(createArg.data["tvaExoneree"]).toBe(true);
+    // Régime assujetti par défaut → TVA 20 % (Qualiopi n'exonère pas).
+    expect(createArg.data["tvaExoneree"]).toBe(false);
+    expect(createArg.data["regimeTva"]).toBe("assujetti");
+    expect(createArg.data["montantTvaCents"]).toBe(60_000); // 20 % de 300 000
+    expect(createArg.data["montantTtcCents"]).toBe(360_000);
     expect(createArg.data["statut"]).toBe("emise");
   });
 
@@ -240,9 +252,9 @@ describe("genererFactureFormation", () => {
     expect(createArg.data["numeroDossierOpco"]).toBe("ATLAS-2026-001234");
   });
 
-  // ── TVA exonérée ──────────────────────────────────────────────────────────
+  // ── Régime de TVA (par défaut assujetti — Qualiopi n'exonère PAS) ──────────
 
-  it("la facture a tvaExoneree=true (261-4-4° CGI par défaut)", async () => {
+  it("la facture est en régime assujetti par défaut (TVA 20 %, tvaExoneree=false)", async () => {
     await genererFactureFormation({
       sessionId: "sess-uuid-1",
       destinataire: "entreprise",
@@ -251,7 +263,9 @@ describe("genererFactureFormation", () => {
     const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
       data: Record<string, unknown>;
     };
-    expect(createArg.data["tvaExoneree"]).toBe(true);
+    expect(createArg.data["regimeTva"]).toBe("assujetti");
+    expect(createArg.data["tvaExoneree"]).toBe(false);
+    expect(createArg.data["montantTvaCents"]).toBeGreaterThan(0);
   });
 
   // ── Ventilation dossier (T18) ─────────────────────────────────────────────
@@ -270,7 +284,8 @@ describe("genererFactureFormation", () => {
     };
     // 7h × 4000 cts/h = 28000 par participant × 5 = 140 000
     expect(createArg.data["montantHtCents"]).toBe(140_000);
-    expect(createArg.data["tvaExoneree"]).toBe(true);
+    expect(createArg.data["tvaExoneree"]).toBe(false); // régime assujetti par défaut
+    expect(createArg.data["montantTvaCents"]).toBe(28_000); // 20 % de 140 000
     expect(createArg.data["statut"]).toBe("emise");
   });
 

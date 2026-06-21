@@ -9,35 +9,18 @@
  */
 
 import React from "react";
-import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  SignatureZone,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 const styles = StyleSheet.create({
-  table: { marginTop: 6 },
-  row: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("sand"),
-    paddingVertical: 4,
-  },
-  headRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border-strong"),
-    paddingVertical: 4,
-  },
-  cDate: { width: 90, fontSize: 9 },
-  cDuree: { width: 60, fontSize: 9 },
-  cPres: { width: 60, fontSize: 9 },
-  cSig: { flex: 1, fontSize: 8, color: brandColor("fg-muted") },
-  head: { fontSize: 9, fontWeight: "bold", color: brandColor("fg-soft") },
   total: { marginTop: 8, fontSize: 10, fontWeight: "bold" },
 });
 
@@ -92,26 +75,26 @@ export function Emargement1to1Pdf({ data }: { data: Emargement1to1Data }): React
         </DocSection>
 
         <DocSection title="Présence par séance">
-          <View style={styles.table}>
-            <View style={styles.headRow}>
-              <Text style={[styles.cDate, styles.head]}>Date</Text>
-              <Text style={[styles.cDuree, styles.head]}>Durée</Text>
-              <Text style={[styles.cPres, styles.head]}>Présent</Text>
-              <Text style={[styles.cSig, styles.head]}>Bénéf.</Text>
-              <Text style={[styles.cSig, styles.head]}>Formateur</Text>
-              <Text style={[styles.cSig, styles.head]}>Tuteur</Text>
-            </View>
-            {data.seances.map((s, i) => (
-              <View key={i} style={styles.row}>
-                <Text style={styles.cDate}>{s.date}</Text>
-                <Text style={styles.cDuree}>{s.dureeLabel}</Text>
-                <Text style={styles.cPres}>{s.present ? "Oui" : "Non"}</Text>
-                <Text style={styles.cSig}>{sig(s.beneficiaireSigne)}</Text>
-                <Text style={styles.cSig}>{sig(s.formateurSigne)}</Text>
-                <Text style={styles.cSig}>{sig(s.tuteurSigne)}</Text>
-              </View>
-            ))}
-          </View>
+          <DataTable
+            columns={[
+              { key: "date", header: "Date", flex: 1.5 },
+              { key: "duree", header: "Durée", flex: 1 },
+              { key: "present", header: "Présent", flex: 1 },
+              { key: "benef", header: "Bénéf.", flex: 1, align: "center" },
+              { key: "formateur", header: "Formateur", flex: 1, align: "center" },
+              { key: "tuteur", header: "Tuteur", flex: 1, align: "center" },
+              { key: "observations", header: "Observations", flex: 1.5 },
+            ]}
+            rows={data.seances.map((s) => ({
+              date: s.date,
+              duree: s.dureeLabel,
+              present: s.present ? "Oui" : "Non",
+              benef: sig(s.beneficiaireSigne),
+              formateur: sig(s.formateurSigne),
+              tuteur: sig(s.tuteurSigne),
+              observations: "",
+            }))}
+          />
           <Text style={styles.total}>{`Total heures réalisées : ${data.totalHeures} h`}</Text>
         </DocSection>
 
@@ -119,15 +102,13 @@ export function Emargement1to1Pdf({ data }: { data: Emargement1to1Data }): React
           <Text style={pdfStyles.paragraph}>
             {`Le formateur atteste la réalité des séances ci-dessus et des mises en situation de travail correspondantes.`}
           </Text>
-          <View style={pdfStyles.signatureZone}>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={pdfStyles.paragraph}>{`Fait le ${data.dateEmission}`}</Text>
-              <Text style={pdfStyles.paragraph}>{`Le formateur : ${data.formateur}`}</Text>
-            </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={pdfStyles.paragraph}>Cachet de l'organisme</Text>
-            </View>
-          </View>
+          <SignatureZone
+            faitLe={data.dateEmission}
+            parties={[
+              { titre: "Le formateur", nom: data.formateur },
+              { titre: "Cachet de l'organisme" },
+            ]}
+          />
         </DocSection>
       </QualiopiPage>
     </Document>

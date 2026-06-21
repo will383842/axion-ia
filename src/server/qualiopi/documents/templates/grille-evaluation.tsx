@@ -17,6 +17,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
@@ -50,25 +51,6 @@ const localStyles = StyleSheet.create({
     backgroundColor: brandColor("terracotta"),
   },
   typeLabel: { fontSize: 10, color: brandColor("fg") },
-  tableHeaderRow: {
-    flexDirection: "row",
-    backgroundColor: brandColor("sand"),
-    borderBottomWidth: 2,
-    borderBottomColor: brandColor("border-strong"),
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-  },
-  tableDataRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-    minHeight: 28,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-  },
-  cellCompetence: { flex: 4, fontSize: 9, paddingRight: 4 },
-  cellNote: { flex: 1, fontSize: 9, textAlign: "center" as const, paddingRight: 2 },
-  cellObs: { flex: 3, fontSize: 9 },
   summaryBox: {
     backgroundColor: brandColor("sand"),
     borderRadius: 2,
@@ -200,21 +182,19 @@ export function GrilleEvaluationPdf({
 
         {/* Grille des compétences */}
         <DocSection title="Grille des compétences — Barème : 1 Non acquis | 2 En cours | 3 Acquis">
-          {/* En-tête */}
-          <View style={localStyles.tableHeaderRow}>
-            <Text style={[localStyles.cellCompetence, { fontWeight: "bold" }]}>Compétence</Text>
-            <Text style={[localStyles.cellNote, { fontWeight: "bold" }]}>Note /3</Text>
-            <Text style={[localStyles.cellObs, { fontWeight: "bold" }]}>Observations</Text>
-          </View>
-
-          {/* Lignes */}
-          {data.competences.map((comp, idx) => (
-            <View key={idx} style={localStyles.tableDataRow}>
-              <Text style={localStyles.cellCompetence}>{comp.libelle}</Text>
-              <Text style={localStyles.cellNote}>{noteToText(comp.note)}</Text>
-              <Text style={localStyles.cellObs}>{comp.observations ?? ""}</Text>
-            </View>
-          ))}
+          <DataTable
+            columns={[
+              { key: "competence", header: "Compétence", flex: 4 },
+              { key: "note", header: "Note /3", flex: 1, align: "center" },
+              { key: "observations", header: "Observations", flex: 3 },
+            ]}
+            rows={data.competences.map((comp) => ({
+              competence: comp.libelle,
+              note: noteToText(comp.note),
+              observations: comp.observations ?? "",
+            }))}
+            minRowHeight={28}
+          />
 
           {/* Score */}
           <View style={localStyles.summaryBox}>

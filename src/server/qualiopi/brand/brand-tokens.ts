@@ -59,3 +59,57 @@ export const QUALIOPI_BRAND_FONTS = {
 export function brandColor(token: QualiopiBrandColorToken): string {
   return QUALIOPI_BRAND_COLORS[token];
 }
+
+/**
+ * Échelle typographique des PDF officiels (en points). Centralisée pour donner
+ * une hiérarchie cohérente à TOUS les templates (fini les `fontSize: 10` en dur
+ * dispersés). NON soumise au test de parité couleurs (ce ne sont pas des
+ * couleurs) : modifiable librement sans toucher globals.css.
+ *
+ * Échelle modulaire ~1.18 autour d'un corps de 10 pt, calée pour l'A4 dense
+ * réglementaire (lisibilité à l'impression + à l'écran).
+ */
+export const QUALIOPI_PDF_TYPE = {
+  /** Légales en pied, filigranes secondaires. */
+  xs: 8,
+  /** Méta, labels de champ, notes. */
+  sm: 9,
+  /** Corps de texte par défaut. */
+  base: 10,
+  /** Sous-titres, libellés de section. */
+  md: 11,
+  /** Intertitres marquants, montant TTC. */
+  lg: 13,
+  /** Titre de document (en-tête). */
+  xl: 16,
+  /** Très grands chiffres (note /10, durée mise en avant). */
+  display: 22,
+
+  /** Interlignes. */
+  lineTight: 1.3,
+  lineNormal: 1.5,
+  lineRelaxed: 1.65,
+
+  /** Interlettrage des sur-titres (« eyebrow ») et labels capitales. */
+  trackingWide: 1.1,
+} as const;
+
+/**
+ * Échelle d'espacement (points) — rythme vertical/horizontal homogène.
+ * Multiples de 2, alignés sur une grille de 4 pt. NON soumise à la parité.
+ */
+export const QUALIOPI_PDF_SPACE = {
+  xs: 2,
+  sm: 4,
+  md: 6,
+  lg: 8,
+  xl: 12,
+  xxl: 16,
+  xxxl: 24,
+  /** Marge de page A4. */
+  page: 40,
+  /** Rayon de coin par défaut (callouts, encarts). */
+  radius: 3,
+  /** Rayon large (totaux, blocs mis en avant). */
+  radiusLg: 4,
+} as const;

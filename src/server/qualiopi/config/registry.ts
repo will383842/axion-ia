@@ -10,6 +10,7 @@
  */
 
 import { z } from "zod";
+import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 
 /** Définition typée d'une clé : schéma Zod + défaut + description. */
 export interface ConfigEntry<T> {
@@ -55,6 +56,21 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   adresse_exercice: {
     ...str(),
     description: "Adresse du lieu d'exercice effectif (Saint-Lattier, Isère).",
+  },
+  // ── Régime de TVA (ÉVOLUTIF — cf. legal/tva.ts) ──────────────────────────
+  // Qualiopi n'a AUCUN effet sur la TVA. Défaut « assujetti » (20 %), le seul
+  // sûr tant qu'aucune attestation DREETS (261-4-4°) ni franchise (293 B) n'est
+  // acquise. À changer ici quand le statut fiscal évolue ; les factures déjà
+  // émises gardent leur régime d'origine.
+  regime_tva: {
+    schema: z.enum(["assujetti", "exoneration_261", "franchise_293b"]),
+    default: REGIME_TVA_DEFAUT,
+    description:
+      "Régime de TVA des factures : assujetti (20 %) / exoneration_261 (formation pro, attestation DREETS) / franchise_293b.",
+  },
+  taux_tva_standard_percent: {
+    ...num(20),
+    description: "Taux de TVA standard appliqué aux lignes taxables en régime assujetti (%).",
   },
   dirigeant_nom: {
     ...str("Williams Jullin"),

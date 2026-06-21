@@ -27,6 +27,15 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  computeTotauxFacture,
+  isRegimeTva,
+  REGIME_TVA_DEFAUT,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
@@ -349,6 +358,17 @@ export async function genererFactureFormationAction(input: {
     };
   }
 
+  // Identité de l'organisme complète (mentions vendeur obligatoires sur facture :
+  // SIRET, NDA, adresse du siège). Bloque AVANT la création du dossier facture
+  // avec un message actionnable plutôt que de produire un document non conforme.
+  const identiteFacture = await getOrganismeIdentite();
+  const manquants = champsIdentiteManquants(identiteFacture, "facture");
+  if (manquants.length > 0) {
+    return {
+      error: `Identité de l'organisme incomplète (${manquants.join(", ")}). Renseignez ces valeurs dans les paramètres Qualiopi avant de facturer.`,
+    };
+  }
+
   // ── Calcul des lignes ─────────────────────────────────────────────────────
 
   let lignes: Array<{ designation: string; quantite: number; prixUnitaireHtCents: number }>;
@@ -401,6 +421,14 @@ export async function genererFactureFormationAction(input: {
     ? "opco"
     : destinataire;
 
+  // ── Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC ─────────────
+  // Qualiopi n'a aucun effet sur la TVA : le régime est lu depuis la config et
+  // figé sur la facture (snapshot). Défaut « assujetti » (20 %).
+  const regimeTvaConfig = await getQualiopiConfig("regime_tva");
+  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
+
   // ── Numéro séquentiel + création atomique ─────────────────────────────────
   // R7 : `genererNumeroFacture` est un `count+1` ; sous création concurrente deux
   // factures peuvent lire le même count → même numéro. La contrainte @unique sur
@@ -416,7 +444,10 @@ export async function genererFactureFormationAction(input: {
         destinataire: destinataireEffectif,
         destinataireNom: trainingSession.titreSession,
         montantHtCents: totalHtCents,
-        tvaExoneree: true,
+        tvaExoneree: totaux.totalTvaCents === 0,
+        regimeTva,
+        montantTvaCents: totaux.totalTvaCents,
+        montantTtcCents: totaux.totalTtcCents,
         lignes: lignes as never,
         subrogation: trainingSession.opcoSubrogation,
         numeroDossierOpco: trainingSession.opcoSubrogation
@@ -563,6 +594,7 @@ export async function genererFacturePdfAction(input: {
       destinataireAdresse: true,
       montantHtCents: true,
       lignes: true,
+      regimeTva: true,
       subrogation: true,
       numeroDossierOpco: true,
       emiseAt: true,
@@ -574,6 +606,12 @@ export async function genererFacturePdfAction(input: {
 
   // Reconstruction de FactureData pour le renderer
   const identite = await getOrganismeIdentite();
+  // Régime de TVA figé sur la facture (snapshot) + taux standard courant.
+  const regimeTva: RegimeTva = isRegimeTva(facture.regimeTva)
+    ? facture.regimeTva
+    : REGIME_TVA_DEFAUT;
+  const tauxTvaStandardPercent =
+    (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
 
   const formatDate = (d: Date | null | undefined): string =>
     d ? d.toLocaleDateString("fr-FR") : new Date().toLocaleDateString("fr-FR");
@@ -590,6 +628,7 @@ export async function genererFacturePdfAction(input: {
     designation: string;
     quantite: number;
     prixUnitaireHtCents: number;
+    tauxTvaPercent?: number;
   }>;
 
   const factureData: FactureData = {
@@ -597,6 +636,8 @@ export async function genererFacturePdfAction(input: {
     dateEmission: formatDate(facture.emiseAt),
     dateEcheance: formatDate(echeance),
     identite,
+    regimeTva,
+    tauxTvaStandardPercent,
     client: {
       raisonSociale: facture.destinataireNom,
       ...(facture.destinataireSiret !== null && facture.destinataireSiret !== undefined
@@ -742,6 +783,9 @@ export async function exportComptaCsvAction(input: {
       destinataireNom: true,
       montantHtCents: true,
       tvaExoneree: true,
+      regimeTva: true,
+      montantTvaCents: true,
+      montantTtcCents: true,
       statut: true,
       session: { select: { numero: true, titreSession: true } },
     },
@@ -762,6 +806,12 @@ export async function exportComptaCsvAction(input: {
     annulee: "Annulée",
   };
 
+  const REGIME_TVA_CSV: Record<string, string> = {
+    assujetti: "Assujetti (20 %)",
+    exoneration_261: "Exonération formation (261-4-4° CGI)",
+    franchise_293b: "Franchise en base (293 B CGI)",
+  };
+
   const header = [
     "Numéro facture",
     "Date émission",
@@ -770,14 +820,19 @@ export async function exportComptaCsvAction(input: {
     "Destinataire type",
     "Destinataire nom",
     "Montant HT (€)",
-    "TVA",
+    "Régime TVA",
+    "Montant TVA (€)",
+    "Montant TTC (€)",
     "Statut",
   ].join(";");
 
+  const eurosFmt = (cents: number): string => (cents / 100).toFixed(2).replace(".", ",");
+
   const rows = factures.map((f) => {
     const dateEmission = f.emiseAt ? f.emiseAt.toLocaleDateString("fr-FR") : "";
-    const montantHt = (f.montantHtCents / 100).toFixed(2).replace(".", ",");
-    const tva = f.tvaExoneree ? "Exonérée (261-4-4° CGI)" : "20%";
+    const tvaCents = f.montantTvaCents ?? 0;
+    const ttcCents = f.montantTtcCents ?? f.montantHtCents + tvaCents;
+    const regimeLabel = REGIME_TVA_CSV[f.regimeTva] ?? (f.tvaExoneree ? "Exonérée" : "Assujetti");
     return [
       f.numero,
       dateEmission,
@@ -785,8 +840,10 @@ export async function exportComptaCsvAction(input: {
       `"${(f.session?.titreSession ?? "Coaching 1-to-1").replace(/"/g, '""')}"`,
       DEST_LABELS[f.destinataire] ?? f.destinataire,
       `"${f.destinataireNom.replace(/"/g, '""')}"`,
-      montantHt,
-      tva,
+      eurosFmt(f.montantHtCents),
+      regimeLabel,
+      eurosFmt(tvaCents),
+      eurosFmt(ttcCents),
       STATUT_LABELS[f.statut] ?? f.statut,
     ].join(";");
   });

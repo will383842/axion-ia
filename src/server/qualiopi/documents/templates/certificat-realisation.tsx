@@ -141,19 +141,13 @@ export function CertificatRealisationPdf({
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.certificatRealisation}</Text>
         </View>
 
-        {/* Organisme de formation */}
+        {/* Organisme de formation — identifiants jamais masqués (pièce d'audit) */}
         <DocSection title="Organisme de formation">
-          <FieldRow label="Raison sociale" value={identite.raisonSociale} />
-          {identite.nda ? (
-            <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} />
-          ) : null}
-          {identite.qualiopi ? (
-            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
-          ) : null}
-          {identite.siret ? <FieldRow label="SIRET" value={identite.siret} /> : null}
-          {identite.adresseSiege ? (
-            <FieldRow label="Adresse" value={identite.adresseSiege} />
-          ) : null}
+          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
+          <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
+          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          <FieldRow label="SIRET" value={identite.siret} required />
+          <FieldRow label="Adresse" value={identite.adresseSiege} required />
         </DocSection>
 
         {/* Entreprise cliente */}
@@ -213,7 +207,7 @@ export function CertificatRealisationPdf({
           <View style={pdfStyles.signatureZone}>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>
-                {`Fait à ${identite.adresseSiege || "Paris"}, le ${data.dateEmission}`}
+                {`Fait à ${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
               <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
             </View>

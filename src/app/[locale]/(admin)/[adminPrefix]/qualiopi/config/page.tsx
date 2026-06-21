@@ -8,6 +8,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -49,11 +50,14 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
   const fields: ConfigField[] = keys.map((k) => {
     const entry = QUALIOPI_CONFIG_REGISTRY[k];
     const value = current[k];
+    // Clés à valeurs énumérées (ex. regime_tva) → rendues en <select> côté UI.
+    const options = entry.schema instanceof z.ZodEnum ? [...entry.schema.options] : undefined;
     return {
       key: k,
       description: entry.description,
       value: value == null ? "" : String(value),
       isNumber: typeof entry.default === "number",
+      ...(options ? { options } : {}),
     };
   });
 

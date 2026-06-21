@@ -384,7 +384,7 @@ describe("genererFactureFormationAction", () => {
     expect(result.data.documentId).toBeNull();
   });
 
-  it("crée la facture avec tvaExoneree=true (art. 261-4-4° CGI)", async () => {
+  it("crée la facture en régime assujetti par défaut (TVA 20 %, Qualiopi n'exonère pas)", async () => {
     await genererFactureFormationAction({
       sessionId: SESSION_UUID,
       destinataire: "entreprise",
@@ -394,7 +394,12 @@ describe("genererFactureFormationAction", () => {
     const createCall = mockCall<{ data: Record<string, unknown> }>(
       mockPrisma.factureFormation.create,
     );
-    expect(createCall.data["tvaExoneree"]).toBe(true);
+    expect(createCall.data["regimeTva"]).toBe("assujetti");
+    expect(createCall.data["tvaExoneree"]).toBe(false);
+    expect(createCall.data["montantTvaCents"]).toBeGreaterThan(0);
+    expect(createCall.data["montantTtcCents"]).toBeGreaterThan(
+      createCall.data["montantHtCents"] as number,
+    );
   });
 
   // ── BLOQUANT : OPCO accord ────────────────────────────────────────────────

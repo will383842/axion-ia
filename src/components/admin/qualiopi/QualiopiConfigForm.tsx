@@ -15,6 +15,8 @@ export interface ConfigField {
   description: string;
   value: string;
   isNumber: boolean;
+  /** Valeurs autorisées (clé énumérée) → rendu en <select> au lieu d'un input. */
+  options?: string[];
 }
 
 export interface QualiopiConfigFormProps {
@@ -77,15 +79,31 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
               {f.key}
             </label>
             <span className={descCls}>{f.description}</span>
-            <input
-              id={`cfg-${f.key}`}
-              type={f.isNumber ? "number" : "text"}
-              step={f.isNumber ? "any" : undefined}
-              value={values[f.key] ?? ""}
-              onChange={(e) => setValues((prev) => ({ ...prev, [f.key]: e.target.value }))}
-              disabled={isPending}
-              className={inputCls}
-            />
+            {f.options ? (
+              <select
+                id={`cfg-${f.key}`}
+                value={values[f.key] ?? ""}
+                onChange={(e) => setValues((prev) => ({ ...prev, [f.key]: e.target.value }))}
+                disabled={isPending}
+                className={inputCls}
+              >
+                {f.options.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                id={`cfg-${f.key}`}
+                type={f.isNumber ? "number" : "text"}
+                step={f.isNumber ? "any" : undefined}
+                value={values[f.key] ?? ""}
+                onChange={(e) => setValues((prev) => ({ ...prev, [f.key]: e.target.value }))}
+                disabled={isPending}
+                className={inputCls}
+              />
+            )}
           </div>
         ))}
       </div>

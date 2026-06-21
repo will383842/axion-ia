@@ -16,6 +16,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  BulletList,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -117,16 +118,14 @@ export function ConvocationPdf({
             <Text style={pdfStyles.paragraph}>
               Pour participer dans de bonnes conditions, veuillez disposer de :
             </Text>
-            <Text style={pdfStyles.paragraph}>
-              • Un ordinateur avec caméra et micro fonctionnels.
-            </Text>
-            <Text style={pdfStyles.paragraph}>
-              • Une connexion internet stable (≥ 5 Mbit/s recommandé).
-            </Text>
-            <Text style={pdfStyles.paragraph}>
-              • L'application de visioconférence installée et testée avant la session.
-            </Text>
-            <Text style={pdfStyles.paragraph}>• Un espace calme et éclairé.</Text>
+            <BulletList
+              items={[
+                "Un ordinateur avec caméra et micro fonctionnels.",
+                "Une connexion internet stable (≥ 5 Mbit/s recommandé).",
+                "L'application de visioconférence installée et testée avant la session.",
+                "Un espace calme et éclairé.",
+              ]}
+            />
           </DocSection>
         ) : null}
 
@@ -135,12 +134,14 @@ export function ConvocationPdf({
           <Text style={pdfStyles.paragraph}>
             Les documents suivants vous sont transmis avec cette convocation :
           </Text>
-          <Text style={pdfStyles.paragraph}>• Programme de formation détaillé</Text>
-          <Text style={pdfStyles.paragraph}>• Règlement intérieur des stagiaires</Text>
-          <Text style={pdfStyles.paragraph}>• Livret d'accueil stagiaire</Text>
-          <Text style={pdfStyles.paragraph}>
-            • Questionnaire de positionnement (à remplir avant la formation)
-          </Text>
+          <BulletList
+            items={[
+              "Programme de formation détaillé",
+              "Règlement intérieur des stagiaires",
+              "Livret d'accueil stagiaire",
+              "Questionnaire de positionnement (à remplir avant la formation)",
+            ]}
+          />
         </DocSection>
 
         {/* Section 5 : Situation handicap */}

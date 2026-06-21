@@ -16,51 +16,19 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  LegalCallout,
+  formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
-// Helpers monétaires
-// ============================================================
-
-function formatEuros(cents: number): string {
-  const euros = cents / 100;
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(euros);
-}
-
-// ============================================================
 // Styles spécifiques
 // ============================================================
 
 const styles = StyleSheet.create({
-  dispositifBadge: {
-    backgroundColor: brandColor("primary-soft"),
-    padding: 8,
-    marginBottom: 14,
-    borderRadius: 2,
-    borderLeftWidth: 4,
-    borderLeftColor: brandColor("primary"),
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  dispositifLabel: {
-    fontSize: 9,
-    color: brandColor("fg-soft"),
-    fontWeight: "bold",
-    marginRight: 8,
-  },
-  dispositifValue: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: brandColor("primary"),
-  },
   pieceRow: {
     flexDirection: "row",
     paddingVertical: 4,
@@ -84,38 +52,17 @@ const styles = StyleSheet.create({
     color: brandColor("fg-muted"),
     fontStyle: "italic",
   },
-  financeRow: {
-    flexDirection: "row",
-    paddingVertical: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-  },
-  financeLabel: {
-    fontSize: 10,
-    flex: 1,
-    color: brandColor("fg-soft"),
-    fontWeight: "bold",
-  },
-  financeValue: {
-    fontSize: 10,
-    color: brandColor("fg"),
-    fontFamily: "Inconsolata",
-  },
-  totalBlock: {
-    backgroundColor: brandColor("sand"),
-    padding: 8,
-    borderRadius: 2,
-    marginTop: 8,
+  racRow: {
     flexDirection: "row",
     alignItems: "center",
   },
-  totalLabel: {
+  racLabel: {
     fontSize: 10,
     fontWeight: "bold",
     color: brandColor("mocha"),
     flex: 1,
   },
-  totalValue: {
+  racValue: {
     fontSize: 12,
     fontWeight: "bold",
     color: brandColor("terracotta"),
@@ -219,10 +166,9 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
         {/* Badge dispositif */}
-        <View style={styles.dispositifBadge}>
-          <Text style={styles.dispositifLabel}>Dispositif :</Text>
-          <Text style={styles.dispositifValue}>{DISPOSITIF_LABELS[data.dispositif]}</Text>
-        </View>
+        <LegalCallout variant="info" title="Dispositif">
+          {DISPOSITIF_LABELS[data.dispositif]}
+        </LegalCallout>
 
         {/* Identification */}
         <DocSection title="Identification">
@@ -274,20 +220,30 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
 
         {/* Montants */}
         <DocSection title="Montants de financement">
-          <View style={styles.financeRow}>
-            <Text style={styles.financeLabel}>Coût total de la formation</Text>
-            <Text style={styles.financeValue}>{formatEuros(data.montants.coutTotalCents)}</Text>
-          </View>
-          <View style={styles.financeRow}>
-            <Text style={styles.financeLabel}>Aide France Travail</Text>
-            <Text style={styles.financeValue}>
-              {formatEuros(data.montants.montantAideFranceTravailCents)}
-            </Text>
-          </View>
-          <View style={styles.totalBlock}>
-            <Text style={styles.totalLabel}>Reste à charge</Text>
-            <Text style={styles.totalValue}>{formatEuros(data.montants.resteAChargeCents)}</Text>
-          </View>
+          <DataTable
+            columns={[
+              { key: "poste", header: "Poste", flex: 3 },
+              { key: "montant", header: "Montant", flex: 1.5, align: "right" },
+            ]}
+            rows={[
+              {
+                poste: "Coût total de la formation",
+                montant: formatEurosFromCents(data.montants.coutTotalCents),
+              },
+              {
+                poste: "Aide France Travail",
+                montant: formatEurosFromCents(data.montants.montantAideFranceTravailCents),
+              },
+            ]}
+          />
+          <LegalCallout variant="warning">
+            <View style={styles.racRow}>
+              <Text style={styles.racLabel}>Reste à charge</Text>
+              <Text style={styles.racValue}>
+                {formatEurosFromCents(data.montants.resteAChargeCents)}
+              </Text>
+            </View>
+          </LegalCallout>
         </DocSection>
 
         {/* Mentions légales */}

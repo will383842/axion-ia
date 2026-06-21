@@ -23,9 +23,19 @@ export const LEGAL_MENTIONS = {
   /** Certificat de réalisation (durées EN CENTIÈMES obligatoires). */
   certificatRealisation:
     "Établi conformément à l'article R.6313-3 du Code du travail et à l'arrêté du 21 décembre 2018.",
-  /** Facture — exonération TVA formation professionnelle continue. */
+  /** Facture — exonération TVA formation professionnelle continue (attestation DREETS requise). */
   factureExonerationTva:
     "Exonéré de TVA en application de l'article 261-4-4° du Code Général des Impôts — Prestations de formation professionnelle continue.",
+  /** Facture — franchise en base de TVA (art. 293 B CGI, sous les seuils de CA). */
+  factureFranchiseTva: "TVA non applicable, article 293 B du Code Général des Impôts.",
+  /** Facture B2B — pénalités de retard (art. L.441-10 C. com.). OBLIGATOIRE. */
+  facturePenalitesRetard:
+    "Tout retard de paiement entraîne de plein droit, sans qu'un rappel soit nécessaire, l'application de pénalités de retard calculées au taux de trois fois le taux d'intérêt légal en vigueur (article L.441-10 du Code de commerce).",
+  /** Facture B2B — indemnité forfaitaire de recouvrement de 40 € (art. D.441-5 C. com.). OBLIGATOIRE. */
+  factureIndemniteRecouvrement:
+    "Une indemnité forfaitaire pour frais de recouvrement de 40 € est due en cas de retard de paiement (articles L.441-10 et D.441-5 du Code de commerce).",
+  /** Facture B2B — absence d'escompte (art. L.441-9 C. com.). OBLIGATOIRE. */
+  factureEscompte: "Aucun escompte n'est accordé en cas de paiement anticipé.",
   /** Règlement intérieur des stagiaires. */
   reglementInterieur: "Établi conformément aux articles L.6352-3 et suivants du Code du travail.",
   /** Désignation du référent handicap. */

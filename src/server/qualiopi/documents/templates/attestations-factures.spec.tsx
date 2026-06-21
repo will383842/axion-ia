@@ -239,6 +239,7 @@ describe("FacturePdf", () => {
               prixUnitaireHtCents: 280000,
             },
           ],
+          regimeTva: "assujetti",
         },
       }),
     );

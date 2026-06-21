@@ -11,6 +11,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  SignatureZone,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -52,17 +53,6 @@ export interface ConventionData {
 // ============================================================
 
 const local = StyleSheet.create({
-  signatureLabel: {
-    fontSize: 9,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  signatureLu: {
-    fontSize: 8,
-    fontStyle: "italic",
-    marginBottom: 12,
-    color: pdfStyles.legalNote.color,
-  },
   annexeList: {
     marginTop: 4,
   },
@@ -135,11 +125,11 @@ export function ConventionPdf({
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
             Organisme de formation (prestataire)
           </Text>
-          <FieldRow label="Raison sociale" value={identite.raisonSociale || "Axion-IA SAS"} />
-          <FieldRow label="SIRET" value={identite.siret || "—"} />
-          <FieldRow label="NDA" value={identite.nda || "—"} />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi || "—"} />
-          <FieldRow label="Siège social" value={identite.adresseSiege || "—"} />
+          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
+          <FieldRow label="SIRET" value={identite.siret} required />
+          <FieldRow label="NDA" value={identite.nda} required />
+          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
           <FieldRow label="Téléphone" value={identite.telephone || "—"} />
 
@@ -218,26 +208,17 @@ export function ConventionPdf({
 
         {/* 6. Signatures */}
         <DocSection title="6. Signatures">
-          <Text style={local.signatureLu}>
-            La présente convention est établie en deux exemplaires originaux, un pour chaque partie.
-          </Text>
-          <Text style={pdfStyles.paragraph}>
-            Fait à _________________________, le {data.dateConvention}
-          </Text>
-          <View style={pdfStyles.signatureZone}>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={local.signatureLabel}>Pour l'organisme de formation</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{identite.raisonSociale || "Axion-IA SAS"}</Text>
-              <Text style={pdfStyles.legalNote}>Nom, qualité, signature et cachet</Text>
-            </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={local.signatureLabel}>Pour le client</Text>
-              <Text style={local.signatureLu}>Lu et approuvé</Text>
-              <Text style={pdfStyles.paragraph}>{data.client.raisonSociale}</Text>
-              <Text style={pdfStyles.legalNote}>Nom, qualité, signature et cachet</Text>
-            </View>
-          </View>
+          <SignatureZone
+            intro="La présente convention est établie en deux exemplaires originaux, un pour chaque partie."
+            faitLe={`_________________________, le ${data.dateConvention}`}
+            parties={[
+              {
+                titre: "Pour l'organisme de formation",
+                nom: identite.raisonSociale || "Axion-IA SAS",
+              },
+              { titre: "Pour le client", nom: data.client.raisonSociale },
+            ]}
+          />
         </DocSection>
       </QualiopiPage>
     </Document>

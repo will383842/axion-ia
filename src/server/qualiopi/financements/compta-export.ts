@@ -17,6 +17,12 @@ export interface FactureCsvRow {
   destinataire: string;
   montantHtCents: number;
   tvaExoneree: boolean;
+  /** Régime de TVA (assujetti / exoneration_261 / franchise_293b). */
+  regimeTva?: string;
+  /** Montant total de TVA (centimes). */
+  montantTvaCents?: number;
+  /** Montant total TTC (centimes). Null pour les anciennes factures. */
+  montantTtcCents?: number | null;
   statut: string;
   sessionId: string;
 }
@@ -44,11 +50,16 @@ export function facturesToCsv(factures: FactureCsvRow[]): string {
     "Destinataire",
     "Montant HT (€)",
     "TVA exonérée",
+    "Régime TVA",
+    "Montant TVA (€)",
+    "Montant TTC (€)",
     "Statut",
     "Session ID",
   ]
     .map(escapeCsvField)
     .join(";");
+
+  const euros = (cents: number): string => (cents / 100).toFixed(2).replace(".", ",");
 
   const rows = factures.map((f) => {
     const dateStr = f.emiseAt
@@ -58,13 +69,17 @@ export function facturesToCsv(factures: FactureCsvRow[]): string {
           day: "2-digit",
         })
       : "";
-    const montantEuros = (f.montantHtCents / 100).toFixed(2).replace(".", ",");
+    const tvaCents = f.montantTvaCents ?? 0;
+    const ttcCents = f.montantTtcCents ?? f.montantHtCents + tvaCents;
     return [
       f.numero,
       dateStr,
       f.destinataire,
-      montantEuros,
+      euros(f.montantHtCents),
       f.tvaExoneree ? "Oui" : "Non",
+      f.regimeTva ?? "",
+      euros(tvaCents),
+      euros(ttcCents),
       f.statut,
       f.sessionId,
     ]

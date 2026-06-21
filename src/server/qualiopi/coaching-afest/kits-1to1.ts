@@ -368,6 +368,7 @@ export async function genererConventionTripartiteCoaching(
 
   const doc = await generateDocument({
     type: "convention_tripartite",
+    identite,
     buildElement: (numero) =>
       React.createElement(ConventionTripartitePdf, {
         data: {

@@ -21,6 +21,8 @@ import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import type { NumberingType } from "@/server/qualiopi/numbering/formats";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
+import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
+import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /** Mappage DocumentType → NumberingType (NUMBERING_PREFIX). */
 const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
@@ -60,6 +62,14 @@ export interface GenerateDocumentInput {
    * Prioritaire sur `element` quand les deux sont fournis.
    */
   buildElement?: (numero: string) => React.ReactElement;
+  /**
+   * Identité de l'organisme. Si fournie ET que le type de document a une valeur
+   * juridique/fiscale (facture, convention, tripartite, contrat), un garde-fou
+   * de conformité (`assertOrganismeComplet`) refuse la génération si un champ
+   * obligatoire (SIRET, NDA, adresse siège, Qualiopi) est vide — plutôt que de
+   * masquer la ligne en silence. Optionnel pour rétro-compatibilité.
+   */
+  identite?: OrganismeIdentite;
   refs?: {
     formationId?: string;
     sessionId?: string;
@@ -101,7 +111,8 @@ export interface GenerateDocumentResult {
 export async function generateDocument(
   input: GenerateDocumentInput,
 ): Promise<GenerateDocumentResult> {
-  // Stub-aware early-exit (build GitHub Actions).
+  // Stub-aware early-exit (build GitHub Actions) — AVANT toute validation pour
+  // ne jamais casser le build SSG (le contrat stub.invalid prime).
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return {
       id: "stub-id",
@@ -109,6 +120,13 @@ export async function generateDocument(
       pdfUrl: null,
       hashSha256: "0".repeat(64),
     };
+  }
+
+  // Garde-fou conformité (runtime only) : refuse un document à valeur
+  // juridique/fiscale si l'identité de l'OF est incomplète (SIRET/NDA/adresse/
+  // Qualiopi vides) plutôt que de masquer la ligne en silence.
+  if (input.identite) {
+    assertOrganismeComplet(input.identite, input.type);
   }
 
   // 1. Allocation numéro séquentiel + rendu PDF (retry sur P2002 contrainte unique).

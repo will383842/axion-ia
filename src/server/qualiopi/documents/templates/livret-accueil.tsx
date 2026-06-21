@@ -7,11 +7,13 @@
  */
 
 import React from "react";
-import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { View, Document, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  BulletList,
+  LegalCallout,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
 import {
@@ -53,28 +55,10 @@ const local = StyleSheet.create({
     lineHeight: 1.6,
     marginBottom: 8,
   },
-  bulletItem: {
-    fontSize: 10,
-    marginBottom: 3,
-    paddingLeft: 10,
-    lineHeight: 1.5,
-  },
   bodyText: {
     fontSize: 10,
     lineHeight: 1.5,
     marginBottom: 4,
-  },
-  highlightBox: {
-    borderLeftWidth: 3,
-    borderLeftColor: pdfStyles.sectionTitle.color,
-    paddingLeft: 8,
-    paddingVertical: 4,
-    marginBottom: 6,
-    backgroundColor: pdfStyles.fieldRow.borderBottomColor,
-  },
-  highlightText: {
-    fontSize: 10,
-    lineHeight: 1.5,
   },
   contactBlock: {
     marginBottom: 6,
@@ -114,10 +98,10 @@ export function LivretAccueilPdf({
         {/* Présentation de l'organisme */}
         <DocSection title="1. Présentation de l'organisme">
           <FieldRow label="Raison sociale" value={identite.raisonSociale || "Axion-IA SAS"} />
-          <FieldRow label="SIRET" value={identite.siret || "—"} />
-          <FieldRow label="NDA" value={identite.nda || "—"} />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi || "—"} />
-          <FieldRow label="Siège social" value={identite.adresseSiege || "—"} />
+          <FieldRow label="SIRET" value={identite.siret} required />
+          <FieldRow label="NDA" value={identite.nda} required />
+          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow
             label="Lieu d'exercice"
             value={identite.adresseExercice || identite.adresseSiege || "—"}
@@ -160,32 +144,24 @@ export function LivretAccueilPdf({
         {/* Modalités pratiques */}
         <DocSection title="3. Modalités pratiques">
           <Text style={[local.bodyText, { fontWeight: "bold" }]}>En présentiel</Text>
-          <Text style={local.bulletItem}>
-            • L'accueil est assuré 15 minutes avant le début de chaque session.
-          </Text>
-          <Text style={local.bulletItem}>
-            • Merci de vous munir d'une pièce d'identité lors de votre première journée.
-          </Text>
-          <Text style={local.bulletItem}>
-            • Des pauses sont prévues selon le programme communiqué.
-          </Text>
-          <Text style={local.bulletItem}>
-            • L'émargement est obligatoire à chaque demi-journée.
-          </Text>
+          <BulletList
+            items={[
+              "L'accueil est assuré 15 minutes avant le début de chaque session.",
+              "Merci de vous munir d'une pièce d'identité lors de votre première journée.",
+              "Des pauses sont prévues selon le programme communiqué.",
+              "L'émargement est obligatoire à chaque demi-journée.",
+            ]}
+          />
 
           <Text style={[local.bodyText, { fontWeight: "bold", marginTop: 6 }]}>En distanciel</Text>
-          <Text style={local.bulletItem}>
-            • Le lien de connexion vous est communiqué par email avant la session.
-          </Text>
-          <Text style={local.bulletItem}>
-            • Merci d'activer votre caméra pendant les séquences synchrones.
-          </Text>
-          <Text style={local.bulletItem}>
-            • Un relevé de connexion automatique fait office d'émargement.
-          </Text>
-          <Text style={local.bulletItem}>
-            • En cas de problème technique, contactez immédiatement votre référent pédagogique.
-          </Text>
+          <BulletList
+            items={[
+              "Le lien de connexion vous est communiqué par email avant la session.",
+              "Merci d'activer votre caméra pendant les séquences synchrones.",
+              "Un relevé de connexion automatique fait office d'émargement.",
+              "En cas de problème technique, contactez immédiatement votre référent pédagogique.",
+            ]}
+          />
         </DocSection>
 
         {/* Évaluation et attestation */}
@@ -199,12 +175,9 @@ export function LivretAccueilPdf({
             À l'issue de la formation, vous recevrez une attestation de fin de formation mentionnant
             les objectifs, la durée, les dates et les résultats de votre évaluation.
           </Text>
-          <View style={local.highlightBox}>
-            <Text style={local.highlightText}>
-              La participation active aux évaluations est obligatoire pour obtenir votre
-              attestation.
-            </Text>
-          </View>
+          <LegalCallout variant="info">
+            La participation active aux évaluations est obligatoire pour obtenir votre attestation.
+          </LegalCallout>
         </DocSection>
 
         {/* Accessibilité et handicap */}
@@ -224,11 +197,7 @@ export function LivretAccueilPdf({
           <Text style={[local.bodyText, { marginTop: 6, fontWeight: "bold" }]}>
             Nos partenaires et relais spécialisés
           </Text>
-          {HANDICAP_PARTENAIRES.map((p) => (
-            <Text key={p.nom} style={local.bulletItem}>
-              • {p.nom} — {p.role} ({p.url})
-            </Text>
-          ))}
+          <BulletList items={HANDICAP_PARTENAIRES.map((p) => `${p.nom} — ${p.role} (${p.url})`)} />
           <Text style={pdfStyles.legalNote}>
             Nous vous encourageons à nous contacter avant le début de la formation pour anticiper
             tout aménagement spécifique.
@@ -241,16 +210,13 @@ export function LivretAccueilPdf({
             Votre satisfaction est notre priorité. Si vous rencontrez un problème ou si vous
             souhaitez formuler une réclamation, nous vous invitons à nous contacter :
           </Text>
-          <Text style={local.bulletItem}>
-            • Par écrit (courrier ou email) auprès de votre référent pédagogique.
-          </Text>
-          <Text style={local.bulletItem}>
-            • Dans un délai de 10 jours ouvrés suivant la situation litigieuse.
-          </Text>
-          <Text style={local.bulletItem}>
-            • Nous vous accuserons réception sous 5 jours ouvrés et vous apporterons une réponse
-            circonstanciée dans un délai maximum de 15 jours ouvrés.
-          </Text>
+          <BulletList
+            items={[
+              "Par écrit (courrier ou email) auprès de votre référent pédagogique.",
+              "Dans un délai de 10 jours ouvrés suivant la situation litigieuse.",
+              "Nous vous accuserons réception sous 5 jours ouvrés et vous apporterons une réponse circonstanciée dans un délai maximum de 15 jours ouvrés.",
+            ]}
+          />
           <FieldRow label="Email réclamations" value={identite.email || "—"} />
         </DocSection>
 

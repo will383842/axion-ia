@@ -18,10 +18,11 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  BulletList,
+  SignatureZone,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
 // Styles spécifiques
@@ -33,26 +34,10 @@ const styles = StyleSheet.create({
     lineHeight: 1.6,
     marginBottom: 12,
   },
-  listItem: {
-    flexDirection: "row",
-    marginBottom: 3,
-  },
-  bullet: {
-    fontSize: 10,
-    color: brandColor("terracotta"),
-    width: 14,
-  },
   listText: {
     fontSize: 10,
-    color: brandColor("fg"),
     flex: 1,
     lineHeight: 1.5,
-  },
-  signatureLabel: {
-    fontSize: 9,
-    color: brandColor("fg-soft"),
-    fontWeight: "bold",
-    marginBottom: 24,
   },
 });
 
@@ -99,23 +84,6 @@ export interface ProtocoleAfestData {
 }
 
 // ============================================================
-// Helpers
-// ============================================================
-
-function Liste({ items }: { items: string[] }): React.ReactElement {
-  return (
-    <View>
-      {items.map((item, i) => (
-        <View key={i} style={styles.listItem}>
-          <Text style={styles.bullet}>•</Text>
-          <Text style={styles.listText}>{item}</Text>
-        </View>
-      ))}
-    </View>
-  );
-}
-
-// ============================================================
 // Composant principal
 // ============================================================
 
@@ -141,7 +109,11 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
 
         {/* Parties */}
         <DocSection title="Parties">
-          <FieldRow label="Organisme de formation" value={identite.raisonSociale} />
+          <FieldRow label="Organisme de formation" value={identite.raisonSociale} required />
+          <FieldRow label="SIRET" value={identite.siret} required />
+          <FieldRow label="NDA" value={identite.nda} required />
+          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          <FieldRow label="Siège social" value={identite.adresseSiege} required />
           {data.beneficiaire.entreprise ? (
             <FieldRow label="Entreprise" value={data.beneficiaire.entreprise} />
           ) : null}
@@ -180,12 +152,12 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
 
         {/* Objectifs pédagogiques */}
         <DocSection title="Objectifs pédagogiques">
-          <Liste items={data.objectifs} />
+          <BulletList items={data.objectifs} variant="objective" />
         </DocSection>
 
         {/* Séquences : alternance mises en situation ↔ phases réflexives (§4) */}
         <DocSection title="Mises en situation de travail">
-          <Liste items={data.misesEnSituation} />
+          <BulletList items={data.misesEnSituation} />
         </DocSection>
         <DocSection title="Phases réflexives">
           <Text style={styles.listText}>{data.phasesReflexives}</Text>
@@ -210,20 +182,14 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
 
         {/* Signatures 3 parties */}
         <DocSection title="Signatures">
-          <View style={pdfStyles.signatureZone}>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={styles.signatureLabel}>L'organisme</Text>
-            </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={styles.signatureLabel}>L'entreprise</Text>
-            </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={styles.signatureLabel}>Le bénéficiaire</Text>
-            </View>
-          </View>
-          <Text style={pdfStyles.paragraph}>
-            {`Fait à ${identite.adresseSiege || "Paris"}, le ${data.dateEmission}`}
-          </Text>
+          <SignatureZone
+            faitLe={`${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
+            parties={[
+              { titre: "L'organisme" },
+              { titre: "L'entreprise" },
+              { titre: "Le bénéficiaire" },
+            ]}
+          />
         </DocSection>
       </QualiopiPage>
     </Document>
