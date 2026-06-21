@@ -12,7 +12,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { BLOG_POSTS } from "@/content/transversal";
+import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { slugify } from "@/lib/slug";
@@ -78,9 +78,18 @@ export default async function BlogListing({ params, searchParams }: Props) {
 
   const breadcrumbItems = [{ href: "/blog", label: "Blog" }];
 
-  // Catégories agrégées (count par catégorie)
+  // P1 (2026-06-21) — index DB-FIRST : la liste fusionne les articles DB
+  // (factory content-gen, tier-1+2) ET les articles FS éditoriaux, dédupliqués
+  // par slug et triés par date (cf. loadBlogIndexForView). Avant : FS-only → les
+  // contenus générés (ex. Grenoble) n'apparaissaient JAMAIS dans le hub /blog.
+  // Cap index = scalabilité : on liste les N plus récents (archive profonde via
+  // les hubs catégorie + le sitemap, pas via une pagination infinie ici).
+  const INDEX_MAX = 300;
+  const sortedPosts = (await loadBlogIndexForView(loc)).slice(0, INDEX_MAX);
+
+  // Catégories agrégées (count par catégorie) — dérivées de la liste fusionnée.
   const categoriesMap = new Map<string, { label: string; slug: string; count: number }>();
-  for (const post of BLOG_POSTS) {
+  for (const post of sortedPosts) {
     const slug = slugify(post.category);
     const existing = categoriesMap.get(slug);
     if (existing) {
@@ -91,9 +100,6 @@ export default async function BlogListing({ params, searchParams }: Props) {
   }
   const categories = [...categoriesMap.values()];
   const categoryBase = isFr ? "/blog/categorie" : "/blog/category";
-
-  // Posts pour le hero schema (3 plus récents par publishedAt desc)
-  const sortedPosts = [...BLOG_POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   // V-02 sprint UX 2026-05-22 — Pagination v1 (offset/limit).
   const totalPages = Math.max(1, Math.ceil(sortedPosts.length / ARTICLES_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
@@ -105,34 +111,36 @@ export default async function BlogListing({ params, searchParams }: Props) {
     slug: p.slug,
     category: p.category,
     readingTime: p.readingTime,
-    title: p[loc].title,
+    title: p.title,
   }));
 
   // ItemList JSON-LD — expose chaque article au crawler depuis l'index
   // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
-  // déjà émis ailleurs).
+  // déjà émis ailleurs). @id (2026-06-21) : ancre la collection pour la citation
+  // LLM (Perplexity/Claude « selon le blog Axion-IA »).
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${SITE_URL}/${locale}/blog#itemlist`,
     name: isFr ? "Articles Axion-IA · ligne éditoriale" : "Axion-IA articles · editorial line",
     itemListElement: sortedPosts.map((post, index) => ({
       "@type": "ListItem",
       position: index + 1,
       url: `${SITE_URL}/${locale}/blog/${post.slug}`,
-      name: post[loc].title,
+      name: post.title,
     })),
   } as const;
 
   // Pills réassurance (count dynamique)
   const pills = isFr
     ? [
-        { icon: FileText, label: `${BLOG_POSTS.length} articles` },
+        { icon: FileText, label: `${sortedPosts.length} articles` },
         { icon: Layers, label: `${categories.length} catégories` },
         { icon: Clock, label: "Lecture 6-12 min" },
         { icon: RefreshCw, label: "MAJ mensuelle" },
       ]
     : [
-        { icon: FileText, label: `${BLOG_POSTS.length} articles` },
+        { icon: FileText, label: `${sortedPosts.length} articles` },
         { icon: Layers, label: `${categories.length} categories` },
         { icon: Clock, label: "6-12 min read" },
         { icon: RefreshCw, label: "Monthly updates" },
@@ -205,9 +213,9 @@ export default async function BlogListing({ params, searchParams }: Props) {
                 </Cta>
                 {/* V-02 sprint UX 2026-05-22 — search Cmd+K autocomplete (gap audit 74 → +15 pts). */}
                 <BlogSearch
-                  items={BLOG_POSTS.map((p) => ({
+                  items={sortedPosts.map((p) => ({
                     slug: p.slug,
-                    title: p[loc].title,
+                    title: p.title,
                     category: p.category,
                     tags: p.tags,
                   }))}
@@ -299,20 +307,17 @@ export default async function BlogListing({ params, searchParams }: Props) {
             </>
           ) : null}
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {paginatedPosts.map((post) => {
-              const c = post[loc];
-              return (
-                <li key={post.slug}>
-                  <ArticleCard
-                    href={`/blog/${post.slug}`}
-                    title={c.title}
-                    excerpt={c.excerpt}
-                    publishedAt={post.publishedAt}
-                    readingTime={post.readingTime}
-                  />
-                </li>
-              );
-            })}
+            {paginatedPosts.map((post) => (
+              <li key={post.slug}>
+                <ArticleCard
+                  href={`/blog/${post.slug}`}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  publishedAt={post.publishedAt}
+                  readingTime={post.readingTime}
+                />
+              </li>
+            ))}
           </ul>
           {totalPages > 1 ? (
             <nav
