@@ -17,6 +17,7 @@ import type { BlogPost } from "@/content/blog";
 import { resolveTier } from "@/content/blog";
 import { findArticleBySlug, listPublishedArticles } from "@/lib/knowledge/readers";
 import { prisma } from "@/lib/prisma";
+import { slugify } from "@/lib/slug";
 
 /** Vue unifiée d'un article — shape consommée par la route /blog/[slug]. */
 export interface BlogArticleView {
@@ -33,6 +34,8 @@ export interface BlogArticleView {
   readonly readingTime: string;
   readonly author: string;
   readonly category: string;
+  /** Slug de la catégorie pour lier le hub `/blog/categorie/{slug}` (null si aucune). */
+  readonly categorySlug: string | null;
   readonly tags: ReadonlyArray<string>;
   readonly tier: "tier-1-indexable" | "tier-2-noindex-follow" | "tier-3-noindex-nofollow";
   readonly source: "db" | "fs";
@@ -69,6 +72,7 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     readingTime: post.readingTime,
     author: post.author,
     category: post.category,
+    categorySlug: slugify(post.category),
     tags: post.tags,
     tier: resolveTier(post),
     source: "fs",
@@ -162,6 +166,7 @@ export async function loadBlogArticleForView(
       author: "Manon",
       // Catégorisation 2026-06-16 — catégorie réelle (dérivée du serviceSector) + tags persistés.
       category: catTags?.category?.nameFr ?? "Cas d'usage",
+      categorySlug: catTags?.category?.slug ?? null,
       tags: catTags?.tags.map((t) => t.tag.nameFr) ?? [],
       // VIS-02 (audit visibilité 2026-06-05) — dérive le tier RÉEL de l'Article
       // (avant : hardcodé tier-2 → un article promu tier-1 restait noindex alors
@@ -223,6 +228,7 @@ export async function loadBlogIndexForView(
     readingTime: a.readingTime ? `${a.readingTime} min` : "5 min",
     author: a.author?.name ?? "Manon",
     category: a.category?.name ?? "Cas d'usage",
+    categorySlug: a.category?.slug ?? null,
     tags: [],
     tier: "tier-2-noindex-follow",
     source: "db",

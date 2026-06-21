@@ -15,7 +15,6 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
-import { slugify } from "@/lib/slug";
 import { BlogSearch } from "@/components/blog/BlogSearch";
 
 // Sprint 8 V2 : ISR Next 16 — pré-rendue au build, revalidée toutes les heures
@@ -36,8 +35,6 @@ function parsePage(raw: string | undefined): number {
   const n = parseInt(raw ?? "1", 10);
   return Number.isFinite(n) && n >= 1 ? n : 1;
 }
-
-// slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -88,9 +85,14 @@ export default async function BlogListing({ params, searchParams }: Props) {
   const sortedPosts = (await loadBlogIndexForView(loc)).slice(0, INDEX_MAX);
 
   // Catégories agrégées (count par catégorie) — dérivées de la liste fusionnée.
+  // On utilise le `categorySlug` RÉEL (slug DB `blog-formations-ia` pour les
+  // articles factory, slugify(nom) pour les FS) afin que les liens pointent vers
+  // une page catégorie valide (les slugs DB ≠ slugify(nom)). Skip si pas de
+  // catégorie résoluble (évite tout lien 404).
   const categoriesMap = new Map<string, { label: string; slug: string; count: number }>();
   for (const post of sortedPosts) {
-    const slug = slugify(post.category);
+    const slug = post.categorySlug;
+    if (!slug) continue;
     const existing = categoriesMap.get(slug);
     if (existing) {
       categoriesMap.set(slug, { ...existing, count: existing.count + 1 });
