@@ -710,7 +710,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     benefitMeasured:
       "Filtrer 50 à 70 % des demandes hors cible avant le premier rendez-vous — vous ne recevez plus que des prospects dans votre périmètre de mission.",
     beforeScenario:
-      "Votre secrétaire prend 30 appels de prospects par mois via le formulaire du site. La moitié veut une simple déclaration 2042 à 80 €, pas un suivi de TPE. Votre associé perd des rendez-vous découverte sur des dossiers non rentables.",
+      "Votre secrétaire prend 30 appels de prospects par mois via le formulaire du site. La moitié veut une simple déclaration de revenus pour particulier, pas un suivi de TPE. Votre associé perd des rendez-vous découverte sur des dossiers non rentables.",
     afterScenario:
       "L'assistant en ligne qualifie chaque demande (forme juridique, régime fiscal, chiffre d'affaires, type de mission) et oriente. Les particuliers obtiennent une réponse, vous récupérez les prospects à votre cible directement dans votre agenda de rendez-vous.",
     sectorLexicon: [
