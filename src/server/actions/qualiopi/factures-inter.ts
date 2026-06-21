@@ -14,6 +14,16 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import {
+  computeTotauxFacture,
+  isRegimeTva,
+  REGIME_TVA_DEFAUT,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
 import {
   resolveEnrollmentFinancement,
   destinataireFacture,
@@ -110,6 +120,15 @@ export async function genererFactureParInscriptionAction(
     destinataireAdresse = payeur?.adresse ?? undefined;
   }
 
+  // Garde-fou conformité : facture inter illégale si identité OF incomplète.
+  const identite = await getOrganismeIdentite();
+  const manquants = champsIdentiteManquants(identite, "facture");
+  if (manquants.length > 0) {
+    return {
+      error: `Identité de l'organisme incomplète (${manquants.join(", ")}). Renseignez ces valeurs dans les paramètres Qualiopi avant de facturer.`,
+    };
+  }
+
   const annee = new Date().getFullYear();
   const lignes = [
     {
@@ -118,6 +137,13 @@ export async function genererFactureParInscriptionAction(
       prixUnitaireHtCents: resolved.montantHtCents,
     },
   ];
+
+  // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
+  const regimeTvaConfig = await getQualiopiConfig("regime_tva");
+  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const tauxStandard =
+    (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   let created: { id: string; numero: string };
   try {
@@ -133,7 +159,10 @@ export async function genererFactureParInscriptionAction(
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
           montantHtCents: resolved.montantHtCents,
-          tvaExoneree: true,
+          tvaExoneree: totaux.totalTvaCents === 0,
+          regimeTva,
+          montantTvaCents: totaux.totalTvaCents,
+          montantTtcCents: totaux.totalTtcCents,
           lignes: lignes as never,
           subrogation: resolved.financementType === "opco" && enrollment.session.opcoSubrogation,
           ...(resolved.numeroDossierOpco !== null
