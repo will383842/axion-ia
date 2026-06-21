@@ -143,14 +143,13 @@ export default async function GuidePiliersPage({ params }: Props) {
 
   // TOC Featured Snippets P0-4 — généré depuis les steps structurées si
   // disponibles. Chaque step.name devient un h2 dans le rendu, donc une entrée TOC.
+  // Chantier templates 2026-06-21 — FIX ancres mortes : l'ancre du sommaire
+  // DOIT être identique à l'`id` de la section (`step-${position}`, cf. rendu
+  // ci-dessous). Avant : l'ancre était un slug du nom → ne matchait jamais
+  // l'id `step-N` → clics du sommaire sans effet. `step-${position}` est unique.
   const tocItems: TocItem[] = guide.hasStructuredSteps
     ? guide.steps.map((s) => ({
-        anchor: s.name
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[̀-ͯ]/g, "")
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, ""),
+        anchor: `step-${s.position}`,
         title: s.name,
         level: 2 as const,
       }))
