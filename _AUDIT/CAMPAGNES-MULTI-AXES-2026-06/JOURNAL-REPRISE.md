@@ -130,10 +130,33 @@ régression** trouvée et corrigée (`bdda99ed`) :
 - ✅ **corpus anti-plagiat 50→200** (`6afd9f5b`) — + tunable `policies.plagiarismCorpusSize`.
 - ⏳ `benefit_gate` = flag console **= décision Will** (page admin PH4) — laissé OFF.
 
+## ✅ FAIT — Phase 3 SEO secteurs + items 8/9 (2026-06-21, commit `da08ea8c`)
+
+**Branche `feat/console-ameliorations` POUSSÉE sur origin** (`5e394908`, gate full
+suite 17k tests verte, NON mergée) ; Phase 3 commitée par-dessus.
+
+- ✅ **Pilier `/secteurs` (61 pages)** : hub + 10 piliers `/secteurs/[secteur]` +
+  50 croisées `/secteurs/[secteur]/[activite]`. **Anti-doorway HCU** : chaque page
+  rend un combo pain-matrix UNIQUE hand-authored (pas de gabarit ville-swap) +
+  maillage hub↔pilier↔croisée + lien footer (anti-orphelin) + sitemap dédié (61 URLs)
+  + breadcrumbs + JSON-LD Service/Breadcrumb/ItemList/FAQPage/Speakable + h1 unique/page
+  + filet `noindex,follow` si combo manquant (jamais le cas, 50/50). Garde-test contrat.
+- ✅ **Item 8** : `buildArticleJsonLd` émet une SpeakableSpecification (articles FS
+  alignés sur Service + DB).
+- ✅ **Item 9** : galerie — bloc Module `div→section`+h2 + `aria-label` sur l'aside.
+- **Items 7/10a/10c VÉRIFIÉS NON-ACTIONNABLES** (agents) : (7) Review/AggregateRating
+  = **SKIP, anti-fabrication** (aucune note réelle en base ; inventer un `ratingValue`
+  viole les règles Google) ; (10a) `/reserver` CLS = **déjà fixé** (skeleton min-h-800
+  + loading.tsx) ; (10c) CF cache = **déjà mitigé** en code (proxy strip cookies sur GET
+  public), reste = règle dashboard Cloudflare (Will). (10b) size-limit hard-gate =
+  risqué sans recalibrage baseline → **laissé à Will** (Lighthouse reste l'autorité).
+
 ## ⏳ À FAIRE
 
-### Phase 3 (plus tard) — SEO v2
-Pilier `/secteurs/*` + 50 pages croisées (curées).
+### Activation Will
+- Pousser Phase 3 (déjà commitée localement) → re-push branche → PR → main.
+- benefit_gate (flag console) · size-limit CI hard-gate (10b) · CF cache rule (10c).
+- Wikidata Q-number Organisation (densité Knowledge Graph).
 
 ### Nettoyage
 Supprimer les 3 campagnes de TEST qualité (Grenoble).
