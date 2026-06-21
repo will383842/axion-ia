@@ -53,8 +53,32 @@ const SEARCH_INTENT_VALUES = WIZARD_SEARCH_INTENTS.map((s) => s.value) as unknow
   ...string[],
 ];
 const CLIENT_SECTOR_VALUES = [...CLIENT_SECTOR_SLUGS] as unknown as [string, ...string[]];
-// Clé audienceMix « SIZE:ORG » (axe 5). SIZE ∈ enum CompanySize.
-const AUDIENCE_KEY_RE = /^(TPE|PME|ETI|GRANDE_ENTREPRISE):[a-z_]+$/;
+// Clé audienceMix « SIZE:ORG » (axe 5). SIZE ∈ enum CompanySize, ORG ∈ enum
+// OrganisationType (schema.prisma) — validés strictement : un ORG hors enum
+// ferait échouer l'insert du job en silence (cast non vérifié côté orchestrateur).
+const COMPANY_SIZE_VALUES = ["TPE", "PME", "ETI", "GRANDE_ENTREPRISE"] as const;
+const ORGANISATION_TYPE_VALUES = [
+  "entreprise_privee",
+  "ecole",
+  "universite",
+  "mairie",
+  "collectivite",
+  "hopital",
+  "association",
+  "comite_entreprise",
+  "opco",
+  "carsat",
+  "etablissement_public",
+  "autre",
+] as const;
+const COMPANY_SIZE_SET: ReadonlySet<string> = new Set(COMPANY_SIZE_VALUES);
+const ORG_TYPE_SET: ReadonlySet<string> = new Set(ORGANISATION_TYPE_VALUES);
+function isValidAudienceKey(key: string): boolean {
+  const [size, org, extra] = key.split(":");
+  return (
+    extra === undefined && !!size && !!org && COMPANY_SIZE_SET.has(size) && ORG_TYPE_SET.has(org)
+  );
+}
 
 /** Record pondéré à vocabulaire fermé : ≥ 1 pondération > 0 (proportions). */
 function weightedEnumRecord(values: [string, ...string[]]) {
@@ -97,7 +121,10 @@ const WizardInputSchema = z
     searchIntentMix: weightedEnumRecord(SEARCH_INTENT_VALUES).optional(),
     // Axe 5 — % audience « SIZE:ORG » (sinon { default: 100 }).
     audienceMix: z
-      .record(z.string().regex(AUDIENCE_KEY_RE), z.number().int().min(0).max(1000))
+      .record(z.string(), z.number().int().min(0).max(1000))
+      .refine((w) => Object.keys(w).every(isValidAudienceKey), {
+        message: "clé audienceMix invalide (attendu « SIZE:ORG » avec SIZE/ORG des enums)",
+      })
       .refine((w) => Object.values(w).reduce((s, v) => s + (v ?? 0), 0) > 0, {
         message: "au moins une audience > 0",
       })

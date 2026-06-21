@@ -73,12 +73,15 @@ export const WIZARD_COMPANY_SIZES = [
   { value: "GRANDE_ENTREPRISE", labelFr: "Grande entreprise (5000+)" },
 ] as const;
 
-/** Axe 5 — types d'organisation (suffixe des clés audienceMix « SIZE:ORG »). */
+// Axe 5 — types d'organisation (suffixe des clés audienceMix « SIZE:ORG »).
+// ⚠️ Les `value` DOIVENT être des membres réels de l'enum Prisma `OrganisationType`
+// (schema.prisma) sinon l'insertion du job échoue silencieusement à
+// l'échantillonnage (cast `as OrganisationType` non validé en DB).
 export const WIZARD_ORG_TYPES = [
   { value: "entreprise_privee", labelFr: "Entreprise privée" },
-  { value: "profession_liberale", labelFr: "Profession libérale" },
   { value: "association", labelFr: "Association" },
-  { value: "collectivite_territoriale", labelFr: "Collectivité territoriale" },
+  { value: "collectivite", labelFr: "Collectivité" },
+  { value: "etablissement_public", labelFr: "Établissement public" },
 ] as const;
 
 /** Axe 6 — mode « ville & alentours ». */
