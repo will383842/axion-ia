@@ -38,7 +38,7 @@ jobs:
     timeout-minutes: 30
     if: ${{ vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
@@ -86,7 +86,7 @@ jobs:
     timeout-minutes: 30
     if: ${{ vars.NIGHTLY_ZAP_ENABLED != 'false' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: ZAP baseline vs prod
         # owasp/zap2docker-stable image renamed → use zaproxy/zap-stable
         run: |
@@ -115,7 +115,7 @@ jobs:
     # Active via `gh variable set NIGHTLY_MAIL_TESTER_ENABLED --body true`.
     if: ${{ vars.NIGHTLY_MAIL_TESTER_ENABLED == 'true' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
@@ -155,7 +155,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install aws-cli (R2 S3-compatible)
         run: aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
       - name: Pull latest Postgres backup from Cloudflare R2 + drill restore
@@ -183,7 +183,7 @@ jobs:
     timeout-minutes: 25
     if: ${{ vars.NIGHTLY_LHCI_ENABLED != 'false' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4

@@ -27,7 +27,7 @@ jobs:
       # Sans full history, gitleaks fail avec "ambiguous argument" sur les
       # PRs dont le premier commit a un parent absent du shallow clone
       # (audit V1 image-bank 2026-05-16 PR #14).
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
@@ -116,7 +116,7 @@ jobs:
       NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
       NEXT_PUBLIC_APP_ENV: "production"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -278,7 +278,7 @@ jobs:
     timeout-minutes: 60
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Free disk space avant le `docker build` SSG (17,9k pages) — le runner
       # ubuntu-latest démarre à ~14 GB libres, insuffisant : le build + la copie
@@ -463,7 +463,7 @@ jobs:
       DATABASE_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
       DIRECT_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}

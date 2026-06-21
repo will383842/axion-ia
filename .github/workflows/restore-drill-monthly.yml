@@ -41,7 +41,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install aws-cli
         run: aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
       - name: Drill restore + report RestoreDrill
@@ -84,7 +84,7 @@ jobs:
     timeout-minutes: 10
     if: ${{ vars.MONTHLY_RESTORE_DRILL_ENABLED != 'false' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install aws-cli
         run: aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
       - name: Head-object dernière archive secrets + report

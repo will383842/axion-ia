@@ -22,7 +22,7 @@ jobs:
       # workflow). On bascule la présence du secret via une env var step-level.
       HAS_COOLIFY_STAGING_WEBHOOK: ${{ secrets.COOLIFY_STAGING_WEBHOOK != '' && 'yes' || 'no' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Trigger Coolify webhook
         if: env.HAS_COOLIFY_STAGING_WEBHOOK == 'yes'
         run: |
