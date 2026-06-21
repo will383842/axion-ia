@@ -167,9 +167,11 @@ describe("multi-axes — helpers purs", () => {
     // same_departement : toutes les communes renvoyées partagent le département.
     const dept = await expandVilleAnchors(["lyon"], "same_departement", null);
     expect(dept).toContain("lyon");
-    // Timeout élargi : 1er appel = import dynamique de geo + villes (~2150 communes
+    // Timeout large : 1er appel = import dynamique de geo + villes (~2150 communes
     // + case-studies), volontairement paresseux pour alléger le boot du worker.
-  }, 30000);
+    // Le coût (~22s) est un artefact de transform vitest (rapide en prod compilé) ;
+    // 60s absorbe la contention CPU quand la suite tourne en parallèle.
+  }, 60000);
 });
 
 // ─── Comportement orchestrateur ──────────────────────────────────────────────
