@@ -42,9 +42,7 @@ export async function CostsV2(): Promise<React.ReactElement> {
         const pct = cap > 0 ? Math.round((p.costUsd / cap) * 100) : 0;
         const warn = pct >= 80;
         return (
-          <span
-            className={warn ? "font-semibold text-[color:var(--color-admin-destructive)]" : ""}
-          >
+          <span className={warn ? "font-semibold text-[color:var(--color-admin-destructive)]" : ""}>
             {pct}%
           </span>
         );

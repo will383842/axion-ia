@@ -56,9 +56,7 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
     {
       key: "status",
       header: "Statut",
-      cell: (b) => (
-        <AdminBadge tone={STATUS_TONE[b.status] ?? "neutral"}>{b.status}</AdminBadge>
-      ),
+      cell: (b) => <AdminBadge tone={STATUS_TONE[b.status] ?? "neutral"}>{b.status}</AdminBadge>,
     },
   ];
 

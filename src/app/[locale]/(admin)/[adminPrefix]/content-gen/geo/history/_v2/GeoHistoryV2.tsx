@@ -30,10 +30,7 @@ export async function GeoHistoryV2({ adminPrefix }: Props): Promise<React.ReactE
       key: "name",
       header: "Nom",
       cell: (c) => (
-        <Link
-          href={`/fr/${adminPrefix}/content-gen/coverage/${c.id}`}
-          className="admin-link"
-        >
+        <Link href={`/fr/${adminPrefix}/content-gen/coverage/${c.id}`} className="admin-link">
           {c.name}
         </Link>
       ),

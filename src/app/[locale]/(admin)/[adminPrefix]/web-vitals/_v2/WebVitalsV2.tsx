@@ -70,7 +70,10 @@ const RATING_LABELS: Record<"good" | "needs_improvement" | "poor", string> = {
   needs_improvement: "● Needs improvement",
   poor: "● Poor",
 };
-const RATING_TONE: Record<"good" | "needs_improvement" | "poor", "success" | "warning" | "destructive"> = {
+const RATING_TONE: Record<
+  "good" | "needs_improvement" | "poor",
+  "success" | "warning" | "destructive"
+> = {
   good: "success",
   needs_improvement: "warning",
   poor: "destructive",

@@ -67,7 +67,11 @@ export function NewsletterV2({
   csvUrl,
 }: Props): React.ReactElement {
   const columns: ReadonlyArray<AdminTableColumn<SubscriberRow>> = [
-    { key: "createdAt", header: "Date inscription", cell: (s) => s.createdAt.toISOString().slice(0, 10) },
+    {
+      key: "createdAt",
+      header: "Date inscription",
+      cell: (s) => s.createdAt.toISOString().slice(0, 10),
+    },
     { key: "email", header: "Email", cell: (s) => s.email },
     { key: "locale", header: "Locale", cell: (s) => s.locale.toUpperCase() },
     {
