@@ -15,6 +15,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
@@ -78,6 +79,9 @@ export async function genererFactureCoaching(
   }
 
   const identite = await getOrganismeIdentite();
+  // Garde-fou conformité : facture illégale si identité OF incomplète.
+  // Validé hors du try/catch fail-soft de génération PDF (blocage dur).
+  assertOrganismeComplet(identite, "facture");
   const annee = new Date().getFullYear();
   const now = new Date();
   const echeance = new Date(now);
@@ -113,6 +117,7 @@ export async function genererFactureCoaching(
     try {
       docResult = await generateDocument({
         type: "facture",
+        identite,
         buildElement: (docNumero) =>
           React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
       });

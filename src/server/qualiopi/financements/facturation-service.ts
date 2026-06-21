@@ -19,6 +19,7 @@ import type { FactureFormationDestinataire } from "../../../../prisma/generated/
 import { computeVentilationDossier, computeForfait } from "./opco-calcul";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
@@ -135,6 +136,13 @@ export async function genererFactureFormation(
   const annee = new Date().getFullYear();
   const identite = await getOrganismeIdentite();
 
+  // Garde-fou conformité : une facture sans identité OF complète (SIRET, NDA,
+  // adresse siège) est illégale. On valide AVANT toute création de
+  // FactureFormation, et hors du try/catch fail-soft de génération PDF, pour
+  // bloquer DUR (sinon l'erreur serait avalée et un enregistrement non conforme
+  // serait créé sans PDF).
+  assertOrganismeComplet(identite, "facture");
+
   // Calcul échéance : 30 jours
   const now = new Date();
   const echeance = new Date(now);
@@ -180,6 +188,7 @@ export async function genererFactureFormation(
     try {
       docResult = await generateDocument({
         type: "facture",
+        identite,
         buildElement: (docNumero) =>
           React.createElement(FacturePdf, { data: { ...factureData, numero: docNumero } }),
         refs: { sessionId: input.sessionId },

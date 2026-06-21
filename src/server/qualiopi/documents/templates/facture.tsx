@@ -1,12 +1,17 @@
 /**
  * Qualiopi — Facture de prestation de formation professionnelle.
  *
- * Mention légale EXACTE : LEGAL_MENTIONS.factureExonerationTva
- * Exonération TVA : article 261-4-4° du Code Général des Impôts.
+ * Conformité mentions obligatoires :
+ *   - Identité + adresse du siège du vendeur (en-tête + pied via QualiopiPage).
+ *   - SIRET / NDA / Qualiopi (en-tête + bloc facturation, `required`).
+ *   - Date d'émission, date d'échéance, date de réalisation de la prestation
+ *     (art. 242 nonies A CGI).
+ *   - TVA : exonération art. 261-4-4° CGI (formation professionnelle continue).
+ *   - Pénalités de retard (art. L.441-10), indemnité forfaitaire 40 €
+ *     (art. D.441-5), absence d'escompte (art. L.441-9) — C. commerce, B2B.
  *
- * NDA + Qualiopi + SIRET obligatoires dans l'en-tête (via QualiopiPage).
- * Montants en centimes d'euro (prixUnitaireHtCents, totalHtCents) pour
- * éviter les erreurs d'arrondi flottant.
+ * Montants en centimes d'euro (prixUnitaireHtCents, totalHtCents) pour éviter
+ * les erreurs d'arrondi flottant.
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -18,59 +23,25 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  LegalCallout,
+  formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import {
+  brandColor,
+  QUALIOPI_PDF_TYPE as T,
+  QUALIOPI_PDF_SPACE as S,
+} from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
-// Helpers monétaires
-// ============================================================
-
-/** Formate des centimes en euros avec virgule décimale française. Ex: 150000 → "1 500,00 €" */
-function formatEuros(cents: number): string {
-  const euros = cents / 100;
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(euros);
-}
-
-// ============================================================
-// Styles spécifiques
+// Styles spécifiques (totaux + RIB)
 // ============================================================
 
 const styles = StyleSheet.create({
-  tableHeader: {
-    flexDirection: "row",
-    borderBottomWidth: 2,
-    borderBottomColor: brandColor("mocha"),
-    paddingBottom: 4,
-    marginBottom: 4,
-  },
-  colDesignation: { flex: 3 },
-  colQty: { flex: 1, textAlign: "right" },
-  colPu: { flex: 1.5, textAlign: "right" },
-  colTotal: { flex: 1.5, textAlign: "right" },
-  tableHeaderText: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: brandColor("fg-soft"),
-  },
-  tableBodyRow: {
-    flexDirection: "row",
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: pdfStyles.fieldRow.borderBottomColor as string,
-  },
-  tableCellText: {
-    fontSize: 10,
-    color: brandColor("fg"),
-  },
   totalsBlock: {
-    marginTop: 12,
+    marginTop: S.xl,
     alignItems: "flex-end",
   },
   totalRow: {
@@ -81,62 +52,50 @@ const styles = StyleSheet.create({
     borderBottomColor: brandColor("border"),
   },
   totalLabel: {
-    fontSize: 10,
+    fontSize: T.base,
     flex: 1,
     color: brandColor("fg-soft"),
     fontWeight: "bold",
   },
   totalValue: {
-    fontSize: 10,
+    fontSize: T.base,
     color: brandColor("fg"),
     fontFamily: "Inconsolata",
+    textAlign: "right",
   },
   totalTtcRow: {
     flexDirection: "row",
     width: 240,
-    paddingVertical: 5,
+    paddingVertical: S.md,
     backgroundColor: brandColor("mocha"),
-    paddingHorizontal: 6,
-    marginTop: 2,
-    borderRadius: 2,
+    paddingHorizontal: S.md,
+    marginTop: S.xs,
+    borderRadius: S.radius,
   },
   totalTtcLabel: {
-    fontSize: 11,
+    fontSize: T.lg,
     flex: 1,
     color: brandColor("primary-fg"),
     fontWeight: "bold",
   },
   totalTtcValue: {
-    fontSize: 11,
+    fontSize: T.lg,
     color: brandColor("primary-fg"),
     fontFamily: "Inconsolata",
     fontWeight: "bold",
-  },
-  subrogationBlock: {
-    padding: 8,
-    marginTop: 10,
-    borderRadius: 2,
-    borderLeftWidth: 3,
-    borderLeftColor: brandColor("terracotta"),
-    borderWidth: 1,
-    borderColor: brandColor("border"),
-  },
-  subrogationText: {
-    fontSize: 9,
-    color: brandColor("fg"),
-  },
-  ribBlock: {
-    marginTop: 8,
-    padding: 8,
-    borderWidth: 1,
-    borderColor: brandColor("border-strong"),
-    borderRadius: 2,
+    textAlign: "right",
   },
   ribTitle: {
-    fontSize: 9,
+    fontSize: T.sm,
     fontWeight: "bold",
     color: brandColor("fg-soft"),
-    marginBottom: 4,
+    marginBottom: S.sm,
+  },
+  legalLine: {
+    fontSize: T.xs,
+    color: brandColor("fg"),
+    lineHeight: T.lineNormal,
+    marginBottom: S.xs,
   },
 });
 
@@ -155,6 +114,8 @@ export interface ClientFacture {
   siret?: string;
   adresse?: string;
   email?: string;
+  /** N° TVA intracommunautaire du client (B2B intra-UE). Optionnel. */
+  numeroTvaIntracom?: string;
 }
 
 export interface SubrogationOpco {
@@ -173,6 +134,12 @@ export interface FactureData {
   numero: string;
   dateEmission: string;
   dateEcheance: string;
+  /**
+   * Date (ou période) de réalisation de la prestation — obligatoire si
+   * différente de la date d'émission (art. 242 nonies A CGI). Ex.
+   * « du 01/06/2026 au 02/06/2026 ». Optionnel (défaut : date d'émission).
+   */
+  periodePrestation?: string;
   identite: OrganismeIdentite;
   client: ClientFacture;
   lignes: LigneFacture[];
@@ -198,107 +165,85 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
-        {/* Identifiants de facturation */}
+        {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
         <DocSection title="Informations de facturation">
-          <FieldRow label="N° de facture" value={data.numero} />
-          <FieldRow label="Date d'émission" value={data.dateEmission} />
-          <FieldRow label="Date d'échéance" value={data.dateEcheance} />
-          {identite.nda ? (
-            <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} />
-          ) : null}
+          <FieldRow label="N° de facture" value={data.numero} required />
+          <FieldRow label="Date d'émission" value={data.dateEmission} required />
+          <FieldRow
+            label="Date de réalisation de la prestation"
+            value={data.periodePrestation ?? data.dateEmission}
+          />
+          <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
+          <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
+          <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
           {identite.qualiopi ? (
             <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
           ) : null}
-          {identite.siret ? <FieldRow label="SIRET" value={identite.siret} /> : null}
         </DocSection>
 
         {/* Client */}
         <DocSection title="Client">
-          <FieldRow label="Raison sociale" value={data.client.raisonSociale} />
+          <FieldRow label="Raison sociale" value={data.client.raisonSociale} required />
           {data.client.siret ? <FieldRow label="SIRET" value={data.client.siret} /> : null}
           {data.client.adresse ? <FieldRow label="Adresse" value={data.client.adresse} /> : null}
+          {data.client.numeroTvaIntracom ? (
+            <FieldRow label="N° TVA intracommunautaire" value={data.client.numeroTvaIntracom} />
+          ) : null}
           {data.client.email ? <FieldRow label="Email" value={data.client.email} /> : null}
         </DocSection>
 
         {/* Détail des prestations */}
         <DocSection title="Détail des prestations">
-          {/* En-tête tableau */}
-          <View style={styles.tableHeader}>
-            <View style={styles.colDesignation}>
-              <Text style={styles.tableHeaderText}>Désignation</Text>
-            </View>
-            <View style={styles.colQty}>
-              <Text style={styles.tableHeaderText}>Qté</Text>
-            </View>
-            <View style={styles.colPu}>
-              <Text style={styles.tableHeaderText}>P.U. HT</Text>
-            </View>
-            <View style={styles.colTotal}>
-              <Text style={styles.tableHeaderText}>Total HT</Text>
-            </View>
-          </View>
-
-          {/* Lignes */}
-          {data.lignes.map((ligne, idx) => {
-            const ligneTotal = ligne.quantite * ligne.prixUnitaireHtCents;
-            return (
-              <View key={idx} style={styles.tableBodyRow}>
-                <View style={styles.colDesignation}>
-                  <Text style={styles.tableCellText}>{ligne.designation}</Text>
-                </View>
-                <View style={styles.colQty}>
-                  <Text style={[styles.tableCellText, { textAlign: "right" }]}>
-                    {String(ligne.quantite)}
-                  </Text>
-                </View>
-                <View style={styles.colPu}>
-                  <Text style={[styles.tableCellText, { textAlign: "right" }]}>
-                    {formatEuros(ligne.prixUnitaireHtCents)}
-                  </Text>
-                </View>
-                <View style={styles.colTotal}>
-                  <Text style={[styles.tableCellText, { textAlign: "right" }]}>
-                    {formatEuros(ligneTotal)}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
+          <DataTable
+            columns={[
+              { key: "designation", header: "Désignation", flex: 3 },
+              { key: "qte", header: "Qté", flex: 1, align: "right" },
+              { key: "pu", header: "P.U. HT", flex: 1.5, align: "right" },
+              { key: "total", header: "Total HT", flex: 1.5, align: "right" },
+            ]}
+            rows={data.lignes.map((ligne) => ({
+              designation: ligne.designation,
+              qte: String(ligne.quantite),
+              pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
+              total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
+            }))}
+          />
         </DocSection>
 
         {/* Totaux */}
         <View style={styles.totalsBlock}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total HT</Text>
-            <Text style={styles.totalValue}>{formatEuros(totalHtCents)}</Text>
+            <Text style={styles.totalValue}>{formatEurosFromCents(totalHtCents)}</Text>
           </View>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>TVA (0 %)</Text>
-            <Text style={styles.totalValue}>{formatEuros(0)}</Text>
+            <Text style={styles.totalValue}>{formatEurosFromCents(0)}</Text>
           </View>
           <View style={styles.totalTtcRow}>
             <Text style={styles.totalTtcLabel}>Total TTC</Text>
-            <Text style={styles.totalTtcValue}>{formatEuros(totalHtCents)}</Text>
+            <Text style={styles.totalTtcValue}>{formatEurosFromCents(totalHtCents)}</Text>
           </View>
-        </View>
-
-        {/* Mention exonération TVA */}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
         </View>
 
         {/* Subrogation OPCO */}
         {data.subrogationOpco ? (
-          <View style={styles.subrogationBlock}>
-            <Text style={styles.subrogationText}>
-              {`Facture libellée à l'OPCO ${data.subrogationOpco.nomOpco} dans le cadre de la subrogation de paiement — N° dossier : ${data.subrogationOpco.numeroDossier}.`}
-            </Text>
-          </View>
+          <LegalCallout variant="info" title="Subrogation de paiement OPCO">
+            {`Facture libellée à l'OPCO ${data.subrogationOpco.nomOpco} dans le cadre de la subrogation de paiement — N° dossier : ${data.subrogationOpco.numeroDossier}.`}
+          </LegalCallout>
         ) : null}
 
         {/* RIB */}
         {data.rib ? (
-          <View style={styles.ribBlock}>
+          <View
+            style={{
+              marginTop: S.lg,
+              padding: S.lg,
+              borderWidth: 1,
+              borderColor: brandColor("border-strong"),
+              borderRadius: S.radius,
+            }}
+          >
             <Text style={styles.ribTitle}>Coordonnées bancaires</Text>
             <FieldRow label="Titulaire" value={data.rib.titulaire} />
             {data.rib.banque ? <FieldRow label="Banque" value={data.rib.banque} /> : null}
@@ -306,6 +251,14 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
             <FieldRow label="BIC" value={data.rib.bic} />
           </View>
         ) : null}
+
+        {/* Conditions de règlement + mentions légales obligatoires */}
+        <LegalCallout variant="legal" title="Conditions de règlement et mentions légales">
+          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
+          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
+          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
+        </LegalCallout>
       </QualiopiPage>
     </Document>
   );
