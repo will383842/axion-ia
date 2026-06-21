@@ -45,6 +45,55 @@ export const WIZARD_CONTENT_TYPES = [
 
 export type WizardContentType = (typeof WIZARD_CONTENT_TYPES)[number];
 
+// ─── Axes multi-axes (2026-06-21) — vocabulaires partagés UI + validation ────
+
+/** Axe 2 — les 5 ACTIVITÉS Axion-IA (clés serviceSectorWeights). */
+export const WIZARD_SERVICE_SECTORS = [
+  { value: "interventions_formations", labelFr: "Formations & interventions" },
+  { value: "audits", labelFr: "Audits IA" },
+  { value: "implementations", labelFr: "Implémentation & automatisation" },
+  { value: "un_a_un", labelFr: "Accompagnement 1-to-1" },
+  { value: "sites_web_augmentes", labelFr: "Sites web & SaaS IA" },
+] as const;
+
+/** Axe 4 — intentions de recherche (clés searchIntentMix, alignées enum DB). */
+export const WIZARD_SEARCH_INTENTS = [
+  { value: "informational", labelFr: "Informationnel" },
+  { value: "commercial_investigation", labelFr: "Commercial / comparaison" },
+  { value: "transactional", labelFr: "Transactionnel" },
+  { value: "local", labelFr: "Local" },
+  { value: "navigational", labelFr: "Navigationnel" },
+] as const;
+
+/** Axe 5 — tailles d'entreprise (préfixe des clés audienceMix « SIZE:ORG »). */
+export const WIZARD_COMPANY_SIZES = [
+  { value: "TPE", labelFr: "TPE (< 10)" },
+  { value: "PME", labelFr: "PME (10-249)" },
+  { value: "ETI", labelFr: "ETI (250-4999)" },
+  { value: "GRANDE_ENTREPRISE", labelFr: "Grande entreprise (5000+)" },
+] as const;
+
+/** Axe 5 — types d'organisation (suffixe des clés audienceMix « SIZE:ORG »). */
+export const WIZARD_ORG_TYPES = [
+  { value: "entreprise_privee", labelFr: "Entreprise privée" },
+  { value: "profession_liberale", labelFr: "Profession libérale" },
+  { value: "association", labelFr: "Association" },
+  { value: "collectivite_territoriale", labelFr: "Collectivité territoriale" },
+] as const;
+
+/** Axe 6 — mode « ville & alentours ». */
+export const WIZARD_SURROUNDING_MODES = [
+  { value: "none", labelFr: "Villes choisies uniquement" },
+  { value: "radius", labelFr: "Ville + alentours (rayon km)" },
+  { value: "same_departement", labelFr: "Ville + tout le département" },
+] as const;
+
+/** Axe 8 — mode de durée. */
+export const WIZARD_DURATION_MODES = [
+  { value: "fixed", labelFr: "Durée fixe (s'arrête à la cible)" },
+  { value: "unlimited", labelFr: "Sans limite (jusqu'à arrêt manuel)" },
+] as const;
+
 export const WIZARD_SECTIONS = [
   {
     id: "core",

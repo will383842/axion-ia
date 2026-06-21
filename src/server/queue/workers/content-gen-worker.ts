@@ -327,7 +327,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // pools par vertical (audits/formations/…) n'étaient jamais ciblés. On le
       // dérive désormais du `serviceSector` de la campagne (CoverageCampaign).
       let campaignSector = "transversal";
-      if (dbJob.campaignId) {
+      // Multi-axes (2026-06-21) — l'activité peut être échantillonnée PAR JOB
+      // (axe 2) et portée par inputPayload.vertical. On la préfère au singleton
+      // serviceSector de la campagne (qui reste le fallback rétro-compat).
+      if (typeof inputPayload["vertical"] === "string") {
+        campaignSector = inputPayload["vertical"];
+      } else if (dbJob.campaignId) {
         const campaign = await prisma.coverageCampaign.findUnique({
           where: { id: dbJob.campaignId },
           select: { serviceSector: true },
