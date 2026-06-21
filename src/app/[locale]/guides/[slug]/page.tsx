@@ -16,6 +16,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, permanentRedirect } from "next/navigation";
+import Image from "next/image";
 import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -37,6 +38,7 @@ import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
 // pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
@@ -191,6 +193,27 @@ export default async function GuidePiliersPage({ params }: Props) {
             lastReviewedAt={guide.updatedAt ? new Date(guide.updatedAt) : null}
             locale="fr"
           />
+
+          {/* Chantier templates 2026-06-21 — héros Unsplash (avant : aucune
+              image sur /guides). LCP priority, ratio 16/9 réservé (CLS=0). */}
+          {guide.featuredImage ? (
+            <div className="mt-8">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                <Image
+                  src={guide.featuredImage}
+                  alt={guide.featuredImageAlt ?? guide.title}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={guide.photographerName}
+                photographerUrl={guide.photographerUrl}
+              />
+            </div>
+          ) : null}
 
           <div className="mt-12 space-y-6">
             {guide.hasStructuredSteps ? (

@@ -41,6 +41,12 @@ export interface GuideArticleView {
   readonly faqItems: ReadonlyArray<FaqItem>;
   /** Sources citées (ContentCitation) — section Sources & méthodologie visible. */
   readonly citations: ReadonlyArray<{ name: string; url: string }>;
+  /** Héros Unsplash (Article.featuredImage) — avant : aucune image sur /guides. */
+  readonly featuredImage: string | null;
+  readonly featuredImageAlt: string | null;
+  /** Attribution Unsplash (CGU §6) — null si pas de photo Unsplash. */
+  readonly photographerName: string | null;
+  readonly photographerUrl: string | null;
 }
 
 const GUIDE_TEMPLATE_VARIANT_PATTERNS = ["guide", "guide_pilier"];
@@ -167,6 +173,11 @@ export async function loadGuideForView(
       name: c.externalReference.title,
       url: c.externalReference.url,
     })),
+    // Chantier templates 2026-06-21 — héros Unsplash (avant : aucune image).
+    featuredImage: translation.article.featuredImage ?? null,
+    featuredImageAlt: translation.article.featuredImageAlt ?? null,
+    photographerName: translation.article.featuredImagePhotographerName ?? null,
+    photographerUrl: translation.article.featuredImagePhotographerUrl ?? null,
   };
 }
 
