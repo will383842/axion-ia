@@ -35,6 +35,8 @@ import { loadGuideForView } from "@/server/content-gen/guides/loader";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
+import { ArticleSources } from "@/components/content-gen/ArticleSources";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
 // pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
@@ -228,6 +230,19 @@ export default async function GuidePiliersPage({ params }: Props) {
           <AiContentDisclaimer locale="fr" className="mt-10" />
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — FAQ + Sources (briques partagées,
+          mêmes composants que /blog). guide.updatedAt = Date → ISO court. */}
+      <ArticleFaq
+        items={guide.faqItems}
+        locale="fr"
+        dateModified={guide.updatedAt.toISOString().slice(0, 10)}
+      />
+      <ArticleSources
+        items={guide.citations}
+        locale="fr"
+        lastVerified={guide.updatedAt.toISOString().slice(0, 10)}
+      />
 
       {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
       <SuggestedContent

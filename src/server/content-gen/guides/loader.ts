@@ -18,6 +18,7 @@
 
 import type { Locale } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
+import { parseFaqItems, type FaqItem } from "@/server/content-gen/shared/faq-items";
 
 export interface GuideStep {
   readonly position: number;
@@ -36,6 +37,10 @@ export interface GuideArticleView {
   readonly steps: ReadonlyArray<GuideStep>;
   readonly hasStructuredSteps: boolean;
   readonly readingTimeMinutes: number;
+  /** FAQ structurée (Article.faqJson) — accordéon + FAQPage (chantier 2026-06-21). */
+  readonly faqItems: ReadonlyArray<FaqItem>;
+  /** Sources citées (ContentCitation) — section Sources & méthodologie visible. */
+  readonly citations: ReadonlyArray<{ name: string; url: string }>;
 }
 
 const GUIDE_TEMPLATE_VARIANT_PATTERNS = ["guide", "guide_pilier"];
@@ -137,6 +142,14 @@ export async function loadGuideForView(
   const body = translation.body || translation.bodyText || "";
   const steps = parseStepsFromBody(body);
 
+  // Chantier templates 2026-06-21 — sources citées (visibles + nofollow).
+  const rawCitations = await prisma.contentCitation
+    .findMany({
+      where: { articleId: translation.article.id },
+      include: { externalReference: { select: { url: true, title: true } } },
+    })
+    .catch(() => []);
+
   return {
     slug: translation.slug,
     title: translation.title,
@@ -148,6 +161,12 @@ export async function loadGuideForView(
     steps,
     hasStructuredSteps: steps.length >= 2,
     readingTimeMinutes: estimateReadingTime(body),
+    // Chantier templates 2026-06-21 — FAQ (jamais rendue) + sources visibles.
+    faqItems: parseFaqItems(translation.article.faqJson),
+    citations: rawCitations.map((c) => ({
+      name: c.externalReference.title,
+      url: c.externalReference.url,
+    })),
   };
 }
 

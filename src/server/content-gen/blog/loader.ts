@@ -18,6 +18,7 @@ import { resolveTier } from "@/content/blog";
 import { findArticleBySlug, listPublishedArticles } from "@/lib/knowledge/readers";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
+import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 
 /** Vue unifiée d'un article — shape consommée par la route /blog/[slug]. */
 export interface BlogArticleView {
@@ -64,27 +65,6 @@ export interface BlogArticleView {
   readonly faqItems: ReadonlyArray<{ question: string; answer: string }>;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
-}
-
-/**
- * Parse défensif de `Article.faqJson` (Json libre écrit par les generators).
- * Accepte `{ question, answer }` ou `{ q, a }`. Ignore tout item incomplet.
- * Retourne `[]` si la donnée est absente/malformée (zéro régression : pas de
- * FAQ → l'accordéon ne se rend pas).
- */
-function parseFaqItems(raw: unknown): ReadonlyArray<{ question: string; answer: string }> {
-  if (!Array.isArray(raw)) return [];
-  const out: { question: string; answer: string }[] = [];
-  for (const entry of raw) {
-    if (!entry || typeof entry !== "object") continue;
-    const o = entry as Record<string, unknown>;
-    const q = typeof o.question === "string" ? o.question : typeof o.q === "string" ? o.q : null;
-    const a = typeof o.answer === "string" ? o.answer : typeof o.a === "string" ? o.a : null;
-    if (q && a && q.trim().length > 0 && a.trim().length > 0) {
-      out.push({ question: q.trim(), answer: a.trim() });
-    }
-  }
-  return out;
 }
 
 function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
