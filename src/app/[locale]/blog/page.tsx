@@ -196,7 +196,11 @@ export default async function BlogListing({ params, searchParams }: Props) {
                   {isFr ? "Lire les articles" : "Read articles"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
-                <Cta href={`/${locale}/blog/feed.xml`} variant="outline" size="lg">
+                {/* P0 (2026-06-21) — href locale-relatif : le <Cta> utilise le
+                    Link next-intl qui PRÉFIXE déjà la locale. Passer
+                    `/${locale}/blog/feed.xml` produisait `/fr/fr/blog/feed.xml`
+                    (double locale). `/blog/feed.xml` → next-intl ajoute `/fr`. */}
+                <Cta href="/blog/feed.xml" variant="outline" size="lg">
                   {isFr ? "S'abonner RSS" : "Subscribe RSS"}
                 </Cta>
                 {/* V-02 sprint UX 2026-05-22 — search Cmd+K autocomplete (gap audit 74 → +15 pts). */}

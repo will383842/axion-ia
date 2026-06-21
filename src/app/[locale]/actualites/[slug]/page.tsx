@@ -134,7 +134,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         robots: { index: false, follow: false },
       };
     }
-    return {};
+    // P0 soft-404 (2026-06-21) — slug actualité inconnu SANS tombstone. Comme
+    // `dynamicParams=true`, Next rend la page on-demand : un `return {}` héritait
+    // du `robots: index, follow` du layout → URL inexistante servie en 200
+    // indexable (soft-404). On force noindex/nofollow explicite (la page appelle
+    // aussi `notFound()`). Même correctif que blog/[slug].
+    return { robots: { index: false, follow: false } };
   }
 
   const meta = buildProductMetadata({

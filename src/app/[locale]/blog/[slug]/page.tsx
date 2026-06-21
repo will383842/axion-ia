@@ -73,7 +73,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         };
       }
     }
-    return {};
+    // P0 soft-404 (2026-06-21) — slug inconnu SANS tombstone. Avant : `return {}`
+    // → métadonnées vides → la page héritait du `robots: index, follow` du
+    // `[locale]/layout.tsx` et était servie en 200 INDEXABLE (Google indexait des
+    // URLs blog inexistantes à l'infini = gaspillage de crawl + soft-404). On
+    // émet désormais un noindex/nofollow explicite (la page appelle aussi
+    // `notFound()` → rendu `[locale]/not-found.tsx`). Aligné avec le catch-all.
+    return { robots: { index: false, follow: false } };
   }
   // V-07 sprint UX 2026-05-22 — préfère DB metaTitle/metaDescription si fournis
   // (champs SEO-tunés au moment de la rédaction Manon ou via factory content-gen).
