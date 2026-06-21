@@ -100,16 +100,19 @@ import {
   ContractVersionUpdatedEmail,
   contractVersionUpdatedSubject,
 } from "./contract-version-updated";
-// Stubs minimaux restants (P2 — cadrage, booking, devis)
+import { CadrageJ1ReminderEmail, cadrageJ1ReminderSubject } from "./cadrage-j1-reminder";
+import { CadrageH2ReminderEmail, cadrageH2ReminderSubject } from "./cadrage-h2-reminder";
 import {
-  cadrageJ1Reminder,
-  cadrageH2Reminder,
-  bookingRescheduledByAdmin,
-  bookingJ1Reminder,
-  bookingCompletedThanks,
-  quoteReminder,
-  quoteExpired,
-} from "./_pending-templates";
+  BookingRescheduledByAdminEmail,
+  bookingRescheduledByAdminSubject,
+} from "./booking-rescheduled-by-admin";
+import { BookingJ1ReminderEmail, bookingJ1ReminderSubject } from "./booking-j1-reminder";
+import {
+  BookingCompletedThanksEmail,
+  bookingCompletedThanksSubject,
+} from "./booking-completed-thanks";
+import { QuoteReminderEmail, quoteReminderSubject } from "./quote-reminder";
+import { QuoteExpiredEmail, quoteExpiredSubject } from "./quote-expired";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -296,14 +299,20 @@ const TEMPLATES: TemplateMap = {
     subject: disputedNoticeSubject,
     component: DisputedNoticeEmail,
   },
-  // Stubs restants (P2 — cadrage, booking, devis)
-  "cadrage-j1-reminder": cadrageJ1Reminder,
-  "cadrage-h2-reminder": cadrageH2Reminder,
-  "booking-rescheduled-by-admin": bookingRescheduledByAdmin,
-  "booking-j1-reminder": bookingJ1Reminder,
-  "booking-completed-thanks": bookingCompletedThanks,
-  "quote-reminder": quoteReminder,
-  "quote-expired": quoteExpired,
+  // P1 refonte 2026-06-21 — cadrage / booking / devis (templates pleins)
+  "cadrage-j1-reminder": { subject: cadrageJ1ReminderSubject, component: CadrageJ1ReminderEmail },
+  "cadrage-h2-reminder": { subject: cadrageH2ReminderSubject, component: CadrageH2ReminderEmail },
+  "booking-rescheduled-by-admin": {
+    subject: bookingRescheduledByAdminSubject,
+    component: BookingRescheduledByAdminEmail,
+  },
+  "booking-j1-reminder": { subject: bookingJ1ReminderSubject, component: BookingJ1ReminderEmail },
+  "booking-completed-thanks": {
+    subject: bookingCompletedThanksSubject,
+    component: BookingCompletedThanksEmail,
+  },
+  "quote-reminder": { subject: quoteReminderSubject, component: QuoteReminderEmail },
+  "quote-expired": { subject: quoteExpiredSubject, component: QuoteExpiredEmail },
 };
 
 export interface RenderedEmail {
