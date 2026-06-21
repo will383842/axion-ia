@@ -19,6 +19,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect } from "next/navigation";
+import Image from "next/image";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -43,6 +44,7 @@ import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitiz
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
 import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { ArticleSources } from "@/components/content-gen/ArticleSources";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -350,6 +352,28 @@ export default async function NewsArticlePage({ params }: Props) {
           ) : null}
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — Héros (avant : aucune image sur les
+          actualités). Image Unsplash de l'Article, LCP priority, ratio réservé
+          (CLS=0), crédit Unsplash. Rendu seulement si featuredImage présent. */}
+      {article.featuredImage ? (
+        <Container className="max-w-4xl">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+            <Image
+              src={article.featuredImage}
+              alt={article.featuredImageAlt ?? t.title}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              className="object-cover"
+            />
+          </div>
+          <UnsplashCredit
+            photographerName={article.featuredImagePhotographerName}
+            photographerUrl={article.featuredImagePhotographerUrl}
+          />
+        </Container>
+      ) : null}
 
       {tldrText ? (
         <Section>
