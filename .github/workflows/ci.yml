@@ -170,6 +170,20 @@ jobs:
           df -h /
       - name: Install Playwright browsers (avant build pour chrome dep)
         run: pnpm exec playwright install --with-deps chromium
+      # ENOSPC fix 2026-06-21 : la sortie SSG (~18k pages) + la copie `.next/standalone`
+      # (qui DUPLIQUE `.next/server`) dépassent les ~15 GB libérés sur `/` (cause du
+      # « ENOSPC: no space left on device » à la copie standalone, build pourtant
+      # « ✓ Compiled successfully »). On relocalise `.next` sur le 2e disque `/mnt`
+      # (~65 GB libres) — symlink transparent pour `next build`. Même philosophie que
+      # le data-root `/mnt` de deploy-coolify.yml.
+      - name: Relocate .next to /mnt (ENOSPC headroom)
+        run: |
+          df -h / /mnt
+          sudo mkdir -p /mnt/axion-next
+          sudo chown "$(id -u):$(id -g)" /mnt/axion-next
+          rm -rf .next
+          ln -s /mnt/axion-next .next
+          df -h / /mnt
       - name: Build
         # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
         # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
@@ -288,6 +302,21 @@ jobs:
           sudo apt-get clean || true
           docker image prune -af || true
           df -h /
+
+      # ENOSPC fix 2026-06-21 : le `docker build` (compile + 18k pages SSG + copie
+      # standalone + export image) sature `/` malgré le free-disk → on déplace le
+      # data-root Docker sur le 2e disque `/mnt` (~65 GB), comme deploy-coolify.yml.
+      # DOIT précéder tout `docker run`/`docker build` (sinon images sur l'ancien root).
+      - name: Relocate Docker data-root to /mnt (ENOSPC headroom)
+        run: |
+          df -h / /mnt
+          sudo systemctl stop docker docker.socket || true
+          sudo mkdir -p /mnt/docker
+          echo '{"data-root":"/mnt/docker"}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl start docker
+          sleep 3
+          docker info | grep -i "docker root dir" || true
+          df -h / /mnt
 
       - name: Generate ephemeral test secrets
         id: secrets
