@@ -80,21 +80,30 @@ import { FormateurMagicLinkEmail, formateurMagicLinkSubject } from "./formateur-
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 // P1 refonte 2026-06-21 — templates « pleins » (sortis du stub-factory)
 import { DisputedNoticeEmail, disputedNoticeSubject } from "./disputed-notice";
-// Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (en cours de refonte P1)
+import { PaymentReminderJ7Email, paymentReminderJ7Subject } from "./payment-reminder-j7";
+import { PaymentOverdueJ1Email, paymentOverdueJ1Subject } from "./payment-overdue-j1";
+import { PaymentOverdueJ15Email, paymentOverdueJ15Subject } from "./payment-overdue-j15";
+import { PaymentOverdueJ30Email, paymentOverdueJ30Subject } from "./payment-overdue-j30";
 import {
-  contractVersionUpdated,
-  contractSent,
-  contractSigned,
-  contractRefused,
-  contractReminder,
+  InstallmentOverdueSoftEmail,
+  installmentOverdueSoftSubject,
+} from "./installment-overdue-soft";
+import {
+  InstallmentOverdueFirmEmail,
+  installmentOverdueFirmSubject,
+} from "./installment-overdue-firm";
+import { ContractSentEmail, contractSentSubject } from "./contract-sent";
+import { ContractSignedEmail, contractSignedSubject } from "./contract-signed";
+import { ContractRefusedEmail, contractRefusedSubject } from "./contract-refused";
+import { ContractReminderEmail, contractReminderSubject } from "./contract-reminder";
+import {
+  ContractVersionUpdatedEmail,
+  contractVersionUpdatedSubject,
+} from "./contract-version-updated";
+// Stubs minimaux restants (P2 — cadrage, booking, devis)
+import {
   cadrageJ1Reminder,
   cadrageH2Reminder,
-  paymentReminderJ7,
-  paymentOverdueJ1,
-  paymentOverdueJ15,
-  paymentOverdueJ30,
-  installmentOverdueSoft,
-  installmentOverdueFirm,
   bookingRescheduledByAdmin,
   bookingJ1Reminder,
   bookingCompletedThanks,
@@ -259,24 +268,37 @@ const TEMPLATES: TemplateMap = {
     subject: ressourcesMagicLinkSubject,
     component: RessourcesMagicLinkEmail,
   },
-  // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
-  "contract-version-updated": contractVersionUpdated,
-  "contract-sent": contractSent,
-  "contract-signed": contractSigned,
-  "contract-refused": contractRefused,
-  "contract-reminder": contractReminder,
-  "cadrage-j1-reminder": cadrageJ1Reminder,
-  "cadrage-h2-reminder": cadrageH2Reminder,
-  "payment-reminder-j7": paymentReminderJ7,
-  "payment-overdue-j1": paymentOverdueJ1,
-  "payment-overdue-j15": paymentOverdueJ15,
-  "payment-overdue-j30": paymentOverdueJ30,
-  "installment-overdue-soft": installmentOverdueSoft,
-  "installment-overdue-firm": installmentOverdueFirm,
+  // P1 refonte 2026-06-21 — templates pleins (relation-client, FR+EN)
+  "contract-version-updated": {
+    subject: contractVersionUpdatedSubject,
+    component: ContractVersionUpdatedEmail,
+  },
+  "contract-sent": { subject: contractSentSubject, component: ContractSentEmail },
+  "contract-signed": { subject: contractSignedSubject, component: ContractSignedEmail },
+  "contract-refused": { subject: contractRefusedSubject, component: ContractRefusedEmail },
+  "contract-reminder": { subject: contractReminderSubject, component: ContractReminderEmail },
+  "payment-reminder-j7": {
+    subject: paymentReminderJ7Subject,
+    component: PaymentReminderJ7Email,
+  },
+  "payment-overdue-j1": { subject: paymentOverdueJ1Subject, component: PaymentOverdueJ1Email },
+  "payment-overdue-j15": { subject: paymentOverdueJ15Subject, component: PaymentOverdueJ15Email },
+  "payment-overdue-j30": { subject: paymentOverdueJ30Subject, component: PaymentOverdueJ30Email },
+  "installment-overdue-soft": {
+    subject: installmentOverdueSoftSubject,
+    component: InstallmentOverdueSoftEmail,
+  },
+  "installment-overdue-firm": {
+    subject: installmentOverdueFirmSubject,
+    component: InstallmentOverdueFirmEmail,
+  },
   "disputed-notice": {
     subject: disputedNoticeSubject,
     component: DisputedNoticeEmail,
   },
+  // Stubs restants (P2 — cadrage, booking, devis)
+  "cadrage-j1-reminder": cadrageJ1Reminder,
+  "cadrage-h2-reminder": cadrageH2Reminder,
   "booking-rescheduled-by-admin": bookingRescheduledByAdmin,
   "booking-j1-reminder": bookingJ1Reminder,
   "booking-completed-thanks": bookingCompletedThanks,
