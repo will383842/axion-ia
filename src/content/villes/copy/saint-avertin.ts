@@ -1,71 +1,71 @@
-﻿// AUTO-GENERATED 2026-05-27 â€” T4 batch #21 Claude Code (Will).
-// Saint-Avertin (37, Indre-et-Loire) â€” agglo Tours sud, bords Cher, rÃ©sidentiel/tertiaire.
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #21 Claude Code (Will).
+// Saint-Avertin (37, Indre-et-Loire) — agglo Tours sud, bords Cher, résidentiel/tertiaire.
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_AVERTIN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Avertin (37), commune rÃ©sidentielle et tertiaire au sud de Tours sur les bords du Cher, bÃ©nÃ©ficie d'un cadre de vie attractif dans Tours MÃ©tropole. Zones d'activitÃ©s tertiaires, parc CangÃ©. Tissu PME tertiaires conseil, TPE artisans, commerces, professions libÃ©rales, services Ã  la personne. Axion-IA y intervient pour tous types d'activitÃ©s.",
+    "Saint-Avertin (37), commune résidentielle et tertiaire au sud de Tours sur les bords du Cher, bénéficie d'un cadre de vie attractif dans Tours Métropole. Zones d'activités tertiaires, parc Cangé. Tissu PME tertiaires conseil, TPE artisans, commerces, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Saint-Avertin (37), commune rÃ©sidentielle et tertiaire au sud de Tours sur les bords du Cher, bÃ©nÃ©ficie d'un cadre de vie attractif dans Tours MÃ©tropole. Zones d'activitÃ©s tertiaires, parc CangÃ©. Tissu PME tertiaires conseil, TPE artisans, commerces, professions libÃ©rales, services Ã  la personne. Axion-IA y intervient pour tous types d'activitÃ©s.",
+    "Saint-Avertin (37), commune résidentielle et tertiaire au sud de Tours sur les bords du Cher, bénéficie d'un cadre de vie attractif dans Tours Métropole. Zones d'activités tertiaires, parc Cangé. Tissu PME tertiaires conseil, TPE artisans, commerces, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient Ã  Saint-Avertin (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires et cabinets conseil, TPE artisans, professions libÃ©rales, commerces, services Ã  la personne de Tours MÃ©tropole sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Avertin (37). Nous accompagnons tous types d'activités : PME tertiaires et cabinets conseil, TPE artisans, professions libérales, commerces, services à la personne de Tours Métropole sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient Ã  Saint-Avertin (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires et cabinets conseil, TPE artisans, professions libÃ©rales, commerces, services Ã  la personne de Tours MÃ©tropole sud.",
-  seoHook: "tertiaires conseil & professions libã©rales",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Avertin (37). Nous accompagnons tous types d'activités : PME tertiaires et cabinets conseil, TPE artisans, professions libérales, commerces, services à la personne de Tours Métropole sud.",
+  seoHook: "tertiaires conseil & professions libérales",
   ecosystemFr:
-    "Saint-Avertin est une commune rÃ©sidentielle et tertiaire au sud de Tours, en bords du Cher. Zones d'activitÃ©s tertiaires, parc du chÃ¢teau de CangÃ©. Tissu PME cabinets conseil, professions libÃ©rales (santÃ©, juridique), TPE artisanat, commerces, services Ã  la personne.",
+    "Saint-Avertin est une commune résidentielle et tertiaire au sud de Tours, en bords du Cher. Zones d'activités tertiaires, parc du château de Cangé. Tissu PME cabinets conseil, professions libérales (santé, juridique), TPE artisanat, commerces, services à la personne.",
   ecosystemEn:
-    "Saint-Avertin est une commune rÃ©sidentielle et tertiaire au sud de Tours, en bords du Cher. Zones d'activitÃ©s tertiaires, parc du chÃ¢teau de CangÃ©. Tissu PME cabinets conseil, professions libÃ©rales (santÃ©, juridique), TPE artisanat, commerces, services Ã  la personne.",
+    "Saint-Avertin est une commune résidentielle et tertiaire au sud de Tours, en bords du Cher. Zones d'activités tertiaires, parc du château de Cangé. Tissu PME cabinets conseil, professions libérales (santé, juridique), TPE artisanat, commerces, services à la personne.",
   distancesFr:
-    "Tours centre Ã  10 min. Gare TGV Saint-Pierre-des-Corps Ã  15 min. AÃ©roport Tours Val de Loire Ã  20 min. Chambray-lÃ¨s-Tours Ã  5 min. Paris Ã  1h15 TGV.",
+    "Tours centre à 10 min. Gare TGV Saint-Pierre-des-Corps à 15 min. Aéroport Tours Val de Loire à 20 min. Chambray-lès-Tours à 5 min. Paris à 1h15 TGV.",
   distancesEn:
-    "Tours centre Ã  10 min. Gare TGV Saint-Pierre-des-Corps Ã  15 min. AÃ©roport Tours Val de Loire Ã  20 min. Chambray-lÃ¨s-Tours Ã  5 min. Paris Ã  1h15 TGV.",
+    "Tours centre à 10 min. Gare TGV Saint-Pierre-des-Corps à 15 min. Aéroport Tours Val de Loire à 20 min. Chambray-lès-Tours à 5 min. Paris à 1h15 TGV.",
   topSectorsNaf: [
     "PME tertiaires conseil",
-    "Professions libÃ©rales (santÃ©, juridique)",
+    "Professions libérales (santé, juridique)",
     "TPE artisanat BTP",
-    "Commerce de proximitÃ©",
-    "Services Ã  la personne",
+    "Commerce de proximité",
+    "Services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Ã  Saint-Avertin : diagnostic adaptÃ© aux PME tertiaires conseil, professions libÃ©rales santÃ©/juridique, TPE artisans, commerces Tours sud. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
-      en: "Audit IA Ã  Saint-Avertin : diagnostic adaptÃ© aux PME tertiaires conseil, professions libÃ©rales santÃ©/juridique, TPE artisans, commerces Tours sud. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      fr: "Audit IA à Saint-Avertin : diagnostic adapté aux PME tertiaires conseil, professions libérales santé/juridique, TPE artisans, commerces Tours sud. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Avertin : diagnostic adapté aux PME tertiaires conseil, professions libérales santé/juridique, TPE artisans, commerces Tours sud. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site Ã  Saint-Avertin : formats adaptÃ©s aux cabinets conseil, professions libÃ©rales, artisanat, commerce. Vos Ã©quipes repartent autonomes.",
-      en: "Interventions IA sur site Ã  Saint-Avertin : formats adaptÃ©s aux cabinets conseil, professions libÃ©rales, artisanat, commerce. Vos Ã©quipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Avertin : formats adaptés aux cabinets conseil, professions libérales, artisanat, commerce. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Saint-Avertin : formats adaptés aux cabinets conseil, professions libérales, artisanat, commerce. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "ImplÃ©mentation IA Ã  Saint-Avertin : automatisation CRM cabinets conseil, gestion rendez-vous professions libÃ©rales, classification documents juridiques/mÃ©dicaux, agents conversationnels commerces.",
-      en: "ImplÃ©mentation IA Ã  Saint-Avertin : automatisation CRM cabinets conseil, gestion rendez-vous professions libÃ©rales, classification documents juridiques/mÃ©dicaux, agents conversationnels commerces.",
+      fr: "Implémentation IA à Saint-Avertin : automatisation CRM cabinets conseil, gestion rendez-vous professions libérales, classification documents juridiques/médicaux, agents conversationnels commerces.",
+      en: "Implémentation IA à Saint-Avertin : automatisation CRM cabinets conseil, gestion rendez-vous professions libérales, classification documents juridiques/médicaux, agents conversationnels commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 Ã  Saint-Avertin : sessions dans votre cabinet, bureau ou en visio. PME conseil, professions libÃ©rales, commerÃ§ants, gÃ©rants TPE/PME de Tours MÃ©tropole sud.",
-      en: "Coaching 1-to-1 Ã  Saint-Avertin : sessions dans votre cabinet, bureau ou en visio. PME conseil, professions libÃ©rales, commerÃ§ants, gÃ©rants TPE/PME de Tours MÃ©tropole sud.",
+      fr: "Coaching 1-to-1 à Saint-Avertin : sessions dans votre cabinet, bureau ou en visio. PME conseil, professions libérales, commerçants, gérants TPE/PME de Tours Métropole sud.",
+      en: "Coaching 1-to-1 à Saint-Avertin : sessions dans votre cabinet, bureau ou en visio. PME conseil, professions libérales, commerçants, gérants TPE/PME de Tours Métropole sud.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il Ã  Saint-Avertin et Tours sud ?",
-      a: "Oui, Axion-IA intervient Ã  Saint-Avertin et tout le sud de Tours MÃ©tropole (Chambray-lÃ¨s-Tours, LarÃ§ay, VÃ©retz). Tours centre Ã  10 min.",
+      q: "Axion-IA intervient-il à Saint-Avertin et Tours sud ?",
+      a: "Oui, Axion-IA intervient à Saint-Avertin et tout le sud de Tours Métropole (Chambray-lès-Tours, Larçay, Véretz). Tours centre à 10 min.",
     },
     {
-      q: "Travaillez-vous avec les cabinets conseil et professions libÃ©rales ?",
-      a: "Oui, automatisation CRM, classification documents juridiques/mÃ©dicaux, gestion rendez-vous, optimisation processus cabinet. Audit sur place 1 190 â‚¬ HT.",
+      q: "Travaillez-vous avec les cabinets conseil et professions libérales ?",
+      a: "Oui, automatisation CRM, classification documents juridiques/médicaux, gestion rendez-vous, optimisation processus cabinet. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Saint-Avertin ?",
-      a: "Oui, automatisation devis/facturation, planification chantiers, gestion clients, suivi stocks. Intervention 1 journÃ©e formation sur site.",
+      a: "Oui, automatisation devis/facturation, planification chantiers, gestion clients, suivi stocks. Intervention 1 journée formation sur site.",
     },
     {
-      q: "Quels services pour les commerces de proximitÃ© ?",
-      a: "Audit sur place 1 190 â‚¬ HT, coaching 1-to-1 990 â‚¬ HT. Agents conversationnels, gestion stocks, fidÃ©lisation clients, automatisation commandes.",
+      q: "Quels services pour les commerces de proximité ?",
+      a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Agents conversationnels, gestion stocks, fidélisation clients, automatisation commandes.",
     },
     {
-      q: "Comment accÃ©der Ã  Saint-Avertin depuis Paris ?",
-      a: "Paris Ã  1h15 TGV (gare Saint-Pierre-des-Corps), puis 15 min. Consultants sur site Tours MÃ©tropole. Frais de dÃ©placement en sus.",
+      q: "Comment accéder à Saint-Avertin depuis Paris ?",
+      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 15 min. Consultants sur site Tours Métropole. Frais de déplacement en sus.",
     },
   ],
 };
