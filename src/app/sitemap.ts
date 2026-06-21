@@ -44,6 +44,10 @@ import { PRESS_RELEASES } from "@/content/press";
 // (afficher Qualiopi/CPF/OPCO avant certification est illégal — cf. flag.ts).
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { FORMATION_DUREES_META } from "@/content/formations/catalog-v2-meta";
+// Phase 3 SEO secteurs (2026-06-21) — hub /secteurs + 10 piliers + 50 croisées.
+// Contenu unique par combo (pain-matrix 50/50) → indexable, anti-doorway.
+import { CLIENT_SECTORS } from "@/content/sectors";
+import { SERVICE_DEFS } from "@/content/knowledge/services";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -132,6 +136,8 @@ type StaticSitemapId =
   | "services-villes-sites-web-augmentes"
   // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
   // sub-sitemap dédié pour les 11 pages détail outils `/stack-ia/[tool]`.
+  // Phase 3 SEO secteurs (2026-06-21) — hub + 10 piliers + 50 croisées = 61 URLs.
+  | "secteurs"
   // ~22 URLs V1 (11 outils × 2 locales). Sub-sitemap propre pour isoler le
   // diagnostic Product JSON-LD côté Search Console. Scale prête pour +5
   // outils/trimestre sans refactor.
@@ -366,6 +372,8 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
     // ~22 URLs V1 (11 outils × 2 locales). Statique.
     "stack-ia-tools",
+    // Phase 3 SEO secteurs (2026-06-21) — hub + 10 piliers + 50 croisées.
+    "secteurs",
   ];
 
   // Catalogue Formations V2 — PUBLIC/live (décision Will 2026-06-11) : le
@@ -500,6 +508,9 @@ export default async function sitemap(props: {
     // Sprint S+4-B City Domination 2026-05-18 — pages détail outils stack-ia.
     case "stack-ia-tools":
       return filterEnIfDisabled(buildStackIaToolsSitemap(EDITORIAL_BASELINE));
+    // Phase 3 SEO secteurs (2026-06-21).
+    case "secteurs":
+      return filterEnIfDisabled(buildSecteursSitemap(EDITORIAL_BASELINE));
     // Catalogue Formations V2 (Qualiopi, déploiement phasé) — GATÉ par flag.
     case "formations":
       return filterEnIfDisabled(buildFormationsSitemap(EDITORIAL_BASELINE));
@@ -855,6 +866,38 @@ function buildComparaisonsSitemap(now: Date): MetadataRoute.Sitemap {
  * TODO Vague 2 : passer à `max(publishedAt)` DB des guides (signal de fraîcheur
  * réel quand un nouveau guide est publié) — nécessite de rendre ce builder async.
  */
+// Sub-sitemap `secteurs` — Phase 3 SEO (2026-06-21). 61 URLs : hub /secteurs +
+// 10 piliers /secteurs/[secteur] + 50 croisées /secteurs/[secteur]/[activite].
+// Anti-doorway HCU : chaque page porte du contenu pain-matrix UNIQUE par combo
+// (hand-authored 50/50), pas un gabarit ville-swap. `lastModified = BUILD/EDITORIAL`
+// (contenu éditorial stable). Priorité hub 0.8 > pilier 0.7 > croisée 0.6.
+function buildSecteursSitemap(now: Date): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+  const push = (path: string, priority: number) => {
+    for (const locale of effectiveLocales) {
+      const frUrl = `${SITE_URL}/fr${path}`;
+      const url = `${SITE_URL}/${locale}${path}`;
+      entries.push({
+        url,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority,
+        alternates: { languages: { fr: frUrl, "x-default": frUrl } },
+      });
+    }
+  };
+  // Hub
+  push("/secteurs", 0.8);
+  // 10 piliers + 50 croisées
+  for (const sector of CLIENT_SECTORS) {
+    push(`/secteurs/${sector.slug}`, 0.7);
+    for (const svc of SERVICE_DEFS) {
+      push(`/secteurs/${sector.slug}/${svc.slug}`, 0.6);
+    }
+  }
+  return entries;
+}
+
 function buildGuidesHubSitemap(now: Date): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   const hubKey = "/guides" as const;
