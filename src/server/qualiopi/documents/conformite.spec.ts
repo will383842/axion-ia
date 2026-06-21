@@ -89,9 +89,7 @@ describe("assertOrganismeComplet", () => {
   });
 
   it("identité vide → lève OrganismeIncompletError pour une facture", () => {
-    expect(() => assertOrganismeComplet(IDENTITE_VIDE, "facture")).toThrow(
-      OrganismeIncompletError,
-    );
+    expect(() => assertOrganismeComplet(IDENTITE_VIDE, "facture")).toThrow(OrganismeIncompletError);
   });
 
   it("l'erreur porte le type et la liste des champs manquants", () => {

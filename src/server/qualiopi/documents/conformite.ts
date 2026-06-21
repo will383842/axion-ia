@@ -55,15 +55,10 @@ function estRenseigne(valeur: string | undefined): boolean {
  * Retourne la liste des champs obligatoires MANQUANTS pour ce type de document
  * (libellés humains). Vide = conforme. Ne lève jamais.
  */
-export function champsIdentiteManquants(
-  identite: OrganismeIdentite,
-  type: DocumentType,
-): string[] {
+export function champsIdentiteManquants(identite: OrganismeIdentite, type: DocumentType): string[] {
   const requis = CHAMPS_OBLIGATOIRES[type];
   if (!requis) return [];
-  return requis
-    .filter((champ) => !estRenseigne(identite[champ]))
-    .map((champ) => LABELS[champ]);
+  return requis.filter((champ) => !estRenseigne(identite[champ])).map((champ) => LABELS[champ]);
 }
 
 /** `true` si le type de document est soumis au garde-fou bloquant. */
@@ -94,10 +89,7 @@ export class OrganismeIncompletError extends Error {
  * document à valeur juridique/fiscale (facture, convention, tripartite,
  * contrat). No-op pour les autres types. À appeler AVANT le rendu PDF.
  */
-export function assertOrganismeComplet(
-  identite: OrganismeIdentite,
-  type: DocumentType,
-): void {
+export function assertOrganismeComplet(identite: OrganismeIdentite, type: DocumentType): void {
   const manquants = champsIdentiteManquants(identite, type);
   if (manquants.length > 0) {
     throw new OrganismeIncompletError(type, manquants);

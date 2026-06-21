@@ -32,7 +32,12 @@ const IDENTITE: OrganismeIdentite = {
 
 const CONVENTION: ConventionData = {
   numero: "AXI-CONV-2026-001",
-  client: { raisonSociale: "Acme SAS", siret: "98765432100011", adresse: "10 av.", contact: "Jean" },
+  client: {
+    raisonSociale: "Acme SAS",
+    siret: "98765432100011",
+    adresse: "10 av.",
+    contact: "Jean",
+  },
   intitule: "IA appliquée",
   objectifs: ["Objectif A", "Objectif B"],
   publicVise: "Dirigeants",
@@ -62,7 +67,12 @@ const CONTRAT: ContratFormationData = {
 
 const TRIPARTITE: ConventionTripartiteData = {
   numero: "AXI-CONV-2026-003",
-  client: { raisonSociale: "Acme SAS", siret: "98765432100011", adresse: "10 av.", contact: "Jean" },
+  client: {
+    raisonSociale: "Acme SAS",
+    siret: "98765432100011",
+    adresse: "10 av.",
+    contact: "Jean",
+  },
   opco: { nom: "OPCO Atlas", numeroPriseEnCharge: "ATLAS-123" },
   intitule: "IA appliquée",
   objectifs: ["Objectif A"],

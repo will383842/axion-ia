@@ -344,10 +344,7 @@ export function QualiopiPage({
     ],
     "  ·  ",
   );
-  const footerContact = joinDefined(
-    [identite.email, identite.telephone, identite.site],
-    "  ·  ",
-  );
+  const footerContact = joinDefined([identite.email, identite.telephone, identite.site], "  ·  ");
 
   return (
     <Page size="A4" style={pdfStyles.page}>
@@ -485,11 +482,7 @@ const signatureLocal = StyleSheet.create({
  * `signatureZone`/`signatureBox`/`signatureLabel`/`signatureLu` redéfinis
  * dans chaque template. Les encadrés s'étalent uniformément.
  */
-export function SignatureZone({
-  parties,
-  intro,
-  faitLe,
-}: SignatureZoneProps): React.ReactElement {
+export function SignatureZone({ parties, intro, faitLe }: SignatureZoneProps): React.ReactElement {
   return (
     <View wrap={false}>
       {intro ? <Text style={signatureLocal.intro}>{intro}</Text> : null}
@@ -600,7 +593,7 @@ export function DataTable({
                   {row[c.key]}
                 </Text>
               ) : (
-                (row[c.key] as React.ReactNode) ?? <Text style={tableLocal.dataCell}> </Text>
+                ((row[c.key] as React.ReactNode) ?? <Text style={tableLocal.dataCell}> </Text>)
               )}
             </View>
           ))}
@@ -632,14 +625,26 @@ interface CalloutTheme {
 function calloutTheme(variant: CalloutVariant): CalloutTheme {
   switch (variant) {
     case "info":
-      return { bg: brandColor("primary-soft"), border: brandColor("primary"), title: brandColor("primary-hover") };
+      return {
+        bg: brandColor("primary-soft"),
+        border: brandColor("primary"),
+        title: brandColor("primary-hover"),
+      };
     case "warning":
-      return { bg: brandColor("terracotta-soft"), border: brandColor("terracotta"), title: brandColor("terracotta-deep") };
+      return {
+        bg: brandColor("terracotta-soft"),
+        border: brandColor("terracotta"),
+        title: brandColor("terracotta-deep"),
+      };
     case "success":
       return { bg: brandColor("sage-soft"), border: brandColor("sage"), title: brandColor("sage") };
     case "legal":
     default:
-      return { bg: brandColor("bg"), border: brandColor("border-strong"), title: brandColor("mocha") };
+      return {
+        bg: brandColor("bg"),
+        border: brandColor("border-strong"),
+        title: brandColor("mocha"),
+      };
   }
 }
 

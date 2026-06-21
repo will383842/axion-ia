@@ -84,9 +84,7 @@ const CERTIFICAT: CertificatRealisationData = {
 };
 
 describe("AttestationPdf — contenu", () => {
-  const text = collectPdfTextNormalized(
-    React.createElement(AttestationPdf, { data: ATTESTATION }),
-  );
+  const text = collectPdfTextNormalized(React.createElement(AttestationPdf, { data: ATTESTATION }));
   it("porte la mention L.6353-1 / D.6353-1", () => {
     expect(text).toContain(LEGAL_MENTIONS.attestation);
   });

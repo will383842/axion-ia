@@ -141,8 +141,7 @@ export async function genererFactureParInscriptionAction(
   // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
   const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
-  const tauxStandard =
-    (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   let created: { id: string; numero: string };

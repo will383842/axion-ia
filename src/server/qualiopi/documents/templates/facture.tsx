@@ -291,9 +291,7 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           {/* Mention de TVA selon le régime (exonération 261-4-4° ou franchise
               293 B). En régime assujetti : pas de mention d'exonération, la TVA
               figure dans les totaux. */}
-          {mentionRegimeTva ? (
-            <Text style={styles.legalLine}>{mentionRegimeTva}</Text>
-          ) : null}
+          {mentionRegimeTva ? <Text style={styles.legalLine}>{mentionRegimeTva}</Text> : null}
           <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
           <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
           <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>

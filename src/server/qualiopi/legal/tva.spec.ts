@@ -75,10 +75,7 @@ describe("computeTotauxFacture", () => {
   });
 
   it("facture MIXTE : formation 0 % + conseil 20 % → 2 lignes de ventilation", () => {
-    const t = computeTotauxFacture(
-      [ligne(200000, 1, 0), ligne(100000, 1, 20)],
-      "exoneration_261",
-    );
+    const t = computeTotauxFacture([ligne(200000, 1, 0), ligne(100000, 1, 20)], "exoneration_261");
     expect(t.totalHtCents).toBe(300000);
     // 0 % sur 2000 € + 20 % sur 1000 € = 200 € de TVA
     expect(t.totalTvaCents).toBe(20000);
