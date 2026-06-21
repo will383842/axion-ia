@@ -78,7 +78,9 @@ import {
 } from "./documents-nouvelle-version";
 import { FormateurMagicLinkEmail, formateurMagicLinkSubject } from "./formateur-magic-link";
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
-// Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
+// P1 refonte 2026-06-21 — templates « pleins » (sortis du stub-factory)
+import { DisputedNoticeEmail, disputedNoticeSubject } from "./disputed-notice";
+// Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (en cours de refonte P1)
 import {
   contractVersionUpdated,
   contractSent,
@@ -93,7 +95,6 @@ import {
   paymentOverdueJ30,
   installmentOverdueSoft,
   installmentOverdueFirm,
-  disputedNotice,
   bookingRescheduledByAdmin,
   bookingJ1Reminder,
   bookingCompletedThanks,
@@ -272,7 +273,10 @@ const TEMPLATES: TemplateMap = {
   "payment-overdue-j30": paymentOverdueJ30,
   "installment-overdue-soft": installmentOverdueSoft,
   "installment-overdue-firm": installmentOverdueFirm,
-  "disputed-notice": disputedNotice,
+  "disputed-notice": {
+    subject: disputedNoticeSubject,
+    component: DisputedNoticeEmail,
+  },
   "booking-rescheduled-by-admin": bookingRescheduledByAdmin,
   "booking-j1-reminder": bookingJ1Reminder,
   "booking-completed-thanks": bookingCompletedThanks,

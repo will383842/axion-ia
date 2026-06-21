@@ -176,12 +176,7 @@ export const installmentOverdueFirm = makeStub(
   "Your installment remains unpaid. Without prompt settlement, the full balance becomes immediately due.",
 );
 
-export const disputedNotice = makeStub(
-  "Notification de contentieux — Axion-IA",
-  "Dispute notice — Axion-IA",
-  "Votre dossier a été basculé en contentieux suite à de multiples relances sans réponse. Notre conseil juridique vous contactera.",
-  "Your file has been escalated to dispute following multiple unanswered reminders. Our legal counsel will reach out.",
-);
+// disputedNotice : refondu en template plein → ./disputed-notice.tsx (P1).
 
 // ────────────────────────────────────────────────────────────────────
 // Booking lifecycle (Sprint X.12 + X.13)
