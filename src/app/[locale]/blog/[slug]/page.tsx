@@ -26,6 +26,7 @@ import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
+import { getVille } from "@/content/villes";
 // VIS-01 (audit visibilité 2026-06-05) — rendu HTML sanitisé du body des
 // articles DB (bodyHtml) + injection d'ancres h2. Aligne /blog sur le chemin
 // correct déjà utilisé par /connaissances (avant : parseBody rendait le HTML
@@ -368,6 +369,15 @@ export default async function BlogArticle({ params }: Props) {
     limit: 4,
   });
 
+  // Maillage ville (2026-06-21) — lien RETOUR article → page locale, si l'article
+  // est ancré sur une ville indexable. Complète le maillage bidirectionnel (la
+  // page ville liste déjà ses articles). `getVille` donne region + nom.
+  const anchorVille = view.villeSlug ? getVille(view.villeSlug) : undefined;
+  const anchorVilleHref =
+    anchorVille && anchorVille.copy
+      ? `/implantations/${anchorVille.region}/${anchorVille.slug}`
+      : null;
+
   return (
     <>
       {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
@@ -514,6 +524,24 @@ export default async function BlogArticle({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
+      {anchorVilleHref ? (
+        <Section>
+          <Container className="max-w-3xl">
+            <p className="text-fg-muted text-sm">
+              {isFr ? "Cet article concerne " : "This article covers "}
+              <Link
+                href={anchorVilleHref as never}
+                className="text-primary font-medium hover:underline"
+              >
+                {isFr ? `l'IA à ${anchorVille?.nameFr}` : `AI in ${anchorVille?.nameFr}`}
+              </Link>
+              {isFr ? " — voir la page locale." : " — see the local page."}
+            </p>
+          </Container>
+        </Section>
+      ) : null}
 
       <Section>
         <Container className="max-w-3xl">

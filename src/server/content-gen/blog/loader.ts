@@ -36,6 +36,8 @@ export interface BlogArticleView {
   readonly category: string;
   /** Slug de la catégorie pour lier le hub `/blog/categorie/{slug}` (null si aucune). */
   readonly categorySlug: string | null;
+  /** Slug de la ville ancrée pour le lien retour vers `/implantations` (null si aucune). */
+  readonly villeSlug: string | null;
   readonly tags: ReadonlyArray<string>;
   readonly tier: "tier-1-indexable" | "tier-2-noindex-follow" | "tier-3-noindex-nofollow";
   readonly source: "db" | "fs";
@@ -73,6 +75,7 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     author: post.author,
     category: post.category,
     categorySlug: slugify(post.category),
+    villeSlug: null,
     tags: post.tags,
     tier: resolveTier(post),
     source: "fs",
@@ -167,6 +170,7 @@ export async function loadBlogArticleForView(
       // Catégorisation 2026-06-16 — catégorie réelle (dérivée du serviceSector) + tags persistés.
       category: catTags?.category?.nameFr ?? "Cas d'usage",
       categorySlug: catTags?.category?.slug ?? null,
+      villeSlug: dbArticle.mentionedCities?.[0] ?? null,
       tags: catTags?.tags.map((t) => t.tag.nameFr) ?? [],
       // VIS-02 (audit visibilité 2026-06-05) — dérive le tier RÉEL de l'Article
       // (avant : hardcodé tier-2 → un article promu tier-1 restait noindex alors
@@ -229,6 +233,7 @@ export async function loadBlogIndexForView(
     author: a.author?.name ?? "Manon",
     category: a.category?.name ?? "Cas d'usage",
     categorySlug: a.category?.slug ?? null,
+    villeSlug: null,
     tags: [],
     tier: "tier-2-noindex-follow",
     source: "db",

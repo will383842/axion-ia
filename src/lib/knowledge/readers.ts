@@ -72,6 +72,12 @@ export interface PublicEntryFacade {
    */
   readonly featuredImagePhotographerName?: string | null;
   readonly featuredImagePhotographerUrl?: string | null;
+  /**
+   * Maillage ville (2026-06-21) — villes mentionnées de l'Article content-gen,
+   * pour le lien retour article → page /implantations. Optionnel : absent pour
+   * KnowledgeEntry et les contenus non ancrés sur une ville.
+   */
+  readonly mentionedCities?: readonly string[];
 }
 
 // ============================================================
@@ -471,6 +477,9 @@ export async function findArticleBySlug(
       // Unsplash hero (Option A 2026-06-16) — attribution CGU §6 (null = image-bank).
       featuredImagePhotographerName: translation.article.featuredImagePhotographerName ?? null,
       featuredImagePhotographerUrl: translation.article.featuredImagePhotographerUrl ?? null,
+      // Maillage ville (2026-06-21) — villes mentionnées (inclut la ville ancrée
+      // via forceInclude au publish) pour le lien retour article → /implantations.
+      mentionedCities: translation.article.mentionedCities ?? [],
     };
   }
 
