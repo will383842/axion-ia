@@ -35,9 +35,59 @@ function adminBase(): string {
 // Note : les constantes (WIZARD_CONTENT_TYPES, WIZARD_SECTIONS, WizardContentType)
 // doivent être importées DIRECTEMENT depuis "./campaign-wizard-constants" — un
 // fichier "use server" ne peut exporter que des fonctions async (contrainte Next 16).
-import { WIZARD_CONTENT_TYPES } from "./campaign-wizard-constants";
+import {
+  WIZARD_CONTENT_TYPES,
+  WIZARD_SERVICE_SECTORS,
+  WIZARD_SEARCH_INTENTS,
+} from "./campaign-wizard-constants";
+import { CLIENT_SECTOR_SLUGS } from "@/content/sectors";
 
 // ─── Zod schema (validation Step 4 submit) ──────────────────────────────────
+
+const SERVICE_SECTOR_VALUES = WIZARD_SERVICE_SECTORS.map((s) => s.value) as unknown as [
+  string,
+  ...string[],
+];
+const SEARCH_INTENT_VALUES = WIZARD_SEARCH_INTENTS.map((s) => s.value) as unknown as [
+  string,
+  ...string[],
+];
+const CLIENT_SECTOR_VALUES = [...CLIENT_SECTOR_SLUGS] as unknown as [string, ...string[]];
+// Clé audienceMix « SIZE:ORG » (axe 5). SIZE ∈ enum CompanySize, ORG ∈ enum
+// OrganisationType (schema.prisma) — validés strictement : un ORG hors enum
+// ferait échouer l'insert du job en silence (cast non vérifié côté orchestrateur).
+const COMPANY_SIZE_VALUES = ["TPE", "PME", "ETI", "GRANDE_ENTREPRISE"] as const;
+const ORGANISATION_TYPE_VALUES = [
+  "entreprise_privee",
+  "ecole",
+  "universite",
+  "mairie",
+  "collectivite",
+  "hopital",
+  "association",
+  "comite_entreprise",
+  "opco",
+  "carsat",
+  "etablissement_public",
+  "autre",
+] as const;
+const COMPANY_SIZE_SET: ReadonlySet<string> = new Set(COMPANY_SIZE_VALUES);
+const ORG_TYPE_SET: ReadonlySet<string> = new Set(ORGANISATION_TYPE_VALUES);
+function isValidAudienceKey(key: string): boolean {
+  const [size, org, extra] = key.split(":");
+  return (
+    extra === undefined && !!size && !!org && COMPANY_SIZE_SET.has(size) && ORG_TYPE_SET.has(org)
+  );
+}
+
+/** Record pondéré à vocabulaire fermé : ≥ 1 pondération > 0 (proportions). */
+function weightedEnumRecord(values: [string, ...string[]]) {
+  return z
+    .record(z.enum(values), z.number().int().min(0).max(1000))
+    .refine((w) => Object.values(w).reduce((s, v) => s + (v ?? 0), 0) > 0, {
+      message: "au moins une pondération > 0",
+    });
+}
 
 const WizardInputSchema = z
   .object({
@@ -61,6 +111,29 @@ const WizardInputSchema = z
       .refine((w) => Object.values(w).reduce((s, v) => s + v, 0) > 0, {
         message: "Au moins un slider doit être > 0",
       }),
+    // ── Axes multi-axes (tous optionnels → rétro-compat) ─────────────────────
+    // Axe 2 — % activité (sinon singleton serviceSector). Proportions (sampleWeighted
+    // normalise par la somme), pas besoin de = 100.
+    serviceSectorWeights: weightedEnumRecord(SERVICE_SECTOR_VALUES).optional(),
+    // Axe 3 — % secteur client (santé/BTP/juridique…). Réveille la pain-matrix.
+    targetSecteurWeights: weightedEnumRecord(CLIENT_SECTOR_VALUES).optional(),
+    // Axe 4 — % intention de recherche (sinon fallback global console).
+    searchIntentMix: weightedEnumRecord(SEARCH_INTENT_VALUES).optional(),
+    // Axe 5 — % audience « SIZE:ORG » (sinon { default: 100 }).
+    audienceMix: z
+      .record(z.string(), z.number().int().min(0).max(1000))
+      .refine((w) => Object.keys(w).every(isValidAudienceKey), {
+        message: "clé audienceMix invalide (attendu « SIZE:ORG » avec SIZE/ORG des enums)",
+      })
+      .refine((w) => Object.values(w).reduce((s, v) => s + (v ?? 0), 0) > 0, {
+        message: "au moins une audience > 0",
+      })
+      .optional(),
+    // Axe 6 — ville & alentours.
+    villeSurroundingMode: z.enum(["none", "radius", "same_departement"]).default("none"),
+    villeSurroundingRadiusKm: z.number().int().min(5).max(200).optional(),
+    // Axe 8 — durée fixe ou illimitée.
+    durationMode: z.enum(["fixed", "unlimited"]).default("fixed"),
     action: z.enum(["draft", "launch"]),
   })
   .strict()
@@ -102,7 +175,11 @@ export async function createCampaignFromWizard(rawInput: unknown): Promise<Campa
 
   try {
     const totalTargetCount = input.dailyArticles * 30;
-    const audienceMix = { default: 100 };
+    // Axe 5 — audience pilotée par la campagne si fournie, sinon défaut historique.
+    const audienceMix =
+      input.audienceMix && Object.keys(input.audienceMix).length > 0
+        ? input.audienceMix
+        : { default: 100 };
     const typeDistribution = input.contentTypeWeights as Record<string, number>;
 
     const campaign = await prisma.coverageCampaign.create({
@@ -110,6 +187,8 @@ export async function createCampaignFromWizard(rawInput: unknown): Promise<Campa
         name: input.name,
         status: input.action === "launch" ? "running" : "draft",
         scope: "ville",
+        // Activité « primaire » = fallback rétro-compat + catégorisation. L'axe 2
+        // (serviceSectorWeights) prime à l'échantillonnage par job s'il est fourni.
         serviceSector: input.serviceSector,
         totalTargetCount,
         typeDistribution: typeDistribution as never,
@@ -119,6 +198,19 @@ export async function createCampaignFromWizard(rawInput: unknown): Promise<Campa
         customVilleSlugs: input.customVilleSlugs,
         mixMode: input.mixMode,
         contentTypeWeights: input.contentTypeWeights as never,
+        // ── Axes multi-axes (conditionnels : NULL = comportement historique) ──
+        ...(input.serviceSectorWeights
+          ? { serviceSectorWeights: input.serviceSectorWeights as never }
+          : {}),
+        ...(input.targetSecteurWeights
+          ? { targetSecteurWeights: input.targetSecteurWeights as never }
+          : {}),
+        ...(input.searchIntentMix ? { searchIntentMix: input.searchIntentMix as never } : {}),
+        villeSurroundingMode: input.villeSurroundingMode,
+        ...(input.villeSurroundingRadiusKm
+          ? { villeSurroundingRadiusKm: input.villeSurroundingRadiusKm }
+          : {}),
+        durationMode: input.durationMode,
         ...(input.startDate ? { startDate: new Date(input.startDate) } : {}),
         ...(input.endDate ? { endDate: new Date(input.endDate) } : {}),
         createdBy: session.userId,
@@ -143,6 +235,17 @@ export async function createCampaignFromWizard(rawInput: unknown): Promise<Campa
         villeScopeMode: input.villeScopeMode,
         customSubsetSize: input.customVilleSlugs.length,
         mixMode: input.mixMode,
+        // Axes multi-axes activés (traçabilité).
+        serviceSectorMixKeys: input.serviceSectorWeights
+          ? Object.keys(input.serviceSectorWeights).length
+          : 0,
+        targetSecteurMixKeys: input.targetSecteurWeights
+          ? Object.keys(input.targetSecteurWeights).length
+          : 0,
+        searchIntentMixKeys: input.searchIntentMix ? Object.keys(input.searchIntentMix).length : 0,
+        audienceMixKeys: input.audienceMix ? Object.keys(input.audienceMix).length : 0,
+        villeSurroundingMode: input.villeSurroundingMode,
+        durationMode: input.durationMode,
         status: campaign.status,
       },
     });

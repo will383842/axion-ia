@@ -113,7 +113,11 @@ export async function CitiesCoverageV2({
         </span>
       ),
     },
-    { key: "ville", header: "Ville", cell: (city) => <span className="font-medium">{city.name}</span> },
+    {
+      key: "ville",
+      header: "Ville",
+      cell: (city) => <span className="font-medium">{city.name}</span>,
+    },
     {
       key: "population",
       header: "Population",
@@ -140,11 +144,7 @@ export async function CitiesCoverageV2({
       cell: (city) => (
         <AdminBadge tone={cityStateTone(city)}>
           {cityStateIcon(city)}{" "}
-          {city.isCovered
-            ? "Couverte"
-            : city.articlesCount > 0
-              ? "En cours"
-              : "À faire"}
+          {city.isCovered ? "Couverte" : city.articlesCount > 0 ? "En cours" : "À faire"}
         </AdminBadge>
       ),
     },

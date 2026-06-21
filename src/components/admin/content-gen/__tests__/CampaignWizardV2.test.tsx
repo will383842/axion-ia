@@ -49,7 +49,8 @@ describe("CampaignWizardV2 — CONTENT-GEN-UX 2026 (4 étapes)", () => {
     render(<CampaignWizardV2 adminPrefix="admin" />);
 
     expect(screen.getByText("Étape 1 — Quoi générer ?")).toBeTruthy();
-    expect(screen.getByText("Pages villes")).toBeTruthy();
+    // « Pages villes » renommé « Contenu local » (landing_ville CLI-only retiré du wizard).
+    expect(screen.getByText("Contenu local")).toBeTruthy();
     expect(screen.getByText("Articles de blog")).toBeTruthy();
     expect(screen.getByText("Guides piliers")).toBeTruthy();
     expect(screen.getByText("Q-R / FAQ")).toBeTruthy();

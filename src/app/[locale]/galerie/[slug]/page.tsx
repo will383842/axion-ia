@@ -386,7 +386,10 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
         </div>
 
         {/* Sidebar métadonnées */}
-        <aside className="flex flex-col gap-6">
+        <aside
+          className="flex flex-col gap-6"
+          aria-label={isFr ? "Métadonnées de l'image" : "Image metadata"}
+        >
           {/* Boutons téléchargement */}
           <div className="flex flex-col gap-2.5">
             <a
@@ -466,18 +469,24 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
             </section>
           )}
 
-          {/* Module / sous-module */}
+          {/* Module / sous-module — wrappé en <section> + h2 pour la cohérence
+              sémantique avec les autres blocs métadonnées (Détails/Lieu/Tags). */}
           {image.module && (
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-bg rounded-full border border-gray-200 px-3 py-1 text-[11px] text-gray-600">
-                {image.module}
-              </span>
-              {image.subModule && (
-                <span className="bg-bg rounded-full border border-gray-200 px-3 py-1 text-[11px] text-gray-500">
-                  {image.subModule}
+            <section>
+              <h2 className="mb-2 text-[11px] font-semibold tracking-widest text-gray-400 uppercase">
+                Module
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-bg rounded-full border border-gray-200 px-3 py-1 text-[11px] text-gray-600">
+                  {image.module}
                 </span>
-              )}
-            </div>
+                {image.subModule && (
+                  <span className="bg-bg rounded-full border border-gray-200 px-3 py-1 text-[11px] text-gray-500">
+                    {image.subModule}
+                  </span>
+                )}
+              </div>
+            </section>
           )}
 
           {/* Tags */}

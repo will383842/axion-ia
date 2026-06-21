@@ -35,8 +35,9 @@ interface TemplateFormProps {
   readonly errorSlot?: React.ReactNode;
 }
 
+// `landing_ville` exclu : CLI-only, hors REGISTRY content-gen (generators/index.ts)
+// → un template sur ce type ne pourrait pas être testé/généré (« No generator »).
 const CONTENT_TYPES: ReadonlyArray<ContentType> = [
-  "landing_ville",
   "blog_article",
   "blog_from_title",
   "blog_from_keywords",
@@ -85,7 +86,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
           <select
             id="contentType"
             name="contentType"
-            defaultValue={initial?.contentType ?? "landing_ville"}
+            defaultValue={initial?.contentType ?? "blog_article"}
             className="admin-input"
             required
           >

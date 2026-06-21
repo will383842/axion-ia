@@ -2,13 +2,14 @@
 // actif dérivé du pathname via headers()).
 //
 //   Documents
-//   ├── Activités  → Formations · 1-to-1 · Audit · Implémentations · Sites web
-//   └── Autres     → documents transverses (plaquette, pièces admin…)
+//   ├── Documents de prestation → Formations · 1-to-1 · Audit (kits pédagogiques)
+//   └── Boîte à documents       → Implémentations · Sites web · Autres (fichiers libres)
 //
-// Formations / 1-to-1 / Audit = kits pédagogiques Qualiopi (InterventionDocument,
-// route [famille]). Implémentations / Sites web / Autres = buckets de fichiers
-// génériques (ConsoleDocument). « Annuaire équipe » et « Importer un kit »
-// restent accessibles en actions secondaires sous les Activités.
+// Documents de prestation = kits pédagogiques Qualiopi (InterventionDocument,
+// route [famille]) : un jeu de documents structuré par prestation. « Annuaire
+// équipe » et « Importer un kit » sont des utilitaires de cette section.
+// Boîte à documents = buckets de fichiers génériques uploadés (ConsoleDocument) :
+// implémentations, sites web, et documents transverses (plaquette, pièces admin…).
 
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -35,33 +36,47 @@ export default async function DocumentsLayout({
 
   const base = `/fr/${adminPrefix}/documents-interventions`;
 
-  // Niveau 1 : Activités vs Autres.
-  const topActive = path.includes("/documents-interventions/autres") ? "autres" : "activites";
+  // Niveau 1 : « Boîte à documents » (fichiers libres) vs « Documents de prestation ».
+  const isBoite =
+    path.includes("/documents-interventions/implementations") ||
+    path.includes("/documents-interventions/sites-web") ||
+    path.includes("/documents-interventions/autres");
+  const topActive = isBoite ? "boite" : "prestation";
 
-  // Niveau 2 (sous Activités) : famille / bucket courant.
-  let subActive = "formations";
-  if (path.includes("/documents-interventions/un-a-un")) subActive = "un-a-un";
-  else if (path.includes("/documents-interventions/audit")) subActive = "audit";
-  else if (path.includes("/documents-interventions/implementations")) subActive = "implementations";
-  else if (path.includes("/documents-interventions/sites-web")) subActive = "sites-web";
-  else if (path.includes("/documents-interventions/destinataires")) subActive = "";
-  else if (path.includes("/documents-interventions/import")) subActive = "";
+  // Niveau 2 : sous-section courante.
+  let subActive = "";
+  if (isBoite) {
+    subActive = "implementations";
+    if (path.includes("/documents-interventions/sites-web")) subActive = "sites-web";
+    else if (path.includes("/documents-interventions/autres")) subActive = "autres";
+  } else {
+    subActive = "formations";
+    if (path.includes("/documents-interventions/un-a-un")) subActive = "un-a-un";
+    else if (path.includes("/documents-interventions/audit")) subActive = "audit";
+    else if (path.includes("/documents-interventions/destinataires")) subActive = "";
+    else if (path.includes("/documents-interventions/import")) subActive = "";
+  }
 
   const topTabs: AdminTabItem[] = [
-    // L'onglet « Activités » pointe vers sa 1re sous-section (Formations).
-    { id: "activites", label: "Activités", href: `${base}/formations` },
-    { id: "autres", label: "Autres", href: `${base}/autres` },
+    // Chaque onglet pointe vers sa 1re sous-section.
+    { id: "prestation", label: "Documents de prestation", href: `${base}/formations` },
+    { id: "boite", label: "Boîte à documents", href: `${base}/autres` },
   ];
 
-  const subTabs: AdminTabItem[] = [
+  const prestationSubTabs: AdminTabItem[] = [
     { id: "formations", label: "Formations", href: `${base}/formations` },
     { id: "un-a-un", label: "1-to-1", href: `${base}/un-a-un` },
     { id: "audit", label: "Audit", href: `${base}/audit` },
+  ];
+
+  const boiteSubTabs: AdminTabItem[] = [
+    { id: "autres", label: "Autres", href: `${base}/autres` },
     { id: "implementations", label: "Implémentations", href: `${base}/implementations` },
     { id: "sites-web", label: "Sites web", href: `${base}/sites-web` },
   ];
 
-  const panelId = `${topActive === "autres" ? "autres" : subActive || "activites"}-panel`;
+  const subTabs = isBoite ? boiteSubTabs : prestationSubTabs;
+  const panelId = `${subActive || topActive}-panel`;
 
   return (
     <AdminPageShell width="wide">
@@ -69,9 +84,13 @@ export default async function DocumentsLayout({
         <AdminTabs tabs={topTabs} activeTabId={topActive} ariaLabel="Documents" />
       </div>
 
-      {topActive === "activites" ? (
-        <div className="mb-[var(--space-admin-6)]">
-          <AdminTabs tabs={subTabs} activeTabId={subActive} ariaLabel="Catégories d'activités" />
+      <div className="mb-[var(--space-admin-6)]">
+        <AdminTabs
+          tabs={subTabs}
+          activeTabId={subActive}
+          ariaLabel={isBoite ? "Boîte à documents" : "Documents de prestation"}
+        />
+        {!isBoite ? (
           <div className="text-fg-muted mt-2 flex flex-wrap gap-4 text-xs">
             <Link href={`${base}/destinataires`} className="hover:text-mocha underline">
               Annuaire équipe
@@ -80,8 +99,8 @@ export default async function DocumentsLayout({
               Importer un kit
             </Link>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
       <div id={panelId} role="tabpanel">
         {children}

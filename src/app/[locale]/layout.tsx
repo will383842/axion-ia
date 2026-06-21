@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
@@ -136,12 +137,14 @@ export async function generateMetadata({
       ? "Cabinet IA opérationnel · interventions, audit et implémentation IA pour entreprises."
       : "Operational AI consultancy · on-site AI sessions, audits and implementation for companies.",
     alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        fr: "/fr",
-        en: "/en",
-        "x-default": "/fr",
-      },
+      // EN désactivé (301→FR) : le canonical de la home est toujours /fr, et on
+      // n'émet PAS de hreflang `en` (sinon Google reçoit un alternate pointant
+      // vers une URL 301 = signal de crawl gaspillé). Cf. seo.ts buildProductMetadata
+      // qui applique le même gate. Réactivation : EN_LOCALE_ENABLED=true.
+      canonical: isEnLocaleDisabled() ? "/fr" : `/${locale}`,
+      languages: isEnLocaleDisabled()
+        ? { fr: "/fr", "x-default": "/fr" }
+        : { fr: "/fr", en: "/en", "x-default": "/fr" },
     },
     openGraph: {
       type: "website",

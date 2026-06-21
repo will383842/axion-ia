@@ -90,4 +90,21 @@ export function getGenerator(contentType: ContentType): Generator {
   return gen;
 }
 
+/**
+ * Liste des ContentType générables : ré-exportée depuis le module LÉGER
+ * `./registered-types` (pas d'import de générateur) pour que l'orchestrateur
+ * puisse l'importer sans charger tout le graphe de génération. La cohérence
+ * stricte avec les clés de `REGISTRY` est garantie par `registry-phase8.spec.ts`.
+ */
+export {
+  REGISTERED_CONTENT_TYPES,
+  REGISTERED_CONTENT_TYPE_NAMES,
+  isContentTypeRegistered,
+} from "./registered-types";
+
+/** Clés réellement présentes dans REGISTRY (source pour le test anti-dérive). */
+export const REGISTRY_CONTENT_TYPES: readonly ContentType[] = Object.keys(
+  REGISTRY,
+) as ContentType[];
+
 export type { Generator, GeneratorOutput, GeneratorBaseInput } from "./types";

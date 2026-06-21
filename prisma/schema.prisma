@@ -2862,6 +2862,26 @@ enum MixMode {
   manual
 }
 
+/// Mode « ville & alentours » pour une campagne multi-axes (2026-06-21).
+/// `none` : uniquement les villes du scope (comportement historique).
+/// `radius` : étend chaque ville d'ancrage aux communes dans un rayon
+///   (villeSurroundingRadiusKm, défaut 50 km) via geo.ts getNearbyVilles.
+/// `same_departement` : étend aux communes du même département.
+enum VilleSurroundingMode {
+  none
+  radius
+  same_departement
+}
+
+/// Mode de durée d'une campagne multi-axes (2026-06-21).
+/// `fixed` : s'arrête quand totalTargetCount est atteint (ou endDate).
+/// `unlimited` : tourne en continu jusqu'à arrêt manuel (pause/stop) ou endDate ;
+///   totalTargetCount n'est PAS un critère de complétion.
+enum DurationMode {
+  fixed
+  unlimited
+}
+
 /// Phase démarrage progressif (Sprint v7 Phase 9 — D16 prompt 2026-05-23).
 /// `phase_a` : pilote 1 verticale x 39 villes pilotes (mois 1-3).
 /// `phase_b` : 5 verticales x 39 villes pilotes (mois 4-6).
@@ -3199,6 +3219,29 @@ model CoverageCampaign {
   // `expansionPhase` : phase démarrage progressif (Phase 9). NULL = pas
   // gated par phase (campagnes legacy ou manuelles hors roadmap progressive).
   expansionPhase     ExpansionPhase? @map("expansion_phase")
+
+  // ── Campagnes multi-axes (2026-06-21) ──────────────────────────────────────
+  // Tous additifs/optionnels → rétro-compat totale des campagnes existantes
+  // (NULL = comportement historique préservé par les fallbacks orchestrateur).
+  //
+  // `serviceSectorWeights` (axe 2) : pondération % des 5 ACTIVITÉS Axion-IA
+  // échantillonnée par job. Forme { "audits": 50, "implementations": 50 }
+  // (clés = enum ServiceSector). NULL → fallback sur le singleton `serviceSector`.
+  serviceSectorWeights     Json?                @map("service_sector_weights")
+  // `targetSecteurWeights` (axe 3) : pondération % des SECTEURS CLIENT
+  // (sante/BTP/juridique…). Forme { "juridique": 60, "sante_medecine": 40 }
+  // (clés = ClientSectorSlug, cf. src/content/sectors.ts). Échantillonné par job
+  // → pose inputPayload.targetSecteur (réveille la pain-matrix). NULL → pas de
+  // ciblage secteur (augmentation pain-matrix no-op, comportement historique).
+  targetSecteurWeights     Json?                @map("target_secteur_weights")
+  // `villeSurroundingMode` (axe 6) : étend le scope ville aux alentours.
+  villeSurroundingMode     VilleSurroundingMode @default(none) @map("ville_surrounding_mode")
+  // `villeSurroundingRadiusKm` : rayon en km si villeSurroundingMode = radius.
+  // NULL traité comme 50 km par l'orchestrateur.
+  villeSurroundingRadiusKm Int?                 @map("ville_surrounding_radius_km")
+  // `durationMode` (axe 8) : fixed (s'arrête à totalTargetCount) ou unlimited
+  // (tourne jusqu'à arrêt manuel / endDate).
+  durationMode             DurationMode         @default(fixed) @map("duration_mode")
 
   startedAt   DateTime?
   pausedAt    DateTime?

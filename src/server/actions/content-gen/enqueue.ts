@@ -23,8 +23,9 @@ import type { ContentType, SearchIntent } from "../../../../prisma/generated/cli
 import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+// `landing_ville` exclu : CLI-only, hors REGISTRY content-gen (generators/index.ts)
+// → enqueue direct sur ce type créerait un job « No generator registered ».
 const ContentTypeSchema = z.enum([
-  "landing_ville",
   "blog_article",
   "blog_from_rss",
   "blog_from_keywords",

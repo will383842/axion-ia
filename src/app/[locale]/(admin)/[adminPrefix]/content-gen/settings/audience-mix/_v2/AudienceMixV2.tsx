@@ -28,15 +28,19 @@ interface Props {
   rows: ReadonlyArray<MixRow>;
 }
 
+// Clés « SIZE:ORG » : SIZE ∈ enum CompanySize (TPE/PME/ETI/GRANDE_ENTREPRISE),
+// ORG ∈ enum OrganisationType (schema.prisma). Toute valeur hors enum ferait
+// échouer en silence l'insert du job au sampling orchestrateur (cf. régression C1
+// 2026-06-21). Le placeholder ci-dessous n'utilise QUE des valeurs valides.
 const DEFAULT_MIX = `{
   "TPE:entreprise_privee": 20,
   "PME:entreprise_privee": 35,
   "ETI:entreprise_privee": 15,
-  "GE:entreprise_privee": 10,
-  "PME:secteur_public": 5,
-  "ETI:secteur_public": 5,
+  "GRANDE_ENTREPRISE:entreprise_privee": 10,
+  "PME:etablissement_public": 5,
+  "ETI:etablissement_public": 5,
   "PME:association": 5,
-  "PME:profession_liberale": 5
+  "PME:collectivite": 5
 }`;
 
 export function AudienceMixV2({ rows }: Props): React.ReactElement {
@@ -66,8 +70,7 @@ export function AudienceMixV2({ rows }: Props): React.ReactElement {
     {
       key: "default",
       header: "Défaut",
-      cell: (r) =>
-        r.isDefault ? <AdminBadge tone="success">Défaut</AdminBadge> : "—",
+      cell: (r) => (r.isDefault ? <AdminBadge tone="success">Défaut</AdminBadge> : "—"),
     },
     {
       key: "mix",

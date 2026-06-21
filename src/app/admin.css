@@ -979,7 +979,9 @@
 .admin-textarea {
   resize: vertical;
   min-height: 80px;
-  border-radius: var(--radius-admin-md); /* 10px — cohérence inputs (était hérité de .admin-input) */
+  border-radius: var(
+    --radius-admin-md
+  ); /* 10px — cohérence inputs (était hérité de .admin-input) */
   font-family: var(--font-manrope, system-ui);
 }
 

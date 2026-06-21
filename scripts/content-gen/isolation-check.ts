@@ -307,6 +307,25 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/seo\/job-posting\.ts$/,
   /^src\/server\/queue\/workers\/site-route-gsc-worker\.ts$/,
   /^src\/server\/site-explorer\/route-enumerator\.ts$/,
+  // Exceptions 2026-06-21 (campagnes multi-axes + recherche cross-content + Phase 3
+  // secteurs). CONSOMMATEURS LÉGITIMES de la pain-matrix / KB content-gen (lecture
+  // seule data) ou refs en commentaires — PAS du code content-gen core :
+  // - migration campaigns_multi_axes : ALTER coverage_campaigns + commentaires content-gen
+  //   (additive ; le nom ne matche pas le pattern _content_gen_, même cas que
+  //   _add_service_sector / _article_unsplash_credit déjà whitelistés).
+  // - recherche/* + site-search.ts : recherche cross-content qui INDEXE les articles
+  //   content-gen (consumer lecture seule, sprint recherche 2026-06).
+  // - secteurs/* + sectors.ts + tests : pilier SEO Phase 3 qui consomme la pain-matrix
+  //   sectorielle (`src/server/content-gen/kb/sector-pain-matrix`) = data read-only.
+  // - admin.css : styles admin référençant la nav /content-gen (même cas que globals.css).
+  /^prisma\/migrations\/\d+_campaigns_multi_axes\/migration\.sql$/,
+  /^src\/app\/\[locale\]\/recherche\//,
+  /^src\/app\/\[locale\]\/secteurs\//,
+  /^src\/app\/admin\.css$/,
+  /^src\/content\/sectors\.ts$/,
+  /^src\/content\/__tests__\/sectors\.spec\.ts$/,
+  /^src\/content\/__tests__\/secteurs-pages\.spec\.ts$/,
+  /^src\/lib\/search\/site-search\.ts$/,
 ];
 
 /**

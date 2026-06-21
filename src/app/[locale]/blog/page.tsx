@@ -12,16 +12,15 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { BLOG_POSTS } from "@/content/transversal";
+import { loadBlogIndexForView } from "@/server/content-gen/blog/loader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
-import { slugify } from "@/lib/slug";
 import { BlogSearch } from "@/components/blog/BlogSearch";
 
-// Sprint 8 V2 : ISR Next 16 — pré-rendue au build, revalidée toutes les heures
-// pour que les articles DB publiés par la factory apparaissent automatiquement
-// dans la liste sans rebuild manuel. La liste DB est encore V1 FS-only (cf.
-// loadBlogIndexForView) — l'index DB-first arrive Sprint 11+.
+// ISR Next 16 — pré-rendue au build, revalidée toutes les heures pour que les
+// articles DB publiés par la factory apparaissent automatiquement sans rebuild.
+// 2026-06-21 (P1) : l'index est désormais DB-FIRST (loadBlogIndexForView fusionne
+// DB tier-1+2 + FS). Au build stub.invalid → FS-only, l'ISR repeuple sous 1h.
 export const revalidate = 3600;
 
 interface Props {
@@ -36,8 +35,6 @@ function parsePage(raw: string | undefined): number {
   const n = parseInt(raw ?? "1", 10);
   return Number.isFinite(n) && n >= 1 ? n : 1;
 }
-
-// slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -78,10 +75,24 @@ export default async function BlogListing({ params, searchParams }: Props) {
 
   const breadcrumbItems = [{ href: "/blog", label: "Blog" }];
 
-  // Catégories agrégées (count par catégorie)
+  // P1 (2026-06-21) — index DB-FIRST : la liste fusionne les articles DB
+  // (factory content-gen, tier-1+2) ET les articles FS éditoriaux, dédupliqués
+  // par slug et triés par date (cf. loadBlogIndexForView). Avant : FS-only → les
+  // contenus générés (ex. Grenoble) n'apparaissaient JAMAIS dans le hub /blog.
+  // Cap index = scalabilité : on liste les N plus récents (archive profonde via
+  // les hubs catégorie + le sitemap, pas via une pagination infinie ici).
+  const INDEX_MAX = 300;
+  const sortedPosts = (await loadBlogIndexForView(loc)).slice(0, INDEX_MAX);
+
+  // Catégories agrégées (count par catégorie) — dérivées de la liste fusionnée.
+  // On utilise le `categorySlug` RÉEL (slug DB `blog-formations-ia` pour les
+  // articles factory, slugify(nom) pour les FS) afin que les liens pointent vers
+  // une page catégorie valide (les slugs DB ≠ slugify(nom)). Skip si pas de
+  // catégorie résoluble (évite tout lien 404).
   const categoriesMap = new Map<string, { label: string; slug: string; count: number }>();
-  for (const post of BLOG_POSTS) {
-    const slug = slugify(post.category);
+  for (const post of sortedPosts) {
+    const slug = post.categorySlug;
+    if (!slug) continue;
     const existing = categoriesMap.get(slug);
     if (existing) {
       categoriesMap.set(slug, { ...existing, count: existing.count + 1 });
@@ -91,9 +102,6 @@ export default async function BlogListing({ params, searchParams }: Props) {
   }
   const categories = [...categoriesMap.values()];
   const categoryBase = isFr ? "/blog/categorie" : "/blog/category";
-
-  // Posts pour le hero schema (3 plus récents par publishedAt desc)
-  const sortedPosts = [...BLOG_POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   // V-02 sprint UX 2026-05-22 — Pagination v1 (offset/limit).
   const totalPages = Math.max(1, Math.ceil(sortedPosts.length / ARTICLES_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
@@ -105,34 +113,36 @@ export default async function BlogListing({ params, searchParams }: Props) {
     slug: p.slug,
     category: p.category,
     readingTime: p.readingTime,
-    title: p[loc].title,
+    title: p.title,
   }));
 
   // ItemList JSON-LD — expose chaque article au crawler depuis l'index
   // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
-  // déjà émis ailleurs).
+  // déjà émis ailleurs). @id (2026-06-21) : ancre la collection pour la citation
+  // LLM (Perplexity/Claude « selon le blog Axion-IA »).
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${SITE_URL}/${locale}/blog#itemlist`,
     name: isFr ? "Articles Axion-IA · ligne éditoriale" : "Axion-IA articles · editorial line",
     itemListElement: sortedPosts.map((post, index) => ({
       "@type": "ListItem",
       position: index + 1,
       url: `${SITE_URL}/${locale}/blog/${post.slug}`,
-      name: post[loc].title,
+      name: post.title,
     })),
   } as const;
 
   // Pills réassurance (count dynamique)
   const pills = isFr
     ? [
-        { icon: FileText, label: `${BLOG_POSTS.length} articles` },
+        { icon: FileText, label: `${sortedPosts.length} articles` },
         { icon: Layers, label: `${categories.length} catégories` },
         { icon: Clock, label: "Lecture 6-12 min" },
         { icon: RefreshCw, label: "MAJ mensuelle" },
       ]
     : [
-        { icon: FileText, label: `${BLOG_POSTS.length} articles` },
+        { icon: FileText, label: `${sortedPosts.length} articles` },
         { icon: Layers, label: `${categories.length} categories` },
         { icon: Clock, label: "6-12 min read" },
         { icon: RefreshCw, label: "Monthly updates" },
@@ -196,14 +206,18 @@ export default async function BlogListing({ params, searchParams }: Props) {
                   {isFr ? "Lire les articles" : "Read articles"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
-                <Cta href={`/${locale}/blog/feed.xml`} variant="outline" size="lg">
+                {/* P0 (2026-06-21) — href locale-relatif : le <Cta> utilise le
+                    Link next-intl qui PRÉFIXE déjà la locale. Passer
+                    `/${locale}/blog/feed.xml` produisait `/fr/fr/blog/feed.xml`
+                    (double locale). `/blog/feed.xml` → next-intl ajoute `/fr`. */}
+                <Cta href="/blog/feed.xml" variant="outline" size="lg">
                   {isFr ? "S'abonner RSS" : "Subscribe RSS"}
                 </Cta>
                 {/* V-02 sprint UX 2026-05-22 — search Cmd+K autocomplete (gap audit 74 → +15 pts). */}
                 <BlogSearch
-                  items={BLOG_POSTS.map((p) => ({
+                  items={sortedPosts.map((p) => ({
                     slug: p.slug,
-                    title: p[loc].title,
+                    title: p.title,
                     category: p.category,
                     tags: p.tags,
                   }))}
@@ -295,20 +309,17 @@ export default async function BlogListing({ params, searchParams }: Props) {
             </>
           ) : null}
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {paginatedPosts.map((post) => {
-              const c = post[loc];
-              return (
-                <li key={post.slug}>
-                  <ArticleCard
-                    href={`/blog/${post.slug}`}
-                    title={c.title}
-                    excerpt={c.excerpt}
-                    publishedAt={post.publishedAt}
-                    readingTime={post.readingTime}
-                  />
-                </li>
-              );
-            })}
+            {paginatedPosts.map((post) => (
+              <li key={post.slug}>
+                <ArticleCard
+                  href={`/blog/${post.slug}`}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  publishedAt={post.publishedAt}
+                  readingTime={post.readingTime}
+                />
+              </li>
+            ))}
           </ul>
           {totalPages > 1 ? (
             <nav
