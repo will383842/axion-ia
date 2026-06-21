@@ -747,6 +747,13 @@ interface ArticleJsonLdInput {
     url?: string;
     type?: "Thing" | "Organization" | "Product" | "Person" | "Place";
   }>;
+  /**
+   * Speakable specification (AEO / voice / AI Overviews). Auto-injecté par défaut
+   * (selectors h1/h2/[data-speakable]/[data-answer]/[data-faq-a]) ; passer `false`
+   * pour désactiver, ou `{ selectors: [...] }` pour cibler. Aligne les articles FS
+   * sur les pages Service (qui émettent déjà speakable) et sur les articles DB.
+   */
+  speakable?: boolean | { selectors: ReadonlyArray<string> };
 }
 
 // Article JSON-LD — full AEO/GEO 2026 spec :
@@ -776,6 +783,7 @@ export function buildArticleJsonLd({
   citations,
   isBasedOn,
   mentions,
+  speakable = true,
 }: ArticleJsonLdInput) {
   const isFr = locale === "fr";
   const url = `${SITE_URL}/${locale}${path}`;
@@ -837,6 +845,18 @@ export function buildArticleJsonLd({
             name: m.name,
             ...(m.url ? { url: m.url } : {}),
           })),
+        }
+      : {}),
+    // AEO 2026 — Speakable pour citation vocale / AI Overviews. h2 d'article DB
+    // portent déjà `data-speakable` (buildToc) ; AnswerCard porte `data-answer`.
+    ...(speakable !== false
+      ? {
+          speakable: buildSpeakableSpecification({
+            selectors:
+              typeof speakable === "object" && speakable.selectors
+                ? speakable.selectors
+                : ["h1", "h2", "[data-speakable]", "[data-answer]", "[data-faq-a]"],
+          }),
         }
       : {}),
   } as const;

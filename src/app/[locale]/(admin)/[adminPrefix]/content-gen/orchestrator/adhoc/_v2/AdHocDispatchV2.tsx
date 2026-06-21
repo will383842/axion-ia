@@ -5,8 +5,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { dispatchAdHocJob } from "@/server/actions/content-gen/adhoc";
 
+// NB : `landing_ville` est VOLONTAIREMENT absent — généré par script CLI
+// uniquement (hors REGISTRY content-gen, cf. generators/index.ts). Le proposer
+// ici créait un job voué à échouer « No generator registered ».
 const CONTENT_TYPES = [
-  { value: "landing_ville", label: "Landing ville" },
   { value: "blog_article", label: "Blog article" },
   { value: "blog_from_rss", label: "Blog depuis RSS" },
   { value: "blog_from_keywords", label: "Blog depuis keywords" },
@@ -36,7 +38,7 @@ interface Props {
 }
 
 export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
-  const [contentType, setContentType] = useState<string>("landing_ville");
+  const [contentType, setContentType] = useState<string>("blog_article");
   const [anchorVilleSlug, setAnchorVilleSlug] = useState("");
   const [searchIntent, setSearchIntent] = useState<string>("informational");
   const [campaignId, setCampaignId] = useState("");

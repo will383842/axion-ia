@@ -86,6 +86,12 @@ interface PoliciesConfig {
    * (sitemap immédiat + IndexNow + Google Indexing ping). 999 pour désactiver.
    */
   readonly factoryAutoPromoteTier1MinScore?: number;
+  /**
+   * Taille du corpus anti-plagiat (nb de derniers articles comparés en Jaccard).
+   * Default 200 (cf. PLAGIARISM_CORPUS_SIZE). Tunable console sans redeploy ;
+   * plus grand = détection de quasi-doublons plus large mais latence ↑ (~1ms/art.).
+   */
+  readonly plagiarismCorpusSize?: number;
 }
 
 interface QualityLoopConfig {
@@ -98,25 +104,27 @@ const RSS_AUTOPUBLISH_MIN_SCORE_DEFAULT = 60;
 const QUALITY_LOOP_THRESHOLD_DEFAULT = 75;
 const QUALITY_LOOP_MAX_ATTEMPTS_DEFAULT = 2;
 
-const PLAGIARISM_CORPUS_SIZE = 50;
+const PLAGIARISM_CORPUS_SIZE = 200;
 const PLAGIARISM_THRESHOLD_DEFAULT = 0.3;
 const PLAGIARISM_THRESHOLD_RSS_DEFAULT = 0.1;
 
 /**
  * Charge le corpus des derniers articles publiés (tier-1 + tier-2) pour
- * comparaison plagiarism shingling Jaccard. Limite hardcodée à 50 articles
- * pour cap latence (5-gram shingles × 50 articles ≈ 50ms en local).
+ * comparaison plagiarism shingling Jaccard. Taille = 200 par défaut (montée de
+ * 50→200 en Phase 2 2026-06-21 pour détecter les quasi-doublons sur un corpus
+ * plus large à l'échelle ; 5-gram shingles × 200 ≈ 200ms, négligeable vs la
+ * génération LLM). Tunable via policies.plagiarismCorpusSize sans redeploy.
  *
  * Doctrine § 10.1 master prompt — anti-plagiat 3 couches.
  */
-async function loadPlagiarismCorpus(): Promise<Map<string, string>> {
+async function loadPlagiarismCorpus(size = PLAGIARISM_CORPUS_SIZE): Promise<Map<string, string>> {
   const rows = await prisma.article.findMany({
     where: {
       status: "published",
       indexationTier: { in: ["tier_1_indexable", "tier_2_noindex_follow"] },
     },
     orderBy: { publishedAt: "desc" },
-    take: PLAGIARISM_CORPUS_SIZE,
+    take: Math.max(1, Math.min(1000, size)),
     include: {
       translations: {
         where: { locale: "fr" },
@@ -327,7 +335,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // pools par vertical (audits/formations/…) n'étaient jamais ciblés. On le
       // dérive désormais du `serviceSector` de la campagne (CoverageCampaign).
       let campaignSector = "transversal";
-      if (dbJob.campaignId) {
+      // Multi-axes (2026-06-21) — l'activité peut être échantillonnée PAR JOB
+      // (axe 2) et portée par inputPayload.vertical. On la préfère au singleton
+      // serviceSector de la campagne (qui reste le fallback rétro-compat).
+      if (typeof inputPayload["vertical"] === "string") {
+        campaignSector = inputPayload["vertical"];
+      } else if (dbJob.campaignId) {
         const campaign = await prisma.coverageCampaign.findUnique({
           where: { id: dbJob.campaignId },
           select: { serviceSector: true },
@@ -564,7 +577,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       contentType === "blog_from_rss"
         ? (policies.plagiarismJaccardRss ?? PLAGIARISM_THRESHOLD_RSS_DEFAULT)
         : (policies.plagiarismJaccardInternal ?? PLAGIARISM_THRESHOLD_DEFAULT);
-    const corpus = await loadPlagiarismCorpus();
+    const corpus = await loadPlagiarismCorpus(
+      policies.plagiarismCorpusSize ?? PLAGIARISM_CORPUS_SIZE,
+    );
     const plagiarism = checkPlagiarism(output.bodyText, corpus, plagiarismThreshold);
     await logStep(
       contentGenJobId,

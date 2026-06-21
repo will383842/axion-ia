@@ -34,6 +34,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { ArticleCard } from "@/components/marketing/ArticleCard";
+import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Illustration } from "@/components/visual/Illustration";
 import { hasVilleHeroImage } from "@/content/villes/hero-images-map";
@@ -304,6 +306,14 @@ export default async function VilleHubPage({ params }: Props) {
     population: ville.population,
   };
   const villeAsCity = adaptVilleToCity(ville, region.nameFr);
+
+  // P2 maillage ville (2026-06-21) — articles content-gen tier-1 ancrés sur cette
+  // ville (via mentionedCities[]). Croise le hub géographique avec les contenus
+  // générés → la page ville gagne en fraîcheur/profondeur (SEO local) et chaque
+  // article gagne un lien interne depuis un hub pertinent. Fail-open : helper en
+  // try/catch → [] au build stub.invalid ; section rendue UNIQUEMENT s'il y a des
+  // articles (zéro section vide, zéro CLS). Tier-1 only (pas de noindex maillé).
+  const villeArticles = await getBlogArticlesByVille(ville.slug, loc, 3);
 
   // FAQ ville-spécifiques curatées (4-6 Q minimum pour activer Speakable JSON-LD).
   const villeSpecificFaqs: ReadonlyArray<{ q: string; a: string }> = (
@@ -786,6 +796,33 @@ export default async function VilleHubPage({ params }: Props) {
 
       {/* ── FAQ ville-spécifique (composant ville Phase 4) ── */}
       <VilleFaqGeolocalisee villeContext={villeContext} faqs={villeSpecificFaqs} isFr={isFr} />
+
+      {/* ── P2 maillage ville (2026-06-21) — « Contenus IA à {Ville} » : articles
+            content-gen tier-1 ancrés sur la ville. Rendu UNIQUEMENT s'il y en a
+            (pas de section vide). Croise le hub géo ↔ le blog généré. ── */}
+      {villeArticles.length > 0 ? (
+        <Section
+          eyebrow={isFr ? "Ressources locales" : "Local resources"}
+          title={isFr ? `Contenus IA à ${ville.nameFr}` : `AI content for ${ville.nameFr}`}
+        >
+          <Container>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {villeArticles.map((a) => (
+                <li key={a.id}>
+                  <ArticleCard
+                    href={`/blog/${a.slug}`}
+                    title={a.title}
+                    excerpt={a.excerpt ?? ""}
+                    {...(a.publishedAt
+                      ? { publishedAt: a.publishedAt.toISOString().slice(0, 10) }
+                      : {})}
+                  />
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* ── Contexte local (Will 2026-05-26) — discret, en bas de page ──
           Décision : directAnswer + stats sortis du hero (bruit côté visiteur).

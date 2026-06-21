@@ -34,6 +34,12 @@ interface CampaignData {
   typeDistribution: unknown;
   audienceMix: unknown;
   searchIntentMix: unknown | null;
+  // Axes multi-axes (2026-06-21)
+  serviceSectorWeights?: Record<string, number> | null;
+  targetSecteurWeights?: Record<string, number> | null;
+  villeSurroundingMode?: string | null;
+  villeSurroundingRadiusKm?: number | null;
+  durationMode?: string | null;
   estimatedCostUsd: unknown;
   estimatedDurationMinutes: number | null;
   startedAt: Date | null;
@@ -215,6 +221,41 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
           </pre>
         </AdminCard>
       ) : null}
+
+      {/* Axes multi-axes (2026-06-21) — affichés s'ils sont renseignés */}
+      <AdminCard className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Ciblage multi-axes</h2>
+        <ul className="admin-inline-list">
+          <li>
+            Activités (axe 2) :{" "}
+            {campaign.serviceSectorWeights &&
+            Object.keys(campaign.serviceSectorWeights).length > 0
+              ? JSON.stringify(campaign.serviceSectorWeights)
+              : "activité unique (serviceSector)"}
+          </li>
+          <li>
+            Secteurs clients (axe 3) :{" "}
+            {campaign.targetSecteurWeights &&
+            Object.keys(campaign.targetSecteurWeights).length > 0
+              ? JSON.stringify(campaign.targetSecteurWeights)
+              : "non ciblé"}
+          </li>
+          <li>
+            Ville &amp; alentours (axe 6) :{" "}
+            {campaign.villeSurroundingMode === "radius"
+              ? `rayon ${campaign.villeSurroundingRadiusKm ?? 50} km`
+              : campaign.villeSurroundingMode === "same_departement"
+                ? "tout le département"
+                : "villes choisies"}
+          </li>
+          <li>
+            Durée (axe 8) :{" "}
+            {campaign.durationMode === "unlimited"
+              ? "sans limite (arrêt manuel)"
+              : "fixe (s'arrête à la cible)"}
+          </li>
+        </ul>
+      </AdminCard>
 
       <AdminCard>
         <h2 className="admin-h2">Coût &amp; durée</h2>

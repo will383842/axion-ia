@@ -392,9 +392,18 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // être automatiquement indexable. La publication n'a lieu qu'après les gates qualité
   // (auto-publish ≥ seuil / approbation), donc un article publié est par définition
   // éligible à l'index → `tier_1_indexable` systématique (plus de naissance noindex).
-  // `promotedAt` est posé plus bas pour protéger l'article du demote auto (cf.
-  // content-tier-lifecycle-worker : respectManualPromote) → reste indexable.
   // (`promoteToTier1` reste loggué pour la traçabilité mais ne gate plus le tier.)
+  //
+  // P4 ÉLAGAGE (décision Will 2026-06-21) : on NE pose PLUS `promotedAt` au publish.
+  // La NAISSANCE en tier-1 est conservée (ci-dessus), mais on laisse le worker
+  // content-tier-lifecycle DÉMOTER les sous-performants CHRONIQUES (âge ≥ 30j,
+  // CTR < 1 %, impressions ≥ 100 → tier-2 noindex, la page reste EN LIGNE via
+  // URL_UPDATED). Évite le gonflement d'index à l'échelle (risque HCU) sans
+  // toucher la naissance tier-1. `promotedAt` retrouve sa sémantique d'origine
+  // (« protégé manuellement par l'éditeur ») pour un futur bouton admin « épingler ».
+  // ⚠️ INERTE tant que les creds GSC (`GSC_OAUTH_*`/`GSC_PROPERTY_URL`) sont absents
+  // du worker : la source CTR renvoie `null` → le lifecycle noop. Brancher GSC =
+  // prérequis opérationnel pour activer réellement l'élagage.
   const indexationTier = "tier_1_indexable";
 
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
@@ -431,9 +440,10 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(cgJob.seoScore !== null ? { seoScore: cgJob.seoScore } : {}),
         ...(cgJob.readabilityScore !== null ? { readabilityScore: cgJob.readabilityScore } : {}),
         ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
-        // Toujours posé (cf. tier ci-dessus) : marque l'article comme indexable
-        // « décidé » → le worker tier-lifecycle ne le rétrograde pas (respectManualPromote).
-        promotedAt: new Date(),
+        // P4 (2026-06-21) — `promotedAt` N'EST PLUS posé au publish (cf. bloc tier
+        // ci-dessus) : la naissance tier-1 est conservée mais l'article devient
+        // éligible à la démotion par performance (lifecycle CTR). Reste null →
+        // réservé à une future protection éditoriale manuelle.
         generatedByJobId: cgJob.id,
         // P0-6 — Traçabilité directe campagne → article.
         ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),

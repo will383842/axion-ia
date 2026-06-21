@@ -62,9 +62,7 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
       key: "enabled",
       header: "Actif",
       cell: (s) => (
-        <AdminBadge tone={s.enabled ? "success" : "neutral"}>
-          {s.enabled ? "✅" : "🚫"}
-        </AdminBadge>
+        <AdminBadge tone={s.enabled ? "success" : "neutral"}>{s.enabled ? "✅" : "🚫"}</AdminBadge>
       ),
     },
   ];

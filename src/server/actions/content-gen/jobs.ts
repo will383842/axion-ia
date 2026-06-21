@@ -103,6 +103,15 @@ async function enqueueGenJob(jobId: string): Promise<void> {
     },
   });
   if (!dbJob) return;
+  // Garde-fou : ne JAMAIS re-enqueuer un job `landing_ville` (CLI-only, hors
+  // REGISTRY → le worker lèverait « No generator registered »). Les jobs legacy
+  // de ce type restent visibles/filtrables dans l'admin mais ne sont pas rejouables.
+  if (dbJob.contentType === "landing_ville") {
+    console.warn(
+      `[jobs.retry] job ${jobId} de type landing_ville (CLI-only) non re-enqueuable — ignoré`,
+    );
+    return;
+  }
   await queue.add(
     "generate",
     {

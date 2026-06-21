@@ -1,4 +1,4 @@
-// Dynamic OG image generator — 1200×630, served at /api/og?title=...
+// Dynamic OG image generator — 1200×675, served at /api/og?title=...
 // Used by Twitter / LinkedIn / Facebook / Slack previews. Supports 4 module
 // accents via the `accent` query param.
 
@@ -126,6 +126,9 @@ export function GET(req: Request) {
         }}
       />
     </div>,
-    { width: 1200, height: 630 },
+    // 1200×675 = plancher Google Discover (cohérent avec opengraph-image.tsx).
+    // Le contenu interne est en height:100% → pas de distorsion. Avant : 630
+    // (standard OG) rendait ces cartes inéligibles à Discover.
+    { width: 1200, height: 675 },
   );
 }

@@ -46,10 +46,7 @@ export async function KbReadonlyV2({ adminPrefix }: Props): Promise<React.ReactE
       key: "slug",
       header: "Slug",
       cell: (e) => (
-        <Link
-          href={`/fr/${adminPrefix}/content-gen/kb-readonly/${e.id}`}
-          className="admin-link"
-        >
+        <Link href={`/fr/${adminPrefix}/content-gen/kb-readonly/${e.id}`} className="admin-link">
           <code>{e.slug}</code>
         </Link>
       ),

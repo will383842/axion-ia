@@ -38,8 +38,10 @@ const VALID_SECTORS: ReadonlySet<string> = new Set<ServiceSector>([
 /**
  * Slugs de types de contenu utilisés par les presets (TYPE_SHORT) qui diffèrent
  * de l'enum WizardContentType réel. Le cas connu : `blog_pillar` → `guide_pilier`.
- * Les autres slugs preset (landing_ville, blog_from_*, qa_derived, comparison)
- * correspondent déjà 1:1 à un WizardContentType.
+ * Les autres slugs preset (blog_from_*, qa_derived, comparison) correspondent
+ * déjà 1:1 à un WizardContentType. NB : `landing_ville` n'est plus un
+ * WizardContentType (CLI-only) → `mapPresetTypeToWizardType` le renvoie `null`,
+ * il est donc filtré silencieusement par `presetToWizardSeed`.
  */
 const PRESET_TYPE_ALIASES: Record<string, WizardContentType> = {
   blog_pillar: "guide_pilier",

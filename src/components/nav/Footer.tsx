@@ -26,6 +26,7 @@ export async function Footer() {
   // « Entreprise » (2026-06-10) : c'est un outil interactif d'aide à la décision,
   // pas une info corporate.
   const resources = [
+    { href: "/secteurs", label: isFr ? "L'IA par secteur" : "AI by sector" },
     { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
     { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
     { href: "/blog", label: t("nav.blog") },

@@ -66,7 +66,11 @@ export function FaqV2({
 }: Props): React.ReactElement {
   const columns: ReadonlyArray<AdminTableColumn<FAQRow>> = [
     { key: "order", header: "Ordre", cell: (f) => f.displayOrder, width: "70px" },
-    { key: "category", header: "Catégorie", cell: (f) => CATEGORY_LABELS[f.category] ?? f.category },
+    {
+      key: "category",
+      header: "Catégorie",
+      cell: (f) => CATEGORY_LABELS[f.category] ?? f.category,
+    },
     { key: "question", header: "Question (FR)", cell: (f) => f.questionFr },
     {
       key: "slug",

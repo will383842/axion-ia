@@ -18,8 +18,9 @@ import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 const TemplateIdSchema = z.string().min(1).max(64);
+// `landing_ville` exclu : CLI-only, hors REGISTRY content-gen (generators/index.ts)
+// → un template sur ce type serait intestable (enqueue/worker le rejettent).
 const ContentTypeSchema = z.enum([
-  "landing_ville",
   "blog_article",
   "blog_from_rss",
   "blog_from_keywords",

@@ -136,9 +136,7 @@ export async function JobsListV2({
     {
       key: "status",
       header: "Statut",
-      cell: (r) => (
-        <AdminBadge tone={STATUS_TONE[r.status] ?? "neutral"}>{r.status}</AdminBadge>
-      ),
+      cell: (r) => <AdminBadge tone={STATUS_TONE[r.status] ?? "neutral"}>{r.status}</AdminBadge>,
     },
     { key: "ville", header: "Ville", cell: (r) => r.anchorVilleSlug ?? "—" },
     { key: "score", header: "Score", cell: (r) => r.qualityScore ?? "—" },
