@@ -361,7 +361,7 @@ export default async function NewsArticlePage({ params }: Props) {
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
             <Image
               src={article.featuredImage}
-              alt={article.featuredImageAlt ?? t.title}
+              alt={article.featuredImageAltFr ?? t.title}
               fill
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"

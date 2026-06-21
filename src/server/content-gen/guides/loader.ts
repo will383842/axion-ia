@@ -175,7 +175,7 @@ export async function loadGuideForView(
     })),
     // Chantier templates 2026-06-21 — héros Unsplash (avant : aucune image).
     featuredImage: translation.article.featuredImage ?? null,
-    featuredImageAlt: translation.article.featuredImageAlt ?? null,
+    featuredImageAlt: translation.article.featuredImageAltFr ?? null,
     photographerName: translation.article.featuredImagePhotographerName ?? null,
     photographerUrl: translation.article.featuredImagePhotographerUrl ?? null,
   };
