@@ -315,6 +315,9 @@ const TEMPLATES: TemplateMap = {
   "quote-expired": { subject: quoteExpiredSubject, component: QuoteExpiredEmail },
 };
 
+/** Tous les noms de templates email enregistrés (pour tests de couverture). */
+export const EMAIL_TEMPLATE_NAMES = Object.keys(TEMPLATES) as EmailJobName[];
+
 export interface RenderedEmail {
   subject: string;
   html: string;
