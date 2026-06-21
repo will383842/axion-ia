@@ -24,6 +24,7 @@ import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { ArticleFaq } from "@/components/content-gen/ArticleFaq";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 import { getVille } from "@/content/villes";
@@ -524,6 +525,11 @@ export default async function BlogArticle({ params }: Props) {
           )}
         </Container>
       </Section>
+
+      {/* Chantier templates 2026-06-21 — FAQ + FAQPage JSON-LD. La donnée
+          (Article.faqJson) était déjà écrite par les generators mais jamais
+          rendue. Accordéon natif (0 JS), Speakable via data-faq-q/data-faq-a. */}
+      <ArticleFaq items={view.faqItems} locale={loc} dateModified={view.updatedAt ?? view.publishedAt} />
 
       {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
       {anchorVilleHref ? (

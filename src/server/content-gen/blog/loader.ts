@@ -56,8 +56,35 @@ export interface BlogArticleView {
   readonly photographerUrl: string | null;
   /** Sources citées (ContentCitation DB) — émises en isBasedOn JSON-LD. */
   readonly citations: ReadonlyArray<{ name: string; url: string }>;
+  /**
+   * FAQ structurée (Article.faqJson). Écrite par les generators mais jamais
+   * rendue avant le chantier templates 2026-06-21 → alimente l'accordéon FAQ
+   * `<ArticleFaq>` + le schéma FAQPage. Vide pour les articles FS legacy.
+   */
+  readonly faqItems: ReadonlyArray<{ question: string; answer: string }>;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
+}
+
+/**
+ * Parse défensif de `Article.faqJson` (Json libre écrit par les generators).
+ * Accepte `{ question, answer }` ou `{ q, a }`. Ignore tout item incomplet.
+ * Retourne `[]` si la donnée est absente/malformée (zéro régression : pas de
+ * FAQ → l'accordéon ne se rend pas).
+ */
+function parseFaqItems(raw: unknown): ReadonlyArray<{ question: string; answer: string }> {
+  if (!Array.isArray(raw)) return [];
+  const out: { question: string; answer: string }[] = [];
+  for (const entry of raw) {
+    if (!entry || typeof entry !== "object") continue;
+    const o = entry as Record<string, unknown>;
+    const q = typeof o.question === "string" ? o.question : typeof o.q === "string" ? o.q : null;
+    const a = typeof o.answer === "string" ? o.answer : typeof o.a === "string" ? o.a : null;
+    if (q && a && q.trim().length > 0 && a.trim().length > 0) {
+      out.push({ question: q.trim(), answer: a.trim() });
+    }
+  }
+  return out;
 }
 
 function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
@@ -86,6 +113,7 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     photographerName: null,
     photographerUrl: null,
     citations: [],
+    faqItems: [],
     fsPost: post,
   };
 }
@@ -152,6 +180,9 @@ export async function loadBlogArticleForView(
           select: {
             category: { select: { nameFr: true, slug: true } },
             tags: { select: { tag: { select: { nameFr: true } } } },
+            // Chantier templates 2026-06-21 — FAQ structurée (écrite par les
+            // generators, jamais rendue jusqu'ici). Alimente <ArticleFaq>.
+            faqJson: true,
           },
         })
         .catch(() => null),
@@ -197,6 +228,7 @@ export async function loadBlogArticleForView(
         name: c.externalReference.title,
         url: c.externalReference.url,
       })),
+      faqItems: parseFaqItems(catTags?.faqJson),
       fsPost: null,
     };
   }
@@ -245,6 +277,7 @@ export async function loadBlogIndexForView(
     photographerName: null,
     photographerUrl: null,
     citations: [],
+    faqItems: [],
     fsPost: null,
   }));
 
