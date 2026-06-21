@@ -176,13 +176,19 @@ jobs:
       # « ✓ Compiled successfully »). On relocalise `.next` sur le 2e disque `/mnt`
       # (~65 GB libres) — symlink transparent pour `next build`. Même philosophie que
       # le data-root `/mnt` de deploy-coolify.yml.
-      - name: Relocate .next to /mnt (ENOSPC headroom)
+      # IMPORTANT : on utilise un BIND MOUNT, pas un symlink. Un `ln -s .next →
+      # /mnt/...` met `.next` HORS de l'arbre repo → Node ne résout plus
+      # `node_modules` (racine repo) quand `next build` exécute les routes au
+      # « collect page data » (échec « Cannot find module 'argon2' » sur les routes
+      # admin natives). Le bind mount garde `.next` comme vrai dossier DANS le repo
+      # (résolution modules OK) tout en stockant les Go sur `/mnt` (~65 GB, espace OK).
+      - name: Relocate .next to /mnt (bind mount, ENOSPC headroom)
         run: |
           df -h / /mnt
           sudo mkdir -p /mnt/axion-next
-          sudo chown "$(id -u):$(id -g)" /mnt/axion-next
-          rm -rf .next
-          ln -s /mnt/axion-next .next
+          rm -rf .next && mkdir -p .next
+          sudo mount --bind /mnt/axion-next .next
+          sudo chown -R "$(id -u):$(id -g)" .next
           df -h / /mnt
       - name: Build
         # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
