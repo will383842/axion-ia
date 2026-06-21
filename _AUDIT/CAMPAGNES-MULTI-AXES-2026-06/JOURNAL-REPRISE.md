@@ -108,12 +108,29 @@ deploy `prisma migrate deploy` applique la migration ; **redéployer le worker**
 (app Coolify séparée) pour activer le sampling ; `QUALITY_PROFILES_ENABLED=true`
 requis pour que l'axe 3 (pain-matrix) agisse réellement.
 
-## ⏳ À FAIRE
+## ✅ FAIT — Audit E2E + Phase 2 (2026-06-21)
 
-### Phase 2 — Qualité
-- Activer `benefit_gate` (console, page admin PH4 = Will).
-- Compléter les 25 combos pain-matrix manquants (sur 50).
-- Corpus plagiat 50 → 200.
+**Audit E2E exhaustif** (6 agents : intégrité multi-axes, pipeline content-gen, SEO/AEO,
+hiérarchie titres, Web Vitals, console admin) + vérifs croisées perso. **1 seule vraie
+régression** trouvée et corrigée (`bdda99ed`) :
+- **C1** — `WIZARD_ORG_TYPES` envoyait 2 valeurs hors enum `OrganisationType`
+  (`profession_liberale`, `collectivite_territoriale`) → insert job en échec silencieux.
+  Corrigé + Zod durci (clé audienceMix « SIZE:ORG » validée contre les 2 enums) +
+  test anti-dérive `campaign-wizard-constants.spec.ts` (tous vocabulaires ⊆ enums Prisma).
+- Enhancement : détail campagne affiche les axes multi-axes.
+- **Réfuté/par-design** (pas de bug) : tier indexation (publish tier_1 = décision Will
+  documentée ; détail dérive bien tier-1 via `mapIndexationTier`) ; alignement pain-matrix.
+- Findings pré-existants notés pour Will (hors périmètre) : SEO Review/AggregateRating
+  inutilisé, blog sans speakable/data-answer, galerie `<h1>` orphelin, `/reserver` CLS,
+  CF cache BYPASS home, size-limit pas en CI. Score SEO global 87/100.
+
+**Phase 2 — Qualité** :
+- ✅ **pain-matrix 50/50** (`b5d68513`) — 27 combos manquants ajoutés (gold-standard,
+  lexique métier authentique, déontologie santé/juridique/public), garde-test couverture.
+- ✅ **corpus anti-plagiat 50→200** (`6afd9f5b`) — + tunable `policies.plagiarismCorpusSize`.
+- ⏳ `benefit_gate` = flag console **= décision Will** (page admin PH4) — laissé OFF.
+
+## ⏳ À FAIRE
 
 ### Phase 3 (plus tard) — SEO v2
 Pilier `/secteurs/*` + 50 pages croisées (curées).
