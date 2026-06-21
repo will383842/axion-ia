@@ -27,6 +27,7 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
@@ -346,6 +347,17 @@ export async function genererFactureFormationAction(input: {
   if (trainingSession.financementType === "cpf" && !trainingSession.edofVerifieAt) {
     return {
       error: "Financement CPF sans vérification EDOF. Vérifiez le dossier EDOF avant de facturer.",
+    };
+  }
+
+  // Identité de l'organisme complète (mentions vendeur obligatoires sur facture :
+  // SIRET, NDA, adresse du siège). Bloque AVANT la création du dossier facture
+  // avec un message actionnable plutôt que de produire un document non conforme.
+  const identiteFacture = await getOrganismeIdentite();
+  const manquants = champsIdentiteManquants(identiteFacture, "facture");
+  if (manquants.length > 0) {
+    return {
+      error: `Identité de l'organisme incomplète (${manquants.join(", ")}). Renseignez ces valeurs dans les paramètres Qualiopi avant de facturer.`,
     };
   }
 
