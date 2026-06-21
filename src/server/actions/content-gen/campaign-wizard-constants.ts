@@ -10,8 +10,12 @@
  */
 
 export const WIZARD_CONTENT_TYPES = [
-  // Section 1 — Core (3)
-  "landing_ville",
+  // Section 1 — Core (2)
+  // NB : `landing_ville` (page hub ville) est VOLONTAIREMENT hors wizard — généré
+  // par script CLI uniquement (contrôle des coûts, cf. generators/index.ts). Le
+  // proposer ici créait des jobs voués à échouer (« No generator registered »).
+  // La couverture « ville & alentours » se fait via le SCOPE de la campagne sur du
+  // contenu blog ancré ville, pas via ce type.
   "blog_article",
   "guide_pilier",
   // Section 2 — Sources externes (3)
@@ -45,7 +49,7 @@ export const WIZARD_SECTIONS = [
   {
     id: "core",
     label: "Core (essentiels)",
-    types: ["landing_ville", "blog_article", "guide_pilier"] as const,
+    types: ["blog_article", "guide_pilier"] as const,
   },
   {
     id: "sources",

@@ -25,6 +25,7 @@ import {
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
 import { buildWeightedSequence } from "@/server/content-gen/scheduler/type-sequence";
+import { isContentTypeRegistered } from "@/server/content-gen/generators";
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type {
@@ -89,6 +90,27 @@ function sampleWeighted<K extends string>(
     if (position < cumulative) return key;
   }
   return entries[entries.length - 1]![0];
+}
+
+/**
+ * Filtre une distribution de types sur les types RÉELLEMENT générables (REGISTRY).
+ * Retire les types sans générateur (ex. `landing_ville`, CLI-only) AVANT
+ * l'échantillonnage → l'orchestrateur ne crée plus de jobs voués à échouer
+ * « No generator registered ». Re-normalisation implicite (les % restants se
+ * répartissent sur les types valides). Si AUCUN type valide → renvoie tel quel
+ * (le worker tranchera, mais on log) pour ne pas générer un vide silencieux.
+ */
+function registeredTypeDist(dist: Record<ContentType, number>): Record<ContentType, number> {
+  const filtered = Object.fromEntries(
+    Object.entries(dist).filter(([t]) => isContentTypeRegistered(t as ContentType)),
+  ) as Record<ContentType, number>;
+  const dropped = Object.keys(dist).filter((t) => !isContentTypeRegistered(t as ContentType));
+  if (dropped.length > 0) {
+    console.warn(
+      `[orchestrator] types non générables ignorés (CLI-only/absents): ${dropped.join(", ")}`,
+    );
+  }
+  return Object.keys(filtered).length > 0 ? filtered : dist;
 }
 
 function sampleAudienceMix(
@@ -289,9 +311,11 @@ async function processSequentialCampaign(
   }
 
   // Ville courante terminée (ou jamais démarrée) → créer les jobs pour cette ville
-  const typeDist = (
-    campaign.contentTypeWeights != null ? campaign.contentTypeWeights : campaign.typeDistribution
-  ) as Record<ContentType, number>;
+  const typeDist = registeredTypeDist(
+    (campaign.contentTypeWeights != null
+      ? campaign.contentTypeWeights
+      : campaign.typeDistribution) as Record<ContentType, number>,
+  );
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
 
@@ -364,9 +388,11 @@ async function processParallelCampaign(
   forcedVilleSlug: string | undefined,
   villeAnchors: string[],
 ): Promise<number> {
-  const typeDist = (
-    campaign.contentTypeWeights != null ? campaign.contentTypeWeights : campaign.typeDistribution
-  ) as Record<ContentType, number>;
+  const typeDist = registeredTypeDist(
+    (campaign.contentTypeWeights != null
+      ? campaign.contentTypeWeights
+      : campaign.typeDistribution) as Record<ContentType, number>,
+  );
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
   const deptAnchors = campaign.anchorDepartementCodes;

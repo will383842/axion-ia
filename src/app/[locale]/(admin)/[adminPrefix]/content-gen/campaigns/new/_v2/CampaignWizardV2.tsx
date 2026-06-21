@@ -78,10 +78,9 @@ const SERVICE_LABELS: Record<ServiceSector, { fr: string; desc: string }> = {
 // Default 'équilibré' : core 30% + sources 12% + comparatifs 11% + Q&A 13% +
 // SEO long-tail 19% + conversion 15% = 100%.
 const DEFAULT_WEIGHTS_BALANCED: Record<WizardContentType, number> = {
-  // Section 1 — Core (3) = 30%
-  landing_ville: 10,
-  blog_article: 12,
-  guide_pilier: 8,
+  // Section 1 — Core (2) = 30% (landing_ville retiré, CLI-only — % redistribué)
+  blog_article: 18,
+  guide_pilier: 12,
   // Section 2 — Sources externes (3) = 12%
   blog_from_rss: 5,
   blog_from_keywords: 5,
@@ -129,11 +128,11 @@ function focusedWeights(
 
 const QUICK_TYPES: QuickType[] = [
   {
-    id: "pages_villes",
-    fr: "Pages villes",
-    desc: "Landing pages locales par ville",
+    id: "contenu_local",
+    fr: "Contenu local",
+    desc: "Problème/solution, cas d'usage et FAQ ancrés ville",
     emoji: "🏙️",
-    weights: focusedWeights({ landing_ville: 100 }),
+    weights: focusedWeights({ pain_point_solution: 40, case_study_local: 30, faq_geo: 30 }),
   },
   {
     id: "blog",

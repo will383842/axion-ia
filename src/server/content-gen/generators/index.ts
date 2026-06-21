@@ -90,4 +90,21 @@ export function getGenerator(contentType: ContentType): Generator {
   return gen;
 }
 
+/**
+ * Ensemble des ContentType RÉELLEMENT générables (= présents dans REGISTRY).
+ * Sert à l'orchestrateur pour NE PAS créer de jobs sur des types non enregistrés
+ * (ex. `landing_ville`, volontairement hors registre = généré par script CLI, cf.
+ * en-tête de ce fichier) → évite des jobs qui échouent « No generator registered ».
+ * Protège aussi les campagnes existantes dont les `contentTypeWeights` porteraient
+ * un type retiré, et tout type futur ajouté au wizard avant son générateur.
+ */
+export const REGISTERED_CONTENT_TYPES: ReadonlySet<ContentType> = new Set(
+  Object.keys(REGISTRY) as ContentType[],
+);
+
+/** True si un générateur est enregistré pour ce type (campagne-safe). */
+export function isContentTypeRegistered(contentType: ContentType): boolean {
+  return REGISTERED_CONTENT_TYPES.has(contentType);
+}
+
 export type { Generator, GeneratorOutput, GeneratorBaseInput } from "./types";
