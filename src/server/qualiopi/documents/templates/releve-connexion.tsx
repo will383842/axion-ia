@@ -18,6 +18,8 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  SignatureZone,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
@@ -28,26 +30,6 @@ import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 // ============================================================
 
 const localStyles = StyleSheet.create({
-  tableHeaderRow: {
-    flexDirection: "row",
-    backgroundColor: brandColor("sand"),
-    borderBottomWidth: 2,
-    borderBottomColor: brandColor("border-strong"),
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-  },
-  tableDataRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-    minHeight: 26,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-  },
-  cellNom: { flex: 3, fontSize: 9, paddingRight: 4 },
-  cellHeure: { flex: 2, fontSize: 9, paddingRight: 4 },
-  cellDuree: { flex: 2, fontSize: 9, paddingRight: 4 },
-  cellPresence: { flex: 1, fontSize: 9 },
   summaryRow: {
     flexDirection: "row",
     marginTop: 8,
@@ -55,6 +37,11 @@ const localStyles = StyleSheet.create({
     paddingHorizontal: 4,
     backgroundColor: brandColor("sand"),
     borderRadius: 2,
+  },
+  summaryText: {
+    fontSize: 9,
+    fontWeight: "bold",
+    flex: 1,
   },
 });
 
@@ -129,29 +116,26 @@ export function ReleveConnexionPdf({
 
         {/* Tableau connexions */}
         <DocSection title="Relevé des connexions">
-          {/* En-tête tableau */}
-          <View style={localStyles.tableHeaderRow}>
-            <Text style={[localStyles.cellNom, { fontWeight: "bold" }]}>Nom — Prénom</Text>
-            <Text style={[localStyles.cellHeure, { fontWeight: "bold" }]}>Connexion</Text>
-            <Text style={[localStyles.cellHeure, { fontWeight: "bold" }]}>Déconnexion</Text>
-            <Text style={[localStyles.cellDuree, { fontWeight: "bold" }]}>Durée effective</Text>
-            <Text style={[localStyles.cellPresence, { fontWeight: "bold" }]}>Validée</Text>
-          </View>
-
-          {/* Lignes participants */}
-          {data.participants.map((p, idx) => (
-            <View key={idx} style={localStyles.tableDataRow}>
-              <Text style={localStyles.cellNom}>{p.nomPrenom}</Text>
-              <Text style={localStyles.cellHeure}>{p.heureConnexion}</Text>
-              <Text style={localStyles.cellHeure}>{p.heureDeconnexion}</Text>
-              <Text style={localStyles.cellDuree}>{p.dureeEffective}</Text>
-              <Text style={localStyles.cellPresence}>{p.presenceValidee ? "Oui" : "Non"}</Text>
-            </View>
-          ))}
+          <DataTable
+            columns={[
+              { key: "nom", header: "Nom — Prénom", flex: 3 },
+              { key: "connexion", header: "Connexion", flex: 2 },
+              { key: "deconnexion", header: "Déconnexion", flex: 2 },
+              { key: "duree", header: "Durée effective", flex: 2 },
+              { key: "validee", header: "Validée", flex: 1 },
+            ]}
+            rows={data.participants.map((p) => ({
+              nom: p.nomPrenom,
+              connexion: p.heureConnexion,
+              deconnexion: p.heureDeconnexion,
+              duree: p.dureeEffective,
+              validee: p.presenceValidee ? "Oui" : "Non",
+            }))}
+          />
 
           {/* Récapitulatif */}
           <View style={localStyles.summaryRow}>
-            <Text style={{ fontSize: 9, fontWeight: "bold", flex: 1 }}>
+            <Text style={localStyles.summaryText}>
               Stagiaires conformes : {conformes} / {total}
             </Text>
           </View>
@@ -166,24 +150,20 @@ export function ReleveConnexionPdf({
         </View>
 
         {/* Zone de signatures */}
-        <View style={pdfStyles.signatureZone}>
-          <View style={pdfStyles.signatureBox}>
-            <Text style={{ fontSize: 9, fontWeight: "bold", marginBottom: 4 }}>
-              Signature du formateur / de la formatrice
-            </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft") }}>
-              Nom : {data.nomFormateur}
-            </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft"), marginTop: 4 }}>Date :</Text>
-          </View>
-          <View style={pdfStyles.signatureBox}>
-            <Text style={{ fontSize: 9, fontWeight: "bold", marginBottom: 4 }}>
-              Visa du responsable pédagogique
-            </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft") }}>Nom :</Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft"), marginTop: 4 }}>Date :</Text>
-          </View>
-        </View>
+        <SignatureZone
+          parties={[
+            {
+              titre: "Signature du formateur / de la formatrice",
+              nom: `Nom : ${data.nomFormateur}`,
+              mention: "Date :",
+            },
+            {
+              titre: "Visa du responsable pédagogique",
+              nom: "Nom :",
+              mention: "Date :",
+            },
+          ]}
+        />
 
         {/* Mention conservation */}
         <Text style={pdfStyles.legalNote}>

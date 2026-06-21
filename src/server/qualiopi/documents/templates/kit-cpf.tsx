@@ -14,24 +14,13 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  LegalCallout,
+  formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
-
-// ============================================================
-// Helpers monétaires
-// ============================================================
-
-function formatEuros(cents: number): string {
-  const euros = cents / 100;
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(euros);
-}
 
 // ============================================================
 // Styles spécifiques
@@ -56,48 +45,17 @@ const styles = StyleSheet.create({
     color: brandColor("fg"),
     flex: 1,
   },
-  racBlock: {
-    backgroundColor: brandColor("terracotta-soft"),
-    padding: 10,
-    marginTop: 8,
-    borderRadius: 2,
-    borderLeftWidth: 3,
-    borderLeftColor: brandColor("terracotta"),
-  },
-  racLabel: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: brandColor("terracotta-deep"),
-    marginBottom: 2,
-  },
   racValue: {
     fontSize: 16,
     fontFamily: "Inconsolata",
     fontWeight: "bold",
     color: brandColor("terracotta"),
+    marginBottom: 2,
   },
   racNote: {
     fontSize: 8,
     color: brandColor("fg-muted"),
     fontStyle: "italic",
-    marginTop: 2,
-  },
-  financeRow: {
-    flexDirection: "row",
-    paddingVertical: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-  },
-  financeLabel: {
-    fontSize: 10,
-    flex: 1,
-    color: brandColor("fg-soft"),
-    fontWeight: "bold",
-  },
-  financeValue: {
-    fontSize: 10,
-    color: brandColor("fg"),
-    fontFamily: "Inconsolata",
   },
 });
 
@@ -171,25 +129,32 @@ export function KitCpfPdf({ data }: { data: KitCpfData }): React.ReactElement {
 
         {/* Récapitulatif financier */}
         <DocSection title="Récapitulatif financier">
-          <View style={styles.financeRow}>
-            <Text style={styles.financeLabel}>Coût total de la formation</Text>
-            <Text style={styles.financeValue}>{formatEuros(data.coutTotalCents)}</Text>
-          </View>
-          <View style={styles.financeRow}>
-            <Text style={styles.financeLabel}>Montant pris en charge par le CPF</Text>
-            <Text style={styles.financeValue}>{formatEuros(data.montantCpfCents)}</Text>
-          </View>
+          <DataTable
+            columns={[
+              { key: "poste", header: "Poste", flex: 3 },
+              { key: "montant", header: "Montant", flex: 1.5, align: "right" },
+            ]}
+            rows={[
+              {
+                poste: "Coût total de la formation",
+                montant: formatEurosFromCents(data.coutTotalCents),
+              },
+              {
+                poste: "Montant pris en charge par le CPF",
+                montant: formatEurosFromCents(data.montantCpfCents),
+              },
+            ]}
+          />
         </DocSection>
 
         {/* Reste à charge — bloc mis en avant (PLF 2026) */}
-        <View style={styles.racBlock}>
-          <Text style={styles.racLabel}>Reste à charge bénéficiaire (PLF 2026)</Text>
-          <Text style={styles.racValue}>{formatEuros(data.resteAChargeCents)}</Text>
+        <LegalCallout variant="warning" title="Reste à charge bénéficiaire (PLF 2026)">
+          <Text style={styles.racValue}>{formatEurosFromCents(data.resteAChargeCents)}</Text>
           <Text style={styles.racNote}>
             Conformément aux dispositions du Projet de Loi de Finances 2026. Le reste à charge est
             payé directement par le bénéficiaire à l'organisme de formation.
           </Text>
-        </View>
+        </LegalCallout>
 
         {/* Mentions légales */}
         <View style={[pdfStyles.section, { marginTop: 16 }]}>

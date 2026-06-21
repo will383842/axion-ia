@@ -7,7 +7,13 @@
 
 import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
-import { QualiopiPage, DocSection, pdfStyles } from "@/server/qualiopi/documents/base-layout";
+import {
+  QualiopiPage,
+  DocSection,
+  FieldRow,
+  BulletList,
+  pdfStyles,
+} from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -27,22 +33,10 @@ export interface ReglementInterieurData {
 // ============================================================
 
 const local = StyleSheet.create({
-  articleTitle: {
-    fontSize: 10,
-    fontWeight: "bold",
-    marginBottom: 3,
-    marginTop: 2,
-  },
   articleBody: {
     fontSize: 10,
     lineHeight: 1.5,
     marginBottom: 4,
-  },
-  bulletItem: {
-    fontSize: 10,
-    marginBottom: 2,
-    paddingLeft: 10,
-    lineHeight: 1.5,
   },
   signatureLabel: {
     fontSize: 9,
@@ -128,20 +122,14 @@ export function ReglementInterieurPdf({
         {/* Article 3 — Discipline */}
         <DocSection title="Article 3 — Discipline et comportement">
           <Text style={local.articleBody}>Sont notamment interdits :</Text>
-          <Text style={local.bulletItem}>
-            • Tout comportement irrespectueux envers le formateur ou les autres stagiaires.
-          </Text>
-          <Text style={local.bulletItem}>
-            • L'enregistrement audio ou vidéo des sessions sans accord écrit préalable de
-            l'organisme.
-          </Text>
-          <Text style={local.bulletItem}>
-            • L'usage de téléphones portables ou appareils personnels à des fins non pédagogiques
-            pendant les séquences synchrones.
-          </Text>
-          <Text style={local.bulletItem}>
-            • La consommation d'alcool ou de substances illicites.
-          </Text>
+          <BulletList
+            items={[
+              "Tout comportement irrespectueux envers le formateur ou les autres stagiaires.",
+              "L'enregistrement audio ou vidéo des sessions sans accord écrit préalable de l'organisme.",
+              "L'usage de téléphones portables ou appareils personnels à des fins non pédagogiques pendant les séquences synchrones.",
+              "La consommation d'alcool ou de substances illicites.",
+            ]}
+          />
           <Text style={local.articleBody}>
             Tout manquement grave aux règles de discipline peut entraîner l'exclusion définitive du
             stagiaire sans remboursement des frais de formation déjà engagés.
@@ -211,7 +199,7 @@ export function ReglementInterieurPdf({
             y répondre de manière circonstanciée dans un délai maximum de 15 jours ouvrés à compter
             de sa réception.
           </Text>
-          <FieldRowInline label="Email réclamations" value={identite.email || "—"} />
+          <FieldRow label="Email réclamations" value={identite.email || "—"} />
         </DocSection>
 
         {/* Article 9 — Protection des données */}
@@ -250,15 +238,5 @@ export function ReglementInterieurPdf({
         </DocSection>
       </QualiopiPage>
     </Document>
-  );
-}
-
-/** Petit helper interne pour les lignes label/valeur sans importer FieldRow (même rendu). */
-function FieldRowInline({ label, value }: { label: string; value: string }): React.ReactElement {
-  return (
-    <View style={pdfStyles.fieldRow}>
-      <Text style={pdfStyles.fieldLabel}>{label}</Text>
-      <Text style={pdfStyles.fieldValue}>{value}</Text>
-    </View>
   );
 }

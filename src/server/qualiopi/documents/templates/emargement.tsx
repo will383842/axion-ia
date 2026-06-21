@@ -2,7 +2,7 @@
  * Qualiopi — Template PDF : Feuille d'émargement présentiel.
  *
  * Tableau participants : Nom-Prénom / Entreprise / Signature matin /
- * Signature après-midi / Paraphe formateur.
+ * Signature après-midi / Paraphe formateur / Observations.
  * Mention de certification + signature formateur + visa responsable pédagogique.
  * Conservation obligatoire 5 ans (DOCUMENT_RETENTION_YEARS).
  *
@@ -16,6 +16,8 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  SignatureZone,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
@@ -26,26 +28,6 @@ import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 // ============================================================
 
 const localStyles = StyleSheet.create({
-  tableHeaderRow: {
-    flexDirection: "row",
-    backgroundColor: brandColor("sand"),
-    borderBottomWidth: 2,
-    borderBottomColor: brandColor("border-strong"),
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-  },
-  tableDataRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-    minHeight: 32,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-  },
-  cellNom: { flex: 2, fontSize: 9, paddingRight: 4 },
-  cellEntreprise: { flex: 2, fontSize: 9, paddingRight: 4 },
-  cellSignature: { flex: 2, fontSize: 9, paddingRight: 4 },
-  cellParaphe: { flex: 1, fontSize: 9 },
   certificationText: {
     fontSize: 10,
     fontWeight: "bold",
@@ -91,16 +73,6 @@ export function EmargementPdf({
 }): React.ReactElement {
   const lignesVides = data.lignesVides ?? 3;
 
-  // Participants réels + lignes vides
-  const allRows: Array<{ nom: string; entreprise: string; vide: boolean }> = [
-    ...data.participants.map((p) => ({
-      nom: p.nom,
-      entreprise: p.entreprise ?? "",
-      vide: false,
-    })),
-    ...Array.from({ length: lignesVides }, () => ({ nom: "", entreprise: "", vide: true })),
-  ];
-
   return (
     <Document>
       <QualiopiPage
@@ -116,32 +88,31 @@ export function EmargementPdf({
           <FieldRow label="Horaires" value={`${data.horaires} (heure de Paris)`} />
           <FieldRow label="Lieu" value={data.lieu} />
           <FieldRow label="Formateur / Formatrice" value={data.nomFormateur} />
-          <FieldRow label="NDA organisme" value={data.nda || identite.nda} />
+          <FieldRow label="NDA organisme" value={data.nda || identite.nda} required />
         </DocSection>
 
         {/* Tableau émargement */}
         <DocSection title="Émargement des participants">
-          {/* En-tête du tableau */}
-          <View style={localStyles.tableHeaderRow}>
-            <Text style={[localStyles.cellNom, { fontWeight: "bold" }]}>Nom — Prénom</Text>
-            <Text style={[localStyles.cellEntreprise, { fontWeight: "bold" }]}>Entreprise</Text>
-            <Text style={[localStyles.cellSignature, { fontWeight: "bold" }]}>Signature matin</Text>
-            <Text style={[localStyles.cellSignature, { fontWeight: "bold" }]}>
-              Signature après-midi
-            </Text>
-            <Text style={[localStyles.cellParaphe, { fontWeight: "bold" }]}>Paraphe formateur</Text>
-          </View>
-
-          {/* Lignes participants */}
-          {allRows.map((row, idx) => (
-            <View key={idx} style={localStyles.tableDataRow}>
-              <Text style={localStyles.cellNom}>{row.nom}</Text>
-              <Text style={localStyles.cellEntreprise}>{row.entreprise}</Text>
-              <Text style={localStyles.cellSignature}></Text>
-              <Text style={localStyles.cellSignature}></Text>
-              <Text style={localStyles.cellParaphe}></Text>
-            </View>
-          ))}
+          <DataTable
+            columns={[
+              { key: "nom", header: "Nom — Prénom", flex: 2 },
+              { key: "entreprise", header: "Entreprise", flex: 2 },
+              { key: "matin", header: "Signature matin", flex: 2 },
+              { key: "apresMidi", header: "Signature après-midi", flex: 2 },
+              { key: "paraphe", header: "Paraphe formateur", flex: 1 },
+              { key: "observations", header: "Observations", flex: 2 },
+            ]}
+            rows={data.participants.map((p) => ({
+              nom: p.nom,
+              entreprise: p.entreprise ?? "",
+              matin: "",
+              apresMidi: "",
+              paraphe: "",
+              observations: "",
+            }))}
+            emptyRows={lignesVides}
+            minRowHeight={32}
+          />
         </DocSection>
 
         {/* Certification des présences */}
@@ -152,24 +123,20 @@ export function EmargementPdf({
         </View>
 
         {/* Zone de signatures */}
-        <View style={pdfStyles.signatureZone}>
-          <View style={pdfStyles.signatureBox}>
-            <Text style={{ fontSize: 9, fontWeight: "bold", marginBottom: 4 }}>
-              Signature du formateur / de la formatrice
-            </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft") }}>
-              Nom : {data.nomFormateur}
-            </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft"), marginTop: 4 }}>Date :</Text>
-          </View>
-          <View style={pdfStyles.signatureBox}>
-            <Text style={{ fontSize: 9, fontWeight: "bold", marginBottom: 4 }}>
-              Visa du responsable pédagogique
-            </Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft") }}>Nom :</Text>
-            <Text style={{ fontSize: 8, color: brandColor("fg-soft"), marginTop: 4 }}>Date :</Text>
-          </View>
-        </View>
+        <SignatureZone
+          parties={[
+            {
+              titre: "Signature du formateur / de la formatrice",
+              nom: `Nom : ${data.nomFormateur}`,
+              mention: "Date :",
+            },
+            {
+              titre: "Visa du responsable pédagogique",
+              nom: "Nom :",
+              mention: "Date :",
+            },
+          ]}
+        />
 
         {/* Mention conservation */}
         <Text style={pdfStyles.legalNote}>

@@ -15,6 +15,8 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  DataTable,
+  formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS, formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
@@ -48,33 +50,6 @@ const styles = StyleSheet.create({
     color: brandColor("fg-muted"),
     fontStyle: "italic",
   },
-  ventilationHeader: {
-    flexDirection: "row",
-    borderBottomWidth: 2,
-    borderBottomColor: brandColor("mocha"),
-    paddingBottom: 4,
-    marginBottom: 4,
-  },
-  colParticipants: { flex: 2 },
-  colHeures: { flex: 1.5, textAlign: "right" },
-  colBareme: { flex: 1.5, textAlign: "right" },
-  colPrisEnCharge: { flex: 2, textAlign: "right" },
-  colRac: { flex: 1.5, textAlign: "right" },
-  ventilHeaderText: {
-    fontSize: 8,
-    fontWeight: "bold",
-    color: brandColor("fg-soft"),
-  },
-  ventilRow: {
-    flexDirection: "row",
-    paddingVertical: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-  },
-  ventilCell: {
-    fontSize: 9,
-    color: brandColor("fg"),
-  },
   ventilTotalRow: {
     flexDirection: "row",
     paddingVertical: 5,
@@ -98,20 +73,6 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
 });
-
-// ============================================================
-// Helpers monétaires
-// ============================================================
-
-function formatEuros(cents: number): string {
-  const euros = cents / 100;
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(euros);
-}
 
 // ============================================================
 // Types de données
@@ -191,62 +152,35 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
 
         {/* Ventilation horaire */}
         <DocSection title="Ventilation horaire et financement">
-          {/* En-tête tableau */}
-          <View style={styles.ventilationHeader}>
-            <View style={styles.colParticipants}>
-              <Text style={styles.ventilHeaderText}>Participant</Text>
-            </View>
-            <View style={styles.colHeures}>
-              <Text style={[styles.ventilHeaderText, { textAlign: "right" }]}>Heures</Text>
-            </View>
-            <View style={styles.colBareme}>
-              <Text style={[styles.ventilHeaderText, { textAlign: "right" }]}>Barème/h</Text>
-            </View>
-            <View style={styles.colPrisEnCharge}>
-              <Text style={[styles.ventilHeaderText, { textAlign: "right" }]}>Pris en charge</Text>
-            </View>
-            <View style={styles.colRac}>
-              <Text style={[styles.ventilHeaderText, { textAlign: "right" }]}>RAC</Text>
-            </View>
-          </View>
-
-          {/* Lignes participants */}
-          {data.ventilation.map((v, idx) => (
-            <View key={idx} style={styles.ventilRow}>
-              <View style={styles.colParticipants}>
-                <Text style={styles.ventilCell}>{v.nomParticipant}</Text>
-              </View>
-              <View style={styles.colHeures}>
-                <Text style={[styles.ventilCell, { textAlign: "right" }]}>
-                  {formatHeuresCentiemes(v.heuresRealisees)}
-                </Text>
-              </View>
-              <View style={styles.colBareme}>
-                <Text style={[styles.ventilCell, { textAlign: "right" }]}>
-                  {formatEuros(v.baremePrisEnChargeHeureCents)}
-                </Text>
-              </View>
-              <View style={styles.colPrisEnCharge}>
-                <Text style={[styles.ventilCell, { textAlign: "right" }]}>
-                  {formatEuros(v.montantPrisEnChargeCents)}
-                </Text>
-              </View>
-              <View style={styles.colRac}>
-                <Text style={[styles.ventilCell, { textAlign: "right" }]}>
-                  {formatEuros(v.resteAChargeCents)}
-                </Text>
-              </View>
-            </View>
-          ))}
+          <DataTable
+            columns={[
+              { key: "participant", header: "Participant", flex: 2 },
+              { key: "heures", header: "Heures", flex: 1.5, align: "right" },
+              { key: "bareme", header: "Barème/h", flex: 1.5, align: "right" },
+              { key: "prisEnCharge", header: "Pris en charge", flex: 2, align: "right" },
+              { key: "rac", header: "RAC", flex: 1.5, align: "right" },
+            ]}
+            rows={data.ventilation.map((v) => ({
+              participant: v.nomParticipant,
+              heures: formatHeuresCentiemes(v.heuresRealisees),
+              bareme: formatEurosFromCents(v.baremePrisEnChargeHeureCents),
+              prisEnCharge: formatEurosFromCents(v.montantPrisEnChargeCents),
+              rac: formatEurosFromCents(v.resteAChargeCents),
+            }))}
+          />
 
           {/* Totaux */}
           <View style={styles.ventilTotalRow}>
             <Text style={styles.ventilTotalLabel}>Total pris en charge OPCO</Text>
-            <Text style={styles.ventilTotalValue}>{formatEuros(data.totalPrisEnChargeCents)}</Text>
+            <Text style={styles.ventilTotalValue}>
+              {formatEurosFromCents(data.totalPrisEnChargeCents)}
+            </Text>
           </View>
           <View style={[styles.ventilTotalRow, { backgroundColor: brandColor("terracotta-soft") }]}>
             <Text style={styles.ventilTotalLabel}>Total reste à charge</Text>
-            <Text style={styles.ventilTotalValue}>{formatEuros(data.totalResteAChargeCents)}</Text>
+            <Text style={styles.ventilTotalValue}>
+              {formatEurosFromCents(data.totalResteAChargeCents)}
+            </Text>
           </View>
         </DocSection>
 

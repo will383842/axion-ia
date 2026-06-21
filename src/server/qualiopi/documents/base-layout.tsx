@@ -651,6 +651,18 @@ interface LegalCalloutProps {
 }
 
 /**
+ * `true` si le nœud est purement textuel (string/number, ou tableau de tels —
+ * ex. `["texte ", email, "."]`). Sert à envelopper automatiquement le contenu
+ * dans un <Text> : @react-pdf rejette toute chaîne hors <Text> (texte perdu
+ * silencieusement). Faux dès qu'un élément React est présent (déjà structuré).
+ */
+function estTextuel(node: React.ReactNode): boolean {
+  if (typeof node === "string" || typeof node === "number") return true;
+  if (Array.isArray(node)) return node.every((n) => estTextuel(n));
+  return false;
+}
+
+/**
  * Encart mis en évidence (mention légale, avertissement, info, succès).
  * Bord gauche coloré + fond doux. Unifie les nombreux blocs ad hoc
  * (subrogation, RAC, durée certifiée, bannières d'attestation partielle…).
@@ -688,7 +700,7 @@ export function LegalCallout({
           {title}
         </Text>
       ) : null}
-      {typeof children === "string" ? (
+      {estTextuel(children) ? (
         <Text style={{ fontSize: T.sm, color: brandColor("fg"), lineHeight: T.lineNormal }}>
           {children}
         </Text>

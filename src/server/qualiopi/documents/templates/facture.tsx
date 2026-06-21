@@ -20,7 +20,6 @@ import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
-  pdfStyles,
   DocSection,
   FieldRow,
   DataTable,

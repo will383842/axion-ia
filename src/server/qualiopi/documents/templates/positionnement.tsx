@@ -16,6 +16,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  LegalCallout,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
@@ -199,11 +200,11 @@ export function PositionnementPdf({
           </Text>
         </DocSection>
 
-        <Text style={pdfStyles.legalNote}>
+        <LegalCallout variant="legal">
           Données collectées dans le cadre du suivi pédagogique Qualiopi — Indicateur 7. Traitement
           conforme au RGPD. Droit d'accès :{" "}
           {identite.dpoEmail || identite.email || "contact@formation"}.
-        </Text>
+        </LegalCallout>
       </QualiopiPage>
     </Document>
   );
