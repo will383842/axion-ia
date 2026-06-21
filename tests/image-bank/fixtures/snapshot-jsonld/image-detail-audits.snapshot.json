@@ -8,7 +8,7 @@
       "@type": "Organization",
       "@id": "https://axion-ia.com/#organization",
       "name": "Axion-IA",
-      "legalName": "Axion-IA OÜ",
+      "legalName": "Axion-IA SAS",
       "url": "https://axion-ia.com",
       "logo": {
         "@type": "ImageObject",
@@ -35,8 +35,8 @@
       "areaServed": { "@type": "Country", "name": "France" },
       "address": {
         "@type": "PostalAddress",
-        "addressCountry": "EE",
-        "addressLocality": "Tallinn"
+        "addressCountry": "FR",
+        "addressLocality": "Paris"
       }
     },
     {
@@ -105,9 +105,9 @@
       "isAccessibleForFree": true,
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "acquireLicensePage": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon",
-      "copyrightHolder": { "@type": "Organization", "name": "Axion-IA OÜ" },
+      "copyrightHolder": { "@type": "Organization", "name": "Axion-IA SAS" },
       "copyrightYear": 2026,
-      "copyrightNotice": "© 2026 Axion-IA OÜ. Licensed under CC BY 4.0 — axion-ia.com",
+      "copyrightNotice": "© 2026 Axion-IA SAS. Licensed under CC BY 4.0 — axion-ia.com",
       "creditText": "Axion-IA",
       "accessibilityFeature": ["alternativeText", "structuralNavigation"],
       "accessibilityHazard": "none",

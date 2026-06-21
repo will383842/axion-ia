@@ -8,11 +8,11 @@
 
 ## Sujet — FR
 
-Votre demande de portabilité — Axion-IA OÜ
+Votre demande de portabilité — Axion-IA SAS
 
 ## Sujet — EN
 
-Your portability request — Axion-IA OÜ
+Your portability request — Axion-IA SAS
 
 ---
 
@@ -39,7 +39,7 @@ Vous pouvez transmettre ce fichier directement à tout autre responsable de trai
 Si vous souhaitez que nous transmettions directement ces données à un autre responsable de traitement, indiquez-nous ses coordonnées et son adresse de réception.
 
 Cordialement,
-DPO Axion-IA OÜ
+DPO Axion-IA SAS
 contact@axion-ia.com
 
 ---
@@ -67,5 +67,5 @@ You can transmit this file directly to any other controller of your choice.
 If you want us to transmit this data directly to another controller, share their contact details and reception address.
 
 Best regards,
-DPO Axion-IA OÜ
+DPO Axion-IA SAS
 contact@axion-ia.com

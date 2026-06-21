@@ -78,28 +78,41 @@ import {
 } from "./documents-nouvelle-version";
 import { FormateurMagicLinkEmail, formateurMagicLinkSubject } from "./formateur-magic-link";
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
-// Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
+// P1 refonte 2026-06-21 — templates « pleins » (sortis du stub-factory)
+import { DisputedNoticeEmail, disputedNoticeSubject } from "./disputed-notice";
+import { PaymentReminderJ7Email, paymentReminderJ7Subject } from "./payment-reminder-j7";
+import { PaymentOverdueJ1Email, paymentOverdueJ1Subject } from "./payment-overdue-j1";
+import { PaymentOverdueJ15Email, paymentOverdueJ15Subject } from "./payment-overdue-j15";
+import { PaymentOverdueJ30Email, paymentOverdueJ30Subject } from "./payment-overdue-j30";
 import {
-  contractVersionUpdated,
-  contractSent,
-  contractSigned,
-  contractRefused,
-  contractReminder,
-  cadrageJ1Reminder,
-  cadrageH2Reminder,
-  paymentReminderJ7,
-  paymentOverdueJ1,
-  paymentOverdueJ15,
-  paymentOverdueJ30,
-  installmentOverdueSoft,
-  installmentOverdueFirm,
-  disputedNotice,
-  bookingRescheduledByAdmin,
-  bookingJ1Reminder,
-  bookingCompletedThanks,
-  quoteReminder,
-  quoteExpired,
-} from "./_pending-templates";
+  InstallmentOverdueSoftEmail,
+  installmentOverdueSoftSubject,
+} from "./installment-overdue-soft";
+import {
+  InstallmentOverdueFirmEmail,
+  installmentOverdueFirmSubject,
+} from "./installment-overdue-firm";
+import { ContractSentEmail, contractSentSubject } from "./contract-sent";
+import { ContractSignedEmail, contractSignedSubject } from "./contract-signed";
+import { ContractRefusedEmail, contractRefusedSubject } from "./contract-refused";
+import { ContractReminderEmail, contractReminderSubject } from "./contract-reminder";
+import {
+  ContractVersionUpdatedEmail,
+  contractVersionUpdatedSubject,
+} from "./contract-version-updated";
+import { CadrageJ1ReminderEmail, cadrageJ1ReminderSubject } from "./cadrage-j1-reminder";
+import { CadrageH2ReminderEmail, cadrageH2ReminderSubject } from "./cadrage-h2-reminder";
+import {
+  BookingRescheduledByAdminEmail,
+  bookingRescheduledByAdminSubject,
+} from "./booking-rescheduled-by-admin";
+import { BookingJ1ReminderEmail, bookingJ1ReminderSubject } from "./booking-j1-reminder";
+import {
+  BookingCompletedThanksEmail,
+  bookingCompletedThanksSubject,
+} from "./booking-completed-thanks";
+import { QuoteReminderEmail, quoteReminderSubject } from "./quote-reminder";
+import { QuoteExpiredEmail, quoteExpiredSubject } from "./quote-expired";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -258,27 +271,52 @@ const TEMPLATES: TemplateMap = {
     subject: ressourcesMagicLinkSubject,
     component: RessourcesMagicLinkEmail,
   },
-  // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
-  "contract-version-updated": contractVersionUpdated,
-  "contract-sent": contractSent,
-  "contract-signed": contractSigned,
-  "contract-refused": contractRefused,
-  "contract-reminder": contractReminder,
-  "cadrage-j1-reminder": cadrageJ1Reminder,
-  "cadrage-h2-reminder": cadrageH2Reminder,
-  "payment-reminder-j7": paymentReminderJ7,
-  "payment-overdue-j1": paymentOverdueJ1,
-  "payment-overdue-j15": paymentOverdueJ15,
-  "payment-overdue-j30": paymentOverdueJ30,
-  "installment-overdue-soft": installmentOverdueSoft,
-  "installment-overdue-firm": installmentOverdueFirm,
-  "disputed-notice": disputedNotice,
-  "booking-rescheduled-by-admin": bookingRescheduledByAdmin,
-  "booking-j1-reminder": bookingJ1Reminder,
-  "booking-completed-thanks": bookingCompletedThanks,
-  "quote-reminder": quoteReminder,
-  "quote-expired": quoteExpired,
+  // P1 refonte 2026-06-21 — templates pleins (relation-client, FR+EN)
+  "contract-version-updated": {
+    subject: contractVersionUpdatedSubject,
+    component: ContractVersionUpdatedEmail,
+  },
+  "contract-sent": { subject: contractSentSubject, component: ContractSentEmail },
+  "contract-signed": { subject: contractSignedSubject, component: ContractSignedEmail },
+  "contract-refused": { subject: contractRefusedSubject, component: ContractRefusedEmail },
+  "contract-reminder": { subject: contractReminderSubject, component: ContractReminderEmail },
+  "payment-reminder-j7": {
+    subject: paymentReminderJ7Subject,
+    component: PaymentReminderJ7Email,
+  },
+  "payment-overdue-j1": { subject: paymentOverdueJ1Subject, component: PaymentOverdueJ1Email },
+  "payment-overdue-j15": { subject: paymentOverdueJ15Subject, component: PaymentOverdueJ15Email },
+  "payment-overdue-j30": { subject: paymentOverdueJ30Subject, component: PaymentOverdueJ30Email },
+  "installment-overdue-soft": {
+    subject: installmentOverdueSoftSubject,
+    component: InstallmentOverdueSoftEmail,
+  },
+  "installment-overdue-firm": {
+    subject: installmentOverdueFirmSubject,
+    component: InstallmentOverdueFirmEmail,
+  },
+  "disputed-notice": {
+    subject: disputedNoticeSubject,
+    component: DisputedNoticeEmail,
+  },
+  // P1 refonte 2026-06-21 — cadrage / booking / devis (templates pleins)
+  "cadrage-j1-reminder": { subject: cadrageJ1ReminderSubject, component: CadrageJ1ReminderEmail },
+  "cadrage-h2-reminder": { subject: cadrageH2ReminderSubject, component: CadrageH2ReminderEmail },
+  "booking-rescheduled-by-admin": {
+    subject: bookingRescheduledByAdminSubject,
+    component: BookingRescheduledByAdminEmail,
+  },
+  "booking-j1-reminder": { subject: bookingJ1ReminderSubject, component: BookingJ1ReminderEmail },
+  "booking-completed-thanks": {
+    subject: bookingCompletedThanksSubject,
+    component: BookingCompletedThanksEmail,
+  },
+  "quote-reminder": { subject: quoteReminderSubject, component: QuoteReminderEmail },
+  "quote-expired": { subject: quoteExpiredSubject, component: QuoteExpiredEmail },
 };
+
+/** Tous les noms de templates email enregistrés (pour tests de couverture). */
+export const EMAIL_TEMPLATE_NAMES = Object.keys(TEMPLATES) as EmailJobName[];
 
 export interface RenderedEmail {
   subject: string;

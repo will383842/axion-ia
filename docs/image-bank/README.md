@@ -1,6 +1,6 @@
 # Image Bank — Documentation V1
 
-> Banque d'images SEO/AEO/GEO 2026 Axion-IA OÜ. Spec maître :
+> Banque d'images SEO/AEO/GEO 2026 Axion-IA SAS. Spec maître :
 > [`_AUDIT/PROMPT-IMAGE-BANK-AUDIT-AUTOPILOT-2026.md`](../../_AUDIT/PROMPT-IMAGE-BANK-AUDIT-AUTOPILOT-2026.md).
 > ADR : [`0027-image-bank-architecture.md`](../adr/0027-image-bank-architecture.md).
 

@@ -183,12 +183,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",
       answer:
-        "Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable.",
+        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Nous intervenons sur plusieurs modules : interventions sur site, audit, implémentation IA, accompagnement 1-to-1, sites web et SaaS augmentés à l'IA.",
     },
     en: {
       question: "What is Axion-IA?",
       answer:
-        "Axion-IA is an operational AI consultancy for companies. We work on site (or remote) to identify, demonstrate and implement AI use cases generating costed, measurable ROI.",
+        "Axion-IA is an operational AI consultancy for companies, based in France. We work across several modules: on-site interventions, audit, AI implementation, 1-to-1 support, and websites and SaaS augmented with AI.",
     },
   },
   {
@@ -1352,17 +1352,17 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     },
   },
   {
-    slug: "facturation-tva-ee",
-    category: "Facturation & TVA EE",
+    slug: "facturation-tva",
+    category: "Facturation & TVA",
     fr: {
-      title: "Comment fonctionne la facturation TVA UE ?",
-      excerpt: "Virement SEPA/SWIFT, TVA selon résidence du client, devis fixe.",
-      body: "Axion-IA applique le régime TVA UE. Pour les clients UE B2B avec n° TVA intracommunautaire valide : autoliquidation, facture sans TVA. Pour clients UE B2C ou sans n° TVA : TVA UE applicable selon le siège du cabinet. Pour clients hors UE : facture sans TVA, hors-champ. Paiement par virement SEPA/SWIFT, devis fixe, aucune mensualité. La facture est livrée par PDF signé sous 48 h après prestation.",
+      title: "Comment fonctionne la facturation et la TVA ?",
+      excerpt: "Virement bancaire, TVA française 20 %, devis fixe.",
+      body: "Axion-IA est une SAS française et applique la TVA française. Pour les clients professionnels de l'UE disposant d'un n° de TVA intracommunautaire valide : autoliquidation, facture sans TVA (art. 196 directive 2006/112/CE). Pour les clients français et les clients UE sans n° de TVA : TVA française à 20 %. Pour les clients hors UE : facture sans TVA (hors-champ). Paiement par virement, devis fixe, aucune mensualité. La facture est livrée en PDF signé sous 48 h après prestation.",
     },
     en: {
-      title: "How does EU VAT billing work?",
-      excerpt: "SEPA/SWIFT bank transfer, VAT according to client residence, fixed quote.",
-      body: "Axion-IA applies the EU VAT regime. For EU B2B clients with valid intracommunity VAT number: reverse charge, invoice without VAT. For EU B2C or clients without VAT number: EU VAT applicable based on the consultancy's home jurisdiction. For non-EU clients: invoice without VAT, out of scope. Payment via SEPA/SWIFT bank transfer, fixed quote, no subscriptions. Signed PDF invoice delivered within 48h of service.",
+      title: "How does billing and VAT work?",
+      excerpt: "Bank transfer, French 20% VAT, fixed quote.",
+      body: "Axion-IA is a French company (SAS) and applies French VAT. For EU business clients with a valid intra-community VAT number: reverse charge, invoice without VAT. For French clients and EU clients without a VAT number: French VAT at 20%. For non-EU clients: invoice without VAT (out of scope). Payment by bank transfer, fixed quote, no subscriptions. Signed PDF invoice delivered within 48h of service.",
     },
   },
   {

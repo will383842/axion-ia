@@ -69,15 +69,10 @@ export const env = createEnv({
       .regex(/^sk_(live|test)_/, "STRIPE_SECRET_KEY must start with sk_live_ or sk_test_")
       .optional()
       .superRefine((val, ctx) => {
-        if (process.env.NODE_ENV !== "production") return;
-        if (!val) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "STRIPE_SECRET_KEY is required in production (Booking V1 Stripe Checkout)",
-          });
-          return;
-        }
-        if (process.env.STRIPE_LIVE_MODE === "true" && val.startsWith("sk_test_")) {
+        // Stripe NEUTRALISÉ par défaut → clé NON requise au boot prod (paiement
+        // par virement/manuel). On vérifie seulement la cohérence LIVE si une
+        // clé est fournie.
+        if (val && process.env.STRIPE_LIVE_MODE === "true" && val.startsWith("sk_test_")) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "STRIPE_SECRET_KEY must be sk_live_* when STRIPE_LIVE_MODE=true",
@@ -91,15 +86,8 @@ export const env = createEnv({
       .regex(/^pk_(live|test)_/, "STRIPE_PUBLISHABLE_KEY must start with pk_live_ or pk_test_")
       .optional()
       .superRefine((val, ctx) => {
-        if (process.env.NODE_ENV !== "production") return;
-        if (!val) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "STRIPE_PUBLISHABLE_KEY is required in production",
-          });
-          return;
-        }
-        if (process.env.STRIPE_LIVE_MODE === "true" && val.startsWith("pk_test_")) {
+        // Stripe neutralisé → non requis au boot prod. Cohérence LIVE seulement.
+        if (val && process.env.STRIPE_LIVE_MODE === "true" && val.startsWith("pk_test_")) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "STRIPE_PUBLISHABLE_KEY must be pk_live_* when STRIPE_LIVE_MODE=true",
@@ -111,16 +99,13 @@ export const env = createEnv({
       .string()
       .regex(/^whsec_/, "STRIPE_WEBHOOK_SECRET must start with whsec_")
       .min(20)
+      .optional(),
+    /// Interrupteur Stripe. ABSENT/false par défaut → paiement par virement /
+    /// saisie manuelle. `true` (+ clés Stripe) réactive le paiement carte en ligne.
+    STRIPE_ENABLED: z
+      .string()
       .optional()
-      .superRefine((val, ctx) => {
-        if (process.env.NODE_ENV !== "production") return;
-        if (!val) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "STRIPE_WEBHOOK_SECRET is required in production",
-          });
-        }
-      }),
+      .transform((v) => v === "true" || v === "1"),
     /// Toggle mode LIVE vs TEST. Si `true` → keys doivent être `sk_live_` + `pk_live_`.
     STRIPE_LIVE_MODE: z
       .string()
@@ -362,6 +347,7 @@ export const env = createEnv({
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_ENABLED: process.env.STRIPE_ENABLED,
     STRIPE_LIVE_MODE: process.env.STRIPE_LIVE_MODE,
     STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
     // DocuSeal self-hosted (Booking V1 — ADR 0014)

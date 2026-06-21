@@ -1,5 +1,7 @@
 # ADR 0015 — Architecture TVA agnostique FR vs EE
 
+> ⚠️ **SUPERSEDED — Axion-IA est désormais une SAS française (régime France).** Le scénario par défaut « OÜ estonienne / TVA EE » décrit ci-dessous n'est plus actif : la structure retenue est **Axion-IA SAS** (TVA FR, autoliquidation B2B intra-UE conservée). Les identifiants FR (SIREN/SIRET/n° TVA FR) sont communiqués sur demande (non encore publiés). Le corps historique ci-dessous est conservé tel quel pour l'audit trail.
+
 **Statut** : ✅ Acté Sprint X.0 booking-v1 · 2026-05-13
 **Décideur** : Will (gérant Axion-IA OÜ)
 **Contexte sources** : audit booking V2.3 — `agent-11-conformite-legale-v1.md` P0-4 + P0-5, `03-ARCHITECTURE-CIBLE.md` §5.8.1, `STOP-AND-ASK.md` Q2 / D15

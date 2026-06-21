@@ -4,7 +4,7 @@
 - **Version** : 1.0
 - **Date dernière maj** : 2026-05-15
 - **Sévérité** : 🔴 **P0 — critique** (réputation + RGPD/légal)
-- **Impact si non traité** : Axion-IA OÜ exposée à confusion juridique (mention SIREN/RCS) ou rupture doctrine produit (mention "agence", "studio", "formation Qualiopi/OPCO"). Risque légal + risque cannibalisation positionnement "cabinet IA opérationnel".
+- **Impact si non traité** : Axion-IA SAS exposée à confusion juridique (mention SIREN/RCS) ou rupture doctrine produit (mention "agence", "studio", "formation Qualiopi/OPCO"). Risque légal + risque cannibalisation positionnement "cabinet IA opérationnel".
 
 ## Trigger
 
@@ -15,14 +15,14 @@
 
 ## Doctrine intouchable (cf. mémoires)
 
-| Règle                                                                            | Cf. mémoire                       |
-| -------------------------------------------------------------------------------- | --------------------------------- |
-| Naming = **Axion-IA** partout (jamais AxionIA double graphie)                    | `axionia_naming_brand_vs_project` |
-| OÜ estonienne — **0 SIREN/SIRET/RCS**                                            | `axionia_project`                 |
-| Cabinet IA opérationnel — **jamais agence/studio/atelier**                       | `axionia_naming_cabinet`          |
-| Doctrine **≥ 95 % AxionIA-centric**, ≤ 5 % data INSEE                            | `axionia_doctrine_code_ssot`      |
-| Lift formation ban — **mention formation interdite** sauf interventions taxonomy | ADR 0003                          |
-| Palette terracotta #C45A3E + crème #FAF7F2 + ink #1F1B16 uniquement              | `axionia_design_pivot`            |
+| Règle                                                                              | Cf. mémoire                       |
+| ---------------------------------------------------------------------------------- | --------------------------------- |
+| Naming = **Axion-IA** partout (jamais AxionIA double graphie)                      | `axionia_naming_brand_vs_project` |
+| SAS française — immatriculation FR communiquée sur demande (n° non encore publiés) | `axionia_project`                 |
+| Cabinet IA opérationnel — **jamais agence/studio/atelier**                         | `axionia_naming_cabinet`          |
+| Doctrine **≥ 95 % AxionIA-centric**, ≤ 5 % data INSEE                              | `axionia_doctrine_code_ssot`      |
+| Lift formation ban — **mention formation interdite** sauf interventions taxonomy   | ADR 0003                          |
+| Palette terracotta #C45A3E + crème #FAF7F2 + ink #1F1B16 uniquement                | `axionia_design_pivot`            |
 
 ## Prérequis
 
@@ -151,10 +151,10 @@ Tout hit → repasser §1-§6 par batch.
 
 ## Escalation
 
-| Niveau | Contact                             | Quand                                                                      |
-| ------ | ----------------------------------- | -------------------------------------------------------------------------- |
-| L1     | Will                                | toujours (impact réputation)                                               |
-| L2     | Avocat / DPO `contact@axion-ia.com` | si confusion juridique SIREN/RCS (Axion-IA OÜ vs FR société non existante) |
+| Niveau | Contact                             | Quand                                                                              |
+| ------ | ----------------------------------- | ---------------------------------------------------------------------------------- |
+| L1     | Will                                | toujours (impact réputation)                                                       |
+| L2     | Avocat / DPO `contact@axion-ia.com` | si confusion juridique SIREN/RCS (immatriculation Axion-IA SAS non encore publiée) |
 
 ## Post-mortem recommandé
 

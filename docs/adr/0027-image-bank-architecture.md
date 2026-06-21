@@ -1,5 +1,7 @@
 # ADR 0027 — Image Bank Architecture (V1)
 
+> ⚠️ **SUPERSEDED (identité) — Axion-IA est désormais une SAS française (régime France).** Le copyright/licence des images doit porter « © Axion-IA SAS » et non « Axion-IA OÜ (estonienne, 0 SIREN) ». L'architecture image-bank décrite reste valable. Corps historique conservé pour l'audit trail.
+
 - **Statut** : Accepted
 - **Date** : 2026-05-16
 - **Sprint** : 1 → 7 (autopilot V1)

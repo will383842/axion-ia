@@ -23,7 +23,7 @@ Référence master prompt : `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` § 
 - [ ] **A9** `<meta name="theme-color" content="#C45A3E">` (terracotta doctrine)
 - [ ] **A10** `<meta name="author" content="Manon">` pour contenus générés
 - [ ] **A11** `<meta name="publisher" content="Axion-IA">`
-- [ ] **A12** `<meta name="copyright" content="© Axion-IA OÜ">`
+- [ ] **A12** `<meta name="copyright" content="© Axion-IA SAS">`
 - [ ] **A13** Preload font display=swap (LCP optimization)
 - [ ] **A14** `<link rel="dns-prefetch">` ressources tierces (images.unsplash.com)
 - [ ] **A15** Date format ISO 8601 toutes balises temporelles (`<time datetime="…">`)

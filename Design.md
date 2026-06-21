@@ -437,7 +437,7 @@ Implémentation : `src/components/ui/button.tsx` (cva). Toutes les variants util
 - **Tagline** : `font-serif` `text-sm leading-snug`, max-w-xs, ex : « Le cabinet IA _qui vous fait gagner_. » avec `text-terracotta-soft italic` sur la portion italique.
 - **Layout** : flex+grid combo (brand fixed-width 256 px à gauche, 4 colonnes link `flex-1` à droite). Évite le piège JIT `grid-cols-12` quand `--breakpoint-sm` n'est pas défini.
 - **Links** : `text-mocha-fg/85 hover:text-terracotta-soft transition` + focus ring terracotta avec offset mocha.
-- **Bottom strip** : single-line desktop, `text-xs text-mocha-fg/65`, séparé par `border-border-on-mocha border-t pt-5`. Contient © OÜ, EU hosting, RGPD, sitemap, locale switcher.
+- **Bottom strip** : single-line desktop, `text-xs text-mocha-fg/65`, séparé par `border-border-on-mocha border-t pt-5`. Contient © Axion-IA SAS, EU hosting, RGPD, sitemap, locale switcher.
 - Form newsletter (si présent) : adapté automatiquement par les selectors `[data-tone="dark"] input` dans `globals.css` (background ivoire-on-mocha, focus terracotta-soft).
 
 ### Card
@@ -538,7 +538,7 @@ Fichiers de référence :
 | `buildFaqJsonLd`           | `FAQPage`                                                                                  | FAQs basiques                                   |
 | `buildFaqSpeakableJsonLd`  | `FAQPage` + `speakable`                                                                    | FAQs voice-first (Assistant + Alexa + Bixby)    |
 | `buildBreadcrumbJsonLd`    | `BreadcrumbList`                                                                           | toutes pages > niveau 1                         |
-| `buildOrganizationJsonLd`  | `Organization` (10 champs + slots `vatID`/`registrikood`)                                  | layout-level                                    |
+| `buildOrganizationJsonLd`  | `Organization` (10 champs + slots `vatID` FR / `siren`)                                    | layout-level                                    |
 | `buildWebsiteJsonLd`       | `WebSite` + `SearchAction`                                                                 | layout-level                                    |
 | `buildPersonJsonLd`        | `Person` + worksFor + knowsAbout + sameAs                                                  | `/a-propos`, `/blog/auteur/[slug]`              |
 | `buildArticleJsonLd`       | `Article` + `dateModified` + Person author + `wordCount` + `keywords` + `mainEntityOfPage` | `/blog/[slug]`, `/cas-concrets/[slug]`          |

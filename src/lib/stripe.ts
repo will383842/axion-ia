@@ -62,12 +62,15 @@ export function getStripe(): Stripe {
 }
 
 /**
- * Helper pour gates : true si Stripe est configuré et utilisable.
- * Utilisé par les Server Actions pour fallback en mode manuel hybride
- * (ADR 0013 : si Stripe indispo, admin saisit paiement hors-Stripe).
+ * Helper pour gates : true si Stripe est ACTIVÉ et utilisable.
+ *
+ * Stripe est NEUTRALISÉ par défaut : le paiement se fait par virement /
+ * saisie manuelle dans l'admin (`markInvoicePaidManuallyAction`). Tout le code
+ * Stripe reste en place mais dort. Pour réactiver le paiement carte en ligne :
+ * poser `STRIPE_ENABLED=true` + les clés Stripe. (Interrupteur réversible.)
  */
 export function isStripeConfigured(): boolean {
-  return Boolean(process.env["STRIPE_SECRET_KEY"]);
+  return process.env["STRIPE_ENABLED"] === "true" && Boolean(process.env["STRIPE_SECRET_KEY"]);
 }
 
 /**

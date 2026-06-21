@@ -235,7 +235,7 @@ export default async function PressePage({ params }: Props) {
                 "@type": "Organization",
                 "@id": `${SITE_URL}/#organization`,
                 name: "Axion-IA",
-                legalName: "Axion-IA",
+                legalName: "Axion-IA SAS",
                 url: SITE_URL,
                 logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph-image` },
               },

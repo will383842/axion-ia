@@ -68,7 +68,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     "@type": "Organization",
     "@id": ORG_ID,
     name: SITE_NAME,
-    legalName: "Axion-IA",
+    legalName: "Axion-IA SAS",
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
