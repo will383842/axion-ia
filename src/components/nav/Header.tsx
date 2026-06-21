@@ -1,5 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SERVICES, serviceNavShort } from "@/content/services";
 import { BRAND } from "@/lib/brand";
@@ -156,6 +156,18 @@ export async function Header() {
             l'espace est trop serré pour le dual-CTA dans le cap 1366. En drawer
             (< xl) les deux CTA sont rendus dans le menu mobile. */}
         <div className="ml-auto hidden shrink-0 items-center gap-3 xl:flex">
+          {/* Recherche site — lien-icône vers /recherche (2026-06-21). Server
+              Component, zéro JS, zéro CLS : la page /recherche porte le champ.
+              Permet au visiteur de chercher ville / mot / métier / besoin. */}
+          <Link
+            href={ROUTES.search}
+            aria-label={isFr ? "Rechercher sur le site" : "Search the site"}
+            data-cta="header-search"
+            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex h-11 w-11 items-center justify-center rounded-full transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </Link>
+
           {/* CTA secondaire → /contact (formulaire).
               Fond ivoire bg-paper + texte terracotta : cohérent avec le badge
               logo, lisible sur fond terracotta du header. Engagement plus doux
@@ -207,6 +219,15 @@ export async function Header() {
               <p className="text-fg-muted mb-2 text-[12px] font-medium tracking-tight">
                 {taglineB2B}
               </p>
+              {/* Recherche site (mobile) — accès direct au champ /recherche. */}
+              <Link
+                href={ROUTES.search}
+                aria-label={isFr ? "Rechercher sur le site" : "Search the site"}
+                className="text-fg hover:bg-border/40 focus-visible:ring-primary mb-1 flex items-center gap-2 rounded-md px-2 py-2 font-medium focus-visible:ring-2 focus-visible:outline-none"
+              >
+                <Search className="text-terracotta h-4 w-4" aria-hidden="true" />
+                <span>{isFr ? "Rechercher" : "Search"}</span>
+              </Link>
               {/* 6 items principaux */}
               {navItems.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
