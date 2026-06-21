@@ -476,7 +476,7 @@ export function buildOrganizationJsonLd({
     "@id": `${SITE_URL}/#organization`,
     "@type": "Organization",
     name: "Axion-IA",
-    legalName: "Axion-IA",
+    legalName: "Axion-IA SAS",
     alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
     url: SITE_URL,
     logo: `${SITE_URL}/opengraph-image`,
@@ -675,7 +675,7 @@ export function buildPersonJsonLd({
     worksFor: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA",
+      legalName: "Axion-IA SAS",
       url: SITE_URL,
     },
     knowsAbout: [
@@ -797,7 +797,7 @@ export function buildArticleJsonLd({
     publisher: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA",
+      legalName: "Axion-IA SAS",
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/opengraph-image`,
@@ -996,7 +996,7 @@ export function buildLocalBusinessJsonLd({
     parentOrganization: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA",
+      legalName: "Axion-IA SAS",
       alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
       url: SITE_URL,
     },
@@ -1497,7 +1497,7 @@ export function buildDatasetJsonLd({
     creator: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA",
+      legalName: "Axion-IA SAS",
       alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
       url: SITE_URL,
     },

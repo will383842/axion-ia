@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Génère tous les secrets prod requis pour Axion-IA OÜ (Sprint 24.1).
+# Génère tous les secrets prod requis pour Axion-IA SAS (Sprint 24.1).
 #
 # Sortie : copy-paste prêts pour Coolify env vars.
 #
@@ -33,7 +33,7 @@ BACKUP_ENCRYPTION_PASSPHRASE=$(openssl rand -base64 32 | tr -d '=' | tr '/+' '_-
 INDEXNOW_KEY=$(openssl rand -hex 16)
 
 cat <<EOF
-# Axion-IA OÜ · secrets prod générés $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+# Axion-IA SAS · secrets prod générés $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 # Coller dans Coolify → Environment variables. NE JAMAIS committer ce fichier.
 # Toutes les valeurs respectent les contraintes superRefine de src/env.ts.
 
@@ -57,8 +57,8 @@ INDEXNOW_KEY=${INDEXNOW_KEY}
 # HETZNER_STORAGE_HOST=          # user.your-storagebox.de
 # HETZNER_STORAGE_KEY=           # depuis Hetzner Storage Box S3 keys
 # HETZNER_STORAGE_SECRET=        # idem
-# COMPANY_REGISTRATION_NUMBER=   # registrikood EE
-# COMPANY_VAT_NUMBER=            # EE-XXXXXXXXX
+# COMPANY_REGISTRATION_NUMBER=   # SIREN/SIRET FR
+# COMPANY_VAT_NUMBER=            # FRXX XXXXXXXXX (TVA intracommunautaire FR)
 # SENTRY_DSN=                    # depuis sentry.axion-ia.com → settings/projects/.../keys
 # SENTRY_AUTH_TOKEN=             # depuis sentry.axion-ia.com → settings/auth-tokens
 # GOOGLE_SITE_VERIFICATION=      # depuis search.google.com → property → verify HTML tag

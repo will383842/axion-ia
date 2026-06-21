@@ -657,16 +657,16 @@ async function seedFAQs() {
       category: "general",
       qFr: "Qu'est-ce qu'Axion-IA ?",
       qEn: "What is Axion-IA?",
-      aFr: "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en Estonie (UE). Nous intervenons sur trois modules : interventions sur site, audit, et implémentation IA.",
-      aEn: "Axion-IA is an operational AI consultancy for companies, based in Estonia (EU). We deliver across three modules: on-site sessions, audits, and AI implementation.",
+      aFr: "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Nous intervenons sur trois modules : interventions sur site, audit, et implémentation IA.",
+      aEn: "Axion-IA is an operational AI consultancy for companies, based in France. We deliver across three modules: on-site sessions, audits, and AI implementation.",
     },
     {
       slug: "qui-est-derriere-axionia",
       category: "general",
       qFr: "Qui est derrière Axion-IA ?",
       qEn: "Who is behind Axion-IA?",
-      aFr: "Will, fondateur, 10+ ans d'expérience terrain en digitalisation et IA appliquée. Axion-IA OÜ est constituée en Estonie, conforme RGPD et droit européen.",
-      aEn: "Will, founder, with 10+ years of hands-on experience in digitization and applied AI. Axion-IA OÜ is incorporated in Estonia, GDPR-compliant and aligned with EU law.",
+      aFr: "Will, fondateur, 10+ ans d'expérience terrain en digitalisation et IA appliquée. Axion-IA SAS est une société française, conforme RGPD et droit européen.",
+      aEn: "Will, founder, with 10+ years of hands-on experience in digitization and applied AI. Axion-IA SAS is a French company, GDPR-compliant and aligned with EU law.",
     },
     {
       slug: "ou-intervenez-vous",
@@ -689,8 +689,8 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Combien coûte l'intervention Essentielle ?",
       qEn: "How much does the Essentielle session cost?",
-      aFr: "490 € HT pour 1-10 participants, 790 € HT pour 11-30, 1 190 € HT au-delà. TVA estonienne en sus selon résidence du client.",
-      aEn: "€490 excl. VAT for 1-10 participants, €790 for 11-30, €1,190 above. Estonian VAT extra depending on client residence.",
+      aFr: "490 € HT pour 1-10 participants, 790 € HT pour 11-30, 1 190 € HT au-delà. TVA en sus selon le régime applicable.",
+      aEn: "€490 excl. VAT for 1-10 participants, €790 for 11-30, €1,190 above. VAT extra depending on the applicable regime.",
     },
     {
       slug: "qu-est-ce-qu-un-audit",
@@ -753,8 +753,8 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Comment puis-je payer ?",
       qEn: "How can I pay?",
-      aFr: "Virement bancaire UE (IBAN estonien fourni). Facture émise par Axion-IA OÜ avec TVA EE selon résidence.",
-      aEn: "EU bank transfer (Estonian IBAN provided). Invoice issued by Axion-IA OÜ with Estonian VAT depending on residence.",
+      aFr: "Virement bancaire UE (IBAN fourni sur la facture). Facture émise par Axion-IA SAS avec TVA selon le régime applicable.",
+      aEn: "EU bank transfer (IBAN provided on the invoice). Invoice issued by Axion-IA SAS with VAT depending on the applicable regime.",
     },
     {
       slug: "donnees-rgpd",
@@ -769,8 +769,8 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Comment est appliquée la TVA ?",
       qEn: "How is VAT applied?",
-      aFr: "TVA estonienne 22 % par défaut (sauf B2B intra-UE avec numéro TVA valide → autoliquidation). Hors UE : exonération.",
-      aEn: "Default 22% Estonian VAT (except intra-EU B2B with valid VAT number → reverse charge). Outside EU: exempt.",
+      aFr: "TVA française 20 % par défaut (sauf B2B intra-UE avec numéro TVA valide → autoliquidation). Hors UE : exonération.",
+      aEn: "Default 20% French VAT (except intra-EU B2B with valid VAT number → reverse charge). Outside EU: exempt.",
     },
     {
       slug: "annulation-report",
@@ -919,9 +919,9 @@ async function seedHelpArticles() {
       titleFr: "Comprendre ma facture Axion-IA",
       titleEn: "Understanding my Axion-IA invoice",
       bodyFr:
-        "Facture émise par Axion-IA OÜ (Estonie) en EUR, TVA EE 22 % par défaut. Pour clients B2B intra-UE avec numéro TVA, autoliquidation appliquée (TVA 0 %). Mention 'reverse charge' obligatoire.",
+        "Facture émise par Axion-IA SAS (France) en EUR, TVA française 20 % par défaut. Pour clients B2B intra-UE avec numéro TVA, autoliquidation appliquée (TVA 0 %). Mention 'autoliquidation / reverse charge' obligatoire.",
       bodyEn:
-        "Invoice issued by Axion-IA OÜ (Estonia) in EUR, default 22% Estonian VAT. For intra-EU B2B clients with VAT number, reverse charge applies (0% VAT). 'Reverse charge' mention is mandatory.",
+        "Invoice issued by Axion-IA SAS (France) in EUR, default 20% French VAT. For intra-EU B2B clients with VAT number, reverse charge applies (0% VAT). 'Reverse charge' mention is mandatory.",
     },
     {
       categoryId: catFacturation.id,
@@ -931,9 +931,9 @@ async function seedHelpArticles() {
       titleFr: "Comment payer par virement",
       titleEn: "How to pay by transfer",
       bodyFr:
-        "Coordonnées bancaires fournies sur la facture (IBAN estonien LHV ou Wise Business). Délai règlement standard : 14 jours. Référence : numéro de facture obligatoire.",
+        "Coordonnées bancaires fournies sur la facture (IBAN communiqué sur la facture). Délai règlement standard : 14 jours. Référence : numéro de facture obligatoire.",
       bodyEn:
-        "Bank details provided on invoice (Estonian LHV or Wise Business IBAN). Standard payment term: 14 days. Reference: invoice number required.",
+        "Bank details provided on invoice (IBAN provided on the invoice). Standard payment term: 14 days. Reference: invoice number required.",
     },
     {
       categoryId: catFacturation.id,

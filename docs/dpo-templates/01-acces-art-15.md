@@ -10,11 +10,11 @@ qui envoie un lien magique signé HMAC-SHA256 24 h.
 
 ## Sujet — FR
 
-Votre demande d'accès RGPD — Axion-IA OÜ
+Votre demande d'accès RGPD — Axion-IA SAS
 
 ## Sujet — EN
 
-Your GDPR access request — Axion-IA OÜ
+Your GDPR access request — Axion-IA SAS
 
 ---
 
@@ -44,10 +44,10 @@ Vous disposez également d'autres droits RGPD que vous pouvez exercer auprès de
 - limitation (art. 18)
 - opposition (art. 21)
 
-En cas d'insatisfaction, vous pouvez introduire une réclamation auprès de l'AKI (autorité estonienne de protection des données) — www.aki.ee.
+En cas d'insatisfaction, vous pouvez introduire une réclamation auprès de la CNIL (Commission nationale de l'informatique et des libertés) — www.cnil.fr.
 
 Cordialement,
-DPO Axion-IA OÜ
+DPO Axion-IA SAS
 contact@axion-ia.com
 
 ---
@@ -78,8 +78,8 @@ You also have other GDPR rights you can exercise via this address:
 - restriction (art. 18)
 - objection (art. 21)
 
-If unsatisfied, you may lodge a complaint with AKI (Estonian Data Protection Authority) — www.aki.ee.
+If unsatisfied, you may lodge a complaint with the CNIL (French Data Protection Authority) — www.cnil.fr.
 
 Best regards,
-DPO Axion-IA OÜ
+DPO Axion-IA SAS
 contact@axion-ia.com

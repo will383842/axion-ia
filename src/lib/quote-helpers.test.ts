@@ -44,7 +44,7 @@ describe("computeQuotePricing", () => {
     expect(r.vatMention).toBe("TVA 20.00 %");
   });
 
-  it("reverse-charge EE/B2B intra-UE → TVA 0", () => {
+  it("reverse-charge B2B intra-UE (autoliquidation) → TVA 0", () => {
     const r = computeQuotePricing({
       amountHtCents: 100_000,
       vatRate: 0,

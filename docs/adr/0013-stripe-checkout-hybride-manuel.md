@@ -1,5 +1,7 @@
 # ADR 0013 — Stripe Checkout V1 + mode hybride manuel
 
+> ⚠️ **SUPERSEDED (identité) — Axion-IA est désormais une SAS française (régime France).** Les mentions « RIB / chèque à l'ordre de Axion-IA OÜ » et « KYB documents OÜ » ci-dessous réfèrent à l'ancienne structure ; lire **Axion-IA SAS**. La logique de paiement (Stripe + modes manuels) reste valable. Corps historique conservé pour l'audit trail.
+
 **Statut** : ✅ Acté Sprint X.0 booking-v1 · 2026-05-13
 **Décideur** : Will (gérant Axion-IA OÜ)
 **Contexte sources** : audit booking V2.3 — `agent-04-paiement-stripe.md`, `03-ARCHITECTURE-CIBLE.md` §5.1.5 + §5.9.1 + §5.16, `STOP-AND-ASK.md` D42 / D56

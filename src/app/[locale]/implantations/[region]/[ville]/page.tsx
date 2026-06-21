@@ -387,7 +387,7 @@ export default async function VilleHubPage({ params }: Props) {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Axion-IA",
-      legalName: "Axion-IA",
+      legalName: "Axion-IA SAS",
       url: SITE_URL,
     },
     areaServed: { "@type": "City", name: ville.nameFr },

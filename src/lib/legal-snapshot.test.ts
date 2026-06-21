@@ -1,30 +1,30 @@
-// Tests legal-snapshot — Sprint X.17.
+// Tests legal-snapshot — SAS française (régime France uniquement).
 
 import { describe, it, expect } from "vitest";
 import { captureLegalSnapshotSync, type LegalSnapshot } from "./legal-snapshot";
 
 describe("captureLegalSnapshotSync", () => {
-  it("régime FR_SARL par défaut", () => {
+  it("régime France (SAS) : TVA 20 %, droit français, pas de reverse-charge", () => {
     const s = captureLegalSnapshotSync();
     expect(s.fiscalRegime).toBe("FR_SARL");
     expect(s.vatRate).toBe(20);
     expect(s.vatReverseCharge).toBe(false);
     expect(s.vatMention).toContain("20");
+    expect(s.vatMention).not.toContain("autoliquidation");
     expect(s.loiApplicable).toContain("français");
-    expect(s.companyLegalForm).toBe("[forme juridique à préciser]");
+    expect(s.juridiction).toContain("France");
+    expect(s.companyLegalForm).toBe("SAS");
     expect(s.forceMajeureArticle).toContain("1218");
     expect(s.version).toBe(1);
   });
 
-  it("régime FR_SARL", () => {
-    const s = captureLegalSnapshotSync("FR_SARL");
-    expect(s.fiscalRegime).toBe("FR_SARL");
-    expect(s.vatRate).toBe(20);
-    expect(s.vatReverseCharge).toBe(false);
-    expect(s.vatMention).toContain("20");
-    expect(s.loiApplicable).toContain("français");
-    expect(s.companyLegalForm).toContain("forme juridique");
-    expect(s.forceMajeureArticle).toContain("1218");
+  it("aucune trace d'Estonie / OÜ dans le snapshot", () => {
+    const s = captureLegalSnapshotSync();
+    const blob = JSON.stringify(s).toLowerCase();
+    expect(blob).not.toContain("oü");
+    expect(blob).not.toContain("estoni");
+    expect(blob).not.toContain("tallinn");
+    expect(blob).not.toContain("eesti");
   });
 
   it("capturedAt est une chaîne ISO", () => {
@@ -40,7 +40,7 @@ describe("captureLegalSnapshotSync", () => {
     expect(s1.capturedAt).not.toBe(s2.capturedAt);
   });
 
-  it("retourne immuable structure prête JSONB", () => {
+  it("retourne une structure immuable prête JSONB", () => {
     const s = captureLegalSnapshotSync();
     const keys: Array<keyof LegalSnapshot> = [
       "version",
@@ -59,18 +59,5 @@ describe("captureLegalSnapshotSync", () => {
     for (const k of keys) {
       expect(s).toHaveProperty(k);
     }
-  });
-
-  it("EE → reverse-charge UE auto-liquidation mention art. 196", () => {
-    const s = captureLegalSnapshotSync("EE_OU");
-    expect(s.vatReverseCharge).toBe(true);
-    expect(s.vatMention).toContain("autoliquidation");
-    expect(s.vatMention).toContain("art. 196");
-  });
-
-  it("FR → TVA 20% pas de reverse-charge", () => {
-    const s = captureLegalSnapshotSync("FR_SARL");
-    expect(s.vatReverseCharge).toBe(false);
-    expect(s.vatMention).not.toContain("autoliquidation");
   });
 });

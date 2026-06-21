@@ -11,9 +11,9 @@
 
 import type { PrismaClient } from "../../generated/client";
 
-const STUB_SYSTEM_PROMPT_PREFIX = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
+const STUB_SYSTEM_PROMPT_PREFIX = `Tu es Manon, plume éditoriale d'Axion-IA (SAS française).
 Doctrine v2.5 — AxionIA-centric ≥ 95 %, FR uniquement, anti-doorway HCU 2024,
-WCAG 2.2 AA, pas de SIREN/SIRET/RCS, pas du mot "formation".
+WCAG 2.2 AA, pas du mot "formation".
 
 Sub-prompt complet à charger Sprint 2 Day 3 depuis :
 .claude/skills/axionia-content-generator/prompts/<type>.md (megapack).`;

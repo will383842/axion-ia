@@ -248,7 +248,7 @@ async function main() {
           keywordsPrimary: entry.keywordsPrimary || null,
           licenseType: "cc-by-4.0",
           licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
-          copyrightHolder: "Axion-IA OÜ",
+          copyrightHolder: "Axion-IA",
           sourceType,
           aiModel: null,
           isAiGenerated,

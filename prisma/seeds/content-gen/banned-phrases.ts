@@ -22,17 +22,6 @@ import type { PrismaClient } from "../../generated/client";
 type SeedBannedPhrase = { pattern: string; reason: string; severity: "block" | "warn" | "info" };
 
 const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
-  // ===== BLOCK — Identité juridique (OÜ estonienne, jamais FR) =====
-  { pattern: "SIREN", reason: "Numéro français interdit (OÜ estonienne)", severity: "block" },
-  { pattern: "SIRET", reason: "Numéro français interdit (OÜ estonienne)", severity: "block" },
-  { pattern: "RCS", reason: "Registre français interdit (OÜ estonienne)", severity: "block" },
-  {
-    pattern: "Registre du Commerce",
-    reason: "Concept français — utiliser Estonian Business Register",
-    severity: "block",
-  },
-  { pattern: "URSSAF", reason: "Cotisations FR — pas applicable OÜ estonienne", severity: "block" },
-
   // ===== WARN — Doctrine lexicale assouplie 2026-05-18 P1-2 =====
   // Avant 2026-05-18 : `block` strict (le LLM ne pouvait pas écrire "formation").
   // Après : `warn` — le mot est autorisé en copy quand pertinent (sessions
@@ -70,12 +59,6 @@ const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
     reason: "Phrase interdite doctrine § 21 (utiliser durée explicite)",
     severity: "block",
   },
-  {
-    pattern: "basé en UE",
-    reason: "Phrase interdite doctrine § 21 (préférer 'OÜ estonienne')",
-    severity: "block",
-  },
-
   // ===== WARN — Naming concurrent / agence =====
   {
     pattern: "agence",

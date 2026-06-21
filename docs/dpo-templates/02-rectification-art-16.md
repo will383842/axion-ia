@@ -10,11 +10,11 @@
 
 ## Sujet — FR
 
-Votre demande de rectification a été traitée — Axion-IA OÜ
+Votre demande de rectification a été traitée — Axion-IA SAS
 
 ## Sujet — EN
 
-Your rectification request has been processed — Axion-IA OÜ
+Your rectification request has been processed — Axion-IA SAS
 
 ---
 
@@ -32,10 +32,10 @@ Cette modification a été tracée dans notre journal d'activité administrative
 
 Si la rectification ne correspond pas à votre demande ou si d'autres données nécessitent une mise à jour, répondez à ce message en précisant les corrections souhaitées.
 
-En cas d'insatisfaction, vous pouvez introduire une réclamation auprès de l'AKI — www.aki.ee.
+En cas d'insatisfaction, vous pouvez introduire une réclamation auprès de la CNIL — www.cnil.fr.
 
 Cordialement,
-DPO Axion-IA OÜ
+DPO Axion-IA SAS
 contact@axion-ia.com
 
 ---
@@ -54,8 +54,8 @@ This change has been logged in our administrative activity log (GDPR audit trail
 
 If the rectification does not match your request or if other data needs updating, reply to this message specifying the desired corrections.
 
-If unsatisfied, you may lodge a complaint with AKI — www.aki.ee.
+If unsatisfied, you may lodge a complaint with the CNIL (French Data Protection Authority) — www.cnil.fr.
 
 Best regards,
-DPO Axion-IA OÜ
+DPO Axion-IA SAS
 contact@axion-ia.com

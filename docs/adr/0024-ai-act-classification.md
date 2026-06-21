@@ -1,5 +1,7 @@
 # ADR 0024 — Classification AI Act EU 2024/1689 d'Axion-IA
 
+> ⚠️ **SUPERSEDED (identité) — Axion-IA est désormais une SAS française (régime France).** Toute référence à « Axion-IA OÜ » ou à l'autorité estonienne **AKI** ci-dessous est obsolète : l'autorité de contrôle compétente est la **CNIL** (et l'autorité française de marché pour l'AI Act). La classification AI Act elle-même (risque, GPAI aval, transparence art. 50) reste valable. Corps historique conservé pour l'audit trail.
+
 - **Statut** : Accepté
 - **Date** : 2026-05-15
 - **Auteur** : Will + Claude (Opus 4.7), suite à méta-cert `_AUDIT/META-CERT-2026-05-15/20-AI-ACT-EU-2026.md` P0-3

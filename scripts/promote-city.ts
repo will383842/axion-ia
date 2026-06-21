@@ -89,7 +89,7 @@ async function generateServiceCopy(
   const prompt = `Tu génères le contenu copy.services.${service} pour la page Axion-IA \`/${service}/par-ville/${ville}\`.
 
 Contexte :
-- Cabinet IA opérationnel B2B Axion-IA OÜ (Estonie), interventions remote/sur-site en France.
+- Cabinet IA opérationnel B2B Axion-IA (SAS française), interventions remote/sur-site en France.
 - Service ciblé : ${description}
 - Ville cible : ${ville} (région ${region})
 - Doctrine cap : 95% AxionIA-centric (méthodologie cabinet) + 5% data INSEE ville (anti-doorway HCU 2024).

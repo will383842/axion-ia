@@ -1,5 +1,7 @@
 # ADR 0012 — Matrice des 10 décisions Q1–Q10 Booking V1
 
+> ⚠️ **SUPERSEDED (identité fiscale) — Axion-IA est désormais une SAS française (régime France).** Le scénario par défaut « Axion-IA OÜ (Estonie) » mentionné ci-dessous est obsolète ; la structure retenue est **Axion-IA SAS**. La mécanique TVA-agnostique (`PricingConfig`) reste valable. Corps historique conservé pour l'audit trail.
+
 **Statut** : ✅ Acté Sprint X.0 booking-v1 · 2026-05-13
 **Décideur** : Will (gérant Axion-IA OÜ)
 **Contexte sources** : audit booking V2.3 (`_AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/`), `STOP-AND-ASK.md` §2, `SYNTHESE-FINALE.md`

@@ -4,7 +4,7 @@
 - **Version** : 1.0
 - **Date dernière maj** : 2026-05-15
 - **Sévérité** : 🟢 **P2 — routine** (annuel) · 🔴 **P0** si divergence majeure declared ↔ actif
-- **Impact si non traité** : page publique `/legal/donnees-personnelles` peut omettre un sous-processeur réellement actif → défaut transparence RGPD art. 13/14 → risque CNIL/AKI. Inversement, déclaré non utilisé = pollution + perte confiance.
+- **Impact si non traité** : page publique `/legal/donnees-personnelles` peut omettre un sous-processeur réellement actif → défaut transparence RGPD art. 13/14 → risque CNIL. Inversement, déclaré non utilisé = pollution + perte confiance.
 
 ## Trigger
 
@@ -99,7 +99,7 @@ grep -E "^\| 20[0-9]{2}-" _AUDIT/DPA-REGISTER.md | awk -F'|' '{ gsub(/^[ \t]+|[ 
 Créer `_AUDIT/RGPD-SOUS-PROCESSEURS-2026.md` (template depuis ce runbook) :
 
 ```markdown
-# Audit RGPD sous-processeurs Axion-IA OÜ — YYYY
+# Audit RGPD sous-processeurs Axion-IA SAS — YYYY
 
 ## 1. Périmètre
 
@@ -162,7 +162,7 @@ curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
 | ------ | ------------------- | ------------------------------------------------------------ |
 | L1     | Will (DPO de facto) | toujours pour validation finale audit                        |
 | L2     | Avocat externe RGPD | si interprétation art. 28 ambiguë                            |
-| L3     | CNIL FR / AKI EE    | déclaration spontanée si divergence majeure post-publication |
+| L3     | CNIL                | déclaration spontanée si divergence majeure post-publication |
 
 ## Cycle préventif
 

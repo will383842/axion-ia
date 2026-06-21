@@ -4,7 +4,7 @@
 - **Version** : 1.0
 - **Date dernière maj** : 2026-05-15
 - **Sévérité** : 🟢 **P2 — routine** (annuel) · 🟡 **P1** si DPA expiré bloque traitement
-- **Impact si non traité** : Axion-IA OÜ s'expose à un défaut de base juridique RGPD art. 28 (sous-traitant). Risque CNIL/AKI : suspension du traitement + amende. Risque opérationnel : provider peut résilier sans DPA renouvelé.
+- **Impact si non traité** : Axion-IA SAS s'expose à un défaut de base juridique RGPD art. 28 (sous-traitant). Risque CNIL : suspension du traitement + amende. Risque opérationnel : provider peut résilier sans DPA renouvelé.
 
 ## Trigger
 
@@ -141,7 +141,7 @@ curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
 | ------ | ------------------- | --------------------------------------------------------- |
 | L1     | Will (DPO de facto) | toujours (signature contractuelle)                        |
 | L2     | Avocat externe RGPD | si DPA provider refuse clauses standards UE-EU SCC        |
-| L3     | CNIL FR / AKI EE    | si litige sous-traitant ne signe pas / clauses contraires |
+| L3     | CNIL                | si litige sous-traitant ne signe pas / clauses contraires |
 
 ## Cycle préventif
 

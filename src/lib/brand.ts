@@ -12,8 +12,8 @@ import { env } from "@/env";
 export const BRAND = {
   /** Nom canonique customer-facing (logo, header, JSON-LD `name`, OG, titles). */
   name: "Axion-IA",
-  /** Raison sociale juridique pour mentions légales (société française — Will précise forme SAS/SASU + SIREN). */
-  legalName: "Axion-IA",
+  /** Raison sociale juridique pour mentions légales (SAS française — SIREN/SIRET communiqués sur demande). */
+  legalName: "Axion-IA SAS",
   /** Noms alternatifs Knowledge Graph / Wikidata — disambiguation vs axionai.fr. */
   alternateName: ["AxionIA", "Axion IA", "axion-ia.com"] as const,
   /** Tagline courte FR — sous-titre, JSON-LD `description`, OG. */

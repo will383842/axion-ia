@@ -73,7 +73,7 @@ export async function generateQuoteNumber(
  */
 export interface QuotePricingInput {
   amountHtCents: number;
-  vatRate: number; // ex: 20.0 (FR) ou 0.0 (EE reverse-charge)
+  vatRate: number; // ex: 20.0 (FR) ou 0.0 (B2B intra-UE, autoliquidation client)
   vatReverseCharge: boolean;
 }
 

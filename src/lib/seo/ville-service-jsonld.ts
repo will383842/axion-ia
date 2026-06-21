@@ -203,7 +203,7 @@ export function buildVilleServiceJsonLdGraph(
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Axion-IA",
-      legalName: "Axion-IA",
+      legalName: "Axion-IA SAS",
       url: SITE_URL,
     },
     areaServed: { "@type": "City", name: ville.nameFr },
