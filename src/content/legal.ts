@@ -1,7 +1,11 @@
-// Legal content — 6 pages (Sprint 10). Droit français.
+// Legal content — 6 pages. Droit français.
 // CLAUDE.md v6 §1 + §5 + §22. Source: docs 28 + 31.
-// SIREN/SIRET + TVA FR : will fournit plus tard, communiqués sur demande
-// dans l'intervalle (cf. /mentions-legales section "Éditeur").
+//
+// IDENTITÉ LÉGALE : les sections « Éditeur » + « Directeur de la publication »
+// des mentions légales ne figurent PLUS ici — elles sont résolues au runtime
+// depuis le SiteSetting `legal_overrides` via `@/lib/legal-identity` (SSOT
+// partagée avec les factures). Will renseigne SIREN/SIRET/capital/adresse/TVA
+// une seule fois en console admin → page (ISR) + factures se synchronisent.
 
 export type LegalSlug =
   | "mentions-legales"
@@ -37,64 +41,98 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Mentions",
       titleEm: "légales",
       intro:
-        "Informations légales relatives au site axion-ia.com et à la société Axion-IA, conformes au droit français.",
+        "Informations légales relatives au site axion-ia.com, publiées conformément à l'article 1-1 de la loi n° 2004-575 pour la confiance dans l'économie numérique (LCEN, modifiée par la loi n° 2024-449 du 21 mai 2024 dite « SREN ») et au Code de commerce. Les sections « Éditeur » et « Directeur de la publication » ci-dessous sont tenues à jour automatiquement à partir des informations d'immatriculation de la société.",
       sections: [
         {
-          title: "Éditeur",
-          body: "Axion-IA · société française ([forme juridique à préciser]). Siège social : [Ville — France]. RCS [Ville — France], SIREN [SIREN à compléter]. Numéro de TVA FR communiqué sur demande à contact@axion-ia.com.",
-        },
-        {
-          title: "Directeur de publication",
-          body: "Will (gérant). Email : contact@axion-ia.com.",
-        },
-        {
           title: "Hébergeur",
-          body: "Hetzner Online GmbH · Industriestr. 25 · 91710 Gunzenhausen · Allemagne · UE. Données stockées et traitées dans l'UE (datacenter Frankfurt).",
+          body: "Le site est hébergé par Hetzner Online GmbH — Industriestr. 25, 91710 Gunzenhausen, Allemagne (Union européenne). Téléphone : +49 (0)9831 505-0. Site : hetzner.com. Les données sont stockées et traitées dans l'Union européenne (datacenter de Francfort). Les services edge (CDN, sécurité, mise en cache) sont fournis par Cloudflare, avec priorité aux points de présence situés dans l'Union européenne.",
+        },
+        {
+          title: "Conception et réalisation",
+          body: "Le site axion-ia.com est conçu, développé et maintenu en interne par Axion-IA.",
         },
         {
           title: "Propriété intellectuelle",
-          body: "L'ensemble des contenus du site (textes, marques, logos, mises en page) est la propriété d'Axion-IA. Toute reproduction non autorisée est interdite.",
+          body: "L'ensemble des éléments du site (textes, photographies, illustrations, marques, logos, chartes graphiques, mises en page, code source et bases de données) est protégé par le droit de la propriété intellectuelle et demeure la propriété exclusive d'Axion-IA ou de ses partenaires. Toute reproduction, représentation, adaptation, diffusion ou exploitation, totale ou partielle, sans autorisation écrite préalable, est interdite et constitue une contrefaçon sanctionnée par les articles L335-2 et L335-3 du Code de la propriété intellectuelle. La marque « Axion-IA » et son logo ne peuvent être utilisés sans accord exprès.",
+        },
+        {
+          title: "Protection des données personnelles",
+          body: "Les traitements de données personnelles opérés via le site sont détaillés dans la Politique de confidentialité. Conformément au Règlement général sur la protection des données (RGPD, UE 2016/679) et à la loi « Informatique et Libertés », vous disposez de droits d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité, exerçables à contact@axion-ia.com. Aucun délégué à la protection des données (DPO) n'est désigné, sa désignation n'étant pas obligatoire au regard de l'activité. L'autorité de contrôle compétente est la CNIL (Commission Nationale de l'Informatique et des Libertés — www.cnil.fr), auprès de laquelle vous pouvez introduire une réclamation.",
+        },
+        {
+          title: "Cookies",
+          body: "Le site utilise un minimum strict de cookies, sans cookie publicitaire ni traceur tiers de profilage. Le détail des cookies déposés et la gestion de votre consentement figurent dans la Politique de cookies.",
+        },
+        {
+          title: "Accessibilité numérique",
+          body: "Axion-IA s'engage à rendre son site accessible au plus grand nombre, conformément à la directive (UE) 2019/882 (European Accessibility Act) et au Référentiel Général d'Amélioration de l'Accessibilité (RGAA). L'état de conformité, les éventuelles dérogations et les voies de recours sont précisés dans la Déclaration d'accessibilité.",
+        },
+        {
+          title: "Liens hypertextes",
+          body: "La création de liens pointant vers axion-ia.com est libre pour un usage loyal et non commercial, sous réserve de ne pas porter atteinte à l'image d'Axion-IA et de ne pas créer de confusion sur l'origine du contenu. Axion-IA n'exerce aucun contrôle sur les sites tiers accessibles depuis ses pages et décline toute responsabilité quant à leur contenu.",
+        },
+        {
+          title: "Médiation de la consommation",
+          body: "Les prestations d'Axion-IA s'adressent exclusivement à une clientèle professionnelle (B2B), dans le cadre de l'activité de ses clients. En l'absence de relation avec des consommateurs, Axion-IA n'est pas tenue d'adhérer à un dispositif de médiation de la consommation au sens des articles L611-1 et L612-1 du Code de la consommation.",
         },
         {
           title: "Loi applicable",
-          body: "Le présent site est régi par le droit français. Tout litige relève de la compétence des tribunaux compétents en France.",
+          body: "Le présent site et les présentes mentions légales sont régis par le droit français. Tout litige relatif à leur interprétation ou à leur exécution relève de la compétence des tribunaux français.",
         },
       ],
       metaSeo: {
         title: "Mentions légales · Axion-IA",
         description:
-          "Mentions légales d'Axion-IA (société de droit français). Hébergement Hetzner Frankfurt UE.",
+          "Mentions légales d'Axion-IA SAS (LCEN art. 1-1) : éditeur, directeur de publication, hébergeur Hetzner UE, propriété intellectuelle, données personnelles, accessibilité.",
       },
     },
     en: {
       title: "Legal",
       titleEm: "notice",
-      intro: "Legal information about axion-ia.com and Axion-IA, in accordance with French law.",
+      intro:
+        "Legal information about axion-ia.com, published in accordance with article 1-1 of the French Act for Confidence in the Digital Economy (LCEN, as amended by Act no. 2024-449 of 21 May 2024) and the French Commercial Code. The « Publisher » and « Publication director » sections below are kept up to date automatically from the company's registration details.",
       sections: [
         {
-          title: "Publisher",
-          body: "Axion-IA · French company ([forme juridique à préciser]). Registered office: [Ville — France]. RCS [Ville — France], SIREN [SIREN à compléter]. French VAT number available on request at contact@axion-ia.com.",
-        },
-        {
-          title: "Publication director",
-          body: "Will (manager). Email: contact@axion-ia.com.",
-        },
-        {
           title: "Hosting provider",
-          body: "Hetzner Online GmbH · Industriestr. 25 · 91710 Gunzenhausen · Germany · EU. Data stored and processed in the EU (Frankfurt datacenter).",
+          body: "The site is hosted by Hetzner Online GmbH — Industriestr. 25, 91710 Gunzenhausen, Germany (European Union). Phone: +49 (0)9831 505-0. Website: hetzner.com. Data is stored and processed in the European Union (Frankfurt datacenter). Edge services (CDN, security, caching) are provided by Cloudflare, prioritising points of presence located in the European Union.",
+        },
+        {
+          title: "Design and development",
+          body: "The axion-ia.com website is designed, developed and maintained in-house by Axion-IA.",
         },
         {
           title: "Intellectual property",
-          body: "All content on the site (text, marks, logos, layouts) is the property of Axion-IA. Any unauthorized reproduction is prohibited.",
+          body: "All elements of the site (text, photographs, illustrations, trademarks, logos, visual identity, layouts, source code and databases) are protected by intellectual property law and remain the exclusive property of Axion-IA or its partners. Any reproduction, representation, adaptation, distribution or exploitation, in whole or in part, without prior written authorisation is prohibited and constitutes infringement under articles L335-2 and L335-3 of the French Intellectual Property Code. The « Axion-IA » trademark and logo may not be used without express consent.",
+        },
+        {
+          title: "Personal data protection",
+          body: "Personal-data processing carried out via the site is detailed in the Privacy policy. Under the General Data Protection Regulation (GDPR, EU 2016/679) and the French Data Protection Act, you have rights of access, rectification, erasure, objection, restriction and portability, exercisable at contact@axion-ia.com. No Data Protection Officer (DPO) is appointed, as appointment is not mandatory given the activity. The competent supervisory authority is the CNIL (www.cnil.fr), with which you may lodge a complaint.",
+        },
+        {
+          title: "Cookies",
+          body: "The site uses a strict minimum of cookies, with no advertising cookies and no third-party profiling trackers. Details of the cookies set and management of your consent are provided in the Cookie policy.",
+        },
+        {
+          title: "Digital accessibility",
+          body: "Axion-IA is committed to making its site accessible to as many people as possible, in accordance with Directive (EU) 2019/882 (European Accessibility Act) and the French RGAA accessibility standard. The conformance status, any exemptions and the remedies available are set out in the Accessibility statement.",
+        },
+        {
+          title: "Hyperlinks",
+          body: "Creating links to axion-ia.com is free for fair, non-commercial use, provided it does not harm Axion-IA's image or create confusion as to the origin of the content. Axion-IA exercises no control over third-party sites reachable from its pages and accepts no liability for their content.",
+        },
+        {
+          title: "Consumer mediation",
+          body: "Axion-IA's services are intended exclusively for professional (B2B) clients, within the scope of their business activity. In the absence of any relationship with consumers, Axion-IA is not required to join a consumer-mediation scheme within the meaning of articles L611-1 and L612-1 of the French Consumer Code.",
         },
         {
           title: "Applicable law",
-          body: "This site is governed by French law. Any dispute falls within the jurisdiction of the competent courts in France.",
+          body: "This site and these legal notices are governed by French law. Any dispute relating to their interpretation or performance falls within the jurisdiction of the French courts.",
         },
       ],
       metaSeo: {
         title: "Legal notice · Axion-IA",
-        description: "Legal notice for Axion-IA (French company). Hetzner Frankfurt EU hosting.",
+        description:
+          "Legal notice for Axion-IA SAS (LCEN art. 1-1): publisher, publication director, Hetzner EU hosting, intellectual property, personal data, accessibility.",
       },
     },
   },
@@ -106,81 +144,218 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Conditions",
       titleEm: "générales",
       intro:
-        "Conditions générales de vente et d'utilisation des services Axion-IA. Règles applicables aux formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1 et conception de sites web et plateformes SaaS augmentés par l'IA.",
+        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations réservées aux clients professionnels (B2B). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
       sections: [
         {
-          title: "Objet",
-          body: "Les présentes conditions régissent la vente et la prestation des services Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Les prestations s'adressent exclusivement à des clients professionnels (B2B) agissant dans le cadre de leur activité ; elles ne constituent pas une vente à des consommateurs. En conséquence, les dispositions du Code de la consommation (droit de rétractation, médiation de la consommation) ne s'appliquent pas. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
+          title: "Objet et champ d'application",
+          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent exclusivement à des clients professionnels (B2B) agissant dans le cadre de leur activité ; elles ne constituent pas une vente à des consommateurs.",
+        },
+        {
+          title: "Définitions",
+          body: "« Axion-IA » désigne le prestataire ; « Client » le professionnel qui signe le devis ou passe commande ; « Prestations » les services commandés ; « Livrables » les éléments remis au Client (rapports, supports, code, configurations, documents) ; « Devis » la proposition chiffrée détaillant le périmètre, le prix et les délais.",
+        },
+        {
+          title: "Acceptation et opposabilité des CGV",
+          body: "Conformément à l'article L441-1 du Code de commerce, les présentes CGV constituent le socle unique de la relation commerciale et sont communiquées à tout acheteur professionnel qui en fait la demande. Toute commande emporte acceptation pleine et entière des présentes conditions, qui prévalent sur toutes conditions d'achat du Client, sauf dérogation écrite et signée des deux parties. Axion-IA peut faire évoluer ses CGV ; la version applicable est celle en vigueur à la date de la commande.",
         },
         {
           title: "Devis et commande",
-          body: "Tout service fait l'objet d'un devis chiffré, valable 30 jours. La commande est ferme à réception du virement bancaire. Aucune mensualité ni abonnement.",
+          body: "Toute prestation fait l'objet d'un devis chiffré, valable 30 jours à compter de son émission. La commande devient ferme et définitive à réception du devis signé et, le cas échéant, de l'acompte convenu. Aucun abonnement ni engagement de durée n'est imposé, sauf stipulation contraire au devis.",
         },
         {
-          title: "Tarifs et paiement",
-          body: "Les prix sont indiqués en euros HT. La TVA française (20 %) est appliquée selon la résidence du client (B2B intracommunautaire avec n° TVA valide ou TVA FR). Paiement par virement bancaire à la commande pour les prestations < 5 000 € ; échelonnement possible au-delà.",
+          title: "Prix",
+          body: "Les prix sont exprimés en euros et hors taxes (HT) ; ils sont ceux du devis accepté. Tout déplacement, prestation ou livrable hors du périmètre du devis fait l'objet d'un avenant chiffré accepté au préalable. La TVA française au taux en vigueur (20 % à ce jour) s'applique selon le régime fiscal d'Axion-IA et le statut du Client ; le détail figure sur le devis et sur la facture. Pour un client professionnel établi dans un autre État membre de l'Union européenne et disposant d'un numéro de TVA intracommunautaire valide, l'autoliquidation s'applique le cas échéant.",
         },
         {
-          title: "Livraison",
-          body: "Les délais sont indiqués dans chaque devis. Axion-IA s'engage à respecter les délais sauf cas de force majeure ou retard imputable au client (accès données, disponibilité équipe).",
+          title: "Conditions de paiement",
+          body: "Sauf échéancier convenu au devis, le règlement s'effectue par virement bancaire. Pour les prestations inférieures à 5 000 € HT, le paiement intervient à la commande ; au-delà, un échelonnement (acompte à la commande puis solde à l'avancement ou à la livraison) peut être convenu. Aucun escompte n'est accordé en cas de paiement anticipé.",
         },
         {
-          title: "Garanties et limites de responsabilité",
-          body: "Axion-IA fournit ses prestations selon les standards de l'art. La responsabilité d'Axion-IA est limitée au montant facturé pour la prestation concernée. Aucune garantie de résultat n'est donnée — les ROI estimés sont indicatifs.",
+          title: "Retard de paiement — pénalités et indemnité de recouvrement",
+          body: "Le délai de paiement convenu ne peut excéder les plafonds de l'article L441-10 du Code de commerce (60 jours à compter de l'émission de la facture, ou 45 jours fin de mois). Tout retard entraîne de plein droit, sans rappel préalable et dès le jour suivant la date d'échéance : (i) des pénalités de retard calculées au taux d'intérêt appliqué par la Banque centrale européenne à son opération de refinancement la plus récente, majoré de 10 points de pourcentage ; (ii) une indemnité forfaitaire pour frais de recouvrement de 40 € par facture (art. L441-10 II et D441-5 du Code de commerce), sans préjudice d'une indemnisation complémentaire sur justificatifs si les frais réellement exposés sont supérieurs. En cas de retard, Axion-IA peut suspendre les prestations en cours jusqu'au complet paiement.",
         },
         {
-          title: "Annulation et remboursement",
-          body: "Annulation par le client > 7 j avant l'intervention : 100 % remboursement. Entre 7 et 2 j : 50 %. Moins de 2 j : aucun remboursement, créneau reportable une fois sans frais.",
+          title: "Exécution des prestations et délais",
+          body: "Les délais figurent au devis ; ils constituent un engagement de moyens et courent à compter de la réunion des conditions de démarrage (acompte, accès, informations et disponibilités nécessaires). Axion-IA ne saurait être tenue responsable d'un retard imputable au Client (défaut d'accès aux données, indisponibilité des équipes, validations tardives) ou à un cas de force majeure.",
         },
         {
-          title: "Loi applicable et juridiction",
-          body: "Les présentes conditions sont régies par le droit français. Tout litige relève des tribunaux compétents en France.",
+          title: "Obligations et collaboration du Client",
+          body: "Le Client s'engage à collaborer activement et de bonne foi : fournir en temps utile les informations, accès, environnements et moyens nécessaires, désigner un interlocuteur décisionnaire, et garantir qu'il dispose des droits sur les données et systèmes confiés à Axion-IA. Le Client demeure responsable de l'usage qu'il fait des Livrables et des décisions qu'il prend sur leur fondement.",
+        },
+        {
+          title: "Propriété intellectuelle des livrables",
+          body: "Les méthodes, savoir-faire, outils, modèles et éléments préexistants mobilisés par Axion-IA demeurent sa propriété exclusive. Sauf stipulation contraire au devis, les droits d'exploitation sur les Livrables spécifiquement réalisés pour le Client lui sont cédés, dans les limites précisées au devis, après paiement intégral du prix, conformément à l'article L131-3 du Code de la propriété intellectuelle. Axion-IA conserve le droit de réutiliser les compétences, connaissances et savoir-faire génériques acquis à l'occasion de la prestation.",
+        },
+        {
+          title: "Confidentialité",
+          body: "Chaque partie préserve la confidentialité des informations non publiques échangées dans le cadre des prestations et ne les utilise que pour leur exécution. Cet engagement vaut pendant toute la durée de la relation et pendant 3 ans après son terme, sous réserve des obligations légales de divulgation.",
+        },
+        {
+          title: "Protection des données personnelles",
+          body: "Chaque partie respecte la réglementation applicable aux données personnelles (RGPD, UE 2016/679). Lorsque, dans le cadre d'une prestation, Axion-IA traite des données personnelles pour le compte du Client, les parties concluent un accord de sous-traitance conforme à l'article 28 du RGPD précisant l'objet, la durée, la nature et les finalités du traitement, les mesures de sécurité et de confidentialité, ainsi que le sort des données en fin de prestation. Le traitement des données collectées via le site est décrit dans la Politique de confidentialité.",
+        },
+        {
+          title: "Recours à l'intelligence artificielle et transparence",
+          body: "Certaines prestations recourent à des systèmes d'intelligence artificielle, y compris générative. Axion-IA en informe le Client et, le cas échéant, signale les contenus générés ou assistés par IA, conformément à l'article 50 du Règlement européen sur l'intelligence artificielle (UE 2024/1689). Le Client reste responsable de la validation et de l'usage final des résultats produits avec l'assistance de l'IA.",
+        },
+        {
+          title: "Garanties et responsabilité",
+          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Aucune garantie de résultat n'est donnée ; les gains, ROI ou performances évoqués sont indicatifs et dépendent de facteurs propres au Client. La responsabilité d'Axion-IA, toutes causes confondues, est limitée aux dommages directs et plafonnée au montant HT effectivement perçu au titre de la prestation à l'origine du dommage. Sont exclus les dommages indirects (perte d'exploitation, de données, de chiffre d'affaires ou d'image). Ces limitations ne s'appliquent ni en cas de faute lourde ou dolosive, ni dans les cas où la loi les prohibe.",
+        },
+        {
+          title: "Assurance",
+          body: "Axion-IA déclare être titulaire d'une assurance de responsabilité civile professionnelle couvrant les conséquences pécuniaires de sa responsabilité dans le cadre de ses prestations. Les coordonnées de l'assureur sont communiquées sur demande.",
+        },
+        {
+          title: "Force majeure",
+          body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement, et le contrat peut être résolu si l'empêchement devient définitif.",
+        },
+        {
+          title: "Annulation, report et remboursement",
+          body: "Toute annulation à l'initiative du Client : plus de 7 jours avant la date prévue, remboursement intégral des sommes versées ; entre 7 et 2 jours, 50 % du prix restent dus ; à moins de 2 jours, le prix reste dû en totalité, le créneau étant reportable une fois sans frais. Lorsque la prestation prend la forme d'une action de formation, les modalités spécifiques (convention ou contrat de formation, conditions de dédit et d'abandon, financement éventuel) sont précisées au devis ou dans la convention applicable.",
+        },
+        {
+          title: "Réversibilité et restitution",
+          body: "À la fin de la prestation, Axion-IA restitue au Client, sur demande et dans un format exploitable, les données et configurations qui lui appartiennent, et supprime les copies de travail dans un délai raisonnable, sous réserve des obligations légales de conservation.",
+        },
+        {
+          title: "Non-sollicitation du personnel",
+          body: "Pendant l'exécution des prestations et durant 12 mois après leur terme, le Client s'engage à ne pas solliciter ni recruter directement les intervenants d'Axion-IA ayant participé à la prestation, sauf accord écrit préalable d'Axion-IA.",
+        },
+        {
+          title: "Références commerciales",
+          body: "Sauf opposition écrite du Client, Axion-IA peut mentionner le nom et le logo du Client ainsi qu'une description générale de la prestation à titre de référence commerciale, dans le respect de la confidentialité des informations sensibles.",
+        },
+        {
+          title: "Absence de droit de rétractation",
+          body: "Les prestations étant conclues entre professionnels, le droit de rétractation prévu par le Code de la consommation ne s'applique pas. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
+        },
+        {
+          title: "Réclamations et règlement des litiges",
+          body: "Toute réclamation est adressée à contact@axion-ia.com ; les parties s'efforcent de résoudre amiablement tout différend avant toute action contentieuse. La clientèle étant exclusivement professionnelle, le dispositif de médiation de la consommation n'est pas applicable.",
+        },
+        {
+          title: "Indépendance des clauses",
+          body: "Si une stipulation des présentes conditions est jugée nulle ou inapplicable, les autres stipulations conservent leur pleine valeur. La clause concernée est, le cas échéant, remplacée par une stipulation valide d'effet équivalent.",
+        },
+        {
+          title: "Droit applicable et juridiction",
+          body: "Les présentes conditions sont régies par le droit français. À défaut de résolution amiable, tout litige relève de la compétence exclusive du tribunal compétent du ressort du siège social d'Axion-IA, y compris en cas de pluralité de défendeurs ou d'appel en garantie.",
         },
       ],
       metaSeo: {
         title: "Conditions générales · Axion-IA",
         description:
-          "CGV et CGU Axion-IA : devis, paiement, livraison, garanties. Droit français applicable.",
+          "CGV/CGU B2B d'Axion-IA SAS : commande, prix, paiement et pénalités L441-10, propriété intellectuelle, responsabilité, RGPD, IA Act, force majeure. Droit français.",
       },
     },
     en: {
       title: "Terms &",
       titleEm: "conditions",
       intro:
-        "Terms of sale and use for Axion-IA services. Rules applicable to on-site AI trainings and sessions, AI audits, AI implementations, one-to-one individual coaching and AI-augmented websites and SaaS platforms.",
+        "Terms of sale and use (T&Cs) governing the services of Axion-IA SAS: on-site AI trainings and sessions, AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. Services reserved for professional (B2B) clients. The applicable version is the one in force on the last-updated date shown below.",
       sections: [
         {
-          title: "Purpose",
-          body: "These terms govern the sale and provision of Axion-IA services: on-site AI trainings and sessions (group and individual), AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. The services are intended exclusively for professional (B2B) clients acting within their business activity; they do not constitute a sale to consumers. Accordingly, French Consumer Code provisions (right of withdrawal, consumer mediation) do not apply. Any order implies full acceptance of these terms.",
+          title: "Purpose and scope",
+          body: "These terms govern the sale and provision of all Axion-IA services: on-site AI trainings and sessions (group and individual), AI audits, AI implementations, one-to-one individual coaching, and design of AI-augmented websites and SaaS platforms. They apply to any order, to the exclusion of any other document. The services are intended exclusively for professional (B2B) clients acting within their business activity; they do not constitute a sale to consumers.",
+        },
+        {
+          title: "Definitions",
+          body: "« Axion-IA » means the provider; « Client » the professional signing the quote or placing an order; « Services » the ordered services; « Deliverables » the items handed over to the Client (reports, materials, code, configurations, documents); « Quote » the costed proposal detailing scope, price and lead times.",
+        },
+        {
+          title: "Acceptance and enforceability of the T&Cs",
+          body: "In accordance with article L441-1 of the French Commercial Code, these T&Cs form the sole basis of the commercial relationship and are provided to any professional buyer who requests them. Any order entails full acceptance of these terms, which prevail over any purchasing conditions of the Client, unless otherwise agreed in writing and signed by both parties. Axion-IA may amend its T&Cs; the applicable version is the one in force on the order date.",
         },
         {
           title: "Quote and order",
-          body: "Each service is subject to a costed quote, valid 30 days. The order becomes firm upon receipt of bank transfer. No subscriptions, no commitments.",
+          body: "Each service is subject to a costed quote, valid 30 days from issuance. The order becomes firm and final upon receipt of the signed quote and, where applicable, the agreed deposit. No subscription or minimum term is imposed, unless otherwise stated in the quote.",
         },
         {
-          title: "Pricing and payment",
-          body: "Prices are in euros (excl. VAT). French VAT (20%) is applied according to client residence (intra-EU B2B with valid VAT number or FR VAT). Bank transfer at order time for services < €5,000; staged payment possible above.",
+          title: "Pricing",
+          body: "Prices are stated in euros excluding tax (excl. VAT) and are those of the accepted quote. Any travel, service or deliverable outside the quote scope is subject to a costed amendment agreed beforehand. French VAT at the rate in force (currently 20%) applies according to Axion-IA's tax regime and the Client's status; details appear on the quote and invoice. For a professional client established in another EU Member State with a valid intra-EU VAT number, reverse charge applies where relevant.",
         },
         {
-          title: "Delivery",
-          body: "Lead times are stated in each quote. Axion-IA commits to delivery times except in case of force majeure or delay attributable to the client (data access, team availability).",
+          title: "Payment terms",
+          body: "Unless a schedule is agreed in the quote, payment is made by bank transfer. For services under €5,000 excl. VAT, payment is due at order time; above that, staged payment (deposit at order then balance on progress or delivery) may be agreed. No early-payment discount is granted.",
         },
         {
-          title: "Warranties and liability limits",
-          body: "Axion-IA delivers per industry standards. Axion-IA's liability is limited to the amount billed for the relevant service. No outcome guarantee — estimated ROI are indicative.",
+          title: "Late payment — penalties and recovery indemnity",
+          body: "The agreed payment term may not exceed the caps of article L441-10 of the French Commercial Code (60 days from invoice issuance, or 45 days end of month). Any late payment automatically triggers, without prior reminder and from the day following the due date: (i) late-payment penalties at the interest rate applied by the European Central Bank to its most recent refinancing operation, plus 10 percentage points; (ii) a fixed recovery indemnity of €40 per invoice (art. L441-10 II and D441-5 of the Commercial Code), without prejudice to additional compensation on supporting evidence where actual costs are higher. In the event of late payment, Axion-IA may suspend ongoing services until full payment.",
         },
         {
-          title: "Cancellation and refund",
-          body: "Client cancellation > 7 days before the session: 100% refund. Between 7 and 2 days: 50%. Less than 2 days: no refund, slot reschedulable once at no extra charge.",
+          title: "Performance and lead times",
+          body: "Lead times are stated in the quote; they are a best-efforts undertaking and run from the point at which the start conditions are met (deposit, access, information and required availability). Axion-IA cannot be held liable for a delay attributable to the Client (lack of data access, team unavailability, late approvals) or to force majeure.",
+        },
+        {
+          title: "Client obligations and cooperation",
+          body: "The Client undertakes to cooperate actively and in good faith: to provide in a timely manner the information, access, environments and means required, to designate a decision-making contact, and to warrant that it holds the rights to the data and systems entrusted to Axion-IA. The Client remains responsible for its use of the Deliverables and for the decisions it makes on their basis.",
+        },
+        {
+          title: "Intellectual property of deliverables",
+          body: "The methods, know-how, tools, models and pre-existing materials used by Axion-IA remain its exclusive property. Unless otherwise stated in the quote, the exploitation rights over Deliverables specifically produced for the Client are assigned to it, within the limits set out in the quote, after full payment of the price, in accordance with article L131-3 of the French Intellectual Property Code. Axion-IA retains the right to reuse the generic skills, knowledge and know-how acquired during the engagement.",
+        },
+        {
+          title: "Confidentiality",
+          body: "Each party keeps confidential the non-public information exchanged in connection with the services and uses it solely for their performance. This undertaking applies throughout the relationship and for 3 years after its end, subject to legal disclosure obligations.",
+        },
+        {
+          title: "Personal data protection",
+          body: "Each party complies with applicable personal-data law (GDPR, EU 2016/679). Where, as part of a service, Axion-IA processes personal data on the Client's behalf, the parties enter into a processing agreement compliant with GDPR article 28 specifying the subject matter, duration, nature and purposes of the processing, the security and confidentiality measures, and the fate of the data at the end of the service. Processing of data collected via the site is described in the Privacy policy.",
+        },
+        {
+          title: "Use of artificial intelligence and transparency",
+          body: "Certain services rely on artificial intelligence systems, including generative AI. Axion-IA informs the Client and, where applicable, flags AI-generated or AI-assisted content, in accordance with article 50 of the EU Artificial Intelligence Act (EU 2024/1689). The Client remains responsible for validating and for the final use of results produced with AI assistance.",
+        },
+        {
+          title: "Warranties and liability",
+          body: "Axion-IA performs its services to professional standards, as a best-efforts undertaking. No outcome guarantee is given; any gains, ROI or performance mentioned are indicative and depend on factors specific to the Client. Axion-IA's liability, on any ground, is limited to direct damage and capped at the amount excl. VAT actually received for the service giving rise to the damage. Indirect damage is excluded (loss of operations, data, revenue or reputation). These limitations do not apply in the event of gross negligence or wilful misconduct, nor where the law prohibits them.",
+        },
+        {
+          title: "Insurance",
+          body: "Axion-IA declares that it holds professional civil liability insurance covering the financial consequences of its liability in connection with its services. The insurer's details are available on request.",
+        },
+        {
+          title: "Force majeure",
+          body: "Neither party may be held liable for a failure resulting from force majeure within the meaning of article 1218 of the French Civil Code and French case law (including strikes, major outages, disasters, epidemics, failure of an essential supplier). The prevented party informs the other without delay; obligations are suspended for the duration of the impediment, and the contract may be terminated if the impediment becomes permanent.",
+        },
+        {
+          title: "Cancellation, rescheduling and refund",
+          body: "Any cancellation by the Client: more than 7 days before the scheduled date, full refund of sums paid; between 7 and 2 days, 50% of the price remains due; less than 2 days, the full price remains due, with the slot reschedulable once at no extra charge. Where the service takes the form of a training action, the specific terms (training agreement or contract, cancellation and withdrawal conditions, any funding) are set out in the quote or applicable agreement.",
+        },
+        {
+          title: "Reversibility and return",
+          body: "At the end of the service, Axion-IA returns to the Client, on request and in a usable format, the data and configurations belonging to it, and deletes working copies within a reasonable time, subject to legal retention obligations.",
+        },
+        {
+          title: "Non-solicitation of staff",
+          body: "During performance of the services and for 12 months after their end, the Client undertakes not to directly solicit or hire the Axion-IA personnel who took part in the service, save with Axion-IA's prior written consent.",
+        },
+        {
+          title: "Commercial references",
+          body: "Unless the Client objects in writing, Axion-IA may mention the Client's name and logo and a general description of the service as a commercial reference, while respecting the confidentiality of sensitive information.",
+        },
+        {
+          title: "No right of withdrawal",
+          body: "As the services are concluded between professionals, the right of withdrawal under the French Consumer Code does not apply. By exception, a professional Client employing five staff or fewer benefits from a 14-day withdrawal period for contracts concluded away from business premises whose subject matter falls outside its main field of activity (art. L221-3 of the Consumer Code).",
+        },
+        {
+          title: "Complaints and dispute resolution",
+          body: "Any complaint is addressed to contact@axion-ia.com; the parties endeavour to resolve any dispute amicably before any litigation. As the clientele is exclusively professional, the consumer-mediation scheme does not apply.",
+        },
+        {
+          title: "Severability",
+          body: "If any provision of these terms is held void or unenforceable, the remaining provisions retain full force. The provision concerned is, where applicable, replaced by a valid provision of equivalent effect.",
         },
         {
           title: "Applicable law and jurisdiction",
-          body: "These terms are governed by French law. Any dispute falls within the jurisdiction of competent courts in France.",
+          body: "These terms are governed by French law. Failing an amicable resolution, any dispute falls within the exclusive jurisdiction of the competent court for the district of Axion-IA's registered office, including in the event of multiple defendants or third-party proceedings.",
         },
       ],
       metaSeo: {
         title: "Terms & conditions · Axion-IA",
-        description: "Axion-IA T&Cs: quotes, payment, delivery, warranties. French law applies.",
+        description:
+          "Axion-IA SAS B2B T&Cs: order, pricing, payment and L441-10 penalties, intellectual property, liability, GDPR, AI Act, force majeure. French law applies.",
       },
     },
   },
