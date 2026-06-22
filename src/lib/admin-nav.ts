@@ -30,6 +30,7 @@ export type AdminNavGroup =
   | "documents-interventions"
   | "coaching-1to1"
   | "image-bank"
+  | "presse"
   | "chatbot"
   | "engagement"
   | "ops"
@@ -86,6 +87,7 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   "documents-interventions": "Documents",
   "coaching-1to1": "Coaching 1-to-1",
   "image-bank": "Banque d'images",
+  presse: "Salle de presse",
   chatbot: "Chatbot",
   engagement: "Engagement",
   ops: "Ops & monitoring",
@@ -127,6 +129,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "documents-interventions",
   "coaching-1to1",
   "image-bank",
+  "presse",
   "chatbot",
   "engagement",
   "ops",
@@ -636,6 +639,10 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "image-bank",
     },
     { href: `${base}/image-bank/settings`, label: "Settings", icon: "⚙️", group: "image-bank" },
+    // ── salle de presse (communiqués + kit média de marque) ──────────────
+    { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
+    { href: `${base}/presse/communiques`, label: "Communiqués", icon: "🗞️", group: "presse" },
+    { href: `${base}/presse/kit-media`, label: "Kit média", icon: "🎨", group: "presse" },
     // ── chatbot (console conversationnelle) ──────────────────────────────
     { href: `${base}/chatbot`, label: "Tableau de bord", icon: "🤖", group: "chatbot" },
     { href: `${base}/chatbot/escalades`, label: "Escalades", icon: "🆘", group: "chatbot" },

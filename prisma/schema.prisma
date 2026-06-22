@@ -7049,3 +7049,101 @@ model ConsoleDocument {
   @@index([section, sortOrder])
   @@map("console_documents")
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SALLE DE PRESSE (2026-06-22) — communiqués + kit média gérés depuis l'admin.
+// Remplace les fixtures statiques `src/content/press.ts` (migrées en seed).
+// ⚠️ Le KIT MÉDIA (logo, charte couleur/graphique, brand book…) est DISTINCT de
+// la banque d'images (`ImageAsset` = illustrations éditoriales) : ce sont des
+// fichiers de MARQUE, stockés sur le volume console-docs (hors web-root) et
+// servis par une route dédiée. Ne pas confondre les deux modules.
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum PressReleaseTag {
+  launch
+  partnership
+  study
+  product
+  milestone
+}
+
+enum PressMediaKind {
+  logo
+  wordmark
+  photo
+  brand_book
+  boilerplate
+  color_charter
+  graphic_charter
+}
+
+model PressRelease {
+  id          String          @id @default(uuid()) @db.Uuid
+  tag         PressReleaseTag
+  status      PublishStatus   @default(draft)
+  publishedAt DateTime?       @map("published_at")
+  sortOrder   Int             @default(0) @map("sort_order")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  deletedAt   DateTime?       @map("deleted_at")
+
+  translations PressReleaseTranslation[]
+
+  @@index([status, publishedAt])
+  @@map("press_releases")
+}
+
+model PressReleaseTranslation {
+  id              String   @id @default(uuid()) @db.Uuid
+  releaseId       String   @map("release_id") @db.Uuid
+  locale          Locale
+  title           String   @db.VarChar(255)
+  slug            String   @db.VarChar(255)
+  dek             String?  @db.Text
+  body            String   @db.Text
+  metaTitle       String?  @map("meta_title") @db.VarChar(255)
+  metaDescription String?  @map("meta_description") @db.VarChar(320)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  release PressRelease @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+
+  @@unique([releaseId, locale])
+  @@unique([locale, slug])
+  @@map("press_release_translations")
+}
+
+model PressMediaAsset {
+  id          String         @id @default(uuid()) @db.Uuid
+  kind        PressMediaKind
+  status      PublishStatus  @default(draft)
+  storagePath String?        @map("storage_path") @db.VarChar(500)
+  fileName    String?        @map("file_name") @db.VarChar(255)
+  fileFormat  String?        @map("file_format") @db.VarChar(20)
+  fileSize    Int?           @map("file_size")
+  hashSha256  String?        @map("hash_sha256") @db.VarChar(64)
+  sortOrder   Int            @default(0) @map("sort_order")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  deletedAt   DateTime?      @map("deleted_at")
+
+  translations PressMediaAssetTranslation[]
+
+  @@index([status, sortOrder])
+  @@map("press_media_assets")
+}
+
+model PressMediaAssetTranslation {
+  id          String   @id @default(uuid()) @db.Uuid
+  assetId     String   @map("asset_id") @db.Uuid
+  locale      Locale
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  asset PressMediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, locale])
+  @@map("press_media_asset_translations")
+}
