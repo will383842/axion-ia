@@ -25,10 +25,9 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
 
-// 41 villes affichées en badges (info, pas de pages thin) : Saint-Marcellin (bureaux)
-// + les 40 hubs T1+T2 (population ≥ 100 000).
+// 40 villes affichées en badges (info, pas de pages thin) : les 40 hubs T1+T2
+// (population ≥ 100 000), Grenoble (siège) inclus.
 const CAREER_CITIES: ReadonlyArray<string> = [
-  "Saint-Marcellin",
   ...HUB_VILLES.map((v) => v.nameFr),
 ];
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
@@ -251,7 +250,7 @@ export default async function CarrieresHubPage({
         </Container>
       </Section>
 
-      {/* Ancrage — siège Grenoble, bureaux Saint-Marcellin */}
+      {/* Ancrage — siège et bureaux à Grenoble */}
       <Section tone="sand">
         <Container>
           <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
@@ -443,12 +442,12 @@ export default async function CarrieresHubPage({
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr
-              ? "Notre siège est à Grenoble et nos bureaux à Saint-Marcellin (Isère) ; beaucoup de postes sont en remote ou hybride, et nos formateurs interviennent par secteur partout en France. On accueille des talents un peu partout :"
-              : "Our head office is in Grenoble and our offices in Saint-Marcellin (Isère); many roles are remote or hybrid, and our trainers work by sector across France. We welcome talent all over:"}
+              ? "Notre siège et nos bureaux sont à Grenoble (Isère) ; beaucoup de postes sont en remote ou hybride, et nos formateurs interviennent par secteur partout en France. On accueille des talents un peu partout :"
+              : "Our head office and offices are in Grenoble (Isère); many roles are remote or hybrid, and our trainers work by sector across France. We welcome talent all over:"}
           </p>
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
             {CAREER_CITIES.map((city) => {
-              const isHq = city === "Saint-Marcellin" || city === "Grenoble";
+              const isHq = city === "Grenoble";
               return (
                 <li
                   key={city}

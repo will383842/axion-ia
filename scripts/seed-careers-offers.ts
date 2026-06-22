@@ -61,11 +61,8 @@ async function main() {
     postes: Poste[];
     cities: Array<{ city: string; region: string }>;
   };
-  // 41 villes pour les postes itinérants : Saint-Marcellin (siège) + les 40 hubs.
-  const ALL_CITIES = [
-    { city: "Saint-Marcellin", region: "Isère — Auvergne-Rhône-Alpes" },
-    ...input.cities,
-  ];
+  // 40 villes pour les postes itinérants : les 40 hubs (Grenoble — siège — inclus).
+  const ALL_CITIES = [...input.cities];
 
   let created = 0;
   let updated = 0;
@@ -97,7 +94,7 @@ async function main() {
       employmentType: p.emploi,
       workMode: p.workMode as never,
       city: p.city,
-      region: p.city === "Saint-Marcellin" ? "Isère" : null,
+      region: p.city === "Grenoble" ? "Isère" : null,
       country: "FR",
       salaryMin: p.sal_min || null,
       salaryMax: p.sal_max || null,

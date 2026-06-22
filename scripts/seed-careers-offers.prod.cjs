@@ -20,10 +20,8 @@ async function main() {
   const input = JSON.parse(
     fs.readFileSync(path.join(DIR, "careers_seed_input.json"), "utf8"),
   );
-  const ALL_CITIES = [
-    { city: "Saint-Marcellin", region: "Isère — Auvergne-Rhône-Alpes" },
-    ...input.cities,
-  ];
+  // 40 hubs (Grenoble — siège — inclus) ; plus de préfixe siège séparé.
+  const ALL_CITIES = [...input.cities];
   let created = 0,
     updated = 0;
   const missing = [];
@@ -52,7 +50,7 @@ async function main() {
       employmentType: p.emploi,
       workMode: p.workMode,
       city: p.city,
-      region: p.city === "Saint-Marcellin" ? "Isère" : null,
+      region: p.city === "Grenoble" ? "Isère" : null,
       country: "FR",
       salaryMin: p.sal_min || null,
       salaryMax: p.sal_max || null,
