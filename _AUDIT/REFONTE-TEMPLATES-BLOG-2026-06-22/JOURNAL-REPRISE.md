@@ -205,6 +205,29 @@ générateurs classiques (fait sur Phase-8). Besoin données Will : /equipe/will
 (photo/bio) · Trustpilot (compte) · peupler la KB publique · newsletter inline
 (vérifier action existante). Body tables mobile = mineur (tables rares en corps).
 
+## 4e PASSE — décisions Will livrées (2026-06-22)
+
+Clés UNSPLASH/VOYAGE confirmées en Coolify (images + RAG actifs au deploy).
+Décisions Will + livraison :
+- **Williams** (photo+LinkedIn fournis) → `william-person.ts` + page statique
+  `/equipe/williams` (Person, sameAs LinkedIn, photo home-founder-william.avif,
+  bio FACTUELLE sans invention) + EQUIPE_PAGE_SLUGS+=williams (plus de @id 404).
+  ⚠️ Photo = celle déjà sur la home ; Will peut la remplacer au même chemin.
+- **Trustpilot** → NON (décision) → `ArticleSocialProof` réutilise les vrais
+  témoignages consentis (`getRealTestimonialsOnly`), sans service tiers.
+- **Newsletter** → `ArticleNewsletterInline` réutilise `NewsletterForm` existant
+  (action subscribeNewsletterAction + Turnstile). Câblés sur /blog.
+- **KB** → « générer via pipeline » : action RUNTIME (pas de DB locale). À
+  déclencher en prod via la console admin content-gen (générer des entrées
+  KnowledgeEntry publiques méthodo/cas) OU un job worker. VOYAGE_API_KEY posée
+  → le RAG vectoriel s'activera une fois la KB peuplée.
+- Gate **metaTitle** ajouté aux 12 types Phase-8.
+
+RESTE data-safe (code, non fait) : ImageObject images corps · validation schema
+CI réelle · content-refresh-worker 7-14j · liens profonds article→article ·
+PrevNext sur guides/actualites · metaTitle gate sur 8 générateurs classiques ·
+social-proof + newsletter sur guides/actualites (faits sur /blog).
+
 ## Reste Will (hors code)
 
 - Revue visuelle sur prod/preview, puis `git push` → PR → merge.
