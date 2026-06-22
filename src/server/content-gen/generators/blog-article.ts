@@ -26,6 +26,7 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { pickInternalExpert, buildExpertQuote } from "../brand/expert-bank";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
@@ -51,7 +52,9 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - Inclure OBLIGATOIREMENT ≥ 2 liens externes vers des sources d'autorité FR (INSEE, DARES, BPI France, France Num, rapport McKinsey, Stanford AI Index, etc.) avec rel="noopener noreferrer". Les AI Overviews Google et Perplexity citent prioritairement les articles sourcés.
 - "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
 - "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
+- "keyTakeaway": 1 à 2 phrases = LE point clé à retenir (synthèse autonome, citable telle quelle par une IA).
+- "expertTake": 1 à 2 phrases = prise de position d'expert (perspective/insight concret), SANS statistique inventée, signée par l'expert nommé dans le prompt utilisateur.
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags, keyTakeaway, expertTake }`);
 
 function synthesizeTopic(input: GeneratorBaseInput): string {
   if (input.primaryKeyword) return input.primaryKeyword;
@@ -89,6 +92,15 @@ export const blogArticleGenerator: Generator = {
     const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
+    // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT
+    // (nom/titre fixés depuis la banque ; le LLM ne rédige que le texte).
+    const expert = pickInternalExpert({
+      contentType: input.contentType,
+      templateVariant: input.templateVariant,
+      audienceSize: input.targetAudienceSize,
+      topic,
+    });
+
     const kbChunks = await kbRetrieve({
       query: `Axion-IA ${safeTopic} ${sectorTagSlugs.join(" ")}`,
       locale: "fr",
@@ -121,6 +133,8 @@ export const blogArticleGenerator: Generator = {
       bodyHtml: string;
       faq: ReadonlyArray<{ q: string; a: string }>;
       tags: ReadonlyArray<string>;
+      keyTakeaway?: string;
+      expertTake?: string;
     };
     let parsed: BlogArticleParsed | null = null;
     let lastTokensInput = 0;
@@ -142,8 +156,10 @@ Audience cible : ${safeAudienceSize}.
 ## Sources internes Axion-IA (à citer en priorité)
 ${kbContext}
 ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${glossaryContext}` : ""}
+## Avis d'expert
+"expertTake" = une prise de position de ${expert.name} (${expert.title}) : perspective d'expert concise et utile sur le sujet, sans chiffre inventé.
 ## Output attendu (JSON)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×6-8], tags }`;
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×6-8], tags, keyTakeaway, expertTake }`;
 
       // 2026-06-15 — Override template console (fallback prompt code si absent).
       const effectiveSystem = applySystemPromptOverride(
@@ -299,6 +315,8 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
           ? "tier_2_noindex_follow"
           : "tier_3_noindex_nofollow";
 
+    const expertQuote = buildExpertQuote(expert, parsed.expertTake);
+
     return {
       title: parsed.title ?? "",
       metaTitle: parsed.metaTitle ?? "",
@@ -309,6 +327,11 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
       bodyText,
       faq: (parsed.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags ?? [],
+      // Refonte templates 2026-06-22 — point clé + avis d'expert interne. Le
+      // nom/titre sont fixés par la banque (jamais le LLM) ; buildExpertQuote
+      // renvoie undefined si le texte est vide → bloc non rendu.
+      ...(parsed.keyTakeaway?.trim() ? { keyTakeaway: parsed.keyTakeaway.trim() } : {}),
+      ...(expertQuote ? { expertQuote } : {}),
       indexationTier,
       qualityScore,
       seoScore: seo.score,

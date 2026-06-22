@@ -308,6 +308,28 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     : [];
   const directAnswer = typeof output.directAnswer === "string" ? output.directAnswer : null;
   const faqJson = output.faqJson ?? output.faq ?? null;
+  // Refonte templates 2026-06-22 — « Point clé » + avis d'expert interne.
+  // Le nom/titre de l'expert proviennent de la banque interne (expert-bank.ts),
+  // jamais du LLM (anti-fabrication) ; on persiste tel quel si présent.
+  const keyTakeaway =
+    typeof output.keyTakeaway === "string" && output.keyTakeaway.trim().length > 0
+      ? output.keyTakeaway.trim()
+      : null;
+  const expertQuoteRaw = output.expertQuote as
+    | { name?: unknown; title?: unknown; text?: unknown }
+    | undefined;
+  const expertQuote =
+    expertQuoteRaw &&
+    typeof expertQuoteRaw.name === "string" &&
+    typeof expertQuoteRaw.text === "string" &&
+    expertQuoteRaw.name.trim().length > 0 &&
+    expertQuoteRaw.text.trim().length > 0
+      ? {
+          name: expertQuoteRaw.name.trim(),
+          title: typeof expertQuoteRaw.title === "string" ? expertQuoteRaw.title.trim() : null,
+          text: expertQuoteRaw.text.trim(),
+        }
+      : null;
   const slugCandidate =
     typeof output.slug === "string" && output.slug.length > 0
       ? output.slug
@@ -454,6 +476,15 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
         ...(resolvedCategoryId ? { categoryId: resolvedCategoryId } : {}),
         ...(directAnswer ? { directAnswer } : {}),
         ...(faqJson ? { faqJson: faqJson as never } : {}),
+        // Refonte templates 2026-06-22 — point clé + avis d'expert interne.
+        ...(keyTakeaway ? { keyTakeaway } : {}),
+        ...(expertQuote
+          ? {
+              expertQuoteName: expertQuote.name,
+              expertQuoteTitle: expertQuote.title,
+              expertQuoteText: expertQuote.text,
+            }
+          : {}),
         templateVariant: cgJob.templateId ?? null,
         searchIntent: cgJob.targetSearchIntent,
         isNews,
