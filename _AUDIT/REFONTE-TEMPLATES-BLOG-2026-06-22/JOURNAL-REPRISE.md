@@ -47,8 +47,10 @@ Tous gates pre-commit verts (prettier, anti-hex, use-client, typecheck).
 - `cb7abfe1` C3(début) — fix FAQPage `/guides` (`parseFaqItems` déballe `.faq`
   quand faqJson est un objet) + test `faq-items.test.ts` (6/6 verts).
 - `cc698a17` — test parseFaqItems + ce journal de reprise.
-- (commit suivant) C3 propagation `/actualites` — barre progression + **TOC +
+- `0f831ead` C3 propagation `/actualites` — barre progression + **TOC +
   ancres (gap audit comblé)** + ShareBar + TransparencyBlock. typecheck 0.
+- (commit suivant) C3 propagation `/guides` — barre progression + ShareBar +
+  TransparencyBlock (TOC/FAQ/Sources déjà présents). typecheck 0.
 
 ## Vérification E2E (2026-06-22)
 
