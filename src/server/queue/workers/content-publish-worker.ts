@@ -49,6 +49,8 @@ import { persistArticleCitations } from "@/server/content-gen/links/persist-cita
 // Refonte templates 2026-06-22 — images Unsplash intercalées dans le corps
 // (best-effort, doctrine « Unsplash uniquement », attribution CGU §6).
 import { injectBodyImages } from "@/server/content-gen/images/inject-body-images";
+// Refonte 2026-06-22 — liens internes profonds article->article (best-effort).
+import { injectDeepArticleLinks } from "@/server/content-gen/links/inject-deep-links";
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
@@ -462,10 +464,17 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // d'origine : la détection de citations/liens (plus bas) tourne sur `bodyHtml`
   // brut, donc les liens d'attribution Unsplash ne sont jamais comptés comme
   // citations. Best-effort : `bodyHtml` inchangé si Unsplash indisponible.
-  const bodyHtmlForPersist = await injectBodyImages(bodyHtml, {
+  const bodyHtmlWithImages = await injectBodyImages(bodyHtml, {
     jobId: cgJob.id,
     contentType: cgJob.contentType,
     topicHint: primaryKeyword ?? title,
+  });
+  // Liens internes profonds vers d'autres articles tier-1 (maillage thématique),
+  // après les images. Best-effort, sur la même chaîne persistée. Internal links
+  // → n'affecte pas la détection de citations (qui tourne sur `bodyHtml` brut).
+  const bodyHtmlForPersist = await injectDeepArticleLinks(bodyHtmlWithImages, {
+    currentSlug: slugCandidate,
+    locale: "fr",
   });
 
   const article = await prisma.$transaction(async (tx) => {
