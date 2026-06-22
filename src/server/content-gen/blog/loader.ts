@@ -329,6 +329,38 @@ export async function loadAdjacentArticles(
 }
 
 /**
+ * Refonte 2026-06-22 — précédent/suivant pour /guides et /actualites (parité
+ * /blog). Adjacence chronologique au sein du MÊME type (news ou guides). Le H1
+ * de la page = la route ; on génère donc des href `/actualites/<slug>` ou
+ * `/guides/<slug>`. Retourne `{ prev:null, next:null }` si introuvable.
+ */
+export async function loadAdjacentArticlesByType(
+  currentSlug: string,
+  locale: Locale,
+  type: "news" | "guides",
+): Promise<{ prev: ArticleLink | null; next: ArticleLink | null }> {
+  const rows = await prisma.articleTranslation
+    .findMany({
+      where: {
+        locale,
+        article: { status: "published", ...(type === "news" ? { isNews: true } : {}) },
+        ...(type === "guides" ? { slug: { startsWith: "guide-" } } : {}),
+      },
+      select: { slug: true, title: true, article: { select: { publishedAt: true } } },
+      orderBy: { article: { publishedAt: "desc" } },
+      take: 300,
+    })
+    .catch(() => []);
+  const idx = rows.findIndex((r) => r.slug === currentSlug);
+  if (idx === -1) return { prev: null, next: null };
+  const seg = type === "news" ? "actualites" : "guides";
+  const toLink = (r: (typeof rows)[number] | undefined): ArticleLink | null =>
+    r ? { title: r.title, href: `/${seg}/${r.slug}` } : null;
+  // Liste DESC : index+1 = plus ancien (précédent), index-1 = plus récent (suivant).
+  return { prev: toLink(rows[idx + 1]), next: toLink(rows[idx - 1]) };
+}
+
+/**
  * Refonte templates 2026-06-22 — « People Also Ask » (`<ArticlePeopleAlsoAsk>`).
  * Distinct de la FAQ inline ET des « articles connexes » : ce sont de VRAIES
  * questions issues des FAQ d'AUTRES articles publiés (indexables), chaque

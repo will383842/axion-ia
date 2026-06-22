@@ -37,8 +37,10 @@ import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
-import { loadPeopleAlsoAsk } from "@/server/content-gen/blog/loader";
+import { loadPeopleAlsoAsk, loadAdjacentArticlesByType } from "@/server/content-gen/blog/loader";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
+import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
+import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
@@ -275,6 +277,7 @@ export default async function NewsArticlePage({ params }: Props) {
   const related = await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 });
   // Refonte 2026-06-22 — People Also Ask (parité maillage /blog).
   const peopleAlsoAsk = await loadPeopleAlsoAsk(slug, "fr");
+  const adjacentNews = await loadAdjacentArticlesByType(slug, "fr", "news");
 
   const breadcrumbItems = [
     { href: "/actualites", label: "Actualités" },
@@ -488,6 +491,12 @@ export default async function NewsArticlePage({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* Refonte 2026-06-22 — précédent / suivant (parité /blog). */}
+      <ArticlePrevNext prev={adjacentNews.prev} next={adjacentNews.next} locale="fr" />
+
+      {/* Refonte 2026-06-22 — newsletter (parité /blog). */}
+      <ArticleNewsletterInline locale="fr" />
 
       <CtaBlock
         title="Mettre en pratique"

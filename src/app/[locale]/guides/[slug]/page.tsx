@@ -33,8 +33,9 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
-import { loadPeopleAlsoAsk } from "@/server/content-gen/blog/loader";
+import { loadPeopleAlsoAsk, loadAdjacentArticlesByType } from "@/server/content-gen/blog/loader";
 import { ArticlePeopleAlsoAsk } from "@/components/content-gen/ArticlePeopleAlsoAsk";
+import { ArticlePrevNext } from "@/components/content-gen/ArticlePrevNext";
 import { ArticleNewsletterInline } from "@/components/content-gen/ArticleNewsletterInline";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
@@ -132,6 +133,7 @@ export default async function GuidePiliersPage({ params }: Props) {
   // Refonte 2026-06-22 — People Also Ask aussi sur /guides (parité maillage avec
   // /blog) : vraies questions issues des FAQ d'autres articles publiés.
   const peopleAlsoAsk = await loadPeopleAlsoAsk(slug, locale as Locale);
+  const adjacent = await loadAdjacentArticlesByType(slug, locale as Locale, "guides");
 
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
@@ -319,6 +321,9 @@ export default async function GuidePiliersPage({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* Refonte 2026-06-22 — précédent / suivant (parité /blog). */}
+      <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale="fr" />
 
       {/* Refonte 2026-06-22 — newsletter (parité /blog). */}
       <ArticleNewsletterInline locale="fr" />
