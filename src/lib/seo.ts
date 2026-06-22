@@ -6,6 +6,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { FOUNDER } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
@@ -545,13 +546,20 @@ export function buildOrganizationJsonLd({
       },
     },
     // Fondateur — E-E-A-T : un humain nommé identifiable derrière l'entité
-    // (Williams, LinkedIn réel). Renforce la confiance Google + la citabilité LLM.
+    // (Williams Jullin, LinkedIn réel). Renforce la confiance Google + la
+    // citabilité LLM. Audit E-E-A-T 2026-06-22 (P1) — identité dérivée du SSOT
+    // `FOUNDER` (lib/brand.ts) et consolidée sur l'entité canonique
+    // `/equipe/williams` : `@id` aligné sur le nœud Person émis par
+    // `buildPersonWilliamsJsonLd()` → une seule entité Person fusionnée par
+    // Google (avant : nom « Williams » + url `/a-propos#will` divergeaient de la
+    // page d'autorité `/equipe/williams`).
     founder: {
       "@type": "Person",
-      name: "Williams",
-      jobTitle: isFr ? "Fondateur · lead consultant IA" : "Founder · lead AI consultant",
-      url: `${SITE_URL}/${isFr ? "fr/a-propos" : "en/about"}#will`,
-      sameAs: ["https://www.linkedin.com/in/williamsjullin/"],
+      "@id": `${SITE_URL}/fr/equipe/williams#person`,
+      name: FOUNDER.fullName,
+      jobTitle: isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn,
+      url: `${SITE_URL}/fr/equipe/williams`,
+      sameAs: [FOUNDER.linkedin],
     },
     areaServed: ["FR", "EU"],
     knowsLanguage: ["fr", "en"],
@@ -680,10 +688,14 @@ const PERSONA_SLUGS = new Set(["manon"]);
 export function buildPersonJsonLd({
   locale,
   slug = "will",
-  name = "Williams",
+  // Audit E-E-A-T 2026-06-22 (P1) — identité par défaut dérivée du SSOT `FOUNDER`
+  // (lib/brand.ts) au lieu de littéraux divergents. `name` = nom complet d'entité
+  // (« Williams Jullin »), cohérent avec `Organization.founder` + la page
+  // `/equipe/williams`. Un appelant peut toujours surcharger name/jobTitle/sameAs.
+  name = FOUNDER.fullName,
   jobTitle,
   image,
-  sameAs = ["https://www.linkedin.com/in/williamsjullin/"],
+  sameAs = [FOUNDER.linkedin],
 }: PersonJsonLdInput) {
   if (PERSONA_SLUGS.has(slug)) {
     throw new Error(
@@ -692,8 +704,7 @@ export function buildPersonJsonLd({
     );
   }
   const isFr = locale === "fr";
-  const resolvedJobTitle =
-    jobTitle ?? (isFr ? "Fondateur · lead consultant IA" : "Founder · lead AI consultant");
+  const resolvedJobTitle = jobTitle ?? (isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn);
   const resolvedImage = image ?? `${SITE_URL}/opengraph-image`;
   return {
     "@context": "https://schema.org",

@@ -15,6 +15,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
+import { FOUNDER } from "@/lib/brand";
 
 export interface ImplementationFounderBandProps {
   readonly isFr: boolean;
@@ -113,9 +114,9 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
                 />
               </figure>
               <div className="mt-4 text-center">
-                <p className="text-fg text-lg font-semibold">Williams</p>
+                <p className="text-fg text-lg font-semibold">{FOUNDER.displayName}</p>
                 <p className="text-fg-muted text-sm">
-                  {isFr ? "Fondateur & CEO · Axion-IA" : "Founder & CEO · Axion-IA"}
+                  {isFr ? FOUNDER.roleLineFr : FOUNDER.roleLineEn}
                 </p>
               </div>
             </div>
